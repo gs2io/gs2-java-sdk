@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.gs2</groupId>
 	<artifactId>gs2-java-sdk</artifactId>
-	<version>0.0.1</version>
+	<version>0.1.0</version>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -14,47 +14,47 @@
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-auth</artifactId>
-			<version>0.0.1</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-identifier</artifactId>
-			<version>0.0.1</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-inbox</artifactId>
-			<version>0.0.1</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-notification</artifactId>
-			<version>0.0.1</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-timer</artifactId>
-			<version>0.0.1</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-stamina</artifactId>
-			<version>0.0.1</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-matchmaking</artifactId>
-			<version>0.0.1</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-realtime</artifactId>
-			<version>0.0.1</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-watch</artifactId>
-			<version>0.0.1</version>
+			<version>0.1.0</version>
 		</dependency>
 	</dependencies>
 
@@ -191,14 +191,8 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-			</extension>
-		</extensions>
 	</build>
-
+	
 	<reporting>
 		<plugins>
 			<plugin>
@@ -207,14 +201,7 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
-	<repositories>
-		<repository>
-			<id>repos.maven.gs2.io</id>
-			<name>GS2 Maven Repository</name>
-			<url>http://maven.gs2.io/repos</url>
-		</repository>
-	</repositories>
+	
 	<distributionManagement>
 		<repository>
 			<id>ossrh</id>
