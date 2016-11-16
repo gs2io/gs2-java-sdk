@@ -1,0 +1,10 @@
+## Customize the test machine
+machine:
+  java:
+    version: oraclejdk8
+
+deployment:
+  maven:
+    branch: master
+    commands:
+      - mvn deploy
