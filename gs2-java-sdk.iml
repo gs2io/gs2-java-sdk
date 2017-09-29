@@ -36,5 +36,6 @@
     <orderEntry type="module" module-name="gs2-java-sdk-key" />
     <orderEntry type="module" module-name="gs2-java-sdk-script" />
     <orderEntry type="module" module-name="gs2-java-sdk-watch" />
+    <orderEntry type="module" module-name="gs2-java-sdk-in-game-push-notification" />
   </component>
 </module>
