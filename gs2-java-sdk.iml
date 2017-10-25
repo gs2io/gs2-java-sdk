@@ -26,7 +26,7 @@
     <orderEntry type="module" module-name="gs2-java-sdk-consumable-item" />
     <orderEntry type="module" module-name="gs2-java-sdk-identifier" />
     <orderEntry type="module" module-name="gs2-java-sdk-inbox" />
-    <orderEntry type="module" module-name="gs2-java-sdk-notification" />
+    <orderEntry type="library" name="Maven: io.gs2:gs2-java-sdk-notification:0.2.1" level="project" />
     <orderEntry type="module" module-name="gs2-java-sdk-timer" />
     <orderEntry type="module" module-name="gs2-java-sdk-stamina" />
     <orderEntry type="module" module-name="gs2-java-sdk-money" />

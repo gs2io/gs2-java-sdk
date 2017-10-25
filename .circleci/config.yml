@@ -44,11 +44,3 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               ~/publish-${PUBLISH_VERSION}/java/publish_maven.sh ~/publish-${PUBLISH_VERSION}/java/
             fi
-      -
-        run:
-          name: javadocファイルをコピー
-          command: |
-            cp ./target/*-javadoc.jar $CIRCLE_ARTIFACTS
-      -
-        store_test_results:
-          path: $CIRCLE_ARTIFACTS
