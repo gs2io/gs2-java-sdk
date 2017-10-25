@@ -1,0 +1,54 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          CIRCLE_ARTIFACTS: /tmp/test-results
+    steps:
+      - checkout
+      -
+        restore_cache:
+          name: 依存関係をキャッシュから取得
+          keys:
+            - PUBLISH
+      -
+        run:
+          name: OSの初期設定
+          command: |
+            sudo curl -O https://bootstrap.pypa.io/get-pip.py
+            sudo python get-pip.py
+            sudo pip install awscli
+      -
+        run:
+          name: Publishスクリプトを取得
+          command: |
+            aws s3 cp s3://gs2-repos/python/publish/${PUBLISH_VERSION}/publish-${PUBLISH_VERSION}.tar.gz ~/ && tar -zxvf ~/publish-${PUBLISH_VERSION}.tar.gz -C ~/
+      -
+        save_cache:
+          name: Publishスクリプトをキャッシュに保存
+          key: PUBLISH
+          paths:
+            - ~/publish-${PUBLISH_VERSION}
+      -
+        run:
+          name: テストを実行
+          command: |
+            mvn integration-test
+
+      -
+        deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ~/publish-${PUBLISH_VERSION}/java/publish_maven.sh ~/publish-${PUBLISH_VERSION}/java/
+            fi
+      -
+        run:
+          name: javadocファイルをコピー
+          command: |
+            cp ./target/*-javadoc.jar $CIRCLE_ARTIFACTS
+      -
+        store_test_results:
+          path: $CIRCLE_ARTIFACTS
