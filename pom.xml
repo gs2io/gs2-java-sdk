@@ -99,7 +99,7 @@
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-in-game-push-notification</artifactId>
-			<version>0.2.0</version>
+			<version>0.2.1</version>
 		</dependency>
 	</dependencies>
 
