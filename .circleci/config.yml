@@ -18,6 +18,7 @@ jobs:
         run:
           name: OSの初期設定
           command: |
+            sudo apt-get install gnupg2
             sudo curl -O https://bootstrap.pypa.io/get-pip.py
             sudo python get-pip.py
             sudo pip install awscli
