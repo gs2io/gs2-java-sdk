@@ -3,7 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.gs2</groupId>
 	<artifactId>gs2-java-sdk</artifactId>
-	<version>0.2.0</version>
+	<version>0.5.2</version>
+
+	<name>Game Server Services SDK for Java</name>
+	<url>https://gs2.io/</url>
+	<description>Game Server Services SDK for Java</description>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -14,79 +19,120 @@
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-account</artifactId>
-			<version>0.2.0</version>
+			<version>0.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-auth</artifactId>
-			<version>0.2.0</version>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-chat</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-consumable-item</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-gold</artifactId>
+			<version>0.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-identifier</artifactId>
-			<version>0.2.0</version>
+			<version>0.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-inbox</artifactId>
-			<version>0.2.0</version>
+			<version>0.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-notification</artifactId>
-			<version>0.2.0</version>
+			<artifactId>gs2-java-sdk-in-game-push-notification</artifactId>
+			<version>0.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-timer</artifactId>
-			<version>0.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-stamina</artifactId>
-			<version>0.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-matchmaking</artifactId>
-			<version>0.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-ranking</artifactId>
-			<version>0.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-realtime</artifactId>
-			<version>0.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-variable</artifactId>
-			<version>0.2.0</version>
+			<artifactId>gs2-java-sdk-job-queue</artifactId>
+			<version>0.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-key</artifactId>
-			<version>0.2.0</version>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-limit</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-matchmaking</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-money</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-notification</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-ranking</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-realtime</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-schedule</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-showcase</artifactId>
+			<version>0.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-script</artifactId>
-			<version>0.2.0</version>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-stamina</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-timer</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.gs2</groupId>
+			<artifactId>gs2-java-sdk-variable</artifactId>
+			<version>0.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.gs2</groupId>
 			<artifactId>gs2-java-sdk-watch</artifactId>
-			<version>0.2.0</version>
+			<version>0.5.2</version>
 		</dependency>
 	</dependencies>
 
-	<name>Game Server Services SDK for Java</name>
-	<url>https://gs2.io/</url>
-	<description>Game Server Services SDK for Java</description>
-	
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
@@ -113,6 +159,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<gpg.skip>true</gpg.skip>
 	</properties>
 
 	<build>
@@ -121,9 +168,6 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<configuration>
-						<argLine>${jacocoArgs}</argLine>
-					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
