@@ -24,6 +24,8 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.3" level="project" />
     <orderEntry type="module" module-name="gs2-java-sdk-chat" />
     <orderEntry type="module" module-name="gs2-java-sdk-consumable-item" />
+    <orderEntry type="module" module-name="gs2-java-sdk-gold" />
+    <orderEntry type="module" module-name="gs2-java-sdk-gacha" />
     <orderEntry type="module" module-name="gs2-java-sdk-identifier" />
     <orderEntry type="module" module-name="gs2-java-sdk-inbox" />
     <orderEntry type="module" module-name="gs2-java-sdk-in-game-push-notification" />
@@ -36,6 +38,7 @@
     <orderEntry type="module" module-name="gs2-java-sdk-ranking" />
     <orderEntry type="module" module-name="gs2-java-sdk-realtime" />
     <orderEntry type="module" module-name="gs2-java-sdk-schedule" />
+    <orderEntry type="module" module-name="gs2-java-sdk-showcase" />
     <orderEntry type="module" module-name="gs2-java-sdk-script" />
     <orderEntry type="module" module-name="gs2-java-sdk-stamina" />
     <orderEntry type="module" module-name="gs2-java-sdk-timer" />
