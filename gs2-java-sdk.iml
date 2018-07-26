@@ -31,6 +31,7 @@
     <orderEntry type="module" module-name="gs2-java-sdk-in-game-push-notification" />
     <orderEntry type="module" module-name="gs2-java-sdk-job-queue" />
     <orderEntry type="module" module-name="gs2-java-sdk-key" />
+    <orderEntry type="module" module-name="gs2-java-sdk-level" />
     <orderEntry type="module" module-name="gs2-java-sdk-limit" />
     <orderEntry type="module" module-name="gs2-java-sdk-matchmaking" />
     <orderEntry type="module" module-name="gs2-java-sdk-money" />
