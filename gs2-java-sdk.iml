@@ -23,7 +23,7 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.5.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.3" level="project" />
     <orderEntry type="module" module-name="gs2-java-sdk-chat" />
-    <orderEntry type="module" module-name="gs2-java-sdk-consumable-item" />
+    <orderEntry type="library" name="Maven: io.gs2:gs2-java-sdk-consumable-item:0.5.4" level="project" />
     <orderEntry type="module" module-name="gs2-java-sdk-gold" />
     <orderEntry type="module" module-name="gs2-java-sdk-gacha" />
     <orderEntry type="module" module-name="gs2-java-sdk-identifier" />
