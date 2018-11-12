@@ -2,7 +2,7 @@ version: 2
 
 jobs:
   build:
-    working_directory: ~/repo
+    working_directory: ~/repo/gs2-java-sdk
     docker:
       - image: circleci/openjdk:8-jdk-browsers
         environment:
@@ -18,10 +18,11 @@ jobs:
         run:
           name: OSの初期設定
           command: |
-            sudo apt-get install gnupg2
+            sudo apt -q update
+            sudo apt -q install -y --no-install-recommends gnupg2
             sudo curl -O https://bootstrap.pypa.io/get-pip.py
             sudo python get-pip.py
-            sudo pip install awscli
+            sudo pip install awscli requests GitPython
       -
         run:
           name: Publishスクリプトを取得
@@ -33,11 +34,31 @@ jobs:
           key: PUBLISH
           paths:
             - ~/publish-${PUBLISH_VERSION}
+
+      -
+        run:
+          name: テストをチェックアウト
+          command: |
+            cd ..
+            git clone -b ${CIRCLE_BRANCH} git@github.com:gs2io/gs2-java-sdk-private.git || git clone -b develop git@github.com:gs2io/gs2-java-sdk-private.git
+      -
+        run:
+          name: ターゲットを決定
+          command: |
+            cd ../gs2-java-sdk-private
+            .circleci/targets.sh .circleci/filter_gs2-java-sdk.sh > targets
+      -
+        run:
+          name: SDK をビルド
+          command: |
+            cd ../gs2-java-sdk
+            mvn install -Dgpg.skip=true -Dmaven.test.skip=true
       -
         run:
           name: テストを実行
           command: |
-            mvn integration-test
+            cd ../gs2-java-sdk-private
+            .circleci/test.sh < targets
 
       -
         deploy:
