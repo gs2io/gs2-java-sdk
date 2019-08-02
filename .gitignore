@@ -1,5 +1,4 @@
-.DS_Store
-target
-.project
-.classpath
-.settings
+*-private/
+.idea
+*.iml
+*.sh

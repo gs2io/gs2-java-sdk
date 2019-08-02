@@ -10,11 +10,6 @@ jobs:
     steps:
       - checkout
       -
-        restore_cache:
-          name: 依存関係をキャッシュから取得
-          keys:
-            - PUBLISH
-      -
         run:
           name: OSの初期設定
           command: |
@@ -24,47 +19,35 @@ jobs:
             sudo python get-pip.py
             sudo pip install awscli requests GitPython
       -
-        run:
-          name: Publishスクリプトを取得
-          command: |
-            aws s3 cp s3://gs2-repos/python/publish/${PUBLISH_VERSION}/publish-${PUBLISH_VERSION}.tar.gz ~/ && tar -zxvf ~/publish-${PUBLISH_VERSION}.tar.gz -C ~/
-      -
-        save_cache:
-          name: Publishスクリプトをキャッシュに保存
-          key: PUBLISH
-          paths:
-            - ~/publish-${PUBLISH_VERSION}
-
-      -
-        run:
-          name: テストをチェックアウト
-          command: |
-            cd ..
-            git clone -b ${CIRCLE_BRANCH} git@github.com:gs2io/gs2-java-sdk-private.git || git clone -b develop git@github.com:gs2io/gs2-java-sdk-private.git
-      -
-        run:
-          name: ターゲットを決定
-          command: |
-            cd ../gs2-java-sdk-private
-            .circleci/targets.sh .circleci/filter_gs2-java-sdk.sh > targets
-      -
-        run:
-          name: SDK をビルド
-          command: |
-            cd ../gs2-java-sdk
-            mvn install -Dgpg.skip=true -Dmaven.test.skip=true
-      -
-        run:
-          name: テストを実行
-          command: |
-            cd ../gs2-java-sdk-private
-            .circleci/test.sh < targets
-
-      -
         deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ~/publish-${PUBLISH_VERSION}/java/publish_maven.sh ~/publish-${PUBLISH_VERSION}/java/
+
+              aws s3 cp s3://gs2-repos/python/publish/${PUBLISH_VERSION}/publish-${PUBLISH_VERSION}.tar.gz ~/ && tar -zxvf ~/publish-${PUBLISH_VERSION}.tar.gz -C ~/
+
+              mkdir -p ~/.m2/
+
+              gpg --batch --import ~/publish-${PUBLISH_VERSION}/java/gs2-maven-gpg.asc
+              cp ~/publish-${PUBLISH_VERSION}/java/settings.xml ~/.m2/
+
+              echo 'use-agent' >> ~/.gnupg/gpg.conf
+              echo 'pinentry-mode loopback' >> ~/.gnupg/gpg.conf
+
+              echo 'allow-loopback-pinentry' >> ~/.gnupg/gpg-agent.conf
+
+              SERVICES=`find . -name src | sed -e 's/gs2-java-sdk\///g' | sed -e 's/\/src//g' | grep 'gs2-' | sed -e 's/^gs2-//g' | xargs`
+
+              set +e
+
+              for service in $SERVICES; do
+                cd $service/
+                mvn deploy -DperformRelease=true -Dgpg.skip=false
+                cd ../
+              done
+
+              set -e
+
+              mvn deploy -DperformRelease=true -Dgpg.skip=false
             fi
       -
         run:
