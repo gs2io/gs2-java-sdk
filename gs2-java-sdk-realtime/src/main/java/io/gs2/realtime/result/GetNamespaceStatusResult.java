@@ -30,7 +30,7 @@ import io.gs2.realtime.model.*;
  */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetNamespaceStatusResult implements Serializable {
+public class GetNamespaceStatusResult implements IResult, Serializable {
 	/** None */
 	private String status;
 

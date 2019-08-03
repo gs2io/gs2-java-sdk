@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.gs2.model.IModel;
 
 /**
  * プッシュ通知設定
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NotificationSetting implements Serializable {
+public class NotificationSetting implements IModel, Serializable {
 	/** プッシュ通知に使用する GS2-Gateway のネームスペース のGRN */
 	protected String gatewayNamespaceId;
 

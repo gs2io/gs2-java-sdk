@@ -30,7 +30,7 @@ import io.gs2.realtime.model.*;
  */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class WantRoomResult implements Serializable {
+public class WantRoomResult implements IResult, Serializable {
 	/** ルーム */
 	private Room item;
 

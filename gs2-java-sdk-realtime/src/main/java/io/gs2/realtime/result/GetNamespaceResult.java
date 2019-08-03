@@ -30,7 +30,7 @@ import io.gs2.realtime.model.*;
  */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetNamespaceResult implements Serializable {
+public class GetNamespaceResult implements IResult, Serializable {
 	/** ネームスペース */
 	private Namespace item;
 

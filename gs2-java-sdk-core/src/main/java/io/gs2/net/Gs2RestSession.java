@@ -9,29 +9,26 @@ import io.gs2.model.Region;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Gs2RestSession extends Gs2Session {
 
     public static final String EndpointHost = "https://{service}.{region}.gen2.gs2io.com";
 
-    private boolean isOpenCancelled;
+    private boolean m_IsOpenCancelled;
 
     public static class LoginResult {
-        /**
-         * プロジェクトトークン
-         */
+        /** プロジェクトトークン */
         public String access_token;
-        /**
-         * Bearer
-         */
+        /** Bearer */
         public String token_type;
-        /**
-         * 有効期間(秒)
-         */
+        /** 有効期間(秒) */
         public Integer expires_in;
     }
 
-    private class Gs2LoginTask {
+    private class Gs2LoginTask
+    {
         private Gs2RestSession gs2RestSession;
 
         Gs2LoginTask(Gs2RestSession gs2RestSession) {
@@ -86,13 +83,13 @@ public class Gs2RestSession extends Gs2Session {
         super(basicGs2Credential, region);
     }
 
-    public void execute(Gs2RestSessionTask gs2RestSessionTask) {
+    public void execute(Gs2RestSessionTask gs2RestSessionTask) throws IOException {
         super.execute(gs2RestSessionTask);
     }
 
     @Override
     void openImpl() {
-        isOpenCancelled = false;
+        m_IsOpenCancelled = false;
 
         try {
             (new Gs2LoginTask(this)).execute();
@@ -102,8 +99,9 @@ public class Gs2RestSession extends Gs2Session {
     }
 
     @Override
-    void cancelOpenImpl() {
-        isOpenCancelled = true;
+    void cancelOpenImpl()
+    {
+        m_IsOpenCancelled = true;
     }
 
     @Override

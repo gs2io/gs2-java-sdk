@@ -18,30 +18,32 @@ import java.util.concurrent.locks.ReentrantLock;
 public abstract class Gs2Session {
 
     private enum State {
-        IDLE,
-        OPENING,
-        CANCELLING_OPEN,
-        AVAILABLE,
-        CANCELLING_TASKS,
-        CLOSING,
+        Idle,
+        Opening,
+        CancellingOpen,
+        Available,
+        CancellingTasks,
+        Closing,
     }
 
-    private ReentrantLock lock = new ReentrantLock();
+    ;
 
-    private State state;
+    private ReentrantLock m_Mutex = new ReentrantLock();
 
-    private final BasicGs2Credential credential;
-    private Region region;
+    private State m_State;
 
-    private String projectToken;
+    private final BasicGs2Credential m_Gs2Credential;
+    private Region m_Region;
+
+    private String m_ProjectToken;
 
     private List<AsyncAction<AsyncResult<OpenResult>>> openCallbackList = new ArrayList<>();
     private List<AsyncAction<AsyncResult<CloseResult>>> closeCallbackList = new ArrayList<>();
-    private List<Gs2SessionTask> sessionTaskList = new ArrayList<>();
+    private List<Gs2SessionTask> gs2SessionTaskList = new ArrayList<>();
 
-    private AsyncAction<AsyncResult<CloseResult>> onCloseHandler;
+    private AsyncAction<AsyncResult<CloseResult>> m_OnClose;
 
-    private Gs2SessionTaskId.Generator sessionTaskIdGenerator = new Gs2SessionTaskId.Generator();
+    private Gs2SessionTaskId.Generator m_Gs2SessionIdTaskGenerator = new Gs2SessionTaskId.Generator();
 
     private static void triggerOpenCallback(List<AsyncAction<AsyncResult<OpenResult>>> openCallbackList, Gs2Exception result) {
         for (AsyncAction<AsyncResult<OpenResult>> pOpenCallback : openCallbackList) {
@@ -68,33 +70,35 @@ public abstract class Gs2Session {
     }
 
     private void enterStateLock() {
-        lock.lock();
+        m_Mutex.lock();
     }
 
     private void exitStateLock() {
-        lock.unlock();
+        m_Mutex.unlock();
     }
+
+    ;
 
     private void changeStateToIdle() {
         // 外部要因による切断がありうるので、どの状態からでも遷移しうる
 
         assert (openCallbackList.isEmpty());     // すべてコールバックされ（るために取り出され）ているべき
         assert (closeCallbackList.isEmpty());    // すべてコールバックされ（るために取り出され）ているべき
-        assert (sessionTaskList.isEmpty());         // AVAILABLE になる前に登録はできない
+        assert (gs2SessionTaskList.isEmpty());         // Available になる前に登録はできない
 
-        state = State.IDLE;
+        m_State = State.Idle;
 
         exitStateLock();
     }
 
     private void changeStateToOpening() {
-        assert (state == State.IDLE || state == State.CLOSING);
+        assert (m_State == State.Idle || m_State == State.Closing);
 
         assert (!openCallbackList.isEmpty());    // open() タスクが登録されているときのみ遷移する
         assert (closeCallbackList.isEmpty());    // すべてコールバックされ（るために取り出され）ているべき
-        assert (sessionTaskList.isEmpty());         // AVAILABLE になる前に登録はできない
+        assert (gs2SessionTaskList.isEmpty());         // Available になる前に登録はできない
 
-        state = State.OPENING;
+        m_State = State.Opening;
 
         openImpl();
 
@@ -102,13 +106,13 @@ public abstract class Gs2Session {
     }
 
     private void changeStateToCancellingOpen() {
-        assert (state == State.OPENING);
+        assert (m_State == State.Opening);
 
-        assert (!openCallbackList.isEmpty());    // OPENING は open() タスクが必ず存在する
+        assert (!openCallbackList.isEmpty());    // Opening は open() タスクが必ず存在する
         assert (!closeCallbackList.isEmpty());   // 接続処理中の close() によってのみ遷移する
-        assert (sessionTaskList.isEmpty());         // AVAILABLE になる前に登録はできない
+        assert (gs2SessionTaskList.isEmpty());         // Available になる前に登録はできない
 
-        state = State.CANCELLING_OPEN;
+        m_State = State.CancellingOpen;
 
         cancelOpenImpl();
 
@@ -116,46 +120,46 @@ public abstract class Gs2Session {
     }
 
     private void changeStateToAvailable(String projectToken) {
-        assert (state == State.OPENING);
+        assert (m_State == State.Opening);
 
         assert (openCallbackList.isEmpty());     // すべてコールバックされ（るために取り出され）ているべき
-        assert (closeCallbackList.isEmpty());    // close() が呼ばれている場合は CLOSING に遷移しなければならない
-        assert (sessionTaskList.isEmpty());         // AVAILABLE になる前に登録はできない
+        assert (closeCallbackList.isEmpty());    // close() が呼ばれている場合は Closing に遷移しなければならない
+        assert (gs2SessionTaskList.isEmpty());         // Available になる前に登録はできない
 
-        this.projectToken = projectToken;
+        m_ProjectToken = projectToken;
 
-        state = State.AVAILABLE;
+        m_State = State.Available;
 
         exitStateLock();
     }
 
     private void changeStateToCancellingTasks() {
-        assert (state == State.AVAILABLE);
+        assert (m_State == State.Available);
 
-        assert (openCallbackList.isEmpty());     // AVAILABLE のあいだの open() は即時返却される
+        assert (openCallbackList.isEmpty());     // Available のあいだの open() は即時返却される
         // 外部要因による切断の場合に close() を呼ばなくても遷移することがある
-        assert (!sessionTaskList.isEmpty());        // キャンセルしたいタスクがあるから遷移するのである
+        assert (!gs2SessionTaskList.isEmpty());        // キャンセルしたいタスクがあるから遷移するのである
 
-        state = State.CANCELLING_TASKS;
+        m_State = State.CancellingTasks;
 
         exitStateLock();
     }
 
     private void changeStateToClosing() {
-        assert (state == State.OPENING || state == State.CANCELLING_OPEN || state == State.AVAILABLE || state == State.CANCELLING_TASKS);
+        assert (m_State == State.Opening || m_State == State.CancellingOpen || m_State == State.Available || m_State == State.CancellingTasks);
 
-        // CANCELLING_TASKS のあいだには次の open() が積まれることがある
+        // CancellingTasks のあいだには次の open() が積まれることがある
         // 外部要因による切断の場合に close() を呼ばなくても遷移することがある
-        assert (sessionTaskList.isEmpty());         // タスクがなくなったときに遷移する
+        assert (gs2SessionTaskList.isEmpty());         // タスクがなくなったときに遷移する
 
-        projectToken = null;
+        m_ProjectToken = null;
 
-        state = State.CLOSING;
+        m_State = State.Closing;
 
         boolean isCloseInstant = closeImpl();
 
         if (isCloseInstant) {
-            // IDLE か OPENING に遷移しているはずだけど、ロックから出てしまっているので検証はしない
+            // Idle か Opening に遷移しているはずだけど、ロックから出てしまっているので検証はしない
         } else {
             exitStateLock();
         }
@@ -169,12 +173,12 @@ public abstract class Gs2Session {
     public void execute(Gs2SessionTask gs2SessionTask) {
         enterStateLock();
 
-        if (state == State.AVAILABLE) {
-            gs2SessionTask.sessionTaskId = sessionTaskIdGenerator.issue();
+        if (m_State == State.Available) {
+            gs2SessionTask.gs2SessionTaskId = m_Gs2SessionIdTaskGenerator.issue();
 
             gs2SessionTask.prepareImpl();
 
-            sessionTaskList.add(gs2SessionTask);
+            gs2SessionTaskList.add(gs2SessionTask);
 
             keepCurrentState();
 
@@ -189,9 +193,9 @@ public abstract class Gs2Session {
     void notifyComplete(Gs2SessionTask gs2SessionTask) {
         enterStateLock();
 
-        sessionTaskList.remove(gs2SessionTask);
+        gs2SessionTaskList.remove(gs2SessionTask);
 
-        if (state == State.CANCELLING_TASKS && sessionTaskList.isEmpty()) {
+        if (m_State == State.CancellingTasks && gs2SessionTaskList.isEmpty()) {
             changeStateToClosing();
         } else {
             keepCurrentState();
@@ -199,7 +203,7 @@ public abstract class Gs2Session {
     }
 
     protected String getProjectToken() {
-        return projectToken;
+        return m_ProjectToken;
     }
 
     public void openCallback(String pProjectToken, Gs2Exception exception) {
@@ -257,10 +261,10 @@ public abstract class Gs2Session {
             enterStateLock();
         }
 
-        AsyncAction<AsyncResult<CloseResult>> onClose = onCloseHandler;
+        AsyncAction<AsyncResult<CloseResult>> onClose = m_OnClose;
 
-        List<Gs2SessionTask> gs2SessionTaskList = new ArrayList<>(this.sessionTaskList);
-        this.sessionTaskList.clear();
+        List<Gs2SessionTask> gs2SessionTaskList = new ArrayList<>(this.gs2SessionTaskList);
+        this.gs2SessionTaskList.clear();
 
         List<AsyncAction<AsyncResult<CloseResult>>> closeCallbackList = new ArrayList<>(this.closeCallbackList);
         this.closeCallbackList.clear();
@@ -282,8 +286,8 @@ public abstract class Gs2Session {
     protected void cancelTasksCallback(Gs2Exception gs2Exception) {
         enterStateLock();
 
-        List<Gs2SessionTask> gs2SessionTaskList = new ArrayList<>(this.sessionTaskList);
-        this.sessionTaskList.clear();
+        List<Gs2SessionTask> gs2SessionTaskList = new ArrayList<>(this.gs2SessionTaskList);
+        this.gs2SessionTaskList.clear();
 
         keepCurrentState();
 
@@ -291,10 +295,10 @@ public abstract class Gs2Session {
     }
 
     protected Gs2SessionTask findGs2SessionTask(final Gs2SessionTaskId gs2SessionTaskId) {
-        lock.lock();
+        m_Mutex.lock();
 
-        for (Gs2SessionTask sessionTask : sessionTaskList) {
-            if (sessionTask.sessionTaskId == gs2SessionTaskId) {
+        for (Gs2SessionTask sessionTask : gs2SessionTaskList) {
+            if (sessionTask.gs2SessionTaskId == gs2SessionTaskId) {
                 return sessionTask;
             }
         }
@@ -304,50 +308,50 @@ public abstract class Gs2Session {
 
     public Gs2Session(final BasicGs2Credential gs2Credential) {
 
-        state = State.IDLE;
-        credential = gs2Credential;
-        region = Region.AP_NORTHEAST_1;
+        m_State = State.Idle;
+        m_Gs2Credential = gs2Credential;
+        m_Region = Region.AP_NORTHEAST_1;
     }
 
     public Gs2Session(final BasicGs2Credential gs2Credential, final Region region) {
-        state = State.IDLE;
-        credential = gs2Credential;
-        this.region = region;
+        m_State = State.Idle;
+        m_Gs2Credential = gs2Credential;
+        m_Region = region;
 
     }
 
     public Gs2Session(final BasicGs2Credential gs2Credential, final String region) {
-        state = State.IDLE;
-        credential = gs2Credential;
-        this.region = Region.prettyValueOf(region);
+        m_State = State.Idle;
+        m_Gs2Credential = gs2Credential;
+        m_Region = Region.prettyValueOf(region);
     }
 
     public BasicGs2Credential getGs2Credential() {
-        return credential;
+        return m_Gs2Credential;
     }
 
     public Region getRegion() {
-        return region;
+        return m_Region;
     }
 
     public void openAsync(AsyncAction<AsyncResult<OpenResult>> callback) {
         enterStateLock();
 
-        switch (state) {
-            case IDLE:
+        switch (m_State) {
+            case Idle:
                 openCallbackList.add(callback);
                 changeStateToOpening();
                 break;
 
-            case OPENING:
-            case CANCELLING_OPEN:
-            case CANCELLING_TASKS:    // 切断処理が終わってから実行される
-            case CLOSING:            // 切断処理が終わってから実行される
+            case Opening:
+            case CancellingOpen:
+            case CancellingTasks:    // 切断処理が終わってから実行される
+            case Closing:            // 切断処理が終わってから実行される
                 openCallbackList.add(callback);
                 keepCurrentState();
                 break;
 
-            case AVAILABLE:
+            case Available:
                 keepCurrentState();
                 callback.callback(null);
                 break;
@@ -359,18 +363,17 @@ public abstract class Gs2Session {
         openAsync(r -> {
             asyncResult.set(r);
         });
-        while (asyncResult.get() == null) {
+        while(asyncResult.get() == null) {
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException ignored) {
-            }
+            } catch (InterruptedException ignored) {}
         }
     }
 
     public void closeAsync(AsyncAction<AsyncResult<CloseResult>> callback) {
         enterStateLock();
 
-        if (state == State.IDLE) {
+        if (m_State == State.Idle) {
             // 即コールバック
             keepCurrentState();
 
@@ -378,23 +381,23 @@ public abstract class Gs2Session {
         } else {
             closeCallbackList.add(callback);
 
-            switch (state) {
-                case OPENING:
+            switch (m_State) {
+                case Opening:
                     changeStateToCancellingOpen();
                     break;
 
-                case AVAILABLE:
-                    if (sessionTaskList.isEmpty()) {
+                case Available:
+                    if (gs2SessionTaskList.isEmpty()) {
                         changeStateToClosing();
                     } else {
                         changeStateToCancellingTasks();
                     }
                     break;
 
-                case IDLE:   // ここには来ない
-                case CANCELLING_OPEN:
-                case CANCELLING_TASKS:
-                case CLOSING:
+                case Idle:   // ここには来ない
+                case CancellingOpen:
+                case CancellingTasks:
+                case Closing:
                     keepCurrentState();
                     break;
             }
@@ -402,17 +405,16 @@ public abstract class Gs2Session {
     }
 
     public void close() {
-        closeAsync(r -> {
-        });
+        closeAsync(r -> {});
     }
 
     public void setOnClose(AsyncAction<AsyncResult<CloseResult>> callback) {
-        lock.lock();
+        m_Mutex.lock();
 
-        onCloseHandler = callback;
+        m_OnClose = callback;
     }
 
-    // 以下の関数は lock のロック内から呼ばれます
+    // 以下の関数は m_Mutex のロック内から呼ばれます
     abstract void openImpl();
 
     abstract void cancelOpenImpl();

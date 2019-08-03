@@ -1,6 +1,7 @@
 package io.gs2.net;
 
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,10 +13,9 @@ public class HttpTaskBuilder {
     private byte[] body;
     private IResponseHandler handler;
 
-    private HttpTaskBuilder() {
-    }
+    private HttpTaskBuilder() {}
 
-    public static HttpTaskBuilder create() {
+    public static  HttpTaskBuilder create() {
         return new HttpTaskBuilder();
     }
 
@@ -49,9 +49,7 @@ public class HttpTaskBuilder {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             httpTask.addHeaderEntry(entry.getKey(), entry.getValue());
         }
-        if (method == HttpTask.Method.POST || method == HttpTask.Method.PUT) {
-            httpTask.setBody(body);
-        }
+        httpTask.setBody(body);
         return httpTask;
     }
 

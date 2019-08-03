@@ -53,13 +53,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
 		super(gs2RestSession);
 	}
 
-    class DescribeMissionGroupModelMastersTask extends Gs2RestSessionTask<DescribeMissionGroupModelMastersResult> {
-        private DescribeMissionGroupModelMastersRequest request;
+    class DescribeNamespacesTask extends Gs2RestSessionTask<DescribeNamespacesResult> {
+        private DescribeNamespacesRequest request;
 
-        public DescribeMissionGroupModelMastersTask(
-            DescribeMissionGroupModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeMissionGroupModelMastersResult>> userCallback,
-            Class<DescribeMissionGroupModelMastersResult> clazz
+        public DescribeNamespacesTask(
+            DescribeNamespacesRequest request,
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
+            Class<DescribeNamespacesResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -75,9 +75,7 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/group";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+                + "/";
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -108,29 +106,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ミッショングループマスターの一覧を取得<br>
+     * ネームスペースの一覧を取得<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void describeMissionGroupModelMastersAsync(
-            DescribeMissionGroupModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeMissionGroupModelMastersResult>> callback
+    public void describeNamespacesAsync(
+            DescribeNamespacesRequest request,
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeMissionGroupModelMastersTask task = new DescribeMissionGroupModelMastersTask(request, callback, DescribeMissionGroupModelMastersResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
         session.execute(task);
     }
 
     /**
-     * ミッショングループマスターの一覧を取得<br>
+     * ネームスペースの一覧を取得<br>
      *
      * @param request リクエストパラメータ
      */
-    public DescribeMissionGroupModelMastersResult describeMissionGroupModelMasters(
-            DescribeMissionGroupModelMastersRequest request
+    public DescribeNamespacesResult describeNamespaces(
+            DescribeNamespacesRequest request
     ) {
-        final AsyncResult<DescribeMissionGroupModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeMissionGroupModelMastersAsync(
+        final AsyncResult<DescribeNamespacesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeNamespacesAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -147,13 +145,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class CreateMissionGroupModelMasterTask extends Gs2RestSessionTask<CreateMissionGroupModelMasterResult> {
-        private CreateMissionGroupModelMasterRequest request;
+    class CreateNamespaceTask extends Gs2RestSessionTask<CreateNamespaceResult> {
+        private CreateNamespaceRequest request;
 
-        public CreateMissionGroupModelMasterTask(
-            CreateMissionGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateMissionGroupModelMasterResult>> userCallback,
-            Class<CreateMissionGroupModelMasterResult> clazz
+        public CreateNamespaceTask(
+            CreateNamespaceRequest request,
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
+            Class<CreateNamespaceResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -169,23 +167,55 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/group";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+                + "/";
 
             ObjectMapper mapper = new ObjectMapper();
             JSONObject json = new JSONObject();
             if (this.request.getName() != null) {
                 json.put("name", this.request.getName());
             }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
             if (this.request.getDescription() != null) {
                 json.put("description", this.request.getDescription());
             }
-            if (this.request.getCompleteNotificationNamespaceId() != null) {
-                json.put("completeNotificationNamespaceId", this.request.getCompleteNotificationNamespaceId());
+            if (this.request.getMissionCompleteTriggerScriptId() != null) {
+                json.put("missionCompleteTriggerScriptId", this.request.getMissionCompleteTriggerScriptId());
+            }
+            if (this.request.getMissionCompleteDoneTriggerScriptId() != null) {
+                json.put("missionCompleteDoneTriggerScriptId", this.request.getMissionCompleteDoneTriggerScriptId());
+            }
+            if (this.request.getMissionCompleteDoneTriggerQueueNamespaceId() != null) {
+                json.put("missionCompleteDoneTriggerQueueNamespaceId", this.request.getMissionCompleteDoneTriggerQueueNamespaceId());
+            }
+            if (this.request.getCounterIncrementTriggerScriptId() != null) {
+                json.put("counterIncrementTriggerScriptId", this.request.getCounterIncrementTriggerScriptId());
+            }
+            if (this.request.getCounterIncrementDoneTriggerScriptId() != null) {
+                json.put("counterIncrementDoneTriggerScriptId", this.request.getCounterIncrementDoneTriggerScriptId());
+            }
+            if (this.request.getCounterIncrementDoneTriggerQueueNamespaceId() != null) {
+                json.put("counterIncrementDoneTriggerQueueNamespaceId", this.request.getCounterIncrementDoneTriggerQueueNamespaceId());
+            }
+            if (this.request.getReceiveRewardsTriggerScriptId() != null) {
+                json.put("receiveRewardsTriggerScriptId", this.request.getReceiveRewardsTriggerScriptId());
+            }
+            if (this.request.getReceiveRewardsDoneTriggerScriptId() != null) {
+                json.put("receiveRewardsDoneTriggerScriptId", this.request.getReceiveRewardsDoneTriggerScriptId());
+            }
+            if (this.request.getReceiveRewardsDoneTriggerQueueNamespaceId() != null) {
+                json.put("receiveRewardsDoneTriggerQueueNamespaceId", this.request.getReceiveRewardsDoneTriggerQueueNamespaceId());
+            }
+            if (this.request.getQueueNamespaceId() != null) {
+                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
+            }
+            if (this.request.getKeyId() != null) {
+                json.put("keyId", this.request.getKeyId());
+            }
+            if (this.request.getCompleteNotification() != null) {
+                try {
+                    json.put("completeNotification", new JSONObject(mapper.writeValueAsString(this.request.getCompleteNotification())));
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
             }
             if (this.request.getContextStack() != null) {
                 json.put("contextStack", this.request.getContextStack());
@@ -210,29 +240,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ミッショングループマスターを新規作成<br>
+     * ネームスペースを新規作成<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void createMissionGroupModelMasterAsync(
-            CreateMissionGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateMissionGroupModelMasterResult>> callback
+    public void createNamespaceAsync(
+            CreateNamespaceRequest request,
+            AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateMissionGroupModelMasterTask task = new CreateMissionGroupModelMasterTask(request, callback, CreateMissionGroupModelMasterResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
         session.execute(task);
     }
 
     /**
-     * ミッショングループマスターを新規作成<br>
+     * ネームスペースを新規作成<br>
      *
      * @param request リクエストパラメータ
      */
-    public CreateMissionGroupModelMasterResult createMissionGroupModelMaster(
-            CreateMissionGroupModelMasterRequest request
+    public CreateNamespaceResult createNamespace(
+            CreateNamespaceRequest request
     ) {
-        final AsyncResult<CreateMissionGroupModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        createMissionGroupModelMasterAsync(
+        final AsyncResult<CreateNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createNamespaceAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -249,13 +279,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class GetMissionGroupModelMasterTask extends Gs2RestSessionTask<GetMissionGroupModelMasterResult> {
-        private GetMissionGroupModelMasterRequest request;
+    class GetNamespaceStatusTask extends Gs2RestSessionTask<GetNamespaceStatusResult> {
+        private GetNamespaceStatusRequest request;
 
-        public GetMissionGroupModelMasterTask(
-            GetMissionGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<GetMissionGroupModelMasterResult>> userCallback,
-            Class<GetMissionGroupModelMasterResult> clazz
+        public GetNamespaceStatusTask(
+            GetNamespaceStatusRequest request,
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
+            Class<GetNamespaceStatusResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -271,10 +301,9 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/group/{missionGroupName}";
+                + "/{namespaceName}/status";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -299,29 +328,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ミッショングループマスターを取得<br>
+     * ネームスペースの状態を取得<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void getMissionGroupModelMasterAsync(
-            GetMissionGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<GetMissionGroupModelMasterResult>> callback
+    public void getNamespaceStatusAsync(
+            GetNamespaceStatusRequest request,
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetMissionGroupModelMasterTask task = new GetMissionGroupModelMasterTask(request, callback, GetMissionGroupModelMasterResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
         session.execute(task);
     }
 
     /**
-     * ミッショングループマスターを取得<br>
+     * ネームスペースの状態を取得<br>
      *
      * @param request リクエストパラメータ
      */
-    public GetMissionGroupModelMasterResult getMissionGroupModelMaster(
-            GetMissionGroupModelMasterRequest request
+    public GetNamespaceStatusResult getNamespaceStatus(
+            GetNamespaceStatusRequest request
     ) {
-        final AsyncResult<GetMissionGroupModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getMissionGroupModelMasterAsync(
+        final AsyncResult<GetNamespaceStatusResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getNamespaceStatusAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -338,13 +367,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class UpdateMissionGroupModelMasterTask extends Gs2RestSessionTask<UpdateMissionGroupModelMasterResult> {
-        private UpdateMissionGroupModelMasterRequest request;
+    class GetNamespaceTask extends Gs2RestSessionTask<GetNamespaceResult> {
+        private GetNamespaceRequest request;
 
-        public UpdateMissionGroupModelMasterTask(
-            UpdateMissionGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateMissionGroupModelMasterResult>> userCallback,
-            Class<UpdateMissionGroupModelMasterResult> clazz
+        public GetNamespaceTask(
+            GetNamespaceRequest request,
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
+            Class<GetNamespaceResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -360,21 +389,142 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/group/{missionGroupName}";
+                + "/{namespaceName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * ネームスペースを取得<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void getNamespaceAsync(
+            GetNamespaceRequest request,
+            AsyncAction<AsyncResult<GetNamespaceResult>> callback
+    ) {
+        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * ネームスペースを取得<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public GetNamespaceResult getNamespace(
+            GetNamespaceRequest request
+    ) {
+        final AsyncResult<GetNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getNamespaceAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateNamespaceTask extends Gs2RestSessionTask<UpdateNamespaceResult> {
+        private UpdateNamespaceRequest request;
+
+        public UpdateNamespaceTask(
+            UpdateNamespaceRequest request,
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
+            Class<UpdateNamespaceResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             ObjectMapper mapper = new ObjectMapper();
             JSONObject json = new JSONObject();
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
             if (this.request.getDescription() != null) {
                 json.put("description", this.request.getDescription());
             }
-            if (this.request.getCompleteNotificationNamespaceId() != null) {
-                json.put("completeNotificationNamespaceId", this.request.getCompleteNotificationNamespaceId());
+            if (this.request.getMissionCompleteTriggerScriptId() != null) {
+                json.put("missionCompleteTriggerScriptId", this.request.getMissionCompleteTriggerScriptId());
+            }
+            if (this.request.getMissionCompleteDoneTriggerScriptId() != null) {
+                json.put("missionCompleteDoneTriggerScriptId", this.request.getMissionCompleteDoneTriggerScriptId());
+            }
+            if (this.request.getMissionCompleteDoneTriggerQueueNamespaceId() != null) {
+                json.put("missionCompleteDoneTriggerQueueNamespaceId", this.request.getMissionCompleteDoneTriggerQueueNamespaceId());
+            }
+            if (this.request.getCounterIncrementTriggerScriptId() != null) {
+                json.put("counterIncrementTriggerScriptId", this.request.getCounterIncrementTriggerScriptId());
+            }
+            if (this.request.getCounterIncrementDoneTriggerScriptId() != null) {
+                json.put("counterIncrementDoneTriggerScriptId", this.request.getCounterIncrementDoneTriggerScriptId());
+            }
+            if (this.request.getCounterIncrementDoneTriggerQueueNamespaceId() != null) {
+                json.put("counterIncrementDoneTriggerQueueNamespaceId", this.request.getCounterIncrementDoneTriggerQueueNamespaceId());
+            }
+            if (this.request.getReceiveRewardsTriggerScriptId() != null) {
+                json.put("receiveRewardsTriggerScriptId", this.request.getReceiveRewardsTriggerScriptId());
+            }
+            if (this.request.getReceiveRewardsDoneTriggerScriptId() != null) {
+                json.put("receiveRewardsDoneTriggerScriptId", this.request.getReceiveRewardsDoneTriggerScriptId());
+            }
+            if (this.request.getReceiveRewardsDoneTriggerQueueNamespaceId() != null) {
+                json.put("receiveRewardsDoneTriggerQueueNamespaceId", this.request.getReceiveRewardsDoneTriggerQueueNamespaceId());
+            }
+            if (this.request.getQueueNamespaceId() != null) {
+                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
+            }
+            if (this.request.getKeyId() != null) {
+                json.put("keyId", this.request.getKeyId());
+            }
+            if (this.request.getCompleteNotification() != null) {
+                try {
+                    json.put("completeNotification", new JSONObject(mapper.writeValueAsString(this.request.getCompleteNotification())));
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
             }
             if (this.request.getContextStack() != null) {
                 json.put("contextStack", this.request.getContextStack());
@@ -399,29 +549,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ミッショングループマスターを更新<br>
+     * ネームスペースを更新<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void updateMissionGroupModelMasterAsync(
-            UpdateMissionGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateMissionGroupModelMasterResult>> callback
+    public void updateNamespaceAsync(
+            UpdateNamespaceRequest request,
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateMissionGroupModelMasterTask task = new UpdateMissionGroupModelMasterTask(request, callback, UpdateMissionGroupModelMasterResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
         session.execute(task);
     }
 
     /**
-     * ミッショングループマスターを更新<br>
+     * ネームスペースを更新<br>
      *
      * @param request リクエストパラメータ
      */
-    public UpdateMissionGroupModelMasterResult updateMissionGroupModelMaster(
-            UpdateMissionGroupModelMasterRequest request
+    public UpdateNamespaceResult updateNamespace(
+            UpdateNamespaceRequest request
     ) {
-        final AsyncResult<UpdateMissionGroupModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateMissionGroupModelMasterAsync(
+        final AsyncResult<UpdateNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateNamespaceAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -438,13 +588,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class DeleteMissionGroupModelMasterTask extends Gs2RestSessionTask<DeleteMissionGroupModelMasterResult> {
-        private DeleteMissionGroupModelMasterRequest request;
+    class DeleteNamespaceTask extends Gs2RestSessionTask<DeleteNamespaceResult> {
+        private DeleteNamespaceRequest request;
 
-        public DeleteMissionGroupModelMasterTask(
-            DeleteMissionGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteMissionGroupModelMasterResult>> userCallback,
-            Class<DeleteMissionGroupModelMasterResult> clazz
+        public DeleteNamespaceTask(
+            DeleteNamespaceRequest request,
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
+            Class<DeleteNamespaceResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -460,10 +610,9 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/group/{missionGroupName}";
+                + "/{namespaceName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -488,29 +637,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ミッショングループマスターを削除<br>
+     * ネームスペースを削除<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void deleteMissionGroupModelMasterAsync(
-            DeleteMissionGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteMissionGroupModelMasterResult>> callback
+    public void deleteNamespaceAsync(
+            DeleteNamespaceRequest request,
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteMissionGroupModelMasterTask task = new DeleteMissionGroupModelMasterTask(request, callback, DeleteMissionGroupModelMasterResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
         session.execute(task);
     }
 
     /**
-     * ミッショングループマスターを削除<br>
+     * ネームスペースを削除<br>
      *
      * @param request リクエストパラメータ
      */
-    public DeleteMissionGroupModelMasterResult deleteMissionGroupModelMaster(
-            DeleteMissionGroupModelMasterRequest request
+    public DeleteNamespaceResult deleteNamespace(
+            DeleteNamespaceRequest request
     ) {
-        final AsyncResult<DeleteMissionGroupModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        deleteMissionGroupModelMasterAsync(
+        final AsyncResult<DeleteNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteNamespaceAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -527,13 +676,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeCounterModelMastersTask extends Gs2RestSessionTask<DescribeCounterModelMastersResult> {
-        private DescribeCounterModelMastersRequest request;
+    class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
+        private ExportMasterRequest request;
 
-        public DescribeCounterModelMastersTask(
-            DescribeCounterModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeCounterModelMastersResult>> userCallback,
-            Class<DescribeCounterModelMastersResult> clazz
+        public ExportMasterTask(
+            ExportMasterRequest request,
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
+            Class<ExportMasterResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -549,218 +698,9 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/counter";
+                + "/{namespaceName}/master/export";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getPageToken() != null) {
-                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
-            }
-            if (this.request.getLimit() != null) {
-                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * カウンターの種類マスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void describeCounterModelMastersAsync(
-            DescribeCounterModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeCounterModelMastersResult>> callback
-    ) {
-        DescribeCounterModelMastersTask task = new DescribeCounterModelMastersTask(request, callback, DescribeCounterModelMastersResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * カウンターの種類マスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public DescribeCounterModelMastersResult describeCounterModelMasters(
-            DescribeCounterModelMastersRequest request
-    ) {
-        final AsyncResult<DescribeCounterModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeCounterModelMastersAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class CreateCounterModelMasterTask extends Gs2RestSessionTask<CreateCounterModelMasterResult> {
-        private CreateCounterModelMasterRequest request;
-
-        public CreateCounterModelMasterTask(
-            CreateCounterModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateCounterModelMasterResult>> userCallback,
-            Class<CreateCounterModelMasterResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/counter";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getScopes() != null) {
-                JSONArray array = new JSONArray();
-                for(CounterScopeModel item : this.request.getScopes())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("scopes", array);
-            }
-            if (this.request.getChallengePeriodEventId() != null) {
-                json.put("challengePeriodEventId", this.request.getChallengePeriodEventId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.POST)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * カウンターの種類マスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void createCounterModelMasterAsync(
-            CreateCounterModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateCounterModelMasterResult>> callback
-    ) {
-        CreateCounterModelMasterTask task = new CreateCounterModelMasterTask(request, callback, CreateCounterModelMasterResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * カウンターの種類マスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public CreateCounterModelMasterResult createCounterModelMaster(
-            CreateCounterModelMasterRequest request
-    ) {
-        final AsyncResult<CreateCounterModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        createCounterModelMasterAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetCounterModelMasterTask extends Gs2RestSessionTask<GetCounterModelMasterResult> {
-        private GetCounterModelMasterRequest request;
-
-        public GetCounterModelMasterTask(
-            GetCounterModelMasterRequest request,
-            AsyncAction<AsyncResult<GetCounterModelMasterResult>> userCallback,
-            Class<GetCounterModelMasterResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/counter/{counterName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -785,29 +725,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * カウンターの種類マスターを取得<br>
+     * 現在有効なミッションのマスターデータをエクスポートします<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void getCounterModelMasterAsync(
-            GetCounterModelMasterRequest request,
-            AsyncAction<AsyncResult<GetCounterModelMasterResult>> callback
+    public void exportMasterAsync(
+            ExportMasterRequest request,
+            AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        GetCounterModelMasterTask task = new GetCounterModelMasterTask(request, callback, GetCounterModelMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
         session.execute(task);
     }
 
     /**
-     * カウンターの種類マスターを取得<br>
+     * 現在有効なミッションのマスターデータをエクスポートします<br>
      *
      * @param request リクエストパラメータ
      */
-    public GetCounterModelMasterResult getCounterModelMaster(
-            GetCounterModelMasterRequest request
+    public ExportMasterResult exportMaster(
+            ExportMasterRequest request
     ) {
-        final AsyncResult<GetCounterModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getCounterModelMasterAsync(
+        final AsyncResult<ExportMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        exportMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -824,13 +764,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class UpdateCounterModelMasterTask extends Gs2RestSessionTask<UpdateCounterModelMasterResult> {
-        private UpdateCounterModelMasterRequest request;
+    class GetCurrentMissionMasterTask extends Gs2RestSessionTask<GetCurrentMissionMasterResult> {
+        private GetCurrentMissionMasterRequest request;
 
-        public UpdateCounterModelMasterTask(
-            UpdateCounterModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCounterModelMasterResult>> userCallback,
-            Class<UpdateCounterModelMasterResult> clazz
+        public GetCurrentMissionMasterTask(
+            GetCurrentMissionMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentMissionMasterResult>> userCallback,
+            Class<GetCurrentMissionMasterResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -846,33 +786,102 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/counter/{counterName}";
+                + "/{namespaceName}/master";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * 現在有効な現在有効なミッションを取得します<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void getCurrentMissionMasterAsync(
+            GetCurrentMissionMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentMissionMasterResult>> callback
+    ) {
+        GetCurrentMissionMasterTask task = new GetCurrentMissionMasterTask(request, callback, GetCurrentMissionMasterResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * 現在有効な現在有効なミッションを取得します<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public GetCurrentMissionMasterResult getCurrentMissionMaster(
+            GetCurrentMissionMasterRequest request
+    ) {
+        final AsyncResult<GetCurrentMissionMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCurrentMissionMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateCurrentMissionMasterTask extends Gs2RestSessionTask<UpdateCurrentMissionMasterResult> {
+        private UpdateCurrentMissionMasterRequest request;
+
+        public UpdateCurrentMissionMasterTask(
+            UpdateCurrentMissionMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentMissionMasterResult>> userCallback,
+            Class<UpdateCurrentMissionMasterResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             ObjectMapper mapper = new ObjectMapper();
             JSONObject json = new JSONObject();
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getScopes() != null) {
-                JSONArray array = new JSONArray();
-                for(CounterScopeModel item : this.request.getScopes())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("scopes", array);
-            }
-            if (this.request.getChallengePeriodEventId() != null) {
-                json.put("challengePeriodEventId", this.request.getChallengePeriodEventId());
+            if (this.request.getSettings() != null) {
+                json.put("settings", this.request.getSettings());
             }
             if (this.request.getContextStack() != null) {
                 json.put("contextStack", this.request.getContextStack());
@@ -897,118 +906,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * カウンターの種類マスターを更新<br>
+     * 現在有効な現在有効なミッションを更新します<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void updateCounterModelMasterAsync(
-            UpdateCounterModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCounterModelMasterResult>> callback
+    public void updateCurrentMissionMasterAsync(
+            UpdateCurrentMissionMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentMissionMasterResult>> callback
     ) {
-        UpdateCounterModelMasterTask task = new UpdateCounterModelMasterTask(request, callback, UpdateCounterModelMasterResult.class);
+        UpdateCurrentMissionMasterTask task = new UpdateCurrentMissionMasterTask(request, callback, UpdateCurrentMissionMasterResult.class);
         session.execute(task);
     }
 
     /**
-     * カウンターの種類マスターを更新<br>
+     * 現在有効な現在有効なミッションを更新します<br>
      *
      * @param request リクエストパラメータ
      */
-    public UpdateCounterModelMasterResult updateCounterModelMaster(
-            UpdateCounterModelMasterRequest request
+    public UpdateCurrentMissionMasterResult updateCurrentMissionMaster(
+            UpdateCurrentMissionMasterRequest request
     ) {
-        final AsyncResult<UpdateCounterModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateCounterModelMasterAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DeleteCounterModelMasterTask extends Gs2RestSessionTask<DeleteCounterModelMasterResult> {
-        private DeleteCounterModelMasterRequest request;
-
-        public DeleteCounterModelMasterTask(
-            DeleteCounterModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteCounterModelMasterResult>> userCallback,
-            Class<DeleteCounterModelMasterResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/counter/{counterName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * カウンターの種類マスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void deleteCounterModelMasterAsync(
-            DeleteCounterModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteCounterModelMasterResult>> callback
-    ) {
-        DeleteCounterModelMasterTask task = new DeleteCounterModelMasterTask(request, callback, DeleteCounterModelMasterResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * カウンターの種類マスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public DeleteCounterModelMasterResult deleteCounterModelMaster(
-            DeleteCounterModelMasterRequest request
-    ) {
-        final AsyncResult<DeleteCounterModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        deleteCounterModelMasterAsync(
+        final AsyncResult<UpdateCurrentMissionMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentMissionMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -1536,808 +1456,6 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     ) {
         final AsyncResult<DeleteMissionTaskModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteMissionTaskModelMasterAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeCounterModelsTask extends Gs2RestSessionTask<DescribeCounterModelsResult> {
-        private DescribeCounterModelsRequest request;
-
-        public DescribeCounterModelsTask(
-            DescribeCounterModelsRequest request,
-            AsyncAction<AsyncResult<DescribeCounterModelsResult>> userCallback,
-            Class<DescribeCounterModelsResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/counter";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * カウンターの種類の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void describeCounterModelsAsync(
-            DescribeCounterModelsRequest request,
-            AsyncAction<AsyncResult<DescribeCounterModelsResult>> callback
-    ) {
-        DescribeCounterModelsTask task = new DescribeCounterModelsTask(request, callback, DescribeCounterModelsResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * カウンターの種類の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public DescribeCounterModelsResult describeCounterModels(
-            DescribeCounterModelsRequest request
-    ) {
-        final AsyncResult<DescribeCounterModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeCounterModelsAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetCounterModelTask extends Gs2RestSessionTask<GetCounterModelResult> {
-        private GetCounterModelRequest request;
-
-        public GetCounterModelTask(
-            GetCounterModelRequest request,
-            AsyncAction<AsyncResult<GetCounterModelResult>> userCallback,
-            Class<GetCounterModelResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/counter/{counterName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * カウンターの種類を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void getCounterModelAsync(
-            GetCounterModelRequest request,
-            AsyncAction<AsyncResult<GetCounterModelResult>> callback
-    ) {
-        GetCounterModelTask task = new GetCounterModelTask(request, callback, GetCounterModelResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * カウンターの種類を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public GetCounterModelResult getCounterModel(
-            GetCounterModelRequest request
-    ) {
-        final AsyncResult<GetCounterModelResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getCounterModelAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeMissionTaskModelsTask extends Gs2RestSessionTask<DescribeMissionTaskModelsResult> {
-        private DescribeMissionTaskModelsRequest request;
-
-        public DescribeMissionTaskModelsTask(
-            DescribeMissionTaskModelsRequest request,
-            AsyncAction<AsyncResult<DescribeMissionTaskModelsResult>> userCallback,
-            Class<DescribeMissionTaskModelsResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/group/{missionGroupName}/task";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * ミッションタスクの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void describeMissionTaskModelsAsync(
-            DescribeMissionTaskModelsRequest request,
-            AsyncAction<AsyncResult<DescribeMissionTaskModelsResult>> callback
-    ) {
-        DescribeMissionTaskModelsTask task = new DescribeMissionTaskModelsTask(request, callback, DescribeMissionTaskModelsResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * ミッションタスクの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public DescribeMissionTaskModelsResult describeMissionTaskModels(
-            DescribeMissionTaskModelsRequest request
-    ) {
-        final AsyncResult<DescribeMissionTaskModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeMissionTaskModelsAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetMissionTaskModelTask extends Gs2RestSessionTask<GetMissionTaskModelResult> {
-        private GetMissionTaskModelRequest request;
-
-        public GetMissionTaskModelTask(
-            GetMissionTaskModelRequest request,
-            AsyncAction<AsyncResult<GetMissionTaskModelResult>> userCallback,
-            Class<GetMissionTaskModelResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/group/{missionGroupName}/task/{missionTaskName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
-            url = url.replace("{missionTaskName}", this.request.getMissionTaskName() == null|| this.request.getMissionTaskName().length() == 0 ? "null" : String.valueOf(this.request.getMissionTaskName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * ミッションタスクを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void getMissionTaskModelAsync(
-            GetMissionTaskModelRequest request,
-            AsyncAction<AsyncResult<GetMissionTaskModelResult>> callback
-    ) {
-        GetMissionTaskModelTask task = new GetMissionTaskModelTask(request, callback, GetMissionTaskModelResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * ミッションタスクを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public GetMissionTaskModelResult getMissionTaskModel(
-            GetMissionTaskModelRequest request
-    ) {
-        final AsyncResult<GetMissionTaskModelResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getMissionTaskModelAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
-        private ExportMasterRequest request;
-
-        public ExportMasterTask(
-            ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/export";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * 現在有効なミッションのマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void exportMasterAsync(
-            ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> callback
-    ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * 現在有効なミッションのマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public ExportMasterResult exportMaster(
-            ExportMasterRequest request
-    ) {
-        final AsyncResult<ExportMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        exportMasterAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetCurrentMissionMasterTask extends Gs2RestSessionTask<GetCurrentMissionMasterResult> {
-        private GetCurrentMissionMasterRequest request;
-
-        public GetCurrentMissionMasterTask(
-            GetCurrentMissionMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentMissionMasterResult>> userCallback,
-            Class<GetCurrentMissionMasterResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * 現在有効な現在有効なミッションを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void getCurrentMissionMasterAsync(
-            GetCurrentMissionMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentMissionMasterResult>> callback
-    ) {
-        GetCurrentMissionMasterTask task = new GetCurrentMissionMasterTask(request, callback, GetCurrentMissionMasterResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * 現在有効な現在有効なミッションを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public GetCurrentMissionMasterResult getCurrentMissionMaster(
-            GetCurrentMissionMasterRequest request
-    ) {
-        final AsyncResult<GetCurrentMissionMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getCurrentMissionMasterAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class UpdateCurrentMissionMasterTask extends Gs2RestSessionTask<UpdateCurrentMissionMasterResult> {
-        private UpdateCurrentMissionMasterRequest request;
-
-        public UpdateCurrentMissionMasterTask(
-            UpdateCurrentMissionMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentMissionMasterResult>> userCallback,
-            Class<UpdateCurrentMissionMasterResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.PUT)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * 現在有効な現在有効なミッションを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void updateCurrentMissionMasterAsync(
-            UpdateCurrentMissionMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentMissionMasterResult>> callback
-    ) {
-        UpdateCurrentMissionMasterTask task = new UpdateCurrentMissionMasterTask(request, callback, UpdateCurrentMissionMasterResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * 現在有効な現在有効なミッションを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public UpdateCurrentMissionMasterResult updateCurrentMissionMaster(
-            UpdateCurrentMissionMasterRequest request
-    ) {
-        final AsyncResult<UpdateCurrentMissionMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateCurrentMissionMasterAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeMissionGroupModelsTask extends Gs2RestSessionTask<DescribeMissionGroupModelsResult> {
-        private DescribeMissionGroupModelsRequest request;
-
-        public DescribeMissionGroupModelsTask(
-            DescribeMissionGroupModelsRequest request,
-            AsyncAction<AsyncResult<DescribeMissionGroupModelsResult>> userCallback,
-            Class<DescribeMissionGroupModelsResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/group";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * ミッショングループの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void describeMissionGroupModelsAsync(
-            DescribeMissionGroupModelsRequest request,
-            AsyncAction<AsyncResult<DescribeMissionGroupModelsResult>> callback
-    ) {
-        DescribeMissionGroupModelsTask task = new DescribeMissionGroupModelsTask(request, callback, DescribeMissionGroupModelsResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * ミッショングループの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public DescribeMissionGroupModelsResult describeMissionGroupModels(
-            DescribeMissionGroupModelsRequest request
-    ) {
-        final AsyncResult<DescribeMissionGroupModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeMissionGroupModelsAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetMissionGroupModelTask extends Gs2RestSessionTask<GetMissionGroupModelResult> {
-        private GetMissionGroupModelRequest request;
-
-        public GetMissionGroupModelTask(
-            GetMissionGroupModelRequest request,
-            AsyncAction<AsyncResult<GetMissionGroupModelResult>> userCallback,
-            Class<GetMissionGroupModelResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/group/{missionGroupName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * ミッショングループを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void getMissionGroupModelAsync(
-            GetMissionGroupModelRequest request,
-            AsyncAction<AsyncResult<GetMissionGroupModelResult>> callback
-    ) {
-        GetMissionGroupModelTask task = new GetMissionGroupModelTask(request, callback, GetMissionGroupModelResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * ミッショングループを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public GetMissionGroupModelResult getMissionGroupModel(
-            GetMissionGroupModelRequest request
-    ) {
-        final AsyncResult<GetMissionGroupModelResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getMissionGroupModelAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -3028,13 +2146,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeNamespacesTask extends Gs2RestSessionTask<DescribeNamespacesResult> {
-        private DescribeNamespacesRequest request;
+    class DescribeMissionGroupModelsTask extends Gs2RestSessionTask<DescribeMissionGroupModelsResult> {
+        private DescribeMissionGroupModelsRequest request;
 
-        public DescribeNamespacesTask(
-            DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+        public DescribeMissionGroupModelsTask(
+            DescribeMissionGroupModelsRequest request,
+            AsyncAction<AsyncResult<DescribeMissionGroupModelsResult>> userCallback,
+            Class<DescribeMissionGroupModelsResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3050,7 +2168,186 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/";
+                + "/{namespaceName}/group";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * ミッショングループの一覧を取得<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void describeMissionGroupModelsAsync(
+            DescribeMissionGroupModelsRequest request,
+            AsyncAction<AsyncResult<DescribeMissionGroupModelsResult>> callback
+    ) {
+        DescribeMissionGroupModelsTask task = new DescribeMissionGroupModelsTask(request, callback, DescribeMissionGroupModelsResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * ミッショングループの一覧を取得<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public DescribeMissionGroupModelsResult describeMissionGroupModels(
+            DescribeMissionGroupModelsRequest request
+    ) {
+        final AsyncResult<DescribeMissionGroupModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeMissionGroupModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetMissionGroupModelTask extends Gs2RestSessionTask<GetMissionGroupModelResult> {
+        private GetMissionGroupModelRequest request;
+
+        public GetMissionGroupModelTask(
+            GetMissionGroupModelRequest request,
+            AsyncAction<AsyncResult<GetMissionGroupModelResult>> userCallback,
+            Class<GetMissionGroupModelResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/group/{missionGroupName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * ミッショングループを取得<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void getMissionGroupModelAsync(
+            GetMissionGroupModelRequest request,
+            AsyncAction<AsyncResult<GetMissionGroupModelResult>> callback
+    ) {
+        GetMissionGroupModelTask task = new GetMissionGroupModelTask(request, callback, GetMissionGroupModelResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * ミッショングループを取得<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public GetMissionGroupModelResult getMissionGroupModel(
+            GetMissionGroupModelRequest request
+    ) {
+        final AsyncResult<GetMissionGroupModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getMissionGroupModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeMissionGroupModelMastersTask extends Gs2RestSessionTask<DescribeMissionGroupModelMastersResult> {
+        private DescribeMissionGroupModelMastersRequest request;
+
+        public DescribeMissionGroupModelMastersTask(
+            DescribeMissionGroupModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeMissionGroupModelMastersResult>> userCallback,
+            Class<DescribeMissionGroupModelMastersResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/group";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3081,29 +2378,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ネームスペースの一覧を取得<br>
+     * ミッショングループマスターの一覧を取得<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void describeNamespacesAsync(
-            DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
+    public void describeMissionGroupModelMastersAsync(
+            DescribeMissionGroupModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeMissionGroupModelMastersResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeMissionGroupModelMastersTask task = new DescribeMissionGroupModelMastersTask(request, callback, DescribeMissionGroupModelMastersResult.class);
         session.execute(task);
     }
 
     /**
-     * ネームスペースの一覧を取得<br>
+     * ミッショングループマスターの一覧を取得<br>
      *
      * @param request リクエストパラメータ
      */
-    public DescribeNamespacesResult describeNamespaces(
-            DescribeNamespacesRequest request
+    public DescribeMissionGroupModelMastersResult describeMissionGroupModelMasters(
+            DescribeMissionGroupModelMastersRequest request
     ) {
-        final AsyncResult<DescribeNamespacesResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeNamespacesAsync(
+        final AsyncResult<DescribeMissionGroupModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeMissionGroupModelMastersAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -3120,13 +2417,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class CreateNamespaceTask extends Gs2RestSessionTask<CreateNamespaceResult> {
-        private CreateNamespaceRequest request;
+    class CreateMissionGroupModelMasterTask extends Gs2RestSessionTask<CreateMissionGroupModelMasterResult> {
+        private CreateMissionGroupModelMasterRequest request;
 
-        public CreateNamespaceTask(
-            CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+        public CreateMissionGroupModelMasterTask(
+            CreateMissionGroupModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateMissionGroupModelMasterResult>> userCallback,
+            Class<CreateMissionGroupModelMasterResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3142,55 +2439,23 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/";
+                + "/{namespaceName}/master/group";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             ObjectMapper mapper = new ObjectMapper();
             JSONObject json = new JSONObject();
             if (this.request.getName() != null) {
                 json.put("name", this.request.getName());
             }
+            if (this.request.getMetadata() != null) {
+                json.put("metadata", this.request.getMetadata());
+            }
             if (this.request.getDescription() != null) {
                 json.put("description", this.request.getDescription());
             }
-            if (this.request.getMissionCompleteTriggerScriptId() != null) {
-                json.put("missionCompleteTriggerScriptId", this.request.getMissionCompleteTriggerScriptId());
-            }
-            if (this.request.getMissionCompleteDoneTriggerScriptId() != null) {
-                json.put("missionCompleteDoneTriggerScriptId", this.request.getMissionCompleteDoneTriggerScriptId());
-            }
-            if (this.request.getMissionCompleteDoneTriggerQueueNamespaceId() != null) {
-                json.put("missionCompleteDoneTriggerQueueNamespaceId", this.request.getMissionCompleteDoneTriggerQueueNamespaceId());
-            }
-            if (this.request.getCounterIncrementTriggerScriptId() != null) {
-                json.put("counterIncrementTriggerScriptId", this.request.getCounterIncrementTriggerScriptId());
-            }
-            if (this.request.getCounterIncrementDoneTriggerScriptId() != null) {
-                json.put("counterIncrementDoneTriggerScriptId", this.request.getCounterIncrementDoneTriggerScriptId());
-            }
-            if (this.request.getCounterIncrementDoneTriggerQueueNamespaceId() != null) {
-                json.put("counterIncrementDoneTriggerQueueNamespaceId", this.request.getCounterIncrementDoneTriggerQueueNamespaceId());
-            }
-            if (this.request.getReceiveRewardsTriggerScriptId() != null) {
-                json.put("receiveRewardsTriggerScriptId", this.request.getReceiveRewardsTriggerScriptId());
-            }
-            if (this.request.getReceiveRewardsDoneTriggerScriptId() != null) {
-                json.put("receiveRewardsDoneTriggerScriptId", this.request.getReceiveRewardsDoneTriggerScriptId());
-            }
-            if (this.request.getReceiveRewardsDoneTriggerQueueNamespaceId() != null) {
-                json.put("receiveRewardsDoneTriggerQueueNamespaceId", this.request.getReceiveRewardsDoneTriggerQueueNamespaceId());
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getCompleteNotification() != null) {
-                try {
-                    json.put("completeNotification", new JSONObject(mapper.writeValueAsString(this.request.getCompleteNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
+            if (this.request.getCompleteNotificationNamespaceId() != null) {
+                json.put("completeNotificationNamespaceId", this.request.getCompleteNotificationNamespaceId());
             }
             if (this.request.getContextStack() != null) {
                 json.put("contextStack", this.request.getContextStack());
@@ -3215,29 +2480,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ネームスペースを新規作成<br>
+     * ミッショングループマスターを新規作成<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void createNamespaceAsync(
-            CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> callback
+    public void createMissionGroupModelMasterAsync(
+            CreateMissionGroupModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateMissionGroupModelMasterResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateMissionGroupModelMasterTask task = new CreateMissionGroupModelMasterTask(request, callback, CreateMissionGroupModelMasterResult.class);
         session.execute(task);
     }
 
     /**
-     * ネームスペースを新規作成<br>
+     * ミッショングループマスターを新規作成<br>
      *
      * @param request リクエストパラメータ
      */
-    public CreateNamespaceResult createNamespace(
-            CreateNamespaceRequest request
+    public CreateMissionGroupModelMasterResult createMissionGroupModelMaster(
+            CreateMissionGroupModelMasterRequest request
     ) {
-        final AsyncResult<CreateNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
-        createNamespaceAsync(
+        final AsyncResult<CreateMissionGroupModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createMissionGroupModelMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -3254,13 +2519,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class GetNamespaceStatusTask extends Gs2RestSessionTask<GetNamespaceStatusResult> {
-        private GetNamespaceStatusRequest request;
+    class GetMissionGroupModelMasterTask extends Gs2RestSessionTask<GetMissionGroupModelMasterResult> {
+        private GetMissionGroupModelMasterRequest request;
 
-        public GetNamespaceStatusTask(
-            GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+        public GetMissionGroupModelMasterTask(
+            GetMissionGroupModelMasterRequest request,
+            AsyncAction<AsyncResult<GetMissionGroupModelMasterResult>> userCallback,
+            Class<GetMissionGroupModelMasterResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3276,9 +2541,10 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/status";
+                + "/{namespaceName}/master/group/{missionGroupName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3303,29 +2569,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ネームスペースの状態を取得<br>
+     * ミッショングループマスターを取得<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void getNamespaceStatusAsync(
-            GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
+    public void getMissionGroupModelMasterAsync(
+            GetMissionGroupModelMasterRequest request,
+            AsyncAction<AsyncResult<GetMissionGroupModelMasterResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetMissionGroupModelMasterTask task = new GetMissionGroupModelMasterTask(request, callback, GetMissionGroupModelMasterResult.class);
         session.execute(task);
     }
 
     /**
-     * ネームスペースの状態を取得<br>
+     * ミッショングループマスターを取得<br>
      *
      * @param request リクエストパラメータ
      */
-    public GetNamespaceStatusResult getNamespaceStatus(
-            GetNamespaceStatusRequest request
+    public GetMissionGroupModelMasterResult getMissionGroupModelMaster(
+            GetMissionGroupModelMasterRequest request
     ) {
-        final AsyncResult<GetNamespaceStatusResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getNamespaceStatusAsync(
+        final AsyncResult<GetMissionGroupModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getMissionGroupModelMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -3342,13 +2608,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class GetNamespaceTask extends Gs2RestSessionTask<GetNamespaceResult> {
-        private GetNamespaceRequest request;
+    class UpdateMissionGroupModelMasterTask extends Gs2RestSessionTask<UpdateMissionGroupModelMasterResult> {
+        private UpdateMissionGroupModelMasterRequest request;
 
-        public GetNamespaceTask(
-            GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+        public UpdateMissionGroupModelMasterTask(
+            UpdateMissionGroupModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateMissionGroupModelMasterResult>> userCallback,
+            Class<UpdateMissionGroupModelMasterResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3364,142 +2630,21 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}";
+                + "/{namespaceName}/master/group/{missionGroupName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void getNamespaceAsync(
-            GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> callback
-    ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public GetNamespaceResult getNamespace(
-            GetNamespaceRequest request
-    ) {
-        final AsyncResult<GetNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getNamespaceAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class UpdateNamespaceTask extends Gs2RestSessionTask<UpdateNamespaceResult> {
-        private UpdateNamespaceRequest request;
-
-        public UpdateNamespaceTask(
-            UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "mission")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
 
             ObjectMapper mapper = new ObjectMapper();
             JSONObject json = new JSONObject();
+            if (this.request.getMetadata() != null) {
+                json.put("metadata", this.request.getMetadata());
+            }
             if (this.request.getDescription() != null) {
                 json.put("description", this.request.getDescription());
             }
-            if (this.request.getMissionCompleteTriggerScriptId() != null) {
-                json.put("missionCompleteTriggerScriptId", this.request.getMissionCompleteTriggerScriptId());
-            }
-            if (this.request.getMissionCompleteDoneTriggerScriptId() != null) {
-                json.put("missionCompleteDoneTriggerScriptId", this.request.getMissionCompleteDoneTriggerScriptId());
-            }
-            if (this.request.getMissionCompleteDoneTriggerQueueNamespaceId() != null) {
-                json.put("missionCompleteDoneTriggerQueueNamespaceId", this.request.getMissionCompleteDoneTriggerQueueNamespaceId());
-            }
-            if (this.request.getCounterIncrementTriggerScriptId() != null) {
-                json.put("counterIncrementTriggerScriptId", this.request.getCounterIncrementTriggerScriptId());
-            }
-            if (this.request.getCounterIncrementDoneTriggerScriptId() != null) {
-                json.put("counterIncrementDoneTriggerScriptId", this.request.getCounterIncrementDoneTriggerScriptId());
-            }
-            if (this.request.getCounterIncrementDoneTriggerQueueNamespaceId() != null) {
-                json.put("counterIncrementDoneTriggerQueueNamespaceId", this.request.getCounterIncrementDoneTriggerQueueNamespaceId());
-            }
-            if (this.request.getReceiveRewardsTriggerScriptId() != null) {
-                json.put("receiveRewardsTriggerScriptId", this.request.getReceiveRewardsTriggerScriptId());
-            }
-            if (this.request.getReceiveRewardsDoneTriggerScriptId() != null) {
-                json.put("receiveRewardsDoneTriggerScriptId", this.request.getReceiveRewardsDoneTriggerScriptId());
-            }
-            if (this.request.getReceiveRewardsDoneTriggerQueueNamespaceId() != null) {
-                json.put("receiveRewardsDoneTriggerQueueNamespaceId", this.request.getReceiveRewardsDoneTriggerQueueNamespaceId());
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getCompleteNotification() != null) {
-                try {
-                    json.put("completeNotification", new JSONObject(mapper.writeValueAsString(this.request.getCompleteNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
+            if (this.request.getCompleteNotificationNamespaceId() != null) {
+                json.put("completeNotificationNamespaceId", this.request.getCompleteNotificationNamespaceId());
             }
             if (this.request.getContextStack() != null) {
                 json.put("contextStack", this.request.getContextStack());
@@ -3524,29 +2669,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ネームスペースを更新<br>
+     * ミッショングループマスターを更新<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void updateNamespaceAsync(
-            UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
+    public void updateMissionGroupModelMasterAsync(
+            UpdateMissionGroupModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateMissionGroupModelMasterResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateMissionGroupModelMasterTask task = new UpdateMissionGroupModelMasterTask(request, callback, UpdateMissionGroupModelMasterResult.class);
         session.execute(task);
     }
 
     /**
-     * ネームスペースを更新<br>
+     * ミッショングループマスターを更新<br>
      *
      * @param request リクエストパラメータ
      */
-    public UpdateNamespaceResult updateNamespace(
-            UpdateNamespaceRequest request
+    public UpdateMissionGroupModelMasterResult updateMissionGroupModelMaster(
+            UpdateMissionGroupModelMasterRequest request
     ) {
-        final AsyncResult<UpdateNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateNamespaceAsync(
+        final AsyncResult<UpdateMissionGroupModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateMissionGroupModelMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -3563,13 +2708,13 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class DeleteNamespaceTask extends Gs2RestSessionTask<DeleteNamespaceResult> {
-        private DeleteNamespaceRequest request;
+    class DeleteMissionGroupModelMasterTask extends Gs2RestSessionTask<DeleteMissionGroupModelMasterResult> {
+        private DeleteMissionGroupModelMasterRequest request;
 
-        public DeleteNamespaceTask(
-            DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+        public DeleteMissionGroupModelMasterTask(
+            DeleteMissionGroupModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteMissionGroupModelMasterResult>> userCallback,
+            Class<DeleteMissionGroupModelMasterResult> clazz
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3585,9 +2730,10 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mission")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}";
+                + "/{namespaceName}/master/group/{missionGroupName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3612,29 +2758,29 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     }
 
     /**
-     * ネームスペースを削除<br>
+     * ミッショングループマスターを削除<br>
      *
      * @param callback コールバック
      * @param request リクエストパラメータ
      */
-    public void deleteNamespaceAsync(
-            DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
+    public void deleteMissionGroupModelMasterAsync(
+            DeleteMissionGroupModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteMissionGroupModelMasterResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteMissionGroupModelMasterTask task = new DeleteMissionGroupModelMasterTask(request, callback, DeleteMissionGroupModelMasterResult.class);
         session.execute(task);
     }
 
     /**
-     * ネームスペースを削除<br>
+     * ミッショングループマスターを削除<br>
      *
      * @param request リクエストパラメータ
      */
-    public DeleteNamespaceResult deleteNamespace(
-            DeleteNamespaceRequest request
+    public DeleteMissionGroupModelMasterResult deleteMissionGroupModelMaster(
+            DeleteMissionGroupModelMasterRequest request
     ) {
-        final AsyncResult<DeleteNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
-        deleteNamespaceAsync(
+        final AsyncResult<DeleteMissionGroupModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteMissionGroupModelMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -4525,6 +3671,860 @@ public class Gs2MissionRestClient extends AbstractGs2Client<Gs2MissionRestClient
     ) {
         final AsyncResult<ReceiveByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         receiveByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeCounterModelMastersTask extends Gs2RestSessionTask<DescribeCounterModelMastersResult> {
+        private DescribeCounterModelMastersRequest request;
+
+        public DescribeCounterModelMastersTask(
+            DescribeCounterModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeCounterModelMastersResult>> userCallback,
+            Class<DescribeCounterModelMastersResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/counter";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * カウンターの種類マスターの一覧を取得<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void describeCounterModelMastersAsync(
+            DescribeCounterModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeCounterModelMastersResult>> callback
+    ) {
+        DescribeCounterModelMastersTask task = new DescribeCounterModelMastersTask(request, callback, DescribeCounterModelMastersResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * カウンターの種類マスターの一覧を取得<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public DescribeCounterModelMastersResult describeCounterModelMasters(
+            DescribeCounterModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeCounterModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeCounterModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateCounterModelMasterTask extends Gs2RestSessionTask<CreateCounterModelMasterResult> {
+        private CreateCounterModelMasterRequest request;
+
+        public CreateCounterModelMasterTask(
+            CreateCounterModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateCounterModelMasterResult>> userCallback,
+            Class<CreateCounterModelMasterResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/counter";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            ObjectMapper mapper = new ObjectMapper();
+            JSONObject json = new JSONObject();
+            if (this.request.getName() != null) {
+                json.put("name", this.request.getName());
+            }
+            if (this.request.getMetadata() != null) {
+                json.put("metadata", this.request.getMetadata());
+            }
+            if (this.request.getDescription() != null) {
+                json.put("description", this.request.getDescription());
+            }
+            if (this.request.getScopes() != null) {
+                JSONArray array = new JSONArray();
+                for(CounterScopeModel item : this.request.getScopes())
+                {
+                    try {
+                        array.put(new JSONObject(mapper.writeValueAsString(item)));
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                json.put("scopes", array);
+            }
+            if (this.request.getChallengePeriodEventId() != null) {
+                json.put("challengePeriodEventId", this.request.getChallengePeriodEventId());
+            }
+            if (this.request.getContextStack() != null) {
+                json.put("contextStack", this.request.getContextStack());
+            }
+
+            builder.setBody(json.toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * カウンターの種類マスターを新規作成<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void createCounterModelMasterAsync(
+            CreateCounterModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateCounterModelMasterResult>> callback
+    ) {
+        CreateCounterModelMasterTask task = new CreateCounterModelMasterTask(request, callback, CreateCounterModelMasterResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * カウンターの種類マスターを新規作成<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public CreateCounterModelMasterResult createCounterModelMaster(
+            CreateCounterModelMasterRequest request
+    ) {
+        final AsyncResult<CreateCounterModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createCounterModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetCounterModelMasterTask extends Gs2RestSessionTask<GetCounterModelMasterResult> {
+        private GetCounterModelMasterRequest request;
+
+        public GetCounterModelMasterTask(
+            GetCounterModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCounterModelMasterResult>> userCallback,
+            Class<GetCounterModelMasterResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/counter/{counterName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * カウンターの種類マスターを取得<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void getCounterModelMasterAsync(
+            GetCounterModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCounterModelMasterResult>> callback
+    ) {
+        GetCounterModelMasterTask task = new GetCounterModelMasterTask(request, callback, GetCounterModelMasterResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * カウンターの種類マスターを取得<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public GetCounterModelMasterResult getCounterModelMaster(
+            GetCounterModelMasterRequest request
+    ) {
+        final AsyncResult<GetCounterModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCounterModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateCounterModelMasterTask extends Gs2RestSessionTask<UpdateCounterModelMasterResult> {
+        private UpdateCounterModelMasterRequest request;
+
+        public UpdateCounterModelMasterTask(
+            UpdateCounterModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCounterModelMasterResult>> userCallback,
+            Class<UpdateCounterModelMasterResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/counter/{counterName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+
+            ObjectMapper mapper = new ObjectMapper();
+            JSONObject json = new JSONObject();
+            if (this.request.getMetadata() != null) {
+                json.put("metadata", this.request.getMetadata());
+            }
+            if (this.request.getDescription() != null) {
+                json.put("description", this.request.getDescription());
+            }
+            if (this.request.getScopes() != null) {
+                JSONArray array = new JSONArray();
+                for(CounterScopeModel item : this.request.getScopes())
+                {
+                    try {
+                        array.put(new JSONObject(mapper.writeValueAsString(item)));
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                json.put("scopes", array);
+            }
+            if (this.request.getChallengePeriodEventId() != null) {
+                json.put("challengePeriodEventId", this.request.getChallengePeriodEventId());
+            }
+            if (this.request.getContextStack() != null) {
+                json.put("contextStack", this.request.getContextStack());
+            }
+
+            builder.setBody(json.toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * カウンターの種類マスターを更新<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void updateCounterModelMasterAsync(
+            UpdateCounterModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCounterModelMasterResult>> callback
+    ) {
+        UpdateCounterModelMasterTask task = new UpdateCounterModelMasterTask(request, callback, UpdateCounterModelMasterResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * カウンターの種類マスターを更新<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public UpdateCounterModelMasterResult updateCounterModelMaster(
+            UpdateCounterModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateCounterModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCounterModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteCounterModelMasterTask extends Gs2RestSessionTask<DeleteCounterModelMasterResult> {
+        private DeleteCounterModelMasterRequest request;
+
+        public DeleteCounterModelMasterTask(
+            DeleteCounterModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteCounterModelMasterResult>> userCallback,
+            Class<DeleteCounterModelMasterResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/counter/{counterName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * カウンターの種類マスターを削除<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void deleteCounterModelMasterAsync(
+            DeleteCounterModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteCounterModelMasterResult>> callback
+    ) {
+        DeleteCounterModelMasterTask task = new DeleteCounterModelMasterTask(request, callback, DeleteCounterModelMasterResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * カウンターの種類マスターを削除<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public DeleteCounterModelMasterResult deleteCounterModelMaster(
+            DeleteCounterModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteCounterModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteCounterModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeCounterModelsTask extends Gs2RestSessionTask<DescribeCounterModelsResult> {
+        private DescribeCounterModelsRequest request;
+
+        public DescribeCounterModelsTask(
+            DescribeCounterModelsRequest request,
+            AsyncAction<AsyncResult<DescribeCounterModelsResult>> userCallback,
+            Class<DescribeCounterModelsResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/counter";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * カウンターの種類の一覧を取得<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void describeCounterModelsAsync(
+            DescribeCounterModelsRequest request,
+            AsyncAction<AsyncResult<DescribeCounterModelsResult>> callback
+    ) {
+        DescribeCounterModelsTask task = new DescribeCounterModelsTask(request, callback, DescribeCounterModelsResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * カウンターの種類の一覧を取得<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public DescribeCounterModelsResult describeCounterModels(
+            DescribeCounterModelsRequest request
+    ) {
+        final AsyncResult<DescribeCounterModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeCounterModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetCounterModelTask extends Gs2RestSessionTask<GetCounterModelResult> {
+        private GetCounterModelRequest request;
+
+        public GetCounterModelTask(
+            GetCounterModelRequest request,
+            AsyncAction<AsyncResult<GetCounterModelResult>> userCallback,
+            Class<GetCounterModelResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/counter/{counterName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * カウンターの種類を取得<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void getCounterModelAsync(
+            GetCounterModelRequest request,
+            AsyncAction<AsyncResult<GetCounterModelResult>> callback
+    ) {
+        GetCounterModelTask task = new GetCounterModelTask(request, callback, GetCounterModelResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * カウンターの種類を取得<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public GetCounterModelResult getCounterModel(
+            GetCounterModelRequest request
+    ) {
+        final AsyncResult<GetCounterModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCounterModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeMissionTaskModelsTask extends Gs2RestSessionTask<DescribeMissionTaskModelsResult> {
+        private DescribeMissionTaskModelsRequest request;
+
+        public DescribeMissionTaskModelsTask(
+            DescribeMissionTaskModelsRequest request,
+            AsyncAction<AsyncResult<DescribeMissionTaskModelsResult>> userCallback,
+            Class<DescribeMissionTaskModelsResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/group/{missionGroupName}/task";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * ミッションタスクの一覧を取得<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void describeMissionTaskModelsAsync(
+            DescribeMissionTaskModelsRequest request,
+            AsyncAction<AsyncResult<DescribeMissionTaskModelsResult>> callback
+    ) {
+        DescribeMissionTaskModelsTask task = new DescribeMissionTaskModelsTask(request, callback, DescribeMissionTaskModelsResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * ミッションタスクの一覧を取得<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public DescribeMissionTaskModelsResult describeMissionTaskModels(
+            DescribeMissionTaskModelsRequest request
+    ) {
+        final AsyncResult<DescribeMissionTaskModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeMissionTaskModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetMissionTaskModelTask extends Gs2RestSessionTask<GetMissionTaskModelResult> {
+        private GetMissionTaskModelRequest request;
+
+        public GetMissionTaskModelTask(
+            GetMissionTaskModelRequest request,
+            AsyncAction<AsyncResult<GetMissionTaskModelResult>> userCallback,
+            Class<GetMissionTaskModelResult> clazz
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback,
+                    clazz
+            );
+            this.request = request;
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/group/{missionGroupName}/task/{missionTaskName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null|| this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+            url = url.replace("{missionTaskName}", this.request.getMissionTaskName() == null|| this.request.getMissionTaskName().length() == 0 ? "null" : String.valueOf(this.request.getMissionTaskName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    /**
+     * ミッションタスクを取得<br>
+     *
+     * @param callback コールバック
+     * @param request リクエストパラメータ
+     */
+    public void getMissionTaskModelAsync(
+            GetMissionTaskModelRequest request,
+            AsyncAction<AsyncResult<GetMissionTaskModelResult>> callback
+    ) {
+        GetMissionTaskModelTask task = new GetMissionTaskModelTask(request, callback, GetMissionTaskModelResult.class);
+        session.execute(task);
+    }
+
+    /**
+     * ミッションタスクを取得<br>
+     *
+     * @param request リクエストパラメータ
+     */
+    public GetMissionTaskModelResult getMissionTaskModel(
+            GetMissionTaskModelRequest request
+    ) {
+        final AsyncResult<GetMissionTaskModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getMissionTaskModelAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

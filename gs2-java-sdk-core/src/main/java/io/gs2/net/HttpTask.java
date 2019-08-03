@@ -15,7 +15,7 @@ public class HttpTask {
 
     private static HttpClient client = HttpClientBuilder.create().build();
 
-    private HttpRequestBase httpRequest;
+    protected HttpRequestBase httpRequest;
     private IResponseHandler handler;
 
     public enum Method {
@@ -56,7 +56,7 @@ public class HttpTask {
                     } catch (IOException e) {
                         try {
                             callback(httpRequest, null, false);
-                        } catch (IOException ignored) {
+                        } catch (IOException ex) {
                         }
                     }
                 }
@@ -68,7 +68,7 @@ public class HttpTask {
         return httpRequest;
     }
 
-    private void callback(HttpRequestBase pHttpRequest, HttpResponse pHttpResponse, boolean isSuccessful) throws IOException {
+    void callback(HttpRequestBase pHttpRequest, HttpResponse pHttpResponse, boolean isSuccessful) throws IOException {
         if (pHttpResponse != null) {
             int responseLength = (int) pHttpResponse.getEntity().getContentLength();
             byte[] responseBody = new byte[responseLength];
@@ -98,7 +98,7 @@ public class HttpTask {
             bout.write(body);
             BasicHttpEntity entity = new BasicHttpEntity();
             entity.setContent(new ByteArrayInputStream(bout.toByteArray()));
-            ((HttpEntityEnclosingRequestBase) this.httpRequest).setEntity(entity);
+            ((HttpPost)this.httpRequest).setEntity(entity);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

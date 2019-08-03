@@ -6,15 +6,19 @@ import io.gs2.model.GeneralError;
 
 public class Gs2RestResponse extends Gs2Response {
 
-    public Gs2RestResponse(String message, int statusCode) {
+    public Gs2RestResponse(String message, int statusCode)
+    {
         super(message);
 
         String errorMessage;
-        try {
+        try
+        {
             ObjectMapper mapper = new ObjectMapper();
             GeneralError error = mapper.readValue(message, GeneralError.class);
             errorMessage = error.getMessage();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             errorMessage = message;
         }
 

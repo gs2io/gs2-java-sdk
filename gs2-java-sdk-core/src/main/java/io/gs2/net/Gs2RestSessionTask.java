@@ -28,7 +28,7 @@ public class Gs2RestSessionTask<T extends IResult> extends Gs2SessionTask {
     }
 
     protected void prepareImpl() {
-        this.builder.setHeader("X-GS2-CLIENT-ID", getSession().getGs2Credential().getClientId());
+        this.builder.setHeader("X-GS2-CLIENT-ID", getGs2Session().getGs2Credential().getClientId());
         this.builder.setHeader("Authorization", getProjectToken());
     }
 
@@ -39,7 +39,7 @@ public class Gs2RestSessionTask<T extends IResult> extends Gs2SessionTask {
     protected void triggerUserCallback(Gs2Response gs2Response) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            if (gs2Response.getGs2Exception() == null) {
+            if(gs2Response.getGs2Exception() == null) {
                 T result = mapper.readValue(gs2Response.message, clazz);
                 AsyncResult<T> asyncResult = new AsyncResult<>(result, gs2Response.getGs2Exception());
                 callback.callback(asyncResult);

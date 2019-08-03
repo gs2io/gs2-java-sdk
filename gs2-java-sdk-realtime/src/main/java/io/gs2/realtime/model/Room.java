@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.gs2.model.IModel;
 
 /**
  * ルーム
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Room implements Serializable, Comparable<Room> {
+public class Room implements IModel, Serializable, Comparable<Room> {
 	/** ルーム */
 	protected String roomId;
 

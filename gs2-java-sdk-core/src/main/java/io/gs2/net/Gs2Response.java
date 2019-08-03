@@ -6,15 +6,18 @@ public abstract class Gs2Response {
     protected String message;
     protected Gs2Exception exception;
 
-    public Gs2Response(String message) {
+    public Gs2Response(String message)
+    {
         this.message = message;
     }
 
-    public String getMessage() {
+    public String getMessage()
+    {
         return message;
     }
 
-    public Gs2Exception getGs2Exception() {
+    public Gs2Exception getGs2Exception()
+    {
         return exception;
     }
 }
