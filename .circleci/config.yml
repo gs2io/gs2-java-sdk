@@ -35,18 +35,17 @@ jobs:
 
               echo 'allow-loopback-pinentry' >> ~/.gnupg/gpg-agent.conf
 
-              SERVICES=`find . -name src | sed -e 's/gs2-java-sdk\///g' | sed -e 's/\/src//g' | grep 'gs2-' | sed -e 's/^gs2-//g' | xargs`
-
               set +e
 
-              for service in $SERVICES; do
-                cd $service/
+              for service in core auth key script lock job-queue account deploy shcedule showcase stamina distributor experience gateway inbox identifier inventory limit lottery matchmaking mission money project quest realtime; do
+                cd ~/repo/gs2-java-sdk/gs2-java-sdk-$service
+                mvn install
                 mvn deploy -DperformRelease=true -Dgpg.skip=false
-                cd ../
               done
 
               set -e
 
+              cd ~/repo/gs2-java-sdk
               mvn deploy -DperformRelease=true -Dgpg.skip=false
             fi
       -
