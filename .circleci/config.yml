@@ -37,8 +37,8 @@ jobs:
 
               set +e
 
-              for service in core auth key script lock job-queue account deploy shcedule showcase stamina distributor experience gateway inbox identifier inventory limit lottery matchmaking mission money project quest realtime; do
-                cd ~/repo/gs2-java-sdk/gs2-java-sdk-$service
+              for service in core auth key script lock job-queue account deploy distributor experience gateway inbox identifier inventory limit lottery matchmaking mission money project quest realtimeshcedule showcase stamina ; do
+                cd ~/repo/gs2-java-sdk/gs2-java-sdk-$service/
                 mvn install
                 mvn deploy -DperformRelease=true -Dgpg.skip=false
               done
