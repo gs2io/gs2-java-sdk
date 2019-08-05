@@ -49,10 +49,5 @@ jobs:
               mvn deploy -DperformRelease=true -Dgpg.skip=false
             fi
       -
-        run:
-          name: javadocファイルをコピー
-          command: |
-            cp ./target/*-javadoc.jar $CIRCLE_ARTIFACTS
-      -
         store_test_results:
           path: $CIRCLE_ARTIFACTS
