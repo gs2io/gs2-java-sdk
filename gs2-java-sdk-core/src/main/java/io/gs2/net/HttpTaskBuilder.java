@@ -49,7 +49,9 @@ public class HttpTaskBuilder {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             httpTask.addHeaderEntry(entry.getKey(), entry.getValue());
         }
-        httpTask.setBody(body);
+        if (method == HttpTask.Method.POST || method == HttpTask.Method.PUT) {
+            httpTask.setBody(body);
+        }
         return httpTask;
     }
 

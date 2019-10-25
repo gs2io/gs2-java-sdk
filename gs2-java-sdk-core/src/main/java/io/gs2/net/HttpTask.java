@@ -76,7 +76,7 @@ public class HttpTask {
             try (InputStream in = pHttpResponse.getEntity().getContent()) {
                 int readSize = 0;
                 while (readSize < responseLength) {
-                    readSize += in.read(responseBody);
+                    readSize += in.read(responseBody, readSize, responseLength - readSize);
                 }
             }
             Gs2RestResponse gs2RestResponse = new Gs2RestResponse(new String(responseBody), pHttpResponse.getStatusLine().getStatusCode());
@@ -98,7 +98,12 @@ public class HttpTask {
             bout.write(body);
             BasicHttpEntity entity = new BasicHttpEntity();
             entity.setContent(new ByteArrayInputStream(bout.toByteArray()));
-            ((HttpPost)this.httpRequest).setEntity(entity);
+            if (this.httpRequest instanceof HttpPost) {
+                ((HttpPost) this.httpRequest).setEntity(entity);
+            }
+            if (this.httpRequest instanceof HttpPut) {
+                ((HttpPut) this.httpRequest).setEntity(entity);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
