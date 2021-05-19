@@ -1,0 +1,154 @@
+/*
+ * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
+ * Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+package io.gs2.formation.result;
+
+import java.io.Serializable;
+import org.json.JSONObject;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.gs2.core.model.*;
+import io.gs2.formation.model.*;
+
+/**
+ * 署名付きフォームを取得 のレスポンスモデル
+ *
+ * @author Game Server Services, Inc.
+ */
+@SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class GetFormWithSignatureResult implements IResult, Serializable {
+	/** フォーム */
+	private Form item;
+	/** 署名対象の値 */
+	private String body;
+	/** 署名 */
+	private String signature;
+	/** 保存したフォーム */
+	private Mold mold;
+	/** フォームの保存領域 */
+	private MoldModel moldModel;
+	/** フォームモデル */
+	private FormModel formModel;
+
+	/**
+	 * フォームを取得
+	 *
+	 * @return 署名付きフォームを取得
+	 */
+	public Form getItem() {
+		return item;
+	}
+
+	/**
+	 * フォームを設定
+	 *
+	 * @param item 署名付きフォームを取得
+	 */
+	public void setItem(Form item) {
+		this.item = item;
+	}
+
+	/**
+	 * 署名対象の値を取得
+	 *
+	 * @return 署名付きフォームを取得
+	 */
+	public String getBody() {
+		return body;
+	}
+
+	/**
+	 * 署名対象の値を設定
+	 *
+	 * @param body 署名付きフォームを取得
+	 */
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	/**
+	 * 署名を取得
+	 *
+	 * @return 署名付きフォームを取得
+	 */
+	public String getSignature() {
+		return signature;
+	}
+
+	/**
+	 * 署名を設定
+	 *
+	 * @param signature 署名付きフォームを取得
+	 */
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	/**
+	 * 保存したフォームを取得
+	 *
+	 * @return 署名付きフォームを取得
+	 */
+	public Mold getMold() {
+		return mold;
+	}
+
+	/**
+	 * 保存したフォームを設定
+	 *
+	 * @param mold 署名付きフォームを取得
+	 */
+	public void setMold(Mold mold) {
+		this.mold = mold;
+	}
+
+	/**
+	 * フォームの保存領域を取得
+	 *
+	 * @return 署名付きフォームを取得
+	 */
+	public MoldModel getMoldModel() {
+		return moldModel;
+	}
+
+	/**
+	 * フォームの保存領域を設定
+	 *
+	 * @param moldModel 署名付きフォームを取得
+	 */
+	public void setMoldModel(MoldModel moldModel) {
+		this.moldModel = moldModel;
+	}
+
+	/**
+	 * フォームモデルを取得
+	 *
+	 * @return 署名付きフォームを取得
+	 */
+	public FormModel getFormModel() {
+		return formModel;
+	}
+
+	/**
+	 * フォームモデルを設定
+	 *
+	 * @param formModel 署名付きフォームを取得
+	 */
+	public void setFormModel(FormModel formModel) {
+		this.formModel = formModel;
+	}
+}

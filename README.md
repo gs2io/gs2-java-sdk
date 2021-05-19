@@ -33,26 +33,6 @@ SDKを利用するには GS2 のクレデンシャルが必要です。
 </dependencies>
 ```
 
-GS2-SDK for Java はサービスごとにSDKをインストールして利用できます。
-アプリケーションに必要なサービスのSDKを選択し、インストールして利用してください。
-
-```xml
-<dependencies>
-  <dependency>
-    <groupId>io.gs2.account</groupId>
-    <artifactId>gs2-java-sdk-account</artifactId>
-  </dependency>
-  <dependency>
-    <groupId>io.gs2.auth</groupId>
-    <artifactId>gs2-java-sdk-auth</artifactId>
-  </dependency>
-  <dependency>
-    <groupId>io.gs2.deploy</groupId>
-    <artifactId>gs2-java-sdk-deploy</artifactId>
-  </dependency>
-</dependencies>
-```
-
 ### 初期化
 
 GS2-Account の HTTP & 同期処理 の例
@@ -75,12 +55,6 @@ Gs2AccountRestClient client = new Gs2AccountRestClient(session);
 ```
 
 その他のサービス・通信方式の初期化処理は [ドキュメント](https://app.gs2.io/docs/index.html?java#gs2-sdk-account-initialize) を参照ください
-
-## ビルド方法
-
-```bash
-mvn clean install -Dgpg.skip=true
-```
 
 ## フィードバック
 

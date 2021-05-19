@@ -1,0 +1,449 @@
+/*
+ * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
+ * Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+package io.gs2.matchmaking.request;
+
+import org.json.JSONObject;
+import java.util.List;
+import java.util.Map;
+import io.gs2.matchmaking.model.*;
+import io.gs2.core.control.Gs2BasicRequest;
+
+/**
+ * ネームスペースを新規作成 のリクエストモデル
+ *
+ * @author Game Server Services, Inc.
+ */
+@SuppressWarnings("serial")
+public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
+
+    /** ネームスペース名 */
+    private String name;
+
+    /**
+     * ネームスペース名を取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * ネームスペース名を設定
+     *
+     * @param name ネームスペースを新規作成
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * ネームスペース名を設定
+     *
+     * @param name ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withName(String name) {
+        setName(name);
+        return this;
+    }
+
+    /** ネームスペースの説明 */
+    private String description;
+
+    /**
+     * ネームスペースの説明を取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * ネームスペースの説明を設定
+     *
+     * @param description ネームスペースを新規作成
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * ネームスペースの説明を設定
+     *
+     * @param description ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withDescription(String description) {
+        setDescription(description);
+        return this;
+    }
+
+    /** レーティング計算機能を使用するか */
+    private Boolean enableRating;
+
+    /**
+     * レーティング計算機能を使用するかを取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public Boolean getEnableRating() {
+        return enableRating;
+    }
+
+    /**
+     * レーティング計算機能を使用するかを設定
+     *
+     * @param enableRating ネームスペースを新規作成
+     */
+    public void setEnableRating(Boolean enableRating) {
+        this.enableRating = enableRating;
+    }
+
+    /**
+     * レーティング計算機能を使用するかを設定
+     *
+     * @param enableRating ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withEnableRating(Boolean enableRating) {
+        setEnableRating(enableRating);
+        return this;
+    }
+
+    /** ギャザリング新規作成時のアクション */
+    private String createGatheringTriggerType;
+
+    /**
+     * ギャザリング新規作成時のアクションを取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public String getCreateGatheringTriggerType() {
+        return createGatheringTriggerType;
+    }
+
+    /**
+     * ギャザリング新規作成時のアクションを設定
+     *
+     * @param createGatheringTriggerType ネームスペースを新規作成
+     */
+    public void setCreateGatheringTriggerType(String createGatheringTriggerType) {
+        this.createGatheringTriggerType = createGatheringTriggerType;
+    }
+
+    /**
+     * ギャザリング新規作成時のアクションを設定
+     *
+     * @param createGatheringTriggerType ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withCreateGatheringTriggerType(String createGatheringTriggerType) {
+        setCreateGatheringTriggerType(createGatheringTriggerType);
+        return this;
+    }
+
+    /** ギャザリング新規作成時 にルームを作成するネームスペース のGRN */
+    private String createGatheringTriggerRealtimeNamespaceId;
+
+    /**
+     * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public String getCreateGatheringTriggerRealtimeNamespaceId() {
+        return createGatheringTriggerRealtimeNamespaceId;
+    }
+
+    /**
+     * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを設定
+     *
+     * @param createGatheringTriggerRealtimeNamespaceId ネームスペースを新規作成
+     */
+    public void setCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
+        this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
+    }
+
+    /**
+     * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを設定
+     *
+     * @param createGatheringTriggerRealtimeNamespaceId ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
+        setCreateGatheringTriggerRealtimeNamespaceId(createGatheringTriggerRealtimeNamespaceId);
+        return this;
+    }
+
+    /** ギャザリング新規作成時 に実行されるスクリプト のGRN */
+    private String createGatheringTriggerScriptId;
+
+    /**
+     * ギャザリング新規作成時 に実行されるスクリプト のGRNを取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public String getCreateGatheringTriggerScriptId() {
+        return createGatheringTriggerScriptId;
+    }
+
+    /**
+     * ギャザリング新規作成時 に実行されるスクリプト のGRNを設定
+     *
+     * @param createGatheringTriggerScriptId ネームスペースを新規作成
+     */
+    public void setCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
+        this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
+    }
+
+    /**
+     * ギャザリング新規作成時 に実行されるスクリプト のGRNを設定
+     *
+     * @param createGatheringTriggerScriptId ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
+        setCreateGatheringTriggerScriptId(createGatheringTriggerScriptId);
+        return this;
+    }
+
+    /** マッチメイキング完了時のアクション */
+    private String completeMatchmakingTriggerType;
+
+    /**
+     * マッチメイキング完了時のアクションを取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public String getCompleteMatchmakingTriggerType() {
+        return completeMatchmakingTriggerType;
+    }
+
+    /**
+     * マッチメイキング完了時のアクションを設定
+     *
+     * @param completeMatchmakingTriggerType ネームスペースを新規作成
+     */
+    public void setCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
+        this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
+    }
+
+    /**
+     * マッチメイキング完了時のアクションを設定
+     *
+     * @param completeMatchmakingTriggerType ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
+        setCompleteMatchmakingTriggerType(completeMatchmakingTriggerType);
+        return this;
+    }
+
+    /** マッチメイキング完了時 にルームを作成するネームスペース のGRN */
+    private String completeMatchmakingTriggerRealtimeNamespaceId;
+
+    /**
+     * マッチメイキング完了時 にルームを作成するネームスペース のGRNを取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public String getCompleteMatchmakingTriggerRealtimeNamespaceId() {
+        return completeMatchmakingTriggerRealtimeNamespaceId;
+    }
+
+    /**
+     * マッチメイキング完了時 にルームを作成するネームスペース のGRNを設定
+     *
+     * @param completeMatchmakingTriggerRealtimeNamespaceId ネームスペースを新規作成
+     */
+    public void setCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
+        this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
+    }
+
+    /**
+     * マッチメイキング完了時 にルームを作成するネームスペース のGRNを設定
+     *
+     * @param completeMatchmakingTriggerRealtimeNamespaceId ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
+        setCompleteMatchmakingTriggerRealtimeNamespaceId(completeMatchmakingTriggerRealtimeNamespaceId);
+        return this;
+    }
+
+    /** マッチメイキング完了時 に実行されるスクリプト のGRN */
+    private String completeMatchmakingTriggerScriptId;
+
+    /**
+     * マッチメイキング完了時 に実行されるスクリプト のGRNを取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public String getCompleteMatchmakingTriggerScriptId() {
+        return completeMatchmakingTriggerScriptId;
+    }
+
+    /**
+     * マッチメイキング完了時 に実行されるスクリプト のGRNを設定
+     *
+     * @param completeMatchmakingTriggerScriptId ネームスペースを新規作成
+     */
+    public void setCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
+        this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
+    }
+
+    /**
+     * マッチメイキング完了時 に実行されるスクリプト のGRNを設定
+     *
+     * @param completeMatchmakingTriggerScriptId ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
+        setCompleteMatchmakingTriggerScriptId(completeMatchmakingTriggerScriptId);
+        return this;
+    }
+
+    /** ギャザリングに新規プレイヤーが参加したときのプッシュ通知 */
+    private NotificationSetting joinNotification;
+
+    /**
+     * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public NotificationSetting getJoinNotification() {
+        return joinNotification;
+    }
+
+    /**
+     * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を設定
+     *
+     * @param joinNotification ネームスペースを新規作成
+     */
+    public void setJoinNotification(NotificationSetting joinNotification) {
+        this.joinNotification = joinNotification;
+    }
+
+    /**
+     * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を設定
+     *
+     * @param joinNotification ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withJoinNotification(NotificationSetting joinNotification) {
+        setJoinNotification(joinNotification);
+        return this;
+    }
+
+    /** ギャザリングからプレイヤーが離脱したときのプッシュ通知 */
+    private NotificationSetting leaveNotification;
+
+    /**
+     * ギャザリングからプレイヤーが離脱したときのプッシュ通知を取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public NotificationSetting getLeaveNotification() {
+        return leaveNotification;
+    }
+
+    /**
+     * ギャザリングからプレイヤーが離脱したときのプッシュ通知を設定
+     *
+     * @param leaveNotification ネームスペースを新規作成
+     */
+    public void setLeaveNotification(NotificationSetting leaveNotification) {
+        this.leaveNotification = leaveNotification;
+    }
+
+    /**
+     * ギャザリングからプレイヤーが離脱したときのプッシュ通知を設定
+     *
+     * @param leaveNotification ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withLeaveNotification(NotificationSetting leaveNotification) {
+        setLeaveNotification(leaveNotification);
+        return this;
+    }
+
+    /** マッチメイキングが完了したときのプッシュ通知 */
+    private NotificationSetting completeNotification;
+
+    /**
+     * マッチメイキングが完了したときのプッシュ通知を取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public NotificationSetting getCompleteNotification() {
+        return completeNotification;
+    }
+
+    /**
+     * マッチメイキングが完了したときのプッシュ通知を設定
+     *
+     * @param completeNotification ネームスペースを新規作成
+     */
+    public void setCompleteNotification(NotificationSetting completeNotification) {
+        this.completeNotification = completeNotification;
+    }
+
+    /**
+     * マッチメイキングが完了したときのプッシュ通知を設定
+     *
+     * @param completeNotification ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withCompleteNotification(NotificationSetting completeNotification) {
+        setCompleteNotification(completeNotification);
+        return this;
+    }
+
+    /** ログの出力設定 */
+    private LogSetting logSetting;
+
+    /**
+     * ログの出力設定を取得
+     *
+     * @return ネームスペースを新規作成
+     */
+    public LogSetting getLogSetting() {
+        return logSetting;
+    }
+
+    /**
+     * ログの出力設定を設定
+     *
+     * @param logSetting ネームスペースを新規作成
+     */
+    public void setLogSetting(LogSetting logSetting) {
+        this.logSetting = logSetting;
+    }
+
+    /**
+     * ログの出力設定を設定
+     *
+     * @param logSetting ネームスペースを新規作成
+     * @return this
+     */
+    public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+        setLogSetting(logSetting);
+        return this;
+    }
+
+}

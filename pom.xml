@@ -3,141 +3,33 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.gs2</groupId>
 	<artifactId>gs2-java-sdk</artifactId>
-	<version>2.0.1</version>
-
-	<properties>
-		<gs2.version>2.0.1</gs2.version>
-		<java.version>1.8</java.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gpg.skip>true</gpg.skip>
-	</properties>
-
+	<version>3.0.0</version>
 	<dependencies>
 		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-account</artifactId>
-			<version>${gs2.version}</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180813</version>
 		</dependency>
 		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-auth</artifactId>
-			<version>${gs2.version}</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
 		</dependency>
 		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-deploy</artifactId>
-			<version>${gs2.version}</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.9</version>
 		</dependency>
 		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-distributor</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-experience</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>io.gs2</groupId>-->
-<!--			<artifactId>gs2-java-sdk-gateway</artifactId>-->
-<!--			<version>${gs2.version}</version>-->
-<!--		</dependency>-->
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-identifier</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-inbox</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-inventory</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-job-queue</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-key</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-limit</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-lock</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-lottery</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-matchmaking</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-mission</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-money</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-project</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-quest</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-realtime</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-schedule</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-script</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-showcase</artifactId>
-			<version>${gs2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.gs2</groupId>
-			<artifactId>gs2-java-sdk-stamina</artifactId>
-			<version>${gs2.version}</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.10.3</version>
 		</dependency>
 	</dependencies>
 	
-	<name>Game Server Services SDK for Java GS2-Account Library</name>
+	<name>Game Server Services SDK for Java Library</name>
 	<url>https://gs2.io/</url>
-	<description>Game Server Services SDK for Java GS2-Account Library</description>
+	<description>Game Server Services SDK for Java Library</description>
 	
 	<licenses>
 		<license>
@@ -161,6 +53,12 @@
 			<url>https://gs2.io/</url>
 		</developer>
 	</developers>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<gpg.skip>true</gpg.skip>
+	</properties>
 	
 	<build>
 		<pluginManagement>
@@ -199,23 +97,37 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>attach-sources</id>
+						<id>prepare-agent</id>
+						<phase>test-compile</phase>
 						<goals>
-							<goal>jar</goal>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<propertyName>jacocoArgs</propertyName>
+							<includes>
+								<include>*</include>
+							</includes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
+				<artifactId>maven-source-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>attach-javadocs</id>
+						<id>attach-sources</id>
 						<goals>
 							<goal>jar</goal>
 						</goals>
