@@ -683,6 +683,15 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getUserId() != null) {
                 queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
             }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            if (this.request.getLongTerm() != null) {
+                queryStrings.add("longTerm=" + String.valueOf(this.request.getLongTerm()));
+            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -781,13 +790,22 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
             if (this.request.getService() != null) {
-                queryStrings.add("service=" + String.valueOf(this.request.getService()));
+                queryStrings.add("service=" + EncodingUtil.urlEncode((String.valueOf(this.request.getService()))));
             }
             if (this.request.getMethod() != null) {
-                queryStrings.add("method=" + String.valueOf(this.request.getMethod()));
+                queryStrings.add("method=" + EncodingUtil.urlEncode((String.valueOf(this.request.getMethod()))));
             }
             if (this.request.getUserId() != null) {
-                queryStrings.add("userId=" + String.valueOf(this.request.getUserId()));
+                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+            }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            if (this.request.getLongTerm() != null) {
+                queryStrings.add("longTerm=" + String.valueOf(this.request.getLongTerm()));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
@@ -898,6 +916,15 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getAction() != null) {
                 queryStrings.add("action=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAction()))));
             }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            if (this.request.getLongTerm() != null) {
+                queryStrings.add("longTerm=" + String.valueOf(this.request.getLongTerm()));
+            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -996,16 +1023,25 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
             if (this.request.getService() != null) {
-                queryStrings.add("service=" + String.valueOf(this.request.getService()));
+                queryStrings.add("service=" + EncodingUtil.urlEncode((String.valueOf(this.request.getService()))));
             }
             if (this.request.getMethod() != null) {
-                queryStrings.add("method=" + String.valueOf(this.request.getMethod()));
+                queryStrings.add("method=" + EncodingUtil.urlEncode((String.valueOf(this.request.getMethod()))));
             }
             if (this.request.getUserId() != null) {
-                queryStrings.add("userId=" + String.valueOf(this.request.getUserId()));
+                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
             }
             if (this.request.getAction() != null) {
-                queryStrings.add("action=" + String.valueOf(this.request.getAction()));
+                queryStrings.add("action=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAction()))));
+            }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            if (this.request.getLongTerm() != null) {
+                queryStrings.add("longTerm=" + String.valueOf(this.request.getLongTerm()));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
@@ -1116,6 +1152,15 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getAction() != null) {
                 queryStrings.add("action=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAction()))));
             }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            if (this.request.getLongTerm() != null) {
+                queryStrings.add("longTerm=" + String.valueOf(this.request.getLongTerm()));
+            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -1214,16 +1259,25 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
             if (this.request.getService() != null) {
-                queryStrings.add("service=" + String.valueOf(this.request.getService()));
+                queryStrings.add("service=" + EncodingUtil.urlEncode((String.valueOf(this.request.getService()))));
             }
             if (this.request.getMethod() != null) {
-                queryStrings.add("method=" + String.valueOf(this.request.getMethod()));
+                queryStrings.add("method=" + EncodingUtil.urlEncode((String.valueOf(this.request.getMethod()))));
             }
             if (this.request.getUserId() != null) {
-                queryStrings.add("userId=" + String.valueOf(this.request.getUserId()));
+                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
             }
             if (this.request.getAction() != null) {
-                queryStrings.add("action=" + String.valueOf(this.request.getAction()));
+                queryStrings.add("action=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAction()))));
+            }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            if (this.request.getLongTerm() != null) {
+                queryStrings.add("longTerm=" + String.valueOf(this.request.getLongTerm()));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
@@ -1334,6 +1388,15 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getAction() != null) {
                 queryStrings.add("action=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAction()))));
             }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            if (this.request.getLongTerm() != null) {
+                queryStrings.add("longTerm=" + String.valueOf(this.request.getLongTerm()));
+            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -1432,16 +1495,25 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
             if (this.request.getService() != null) {
-                queryStrings.add("service=" + String.valueOf(this.request.getService()));
+                queryStrings.add("service=" + EncodingUtil.urlEncode((String.valueOf(this.request.getService()))));
             }
             if (this.request.getMethod() != null) {
-                queryStrings.add("method=" + String.valueOf(this.request.getMethod()));
+                queryStrings.add("method=" + EncodingUtil.urlEncode((String.valueOf(this.request.getMethod()))));
             }
             if (this.request.getUserId() != null) {
-                queryStrings.add("userId=" + String.valueOf(this.request.getUserId()));
+                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
             }
             if (this.request.getAction() != null) {
-                queryStrings.add("action=" + String.valueOf(this.request.getAction()));
+                queryStrings.add("action=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAction()))));
+            }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            if (this.request.getLongTerm() != null) {
+                queryStrings.add("longTerm=" + String.valueOf(this.request.getLongTerm()));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));

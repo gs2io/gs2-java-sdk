@@ -62,99 +62,195 @@ public class CountAccessLogRequest extends Gs2BasicRequest<CountAccessLogRequest
         return this;
     }
 
-    /** マイクロサービスの種類を集計軸に使用するか */
-    private Boolean service;
+    /** マイクロサービスの種類 */
+    private String service;
 
     /**
-     * マイクロサービスの種類を集計軸に使用するかを取得
+     * マイクロサービスの種類を取得
      *
      * @return アクセスログの一覧を取得
      */
-    public Boolean getService() {
+    public String getService() {
         return service;
     }
 
     /**
-     * マイクロサービスの種類を集計軸に使用するかを設定
+     * マイクロサービスの種類を設定
      *
      * @param service アクセスログの一覧を取得
      */
-    public void setService(Boolean service) {
+    public void setService(String service) {
         this.service = service;
     }
 
     /**
-     * マイクロサービスの種類を集計軸に使用するかを設定
+     * マイクロサービスの種類を設定
      *
      * @param service アクセスログの一覧を取得
      * @return this
      */
-    public CountAccessLogRequest withService(Boolean service) {
+    public CountAccessLogRequest withService(String service) {
         setService(service);
         return this;
     }
 
-    /** マイクロサービスのメソッドを集計軸に使用するか */
-    private Boolean method;
+    /** マイクロサービスのメソッド */
+    private String method;
 
     /**
-     * マイクロサービスのメソッドを集計軸に使用するかを取得
+     * マイクロサービスのメソッドを取得
      *
      * @return アクセスログの一覧を取得
      */
-    public Boolean getMethod() {
+    public String getMethod() {
         return method;
     }
 
     /**
-     * マイクロサービスのメソッドを集計軸に使用するかを設定
+     * マイクロサービスのメソッドを設定
      *
      * @param method アクセスログの一覧を取得
      */
-    public void setMethod(Boolean method) {
+    public void setMethod(String method) {
         this.method = method;
     }
 
     /**
-     * マイクロサービスのメソッドを集計軸に使用するかを設定
+     * マイクロサービスのメソッドを設定
      *
      * @param method アクセスログの一覧を取得
      * @return this
      */
-    public CountAccessLogRequest withMethod(Boolean method) {
+    public CountAccessLogRequest withMethod(String method) {
         setMethod(method);
         return this;
     }
 
-    /** ユーザIDを集計軸に使用するか */
-    private Boolean userId;
+    /** ユーザーID */
+    private String userId;
 
     /**
-     * ユーザIDを集計軸に使用するかを取得
+     * ユーザーIDを取得
      *
      * @return アクセスログの一覧を取得
      */
-    public Boolean getUserId() {
+    public String getUserId() {
         return userId;
     }
 
     /**
-     * ユーザIDを集計軸に使用するかを設定
+     * ユーザーIDを設定
      *
      * @param userId アクセスログの一覧を取得
      */
-    public void setUserId(Boolean userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
     /**
-     * ユーザIDを集計軸に使用するかを設定
+     * ユーザーIDを設定
      *
      * @param userId アクセスログの一覧を取得
      * @return this
      */
-    public CountAccessLogRequest withUserId(Boolean userId) {
+    public CountAccessLogRequest withUserId(String userId) {
         setUserId(userId);
+        return this;
+    }
+
+    /** 検索範囲開始日時 */
+    private Long begin;
+
+    /**
+     * 検索範囲開始日時を取得
+     *
+     * @return アクセスログの一覧を取得
+     */
+    public Long getBegin() {
+        return begin;
+    }
+
+    /**
+     * 検索範囲開始日時を設定
+     *
+     * @param begin アクセスログの一覧を取得
+     */
+    public void setBegin(Long begin) {
+        this.begin = begin;
+    }
+
+    /**
+     * 検索範囲開始日時を設定
+     *
+     * @param begin アクセスログの一覧を取得
+     * @return this
+     */
+    public CountAccessLogRequest withBegin(Long begin) {
+        setBegin(begin);
+        return this;
+    }
+
+    /** 検索範囲終了日時 */
+    private Long end;
+
+    /**
+     * 検索範囲終了日時を取得
+     *
+     * @return アクセスログの一覧を取得
+     */
+    public Long getEnd() {
+        return end;
+    }
+
+    /**
+     * 検索範囲終了日時を設定
+     *
+     * @param end アクセスログの一覧を取得
+     */
+    public void setEnd(Long end) {
+        this.end = end;
+    }
+
+    /**
+     * 検索範囲終了日時を設定
+     *
+     * @param end アクセスログの一覧を取得
+     * @return this
+     */
+    public CountAccessLogRequest withEnd(Long end) {
+        setEnd(end);
+        return this;
+    }
+
+    /** 7日より長い期間のログを検索対象とするか */
+    private Boolean longTerm;
+
+    /**
+     * 7日より長い期間のログを検索対象とするかを取得
+     *
+     * @return アクセスログの一覧を取得
+     */
+    public Boolean getLongTerm() {
+        return longTerm;
+    }
+
+    /**
+     * 7日より長い期間のログを検索対象とするかを設定
+     *
+     * @param longTerm アクセスログの一覧を取得
+     */
+    public void setLongTerm(Boolean longTerm) {
+        this.longTerm = longTerm;
+    }
+
+    /**
+     * 7日より長い期間のログを検索対象とするかを設定
+     *
+     * @param longTerm アクセスログの一覧を取得
+     * @return this
+     */
+    public CountAccessLogRequest withLongTerm(Boolean longTerm) {
+        setLongTerm(longTerm);
         return this;
     }
 

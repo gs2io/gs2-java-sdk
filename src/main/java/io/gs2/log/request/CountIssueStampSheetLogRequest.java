@@ -62,131 +62,227 @@ public class CountIssueStampSheetLogRequest extends Gs2BasicRequest<CountIssueSt
         return this;
     }
 
-    /** マイクロサービスの種類を集計軸に使用するか */
-    private Boolean service;
+    /** マイクロサービスの種類 */
+    private String service;
 
     /**
-     * マイクロサービスの種類を集計軸に使用するかを取得
+     * マイクロサービスの種類を取得
      *
      * @return スタンプシート発行ログの一覧を取得
      */
-    public Boolean getService() {
+    public String getService() {
         return service;
     }
 
     /**
-     * マイクロサービスの種類を集計軸に使用するかを設定
+     * マイクロサービスの種類を設定
      *
      * @param service スタンプシート発行ログの一覧を取得
      */
-    public void setService(Boolean service) {
+    public void setService(String service) {
         this.service = service;
     }
 
     /**
-     * マイクロサービスの種類を集計軸に使用するかを設定
+     * マイクロサービスの種類を設定
      *
      * @param service スタンプシート発行ログの一覧を取得
      * @return this
      */
-    public CountIssueStampSheetLogRequest withService(Boolean service) {
+    public CountIssueStampSheetLogRequest withService(String service) {
         setService(service);
         return this;
     }
 
-    /** マイクロサービスのメソッドを集計軸に使用するか */
-    private Boolean method;
+    /** マイクロサービスのメソッド */
+    private String method;
 
     /**
-     * マイクロサービスのメソッドを集計軸に使用するかを取得
+     * マイクロサービスのメソッドを取得
      *
      * @return スタンプシート発行ログの一覧を取得
      */
-    public Boolean getMethod() {
+    public String getMethod() {
         return method;
     }
 
     /**
-     * マイクロサービスのメソッドを集計軸に使用するかを設定
+     * マイクロサービスのメソッドを設定
      *
      * @param method スタンプシート発行ログの一覧を取得
      */
-    public void setMethod(Boolean method) {
+    public void setMethod(String method) {
         this.method = method;
     }
 
     /**
-     * マイクロサービスのメソッドを集計軸に使用するかを設定
+     * マイクロサービスのメソッドを設定
      *
      * @param method スタンプシート発行ログの一覧を取得
      * @return this
      */
-    public CountIssueStampSheetLogRequest withMethod(Boolean method) {
+    public CountIssueStampSheetLogRequest withMethod(String method) {
         setMethod(method);
         return this;
     }
 
-    /** ユーザIDを集計軸に使用するか */
-    private Boolean userId;
+    /** ユーザーID */
+    private String userId;
 
     /**
-     * ユーザIDを集計軸に使用するかを取得
+     * ユーザーIDを取得
      *
      * @return スタンプシート発行ログの一覧を取得
      */
-    public Boolean getUserId() {
+    public String getUserId() {
         return userId;
     }
 
     /**
-     * ユーザIDを集計軸に使用するかを設定
+     * ユーザーIDを設定
      *
      * @param userId スタンプシート発行ログの一覧を取得
      */
-    public void setUserId(Boolean userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
     /**
-     * ユーザIDを集計軸に使用するかを設定
+     * ユーザーIDを設定
      *
      * @param userId スタンプシート発行ログの一覧を取得
      * @return this
      */
-    public CountIssueStampSheetLogRequest withUserId(Boolean userId) {
+    public CountIssueStampSheetLogRequest withUserId(String userId) {
         setUserId(userId);
         return this;
     }
 
-    /** 報酬アクションの種類を集計軸に使用するか */
-    private Boolean action;
+    /** 報酬アクション */
+    private String action;
 
     /**
-     * 報酬アクションの種類を集計軸に使用するかを取得
+     * 報酬アクションを取得
      *
      * @return スタンプシート発行ログの一覧を取得
      */
-    public Boolean getAction() {
+    public String getAction() {
         return action;
     }
 
     /**
-     * 報酬アクションの種類を集計軸に使用するかを設定
+     * 報酬アクションを設定
      *
      * @param action スタンプシート発行ログの一覧を取得
      */
-    public void setAction(Boolean action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
     /**
-     * 報酬アクションの種類を集計軸に使用するかを設定
+     * 報酬アクションを設定
      *
      * @param action スタンプシート発行ログの一覧を取得
      * @return this
      */
-    public CountIssueStampSheetLogRequest withAction(Boolean action) {
+    public CountIssueStampSheetLogRequest withAction(String action) {
         setAction(action);
+        return this;
+    }
+
+    /** 検索範囲開始日時 */
+    private Long begin;
+
+    /**
+     * 検索範囲開始日時を取得
+     *
+     * @return スタンプシート発行ログの一覧を取得
+     */
+    public Long getBegin() {
+        return begin;
+    }
+
+    /**
+     * 検索範囲開始日時を設定
+     *
+     * @param begin スタンプシート発行ログの一覧を取得
+     */
+    public void setBegin(Long begin) {
+        this.begin = begin;
+    }
+
+    /**
+     * 検索範囲開始日時を設定
+     *
+     * @param begin スタンプシート発行ログの一覧を取得
+     * @return this
+     */
+    public CountIssueStampSheetLogRequest withBegin(Long begin) {
+        setBegin(begin);
+        return this;
+    }
+
+    /** 検索範囲終了日時 */
+    private Long end;
+
+    /**
+     * 検索範囲終了日時を取得
+     *
+     * @return スタンプシート発行ログの一覧を取得
+     */
+    public Long getEnd() {
+        return end;
+    }
+
+    /**
+     * 検索範囲終了日時を設定
+     *
+     * @param end スタンプシート発行ログの一覧を取得
+     */
+    public void setEnd(Long end) {
+        this.end = end;
+    }
+
+    /**
+     * 検索範囲終了日時を設定
+     *
+     * @param end スタンプシート発行ログの一覧を取得
+     * @return this
+     */
+    public CountIssueStampSheetLogRequest withEnd(Long end) {
+        setEnd(end);
+        return this;
+    }
+
+    /** 7日より長い期間のログを検索対象とするか */
+    private Boolean longTerm;
+
+    /**
+     * 7日より長い期間のログを検索対象とするかを取得
+     *
+     * @return スタンプシート発行ログの一覧を取得
+     */
+    public Boolean getLongTerm() {
+        return longTerm;
+    }
+
+    /**
+     * 7日より長い期間のログを検索対象とするかを設定
+     *
+     * @param longTerm スタンプシート発行ログの一覧を取得
+     */
+    public void setLongTerm(Boolean longTerm) {
+        this.longTerm = longTerm;
+    }
+
+    /**
+     * 7日より長い期間のログを検索対象とするかを設定
+     *
+     * @param longTerm スタンプシート発行ログの一覧を取得
+     * @return this
+     */
+    public CountIssueStampSheetLogRequest withLongTerm(Boolean longTerm) {
+        setLongTerm(longTerm);
         return this;
     }
 

@@ -190,6 +190,102 @@ public class QueryIssueStampSheetLogRequest extends Gs2BasicRequest<QueryIssueSt
         return this;
     }
 
+    /** 検索範囲開始日時 */
+    private Long begin;
+
+    /**
+     * 検索範囲開始日時を取得
+     *
+     * @return スタンプシート発行ログの一覧を取得
+     */
+    public Long getBegin() {
+        return begin;
+    }
+
+    /**
+     * 検索範囲開始日時を設定
+     *
+     * @param begin スタンプシート発行ログの一覧を取得
+     */
+    public void setBegin(Long begin) {
+        this.begin = begin;
+    }
+
+    /**
+     * 検索範囲開始日時を設定
+     *
+     * @param begin スタンプシート発行ログの一覧を取得
+     * @return this
+     */
+    public QueryIssueStampSheetLogRequest withBegin(Long begin) {
+        setBegin(begin);
+        return this;
+    }
+
+    /** 検索範囲終了日時 */
+    private Long end;
+
+    /**
+     * 検索範囲終了日時を取得
+     *
+     * @return スタンプシート発行ログの一覧を取得
+     */
+    public Long getEnd() {
+        return end;
+    }
+
+    /**
+     * 検索範囲終了日時を設定
+     *
+     * @param end スタンプシート発行ログの一覧を取得
+     */
+    public void setEnd(Long end) {
+        this.end = end;
+    }
+
+    /**
+     * 検索範囲終了日時を設定
+     *
+     * @param end スタンプシート発行ログの一覧を取得
+     * @return this
+     */
+    public QueryIssueStampSheetLogRequest withEnd(Long end) {
+        setEnd(end);
+        return this;
+    }
+
+    /** 7日より長い期間のログを検索対象とするか */
+    private Boolean longTerm;
+
+    /**
+     * 7日より長い期間のログを検索対象とするかを取得
+     *
+     * @return スタンプシート発行ログの一覧を取得
+     */
+    public Boolean getLongTerm() {
+        return longTerm;
+    }
+
+    /**
+     * 7日より長い期間のログを検索対象とするかを設定
+     *
+     * @param longTerm スタンプシート発行ログの一覧を取得
+     */
+    public void setLongTerm(Boolean longTerm) {
+        this.longTerm = longTerm;
+    }
+
+    /**
+     * 7日より長い期間のログを検索対象とするかを設定
+     *
+     * @param longTerm スタンプシート発行ログの一覧を取得
+     * @return this
+     */
+    public QueryIssueStampSheetLogRequest withLongTerm(Boolean longTerm) {
+        setLongTerm(longTerm);
+        return this;
+    }
+
     /** データの取得を開始する位置を指定するトークン */
     private String pageToken;
 
