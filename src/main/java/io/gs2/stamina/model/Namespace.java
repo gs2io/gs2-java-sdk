@@ -190,34 +190,34 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		return this;
 	}
 	/** スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN */
-	protected String overflowTriggerNamespaceId;
+	protected String overflowTriggerQueueId;
 
 	/**
 	 * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを取得
 	 *
 	 * @return スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN
 	 */
-	public String getOverflowTriggerNamespaceId() {
-		return overflowTriggerNamespaceId;
+	public String getOverflowTriggerQueueId() {
+		return overflowTriggerQueueId;
 	}
 
 	/**
 	 * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを設定
 	 *
-	 * @param overflowTriggerNamespaceId スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN
+	 * @param overflowTriggerQueueId スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN
 	 */
-	public void setOverflowTriggerNamespaceId(String overflowTriggerNamespaceId) {
-		this.overflowTriggerNamespaceId = overflowTriggerNamespaceId;
+	public void setOverflowTriggerQueueId(String overflowTriggerQueueId) {
+		this.overflowTriggerQueueId = overflowTriggerQueueId;
 	}
 
 	/**
 	 * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを設定
 	 *
-	 * @param overflowTriggerNamespaceId スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN
+	 * @param overflowTriggerQueueId スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN
 	 * @return this
 	 */
-	public Namespace withOverflowTriggerNamespaceId(String overflowTriggerNamespaceId) {
-		this.overflowTriggerNamespaceId = overflowTriggerNamespaceId;
+	public Namespace withOverflowTriggerQueueId(String overflowTriggerQueueId) {
+		this.overflowTriggerQueueId = overflowTriggerQueueId;
 		return this;
 	}
 	/** ログの出力設定 */
@@ -322,7 +322,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .put("name", this.getName())
             .put("description", this.getDescription())
             .put("overflowTriggerScriptId", this.getOverflowTriggerScriptId())
-            .put("overflowTriggerNamespaceId", this.getOverflowTriggerNamespaceId())
+            .put("overflowTriggerQueueId", this.getOverflowTriggerQueueId())
             .put("createdAt", this.getCreatedAt())
             .put("updatedAt", this.getUpdatedAt());
         body_.set("logSetting", logSetting);
@@ -342,7 +342,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.overflowTriggerScriptId == null) ? 0 : this.overflowTriggerScriptId.hashCode());
-        result = prime * result + ((this.overflowTriggerNamespaceId == null) ? 0 : this.overflowTriggerNamespaceId.hashCode());
+        result = prime * result + ((this.overflowTriggerQueueId == null) ? 0 : this.overflowTriggerQueueId.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -383,9 +383,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		} else if (!overflowTriggerScriptId.equals(other.overflowTriggerScriptId)) {
 			return false;
 		}
-		if (overflowTriggerNamespaceId == null) {
-			return other.overflowTriggerNamespaceId == null;
-		} else if (!overflowTriggerNamespaceId.equals(other.overflowTriggerNamespaceId)) {
+		if (overflowTriggerQueueId == null) {
+			return other.overflowTriggerQueueId == null;
+		} else if (!overflowTriggerQueueId.equals(other.overflowTriggerQueueId)) {
 			return false;
 		}
 		if (logSetting == null) {

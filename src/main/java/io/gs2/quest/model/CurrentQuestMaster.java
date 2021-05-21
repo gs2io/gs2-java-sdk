@@ -34,35 +34,35 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CurrentQuestMaster implements IModel, Serializable {
-	/** カテゴリ名 */
-	protected String namespaceName;
+	/** クエストを分類するカテゴリー */
+	protected String namespaceId;
 
 	/**
-	 * カテゴリ名を取得
+	 * クエストを分類するカテゴリーを取得
 	 *
-	 * @return カテゴリ名
+	 * @return クエストを分類するカテゴリー
 	 */
-	public String getNamespaceName() {
-		return namespaceName;
+	public String getNamespaceId() {
+		return namespaceId;
 	}
 
 	/**
-	 * カテゴリ名を設定
+	 * クエストを分類するカテゴリーを設定
 	 *
-	 * @param namespaceName カテゴリ名
+	 * @param namespaceId クエストを分類するカテゴリー
 	 */
-	public void setNamespaceName(String namespaceName) {
-		this.namespaceName = namespaceName;
+	public void setNamespaceId(String namespaceId) {
+		this.namespaceId = namespaceId;
 	}
 
 	/**
-	 * カテゴリ名を設定
+	 * クエストを分類するカテゴリーを設定
 	 *
-	 * @param namespaceName カテゴリ名
+	 * @param namespaceId クエストを分類するカテゴリー
 	 * @return this
 	 */
-	public CurrentQuestMaster withNamespaceName(String namespaceName) {
-		this.namespaceName = namespaceName;
+	public CurrentQuestMaster withNamespaceId(String namespaceId) {
+		this.namespaceId = namespaceId;
 		return this;
 	}
 	/** マスターデータ */
@@ -99,7 +99,7 @@ public class CurrentQuestMaster implements IModel, Serializable {
 
     public ObjectNode toJson() {
 		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceName", this.getNamespaceName())
+            .put("namespaceId", this.getNamespaceId())
             .put("settings", this.getSettings());
         return body_;
     }
@@ -108,7 +108,7 @@ public class CurrentQuestMaster implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.namespaceName == null) ? 0 : this.namespaceName.hashCode());
+        result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.settings == null) ? 0 : this.settings.hashCode());
 		return result;
 	}
@@ -122,9 +122,9 @@ public class CurrentQuestMaster implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		CurrentQuestMaster other = (CurrentQuestMaster) o;
-		if (namespaceName == null) {
-			return other.namespaceName == null;
-		} else if (!namespaceName.equals(other.namespaceName)) {
+		if (namespaceId == null) {
+			return other.namespaceId == null;
+		} else if (!namespaceId.equals(other.namespaceId)) {
 			return false;
 		}
 		if (settings == null) {

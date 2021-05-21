@@ -34,35 +34,35 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CurrentLimitMaster implements IModel, Serializable {
-	/** ネームスペース名 */
-	protected String namespaceName;
+	/** 現在有効な回数制限設定 */
+	protected String namespaceId;
 
 	/**
-	 * ネームスペース名を取得
+	 * 現在有効な回数制限設定を取得
 	 *
-	 * @return ネームスペース名
+	 * @return 現在有効な回数制限設定
 	 */
-	public String getNamespaceName() {
-		return namespaceName;
+	public String getNamespaceId() {
+		return namespaceId;
 	}
 
 	/**
-	 * ネームスペース名を設定
+	 * 現在有効な回数制限設定を設定
 	 *
-	 * @param namespaceName ネームスペース名
+	 * @param namespaceId 現在有効な回数制限設定
 	 */
-	public void setNamespaceName(String namespaceName) {
-		this.namespaceName = namespaceName;
+	public void setNamespaceId(String namespaceId) {
+		this.namespaceId = namespaceId;
 	}
 
 	/**
-	 * ネームスペース名を設定
+	 * 現在有効な回数制限設定を設定
 	 *
-	 * @param namespaceName ネームスペース名
+	 * @param namespaceId 現在有効な回数制限設定
 	 * @return this
 	 */
-	public CurrentLimitMaster withNamespaceName(String namespaceName) {
-		this.namespaceName = namespaceName;
+	public CurrentLimitMaster withNamespaceId(String namespaceId) {
+		this.namespaceId = namespaceId;
 		return this;
 	}
 	/** マスターデータ */
@@ -99,7 +99,7 @@ public class CurrentLimitMaster implements IModel, Serializable {
 
     public ObjectNode toJson() {
 		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceName", this.getNamespaceName())
+            .put("namespaceId", this.getNamespaceId())
             .put("settings", this.getSettings());
         return body_;
     }
@@ -108,7 +108,7 @@ public class CurrentLimitMaster implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.namespaceName == null) ? 0 : this.namespaceName.hashCode());
+        result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.settings == null) ? 0 : this.settings.hashCode());
 		return result;
 	}
@@ -122,9 +122,9 @@ public class CurrentLimitMaster implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		CurrentLimitMaster other = (CurrentLimitMaster) o;
-		if (namespaceName == null) {
-			return other.namespaceName == null;
-		} else if (!namespaceName.equals(other.namespaceName)) {
+		if (namespaceId == null) {
+			return other.namespaceId == null;
+		} else if (!namespaceId.equals(other.namespaceId)) {
 			return false;
 		}
 		if (settings == null) {

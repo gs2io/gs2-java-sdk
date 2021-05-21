@@ -35,34 +35,34 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GitHubCheckoutSetting implements IModel, Serializable {
 	/** リソースの取得に使用するGitHub のAPIキー のGRN */
-	protected String gitHubApiKeyId;
+	protected String apiKeyId;
 
 	/**
 	 * リソースの取得に使用するGitHub のAPIキー のGRNを取得
 	 *
 	 * @return リソースの取得に使用するGitHub のAPIキー のGRN
 	 */
-	public String getGitHubApiKeyId() {
-		return gitHubApiKeyId;
+	public String getApiKeyId() {
+		return apiKeyId;
 	}
 
 	/**
 	 * リソースの取得に使用するGitHub のAPIキー のGRNを設定
 	 *
-	 * @param gitHubApiKeyId リソースの取得に使用するGitHub のAPIキー のGRN
+	 * @param apiKeyId リソースの取得に使用するGitHub のAPIキー のGRN
 	 */
-	public void setGitHubApiKeyId(String gitHubApiKeyId) {
-		this.gitHubApiKeyId = gitHubApiKeyId;
+	public void setApiKeyId(String apiKeyId) {
+		this.apiKeyId = apiKeyId;
 	}
 
 	/**
 	 * リソースの取得に使用するGitHub のAPIキー のGRNを設定
 	 *
-	 * @param gitHubApiKeyId リソースの取得に使用するGitHub のAPIキー のGRN
+	 * @param apiKeyId リソースの取得に使用するGitHub のAPIキー のGRN
 	 * @return this
 	 */
-	public GitHubCheckoutSetting withGitHubApiKeyId(String gitHubApiKeyId) {
-		this.gitHubApiKeyId = gitHubApiKeyId;
+	public GitHubCheckoutSetting withApiKeyId(String apiKeyId) {
+		this.apiKeyId = apiKeyId;
 		return this;
 	}
 	/** リポジトリ名 */
@@ -254,7 +254,7 @@ public class GitHubCheckoutSetting implements IModel, Serializable {
 
     public ObjectNode toJson() {
 		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("gitHubApiKeyId", this.getGitHubApiKeyId())
+            .put("apiKeyId", this.getApiKeyId())
             .put("repositoryName", this.getRepositoryName())
             .put("sourcePath", this.getSourcePath())
             .put("referenceType", this.getReferenceType())
@@ -268,7 +268,7 @@ public class GitHubCheckoutSetting implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.gitHubApiKeyId == null) ? 0 : this.gitHubApiKeyId.hashCode());
+        result = prime * result + ((this.apiKeyId == null) ? 0 : this.apiKeyId.hashCode());
         result = prime * result + ((this.repositoryName == null) ? 0 : this.repositoryName.hashCode());
         result = prime * result + ((this.sourcePath == null) ? 0 : this.sourcePath.hashCode());
         result = prime * result + ((this.referenceType == null) ? 0 : this.referenceType.hashCode());
@@ -287,9 +287,9 @@ public class GitHubCheckoutSetting implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		GitHubCheckoutSetting other = (GitHubCheckoutSetting) o;
-		if (gitHubApiKeyId == null) {
-			return other.gitHubApiKeyId == null;
-		} else if (!gitHubApiKeyId.equals(other.gitHubApiKeyId)) {
+		if (apiKeyId == null) {
+			return other.apiKeyId == null;
+		} else if (!apiKeyId.equals(other.apiKeyId)) {
 			return false;
 		}
 		if (repositoryName == null) {
