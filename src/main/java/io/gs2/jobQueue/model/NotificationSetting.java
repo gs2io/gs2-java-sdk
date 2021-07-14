@@ -16,124 +16,80 @@
 
 package io.gs2.jobQueue.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * プッシュ通知設定
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NotificationSetting implements IModel, Serializable {
-	/** プッシュ通知に使用する GS2-Gateway のネームスペース のGRN */
-	protected String gatewayNamespaceId;
+	private String gatewayNamespaceId;
+	private Boolean enableTransferMobileNotification;
+	private String sound;
 
-	/**
-	 * プッシュ通知に使用する GS2-Gateway のネームスペース のGRNを取得
-	 *
-	 * @return プッシュ通知に使用する GS2-Gateway のネームスペース のGRN
-	 */
 	public String getGatewayNamespaceId() {
 		return gatewayNamespaceId;
 	}
 
-	/**
-	 * プッシュ通知に使用する GS2-Gateway のネームスペース のGRNを設定
-	 *
-	 * @param gatewayNamespaceId プッシュ通知に使用する GS2-Gateway のネームスペース のGRN
-	 */
 	public void setGatewayNamespaceId(String gatewayNamespaceId) {
 		this.gatewayNamespaceId = gatewayNamespaceId;
 	}
 
-	/**
-	 * プッシュ通知に使用する GS2-Gateway のネームスペース のGRNを設定
-	 *
-	 * @param gatewayNamespaceId プッシュ通知に使用する GS2-Gateway のネームスペース のGRN
-	 * @return this
-	 */
 	public NotificationSetting withGatewayNamespaceId(String gatewayNamespaceId) {
 		this.gatewayNamespaceId = gatewayNamespaceId;
 		return this;
 	}
-	/** モバイルプッシュ通知へ転送するか */
-	protected Boolean enableTransferMobileNotification;
 
-	/**
-	 * モバイルプッシュ通知へ転送するかを取得
-	 *
-	 * @return モバイルプッシュ通知へ転送するか
-	 */
 	public Boolean getEnableTransferMobileNotification() {
 		return enableTransferMobileNotification;
 	}
 
-	/**
-	 * モバイルプッシュ通知へ転送するかを設定
-	 *
-	 * @param enableTransferMobileNotification モバイルプッシュ通知へ転送するか
-	 */
 	public void setEnableTransferMobileNotification(Boolean enableTransferMobileNotification) {
 		this.enableTransferMobileNotification = enableTransferMobileNotification;
 	}
 
-	/**
-	 * モバイルプッシュ通知へ転送するかを設定
-	 *
-	 * @param enableTransferMobileNotification モバイルプッシュ通知へ転送するか
-	 * @return this
-	 */
 	public NotificationSetting withEnableTransferMobileNotification(Boolean enableTransferMobileNotification) {
 		this.enableTransferMobileNotification = enableTransferMobileNotification;
 		return this;
 	}
-	/** モバイルプッシュ通知で使用するサウンドファイル名 */
-	protected String sound;
 
-	/**
-	 * モバイルプッシュ通知で使用するサウンドファイル名を取得
-	 *
-	 * @return モバイルプッシュ通知で使用するサウンドファイル名
-	 */
 	public String getSound() {
 		return sound;
 	}
 
-	/**
-	 * モバイルプッシュ通知で使用するサウンドファイル名を設定
-	 *
-	 * @param sound モバイルプッシュ通知で使用するサウンドファイル名
-	 */
 	public void setSound(String sound) {
 		this.sound = sound;
 	}
 
-	/**
-	 * モバイルプッシュ通知で使用するサウンドファイル名を設定
-	 *
-	 * @param sound モバイルプッシュ通知で使用するサウンドファイル名
-	 * @return this
-	 */
 	public NotificationSetting withSound(String sound) {
 		this.sound = sound;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("gatewayNamespaceId", this.getGatewayNamespaceId())
-            .put("enableTransferMobileNotification", this.getEnableTransferMobileNotification())
-            .put("sound", this.getSound());
-        return body_;
+    public static NotificationSetting fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new NotificationSetting()
+            .withGatewayNamespaceId(data.get("gatewayNamespaceId") == null || data.get("gatewayNamespaceId").isNull() ? null : data.get("gatewayNamespaceId").asText())
+            .withEnableTransferMobileNotification(data.get("enableTransferMobileNotification") == null || data.get("enableTransferMobileNotification").isNull() ? null : data.get("enableTransferMobileNotification").booleanValue())
+            .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("gatewayNamespaceId", getGatewayNamespaceId());
+                put("enableTransferMobileNotification", getEnableTransferMobileNotification());
+                put("sound", getSound());
+            }}
+        );
     }
 
 	@Override

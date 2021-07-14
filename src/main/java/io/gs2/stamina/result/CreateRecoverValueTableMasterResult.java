@@ -16,39 +16,48 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.RecoverValueTableMaster;
 
-/**
- * スタミナ回復量テーブルマスターを新規作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateRecoverValueTableMasterResult implements IResult, Serializable {
-	/** 作成したスタミナ回復量テーブルマスター */
-	private RecoverValueTableMaster item;
+    private RecoverValueTableMaster item;
 
-	/**
-	 * 作成したスタミナ回復量テーブルマスターを取得
-	 *
-	 * @return スタミナ回復量テーブルマスターを新規作成
-	 */
 	public RecoverValueTableMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 作成したスタミナ回復量テーブルマスターを設定
-	 *
-	 * @param item スタミナ回復量テーブルマスターを新規作成
-	 */
 	public void setItem(RecoverValueTableMaster item) {
 		this.item = item;
 	}
+
+	public CreateRecoverValueTableMasterResult withItem(RecoverValueTableMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateRecoverValueTableMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateRecoverValueTableMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RecoverValueTableMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

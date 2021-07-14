@@ -16,59 +16,68 @@
 
 package io.gs2.matchmaking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.AttributeRange;
+import io.gs2.matchmaking.model.Attribute;
+import io.gs2.matchmaking.model.Player;
+import io.gs2.matchmaking.model.CapacityOfRole;
+import io.gs2.matchmaking.model.Gathering;
 
-/**
- * Player が参加できるギャザリングを探して参加する のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DoMatchmakingByPlayerResult implements IResult, Serializable {
-	/** ギャザリング */
-	private Gathering item;
-	/** マッチメイキングの状態を保持するトークン */
-	private String matchmakingContextToken;
+    private Gathering item;
+    private String matchmakingContextToken;
 
-	/**
-	 * ギャザリングを取得
-	 *
-	 * @return Player が参加できるギャザリングを探して参加する
-	 */
 	public Gathering getItem() {
 		return item;
 	}
 
-	/**
-	 * ギャザリングを設定
-	 *
-	 * @param item Player が参加できるギャザリングを探して参加する
-	 */
 	public void setItem(Gathering item) {
 		this.item = item;
 	}
 
-	/**
-	 * マッチメイキングの状態を保持するトークンを取得
-	 *
-	 * @return Player が参加できるギャザリングを探して参加する
-	 */
+	public DoMatchmakingByPlayerResult withItem(Gathering item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getMatchmakingContextToken() {
 		return matchmakingContextToken;
 	}
 
-	/**
-	 * マッチメイキングの状態を保持するトークンを設定
-	 *
-	 * @param matchmakingContextToken Player が参加できるギャザリングを探して参加する
-	 */
 	public void setMatchmakingContextToken(String matchmakingContextToken) {
 		this.matchmakingContextToken = matchmakingContextToken;
 	}
+
+	public DoMatchmakingByPlayerResult withMatchmakingContextToken(String matchmakingContextToken) {
+		this.matchmakingContextToken = matchmakingContextToken;
+		return this;
+	}
+
+    public static DoMatchmakingByPlayerResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DoMatchmakingByPlayerResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Gathering.fromJson(data.get("item")))
+            .withMatchmakingContextToken(data.get("matchmakingContextToken") == null || data.get("matchmakingContextToken").isNull() ? null : data.get("matchmakingContextToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("matchmakingContextToken", getMatchmakingContextToken());
+            }}
+        );
+    }
 }

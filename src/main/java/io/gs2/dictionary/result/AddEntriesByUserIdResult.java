@@ -16,39 +16,58 @@
 
 package io.gs2.dictionary.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.dictionary.model.*;
+import io.gs2.dictionary.model.Entry;
 
-/**
- * ユーザIDを指定してエントリーを入手済みとして登録 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AddEntriesByUserIdResult implements IResult, Serializable {
-	/** 登録した{model_name}のリスト */
-	private List<Entry> items;
+    private List<Entry> items;
 
-	/**
-	 * 登録した{model_name}のリストを取得
-	 *
-	 * @return ユーザIDを指定してエントリーを入手済みとして登録
-	 */
 	public List<Entry> getItems() {
 		return items;
 	}
 
-	/**
-	 * 登録した{model_name}のリストを設定
-	 *
-	 * @param items ユーザIDを指定してエントリーを入手済みとして登録
-	 */
 	public void setItems(List<Entry> items) {
 		this.items = items;
 	}
+
+	public AddEntriesByUserIdResult withItems(List<Entry> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static AddEntriesByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AddEntriesByUserIdResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Entry>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Entry.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<Entry>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

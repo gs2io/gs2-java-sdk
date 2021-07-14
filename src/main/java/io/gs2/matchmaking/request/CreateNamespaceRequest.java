@@ -16,434 +16,240 @@
 
 package io.gs2.matchmaking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.matchmaking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.matchmaking.model.NotificationSetting;
+import io.gs2.matchmaking.model.LogSetting;
 
-/**
- * ネームスペースを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String name;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** レーティング計算機能を使用するか */
     private Boolean enableRating;
-
-    /**
-     * レーティング計算機能を使用するかを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public Boolean getEnableRating() {
-        return enableRating;
-    }
-
-    /**
-     * レーティング計算機能を使用するかを設定
-     *
-     * @param enableRating ネームスペースを新規作成
-     */
-    public void setEnableRating(Boolean enableRating) {
-        this.enableRating = enableRating;
-    }
-
-    /**
-     * レーティング計算機能を使用するかを設定
-     *
-     * @param enableRating ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withEnableRating(Boolean enableRating) {
-        setEnableRating(enableRating);
-        return this;
-    }
-
-    /** ギャザリング新規作成時のアクション */
     private String createGatheringTriggerType;
-
-    /**
-     * ギャザリング新規作成時のアクションを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getCreateGatheringTriggerType() {
-        return createGatheringTriggerType;
-    }
-
-    /**
-     * ギャザリング新規作成時のアクションを設定
-     *
-     * @param createGatheringTriggerType ネームスペースを新規作成
-     */
-    public void setCreateGatheringTriggerType(String createGatheringTriggerType) {
-        this.createGatheringTriggerType = createGatheringTriggerType;
-    }
-
-    /**
-     * ギャザリング新規作成時のアクションを設定
-     *
-     * @param createGatheringTriggerType ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCreateGatheringTriggerType(String createGatheringTriggerType) {
-        setCreateGatheringTriggerType(createGatheringTriggerType);
-        return this;
-    }
-
-    /** ギャザリング新規作成時 にルームを作成するネームスペース のGRN */
     private String createGatheringTriggerRealtimeNamespaceId;
-
-    /**
-     * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getCreateGatheringTriggerRealtimeNamespaceId() {
-        return createGatheringTriggerRealtimeNamespaceId;
-    }
-
-    /**
-     * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを設定
-     *
-     * @param createGatheringTriggerRealtimeNamespaceId ネームスペースを新規作成
-     */
-    public void setCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
-        this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
-    }
-
-    /**
-     * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを設定
-     *
-     * @param createGatheringTriggerRealtimeNamespaceId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
-        setCreateGatheringTriggerRealtimeNamespaceId(createGatheringTriggerRealtimeNamespaceId);
-        return this;
-    }
-
-    /** ギャザリング新規作成時 に実行されるスクリプト のGRN */
     private String createGatheringTriggerScriptId;
-
-    /**
-     * ギャザリング新規作成時 に実行されるスクリプト のGRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getCreateGatheringTriggerScriptId() {
-        return createGatheringTriggerScriptId;
-    }
-
-    /**
-     * ギャザリング新規作成時 に実行されるスクリプト のGRNを設定
-     *
-     * @param createGatheringTriggerScriptId ネームスペースを新規作成
-     */
-    public void setCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
-        this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
-    }
-
-    /**
-     * ギャザリング新規作成時 に実行されるスクリプト のGRNを設定
-     *
-     * @param createGatheringTriggerScriptId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
-        setCreateGatheringTriggerScriptId(createGatheringTriggerScriptId);
-        return this;
-    }
-
-    /** マッチメイキング完了時のアクション */
     private String completeMatchmakingTriggerType;
-
-    /**
-     * マッチメイキング完了時のアクションを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getCompleteMatchmakingTriggerType() {
-        return completeMatchmakingTriggerType;
-    }
-
-    /**
-     * マッチメイキング完了時のアクションを設定
-     *
-     * @param completeMatchmakingTriggerType ネームスペースを新規作成
-     */
-    public void setCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
-        this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
-    }
-
-    /**
-     * マッチメイキング完了時のアクションを設定
-     *
-     * @param completeMatchmakingTriggerType ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
-        setCompleteMatchmakingTriggerType(completeMatchmakingTriggerType);
-        return this;
-    }
-
-    /** マッチメイキング完了時 にルームを作成するネームスペース のGRN */
     private String completeMatchmakingTriggerRealtimeNamespaceId;
-
-    /**
-     * マッチメイキング完了時 にルームを作成するネームスペース のGRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getCompleteMatchmakingTriggerRealtimeNamespaceId() {
-        return completeMatchmakingTriggerRealtimeNamespaceId;
-    }
-
-    /**
-     * マッチメイキング完了時 にルームを作成するネームスペース のGRNを設定
-     *
-     * @param completeMatchmakingTriggerRealtimeNamespaceId ネームスペースを新規作成
-     */
-    public void setCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
-        this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
-    }
-
-    /**
-     * マッチメイキング完了時 にルームを作成するネームスペース のGRNを設定
-     *
-     * @param completeMatchmakingTriggerRealtimeNamespaceId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
-        setCompleteMatchmakingTriggerRealtimeNamespaceId(completeMatchmakingTriggerRealtimeNamespaceId);
-        return this;
-    }
-
-    /** マッチメイキング完了時 に実行されるスクリプト のGRN */
     private String completeMatchmakingTriggerScriptId;
-
-    /**
-     * マッチメイキング完了時 に実行されるスクリプト のGRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getCompleteMatchmakingTriggerScriptId() {
-        return completeMatchmakingTriggerScriptId;
-    }
-
-    /**
-     * マッチメイキング完了時 に実行されるスクリプト のGRNを設定
-     *
-     * @param completeMatchmakingTriggerScriptId ネームスペースを新規作成
-     */
-    public void setCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
-        this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
-    }
-
-    /**
-     * マッチメイキング完了時 に実行されるスクリプト のGRNを設定
-     *
-     * @param completeMatchmakingTriggerScriptId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
-        setCompleteMatchmakingTriggerScriptId(completeMatchmakingTriggerScriptId);
-        return this;
-    }
-
-    /** ギャザリングに新規プレイヤーが参加したときのプッシュ通知 */
     private NotificationSetting joinNotification;
-
-    /**
-     * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public NotificationSetting getJoinNotification() {
-        return joinNotification;
-    }
-
-    /**
-     * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を設定
-     *
-     * @param joinNotification ネームスペースを新規作成
-     */
-    public void setJoinNotification(NotificationSetting joinNotification) {
-        this.joinNotification = joinNotification;
-    }
-
-    /**
-     * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を設定
-     *
-     * @param joinNotification ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withJoinNotification(NotificationSetting joinNotification) {
-        setJoinNotification(joinNotification);
-        return this;
-    }
-
-    /** ギャザリングからプレイヤーが離脱したときのプッシュ通知 */
     private NotificationSetting leaveNotification;
-
-    /**
-     * ギャザリングからプレイヤーが離脱したときのプッシュ通知を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public NotificationSetting getLeaveNotification() {
-        return leaveNotification;
-    }
-
-    /**
-     * ギャザリングからプレイヤーが離脱したときのプッシュ通知を設定
-     *
-     * @param leaveNotification ネームスペースを新規作成
-     */
-    public void setLeaveNotification(NotificationSetting leaveNotification) {
-        this.leaveNotification = leaveNotification;
-    }
-
-    /**
-     * ギャザリングからプレイヤーが離脱したときのプッシュ通知を設定
-     *
-     * @param leaveNotification ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withLeaveNotification(NotificationSetting leaveNotification) {
-        setLeaveNotification(leaveNotification);
-        return this;
-    }
-
-    /** マッチメイキングが完了したときのプッシュ通知 */
     private NotificationSetting completeNotification;
-
-    /**
-     * マッチメイキングが完了したときのプッシュ通知を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public NotificationSetting getCompleteNotification() {
-        return completeNotification;
-    }
-
-    /**
-     * マッチメイキングが完了したときのプッシュ通知を設定
-     *
-     * @param completeNotification ネームスペースを新規作成
-     */
-    public void setCompleteNotification(NotificationSetting completeNotification) {
-        this.completeNotification = completeNotification;
-    }
-
-    /**
-     * マッチメイキングが完了したときのプッシュ通知を設定
-     *
-     * @param completeNotification ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCompleteNotification(NotificationSetting completeNotification) {
-        setCompleteNotification(completeNotification);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateNamespaceRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public Boolean getEnableRating() {
+		return enableRating;
+	}
+
+	public void setEnableRating(Boolean enableRating) {
+		this.enableRating = enableRating;
+	}
+
+	public CreateNamespaceRequest withEnableRating(Boolean enableRating) {
+		this.enableRating = enableRating;
+		return this;
+	}
+
+	public String getCreateGatheringTriggerType() {
+		return createGatheringTriggerType;
+	}
+
+	public void setCreateGatheringTriggerType(String createGatheringTriggerType) {
+		this.createGatheringTriggerType = createGatheringTriggerType;
+	}
+
+	public CreateNamespaceRequest withCreateGatheringTriggerType(String createGatheringTriggerType) {
+		this.createGatheringTriggerType = createGatheringTriggerType;
+		return this;
+	}
+
+	public String getCreateGatheringTriggerRealtimeNamespaceId() {
+		return createGatheringTriggerRealtimeNamespaceId;
+	}
+
+	public void setCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
+		this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
+	}
+
+	public CreateNamespaceRequest withCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
+		this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
+		return this;
+	}
+
+	public String getCreateGatheringTriggerScriptId() {
+		return createGatheringTriggerScriptId;
+	}
+
+	public void setCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
+		this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
+	}
+
+	public CreateNamespaceRequest withCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
+		this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
+		return this;
+	}
+
+	public String getCompleteMatchmakingTriggerType() {
+		return completeMatchmakingTriggerType;
+	}
+
+	public void setCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
+		this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
+	}
+
+	public CreateNamespaceRequest withCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
+		this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
+		return this;
+	}
+
+	public String getCompleteMatchmakingTriggerRealtimeNamespaceId() {
+		return completeMatchmakingTriggerRealtimeNamespaceId;
+	}
+
+	public void setCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
+		this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
+	}
+
+	public CreateNamespaceRequest withCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
+		this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
+		return this;
+	}
+
+	public String getCompleteMatchmakingTriggerScriptId() {
+		return completeMatchmakingTriggerScriptId;
+	}
+
+	public void setCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
+		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
+	}
+
+	public CreateNamespaceRequest withCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
+		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
+		return this;
+	}
+
+	public NotificationSetting getJoinNotification() {
+		return joinNotification;
+	}
+
+	public void setJoinNotification(NotificationSetting joinNotification) {
+		this.joinNotification = joinNotification;
+	}
+
+	public CreateNamespaceRequest withJoinNotification(NotificationSetting joinNotification) {
+		this.joinNotification = joinNotification;
+		return this;
+	}
+
+	public NotificationSetting getLeaveNotification() {
+		return leaveNotification;
+	}
+
+	public void setLeaveNotification(NotificationSetting leaveNotification) {
+		this.leaveNotification = leaveNotification;
+	}
+
+	public CreateNamespaceRequest withLeaveNotification(NotificationSetting leaveNotification) {
+		this.leaveNotification = leaveNotification;
+		return this;
+	}
+
+	public NotificationSetting getCompleteNotification() {
+		return completeNotification;
+	}
+
+	public void setCompleteNotification(NotificationSetting completeNotification) {
+		this.completeNotification = completeNotification;
+	}
+
+	public CreateNamespaceRequest withCompleteNotification(NotificationSetting completeNotification) {
+		this.completeNotification = completeNotification;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static CreateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateNamespaceRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withEnableRating(data.get("enableRating") == null || data.get("enableRating").isNull() ? null : data.get("enableRating").booleanValue())
+            .withCreateGatheringTriggerType(data.get("createGatheringTriggerType") == null || data.get("createGatheringTriggerType").isNull() ? null : data.get("createGatheringTriggerType").asText())
+            .withCreateGatheringTriggerRealtimeNamespaceId(data.get("createGatheringTriggerRealtimeNamespaceId") == null || data.get("createGatheringTriggerRealtimeNamespaceId").isNull() ? null : data.get("createGatheringTriggerRealtimeNamespaceId").asText())
+            .withCreateGatheringTriggerScriptId(data.get("createGatheringTriggerScriptId") == null || data.get("createGatheringTriggerScriptId").isNull() ? null : data.get("createGatheringTriggerScriptId").asText())
+            .withCompleteMatchmakingTriggerType(data.get("completeMatchmakingTriggerType") == null || data.get("completeMatchmakingTriggerType").isNull() ? null : data.get("completeMatchmakingTriggerType").asText())
+            .withCompleteMatchmakingTriggerRealtimeNamespaceId(data.get("completeMatchmakingTriggerRealtimeNamespaceId") == null || data.get("completeMatchmakingTriggerRealtimeNamespaceId").isNull() ? null : data.get("completeMatchmakingTriggerRealtimeNamespaceId").asText())
+            .withCompleteMatchmakingTriggerScriptId(data.get("completeMatchmakingTriggerScriptId") == null || data.get("completeMatchmakingTriggerScriptId").isNull() ? null : data.get("completeMatchmakingTriggerScriptId").asText())
+            .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
+            .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
+            .withCompleteNotification(data.get("completeNotification") == null || data.get("completeNotification").isNull() ? null : NotificationSetting.fromJson(data.get("completeNotification")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("enableRating", getEnableRating());
+                put("createGatheringTriggerType", getCreateGatheringTriggerType());
+                put("createGatheringTriggerRealtimeNamespaceId", getCreateGatheringTriggerRealtimeNamespaceId());
+                put("createGatheringTriggerScriptId", getCreateGatheringTriggerScriptId());
+                put("completeMatchmakingTriggerType", getCompleteMatchmakingTriggerType());
+                put("completeMatchmakingTriggerRealtimeNamespaceId", getCompleteMatchmakingTriggerRealtimeNamespaceId());
+                put("completeMatchmakingTriggerScriptId", getCompleteMatchmakingTriggerScriptId());
+                put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
+                put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
+                put("completeNotification", getCompleteNotification() != null ? getCompleteNotification().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

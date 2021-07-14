@@ -16,39 +16,49 @@
 
 package io.gs2.formation.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
+import io.gs2.formation.model.SlotModel;
+import io.gs2.formation.model.FormModelMaster;
 
-/**
- * フォームマスターを新規作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateFormModelMasterResult implements IResult, Serializable {
-	/** 作成したフォームマスター */
-	private FormModelMaster item;
+    private FormModelMaster item;
 
-	/**
-	 * 作成したフォームマスターを取得
-	 *
-	 * @return フォームマスターを新規作成
-	 */
 	public FormModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 作成したフォームマスターを設定
-	 *
-	 * @param item フォームマスターを新規作成
-	 */
 	public void setItem(FormModelMaster item) {
 		this.item = item;
 	}
+
+	public CreateFormModelMasterResult withItem(FormModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateFormModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateFormModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : FormModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,274 +16,174 @@
 
 package io.gs2.matchmaking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.matchmaking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.matchmaking.model.Attribute;
+import io.gs2.matchmaking.model.Player;
+import io.gs2.matchmaking.model.AttributeRange;
+import io.gs2.matchmaking.model.CapacityOfRole;
 
-/**
- * ギャザリングを作成して募集を開始 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateGatheringRequest extends Gs2BasicRequest<CreateGatheringRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ギャザリングを作成して募集を開始
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ギャザリングを作成して募集を開始
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ギャザリングを作成して募集を開始
-     * @return this
-     */
-    public CreateGatheringRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 自身のプレイヤー情報 */
+    private String accessToken;
     private Player player;
-
-    /**
-     * 自身のプレイヤー情報を取得
-     *
-     * @return ギャザリングを作成して募集を開始
-     */
-    public Player getPlayer() {
-        return player;
-    }
-
-    /**
-     * 自身のプレイヤー情報を設定
-     *
-     * @param player ギャザリングを作成して募集を開始
-     */
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    /**
-     * 自身のプレイヤー情報を設定
-     *
-     * @param player ギャザリングを作成して募集を開始
-     * @return this
-     */
-    public CreateGatheringRequest withPlayer(Player player) {
-        setPlayer(player);
-        return this;
-    }
-
-    /** 募集条件 */
     private List<AttributeRange> attributeRanges;
-
-    /**
-     * 募集条件を取得
-     *
-     * @return ギャザリングを作成して募集を開始
-     */
-    public List<AttributeRange> getAttributeRanges() {
-        return attributeRanges;
-    }
-
-    /**
-     * 募集条件を設定
-     *
-     * @param attributeRanges ギャザリングを作成して募集を開始
-     */
-    public void setAttributeRanges(List<AttributeRange> attributeRanges) {
-        this.attributeRanges = attributeRanges;
-    }
-
-    /**
-     * 募集条件を設定
-     *
-     * @param attributeRanges ギャザリングを作成して募集を開始
-     * @return this
-     */
-    public CreateGatheringRequest withAttributeRanges(List<AttributeRange> attributeRanges) {
-        setAttributeRanges(attributeRanges);
-        return this;
-    }
-
-    /** 参加者 */
     private List<CapacityOfRole> capacityOfRoles;
-
-    /**
-     * 参加者を取得
-     *
-     * @return ギャザリングを作成して募集を開始
-     */
-    public List<CapacityOfRole> getCapacityOfRoles() {
-        return capacityOfRoles;
-    }
-
-    /**
-     * 参加者を設定
-     *
-     * @param capacityOfRoles ギャザリングを作成して募集を開始
-     */
-    public void setCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
-        this.capacityOfRoles = capacityOfRoles;
-    }
-
-    /**
-     * 参加者を設定
-     *
-     * @param capacityOfRoles ギャザリングを作成して募集を開始
-     * @return this
-     */
-    public CreateGatheringRequest withCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
-        setCapacityOfRoles(capacityOfRoles);
-        return this;
-    }
-
-    /** 参加を許可するユーザIDリスト */
     private List<String> allowUserIds;
-
-    /**
-     * 参加を許可するユーザIDリストを取得
-     *
-     * @return ギャザリングを作成して募集を開始
-     */
-    public List<String> getAllowUserIds() {
-        return allowUserIds;
-    }
-
-    /**
-     * 参加を許可するユーザIDリストを設定
-     *
-     * @param allowUserIds ギャザリングを作成して募集を開始
-     */
-    public void setAllowUserIds(List<String> allowUserIds) {
-        this.allowUserIds = allowUserIds;
-    }
-
-    /**
-     * 参加を許可するユーザIDリストを設定
-     *
-     * @param allowUserIds ギャザリングを作成して募集を開始
-     * @return this
-     */
-    public CreateGatheringRequest withAllowUserIds(List<String> allowUserIds) {
-        setAllowUserIds(allowUserIds);
-        return this;
-    }
-
-    /** ギャザリングの有効期限 */
     private Long expiresAt;
 
-    /**
-     * ギャザリングの有効期限を取得
-     *
-     * @return ギャザリングを作成して募集を開始
-     */
-    public Long getExpiresAt() {
-        return expiresAt;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateGatheringRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public CreateGatheringRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public CreateGatheringRequest withPlayer(Player player) {
+		this.player = player;
+		return this;
+	}
+
+	public List<AttributeRange> getAttributeRanges() {
+		return attributeRanges;
+	}
+
+	public void setAttributeRanges(List<AttributeRange> attributeRanges) {
+		this.attributeRanges = attributeRanges;
+	}
+
+	public CreateGatheringRequest withAttributeRanges(List<AttributeRange> attributeRanges) {
+		this.attributeRanges = attributeRanges;
+		return this;
+	}
+
+	public List<CapacityOfRole> getCapacityOfRoles() {
+		return capacityOfRoles;
+	}
+
+	public void setCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
+		this.capacityOfRoles = capacityOfRoles;
+	}
+
+	public CreateGatheringRequest withCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
+		this.capacityOfRoles = capacityOfRoles;
+		return this;
+	}
+
+	public List<String> getAllowUserIds() {
+		return allowUserIds;
+	}
+
+	public void setAllowUserIds(List<String> allowUserIds) {
+		this.allowUserIds = allowUserIds;
+	}
+
+	public CreateGatheringRequest withAllowUserIds(List<String> allowUserIds) {
+		this.allowUserIds = allowUserIds;
+		return this;
+	}
+
+	public Long getExpiresAt() {
+		return expiresAt;
+	}
+
+	public void setExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+	}
+
+	public CreateGatheringRequest withExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+		return this;
+	}
+
+    public static CreateGatheringRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateGatheringRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withPlayer(data.get("player") == null || data.get("player").isNull() ? null : Player.fromJson(data.get("player")))
+            .withAttributeRanges(data.get("attributeRanges") == null || data.get("attributeRanges").isNull() ? new ArrayList<AttributeRange>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributeRanges").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AttributeRange.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCapacityOfRoles(data.get("capacityOfRoles") == null || data.get("capacityOfRoles").isNull() ? new ArrayList<CapacityOfRole>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("capacityOfRoles").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return CapacityOfRole.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("allowUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
     }
 
-    /**
-     * ギャザリングの有効期限を設定
-     *
-     * @param expiresAt ギャザリングを作成して募集を開始
-     */
-    public void setExpiresAt(Long expiresAt) {
-        this.expiresAt = expiresAt;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("accessToken", getAccessToken());
+                put("player", getPlayer() != null ? getPlayer().toJson() : null);
+                put("attributeRanges", getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                    getAttributeRanges().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("capacityOfRoles", getCapacityOfRoles() == null ? new ArrayList<CapacityOfRole>() :
+                    getCapacityOfRoles().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("allowUserIds", getAllowUserIds() == null ? new ArrayList<String>() :
+                    getAllowUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("expiresAt", getExpiresAt());
+            }}
+        );
     }
-
-    /**
-     * ギャザリングの有効期限を設定
-     *
-     * @param expiresAt ギャザリングを作成して募集を開始
-     * @return this
-     */
-    public CreateGatheringRequest withExpiresAt(Long expiresAt) {
-        setExpiresAt(expiresAt);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ギャザリングを作成して募集を開始
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ギャザリングを作成して募集を開始
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ギャザリングを作成して募集を開始
-     * @return this
-     */
-    public CreateGatheringRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public CreateGatheringRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

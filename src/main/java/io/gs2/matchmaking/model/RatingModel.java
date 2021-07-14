@@ -16,157 +16,98 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * レーティングモデル
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RatingModel implements IModel, Serializable, Comparable<RatingModel> {
-	/** レーティングモデル */
-	protected String ratingModelId;
+	private String ratingModelId;
+	private String name;
+	private String metadata;
+	private Integer volatility;
 
-	/**
-	 * レーティングモデルを取得
-	 *
-	 * @return レーティングモデル
-	 */
 	public String getRatingModelId() {
 		return ratingModelId;
 	}
 
-	/**
-	 * レーティングモデルを設定
-	 *
-	 * @param ratingModelId レーティングモデル
-	 */
 	public void setRatingModelId(String ratingModelId) {
 		this.ratingModelId = ratingModelId;
 	}
 
-	/**
-	 * レーティングモデルを設定
-	 *
-	 * @param ratingModelId レーティングモデル
-	 * @return this
-	 */
 	public RatingModel withRatingModelId(String ratingModelId) {
 		this.ratingModelId = ratingModelId;
 		return this;
 	}
-	/** レーティングの種類名 */
-	protected String name;
 
-	/**
-	 * レーティングの種類名を取得
-	 *
-	 * @return レーティングの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * レーティングの種類名を設定
-	 *
-	 * @param name レーティングの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * レーティングの種類名を設定
-	 *
-	 * @param name レーティングの種類名
-	 * @return this
-	 */
 	public RatingModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** レーティングの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * レーティングの種類のメタデータを取得
-	 *
-	 * @return レーティングの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * レーティングの種類のメタデータを設定
-	 *
-	 * @param metadata レーティングの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * レーティングの種類のメタデータを設定
-	 *
-	 * @param metadata レーティングの種類のメタデータ
-	 * @return this
-	 */
 	public RatingModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** レート値の変動の大きさ */
-	protected Integer volatility;
 
-	/**
-	 * レート値の変動の大きさを取得
-	 *
-	 * @return レート値の変動の大きさ
-	 */
 	public Integer getVolatility() {
 		return volatility;
 	}
 
-	/**
-	 * レート値の変動の大きさを設定
-	 *
-	 * @param volatility レート値の変動の大きさ
-	 */
 	public void setVolatility(Integer volatility) {
 		this.volatility = volatility;
 	}
 
-	/**
-	 * レート値の変動の大きさを設定
-	 *
-	 * @param volatility レート値の変動の大きさ
-	 * @return this
-	 */
 	public RatingModel withVolatility(Integer volatility) {
 		this.volatility = volatility;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("ratingModelId", this.getRatingModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("volatility", this.getVolatility());
-        return body_;
+    public static RatingModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new RatingModel()
+            .withRatingModelId(data.get("ratingModelId") == null || data.get("ratingModelId").isNull() ? null : data.get("ratingModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withVolatility(data.get("volatility") == null || data.get("volatility").isNull() ? null : data.get("volatility").intValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("ratingModelId", getRatingModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("volatility", getVolatility());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(RatingModel o) {
 		return ratingModelId.compareTo(o.ratingModelId);

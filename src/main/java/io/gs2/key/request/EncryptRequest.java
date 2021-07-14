@@ -16,114 +16,78 @@
 
 package io.gs2.key.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.key.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * データを暗号化します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class EncryptRequest extends Gs2BasicRequest<EncryptRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return データを暗号化します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName データを暗号化します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName データを暗号化します
-     * @return this
-     */
-    public EncryptRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 暗号鍵名 */
     private String keyName;
-
-    /**
-     * 暗号鍵名を取得
-     *
-     * @return データを暗号化します
-     */
-    public String getKeyName() {
-        return keyName;
-    }
-
-    /**
-     * 暗号鍵名を設定
-     *
-     * @param keyName データを暗号化します
-     */
-    public void setKeyName(String keyName) {
-        this.keyName = keyName;
-    }
-
-    /**
-     * 暗号鍵名を設定
-     *
-     * @param keyName データを暗号化します
-     * @return this
-     */
-    public EncryptRequest withKeyName(String keyName) {
-        setKeyName(keyName);
-        return this;
-    }
-
-    /** None */
     private String data;
 
-    /**
-     * Noneを取得
-     *
-     * @return データを暗号化します
-     */
-    public String getData() {
-        return data;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public EncryptRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getKeyName() {
+		return keyName;
+	}
+
+	public void setKeyName(String keyName) {
+		this.keyName = keyName;
+	}
+
+	public EncryptRequest withKeyName(String keyName) {
+		this.keyName = keyName;
+		return this;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public EncryptRequest withData(String data) {
+		this.data = data;
+		return this;
+	}
+
+    public static EncryptRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new EncryptRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withKeyName(data.get("keyName") == null || data.get("keyName").isNull() ? null : data.get("keyName").asText())
+            .withData(data.get("data") == null || data.get("data").isNull() ? null : data.get("data").asText());
     }
 
-    /**
-     * Noneを設定
-     *
-     * @param data データを暗号化します
-     */
-    public void setData(String data) {
-        this.data = data;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("keyName", getKeyName());
+                put("data", getData());
+            }}
+        );
     }
-
-    /**
-     * Noneを設定
-     *
-     * @param data データを暗号化します
-     * @return this
-     */
-    public EncryptRequest withData(String data) {
-        setData(data);
-        return this;
-    }
-
 }

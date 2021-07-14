@@ -16,50 +16,46 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * パスワードを再発行 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class IssuePasswordRequest extends Gs2BasicRequest<IssuePasswordRequest> {
-
-    /** パスワードを再発行するために必要なトークン */
     private String issuePasswordToken;
 
-    /**
-     * パスワードを再発行するために必要なトークンを取得
-     *
-     * @return パスワードを再発行
-     */
-    public String getIssuePasswordToken() {
-        return issuePasswordToken;
+	public String getIssuePasswordToken() {
+		return issuePasswordToken;
+	}
+
+	public void setIssuePasswordToken(String issuePasswordToken) {
+		this.issuePasswordToken = issuePasswordToken;
+	}
+
+	public IssuePasswordRequest withIssuePasswordToken(String issuePasswordToken) {
+		this.issuePasswordToken = issuePasswordToken;
+		return this;
+	}
+
+    public static IssuePasswordRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new IssuePasswordRequest()
+            .withIssuePasswordToken(data.get("issuePasswordToken") == null || data.get("issuePasswordToken").isNull() ? null : data.get("issuePasswordToken").asText());
     }
 
-    /**
-     * パスワードを再発行するために必要なトークンを設定
-     *
-     * @param issuePasswordToken パスワードを再発行
-     */
-    public void setIssuePasswordToken(String issuePasswordToken) {
-        this.issuePasswordToken = issuePasswordToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("issuePasswordToken", getIssuePasswordToken());
+            }}
+        );
     }
-
-    /**
-     * パスワードを再発行するために必要なトークンを設定
-     *
-     * @param issuePasswordToken パスワードを再発行
-     * @return this
-     */
-    public IssuePasswordRequest withIssuePasswordToken(String issuePasswordToken) {
-        setIssuePasswordToken(issuePasswordToken);
-        return this;
-    }
-
 }

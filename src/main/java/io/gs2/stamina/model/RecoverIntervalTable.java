@@ -16,195 +16,122 @@
 
 package io.gs2.stamina.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スタミナ回復間隔テーブル
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RecoverIntervalTable implements IModel, Serializable, Comparable<RecoverIntervalTable> {
-	/** スタミナ回復間隔テーブルマスター */
-	protected String recoverIntervalTableId;
+	private String recoverIntervalTableId;
+	private String name;
+	private String metadata;
+	private String experienceModelId;
+	private List<Integer> values;
 
-	/**
-	 * スタミナ回復間隔テーブルマスターを取得
-	 *
-	 * @return スタミナ回復間隔テーブルマスター
-	 */
 	public String getRecoverIntervalTableId() {
 		return recoverIntervalTableId;
 	}
 
-	/**
-	 * スタミナ回復間隔テーブルマスターを設定
-	 *
-	 * @param recoverIntervalTableId スタミナ回復間隔テーブルマスター
-	 */
 	public void setRecoverIntervalTableId(String recoverIntervalTableId) {
 		this.recoverIntervalTableId = recoverIntervalTableId;
 	}
 
-	/**
-	 * スタミナ回復間隔テーブルマスターを設定
-	 *
-	 * @param recoverIntervalTableId スタミナ回復間隔テーブルマスター
-	 * @return this
-	 */
 	public RecoverIntervalTable withRecoverIntervalTableId(String recoverIntervalTableId) {
 		this.recoverIntervalTableId = recoverIntervalTableId;
 		return this;
 	}
-	/** スタミナ回復間隔テーブル名 */
-	protected String name;
 
-	/**
-	 * スタミナ回復間隔テーブル名を取得
-	 *
-	 * @return スタミナ回復間隔テーブル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * スタミナ回復間隔テーブル名を設定
-	 *
-	 * @param name スタミナ回復間隔テーブル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * スタミナ回復間隔テーブル名を設定
-	 *
-	 * @param name スタミナ回復間隔テーブル名
-	 * @return this
-	 */
 	public RecoverIntervalTable withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** スタミナ回復間隔テーブルのメタデータ */
-	protected String metadata;
 
-	/**
-	 * スタミナ回復間隔テーブルのメタデータを取得
-	 *
-	 * @return スタミナ回復間隔テーブルのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * スタミナ回復間隔テーブルのメタデータを設定
-	 *
-	 * @param metadata スタミナ回復間隔テーブルのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * スタミナ回復間隔テーブルのメタデータを設定
-	 *
-	 * @param metadata スタミナ回復間隔テーブルのメタデータ
-	 * @return this
-	 */
 	public RecoverIntervalTable withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 経験値の種類マスター のGRN */
-	protected String experienceModelId;
 
-	/**
-	 * 経験値の種類マスター のGRNを取得
-	 *
-	 * @return 経験値の種類マスター のGRN
-	 */
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
 
-	/**
-	 * 経験値の種類マスター のGRNを設定
-	 *
-	 * @param experienceModelId 経験値の種類マスター のGRN
-	 */
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
 
-	/**
-	 * 経験値の種類マスター のGRNを設定
-	 *
-	 * @param experienceModelId 経験値の種類マスター のGRN
-	 * @return this
-	 */
 	public RecoverIntervalTable withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-	/** ランク毎のスタミナ回復間隔テーブル */
-	protected List<Integer> values;
 
-	/**
-	 * ランク毎のスタミナ回復間隔テーブルを取得
-	 *
-	 * @return ランク毎のスタミナ回復間隔テーブル
-	 */
 	public List<Integer> getValues() {
 		return values;
 	}
 
-	/**
-	 * ランク毎のスタミナ回復間隔テーブルを設定
-	 *
-	 * @param values ランク毎のスタミナ回復間隔テーブル
-	 */
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
 
-	/**
-	 * ランク毎のスタミナ回復間隔テーブルを設定
-	 *
-	 * @param values ランク毎のスタミナ回復間隔テーブル
-	 * @return this
-	 */
 	public RecoverIntervalTable withValues(List<Integer> values) {
 		this.values = values;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> values = new ArrayList<>();
-        if(this.values != null) {
-            for(Integer item : this.values) {
-                values.add(JsonNodeFactory.instance.numberNode(item));
-            }
+    public static RecoverIntervalTable fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("recoverIntervalTableId", this.getRecoverIntervalTableId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("experienceModelId", this.getExperienceModelId());
-        body_.set("values", JsonNodeFactory.instance.arrayNode().addAll(values));
-        return body_;
+        return new RecoverIntervalTable()
+            .withRecoverIntervalTableId(data.get("recoverIntervalTableId") == null || data.get("recoverIntervalTableId").isNull() ? null : data.get("recoverIntervalTableId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Integer>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.intValue();
+                }
+            ).collect(Collectors.toList()));
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("recoverIntervalTableId", getRecoverIntervalTableId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("experienceModelId", getExperienceModelId());
+                put("values", getValues() == null ? new ArrayList<Integer>() :
+                    getValues().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(RecoverIntervalTable o) {
 		return recoverIntervalTableId.compareTo(o.recoverIntervalTableId);

@@ -16,59 +16,66 @@
 
 package io.gs2.enhance.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.enhance.model.*;
+import io.gs2.enhance.model.Progress;
+import io.gs2.enhance.model.BonusRate;
+import io.gs2.enhance.model.RateModel;
 
-/**
- * ユーザIDを指定して強化実行を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetProgressByUserIdResult implements IResult, Serializable {
-	/** 強化実行 */
-	private Progress item;
-	/** 強化レートモデル */
-	private RateModel rateModel;
+    private Progress item;
+    private RateModel rateModel;
 
-	/**
-	 * 強化実行を取得
-	 *
-	 * @return ユーザIDを指定して強化実行を取得
-	 */
 	public Progress getItem() {
 		return item;
 	}
 
-	/**
-	 * 強化実行を設定
-	 *
-	 * @param item ユーザIDを指定して強化実行を取得
-	 */
 	public void setItem(Progress item) {
 		this.item = item;
 	}
 
-	/**
-	 * 強化レートモデルを取得
-	 *
-	 * @return ユーザIDを指定して強化実行を取得
-	 */
+	public GetProgressByUserIdResult withItem(Progress item) {
+		this.item = item;
+		return this;
+	}
+
 	public RateModel getRateModel() {
 		return rateModel;
 	}
 
-	/**
-	 * 強化レートモデルを設定
-	 *
-	 * @param rateModel ユーザIDを指定して強化実行を取得
-	 */
 	public void setRateModel(RateModel rateModel) {
 		this.rateModel = rateModel;
 	}
+
+	public GetProgressByUserIdResult withRateModel(RateModel rateModel) {
+		this.rateModel = rateModel;
+		return this;
+	}
+
+    public static GetProgressByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetProgressByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Progress.fromJson(data.get("item")))
+            .withRateModel(data.get("rateModel") == null || data.get("rateModel").isNull() ? null : RateModel.fromJson(data.get("rateModel")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("rateModel", getRateModel() != null ? getRateModel().toJson() : null);
+            }}
+        );
+    }
 }

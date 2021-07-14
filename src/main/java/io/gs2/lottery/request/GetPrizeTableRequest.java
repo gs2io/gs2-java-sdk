@@ -16,82 +16,62 @@
 
 package io.gs2.lottery.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.lottery.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 排出確率テーブルを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetPrizeTableRequest extends Gs2BasicRequest<GetPrizeTableRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 排出確率テーブルを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 排出確率テーブルを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 排出確率テーブルを取得
-     * @return this
-     */
-    public GetPrizeTableRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 排出確率テーブル名 */
     private String prizeTableName;
 
-    /**
-     * 排出確率テーブル名を取得
-     *
-     * @return 排出確率テーブルを取得
-     */
-    public String getPrizeTableName() {
-        return prizeTableName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetPrizeTableRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getPrizeTableName() {
+		return prizeTableName;
+	}
+
+	public void setPrizeTableName(String prizeTableName) {
+		this.prizeTableName = prizeTableName;
+	}
+
+	public GetPrizeTableRequest withPrizeTableName(String prizeTableName) {
+		this.prizeTableName = prizeTableName;
+		return this;
+	}
+
+    public static GetPrizeTableRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetPrizeTableRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withPrizeTableName(data.get("prizeTableName") == null || data.get("prizeTableName").isNull() ? null : data.get("prizeTableName").asText());
     }
 
-    /**
-     * 排出確率テーブル名を設定
-     *
-     * @param prizeTableName 排出確率テーブルを取得
-     */
-    public void setPrizeTableName(String prizeTableName) {
-        this.prizeTableName = prizeTableName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("prizeTableName", getPrizeTableName());
+            }}
+        );
     }
-
-    /**
-     * 排出確率テーブル名を設定
-     *
-     * @param prizeTableName 排出確率テーブルを取得
-     * @return this
-     */
-    public GetPrizeTableRequest withPrizeTableName(String prizeTableName) {
-        setPrizeTableName(prizeTableName);
-        return this;
-    }
-
 }

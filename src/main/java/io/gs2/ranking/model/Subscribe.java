@@ -16,195 +16,122 @@
 
 package io.gs2.ranking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 購読
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
-	/** 購読 */
-	protected String subscribeId;
+	private String subscribeId;
+	private String categoryName;
+	private String userId;
+	private List<String> targetUserIds;
+	private Long createdAt;
 
-	/**
-	 * 購読を取得
-	 *
-	 * @return 購読
-	 */
 	public String getSubscribeId() {
 		return subscribeId;
 	}
 
-	/**
-	 * 購読を設定
-	 *
-	 * @param subscribeId 購読
-	 */
 	public void setSubscribeId(String subscribeId) {
 		this.subscribeId = subscribeId;
 	}
 
-	/**
-	 * 購読を設定
-	 *
-	 * @param subscribeId 購読
-	 * @return this
-	 */
 	public Subscribe withSubscribeId(String subscribeId) {
 		this.subscribeId = subscribeId;
 		return this;
 	}
-	/** カテゴリ名 */
-	protected String categoryName;
 
-	/**
-	 * カテゴリ名を取得
-	 *
-	 * @return カテゴリ名
-	 */
 	public String getCategoryName() {
 		return categoryName;
 	}
 
-	/**
-	 * カテゴリ名を設定
-	 *
-	 * @param categoryName カテゴリ名
-	 */
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
 
-	/**
-	 * カテゴリ名を設定
-	 *
-	 * @param categoryName カテゴリ名
-	 * @return this
-	 */
 	public Subscribe withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-	/** 購読するユーザID */
-	protected String userId;
 
-	/**
-	 * 購読するユーザIDを取得
-	 *
-	 * @return 購読するユーザID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * 購読するユーザIDを設定
-	 *
-	 * @param userId 購読するユーザID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * 購読するユーザIDを設定
-	 *
-	 * @param userId 購読するユーザID
-	 * @return this
-	 */
 	public Subscribe withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 購読されるユーザIDリスト */
-	protected List<String> targetUserIds;
 
-	/**
-	 * 購読されるユーザIDリストを取得
-	 *
-	 * @return 購読されるユーザIDリスト
-	 */
 	public List<String> getTargetUserIds() {
 		return targetUserIds;
 	}
 
-	/**
-	 * 購読されるユーザIDリストを設定
-	 *
-	 * @param targetUserIds 購読されるユーザIDリスト
-	 */
 	public void setTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 	}
 
-	/**
-	 * 購読されるユーザIDリストを設定
-	 *
-	 * @param targetUserIds 購読されるユーザIDリスト
-	 * @return this
-	 */
 	public Subscribe withTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Subscribe withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> targetUserIds = new ArrayList<>();
-        if(this.targetUserIds != null) {
-            for(String item : this.targetUserIds) {
-                targetUserIds.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static Subscribe fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("subscribeId", this.getSubscribeId())
-            .put("categoryName", this.getCategoryName())
-            .put("userId", this.getUserId())
-            .put("createdAt", this.getCreatedAt());
-        body_.set("targetUserIds", JsonNodeFactory.instance.arrayNode().addAll(targetUserIds));
-        return body_;
+        return new Subscribe()
+            .withSubscribeId(data.get("subscribeId") == null || data.get("subscribeId").isNull() ? null : data.get("subscribeId").asText())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTargetUserIds(data.get("targetUserIds") == null || data.get("targetUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("targetUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("subscribeId", getSubscribeId());
+                put("categoryName", getCategoryName());
+                put("userId", getUserId());
+                put("targetUserIds", getTargetUserIds() == null ? new ArrayList<String>() :
+                    getTargetUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Subscribe o) {
 		return subscribeId.compareTo(o.subscribeId);

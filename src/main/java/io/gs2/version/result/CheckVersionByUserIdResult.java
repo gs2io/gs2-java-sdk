@@ -16,79 +16,102 @@
 
 package io.gs2.version.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.version.model.*;
+import io.gs2.version.model.Version;
+import io.gs2.version.model.VersionModel;
+import io.gs2.version.model.Status;
 
-/**
- * バージョンチェック のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CheckVersionByUserIdResult implements IResult, Serializable {
-	/** プロジェクトトークン */
-	private String projectToken;
-	/** バージョンの検証結果のリスト */
-	private List<Status> warnings;
-	/** バージョンの検証結果のリスト */
-	private List<Status> errors;
+    private String projectToken;
+    private List<Status> warnings;
+    private List<Status> errors;
 
-	/**
-	 * プロジェクトトークンを取得
-	 *
-	 * @return バージョンチェック
-	 */
 	public String getProjectToken() {
 		return projectToken;
 	}
 
-	/**
-	 * プロジェクトトークンを設定
-	 *
-	 * @param projectToken バージョンチェック
-	 */
 	public void setProjectToken(String projectToken) {
 		this.projectToken = projectToken;
 	}
 
-	/**
-	 * バージョンの検証結果のリストを取得
-	 *
-	 * @return バージョンチェック
-	 */
+	public CheckVersionByUserIdResult withProjectToken(String projectToken) {
+		this.projectToken = projectToken;
+		return this;
+	}
+
 	public List<Status> getWarnings() {
 		return warnings;
 	}
 
-	/**
-	 * バージョンの検証結果のリストを設定
-	 *
-	 * @param warnings バージョンチェック
-	 */
 	public void setWarnings(List<Status> warnings) {
 		this.warnings = warnings;
 	}
 
-	/**
-	 * バージョンの検証結果のリストを取得
-	 *
-	 * @return バージョンチェック
-	 */
+	public CheckVersionByUserIdResult withWarnings(List<Status> warnings) {
+		this.warnings = warnings;
+		return this;
+	}
+
 	public List<Status> getErrors() {
 		return errors;
 	}
 
-	/**
-	 * バージョンの検証結果のリストを設定
-	 *
-	 * @param errors バージョンチェック
-	 */
 	public void setErrors(List<Status> errors) {
 		this.errors = errors;
 	}
+
+	public CheckVersionByUserIdResult withErrors(List<Status> errors) {
+		this.errors = errors;
+		return this;
+	}
+
+    public static CheckVersionByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CheckVersionByUserIdResult()
+            .withProjectToken(data.get("projectToken") == null || data.get("projectToken").isNull() ? null : data.get("projectToken").asText())
+            .withWarnings(data.get("warnings") == null || data.get("warnings").isNull() ? new ArrayList<Status>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("warnings").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Status.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withErrors(data.get("errors") == null || data.get("errors").isNull() ? new ArrayList<Status>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("errors").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Status.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("projectToken", getProjectToken());
+                put("warnings", getWarnings() == null ? new ArrayList<Status>() :
+                    getWarnings().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("errors", getErrors() == null ? new ArrayList<Status>() :
+                    getErrors().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

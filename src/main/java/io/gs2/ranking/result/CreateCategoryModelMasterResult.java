@@ -16,39 +16,48 @@
 
 package io.gs2.ranking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.ranking.model.*;
+import io.gs2.ranking.model.CategoryModelMaster;
 
-/**
- * カテゴリマスターを新規作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateCategoryModelMasterResult implements IResult, Serializable {
-	/** 作成したカテゴリマスター */
-	private CategoryModelMaster item;
+    private CategoryModelMaster item;
 
-	/**
-	 * 作成したカテゴリマスターを取得
-	 *
-	 * @return カテゴリマスターを新規作成
-	 */
 	public CategoryModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 作成したカテゴリマスターを設定
-	 *
-	 * @param item カテゴリマスターを新規作成
-	 */
 	public void setItem(CategoryModelMaster item) {
 		this.item = item;
 	}
+
+	public CreateCategoryModelMasterResult withItem(CategoryModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateCategoryModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateCategoryModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CategoryModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,146 +16,78 @@
 
 package io.gs2.jobQueue.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.jobQueue.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * デッドレタージョブを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteDeadLetterJobByUserIdRequest extends Gs2BasicRequest<DeleteDeadLetterJobByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return デッドレタージョブを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName デッドレタージョブを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName デッドレタージョブを取得
-     * @return this
-     */
-    public DeleteDeadLetterJobByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return デッドレタージョブを取得
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId デッドレタージョブを取得
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId デッドレタージョブを取得
-     * @return this
-     */
-    public DeleteDeadLetterJobByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** ジョブの名前 */
     private String deadLetterJobName;
 
-    /**
-     * ジョブの名前を取得
-     *
-     * @return デッドレタージョブを取得
-     */
-    public String getDeadLetterJobName() {
-        return deadLetterJobName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DeleteDeadLetterJobByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public DeleteDeadLetterJobByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getDeadLetterJobName() {
+		return deadLetterJobName;
+	}
+
+	public void setDeadLetterJobName(String deadLetterJobName) {
+		this.deadLetterJobName = deadLetterJobName;
+	}
+
+	public DeleteDeadLetterJobByUserIdRequest withDeadLetterJobName(String deadLetterJobName) {
+		this.deadLetterJobName = deadLetterJobName;
+		return this;
+	}
+
+    public static DeleteDeadLetterJobByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteDeadLetterJobByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withDeadLetterJobName(data.get("deadLetterJobName") == null || data.get("deadLetterJobName").isNull() ? null : data.get("deadLetterJobName").asText());
     }
 
-    /**
-     * ジョブの名前を設定
-     *
-     * @param deadLetterJobName デッドレタージョブを取得
-     */
-    public void setDeadLetterJobName(String deadLetterJobName) {
-        this.deadLetterJobName = deadLetterJobName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("deadLetterJobName", getDeadLetterJobName());
+            }}
+        );
     }
-
-    /**
-     * ジョブの名前を設定
-     *
-     * @param deadLetterJobName デッドレタージョブを取得
-     * @return this
-     */
-    public DeleteDeadLetterJobByUserIdRequest withDeadLetterJobName(String deadLetterJobName) {
-        setDeadLetterJobName(deadLetterJobName);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return デッドレタージョブを取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider デッドレタージョブを取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider デッドレタージョブを取得
-     * @return this
-     */
-    public DeleteDeadLetterJobByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

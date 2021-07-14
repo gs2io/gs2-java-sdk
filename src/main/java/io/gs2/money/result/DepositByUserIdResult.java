@@ -16,39 +16,49 @@
 
 package io.gs2.money.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.money.model.*;
+import io.gs2.money.model.WalletDetail;
+import io.gs2.money.model.Wallet;
 
-/**
- * ユーザーIDを指定してウォレットに残高を加算します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DepositByUserIdResult implements IResult, Serializable {
-	/** 加算後のウォレット */
-	private Wallet item;
+    private Wallet item;
 
-	/**
-	 * 加算後のウォレットを取得
-	 *
-	 * @return ユーザーIDを指定してウォレットに残高を加算します
-	 */
 	public Wallet getItem() {
 		return item;
 	}
 
-	/**
-	 * 加算後のウォレットを設定
-	 *
-	 * @param item ユーザーIDを指定してウォレットに残高を加算します
-	 */
 	public void setItem(Wallet item) {
 		this.item = item;
 	}
+
+	public DepositByUserIdResult withItem(Wallet item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DepositByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DepositByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Wallet.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,210 +16,138 @@
 
 package io.gs2.inbox.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inbox.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.inbox.model.AcquireAction;
+import io.gs2.inbox.model.TimeSpan;
 
-/**
- * 全ユーザに向けたメッセージを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateGlobalMessageMasterRequest extends Gs2BasicRequest<CreateGlobalMessageMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 全ユーザに向けたメッセージを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 全ユーザに向けたメッセージを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 全ユーザに向けたメッセージを新規作成
-     * @return this
-     */
-    public CreateGlobalMessageMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 全ユーザに向けたメッセージ名 */
     private String name;
-
-    /**
-     * 全ユーザに向けたメッセージ名を取得
-     *
-     * @return 全ユーザに向けたメッセージを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 全ユーザに向けたメッセージ名を設定
-     *
-     * @param name 全ユーザに向けたメッセージを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * 全ユーザに向けたメッセージ名を設定
-     *
-     * @param name 全ユーザに向けたメッセージを新規作成
-     * @return this
-     */
-    public CreateGlobalMessageMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** 全ユーザに向けたメッセージの内容に相当するメタデータ */
     private String metadata;
-
-    /**
-     * 全ユーザに向けたメッセージの内容に相当するメタデータを取得
-     *
-     * @return 全ユーザに向けたメッセージを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 全ユーザに向けたメッセージの内容に相当するメタデータを設定
-     *
-     * @param metadata 全ユーザに向けたメッセージを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 全ユーザに向けたメッセージの内容に相当するメタデータを設定
-     *
-     * @param metadata 全ユーザに向けたメッセージを新規作成
-     * @return this
-     */
-    public CreateGlobalMessageMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 開封時に実行する入手アクション */
     private List<AcquireAction> readAcquireActions;
-
-    /**
-     * 開封時に実行する入手アクションを取得
-     *
-     * @return 全ユーザに向けたメッセージを新規作成
-     */
-    public List<AcquireAction> getReadAcquireActions() {
-        return readAcquireActions;
-    }
-
-    /**
-     * 開封時に実行する入手アクションを設定
-     *
-     * @param readAcquireActions 全ユーザに向けたメッセージを新規作成
-     */
-    public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
-        this.readAcquireActions = readAcquireActions;
-    }
-
-    /**
-     * 開封時に実行する入手アクションを設定
-     *
-     * @param readAcquireActions 全ユーザに向けたメッセージを新規作成
-     * @return this
-     */
-    public CreateGlobalMessageMasterRequest withReadAcquireActions(List<AcquireAction> readAcquireActions) {
-        setReadAcquireActions(readAcquireActions);
-        return this;
-    }
-
-    /** メッセージを受信したあとメッセージが削除されるまでの期間 */
     private TimeSpan expiresTimeSpan;
-
-    /**
-     * メッセージを受信したあとメッセージが削除されるまでの期間を取得
-     *
-     * @return 全ユーザに向けたメッセージを新規作成
-     */
-    public TimeSpan getExpiresTimeSpan() {
-        return expiresTimeSpan;
-    }
-
-    /**
-     * メッセージを受信したあとメッセージが削除されるまでの期間を設定
-     *
-     * @param expiresTimeSpan 全ユーザに向けたメッセージを新規作成
-     */
-    public void setExpiresTimeSpan(TimeSpan expiresTimeSpan) {
-        this.expiresTimeSpan = expiresTimeSpan;
-    }
-
-    /**
-     * メッセージを受信したあとメッセージが削除されるまでの期間を設定
-     *
-     * @param expiresTimeSpan 全ユーザに向けたメッセージを新規作成
-     * @return this
-     */
-    public CreateGlobalMessageMasterRequest withExpiresTimeSpan(TimeSpan expiresTimeSpan) {
-        setExpiresTimeSpan(expiresTimeSpan);
-        return this;
-    }
-
-    /** 全ユーザに向けたメッセージの受信期限 */
     private Long expiresAt;
 
-    /**
-     * 全ユーザに向けたメッセージの受信期限を取得
-     *
-     * @return 全ユーザに向けたメッセージを新規作成
-     */
-    public Long getExpiresAt() {
-        return expiresAt;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateGlobalMessageMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateGlobalMessageMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateGlobalMessageMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public List<AcquireAction> getReadAcquireActions() {
+		return readAcquireActions;
+	}
+
+	public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
+		this.readAcquireActions = readAcquireActions;
+	}
+
+	public CreateGlobalMessageMasterRequest withReadAcquireActions(List<AcquireAction> readAcquireActions) {
+		this.readAcquireActions = readAcquireActions;
+		return this;
+	}
+
+	public TimeSpan getExpiresTimeSpan() {
+		return expiresTimeSpan;
+	}
+
+	public void setExpiresTimeSpan(TimeSpan expiresTimeSpan) {
+		this.expiresTimeSpan = expiresTimeSpan;
+	}
+
+	public CreateGlobalMessageMasterRequest withExpiresTimeSpan(TimeSpan expiresTimeSpan) {
+		this.expiresTimeSpan = expiresTimeSpan;
+		return this;
+	}
+
+	public Long getExpiresAt() {
+		return expiresAt;
+	}
+
+	public void setExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+	}
+
+	public CreateGlobalMessageMasterRequest withExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+		return this;
+	}
+
+    public static CreateGlobalMessageMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateGlobalMessageMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("readAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withExpiresTimeSpan(data.get("expiresTimeSpan") == null || data.get("expiresTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresTimeSpan")))
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
     }
 
-    /**
-     * 全ユーザに向けたメッセージの受信期限を設定
-     *
-     * @param expiresAt 全ユーザに向けたメッセージを新規作成
-     */
-    public void setExpiresAt(Long expiresAt) {
-        this.expiresAt = expiresAt;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("readAcquireActions", getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getReadAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("expiresTimeSpan", getExpiresTimeSpan() != null ? getExpiresTimeSpan().toJson() : null);
+                put("expiresAt", getExpiresAt());
+            }}
+        );
     }
-
-    /**
-     * 全ユーザに向けたメッセージの受信期限を設定
-     *
-     * @param expiresAt 全ユーザに向けたメッセージを新規作成
-     * @return this
-     */
-    public CreateGlobalMessageMasterRequest withExpiresAt(Long expiresAt) {
-        setExpiresAt(expiresAt);
-        return this;
-    }
-
 }

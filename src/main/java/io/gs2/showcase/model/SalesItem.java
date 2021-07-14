@@ -16,173 +16,117 @@
 
 package io.gs2.showcase.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 商品
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SalesItem implements IModel, Serializable, Comparable<SalesItem> {
-	/** 商品名 */
-	protected String name;
+public class SalesItem implements IModel, Serializable {
+	private String name;
+	private String metadata;
+	private List<ConsumeAction> consumeActions;
+	private List<AcquireAction> acquireActions;
 
-	/**
-	 * 商品名を取得
-	 *
-	 * @return 商品名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 商品名を設定
-	 *
-	 * @param name 商品名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 商品名を設定
-	 *
-	 * @param name 商品名
-	 * @return this
-	 */
 	public SalesItem withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 商品のメタデータ */
-	protected String metadata;
 
-	/**
-	 * 商品のメタデータを取得
-	 *
-	 * @return 商品のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 商品のメタデータを設定
-	 *
-	 * @param metadata 商品のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 商品のメタデータを設定
-	 *
-	 * @param metadata 商品のメタデータ
-	 * @return this
-	 */
 	public SalesItem withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 消費アクションリスト */
-	protected List<ConsumeAction> consumeActions;
 
-	/**
-	 * 消費アクションリストを取得
-	 *
-	 * @return 消費アクションリスト
-	 */
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
 
-	/**
-	 * 消費アクションリストを設定
-	 *
-	 * @param consumeActions 消費アクションリスト
-	 */
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
 
-	/**
-	 * 消費アクションリストを設定
-	 *
-	 * @param consumeActions 消費アクションリスト
-	 * @return this
-	 */
 	public SalesItem withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;
 	}
-	/** 入手アクションリスト */
-	protected List<AcquireAction> acquireActions;
 
-	/**
-	 * 入手アクションリストを取得
-	 *
-	 * @return 入手アクションリスト
-	 */
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
 
-	/**
-	 * 入手アクションリストを設定
-	 *
-	 * @param acquireActions 入手アクションリスト
-	 */
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
 
-	/**
-	 * 入手アクションリストを設定
-	 *
-	 * @param acquireActions 入手アクションリスト
-	 * @return this
-	 */
 	public SalesItem withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> consumeActions = new ArrayList<>();
-        if(this.consumeActions != null) {
-            for(ConsumeAction item : this.consumeActions) {
-                consumeActions.add(item.toJson());
-            }
+    public static SalesItem fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-        List<JsonNode> acquireActions = new ArrayList<>();
-        if(this.acquireActions != null) {
-            for(AcquireAction item : this.acquireActions) {
-                acquireActions.add(item.toJson());
-            }
-        }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata());
-        body_.set("consumeActions", JsonNodeFactory.instance.arrayNode().addAll(consumeActions));
-        body_.set("acquireActions", JsonNodeFactory.instance.arrayNode().addAll(acquireActions));
-        return body_;
+        return new SalesItem()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ConsumeAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
-	@Override
-	public int compareTo(SalesItem o) {
-		return name.compareTo(o.name);
-	}
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    getConsumeActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 
 	@Override
 	public int hashCode() {

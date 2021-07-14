@@ -16,189 +16,98 @@
 
 package io.gs2.identifier.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * クレデンシャル
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Identifier implements IModel, Serializable, Comparable<Identifier> {
-	/** オーナーID */
-	protected String ownerId;
+	private String clientId;
+	private String userName;
+	private String clientSecret;
+	private Long createdAt;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Identifier withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** クライアントID */
-	protected String clientId;
-
-	/**
-	 * クライアントIDを取得
-	 *
-	 * @return クライアントID
-	 */
 	public String getClientId() {
 		return clientId;
 	}
 
-	/**
-	 * クライアントIDを設定
-	 *
-	 * @param clientId クライアントID
-	 */
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
 
-	/**
-	 * クライアントIDを設定
-	 *
-	 * @param clientId クライアントID
-	 * @return this
-	 */
 	public Identifier withClientId(String clientId) {
 		this.clientId = clientId;
 		return this;
 	}
-	/** ユーザー名 */
-	protected String userName;
 
-	/**
-	 * ユーザー名を取得
-	 *
-	 * @return ユーザー名
-	 */
 	public String getUserName() {
 		return userName;
 	}
 
-	/**
-	 * ユーザー名を設定
-	 *
-	 * @param userName ユーザー名
-	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
-	/**
-	 * ユーザー名を設定
-	 *
-	 * @param userName ユーザー名
-	 * @return this
-	 */
 	public Identifier withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-	/** クライアントシークレット */
-	protected String clientSecret;
 
-	/**
-	 * クライアントシークレットを取得
-	 *
-	 * @return クライアントシークレット
-	 */
 	public String getClientSecret() {
 		return clientSecret;
 	}
 
-	/**
-	 * クライアントシークレットを設定
-	 *
-	 * @param clientSecret クライアントシークレット
-	 */
 	public void setClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
 	}
 
-	/**
-	 * クライアントシークレットを設定
-	 *
-	 * @param clientSecret クライアントシークレット
-	 * @return this
-	 */
 	public Identifier withClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Identifier withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("ownerId", this.getOwnerId())
-            .put("clientId", this.getClientId())
-            .put("userName", this.getUserName())
-            .put("clientSecret", this.getClientSecret())
-            .put("createdAt", this.getCreatedAt());
-        return body_;
+    public static Identifier fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Identifier()
+            .withClientId(data.get("clientId") == null || data.get("clientId").isNull() ? null : data.get("clientId").asText())
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withClientSecret(data.get("clientSecret") == null || data.get("clientSecret").isNull() ? null : data.get("clientSecret").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("clientId", getClientId());
+                put("userName", getUserName());
+                put("clientSecret", getClientSecret());
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Identifier o) {
 		return clientId.compareTo(o.clientId);
@@ -208,7 +117,6 @@ public class Identifier implements IModel, Serializable, Comparable<Identifier> 
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.clientId == null) ? 0 : this.clientId.hashCode());
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
         result = prime * result + ((this.clientSecret == null) ? 0 : this.clientSecret.hashCode());
@@ -225,11 +133,6 @@ public class Identifier implements IModel, Serializable, Comparable<Identifier> 
 		if (getClass() != o.getClass())
 			return false;
 		Identifier other = (Identifier) o;
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
-			return false;
-		}
 		if (clientId == null) {
 			return other.clientId == null;
 		} else if (!clientId.equals(other.clientId)) {

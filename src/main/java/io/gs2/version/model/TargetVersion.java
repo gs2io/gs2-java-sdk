@@ -16,157 +16,96 @@
 
 package io.gs2.version.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 検証するバージョン
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TargetVersion implements IModel, Serializable {
-	/** バージョンの名前 */
-	protected String versionName;
+	private String versionName;
+	private Version version;
+	private String body;
+	private String signature;
 
-	/**
-	 * バージョンの名前を取得
-	 *
-	 * @return バージョンの名前
-	 */
 	public String getVersionName() {
 		return versionName;
 	}
 
-	/**
-	 * バージョンの名前を設定
-	 *
-	 * @param versionName バージョンの名前
-	 */
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
 
-	/**
-	 * バージョンの名前を設定
-	 *
-	 * @param versionName バージョンの名前
-	 * @return this
-	 */
 	public TargetVersion withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;
 	}
-	/** バージョン */
-	protected Version version;
 
-	/**
-	 * バージョンを取得
-	 *
-	 * @return バージョン
-	 */
 	public Version getVersion() {
 		return version;
 	}
 
-	/**
-	 * バージョンを設定
-	 *
-	 * @param version バージョン
-	 */
 	public void setVersion(Version version) {
 		this.version = version;
 	}
 
-	/**
-	 * バージョンを設定
-	 *
-	 * @param version バージョン
-	 * @return this
-	 */
 	public TargetVersion withVersion(Version version) {
 		this.version = version;
 		return this;
 	}
-	/** ボディ */
-	protected String body;
 
-	/**
-	 * ボディを取得
-	 *
-	 * @return ボディ
-	 */
 	public String getBody() {
 		return body;
 	}
 
-	/**
-	 * ボディを設定
-	 *
-	 * @param body ボディ
-	 */
 	public void setBody(String body) {
 		this.body = body;
 	}
 
-	/**
-	 * ボディを設定
-	 *
-	 * @param body ボディ
-	 * @return this
-	 */
 	public TargetVersion withBody(String body) {
 		this.body = body;
 		return this;
 	}
-	/** 署名 */
-	protected String signature;
 
-	/**
-	 * 署名を取得
-	 *
-	 * @return 署名
-	 */
 	public String getSignature() {
 		return signature;
 	}
 
-	/**
-	 * 署名を設定
-	 *
-	 * @param signature 署名
-	 */
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
 
-	/**
-	 * 署名を設定
-	 *
-	 * @param signature 署名
-	 * @return this
-	 */
 	public TargetVersion withSignature(String signature) {
 		this.signature = signature;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode version = this.getVersion().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("versionName", this.getVersionName())
-            .put("body", this.getBody())
-            .put("signature", this.getSignature());
-        body_.set("version", version);
-        return body_;
+    public static TargetVersion fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new TargetVersion()
+            .withVersionName(data.get("versionName") == null || data.get("versionName").isNull() ? null : data.get("versionName").asText())
+            .withVersion(data.get("version") == null || data.get("version").isNull() ? null : Version.fromJson(data.get("version")))
+            .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
+            .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("versionName", getVersionName());
+                put("version", getVersion() != null ? getVersion().toJson() : null);
+                put("body", getBody());
+                put("signature", getSignature());
+            }}
+        );
     }
 
 	@Override

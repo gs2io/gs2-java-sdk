@@ -12,109 +12,80 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 
 package io.gs2.dictionary.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 現在有効なエントリー設定
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CurrentEntryMaster implements IModel, Serializable, Comparable<CurrentEntryMaster> {
-	/** ネームスペース名 */
-	protected String namespaceName;
+	private String namespaceId;
+	private String settings;
 
-	/**
-	 * ネームスペース名を取得
-	 *
-	 * @return ネームスペース名
-	 */
-	public String getNamespaceName() {
-		return namespaceName;
+	public String getNamespaceId() {
+		return namespaceId;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param namespaceName ネームスペース名
-	 */
-	public void setNamespaceName(String namespaceName) {
-		this.namespaceName = namespaceName;
+	public void setNamespaceId(String namespaceId) {
+		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param namespaceName ネームスペース名
-	 * @return this
-	 */
-	public CurrentEntryMaster withNamespaceName(String namespaceName) {
-		this.namespaceName = namespaceName;
+	public CurrentEntryMaster withNamespaceId(String namespaceId) {
+		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** マスターデータ */
-	protected String settings;
 
-	/**
-	 * マスターデータを取得
-	 *
-	 * @return マスターデータ
-	 */
 	public String getSettings() {
 		return settings;
 	}
 
-	/**
-	 * マスターデータを設定
-	 *
-	 * @param settings マスターデータ
-	 */
 	public void setSettings(String settings) {
 		this.settings = settings;
 	}
 
-	/**
-	 * マスターデータを設定
-	 *
-	 * @param settings マスターデータ
-	 * @return this
-	 */
 	public CurrentEntryMaster withSettings(String settings) {
 		this.settings = settings;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceName", this.getNamespaceName())
-            .put("settings", this.getSettings());
-        return body_;
+    public static CurrentEntryMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CurrentEntryMaster()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withSettings(data.get("settings") == null || data.get("settings").isNull() ? null : data.get("settings").asText());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("settings", getSettings());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(CurrentEntryMaster o) {
-		return namespaceName.compareTo(o.namespaceName);
+		return namespaceId.compareTo(o.namespaceId);
 	}
 
 	@Override
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.namespaceName == null) ? 0 : this.namespaceName.hashCode());
+        result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.settings == null) ? 0 : this.settings.hashCode());
 		return result;
 	}
@@ -128,9 +99,9 @@ public class CurrentEntryMaster implements IModel, Serializable, Comparable<Curr
 		if (getClass() != o.getClass())
 			return false;
 		CurrentEntryMaster other = (CurrentEntryMaster) o;
-		if (namespaceName == null) {
-			return other.namespaceName == null;
-		} else if (!namespaceName.equals(other.namespaceName)) {
+		if (namespaceId == null) {
+			return other.namespaceId == null;
+		} else if (!namespaceId.equals(other.namespaceId)) {
 			return false;
 		}
 		if (settings == null) {

@@ -16,351 +16,178 @@
 
 package io.gs2.realtime.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ネームスペース
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Namespace implements IModel, Serializable, Comparable<Namespace> {
-	/** ネームスペース */
-	protected String namespaceId;
+	private String namespaceId;
+	private String name;
+	private String description;
+	private String serverType;
+	private String serverSpec;
+	private NotificationSetting createNotification;
+	private LogSetting logSetting;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ネームスペースを取得
-	 *
-	 * @return ネームスペース
-	 */
 	public String getNamespaceId() {
 		return namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 */
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 * @return this
-	 */
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Namespace withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ネームスペース名 */
-	protected String name;
-
-	/**
-	 * ネームスペース名を取得
-	 *
-	 * @return ネームスペース名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 * @return this
-	 */
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ネームスペースの説明 */
-	protected String description;
 
-	/**
-	 * ネームスペースの説明を取得
-	 *
-	 * @return ネームスペースの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 * @return this
-	 */
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** サーバの種類 */
-	protected String serverType;
 
-	/**
-	 * サーバの種類を取得
-	 *
-	 * @return サーバの種類
-	 */
 	public String getServerType() {
 		return serverType;
 	}
 
-	/**
-	 * サーバの種類を設定
-	 *
-	 * @param serverType サーバの種類
-	 */
 	public void setServerType(String serverType) {
 		this.serverType = serverType;
 	}
 
-	/**
-	 * サーバの種類を設定
-	 *
-	 * @param serverType サーバの種類
-	 * @return this
-	 */
 	public Namespace withServerType(String serverType) {
 		this.serverType = serverType;
 		return this;
 	}
-	/** サーバのスペック */
-	protected String serverSpec;
 
-	/**
-	 * サーバのスペックを取得
-	 *
-	 * @return サーバのスペック
-	 */
 	public String getServerSpec() {
 		return serverSpec;
 	}
 
-	/**
-	 * サーバのスペックを設定
-	 *
-	 * @param serverSpec サーバのスペック
-	 */
 	public void setServerSpec(String serverSpec) {
 		this.serverSpec = serverSpec;
 	}
 
-	/**
-	 * サーバのスペックを設定
-	 *
-	 * @param serverSpec サーバのスペック
-	 * @return this
-	 */
 	public Namespace withServerSpec(String serverSpec) {
 		this.serverSpec = serverSpec;
 		return this;
 	}
-	/** ルームの作成が終わったときのプッシュ通知 */
-	protected NotificationSetting createNotification;
 
-	/**
-	 * ルームの作成が終わったときのプッシュ通知を取得
-	 *
-	 * @return ルームの作成が終わったときのプッシュ通知
-	 */
 	public NotificationSetting getCreateNotification() {
 		return createNotification;
 	}
 
-	/**
-	 * ルームの作成が終わったときのプッシュ通知を設定
-	 *
-	 * @param createNotification ルームの作成が終わったときのプッシュ通知
-	 */
 	public void setCreateNotification(NotificationSetting createNotification) {
 		this.createNotification = createNotification;
 	}
 
-	/**
-	 * ルームの作成が終わったときのプッシュ通知を設定
-	 *
-	 * @param createNotification ルームの作成が終わったときのプッシュ通知
-	 * @return this
-	 */
 	public Namespace withCreateNotification(NotificationSetting createNotification) {
 		this.createNotification = createNotification;
 		return this;
 	}
-	/** ログの出力設定 */
-	protected LogSetting logSetting;
 
-	/**
-	 * ログの出力設定を取得
-	 *
-	 * @return ログの出力設定
-	 */
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 */
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 * @return this
-	 */
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode createNotification = this.getCreateNotification().toJson();
-        JsonNode logSetting = this.getLogSetting().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceId", this.getNamespaceId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("serverType", this.getServerType())
-            .put("serverSpec", this.getServerSpec())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("createNotification", createNotification);
-        body_.set("logSetting", logSetting);
-        return body_;
+    public static Namespace fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Namespace()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withServerType(data.get("serverType") == null || data.get("serverType").isNull() ? null : data.get("serverType").asText())
+            .withServerSpec(data.get("serverSpec") == null || data.get("serverSpec").isNull() ? null : data.get("serverSpec").asText())
+            .withCreateNotification(data.get("createNotification") == null || data.get("createNotification").isNull() ? null : NotificationSetting.fromJson(data.get("createNotification")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("name", getName());
+                put("description", getDescription());
+                put("serverType", getServerType());
+                put("serverSpec", getServerSpec());
+                put("createNotification", getCreateNotification() != null ? getCreateNotification().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Namespace o) {
 		return namespaceId.compareTo(o.namespaceId);
@@ -371,7 +198,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.serverType == null) ? 0 : this.serverType.hashCode());
@@ -395,11 +221,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (namespaceId == null) {
 			return other.namespaceId == null;
 		} else if (!namespaceId.equals(other.namespaceId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {

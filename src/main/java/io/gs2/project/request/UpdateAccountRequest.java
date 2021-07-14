@@ -16,178 +16,110 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * GS2アカウントを更新します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateAccountRequest extends Gs2BasicRequest<UpdateAccountRequest> {
-
-    /** メールアドレス */
     private String email;
-
-    /**
-     * メールアドレスを取得
-     *
-     * @return GS2アカウントを更新します
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * メールアドレスを設定
-     *
-     * @param email GS2アカウントを更新します
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * メールアドレスを設定
-     *
-     * @param email GS2アカウントを更新します
-     * @return this
-     */
-    public UpdateAccountRequest withEmail(String email) {
-        setEmail(email);
-        return this;
-    }
-
-    /** フルネーム */
     private String fullName;
-
-    /**
-     * フルネームを取得
-     *
-     * @return GS2アカウントを更新します
-     */
-    public String getFullName() {
-        return fullName;
-    }
-
-    /**
-     * フルネームを設定
-     *
-     * @param fullName GS2アカウントを更新します
-     */
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    /**
-     * フルネームを設定
-     *
-     * @param fullName GS2アカウントを更新します
-     * @return this
-     */
-    public UpdateAccountRequest withFullName(String fullName) {
-        setFullName(fullName);
-        return this;
-    }
-
-    /** 会社名 */
     private String companyName;
-
-    /**
-     * 会社名を取得
-     *
-     * @return GS2アカウントを更新します
-     */
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    /**
-     * 会社名を設定
-     *
-     * @param companyName GS2アカウントを更新します
-     */
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    /**
-     * 会社名を設定
-     *
-     * @param companyName GS2アカウントを更新します
-     * @return this
-     */
-    public UpdateAccountRequest withCompanyName(String companyName) {
-        setCompanyName(companyName);
-        return this;
-    }
-
-    /** パスワード */
     private String password;
-
-    /**
-     * パスワードを取得
-     *
-     * @return GS2アカウントを更新します
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * パスワードを設定
-     *
-     * @param password GS2アカウントを更新します
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * パスワードを設定
-     *
-     * @param password GS2アカウントを更新します
-     * @return this
-     */
-    public UpdateAccountRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    /** GS2アカウントトークン */
     private String accountToken;
 
-    /**
-     * GS2アカウントトークンを取得
-     *
-     * @return GS2アカウントを更新します
-     */
-    public String getAccountToken() {
-        return accountToken;
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public UpdateAccountRequest withEmail(String email) {
+		this.email = email;
+		return this;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public UpdateAccountRequest withFullName(String fullName) {
+		this.fullName = fullName;
+		return this;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public UpdateAccountRequest withCompanyName(String companyName) {
+		this.companyName = companyName;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public UpdateAccountRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+	public String getAccountToken() {
+		return accountToken;
+	}
+
+	public void setAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+	}
+
+	public UpdateAccountRequest withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+    public static UpdateAccountRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateAccountRequest()
+            .withEmail(data.get("email") == null || data.get("email").isNull() ? null : data.get("email").asText())
+            .withFullName(data.get("fullName") == null || data.get("fullName").isNull() ? null : data.get("fullName").asText())
+            .withCompanyName(data.get("companyName") == null || data.get("companyName").isNull() ? null : data.get("companyName").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText());
     }
 
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken GS2アカウントを更新します
-     */
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("email", getEmail());
+                put("fullName", getFullName());
+                put("companyName", getCompanyName());
+                put("password", getPassword());
+                put("accountToken", getAccountToken());
+            }}
+        );
     }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken GS2アカウントを更新します
-     * @return this
-     */
-    public UpdateAccountRequest withAccountToken(String accountToken) {
-        setAccountToken(accountToken);
-        return this;
-    }
-
 }

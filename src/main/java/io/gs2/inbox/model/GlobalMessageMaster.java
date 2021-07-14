@@ -16,260 +16,156 @@
 
 package io.gs2.inbox.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 全ユーザに向けたメッセージ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlobalMessageMaster implements IModel, Serializable, Comparable<GlobalMessageMaster> {
-	/** 全ユーザに向けたメッセージ */
-	protected String globalMessageId;
+	private String globalMessageId;
+	private String name;
+	private String metadata;
+	private List<AcquireAction> readAcquireActions;
+	private TimeSpan expiresTimeSpan;
+	private Long createdAt;
+	private Long expiresAt;
 
-	/**
-	 * 全ユーザに向けたメッセージを取得
-	 *
-	 * @return 全ユーザに向けたメッセージ
-	 */
 	public String getGlobalMessageId() {
 		return globalMessageId;
 	}
 
-	/**
-	 * 全ユーザに向けたメッセージを設定
-	 *
-	 * @param globalMessageId 全ユーザに向けたメッセージ
-	 */
 	public void setGlobalMessageId(String globalMessageId) {
 		this.globalMessageId = globalMessageId;
 	}
 
-	/**
-	 * 全ユーザに向けたメッセージを設定
-	 *
-	 * @param globalMessageId 全ユーザに向けたメッセージ
-	 * @return this
-	 */
 	public GlobalMessageMaster withGlobalMessageId(String globalMessageId) {
 		this.globalMessageId = globalMessageId;
 		return this;
 	}
-	/** 全ユーザに向けたメッセージ名 */
-	protected String name;
 
-	/**
-	 * 全ユーザに向けたメッセージ名を取得
-	 *
-	 * @return 全ユーザに向けたメッセージ名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 全ユーザに向けたメッセージ名を設定
-	 *
-	 * @param name 全ユーザに向けたメッセージ名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 全ユーザに向けたメッセージ名を設定
-	 *
-	 * @param name 全ユーザに向けたメッセージ名
-	 * @return this
-	 */
 	public GlobalMessageMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 全ユーザに向けたメッセージの内容に相当するメタデータ */
-	protected String metadata;
 
-	/**
-	 * 全ユーザに向けたメッセージの内容に相当するメタデータを取得
-	 *
-	 * @return 全ユーザに向けたメッセージの内容に相当するメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 全ユーザに向けたメッセージの内容に相当するメタデータを設定
-	 *
-	 * @param metadata 全ユーザに向けたメッセージの内容に相当するメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 全ユーザに向けたメッセージの内容に相当するメタデータを設定
-	 *
-	 * @param metadata 全ユーザに向けたメッセージの内容に相当するメタデータ
-	 * @return this
-	 */
 	public GlobalMessageMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 開封時に実行する入手アクション */
-	protected List<AcquireAction> readAcquireActions;
 
-	/**
-	 * 開封時に実行する入手アクションを取得
-	 *
-	 * @return 開封時に実行する入手アクション
-	 */
 	public List<AcquireAction> getReadAcquireActions() {
 		return readAcquireActions;
 	}
 
-	/**
-	 * 開封時に実行する入手アクションを設定
-	 *
-	 * @param readAcquireActions 開封時に実行する入手アクション
-	 */
 	public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 	}
 
-	/**
-	 * 開封時に実行する入手アクションを設定
-	 *
-	 * @param readAcquireActions 開封時に実行する入手アクション
-	 * @return this
-	 */
 	public GlobalMessageMaster withReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 		return this;
 	}
-	/** メッセージを受信したあとメッセージが削除されるまでの期間 */
-	protected TimeSpan expiresTimeSpan;
 
-	/**
-	 * メッセージを受信したあとメッセージが削除されるまでの期間を取得
-	 *
-	 * @return メッセージを受信したあとメッセージが削除されるまでの期間
-	 */
 	public TimeSpan getExpiresTimeSpan() {
 		return expiresTimeSpan;
 	}
 
-	/**
-	 * メッセージを受信したあとメッセージが削除されるまでの期間を設定
-	 *
-	 * @param expiresTimeSpan メッセージを受信したあとメッセージが削除されるまでの期間
-	 */
 	public void setExpiresTimeSpan(TimeSpan expiresTimeSpan) {
 		this.expiresTimeSpan = expiresTimeSpan;
 	}
 
-	/**
-	 * メッセージを受信したあとメッセージが削除されるまでの期間を設定
-	 *
-	 * @param expiresTimeSpan メッセージを受信したあとメッセージが削除されるまでの期間
-	 * @return this
-	 */
 	public GlobalMessageMaster withExpiresTimeSpan(TimeSpan expiresTimeSpan) {
 		this.expiresTimeSpan = expiresTimeSpan;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public GlobalMessageMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 全ユーザに向けたメッセージの受信期限 */
-	protected Long expiresAt;
 
-	/**
-	 * 全ユーザに向けたメッセージの受信期限を取得
-	 *
-	 * @return 全ユーザに向けたメッセージの受信期限
-	 */
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
 
-	/**
-	 * 全ユーザに向けたメッセージの受信期限を設定
-	 *
-	 * @param expiresAt 全ユーザに向けたメッセージの受信期限
-	 */
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
 
-	/**
-	 * 全ユーザに向けたメッセージの受信期限を設定
-	 *
-	 * @param expiresAt 全ユーザに向けたメッセージの受信期限
-	 * @return this
-	 */
 	public GlobalMessageMaster withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> readAcquireActions = new ArrayList<>();
-        if(this.readAcquireActions != null) {
-            for(AcquireAction item : this.readAcquireActions) {
-                readAcquireActions.add(item.toJson());
-            }
+    public static GlobalMessageMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-        JsonNode expiresTimeSpan = this.getExpiresTimeSpan().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("globalMessageId", this.getGlobalMessageId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("createdAt", this.getCreatedAt())
-            .put("expiresAt", this.getExpiresAt());
-        body_.set("readAcquireActions", JsonNodeFactory.instance.arrayNode().addAll(readAcquireActions));
-        body_.set("expiresTimeSpan", expiresTimeSpan);
-        return body_;
+        return new GlobalMessageMaster()
+            .withGlobalMessageId(data.get("globalMessageId") == null || data.get("globalMessageId").isNull() ? null : data.get("globalMessageId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("readAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withExpiresTimeSpan(data.get("expiresTimeSpan") == null || data.get("expiresTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresTimeSpan")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("globalMessageId", getGlobalMessageId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("readAcquireActions", getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getReadAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("expiresTimeSpan", getExpiresTimeSpan() != null ? getExpiresTimeSpan().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("expiresAt", getExpiresAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(GlobalMessageMaster o) {
 		return globalMessageId.compareTo(o.globalMessageId);

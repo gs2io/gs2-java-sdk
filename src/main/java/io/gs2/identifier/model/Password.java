@@ -16,189 +16,82 @@
 
 package io.gs2.identifier.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * パスワード
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Password implements IModel, Serializable, Comparable<Password> {
-	/** オーナーID */
-	protected String ownerId;
+	private String userId;
+	private String userName;
+	private Long createdAt;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Password withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ユーザ */
-	protected String userId;
-
-	/**
-	 * ユーザを取得
-	 *
-	 * @return ユーザ
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザを設定
-	 *
-	 * @param userId ユーザ
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザを設定
-	 *
-	 * @param userId ユーザ
-	 * @return this
-	 */
 	public Password withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** ユーザー名 */
-	protected String userName;
 
-	/**
-	 * ユーザー名を取得
-	 *
-	 * @return ユーザー名
-	 */
 	public String getUserName() {
 		return userName;
 	}
 
-	/**
-	 * ユーザー名を設定
-	 *
-	 * @param userName ユーザー名
-	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
-	/**
-	 * ユーザー名を設定
-	 *
-	 * @param userName ユーザー名
-	 * @return this
-	 */
 	public Password withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-	/** パスワード */
-	protected String password;
 
-	/**
-	 * パスワードを取得
-	 *
-	 * @return パスワード
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * パスワードを設定
-	 *
-	 * @param password パスワード
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * パスワードを設定
-	 *
-	 * @param password パスワード
-	 * @return this
-	 */
-	public Password withPassword(String password) {
-		this.password = password;
-		return this;
-	}
-	/** 作成日時 */
-	protected Long createdAt;
-
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Password withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("ownerId", this.getOwnerId())
-            .put("userId", this.getUserId())
-            .put("userName", this.getUserName())
-            .put("password", this.getPassword())
-            .put("createdAt", this.getCreatedAt());
-        return body_;
+    public static Password fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Password()
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userId", getUserId());
+                put("userName", getUserName());
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Password o) {
 		return userId.compareTo(o.userId);
@@ -208,10 +101,8 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
-        result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
 		return result;
 	}
@@ -225,11 +116,6 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 		if (getClass() != o.getClass())
 			return false;
 		Password other = (Password) o;
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
-			return false;
-		}
 		if (userId == null) {
 			return other.userId == null;
 		} else if (!userId.equals(other.userId)) {
@@ -238,11 +124,6 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 		if (userName == null) {
 			return other.userName == null;
 		} else if (!userName.equals(other.userName)) {
-			return false;
-		}
-		if (password == null) {
-			return other.password == null;
-		} else if (!password.equals(other.password)) {
 			return false;
 		}
 		if (createdAt == null) {

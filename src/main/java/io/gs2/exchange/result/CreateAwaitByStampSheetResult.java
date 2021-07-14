@@ -16,39 +16,64 @@
 
 package io.gs2.exchange.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.exchange.model.*;
+import io.gs2.exchange.model.Await;
 
-/**
- * スタンプシートで交換待機 を作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateAwaitByStampSheetResult implements IResult, Serializable {
-	/** 交換待機 */
-	private Await item;
+    private Await item;
+    private Long unlockAt;
 
-	/**
-	 * 交換待機を取得
-	 *
-	 * @return スタンプシートで交換待機 を作成
-	 */
 	public Await getItem() {
 		return item;
 	}
 
-	/**
-	 * 交換待機を設定
-	 *
-	 * @param item スタンプシートで交換待機 を作成
-	 */
 	public void setItem(Await item) {
 		this.item = item;
 	}
+
+	public CreateAwaitByStampSheetResult withItem(Await item) {
+		this.item = item;
+		return this;
+	}
+
+	public Long getUnlockAt() {
+		return unlockAt;
+	}
+
+	public void setUnlockAt(Long unlockAt) {
+		this.unlockAt = unlockAt;
+	}
+
+	public CreateAwaitByStampSheetResult withUnlockAt(Long unlockAt) {
+		this.unlockAt = unlockAt;
+		return this;
+	}
+
+    public static CreateAwaitByStampSheetResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateAwaitByStampSheetResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Await.fromJson(data.get("item")))
+            .withUnlockAt(data.get("unlockAt") == null || data.get("unlockAt").isNull() ? null : data.get("unlockAt").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("unlockAt", getUnlockAt());
+            }}
+        );
+    }
 }

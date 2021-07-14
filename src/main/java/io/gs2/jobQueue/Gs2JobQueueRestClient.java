@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.jobQueue;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.jobQueue.request.*;
 import io.gs2.jobQueue.result.*;
-import io.gs2.jobQueue.model.*;
+import io.gs2.jobQueue.model.*;public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClient> {
 
-/**
- * GS2 JobQueue API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2JobQueueRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,33 +152,15 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getPushNotification() != null) {
-                try {
-                    json.put("pushNotification", new JSONObject(mapper.writeValueAsString(this.request.getPushNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("pushNotification", request.getPushNotification() != null ? request.getPushNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -213,25 +178,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -258,15 +212,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -277,7 +234,7 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -301,25 +258,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -346,15 +292,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -365,7 +314,7 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -389,25 +338,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -434,15 +372,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -453,32 +394,16 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getPushNotification() != null) {
-                try {
-                    json.put("pushNotification", new JSONObject(mapper.writeValueAsString(this.request.getPushNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("pushNotification", request.getPushNotification() != null ? request.getPushNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -496,25 +421,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -541,15 +455,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -560,7 +477,7 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -584,25 +501,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -629,15 +535,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public DescribeJobsByUserIdTask(
             DescribeJobsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeJobsByUserIdResult>> userCallback,
-            Class<DescribeJobsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeJobsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeJobsByUserIdResult parse(JsonNode data) {
+            return DescribeJobsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -648,8 +557,8 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/job";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -672,9 +581,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -682,25 +588,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ジョブの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeJobsByUserIdAsync(
             DescribeJobsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeJobsByUserIdResult>> callback
     ) {
-        DescribeJobsByUserIdTask task = new DescribeJobsByUserIdTask(request, callback, DescribeJobsByUserIdResult.class);
+        DescribeJobsByUserIdTask task = new DescribeJobsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ジョブの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeJobsByUserIdResult describeJobsByUserId(
             DescribeJobsByUserIdRequest request
     ) {
@@ -727,15 +622,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public GetJobByUserIdTask(
             GetJobByUserIdRequest request,
-            AsyncAction<AsyncResult<GetJobByUserIdResult>> userCallback,
-            Class<GetJobByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetJobByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetJobByUserIdResult parse(JsonNode data) {
+            return GetJobByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -746,9 +644,9 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/job/{jobName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{jobName}", this.request.getJobName() == null|| this.request.getJobName().length() == 0 ? "null" : String.valueOf(this.request.getJobName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{jobName}", this.request.getJobName() == null || this.request.getJobName().length() == 0 ? "null" : String.valueOf(this.request.getJobName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -765,9 +663,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -775,25 +670,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ジョブを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getJobByUserIdAsync(
             GetJobByUserIdRequest request,
             AsyncAction<AsyncResult<GetJobByUserIdResult>> callback
     ) {
-        GetJobByUserIdTask task = new GetJobByUserIdTask(request, callback, GetJobByUserIdResult.class);
+        GetJobByUserIdTask task = new GetJobByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ジョブを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetJobByUserIdResult getJobByUserId(
             GetJobByUserIdRequest request
     ) {
@@ -820,15 +704,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public PushByUserIdTask(
             PushByUserIdRequest request,
-            AsyncAction<AsyncResult<PushByUserIdResult>> userCallback,
-            Class<PushByUserIdResult> clazz
+            AsyncAction<AsyncResult<PushByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PushByUserIdResult parse(JsonNode data) {
+            return PushByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -839,28 +726,20 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/job";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getJobs() != null) {
-                JSONArray array = new JSONArray();
-                for(JobEntry item : this.request.getJobs())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("jobs", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("jobs", request.getJobs() == null ? new ArrayList<JobEntry>() :
+                        request.getJobs().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -871,9 +750,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -881,25 +757,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ユーザIDを指定してジョブを登録<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void pushByUserIdAsync(
             PushByUserIdRequest request,
             AsyncAction<AsyncResult<PushByUserIdResult>> callback
     ) {
-        PushByUserIdTask task = new PushByUserIdTask(request, callback, PushByUserIdResult.class);
+        PushByUserIdTask task = new PushByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してジョブを登録<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PushByUserIdResult pushByUserId(
             PushByUserIdRequest request
     ) {
@@ -926,15 +791,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public RunTask(
             RunRequest request,
-            AsyncAction<AsyncResult<RunResult>> userCallback,
-            Class<RunResult> clazz
+            AsyncAction<AsyncResult<RunResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RunResult parse(JsonNode data) {
+            return RunResult.fromJson(data);
         }
 
         @Override
@@ -945,15 +813,13 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/job/run";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -967,9 +833,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -977,25 +840,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ジョブを実行<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void runAsync(
             RunRequest request,
             AsyncAction<AsyncResult<RunResult>> callback
     ) {
-        RunTask task = new RunTask(request, callback, RunResult.class);
+        RunTask task = new RunTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ジョブを実行<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RunResult run(
             RunRequest request
     ) {
@@ -1022,15 +874,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public RunByUserIdTask(
             RunByUserIdRequest request,
-            AsyncAction<AsyncResult<RunByUserIdResult>> userCallback,
-            Class<RunByUserIdResult> clazz
+            AsyncAction<AsyncResult<RunByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RunByUserIdResult parse(JsonNode data) {
+            return RunByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1041,16 +896,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/job/run";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1061,9 +914,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1071,25 +921,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ユーザIDを指定してジョブを実行<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void runByUserIdAsync(
             RunByUserIdRequest request,
             AsyncAction<AsyncResult<RunByUserIdResult>> callback
     ) {
-        RunByUserIdTask task = new RunByUserIdTask(request, callback, RunByUserIdResult.class);
+        RunByUserIdTask task = new RunByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してジョブを実行<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RunByUserIdResult runByUserId(
             RunByUserIdRequest request
     ) {
@@ -1116,15 +955,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public DeleteJobByUserIdTask(
             DeleteJobByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteJobByUserIdResult>> userCallback,
-            Class<DeleteJobByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteJobByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteJobByUserIdResult parse(JsonNode data) {
+            return DeleteJobByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1135,9 +977,9 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/job/{jobName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{jobName}", this.request.getJobName() == null|| this.request.getJobName().length() == 0 ? "null" : String.valueOf(this.request.getJobName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{jobName}", this.request.getJobName() == null || this.request.getJobName().length() == 0 ? "null" : String.valueOf(this.request.getJobName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1154,9 +996,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1164,25 +1003,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * ジョブを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteJobByUserIdAsync(
             DeleteJobByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteJobByUserIdResult>> callback
     ) {
-        DeleteJobByUserIdTask task = new DeleteJobByUserIdTask(request, callback, DeleteJobByUserIdResult.class);
+        DeleteJobByUserIdTask task = new DeleteJobByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ジョブを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteJobByUserIdResult deleteJobByUserId(
             DeleteJobByUserIdRequest request
     ) {
@@ -1209,15 +1037,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public PushByStampSheetTask(
             PushByStampSheetRequest request,
-            AsyncAction<AsyncResult<PushByStampSheetResult>> userCallback,
-            Class<PushByStampSheetResult> clazz
+            AsyncAction<AsyncResult<PushByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PushByStampSheetResult parse(JsonNode data) {
+            return PushByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -1228,19 +1059,13 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/job";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1251,9 +1076,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1261,25 +1083,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * スタンプシートでジョブを登録<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void pushByStampSheetAsync(
             PushByStampSheetRequest request,
             AsyncAction<AsyncResult<PushByStampSheetResult>> callback
     ) {
-        PushByStampSheetTask task = new PushByStampSheetTask(request, callback, PushByStampSheetResult.class);
+        PushByStampSheetTask task = new PushByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでジョブを登録<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PushByStampSheetResult pushByStampSheet(
             PushByStampSheetRequest request
     ) {
@@ -1306,15 +1117,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public DescribeDeadLetterJobsByUserIdTask(
             DescribeDeadLetterJobsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeDeadLetterJobsByUserIdResult>> userCallback,
-            Class<DescribeDeadLetterJobsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeDeadLetterJobsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeDeadLetterJobsByUserIdResult parse(JsonNode data) {
+            return DescribeDeadLetterJobsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1325,8 +1139,8 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/dead";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1349,9 +1163,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1359,25 +1170,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * デッドレタージョブの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeDeadLetterJobsByUserIdAsync(
             DescribeDeadLetterJobsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeDeadLetterJobsByUserIdResult>> callback
     ) {
-        DescribeDeadLetterJobsByUserIdTask task = new DescribeDeadLetterJobsByUserIdTask(request, callback, DescribeDeadLetterJobsByUserIdResult.class);
+        DescribeDeadLetterJobsByUserIdTask task = new DescribeDeadLetterJobsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * デッドレタージョブの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeDeadLetterJobsByUserIdResult describeDeadLetterJobsByUserId(
             DescribeDeadLetterJobsByUserIdRequest request
     ) {
@@ -1404,15 +1204,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public GetDeadLetterJobByUserIdTask(
             GetDeadLetterJobByUserIdRequest request,
-            AsyncAction<AsyncResult<GetDeadLetterJobByUserIdResult>> userCallback,
-            Class<GetDeadLetterJobByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetDeadLetterJobByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetDeadLetterJobByUserIdResult parse(JsonNode data) {
+            return GetDeadLetterJobByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1423,9 +1226,9 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/dead/{deadLetterJobName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{deadLetterJobName}", this.request.getDeadLetterJobName() == null|| this.request.getDeadLetterJobName().length() == 0 ? "null" : String.valueOf(this.request.getDeadLetterJobName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{deadLetterJobName}", this.request.getDeadLetterJobName() == null || this.request.getDeadLetterJobName().length() == 0 ? "null" : String.valueOf(this.request.getDeadLetterJobName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1442,9 +1245,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1452,25 +1252,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * デッドレタージョブを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getDeadLetterJobByUserIdAsync(
             GetDeadLetterJobByUserIdRequest request,
             AsyncAction<AsyncResult<GetDeadLetterJobByUserIdResult>> callback
     ) {
-        GetDeadLetterJobByUserIdTask task = new GetDeadLetterJobByUserIdTask(request, callback, GetDeadLetterJobByUserIdResult.class);
+        GetDeadLetterJobByUserIdTask task = new GetDeadLetterJobByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * デッドレタージョブを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetDeadLetterJobByUserIdResult getDeadLetterJobByUserId(
             GetDeadLetterJobByUserIdRequest request
     ) {
@@ -1497,15 +1286,18 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
 
         public DeleteDeadLetterJobByUserIdTask(
             DeleteDeadLetterJobByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteDeadLetterJobByUserIdResult>> userCallback,
-            Class<DeleteDeadLetterJobByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteDeadLetterJobByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteDeadLetterJobByUserIdResult parse(JsonNode data) {
+            return DeleteDeadLetterJobByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1516,9 +1308,9 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/dead/{deadLetterJobName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{deadLetterJobName}", this.request.getDeadLetterJobName() == null|| this.request.getDeadLetterJobName().length() == 0 ? "null" : String.valueOf(this.request.getDeadLetterJobName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{deadLetterJobName}", this.request.getDeadLetterJobName() == null || this.request.getDeadLetterJobName().length() == 0 ? "null" : String.valueOf(this.request.getDeadLetterJobName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1535,9 +1327,6 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1545,25 +1334,14 @@ public class Gs2JobQueueRestClient extends AbstractGs2Client<Gs2JobQueueRestClie
         }
     }
 
-    /**
-     * デッドレタージョブを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteDeadLetterJobByUserIdAsync(
             DeleteDeadLetterJobByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteDeadLetterJobByUserIdResult>> callback
     ) {
-        DeleteDeadLetterJobByUserIdTask task = new DeleteDeadLetterJobByUserIdTask(request, callback, DeleteDeadLetterJobByUserIdResult.class);
+        DeleteDeadLetterJobByUserIdTask task = new DeleteDeadLetterJobByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * デッドレタージョブを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteDeadLetterJobByUserIdResult deleteDeadLetterJobByUserId(
             DeleteDeadLetterJobByUserIdRequest request
     ) {

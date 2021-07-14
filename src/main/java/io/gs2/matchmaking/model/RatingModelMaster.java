@@ -16,253 +16,146 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * レーティングモデルマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RatingModelMaster implements IModel, Serializable, Comparable<RatingModelMaster> {
-	/** レーティングモデルマスター */
-	protected String ratingModelId;
+	private String ratingModelId;
+	private String name;
+	private String metadata;
+	private String description;
+	private Integer volatility;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * レーティングモデルマスターを取得
-	 *
-	 * @return レーティングモデルマスター
-	 */
 	public String getRatingModelId() {
 		return ratingModelId;
 	}
 
-	/**
-	 * レーティングモデルマスターを設定
-	 *
-	 * @param ratingModelId レーティングモデルマスター
-	 */
 	public void setRatingModelId(String ratingModelId) {
 		this.ratingModelId = ratingModelId;
 	}
 
-	/**
-	 * レーティングモデルマスターを設定
-	 *
-	 * @param ratingModelId レーティングモデルマスター
-	 * @return this
-	 */
 	public RatingModelMaster withRatingModelId(String ratingModelId) {
 		this.ratingModelId = ratingModelId;
 		return this;
 	}
-	/** レーティングの種類名 */
-	protected String name;
 
-	/**
-	 * レーティングの種類名を取得
-	 *
-	 * @return レーティングの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * レーティングの種類名を設定
-	 *
-	 * @param name レーティングの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * レーティングの種類名を設定
-	 *
-	 * @param name レーティングの種類名
-	 * @return this
-	 */
 	public RatingModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** レーティングの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * レーティングの種類のメタデータを取得
-	 *
-	 * @return レーティングの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * レーティングの種類のメタデータを設定
-	 *
-	 * @param metadata レーティングの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * レーティングの種類のメタデータを設定
-	 *
-	 * @param metadata レーティングの種類のメタデータ
-	 * @return this
-	 */
 	public RatingModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** レーティングモデルマスターの説明 */
-	protected String description;
 
-	/**
-	 * レーティングモデルマスターの説明を取得
-	 *
-	 * @return レーティングモデルマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * レーティングモデルマスターの説明を設定
-	 *
-	 * @param description レーティングモデルマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * レーティングモデルマスターの説明を設定
-	 *
-	 * @param description レーティングモデルマスターの説明
-	 * @return this
-	 */
 	public RatingModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** レート値の変動の大きさ */
-	protected Integer volatility;
 
-	/**
-	 * レート値の変動の大きさを取得
-	 *
-	 * @return レート値の変動の大きさ
-	 */
 	public Integer getVolatility() {
 		return volatility;
 	}
 
-	/**
-	 * レート値の変動の大きさを設定
-	 *
-	 * @param volatility レート値の変動の大きさ
-	 */
 	public void setVolatility(Integer volatility) {
 		this.volatility = volatility;
 	}
 
-	/**
-	 * レート値の変動の大きさを設定
-	 *
-	 * @param volatility レート値の変動の大きさ
-	 * @return this
-	 */
 	public RatingModelMaster withVolatility(Integer volatility) {
 		this.volatility = volatility;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public RatingModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public RatingModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("ratingModelId", this.getRatingModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("description", this.getDescription())
-            .put("volatility", this.getVolatility())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static RatingModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new RatingModelMaster()
+            .withRatingModelId(data.get("ratingModelId") == null || data.get("ratingModelId").isNull() ? null : data.get("ratingModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withVolatility(data.get("volatility") == null || data.get("volatility").isNull() ? null : data.get("volatility").intValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("ratingModelId", getRatingModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("volatility", getVolatility());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(RatingModelMaster o) {
 		return ratingModelId.compareTo(o.ratingModelId);

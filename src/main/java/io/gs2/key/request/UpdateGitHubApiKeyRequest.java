@@ -16,178 +16,110 @@
 
 package io.gs2.key.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.key.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * GitHub のAPIキーを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateGitHubApiKeyRequest extends Gs2BasicRequest<UpdateGitHubApiKeyRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return GitHub のAPIキーを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName GitHub のAPIキーを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName GitHub のAPIキーを更新
-     * @return this
-     */
-    public UpdateGitHubApiKeyRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** GitHub APIキー名 */
     private String apiKeyName;
-
-    /**
-     * GitHub APIキー名を取得
-     *
-     * @return GitHub のAPIキーを更新
-     */
-    public String getApiKeyName() {
-        return apiKeyName;
-    }
-
-    /**
-     * GitHub APIキー名を設定
-     *
-     * @param apiKeyName GitHub のAPIキーを更新
-     */
-    public void setApiKeyName(String apiKeyName) {
-        this.apiKeyName = apiKeyName;
-    }
-
-    /**
-     * GitHub APIキー名を設定
-     *
-     * @param apiKeyName GitHub のAPIキーを更新
-     * @return this
-     */
-    public UpdateGitHubApiKeyRequest withApiKeyName(String apiKeyName) {
-        setApiKeyName(apiKeyName);
-        return this;
-    }
-
-    /** 説明文 */
     private String description;
-
-    /**
-     * 説明文を取得
-     *
-     * @return GitHub のAPIキーを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description GitHub のAPIキーを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description GitHub のAPIキーを更新
-     * @return this
-     */
-    public UpdateGitHubApiKeyRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** APIキー */
     private String apiKey;
-
-    /**
-     * APIキーを取得
-     *
-     * @return GitHub のAPIキーを更新
-     */
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    /**
-     * APIキーを設定
-     *
-     * @param apiKey GitHub のAPIキーを更新
-     */
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    /**
-     * APIキーを設定
-     *
-     * @param apiKey GitHub のAPIキーを更新
-     * @return this
-     */
-    public UpdateGitHubApiKeyRequest withApiKey(String apiKey) {
-        setApiKey(apiKey);
-        return this;
-    }
-
-    /** APIキーの暗号化に使用する暗号鍵名 */
     private String encryptionKeyName;
 
-    /**
-     * APIキーの暗号化に使用する暗号鍵名を取得
-     *
-     * @return GitHub のAPIキーを更新
-     */
-    public String getEncryptionKeyName() {
-        return encryptionKeyName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateGitHubApiKeyRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getApiKeyName() {
+		return apiKeyName;
+	}
+
+	public void setApiKeyName(String apiKeyName) {
+		this.apiKeyName = apiKeyName;
+	}
+
+	public UpdateGitHubApiKeyRequest withApiKeyName(String apiKeyName) {
+		this.apiKeyName = apiKeyName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateGitHubApiKeyRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	public UpdateGitHubApiKeyRequest withApiKey(String apiKey) {
+		this.apiKey = apiKey;
+		return this;
+	}
+
+	public String getEncryptionKeyName() {
+		return encryptionKeyName;
+	}
+
+	public void setEncryptionKeyName(String encryptionKeyName) {
+		this.encryptionKeyName = encryptionKeyName;
+	}
+
+	public UpdateGitHubApiKeyRequest withEncryptionKeyName(String encryptionKeyName) {
+		this.encryptionKeyName = encryptionKeyName;
+		return this;
+	}
+
+    public static UpdateGitHubApiKeyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateGitHubApiKeyRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withApiKeyName(data.get("apiKeyName") == null || data.get("apiKeyName").isNull() ? null : data.get("apiKeyName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withApiKey(data.get("apiKey") == null || data.get("apiKey").isNull() ? null : data.get("apiKey").asText())
+            .withEncryptionKeyName(data.get("encryptionKeyName") == null || data.get("encryptionKeyName").isNull() ? null : data.get("encryptionKeyName").asText());
     }
 
-    /**
-     * APIキーの暗号化に使用する暗号鍵名を設定
-     *
-     * @param encryptionKeyName GitHub のAPIキーを更新
-     */
-    public void setEncryptionKeyName(String encryptionKeyName) {
-        this.encryptionKeyName = encryptionKeyName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("apiKeyName", getApiKeyName());
+                put("description", getDescription());
+                put("apiKey", getApiKey());
+                put("encryptionKeyName", getEncryptionKeyName());
+            }}
+        );
     }
-
-    /**
-     * APIキーの暗号化に使用する暗号鍵名を設定
-     *
-     * @param encryptionKeyName GitHub のAPIキーを更新
-     * @return this
-     */
-    public UpdateGitHubApiKeyRequest withEncryptionKeyName(String encryptionKeyName) {
-        setEncryptionKeyName(encryptionKeyName);
-        return this;
-    }
-
 }

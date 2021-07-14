@@ -16,210 +16,110 @@
 
 package io.gs2.experience.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.experience.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ランクキャップを設定 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SetRankCapByUserIdRequest extends Gs2BasicRequest<SetRankCapByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ランクキャップを設定
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ランクキャップを設定
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ランクキャップを設定
-     * @return this
-     */
-    public SetRankCapByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ランクキャップを設定
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ランクキャップを設定
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ランクキャップを設定
-     * @return this
-     */
-    public SetRankCapByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 経験値の種類の名前 */
     private String experienceName;
-
-    /**
-     * 経験値の種類の名前を取得
-     *
-     * @return ランクキャップを設定
-     */
-    public String getExperienceName() {
-        return experienceName;
-    }
-
-    /**
-     * 経験値の種類の名前を設定
-     *
-     * @param experienceName ランクキャップを設定
-     */
-    public void setExperienceName(String experienceName) {
-        this.experienceName = experienceName;
-    }
-
-    /**
-     * 経験値の種類の名前を設定
-     *
-     * @param experienceName ランクキャップを設定
-     * @return this
-     */
-    public SetRankCapByUserIdRequest withExperienceName(String experienceName) {
-        setExperienceName(experienceName);
-        return this;
-    }
-
-    /** プロパティID */
     private String propertyId;
-
-    /**
-     * プロパティIDを取得
-     *
-     * @return ランクキャップを設定
-     */
-    public String getPropertyId() {
-        return propertyId;
-    }
-
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ランクキャップを設定
-     */
-    public void setPropertyId(String propertyId) {
-        this.propertyId = propertyId;
-    }
-
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ランクキャップを設定
-     * @return this
-     */
-    public SetRankCapByUserIdRequest withPropertyId(String propertyId) {
-        setPropertyId(propertyId);
-        return this;
-    }
-
-    /** ランクキャップ */
     private Long rankCapValue;
 
-    /**
-     * ランクキャップを取得
-     *
-     * @return ランクキャップを設定
-     */
-    public Long getRankCapValue() {
-        return rankCapValue;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public SetRankCapByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public SetRankCapByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getExperienceName() {
+		return experienceName;
+	}
+
+	public void setExperienceName(String experienceName) {
+		this.experienceName = experienceName;
+	}
+
+	public SetRankCapByUserIdRequest withExperienceName(String experienceName) {
+		this.experienceName = experienceName;
+		return this;
+	}
+
+	public String getPropertyId() {
+		return propertyId;
+	}
+
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+	}
+
+	public SetRankCapByUserIdRequest withPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+		return this;
+	}
+
+	public Long getRankCapValue() {
+		return rankCapValue;
+	}
+
+	public void setRankCapValue(Long rankCapValue) {
+		this.rankCapValue = rankCapValue;
+	}
+
+	public SetRankCapByUserIdRequest withRankCapValue(Long rankCapValue) {
+		this.rankCapValue = rankCapValue;
+		return this;
+	}
+
+    public static SetRankCapByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SetRankCapByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
+            .withRankCapValue(data.get("rankCapValue") == null || data.get("rankCapValue").isNull() ? null : data.get("rankCapValue").longValue());
     }
 
-    /**
-     * ランクキャップを設定
-     *
-     * @param rankCapValue ランクキャップを設定
-     */
-    public void setRankCapValue(Long rankCapValue) {
-        this.rankCapValue = rankCapValue;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("experienceName", getExperienceName());
+                put("propertyId", getPropertyId());
+                put("rankCapValue", getRankCapValue());
+            }}
+        );
     }
-
-    /**
-     * ランクキャップを設定
-     *
-     * @param rankCapValue ランクキャップを設定
-     * @return this
-     */
-    public SetRankCapByUserIdRequest withRankCapValue(Long rankCapValue) {
-        setRankCapValue(rankCapValue);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ランクキャップを設定
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ランクキャップを設定
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ランクキャップを設定
-     * @return this
-     */
-    public SetRankCapByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

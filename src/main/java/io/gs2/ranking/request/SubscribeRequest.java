@@ -16,178 +16,94 @@
 
 package io.gs2.ranking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.ranking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを購読 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SubscribeRequest extends Gs2BasicRequest<SubscribeRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを購読
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを購読
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを購読
-     * @return this
-     */
-    public SubscribeRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** カテゴリ名 */
     private String categoryName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return ユーザIDを購読
-     */
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param categoryName ユーザIDを購読
-     */
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param categoryName ユーザIDを購読
-     * @return this
-     */
-    public SubscribeRequest withCategoryName(String categoryName) {
-        setCategoryName(categoryName);
-        return this;
-    }
-
-    /** 購読されるユーザID */
+    private String accessToken;
     private String targetUserId;
 
-    /**
-     * 購読されるユーザIDを取得
-     *
-     * @return ユーザIDを購読
-     */
-    public String getTargetUserId() {
-        return targetUserId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public SubscribeRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public SubscribeRequest withCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public SubscribeRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getTargetUserId() {
+		return targetUserId;
+	}
+
+	public void setTargetUserId(String targetUserId) {
+		this.targetUserId = targetUserId;
+	}
+
+	public SubscribeRequest withTargetUserId(String targetUserId) {
+		this.targetUserId = targetUserId;
+		return this;
+	}
+
+    public static SubscribeRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SubscribeRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText());
     }
 
-    /**
-     * 購読されるユーザIDを設定
-     *
-     * @param targetUserId ユーザIDを購読
-     */
-    public void setTargetUserId(String targetUserId) {
-        this.targetUserId = targetUserId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("categoryName", getCategoryName());
+                put("accessToken", getAccessToken());
+                put("targetUserId", getTargetUserId());
+            }}
+        );
     }
-
-    /**
-     * 購読されるユーザIDを設定
-     *
-     * @param targetUserId ユーザIDを購読
-     * @return this
-     */
-    public SubscribeRequest withTargetUserId(String targetUserId) {
-        setTargetUserId(targetUserId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを購読
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを購読
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを購読
-     * @return this
-     */
-    public SubscribeRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public SubscribeRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

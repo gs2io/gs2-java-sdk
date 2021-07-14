@@ -16,82 +16,62 @@
 
 package io.gs2.schedule.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.schedule.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * イベントを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetRawEventRequest extends Gs2BasicRequest<GetRawEventRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return イベントを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName イベントを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName イベントを取得
-     * @return this
-     */
-    public GetRawEventRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** イベントの種類名 */
     private String eventName;
 
-    /**
-     * イベントの種類名を取得
-     *
-     * @return イベントを取得
-     */
-    public String getEventName() {
-        return eventName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetRawEventRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	public GetRawEventRequest withEventName(String eventName) {
+		this.eventName = eventName;
+		return this;
+	}
+
+    public static GetRawEventRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetRawEventRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withEventName(data.get("eventName") == null || data.get("eventName").isNull() ? null : data.get("eventName").asText());
     }
 
-    /**
-     * イベントの種類名を設定
-     *
-     * @param eventName イベントを取得
-     */
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("eventName", getEventName());
+            }}
+        );
     }
-
-    /**
-     * イベントの種類名を設定
-     *
-     * @param eventName イベントを取得
-     * @return this
-     */
-    public GetRawEventRequest withEventName(String eventName) {
-        setEventName(eventName);
-        return this;
-    }
-
 }

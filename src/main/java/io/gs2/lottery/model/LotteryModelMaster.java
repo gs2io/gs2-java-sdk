@@ -16,349 +16,194 @@
 
 package io.gs2.lottery.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 抽選の種類マスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LotteryModelMaster implements IModel, Serializable, Comparable<LotteryModelMaster> {
-	/** 抽選の種類マスター */
-	protected String lotteryModelId;
+	private String lotteryModelId;
+	private String name;
+	private String metadata;
+	private String description;
+	private String mode;
+	private String method;
+	private String prizeTableName;
+	private String choicePrizeTableScriptId;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 抽選の種類マスターを取得
-	 *
-	 * @return 抽選の種類マスター
-	 */
 	public String getLotteryModelId() {
 		return lotteryModelId;
 	}
 
-	/**
-	 * 抽選の種類マスターを設定
-	 *
-	 * @param lotteryModelId 抽選の種類マスター
-	 */
 	public void setLotteryModelId(String lotteryModelId) {
 		this.lotteryModelId = lotteryModelId;
 	}
 
-	/**
-	 * 抽選の種類マスターを設定
-	 *
-	 * @param lotteryModelId 抽選の種類マスター
-	 * @return this
-	 */
 	public LotteryModelMaster withLotteryModelId(String lotteryModelId) {
 		this.lotteryModelId = lotteryModelId;
 		return this;
 	}
-	/** 抽選モデルの種類名 */
-	protected String name;
 
-	/**
-	 * 抽選モデルの種類名を取得
-	 *
-	 * @return 抽選モデルの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 抽選モデルの種類名を設定
-	 *
-	 * @param name 抽選モデルの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 抽選モデルの種類名を設定
-	 *
-	 * @param name 抽選モデルの種類名
-	 * @return this
-	 */
 	public LotteryModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 抽選モデルの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * 抽選モデルの種類のメタデータを取得
-	 *
-	 * @return 抽選モデルの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 抽選モデルの種類のメタデータを設定
-	 *
-	 * @param metadata 抽選モデルの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 抽選モデルの種類のメタデータを設定
-	 *
-	 * @param metadata 抽選モデルの種類のメタデータ
-	 * @return this
-	 */
 	public LotteryModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 抽選の種類マスターの説明 */
-	protected String description;
 
-	/**
-	 * 抽選の種類マスターの説明を取得
-	 *
-	 * @return 抽選の種類マスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 抽選の種類マスターの説明を設定
-	 *
-	 * @param description 抽選の種類マスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 抽選の種類マスターの説明を設定
-	 *
-	 * @param description 抽選の種類マスターの説明
-	 * @return this
-	 */
 	public LotteryModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 抽選モード */
-	protected String mode;
 
-	/**
-	 * 抽選モードを取得
-	 *
-	 * @return 抽選モード
-	 */
 	public String getMode() {
 		return mode;
 	}
 
-	/**
-	 * 抽選モードを設定
-	 *
-	 * @param mode 抽選モード
-	 */
 	public void setMode(String mode) {
 		this.mode = mode;
 	}
 
-	/**
-	 * 抽選モードを設定
-	 *
-	 * @param mode 抽選モード
-	 * @return this
-	 */
 	public LotteryModelMaster withMode(String mode) {
 		this.mode = mode;
 		return this;
 	}
-	/** 抽選方法 */
-	protected String method;
 
-	/**
-	 * 抽選方法を取得
-	 *
-	 * @return 抽選方法
-	 */
 	public String getMethod() {
 		return method;
 	}
 
-	/**
-	 * 抽選方法を設定
-	 *
-	 * @param method 抽選方法
-	 */
 	public void setMethod(String method) {
 		this.method = method;
 	}
 
-	/**
-	 * 抽選方法を設定
-	 *
-	 * @param method 抽選方法
-	 * @return this
-	 */
 	public LotteryModelMaster withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-	/** 景品テーブルの名前 */
-	protected String prizeTableName;
 
-	/**
-	 * 景品テーブルの名前を取得
-	 *
-	 * @return 景品テーブルの名前
-	 */
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
 
-	/**
-	 * 景品テーブルの名前を設定
-	 *
-	 * @param prizeTableName 景品テーブルの名前
-	 */
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
 
-	/**
-	 * 景品テーブルの名前を設定
-	 *
-	 * @param prizeTableName 景品テーブルの名前
-	 * @return this
-	 */
 	public LotteryModelMaster withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-	/** 抽選テーブルを確定するスクリプト のGRN */
-	protected String choicePrizeTableScriptId;
 
-	/**
-	 * 抽選テーブルを確定するスクリプト のGRNを取得
-	 *
-	 * @return 抽選テーブルを確定するスクリプト のGRN
-	 */
 	public String getChoicePrizeTableScriptId() {
 		return choicePrizeTableScriptId;
 	}
 
-	/**
-	 * 抽選テーブルを確定するスクリプト のGRNを設定
-	 *
-	 * @param choicePrizeTableScriptId 抽選テーブルを確定するスクリプト のGRN
-	 */
 	public void setChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 	}
 
-	/**
-	 * 抽選テーブルを確定するスクリプト のGRNを設定
-	 *
-	 * @param choicePrizeTableScriptId 抽選テーブルを確定するスクリプト のGRN
-	 * @return this
-	 */
 	public LotteryModelMaster withChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public LotteryModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public LotteryModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("lotteryModelId", this.getLotteryModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("description", this.getDescription())
-            .put("mode", this.getMode())
-            .put("method", this.getMethod())
-            .put("prizeTableName", this.getPrizeTableName())
-            .put("choicePrizeTableScriptId", this.getChoicePrizeTableScriptId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static LotteryModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LotteryModelMaster()
+            .withLotteryModelId(data.get("lotteryModelId") == null || data.get("lotteryModelId").isNull() ? null : data.get("lotteryModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMode(data.get("mode") == null || data.get("mode").isNull() ? null : data.get("mode").asText())
+            .withMethod(data.get("method") == null || data.get("method").isNull() ? null : data.get("method").asText())
+            .withPrizeTableName(data.get("prizeTableName") == null || data.get("prizeTableName").isNull() ? null : data.get("prizeTableName").asText())
+            .withChoicePrizeTableScriptId(data.get("choicePrizeTableScriptId") == null || data.get("choicePrizeTableScriptId").isNull() ? null : data.get("choicePrizeTableScriptId").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("lotteryModelId", getLotteryModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("mode", getMode());
+                put("method", getMethod());
+                put("prizeTableName", getPrizeTableName());
+                put("choicePrizeTableScriptId", getChoicePrizeTableScriptId());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(LotteryModelMaster o) {
 		return lotteryModelId.compareTo(o.lotteryModelId);

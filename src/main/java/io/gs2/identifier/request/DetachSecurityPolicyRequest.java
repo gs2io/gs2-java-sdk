@@ -16,82 +16,62 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 割り当てられたセキュリティポリシーをユーザーから外します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DetachSecurityPolicyRequest extends Gs2BasicRequest<DetachSecurityPolicyRequest> {
-
-    /** ユーザー名 */
     private String userName;
-
-    /**
-     * ユーザー名を取得
-     *
-     * @return 割り当てられたセキュリティポリシーをユーザーから外します
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName 割り当てられたセキュリティポリシーをユーザーから外します
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName 割り当てられたセキュリティポリシーをユーザーから外します
-     * @return this
-     */
-    public DetachSecurityPolicyRequest withUserName(String userName) {
-        setUserName(userName);
-        return this;
-    }
-
-    /** 剥奪するセキュリティポリシーのGRN */
     private String securityPolicyId;
 
-    /**
-     * 剥奪するセキュリティポリシーのGRNを取得
-     *
-     * @return 割り当てられたセキュリティポリシーをユーザーから外します
-     */
-    public String getSecurityPolicyId() {
-        return securityPolicyId;
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public DetachSecurityPolicyRequest withUserName(String userName) {
+		this.userName = userName;
+		return this;
+	}
+
+	public String getSecurityPolicyId() {
+		return securityPolicyId;
+	}
+
+	public void setSecurityPolicyId(String securityPolicyId) {
+		this.securityPolicyId = securityPolicyId;
+	}
+
+	public DetachSecurityPolicyRequest withSecurityPolicyId(String securityPolicyId) {
+		this.securityPolicyId = securityPolicyId;
+		return this;
+	}
+
+    public static DetachSecurityPolicyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DetachSecurityPolicyRequest()
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withSecurityPolicyId(data.get("securityPolicyId") == null || data.get("securityPolicyId").isNull() ? null : data.get("securityPolicyId").asText());
     }
 
-    /**
-     * 剥奪するセキュリティポリシーのGRNを設定
-     *
-     * @param securityPolicyId 割り当てられたセキュリティポリシーをユーザーから外します
-     */
-    public void setSecurityPolicyId(String securityPolicyId) {
-        this.securityPolicyId = securityPolicyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userName", getUserName());
+                put("securityPolicyId", getSecurityPolicyId());
+            }}
+        );
     }
-
-    /**
-     * 剥奪するセキュリティポリシーのGRNを設定
-     *
-     * @param securityPolicyId 割り当てられたセキュリティポリシーをユーザーから外します
-     * @return this
-     */
-    public DetachSecurityPolicyRequest withSecurityPolicyId(String securityPolicyId) {
-        setSecurityPolicyId(securityPolicyId);
-        return this;
-    }
-
 }

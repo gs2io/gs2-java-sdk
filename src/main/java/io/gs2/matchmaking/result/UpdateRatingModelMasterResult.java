@@ -16,39 +16,48 @@
 
 package io.gs2.matchmaking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.RatingModelMaster;
 
-/**
- * レーティングモデルマスターを更新 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateRatingModelMasterResult implements IResult, Serializable {
-	/** 更新したレーティングモデルマスター */
-	private RatingModelMaster item;
+    private RatingModelMaster item;
 
-	/**
-	 * 更新したレーティングモデルマスターを取得
-	 *
-	 * @return レーティングモデルマスターを更新
-	 */
 	public RatingModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新したレーティングモデルマスターを設定
-	 *
-	 * @param item レーティングモデルマスターを更新
-	 */
 	public void setItem(RatingModelMaster item) {
 		this.item = item;
 	}
+
+	public UpdateRatingModelMasterResult withItem(RatingModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateRatingModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateRatingModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RatingModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

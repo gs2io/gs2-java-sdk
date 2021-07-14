@@ -16,146 +16,78 @@
 
 package io.gs2.friend.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.friend.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * アンフォロー のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UnfollowRequest extends Gs2BasicRequest<UnfollowRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return アンフォロー
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アンフォロー
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アンフォロー
-     * @return this
-     */
-    public UnfollowRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** フォローされているユーザID */
+    private String accessToken;
     private String targetUserId;
 
-    /**
-     * フォローされているユーザIDを取得
-     *
-     * @return アンフォロー
-     */
-    public String getTargetUserId() {
-        return targetUserId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UnfollowRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public UnfollowRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getTargetUserId() {
+		return targetUserId;
+	}
+
+	public void setTargetUserId(String targetUserId) {
+		this.targetUserId = targetUserId;
+	}
+
+	public UnfollowRequest withTargetUserId(String targetUserId) {
+		this.targetUserId = targetUserId;
+		return this;
+	}
+
+    public static UnfollowRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UnfollowRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText());
     }
 
-    /**
-     * フォローされているユーザIDを設定
-     *
-     * @param targetUserId アンフォロー
-     */
-    public void setTargetUserId(String targetUserId) {
-        this.targetUserId = targetUserId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("accessToken", getAccessToken());
+                put("targetUserId", getTargetUserId());
+            }}
+        );
     }
-
-    /**
-     * フォローされているユーザIDを設定
-     *
-     * @param targetUserId アンフォロー
-     * @return this
-     */
-    public UnfollowRequest withTargetUserId(String targetUserId) {
-        setTargetUserId(targetUserId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return アンフォロー
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider アンフォロー
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider アンフォロー
-     * @return this
-     */
-    public UnfollowRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public UnfollowRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

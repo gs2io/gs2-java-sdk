@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.schedule;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.schedule.request.*;
 import io.gs2.schedule.result.*;
-import io.gs2.schedule.model.*;
+import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClient> {
 
-/**
- * GS2 Schedule API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2ScheduleRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,26 +152,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -206,25 +177,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -251,15 +211,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -270,7 +233,7 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -294,25 +257,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -339,15 +291,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -358,7 +313,7 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -382,25 +337,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -427,15 +371,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -446,25 +393,15 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -482,25 +419,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -527,15 +453,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -546,7 +475,7 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -570,25 +499,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -615,15 +533,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DescribeEventMastersTask(
             DescribeEventMastersRequest request,
-            AsyncAction<AsyncResult<DescribeEventMastersResult>> userCallback,
-            Class<DescribeEventMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeEventMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeEventMastersResult parse(JsonNode data) {
+            return DescribeEventMastersResult.fromJson(data);
         }
 
         @Override
@@ -634,7 +555,7 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/event";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -664,25 +585,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * イベントマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeEventMastersAsync(
             DescribeEventMastersRequest request,
             AsyncAction<AsyncResult<DescribeEventMastersResult>> callback
     ) {
-        DescribeEventMastersTask task = new DescribeEventMastersTask(request, callback, DescribeEventMastersResult.class);
+        DescribeEventMastersTask task = new DescribeEventMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * イベントマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeEventMastersResult describeEventMasters(
             DescribeEventMastersRequest request
     ) {
@@ -709,15 +619,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public CreateEventMasterTask(
             CreateEventMasterRequest request,
-            AsyncAction<AsyncResult<CreateEventMasterResult>> userCallback,
-            Class<CreateEventMasterResult> clazz
+            AsyncAction<AsyncResult<CreateEventMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateEventMasterResult parse(JsonNode data) {
+            return CreateEventMasterResult.fromJson(data);
         }
 
         @Override
@@ -728,60 +641,28 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/event";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getScheduleType() != null) {
-                json.put("scheduleType", this.request.getScheduleType());
-            }
-            if (this.request.getAbsoluteBegin() != null) {
-                json.put("absoluteBegin", this.request.getAbsoluteBegin());
-            }
-            if (this.request.getAbsoluteEnd() != null) {
-                json.put("absoluteEnd", this.request.getAbsoluteEnd());
-            }
-            if (this.request.getRepeatType() != null) {
-                json.put("repeatType", this.request.getRepeatType());
-            }
-            if (this.request.getRepeatBeginDayOfMonth() != null) {
-                json.put("repeatBeginDayOfMonth", this.request.getRepeatBeginDayOfMonth());
-            }
-            if (this.request.getRepeatEndDayOfMonth() != null) {
-                json.put("repeatEndDayOfMonth", this.request.getRepeatEndDayOfMonth());
-            }
-            if (this.request.getRepeatBeginDayOfWeek() != null) {
-                json.put("repeatBeginDayOfWeek", this.request.getRepeatBeginDayOfWeek());
-            }
-            if (this.request.getRepeatEndDayOfWeek() != null) {
-                json.put("repeatEndDayOfWeek", this.request.getRepeatEndDayOfWeek());
-            }
-            if (this.request.getRepeatBeginHour() != null) {
-                json.put("repeatBeginHour", this.request.getRepeatBeginHour());
-            }
-            if (this.request.getRepeatEndHour() != null) {
-                json.put("repeatEndHour", this.request.getRepeatEndHour());
-            }
-            if (this.request.getRelativeTriggerName() != null) {
-                json.put("relativeTriggerName", this.request.getRelativeTriggerName());
-            }
-            if (this.request.getRelativeDuration() != null) {
-                json.put("relativeDuration", this.request.getRelativeDuration());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("scheduleType", request.getScheduleType());
+                    put("absoluteBegin", request.getAbsoluteBegin());
+                    put("absoluteEnd", request.getAbsoluteEnd());
+                    put("repeatType", request.getRepeatType());
+                    put("repeatBeginDayOfMonth", request.getRepeatBeginDayOfMonth());
+                    put("repeatEndDayOfMonth", request.getRepeatEndDayOfMonth());
+                    put("repeatBeginDayOfWeek", request.getRepeatBeginDayOfWeek());
+                    put("repeatEndDayOfWeek", request.getRepeatEndDayOfWeek());
+                    put("repeatBeginHour", request.getRepeatBeginHour());
+                    put("repeatEndHour", request.getRepeatEndHour());
+                    put("relativeTriggerName", request.getRelativeTriggerName());
+                    put("relativeDuration", request.getRelativeDuration());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -799,25 +680,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * イベントマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createEventMasterAsync(
             CreateEventMasterRequest request,
             AsyncAction<AsyncResult<CreateEventMasterResult>> callback
     ) {
-        CreateEventMasterTask task = new CreateEventMasterTask(request, callback, CreateEventMasterResult.class);
+        CreateEventMasterTask task = new CreateEventMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * イベントマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateEventMasterResult createEventMaster(
             CreateEventMasterRequest request
     ) {
@@ -844,15 +714,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public GetEventMasterTask(
             GetEventMasterRequest request,
-            AsyncAction<AsyncResult<GetEventMasterResult>> userCallback,
-            Class<GetEventMasterResult> clazz
+            AsyncAction<AsyncResult<GetEventMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEventMasterResult parse(JsonNode data) {
+            return GetEventMasterResult.fromJson(data);
         }
 
         @Override
@@ -863,8 +736,8 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/event/{eventName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{eventName}", this.request.getEventName() == null|| this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{eventName}", this.request.getEventName() == null || this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -888,25 +761,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * イベントマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEventMasterAsync(
             GetEventMasterRequest request,
             AsyncAction<AsyncResult<GetEventMasterResult>> callback
     ) {
-        GetEventMasterTask task = new GetEventMasterTask(request, callback, GetEventMasterResult.class);
+        GetEventMasterTask task = new GetEventMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * イベントマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEventMasterResult getEventMaster(
             GetEventMasterRequest request
     ) {
@@ -933,15 +795,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public UpdateEventMasterTask(
             UpdateEventMasterRequest request,
-            AsyncAction<AsyncResult<UpdateEventMasterResult>> userCallback,
-            Class<UpdateEventMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateEventMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateEventMasterResult parse(JsonNode data) {
+            return UpdateEventMasterResult.fromJson(data);
         }
 
         @Override
@@ -952,58 +817,28 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/event/{eventName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{eventName}", this.request.getEventName() == null|| this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{eventName}", this.request.getEventName() == null || this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getScheduleType() != null) {
-                json.put("scheduleType", this.request.getScheduleType());
-            }
-            if (this.request.getAbsoluteBegin() != null) {
-                json.put("absoluteBegin", this.request.getAbsoluteBegin());
-            }
-            if (this.request.getAbsoluteEnd() != null) {
-                json.put("absoluteEnd", this.request.getAbsoluteEnd());
-            }
-            if (this.request.getRepeatType() != null) {
-                json.put("repeatType", this.request.getRepeatType());
-            }
-            if (this.request.getRepeatBeginDayOfMonth() != null) {
-                json.put("repeatBeginDayOfMonth", this.request.getRepeatBeginDayOfMonth());
-            }
-            if (this.request.getRepeatEndDayOfMonth() != null) {
-                json.put("repeatEndDayOfMonth", this.request.getRepeatEndDayOfMonth());
-            }
-            if (this.request.getRepeatBeginDayOfWeek() != null) {
-                json.put("repeatBeginDayOfWeek", this.request.getRepeatBeginDayOfWeek());
-            }
-            if (this.request.getRepeatEndDayOfWeek() != null) {
-                json.put("repeatEndDayOfWeek", this.request.getRepeatEndDayOfWeek());
-            }
-            if (this.request.getRepeatBeginHour() != null) {
-                json.put("repeatBeginHour", this.request.getRepeatBeginHour());
-            }
-            if (this.request.getRepeatEndHour() != null) {
-                json.put("repeatEndHour", this.request.getRepeatEndHour());
-            }
-            if (this.request.getRelativeTriggerName() != null) {
-                json.put("relativeTriggerName", this.request.getRelativeTriggerName());
-            }
-            if (this.request.getRelativeDuration() != null) {
-                json.put("relativeDuration", this.request.getRelativeDuration());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("scheduleType", request.getScheduleType());
+                    put("absoluteBegin", request.getAbsoluteBegin());
+                    put("absoluteEnd", request.getAbsoluteEnd());
+                    put("repeatType", request.getRepeatType());
+                    put("repeatBeginDayOfMonth", request.getRepeatBeginDayOfMonth());
+                    put("repeatEndDayOfMonth", request.getRepeatEndDayOfMonth());
+                    put("repeatBeginDayOfWeek", request.getRepeatBeginDayOfWeek());
+                    put("repeatEndDayOfWeek", request.getRepeatEndDayOfWeek());
+                    put("repeatBeginHour", request.getRepeatBeginHour());
+                    put("repeatEndHour", request.getRepeatEndHour());
+                    put("relativeTriggerName", request.getRelativeTriggerName());
+                    put("relativeDuration", request.getRelativeDuration());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1021,25 +856,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * イベントマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateEventMasterAsync(
             UpdateEventMasterRequest request,
             AsyncAction<AsyncResult<UpdateEventMasterResult>> callback
     ) {
-        UpdateEventMasterTask task = new UpdateEventMasterTask(request, callback, UpdateEventMasterResult.class);
+        UpdateEventMasterTask task = new UpdateEventMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * イベントマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateEventMasterResult updateEventMaster(
             UpdateEventMasterRequest request
     ) {
@@ -1066,15 +890,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DeleteEventMasterTask(
             DeleteEventMasterRequest request,
-            AsyncAction<AsyncResult<DeleteEventMasterResult>> userCallback,
-            Class<DeleteEventMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteEventMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteEventMasterResult parse(JsonNode data) {
+            return DeleteEventMasterResult.fromJson(data);
         }
 
         @Override
@@ -1085,8 +912,8 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/event/{eventName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{eventName}", this.request.getEventName() == null|| this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{eventName}", this.request.getEventName() == null || this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1110,25 +937,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * イベントマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteEventMasterAsync(
             DeleteEventMasterRequest request,
             AsyncAction<AsyncResult<DeleteEventMasterResult>> callback
     ) {
-        DeleteEventMasterTask task = new DeleteEventMasterTask(request, callback, DeleteEventMasterResult.class);
+        DeleteEventMasterTask task = new DeleteEventMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * イベントマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteEventMasterResult deleteEventMaster(
             DeleteEventMasterRequest request
     ) {
@@ -1155,15 +971,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DescribeTriggersTask(
             DescribeTriggersRequest request,
-            AsyncAction<AsyncResult<DescribeTriggersResult>> userCallback,
-            Class<DescribeTriggersResult> clazz
+            AsyncAction<AsyncResult<DescribeTriggersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeTriggersResult parse(JsonNode data) {
+            return DescribeTriggersResult.fromJson(data);
         }
 
         @Override
@@ -1174,7 +993,7 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/trigger";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1200,9 +1019,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1210,25 +1026,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * トリガーの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeTriggersAsync(
             DescribeTriggersRequest request,
             AsyncAction<AsyncResult<DescribeTriggersResult>> callback
     ) {
-        DescribeTriggersTask task = new DescribeTriggersTask(request, callback, DescribeTriggersResult.class);
+        DescribeTriggersTask task = new DescribeTriggersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * トリガーの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeTriggersResult describeTriggers(
             DescribeTriggersRequest request
     ) {
@@ -1255,15 +1060,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DescribeTriggersByUserIdTask(
             DescribeTriggersByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeTriggersByUserIdResult>> userCallback,
-            Class<DescribeTriggersByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeTriggersByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeTriggersByUserIdResult parse(JsonNode data) {
+            return DescribeTriggersByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1274,8 +1082,8 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/trigger";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1298,9 +1106,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1308,25 +1113,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ユーザIDを指定してトリガーの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeTriggersByUserIdAsync(
             DescribeTriggersByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeTriggersByUserIdResult>> callback
     ) {
-        DescribeTriggersByUserIdTask task = new DescribeTriggersByUserIdTask(request, callback, DescribeTriggersByUserIdResult.class);
+        DescribeTriggersByUserIdTask task = new DescribeTriggersByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してトリガーの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeTriggersByUserIdResult describeTriggersByUserId(
             DescribeTriggersByUserIdRequest request
     ) {
@@ -1353,15 +1147,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public GetTriggerTask(
             GetTriggerRequest request,
-            AsyncAction<AsyncResult<GetTriggerResult>> userCallback,
-            Class<GetTriggerResult> clazz
+            AsyncAction<AsyncResult<GetTriggerResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetTriggerResult parse(JsonNode data) {
+            return GetTriggerResult.fromJson(data);
         }
 
         @Override
@@ -1372,8 +1169,8 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/trigger/{triggerName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{triggerName}", this.request.getTriggerName() == null|| this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{triggerName}", this.request.getTriggerName() == null || this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1393,9 +1190,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1403,25 +1197,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * トリガーを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getTriggerAsync(
             GetTriggerRequest request,
             AsyncAction<AsyncResult<GetTriggerResult>> callback
     ) {
-        GetTriggerTask task = new GetTriggerTask(request, callback, GetTriggerResult.class);
+        GetTriggerTask task = new GetTriggerTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * トリガーを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetTriggerResult getTrigger(
             GetTriggerRequest request
     ) {
@@ -1448,15 +1231,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public GetTriggerByUserIdTask(
             GetTriggerByUserIdRequest request,
-            AsyncAction<AsyncResult<GetTriggerByUserIdResult>> userCallback,
-            Class<GetTriggerByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetTriggerByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetTriggerByUserIdResult parse(JsonNode data) {
+            return GetTriggerByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1467,9 +1253,9 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/trigger/{triggerName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{triggerName}", this.request.getTriggerName() == null|| this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{triggerName}", this.request.getTriggerName() == null || this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1486,9 +1272,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1496,25 +1279,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ユーザIDを指定してトリガーを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getTriggerByUserIdAsync(
             GetTriggerByUserIdRequest request,
             AsyncAction<AsyncResult<GetTriggerByUserIdResult>> callback
     ) {
-        GetTriggerByUserIdTask task = new GetTriggerByUserIdTask(request, callback, GetTriggerByUserIdResult.class);
+        GetTriggerByUserIdTask task = new GetTriggerByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してトリガーを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetTriggerByUserIdResult getTriggerByUserId(
             GetTriggerByUserIdRequest request
     ) {
@@ -1541,15 +1313,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public TriggerByUserIdTask(
             TriggerByUserIdRequest request,
-            AsyncAction<AsyncResult<TriggerByUserIdResult>> userCallback,
-            Class<TriggerByUserIdResult> clazz
+            AsyncAction<AsyncResult<TriggerByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public TriggerByUserIdResult parse(JsonNode data) {
+            return TriggerByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1560,23 +1335,17 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/trigger/{triggerName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{triggerName}", this.request.getTriggerName() == null|| this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{triggerName}", this.request.getTriggerName() == null || this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTriggerStrategy() != null) {
-                json.put("triggerStrategy", this.request.getTriggerStrategy());
-            }
-            if (this.request.getTtl() != null) {
-                json.put("ttl", this.request.getTtl());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("triggerStrategy", request.getTriggerStrategy());
+                    put("ttl", request.getTtl());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1587,9 +1356,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1597,25 +1363,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ユーザIDを指定してトリガーを登録<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void triggerByUserIdAsync(
             TriggerByUserIdRequest request,
             AsyncAction<AsyncResult<TriggerByUserIdResult>> callback
     ) {
-        TriggerByUserIdTask task = new TriggerByUserIdTask(request, callback, TriggerByUserIdResult.class);
+        TriggerByUserIdTask task = new TriggerByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してトリガーを登録<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public TriggerByUserIdResult triggerByUserId(
             TriggerByUserIdRequest request
     ) {
@@ -1642,15 +1397,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DeleteTriggerTask(
             DeleteTriggerRequest request,
-            AsyncAction<AsyncResult<DeleteTriggerResult>> userCallback,
-            Class<DeleteTriggerResult> clazz
+            AsyncAction<AsyncResult<DeleteTriggerResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteTriggerResult parse(JsonNode data) {
+            return DeleteTriggerResult.fromJson(data);
         }
 
         @Override
@@ -1661,8 +1419,8 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/trigger/{triggerName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{triggerName}", this.request.getTriggerName() == null|| this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{triggerName}", this.request.getTriggerName() == null || this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1682,9 +1440,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1692,25 +1447,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * トリガーを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteTriggerAsync(
             DeleteTriggerRequest request,
             AsyncAction<AsyncResult<DeleteTriggerResult>> callback
     ) {
-        DeleteTriggerTask task = new DeleteTriggerTask(request, callback, DeleteTriggerResult.class);
+        DeleteTriggerTask task = new DeleteTriggerTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * トリガーを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteTriggerResult deleteTrigger(
             DeleteTriggerRequest request
     ) {
@@ -1737,15 +1481,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DeleteTriggerByUserIdTask(
             DeleteTriggerByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteTriggerByUserIdResult>> userCallback,
-            Class<DeleteTriggerByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteTriggerByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteTriggerByUserIdResult parse(JsonNode data) {
+            return DeleteTriggerByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1756,9 +1503,9 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/trigger/{triggerName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{triggerName}", this.request.getTriggerName() == null|| this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{triggerName}", this.request.getTriggerName() == null || this.request.getTriggerName().length() == 0 ? "null" : String.valueOf(this.request.getTriggerName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1775,9 +1522,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1785,25 +1529,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ユーザIDを指定してトリガーを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteTriggerByUserIdAsync(
             DeleteTriggerByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteTriggerByUserIdResult>> callback
     ) {
-        DeleteTriggerByUserIdTask task = new DeleteTriggerByUserIdTask(request, callback, DeleteTriggerByUserIdResult.class);
+        DeleteTriggerByUserIdTask task = new DeleteTriggerByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してトリガーを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteTriggerByUserIdResult deleteTriggerByUserId(
             DeleteTriggerByUserIdRequest request
     ) {
@@ -1830,15 +1563,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DescribeEventsTask(
             DescribeEventsRequest request,
-            AsyncAction<AsyncResult<DescribeEventsResult>> userCallback,
-            Class<DescribeEventsResult> clazz
+            AsyncAction<AsyncResult<DescribeEventsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeEventsResult parse(JsonNode data) {
+            return DescribeEventsResult.fromJson(data);
         }
 
         @Override
@@ -1849,7 +1585,7 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/event";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1869,9 +1605,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1879,25 +1612,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * イベントの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeEventsAsync(
             DescribeEventsRequest request,
             AsyncAction<AsyncResult<DescribeEventsResult>> callback
     ) {
-        DescribeEventsTask task = new DescribeEventsTask(request, callback, DescribeEventsResult.class);
+        DescribeEventsTask task = new DescribeEventsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * イベントの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeEventsResult describeEvents(
             DescribeEventsRequest request
     ) {
@@ -1924,15 +1646,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DescribeEventsByUserIdTask(
             DescribeEventsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeEventsByUserIdResult>> userCallback,
-            Class<DescribeEventsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeEventsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeEventsByUserIdResult parse(JsonNode data) {
+            return DescribeEventsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1943,8 +1668,8 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/event";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1961,9 +1686,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1971,25 +1693,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ユーザIDを指定してイベントの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeEventsByUserIdAsync(
             DescribeEventsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeEventsByUserIdResult>> callback
     ) {
-        DescribeEventsByUserIdTask task = new DescribeEventsByUserIdTask(request, callback, DescribeEventsByUserIdResult.class);
+        DescribeEventsByUserIdTask task = new DescribeEventsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してイベントの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeEventsByUserIdResult describeEventsByUserId(
             DescribeEventsByUserIdRequest request
     ) {
@@ -2016,15 +1727,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public DescribeRawEventsTask(
             DescribeRawEventsRequest request,
-            AsyncAction<AsyncResult<DescribeRawEventsResult>> userCallback,
-            Class<DescribeRawEventsResult> clazz
+            AsyncAction<AsyncResult<DescribeRawEventsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRawEventsResult parse(JsonNode data) {
+            return DescribeRawEventsResult.fromJson(data);
         }
 
         @Override
@@ -2035,7 +1749,7 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/event";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2059,25 +1773,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * イベントの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRawEventsAsync(
             DescribeRawEventsRequest request,
             AsyncAction<AsyncResult<DescribeRawEventsResult>> callback
     ) {
-        DescribeRawEventsTask task = new DescribeRawEventsTask(request, callback, DescribeRawEventsResult.class);
+        DescribeRawEventsTask task = new DescribeRawEventsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * イベントの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRawEventsResult describeRawEvents(
             DescribeRawEventsRequest request
     ) {
@@ -2104,15 +1807,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public GetEventTask(
             GetEventRequest request,
-            AsyncAction<AsyncResult<GetEventResult>> userCallback,
-            Class<GetEventResult> clazz
+            AsyncAction<AsyncResult<GetEventResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEventResult parse(JsonNode data) {
+            return GetEventResult.fromJson(data);
         }
 
         @Override
@@ -2123,8 +1829,8 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/event/{eventName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{eventName}", this.request.getEventName() == null|| this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{eventName}", this.request.getEventName() == null || this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2144,9 +1850,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2154,25 +1857,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * イベントを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEventAsync(
             GetEventRequest request,
             AsyncAction<AsyncResult<GetEventResult>> callback
     ) {
-        GetEventTask task = new GetEventTask(request, callback, GetEventResult.class);
+        GetEventTask task = new GetEventTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * イベントを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEventResult getEvent(
             GetEventRequest request
     ) {
@@ -2199,15 +1891,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public GetEventByUserIdTask(
             GetEventByUserIdRequest request,
-            AsyncAction<AsyncResult<GetEventByUserIdResult>> userCallback,
-            Class<GetEventByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetEventByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEventByUserIdResult parse(JsonNode data) {
+            return GetEventByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2218,9 +1913,9 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/event/{eventName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{eventName}", this.request.getEventName() == null|| this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{eventName}", this.request.getEventName() == null || this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2237,9 +1932,6 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2247,25 +1939,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * ユーザIDを指定してイベントを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEventByUserIdAsync(
             GetEventByUserIdRequest request,
             AsyncAction<AsyncResult<GetEventByUserIdResult>> callback
     ) {
-        GetEventByUserIdTask task = new GetEventByUserIdTask(request, callback, GetEventByUserIdResult.class);
+        GetEventByUserIdTask task = new GetEventByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してイベントを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEventByUserIdResult getEventByUserId(
             GetEventByUserIdRequest request
     ) {
@@ -2292,15 +1973,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public GetRawEventTask(
             GetRawEventRequest request,
-            AsyncAction<AsyncResult<GetRawEventResult>> userCallback,
-            Class<GetRawEventResult> clazz
+            AsyncAction<AsyncResult<GetRawEventResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRawEventResult parse(JsonNode data) {
+            return GetRawEventResult.fromJson(data);
         }
 
         @Override
@@ -2311,8 +1995,8 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/event/{eventName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{eventName}", this.request.getEventName() == null|| this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{eventName}", this.request.getEventName() == null || this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2336,25 +2020,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * イベントを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRawEventAsync(
             GetRawEventRequest request,
             AsyncAction<AsyncResult<GetRawEventResult>> callback
     ) {
-        GetRawEventTask task = new GetRawEventTask(request, callback, GetRawEventResult.class);
+        GetRawEventTask task = new GetRawEventTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * イベントを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRawEventResult getRawEvent(
             GetRawEventRequest request
     ) {
@@ -2381,15 +2054,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -2400,7 +2076,7 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2424,25 +2100,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * 現在有効なイベントスケジュールマスターのマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なイベントスケジュールマスターのマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -2469,15 +2134,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public GetCurrentEventMasterTask(
             GetCurrentEventMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentEventMasterResult>> userCallback,
-            Class<GetCurrentEventMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentEventMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentEventMasterResult parse(JsonNode data) {
+            return GetCurrentEventMasterResult.fromJson(data);
         }
 
         @Override
@@ -2488,7 +2156,7 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2512,25 +2180,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * 現在有効なイベントスケジュールマスターを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentEventMasterAsync(
             GetCurrentEventMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentEventMasterResult>> callback
     ) {
-        GetCurrentEventMasterTask task = new GetCurrentEventMasterTask(request, callback, GetCurrentEventMasterResult.class);
+        GetCurrentEventMasterTask task = new GetCurrentEventMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なイベントスケジュールマスターを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentEventMasterResult getCurrentEventMaster(
             GetCurrentEventMasterRequest request
     ) {
@@ -2557,15 +2214,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public UpdateCurrentEventMasterTask(
             UpdateCurrentEventMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentEventMasterResult>> userCallback,
-            Class<UpdateCurrentEventMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentEventMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentEventMasterResult parse(JsonNode data) {
+            return UpdateCurrentEventMasterResult.fromJson(data);
         }
 
         @Override
@@ -2576,18 +2236,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2605,25 +2261,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * 現在有効なイベントスケジュールマスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentEventMasterAsync(
             UpdateCurrentEventMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentEventMasterResult>> callback
     ) {
-        UpdateCurrentEventMasterTask task = new UpdateCurrentEventMasterTask(request, callback, UpdateCurrentEventMasterResult.class);
+        UpdateCurrentEventMasterTask task = new UpdateCurrentEventMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なイベントスケジュールマスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentEventMasterResult updateCurrentEventMaster(
             UpdateCurrentEventMasterRequest request
     ) {
@@ -2650,15 +2295,18 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
 
         public UpdateCurrentEventMasterFromGitHubTask(
             UpdateCurrentEventMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentEventMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentEventMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentEventMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentEventMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentEventMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2669,22 +2317,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2702,25 +2342,14 @@ public class Gs2ScheduleRestClient extends AbstractGs2Client<Gs2ScheduleRestClie
         }
     }
 
-    /**
-     * 現在有効なイベントスケジュールマスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentEventMasterFromGitHubAsync(
             UpdateCurrentEventMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentEventMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentEventMasterFromGitHubTask task = new UpdateCurrentEventMasterFromGitHubTask(request, callback, UpdateCurrentEventMasterFromGitHubResult.class);
+        UpdateCurrentEventMasterFromGitHubTask task = new UpdateCurrentEventMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なイベントスケジュールマスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentEventMasterFromGitHubResult updateCurrentEventMasterFromGitHub(
             UpdateCurrentEventMasterFromGitHubRequest request
     ) {

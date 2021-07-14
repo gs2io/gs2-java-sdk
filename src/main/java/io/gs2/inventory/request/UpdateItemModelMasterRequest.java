@@ -16,274 +16,158 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * アイテムモデルマスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateItemModelMasterRequest extends Gs2BasicRequest<UpdateItemModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return アイテムモデルマスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アイテムモデルマスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アイテムモデルマスターを更新
-     * @return this
-     */
-    public UpdateItemModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** インベントリの種類名 */
     private String inventoryName;
-
-    /**
-     * インベントリの種類名を取得
-     *
-     * @return アイテムモデルマスターを更新
-     */
-    public String getInventoryName() {
-        return inventoryName;
-    }
-
-    /**
-     * インベントリの種類名を設定
-     *
-     * @param inventoryName アイテムモデルマスターを更新
-     */
-    public void setInventoryName(String inventoryName) {
-        this.inventoryName = inventoryName;
-    }
-
-    /**
-     * インベントリの種類名を設定
-     *
-     * @param inventoryName アイテムモデルマスターを更新
-     * @return this
-     */
-    public UpdateItemModelMasterRequest withInventoryName(String inventoryName) {
-        setInventoryName(inventoryName);
-        return this;
-    }
-
-    /** アイテムモデルの種類名 */
     private String itemName;
-
-    /**
-     * アイテムモデルの種類名を取得
-     *
-     * @return アイテムモデルマスターを更新
-     */
-    public String getItemName() {
-        return itemName;
-    }
-
-    /**
-     * アイテムモデルの種類名を設定
-     *
-     * @param itemName アイテムモデルマスターを更新
-     */
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    /**
-     * アイテムモデルの種類名を設定
-     *
-     * @param itemName アイテムモデルマスターを更新
-     * @return this
-     */
-    public UpdateItemModelMasterRequest withItemName(String itemName) {
-        setItemName(itemName);
-        return this;
-    }
-
-    /** アイテムモデルマスターの説明 */
     private String description;
-
-    /**
-     * アイテムモデルマスターの説明を取得
-     *
-     * @return アイテムモデルマスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * アイテムモデルマスターの説明を設定
-     *
-     * @param description アイテムモデルマスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * アイテムモデルマスターの説明を設定
-     *
-     * @param description アイテムモデルマスターを更新
-     * @return this
-     */
-    public UpdateItemModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** アイテムモデルの種類のメタデータ */
     private String metadata;
-
-    /**
-     * アイテムモデルの種類のメタデータを取得
-     *
-     * @return アイテムモデルマスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * アイテムモデルの種類のメタデータを設定
-     *
-     * @param metadata アイテムモデルマスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * アイテムモデルの種類のメタデータを設定
-     *
-     * @param metadata アイテムモデルマスターを更新
-     * @return this
-     */
-    public UpdateItemModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** スタック可能な最大数量 */
     private Long stackingLimit;
-
-    /**
-     * スタック可能な最大数量を取得
-     *
-     * @return アイテムモデルマスターを更新
-     */
-    public Long getStackingLimit() {
-        return stackingLimit;
-    }
-
-    /**
-     * スタック可能な最大数量を設定
-     *
-     * @param stackingLimit アイテムモデルマスターを更新
-     */
-    public void setStackingLimit(Long stackingLimit) {
-        this.stackingLimit = stackingLimit;
-    }
-
-    /**
-     * スタック可能な最大数量を設定
-     *
-     * @param stackingLimit アイテムモデルマスターを更新
-     * @return this
-     */
-    public UpdateItemModelMasterRequest withStackingLimit(Long stackingLimit) {
-        setStackingLimit(stackingLimit);
-        return this;
-    }
-
-    /** スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか */
     private Boolean allowMultipleStacks;
-
-    /**
-     * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを取得
-     *
-     * @return アイテムモデルマスターを更新
-     */
-    public Boolean getAllowMultipleStacks() {
-        return allowMultipleStacks;
-    }
-
-    /**
-     * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
-     *
-     * @param allowMultipleStacks アイテムモデルマスターを更新
-     */
-    public void setAllowMultipleStacks(Boolean allowMultipleStacks) {
-        this.allowMultipleStacks = allowMultipleStacks;
-    }
-
-    /**
-     * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
-     *
-     * @param allowMultipleStacks アイテムモデルマスターを更新
-     * @return this
-     */
-    public UpdateItemModelMasterRequest withAllowMultipleStacks(Boolean allowMultipleStacks) {
-        setAllowMultipleStacks(allowMultipleStacks);
-        return this;
-    }
-
-    /** 表示順番 */
     private Integer sortValue;
 
-    /**
-     * 表示順番を取得
-     *
-     * @return アイテムモデルマスターを更新
-     */
-    public Integer getSortValue() {
-        return sortValue;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateItemModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+	}
+
+	public UpdateItemModelMasterRequest withInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+		return this;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public UpdateItemModelMasterRequest withItemName(String itemName) {
+		this.itemName = itemName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateItemModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateItemModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public Long getStackingLimit() {
+		return stackingLimit;
+	}
+
+	public void setStackingLimit(Long stackingLimit) {
+		this.stackingLimit = stackingLimit;
+	}
+
+	public UpdateItemModelMasterRequest withStackingLimit(Long stackingLimit) {
+		this.stackingLimit = stackingLimit;
+		return this;
+	}
+
+	public Boolean getAllowMultipleStacks() {
+		return allowMultipleStacks;
+	}
+
+	public void setAllowMultipleStacks(Boolean allowMultipleStacks) {
+		this.allowMultipleStacks = allowMultipleStacks;
+	}
+
+	public UpdateItemModelMasterRequest withAllowMultipleStacks(Boolean allowMultipleStacks) {
+		this.allowMultipleStacks = allowMultipleStacks;
+		return this;
+	}
+
+	public Integer getSortValue() {
+		return sortValue;
+	}
+
+	public void setSortValue(Integer sortValue) {
+		this.sortValue = sortValue;
+	}
+
+	public UpdateItemModelMasterRequest withSortValue(Integer sortValue) {
+		this.sortValue = sortValue;
+		return this;
+	}
+
+    public static UpdateItemModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateItemModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withStackingLimit(data.get("stackingLimit") == null || data.get("stackingLimit").isNull() ? null : data.get("stackingLimit").longValue())
+            .withAllowMultipleStacks(data.get("allowMultipleStacks") == null || data.get("allowMultipleStacks").isNull() ? null : data.get("allowMultipleStacks").booleanValue())
+            .withSortValue(data.get("sortValue") == null || data.get("sortValue").isNull() ? null : data.get("sortValue").intValue());
     }
 
-    /**
-     * 表示順番を設定
-     *
-     * @param sortValue アイテムモデルマスターを更新
-     */
-    public void setSortValue(Integer sortValue) {
-        this.sortValue = sortValue;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("inventoryName", getInventoryName());
+                put("itemName", getItemName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("stackingLimit", getStackingLimit());
+                put("allowMultipleStacks", getAllowMultipleStacks());
+                put("sortValue", getSortValue());
+            }}
+        );
     }
-
-    /**
-     * 表示順番を設定
-     *
-     * @param sortValue アイテムモデルマスターを更新
-     * @return this
-     */
-    public UpdateItemModelMasterRequest withSortValue(Integer sortValue) {
-        setSortValue(sortValue);
-        return this;
-    }
-
 }

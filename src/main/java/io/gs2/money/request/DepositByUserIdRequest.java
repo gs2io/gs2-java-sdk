@@ -16,210 +16,110 @@
 
 package io.gs2.money.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.money.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザーIDを指定してウォレットに残高を加算します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DepositByUserIdRequest extends Gs2BasicRequest<DepositByUserIdRequest> {
-
-    /** ネームスペースの名前 */
     private String namespaceName;
-
-    /**
-     * ネームスペースの名前を取得
-     *
-     * @return ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName ユーザーIDを指定してウォレットに残高を加算します
-     * @return this
-     */
-    public DepositByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザーIDを指定してウォレットに残高を加算します
-     * @return this
-     */
-    public DepositByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** スロット番号 */
     private Integer slot;
-
-    /**
-     * スロット番号を取得
-     *
-     * @return ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public Integer getSlot() {
-        return slot;
-    }
-
-    /**
-     * スロット番号を設定
-     *
-     * @param slot ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public void setSlot(Integer slot) {
-        this.slot = slot;
-    }
-
-    /**
-     * スロット番号を設定
-     *
-     * @param slot ユーザーIDを指定してウォレットに残高を加算します
-     * @return this
-     */
-    public DepositByUserIdRequest withSlot(Integer slot) {
-        setSlot(slot);
-        return this;
-    }
-
-    /** 購入価格 */
     private Float price;
-
-    /**
-     * 購入価格を取得
-     *
-     * @return ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public Float getPrice() {
-        return price;
-    }
-
-    /**
-     * 購入価格を設定
-     *
-     * @param price ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
-    /**
-     * 購入価格を設定
-     *
-     * @param price ユーザーIDを指定してウォレットに残高を加算します
-     * @return this
-     */
-    public DepositByUserIdRequest withPrice(Float price) {
-        setPrice(price);
-        return this;
-    }
-
-    /** 付与する課金通貨の数量 */
     private Integer count;
 
-    /**
-     * 付与する課金通貨の数量を取得
-     *
-     * @return ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public Integer getCount() {
-        return count;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DepositByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public DepositByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Integer getSlot() {
+		return slot;
+	}
+
+	public void setSlot(Integer slot) {
+		this.slot = slot;
+	}
+
+	public DepositByUserIdRequest withSlot(Integer slot) {
+		this.slot = slot;
+		return this;
+	}
+
+	public Float getPrice() {
+		return price;
+	}
+
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+
+	public DepositByUserIdRequest withPrice(Float price) {
+		this.price = price;
+		return this;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public DepositByUserIdRequest withCount(Integer count) {
+		this.count = count;
+		return this;
+	}
+
+    public static DepositByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DepositByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
+            .withPrice(data.get("price") == null || data.get("price").isNull() ? null : data.get("price").floatValue())
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue());
     }
 
-    /**
-     * 付与する課金通貨の数量を設定
-     *
-     * @param count ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public void setCount(Integer count) {
-        this.count = count;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("slot", getSlot());
+                put("price", getPrice());
+                put("count", getCount());
+            }}
+        );
     }
-
-    /**
-     * 付与する課金通貨の数量を設定
-     *
-     * @param count ユーザーIDを指定してウォレットに残高を加算します
-     * @return this
-     */
-    public DepositByUserIdRequest withCount(Integer count) {
-        setCount(count);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザーIDを指定してウォレットに残高を加算します
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザーIDを指定してウォレットに残高を加算します
-     * @return this
-     */
-    public DepositByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

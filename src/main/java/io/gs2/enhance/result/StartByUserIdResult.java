@@ -16,59 +16,63 @@
 
 package io.gs2.enhance.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.enhance.model.*;
 
-/**
- * ユーザIDを指定して強化を開始 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class StartByUserIdResult implements IResult, Serializable {
-	/** 強化の開始処理の実行に使用するスタンプシート */
-	private String stampSheet;
-	/** スタンプシートの署名計算に使用した暗号鍵GRN */
-	private String stampSheetEncryptionKeyId;
+    private String stampSheet;
+    private String stampSheetEncryptionKeyId;
 
-	/**
-	 * 強化の開始処理の実行に使用するスタンプシートを取得
-	 *
-	 * @return ユーザIDを指定して強化を開始
-	 */
 	public String getStampSheet() {
 		return stampSheet;
 	}
 
-	/**
-	 * 強化の開始処理の実行に使用するスタンプシートを設定
-	 *
-	 * @param stampSheet ユーザIDを指定して強化を開始
-	 */
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを取得
-	 *
-	 * @return ユーザIDを指定して強化を開始
-	 */
+	public StartByUserIdResult withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
 	public String getStampSheetEncryptionKeyId() {
 		return stampSheetEncryptionKeyId;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを設定
-	 *
-	 * @param stampSheetEncryptionKeyId ユーザIDを指定して強化を開始
-	 */
 	public void setStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
 		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
 	}
+
+	public StartByUserIdResult withStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
+		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
+		return this;
+	}
+
+    public static StartByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new StartByUserIdResult()
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stampSheet", getStampSheet());
+                put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+            }}
+        );
+    }
 }

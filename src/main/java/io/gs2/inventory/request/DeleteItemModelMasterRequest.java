@@ -16,114 +16,78 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * アイテムモデルマスターを削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteItemModelMasterRequest extends Gs2BasicRequest<DeleteItemModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return アイテムモデルマスターを削除
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アイテムモデルマスターを削除
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アイテムモデルマスターを削除
-     * @return this
-     */
-    public DeleteItemModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** インベントリの種類名 */
     private String inventoryName;
-
-    /**
-     * インベントリの種類名を取得
-     *
-     * @return アイテムモデルマスターを削除
-     */
-    public String getInventoryName() {
-        return inventoryName;
-    }
-
-    /**
-     * インベントリの種類名を設定
-     *
-     * @param inventoryName アイテムモデルマスターを削除
-     */
-    public void setInventoryName(String inventoryName) {
-        this.inventoryName = inventoryName;
-    }
-
-    /**
-     * インベントリの種類名を設定
-     *
-     * @param inventoryName アイテムモデルマスターを削除
-     * @return this
-     */
-    public DeleteItemModelMasterRequest withInventoryName(String inventoryName) {
-        setInventoryName(inventoryName);
-        return this;
-    }
-
-    /** アイテムモデルの種類名 */
     private String itemName;
 
-    /**
-     * アイテムモデルの種類名を取得
-     *
-     * @return アイテムモデルマスターを削除
-     */
-    public String getItemName() {
-        return itemName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DeleteItemModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+	}
+
+	public DeleteItemModelMasterRequest withInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+		return this;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public DeleteItemModelMasterRequest withItemName(String itemName) {
+		this.itemName = itemName;
+		return this;
+	}
+
+    public static DeleteItemModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteItemModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText());
     }
 
-    /**
-     * アイテムモデルの種類名を設定
-     *
-     * @param itemName アイテムモデルマスターを削除
-     */
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("inventoryName", getInventoryName());
+                put("itemName", getItemName());
+            }}
+        );
     }
-
-    /**
-     * アイテムモデルの種類名を設定
-     *
-     * @param itemName アイテムモデルマスターを削除
-     * @return this
-     */
-    public DeleteItemModelMasterRequest withItemName(String itemName) {
-        setItemName(itemName);
-        return this;
-    }
-
 }

@@ -16,82 +16,62 @@
 
 package io.gs2.showcase.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.showcase.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 陳列棚マスターを削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteShowcaseMasterRequest extends Gs2BasicRequest<DeleteShowcaseMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 陳列棚マスターを削除
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 陳列棚マスターを削除
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 陳列棚マスターを削除
-     * @return this
-     */
-    public DeleteShowcaseMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 陳列棚名 */
     private String showcaseName;
 
-    /**
-     * 陳列棚名を取得
-     *
-     * @return 陳列棚マスターを削除
-     */
-    public String getShowcaseName() {
-        return showcaseName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DeleteShowcaseMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getShowcaseName() {
+		return showcaseName;
+	}
+
+	public void setShowcaseName(String showcaseName) {
+		this.showcaseName = showcaseName;
+	}
+
+	public DeleteShowcaseMasterRequest withShowcaseName(String showcaseName) {
+		this.showcaseName = showcaseName;
+		return this;
+	}
+
+    public static DeleteShowcaseMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteShowcaseMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withShowcaseName(data.get("showcaseName") == null || data.get("showcaseName").isNull() ? null : data.get("showcaseName").asText());
     }
 
-    /**
-     * 陳列棚名を設定
-     *
-     * @param showcaseName 陳列棚マスターを削除
-     */
-    public void setShowcaseName(String showcaseName) {
-        this.showcaseName = showcaseName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("showcaseName", getShowcaseName());
+            }}
+        );
     }
-
-    /**
-     * 陳列棚名を設定
-     *
-     * @param showcaseName 陳列棚マスターを削除
-     * @return this
-     */
-    public DeleteShowcaseMasterRequest withShowcaseName(String showcaseName) {
-        setShowcaseName(showcaseName);
-        return this;
-    }
-
 }

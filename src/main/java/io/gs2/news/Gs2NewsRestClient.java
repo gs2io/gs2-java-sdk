@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.news;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.news.request.*;
 import io.gs2.news.result.*;
-import io.gs2.news.model.*;
+import io.gs2.news.model.*;public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
-/**
- * GS2 News API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2NewsRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,26 +152,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -206,25 +177,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを新規作成します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -251,15 +211,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -270,7 +233,7 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -294,25 +257,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの状態を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -339,15 +291,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -358,7 +313,7 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -382,25 +337,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -427,15 +371,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -446,25 +393,15 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -482,25 +419,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -527,15 +453,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -546,7 +475,7 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -570,25 +499,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを削除します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -615,15 +533,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public PrepareUpdateCurrentNewsMasterTask(
             PrepareUpdateCurrentNewsMasterRequest request,
-            AsyncAction<AsyncResult<PrepareUpdateCurrentNewsMasterResult>> userCallback,
-            Class<PrepareUpdateCurrentNewsMasterResult> clazz
+            AsyncAction<AsyncResult<PrepareUpdateCurrentNewsMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareUpdateCurrentNewsMasterResult parse(JsonNode data) {
+            return PrepareUpdateCurrentNewsMasterResult.fromJson(data);
         }
 
         @Override
@@ -634,15 +555,13 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/prepare";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -660,35 +579,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * 現在有効なお知らせを更新準備する<br>
-     *   <br>
-     *   応答に含まれるURLにサイトデータを圧縮したzipファイルをアップロードし<br>
-     *   アップロード完了後に updateCurrentNewsMaster を呼び出して反映します。<br>
-     *   <br>
-     *   zipファイルをアップロードする際には Content-Type に application/zip を指定する必要があります。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareUpdateCurrentNewsMasterAsync(
             PrepareUpdateCurrentNewsMasterRequest request,
             AsyncAction<AsyncResult<PrepareUpdateCurrentNewsMasterResult>> callback
     ) {
-        PrepareUpdateCurrentNewsMasterTask task = new PrepareUpdateCurrentNewsMasterTask(request, callback, PrepareUpdateCurrentNewsMasterResult.class);
+        PrepareUpdateCurrentNewsMasterTask task = new PrepareUpdateCurrentNewsMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なお知らせを更新準備する<br>
-     *   <br>
-     *   応答に含まれるURLにサイトデータを圧縮したzipファイルをアップロードし<br>
-     *   アップロード完了後に updateCurrentNewsMaster を呼び出して反映します。<br>
-     *   <br>
-     *   zipファイルをアップロードする際には Content-Type に application/zip を指定する必要があります。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareUpdateCurrentNewsMasterResult prepareUpdateCurrentNewsMaster(
             PrepareUpdateCurrentNewsMasterRequest request
     ) {
@@ -715,15 +613,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public UpdateCurrentNewsMasterTask(
             UpdateCurrentNewsMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentNewsMasterResult>> userCallback,
-            Class<UpdateCurrentNewsMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentNewsMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentNewsMasterResult parse(JsonNode data) {
+            return UpdateCurrentNewsMasterResult.fromJson(data);
         }
 
         @Override
@@ -734,18 +635,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getUploadToken() != null) {
-                json.put("uploadToken", this.request.getUploadToken());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("uploadToken", request.getUploadToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -763,25 +660,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * 現在有効なお知らせを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentNewsMasterAsync(
             UpdateCurrentNewsMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentNewsMasterResult>> callback
     ) {
-        UpdateCurrentNewsMasterTask task = new UpdateCurrentNewsMasterTask(request, callback, UpdateCurrentNewsMasterResult.class);
+        UpdateCurrentNewsMasterTask task = new UpdateCurrentNewsMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なお知らせを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentNewsMasterResult updateCurrentNewsMaster(
             UpdateCurrentNewsMasterRequest request
     ) {
@@ -808,15 +694,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public PrepareUpdateCurrentNewsMasterFromGitHubTask(
             PrepareUpdateCurrentNewsMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<PrepareUpdateCurrentNewsMasterFromGitHubResult>> userCallback,
-            Class<PrepareUpdateCurrentNewsMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<PrepareUpdateCurrentNewsMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareUpdateCurrentNewsMasterFromGitHubResult parse(JsonNode data) {
+            return PrepareUpdateCurrentNewsMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -827,22 +716,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -860,25 +741,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * 現在有効なお知らせを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareUpdateCurrentNewsMasterFromGitHubAsync(
             PrepareUpdateCurrentNewsMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<PrepareUpdateCurrentNewsMasterFromGitHubResult>> callback
     ) {
-        PrepareUpdateCurrentNewsMasterFromGitHubTask task = new PrepareUpdateCurrentNewsMasterFromGitHubTask(request, callback, PrepareUpdateCurrentNewsMasterFromGitHubResult.class);
+        PrepareUpdateCurrentNewsMasterFromGitHubTask task = new PrepareUpdateCurrentNewsMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なお知らせを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareUpdateCurrentNewsMasterFromGitHubResult prepareUpdateCurrentNewsMasterFromGitHub(
             PrepareUpdateCurrentNewsMasterFromGitHubRequest request
     ) {
@@ -905,15 +775,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public DescribeNewsTask(
             DescribeNewsRequest request,
-            AsyncAction<AsyncResult<DescribeNewsResult>> userCallback,
-            Class<DescribeNewsResult> clazz
+            AsyncAction<AsyncResult<DescribeNewsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNewsResult parse(JsonNode data) {
+            return DescribeNewsResult.fromJson(data);
         }
 
         @Override
@@ -924,7 +797,7 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/news";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -944,9 +817,6 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -954,25 +824,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * お知らせ記事の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNewsAsync(
             DescribeNewsRequest request,
             AsyncAction<AsyncResult<DescribeNewsResult>> callback
     ) {
-        DescribeNewsTask task = new DescribeNewsTask(request, callback, DescribeNewsResult.class);
+        DescribeNewsTask task = new DescribeNewsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * お知らせ記事の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNewsResult describeNews(
             DescribeNewsRequest request
     ) {
@@ -999,15 +858,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public DescribeNewsByUserIdTask(
             DescribeNewsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeNewsByUserIdResult>> userCallback,
-            Class<DescribeNewsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeNewsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNewsByUserIdResult parse(JsonNode data) {
+            return DescribeNewsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1018,8 +880,8 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/news";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1036,9 +898,6 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1046,25 +905,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してお知らせ記事の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNewsByUserIdAsync(
             DescribeNewsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeNewsByUserIdResult>> callback
     ) {
-        DescribeNewsByUserIdTask task = new DescribeNewsByUserIdTask(request, callback, DescribeNewsByUserIdResult.class);
+        DescribeNewsByUserIdTask task = new DescribeNewsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してお知らせ記事の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNewsByUserIdResult describeNewsByUserId(
             DescribeNewsByUserIdRequest request
     ) {
@@ -1091,15 +939,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public WantGrantTask(
             WantGrantRequest request,
-            AsyncAction<AsyncResult<WantGrantResult>> userCallback,
-            Class<WantGrantResult> clazz
+            AsyncAction<AsyncResult<WantGrantResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public WantGrantResult parse(JsonNode data) {
+            return WantGrantResult.fromJson(data);
         }
 
         @Override
@@ -1108,9 +959,9 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "news")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/news/grant";
+                + "/{namespaceName}/user/me/news/grant";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1130,9 +981,6 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1140,25 +988,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * お知らせ記事に加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void wantGrantAsync(
             WantGrantRequest request,
             AsyncAction<AsyncResult<WantGrantResult>> callback
     ) {
-        WantGrantTask task = new WantGrantTask(request, callback, WantGrantResult.class);
+        WantGrantTask task = new WantGrantTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * お知らせ記事に加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public WantGrantResult wantGrant(
             WantGrantRequest request
     ) {
@@ -1185,15 +1022,18 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
 
         public WantGrantByUserIdTask(
             WantGrantByUserIdRequest request,
-            AsyncAction<AsyncResult<WantGrantByUserIdResult>> userCallback,
-            Class<WantGrantByUserIdResult> clazz
+            AsyncAction<AsyncResult<WantGrantByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public WantGrantByUserIdResult parse(JsonNode data) {
+            return WantGrantByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1202,10 +1042,10 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "news")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/news/grant";
+                + "/{namespaceName}/user/{userId}/news/grant";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1222,9 +1062,6 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1232,25 +1069,14 @@ public class Gs2NewsRestClient extends AbstractGs2Client<Gs2NewsRestClient> {
         }
     }
 
-    /**
-     * お知らせ記事に加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void wantGrantByUserIdAsync(
             WantGrantByUserIdRequest request,
             AsyncAction<AsyncResult<WantGrantByUserIdResult>> callback
     ) {
-        WantGrantByUserIdTask task = new WantGrantByUserIdTask(request, callback, WantGrantByUserIdResult.class);
+        WantGrantByUserIdTask task = new WantGrantByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * お知らせ記事に加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public WantGrantByUserIdResult wantGrantByUserId(
             WantGrantByUserIdRequest request
     ) {

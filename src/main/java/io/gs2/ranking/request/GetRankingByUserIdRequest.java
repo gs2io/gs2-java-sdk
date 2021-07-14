@@ -16,210 +16,110 @@
 
 package io.gs2.ranking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.ranking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ランキングを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetRankingByUserIdRequest extends Gs2BasicRequest<GetRankingByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ランキングを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ランキングを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ランキングを取得
-     * @return this
-     */
-    public GetRankingByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** カテゴリ名 */
     private String categoryName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return ランキングを取得
-     */
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param categoryName ランキングを取得
-     */
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param categoryName ランキングを取得
-     * @return this
-     */
-    public GetRankingByUserIdRequest withCategoryName(String categoryName) {
-        setCategoryName(categoryName);
-        return this;
-    }
-
-    /** ユーザID */
     private String userId;
-
-    /**
-     * ユーザIDを取得
-     *
-     * @return ランキングを取得
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザIDを設定
-     *
-     * @param userId ランキングを取得
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザIDを設定
-     *
-     * @param userId ランキングを取得
-     * @return this
-     */
-    public GetRankingByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** スコアを獲得したユーザID */
     private String scorerUserId;
-
-    /**
-     * スコアを獲得したユーザIDを取得
-     *
-     * @return ランキングを取得
-     */
-    public String getScorerUserId() {
-        return scorerUserId;
-    }
-
-    /**
-     * スコアを獲得したユーザIDを設定
-     *
-     * @param scorerUserId ランキングを取得
-     */
-    public void setScorerUserId(String scorerUserId) {
-        this.scorerUserId = scorerUserId;
-    }
-
-    /**
-     * スコアを獲得したユーザIDを設定
-     *
-     * @param scorerUserId ランキングを取得
-     * @return this
-     */
-    public GetRankingByUserIdRequest withScorerUserId(String scorerUserId) {
-        setScorerUserId(scorerUserId);
-        return this;
-    }
-
-    /** スコアのユニークID */
     private String uniqueId;
 
-    /**
-     * スコアのユニークIDを取得
-     *
-     * @return ランキングを取得
-     */
-    public String getUniqueId() {
-        return uniqueId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetRankingByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public GetRankingByUserIdRequest withCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public GetRankingByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getScorerUserId() {
+		return scorerUserId;
+	}
+
+	public void setScorerUserId(String scorerUserId) {
+		this.scorerUserId = scorerUserId;
+	}
+
+	public GetRankingByUserIdRequest withScorerUserId(String scorerUserId) {
+		this.scorerUserId = scorerUserId;
+		return this;
+	}
+
+	public String getUniqueId() {
+		return uniqueId;
+	}
+
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
+
+	public GetRankingByUserIdRequest withUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+		return this;
+	}
+
+    public static GetRankingByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetRankingByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withScorerUserId(data.get("scorerUserId") == null || data.get("scorerUserId").isNull() ? null : data.get("scorerUserId").asText())
+            .withUniqueId(data.get("uniqueId") == null || data.get("uniqueId").isNull() ? null : data.get("uniqueId").asText());
     }
 
-    /**
-     * スコアのユニークIDを設定
-     *
-     * @param uniqueId ランキングを取得
-     */
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("categoryName", getCategoryName());
+                put("userId", getUserId());
+                put("scorerUserId", getScorerUserId());
+                put("uniqueId", getUniqueId());
+            }}
+        );
     }
-
-    /**
-     * スコアのユニークIDを設定
-     *
-     * @param uniqueId ランキングを取得
-     * @return this
-     */
-    public GetRankingByUserIdRequest withUniqueId(String uniqueId) {
-        setUniqueId(uniqueId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ランキングを取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ランキングを取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ランキングを取得
-     * @return this
-     */
-    public GetRankingByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

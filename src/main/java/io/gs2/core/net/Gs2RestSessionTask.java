@@ -1,6 +1,7 @@
 package io.gs2.core.net;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -9,23 +10,23 @@ import io.gs2.core.model.IResult;
 import java.io.IOException;
 
 
-public class Gs2RestSessionTask<T extends IResult> extends Gs2SessionTask {
+public abstract class Gs2RestSessionTask<T extends IResult> extends Gs2SessionTask {
 
     protected HttpTaskBuilder builder;
     private AsyncAction<AsyncResult<T>> callback;
-    private Class<T> clazz;
 
     public Gs2RestSessionTask(
             Gs2RestSession gs2RestSession,
-            AsyncAction<AsyncResult<T>> callback,
-            Class<T> clazz) {
+            AsyncAction<AsyncResult<T>> callback
+    ) {
 
         super(gs2RestSession);
 
         this.builder = HttpTaskBuilder.create();
         this.callback = callback;
-        this.clazz = clazz;
     }
+
+    public abstract T parse(JsonNode data);
 
     protected void prepareImpl() {
         this.builder.setHeader("X-GS2-CLIENT-ID", getGs2Session().getGs2Credential().getClientId());
@@ -37,10 +38,9 @@ public class Gs2RestSessionTask<T extends IResult> extends Gs2SessionTask {
     }
 
     protected void triggerUserCallback(Gs2Response gs2Response) {
-        ObjectMapper mapper = new ObjectMapper();
         try {
             if(gs2Response.getGs2Exception() == null) {
-                T result = mapper.readValue(gs2Response.message, clazz);
+                T result = parse(new ObjectMapper().readTree(gs2Response.message));
                 AsyncResult<T> asyncResult = new AsyncResult<>(result, gs2Response.getGs2Exception());
                 callback.callback(asyncResult);
             } else {

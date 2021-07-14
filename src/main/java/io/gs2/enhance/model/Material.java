@@ -16,92 +16,64 @@
 
 package io.gs2.enhance.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 素材
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Material implements IModel, Serializable {
-	/** 強化対象の GS2-Inventory アイテムセットGRN */
-	protected String materialItemSetId;
+	private String materialItemSetId;
+	private Integer count;
 
-	/**
-	 * 強化対象の GS2-Inventory アイテムセットGRNを取得
-	 *
-	 * @return 強化対象の GS2-Inventory アイテムセットGRN
-	 */
 	public String getMaterialItemSetId() {
 		return materialItemSetId;
 	}
 
-	/**
-	 * 強化対象の GS2-Inventory アイテムセットGRNを設定
-	 *
-	 * @param materialItemSetId 強化対象の GS2-Inventory アイテムセットGRN
-	 */
 	public void setMaterialItemSetId(String materialItemSetId) {
 		this.materialItemSetId = materialItemSetId;
 	}
 
-	/**
-	 * 強化対象の GS2-Inventory アイテムセットGRNを設定
-	 *
-	 * @param materialItemSetId 強化対象の GS2-Inventory アイテムセットGRN
-	 * @return this
-	 */
 	public Material withMaterialItemSetId(String materialItemSetId) {
 		this.materialItemSetId = materialItemSetId;
 		return this;
 	}
-	/** 消費数量 */
-	protected Integer count;
 
-	/**
-	 * 消費数量を取得
-	 *
-	 * @return 消費数量
-	 */
 	public Integer getCount() {
 		return count;
 	}
 
-	/**
-	 * 消費数量を設定
-	 *
-	 * @param count 消費数量
-	 */
 	public void setCount(Integer count) {
 		this.count = count;
 	}
 
-	/**
-	 * 消費数量を設定
-	 *
-	 * @param count 消費数量
-	 * @return this
-	 */
 	public Material withCount(Integer count) {
 		this.count = count;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("materialItemSetId", this.getMaterialItemSetId())
-            .put("count", this.getCount());
-        return body_;
+    public static Material fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Material()
+            .withMaterialItemSetId(data.get("materialItemSetId") == null || data.get("materialItemSetId").isNull() ? null : data.get("materialItemSetId").asText())
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("materialItemSetId", getMaterialItemSetId());
+                put("count", getCount());
+            }}
+        );
     }
 
 	@Override

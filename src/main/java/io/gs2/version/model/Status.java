@@ -16,94 +16,64 @@
 
 package io.gs2.version.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * バージョンの検証結果
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Status implements IModel, Serializable {
-	/** バージョン設定 */
-	protected VersionModel versionModel;
+	private VersionModel versionModel;
+	private Version currentVersion;
 
-	/**
-	 * バージョン設定を取得
-	 *
-	 * @return バージョン設定
-	 */
 	public VersionModel getVersionModel() {
 		return versionModel;
 	}
 
-	/**
-	 * バージョン設定を設定
-	 *
-	 * @param versionModel バージョン設定
-	 */
 	public void setVersionModel(VersionModel versionModel) {
 		this.versionModel = versionModel;
 	}
 
-	/**
-	 * バージョン設定を設定
-	 *
-	 * @param versionModel バージョン設定
-	 * @return this
-	 */
 	public Status withVersionModel(VersionModel versionModel) {
 		this.versionModel = versionModel;
 		return this;
 	}
-	/** 現在のバージョン */
-	protected Version currentVersion;
 
-	/**
-	 * 現在のバージョンを取得
-	 *
-	 * @return 現在のバージョン
-	 */
 	public Version getCurrentVersion() {
 		return currentVersion;
 	}
 
-	/**
-	 * 現在のバージョンを設定
-	 *
-	 * @param currentVersion 現在のバージョン
-	 */
 	public void setCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 	}
 
-	/**
-	 * 現在のバージョンを設定
-	 *
-	 * @param currentVersion 現在のバージョン
-	 * @return this
-	 */
 	public Status withCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode versionModel = this.getVersionModel().toJson();
-        JsonNode currentVersion = this.getCurrentVersion().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode();
-        body_.set("versionModel", versionModel);
-        body_.set("currentVersion", currentVersion);
-        return body_;
+    public static Status fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Status()
+            .withVersionModel(data.get("versionModel") == null || data.get("versionModel").isNull() ? null : VersionModel.fromJson(data.get("versionModel")))
+            .withCurrentVersion(data.get("currentVersion") == null || data.get("currentVersion").isNull() ? null : Version.fromJson(data.get("currentVersion")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("versionModel", getVersionModel() != null ? getVersionModel().toJson() : null);
+                put("currentVersion", getCurrentVersion() != null ? getCurrentVersion().toJson() : null);
+            }}
+        );
     }
 
 	@Override

@@ -16,92 +16,64 @@
 
 package io.gs2.deploy.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * Output に記録するフィールド
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OutputField implements IModel, Serializable {
-	/** 名前 */
-	protected String name;
+	private String name;
+	private String fieldName;
 
-	/**
-	 * 名前を取得
-	 *
-	 * @return 名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 名前を設定
-	 *
-	 * @param name 名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 名前を設定
-	 *
-	 * @param name 名前
-	 * @return this
-	 */
 	public OutputField withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** フィールド名 */
-	protected String fieldName;
 
-	/**
-	 * フィールド名を取得
-	 *
-	 * @return フィールド名
-	 */
 	public String getFieldName() {
 		return fieldName;
 	}
 
-	/**
-	 * フィールド名を設定
-	 *
-	 * @param fieldName フィールド名
-	 */
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
 	}
 
-	/**
-	 * フィールド名を設定
-	 *
-	 * @param fieldName フィールド名
-	 * @return this
-	 */
 	public OutputField withFieldName(String fieldName) {
 		this.fieldName = fieldName;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("name", this.getName())
-            .put("fieldName", this.getFieldName());
-        return body_;
+    public static OutputField fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new OutputField()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withFieldName(data.get("fieldName") == null || data.get("fieldName").isNull() ? null : data.get("fieldName").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("fieldName", getFieldName());
+            }}
+        );
     }
 
 	@Override

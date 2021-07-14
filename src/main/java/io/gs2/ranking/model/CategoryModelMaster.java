@@ -16,573 +16,306 @@
 
 package io.gs2.ranking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * カテゴリマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CategoryModelMaster implements IModel, Serializable, Comparable<CategoryModelMaster> {
-	/** カテゴリマスター */
-	protected String categoryModelId;
+	private String categoryModelId;
+	private String name;
+	private String description;
+	private String metadata;
+	private Long minimumValue;
+	private Long maximumValue;
+	private String orderDirection;
+	private String scope;
+	private Boolean uniqueByUserId;
+	private Integer calculateFixedTimingHour;
+	private Integer calculateFixedTimingMinute;
+	private Integer calculateIntervalMinutes;
+	private String entryPeriodEventId;
+	private String accessPeriodEventId;
+	private String generation;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * カテゴリマスターを取得
-	 *
-	 * @return カテゴリマスター
-	 */
 	public String getCategoryModelId() {
 		return categoryModelId;
 	}
 
-	/**
-	 * カテゴリマスターを設定
-	 *
-	 * @param categoryModelId カテゴリマスター
-	 */
 	public void setCategoryModelId(String categoryModelId) {
 		this.categoryModelId = categoryModelId;
 	}
 
-	/**
-	 * カテゴリマスターを設定
-	 *
-	 * @param categoryModelId カテゴリマスター
-	 * @return this
-	 */
 	public CategoryModelMaster withCategoryModelId(String categoryModelId) {
 		this.categoryModelId = categoryModelId;
 		return this;
 	}
-	/** カテゴリモデル名 */
-	protected String name;
 
-	/**
-	 * カテゴリモデル名を取得
-	 *
-	 * @return カテゴリモデル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * カテゴリモデル名を設定
-	 *
-	 * @param name カテゴリモデル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * カテゴリモデル名を設定
-	 *
-	 * @param name カテゴリモデル名
-	 * @return this
-	 */
 	public CategoryModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** カテゴリマスターの説明 */
-	protected String description;
 
-	/**
-	 * カテゴリマスターの説明を取得
-	 *
-	 * @return カテゴリマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * カテゴリマスターの説明を設定
-	 *
-	 * @param description カテゴリマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * カテゴリマスターの説明を設定
-	 *
-	 * @param description カテゴリマスターの説明
-	 * @return this
-	 */
 	public CategoryModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** カテゴリマスターのメタデータ */
-	protected String metadata;
 
-	/**
-	 * カテゴリマスターのメタデータを取得
-	 *
-	 * @return カテゴリマスターのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * カテゴリマスターのメタデータを設定
-	 *
-	 * @param metadata カテゴリマスターのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * カテゴリマスターのメタデータを設定
-	 *
-	 * @param metadata カテゴリマスターのメタデータ
-	 * @return this
-	 */
 	public CategoryModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** スコアの最小値 */
-	protected Long minimumValue;
 
-	/**
-	 * スコアの最小値を取得
-	 *
-	 * @return スコアの最小値
-	 */
 	public Long getMinimumValue() {
 		return minimumValue;
 	}
 
-	/**
-	 * スコアの最小値を設定
-	 *
-	 * @param minimumValue スコアの最小値
-	 */
 	public void setMinimumValue(Long minimumValue) {
 		this.minimumValue = minimumValue;
 	}
 
-	/**
-	 * スコアの最小値を設定
-	 *
-	 * @param minimumValue スコアの最小値
-	 * @return this
-	 */
 	public CategoryModelMaster withMinimumValue(Long minimumValue) {
 		this.minimumValue = minimumValue;
 		return this;
 	}
-	/** スコアの最大値 */
-	protected Long maximumValue;
 
-	/**
-	 * スコアの最大値を取得
-	 *
-	 * @return スコアの最大値
-	 */
 	public Long getMaximumValue() {
 		return maximumValue;
 	}
 
-	/**
-	 * スコアの最大値を設定
-	 *
-	 * @param maximumValue スコアの最大値
-	 */
 	public void setMaximumValue(Long maximumValue) {
 		this.maximumValue = maximumValue;
 	}
 
-	/**
-	 * スコアの最大値を設定
-	 *
-	 * @param maximumValue スコアの最大値
-	 * @return this
-	 */
 	public CategoryModelMaster withMaximumValue(Long maximumValue) {
 		this.maximumValue = maximumValue;
 		return this;
 	}
-	/** スコアのソート方向 */
-	protected String orderDirection;
 
-	/**
-	 * スコアのソート方向を取得
-	 *
-	 * @return スコアのソート方向
-	 */
 	public String getOrderDirection() {
 		return orderDirection;
 	}
 
-	/**
-	 * スコアのソート方向を設定
-	 *
-	 * @param orderDirection スコアのソート方向
-	 */
 	public void setOrderDirection(String orderDirection) {
 		this.orderDirection = orderDirection;
 	}
 
-	/**
-	 * スコアのソート方向を設定
-	 *
-	 * @param orderDirection スコアのソート方向
-	 * @return this
-	 */
 	public CategoryModelMaster withOrderDirection(String orderDirection) {
 		this.orderDirection = orderDirection;
 		return this;
 	}
-	/** ランキングの種類 */
-	protected String scope;
 
-	/**
-	 * ランキングの種類を取得
-	 *
-	 * @return ランキングの種類
-	 */
 	public String getScope() {
 		return scope;
 	}
 
-	/**
-	 * ランキングの種類を設定
-	 *
-	 * @param scope ランキングの種類
-	 */
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
 
-	/**
-	 * ランキングの種類を設定
-	 *
-	 * @param scope ランキングの種類
-	 * @return this
-	 */
 	public CategoryModelMaster withScope(String scope) {
 		this.scope = scope;
 		return this;
 	}
-	/** ユーザID毎にスコアを1つしか登録されないようにする */
-	protected Boolean uniqueByUserId;
 
-	/**
-	 * ユーザID毎にスコアを1つしか登録されないようにするを取得
-	 *
-	 * @return ユーザID毎にスコアを1つしか登録されないようにする
-	 */
 	public Boolean getUniqueByUserId() {
 		return uniqueByUserId;
 	}
 
-	/**
-	 * ユーザID毎にスコアを1つしか登録されないようにするを設定
-	 *
-	 * @param uniqueByUserId ユーザID毎にスコアを1つしか登録されないようにする
-	 */
 	public void setUniqueByUserId(Boolean uniqueByUserId) {
 		this.uniqueByUserId = uniqueByUserId;
 	}
 
-	/**
-	 * ユーザID毎にスコアを1つしか登録されないようにするを設定
-	 *
-	 * @param uniqueByUserId ユーザID毎にスコアを1つしか登録されないようにする
-	 * @return this
-	 */
 	public CategoryModelMaster withUniqueByUserId(Boolean uniqueByUserId) {
 		this.uniqueByUserId = uniqueByUserId;
 		return this;
 	}
-	/** スコアの固定集計開始時刻(時) */
-	protected Integer calculateFixedTimingHour;
 
-	/**
-	 * スコアの固定集計開始時刻(時)を取得
-	 *
-	 * @return スコアの固定集計開始時刻(時)
-	 */
 	public Integer getCalculateFixedTimingHour() {
 		return calculateFixedTimingHour;
 	}
 
-	/**
-	 * スコアの固定集計開始時刻(時)を設定
-	 *
-	 * @param calculateFixedTimingHour スコアの固定集計開始時刻(時)
-	 */
 	public void setCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
 		this.calculateFixedTimingHour = calculateFixedTimingHour;
 	}
 
-	/**
-	 * スコアの固定集計開始時刻(時)を設定
-	 *
-	 * @param calculateFixedTimingHour スコアの固定集計開始時刻(時)
-	 * @return this
-	 */
 	public CategoryModelMaster withCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
 		this.calculateFixedTimingHour = calculateFixedTimingHour;
 		return this;
 	}
-	/** スコアの固定集計開始時刻(分) */
-	protected Integer calculateFixedTimingMinute;
 
-	/**
-	 * スコアの固定集計開始時刻(分)を取得
-	 *
-	 * @return スコアの固定集計開始時刻(分)
-	 */
 	public Integer getCalculateFixedTimingMinute() {
 		return calculateFixedTimingMinute;
 	}
 
-	/**
-	 * スコアの固定集計開始時刻(分)を設定
-	 *
-	 * @param calculateFixedTimingMinute スコアの固定集計開始時刻(分)
-	 */
 	public void setCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
 		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
 	}
 
-	/**
-	 * スコアの固定集計開始時刻(分)を設定
-	 *
-	 * @param calculateFixedTimingMinute スコアの固定集計開始時刻(分)
-	 * @return this
-	 */
 	public CategoryModelMaster withCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
 		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
 		return this;
 	}
-	/** スコアの集計間隔(分) */
-	protected Integer calculateIntervalMinutes;
 
-	/**
-	 * スコアの集計間隔(分)を取得
-	 *
-	 * @return スコアの集計間隔(分)
-	 */
 	public Integer getCalculateIntervalMinutes() {
 		return calculateIntervalMinutes;
 	}
 
-	/**
-	 * スコアの集計間隔(分)を設定
-	 *
-	 * @param calculateIntervalMinutes スコアの集計間隔(分)
-	 */
 	public void setCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
 		this.calculateIntervalMinutes = calculateIntervalMinutes;
 	}
 
-	/**
-	 * スコアの集計間隔(分)を設定
-	 *
-	 * @param calculateIntervalMinutes スコアの集計間隔(分)
-	 * @return this
-	 */
 	public CategoryModelMaster withCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
 		this.calculateIntervalMinutes = calculateIntervalMinutes;
 		return this;
 	}
-	/** スコアの登録可能期間とするイベントマスター のGRN */
-	protected String entryPeriodEventId;
 
-	/**
-	 * スコアの登録可能期間とするイベントマスター のGRNを取得
-	 *
-	 * @return スコアの登録可能期間とするイベントマスター のGRN
-	 */
 	public String getEntryPeriodEventId() {
 		return entryPeriodEventId;
 	}
 
-	/**
-	 * スコアの登録可能期間とするイベントマスター のGRNを設定
-	 *
-	 * @param entryPeriodEventId スコアの登録可能期間とするイベントマスター のGRN
-	 */
 	public void setEntryPeriodEventId(String entryPeriodEventId) {
 		this.entryPeriodEventId = entryPeriodEventId;
 	}
 
-	/**
-	 * スコアの登録可能期間とするイベントマスター のGRNを設定
-	 *
-	 * @param entryPeriodEventId スコアの登録可能期間とするイベントマスター のGRN
-	 * @return this
-	 */
 	public CategoryModelMaster withEntryPeriodEventId(String entryPeriodEventId) {
 		this.entryPeriodEventId = entryPeriodEventId;
 		return this;
 	}
-	/** アクセス可能期間とするイベントマスター のGRN */
-	protected String accessPeriodEventId;
 
-	/**
-	 * アクセス可能期間とするイベントマスター のGRNを取得
-	 *
-	 * @return アクセス可能期間とするイベントマスター のGRN
-	 */
 	public String getAccessPeriodEventId() {
 		return accessPeriodEventId;
 	}
 
-	/**
-	 * アクセス可能期間とするイベントマスター のGRNを設定
-	 *
-	 * @param accessPeriodEventId アクセス可能期間とするイベントマスター のGRN
-	 */
 	public void setAccessPeriodEventId(String accessPeriodEventId) {
 		this.accessPeriodEventId = accessPeriodEventId;
 	}
 
-	/**
-	 * アクセス可能期間とするイベントマスター のGRNを設定
-	 *
-	 * @param accessPeriodEventId アクセス可能期間とするイベントマスター のGRN
-	 * @return this
-	 */
 	public CategoryModelMaster withAccessPeriodEventId(String accessPeriodEventId) {
 		this.accessPeriodEventId = accessPeriodEventId;
 		return this;
 	}
-	/** ランキングの世代 */
-	protected String generation;
 
-	/**
-	 * ランキングの世代を取得
-	 *
-	 * @return ランキングの世代
-	 */
 	public String getGeneration() {
 		return generation;
 	}
 
-	/**
-	 * ランキングの世代を設定
-	 *
-	 * @param generation ランキングの世代
-	 */
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
 
-	/**
-	 * ランキングの世代を設定
-	 *
-	 * @param generation ランキングの世代
-	 * @return this
-	 */
 	public CategoryModelMaster withGeneration(String generation) {
 		this.generation = generation;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public CategoryModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public CategoryModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("categoryModelId", this.getCategoryModelId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("minimumValue", this.getMinimumValue())
-            .put("maximumValue", this.getMaximumValue())
-            .put("orderDirection", this.getOrderDirection())
-            .put("scope", this.getScope())
-            .put("uniqueByUserId", this.getUniqueByUserId())
-            .put("calculateFixedTimingHour", this.getCalculateFixedTimingHour())
-            .put("calculateFixedTimingMinute", this.getCalculateFixedTimingMinute())
-            .put("calculateIntervalMinutes", this.getCalculateIntervalMinutes())
-            .put("entryPeriodEventId", this.getEntryPeriodEventId())
-            .put("accessPeriodEventId", this.getAccessPeriodEventId())
-            .put("generation", this.getGeneration())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static CategoryModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CategoryModelMaster()
+            .withCategoryModelId(data.get("categoryModelId") == null || data.get("categoryModelId").isNull() ? null : data.get("categoryModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withMinimumValue(data.get("minimumValue") == null || data.get("minimumValue").isNull() ? null : data.get("minimumValue").longValue())
+            .withMaximumValue(data.get("maximumValue") == null || data.get("maximumValue").isNull() ? null : data.get("maximumValue").longValue())
+            .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
+            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
+            .withUniqueByUserId(data.get("uniqueByUserId") == null || data.get("uniqueByUserId").isNull() ? null : data.get("uniqueByUserId").booleanValue())
+            .withCalculateFixedTimingHour(data.get("calculateFixedTimingHour") == null || data.get("calculateFixedTimingHour").isNull() ? null : data.get("calculateFixedTimingHour").intValue())
+            .withCalculateFixedTimingMinute(data.get("calculateFixedTimingMinute") == null || data.get("calculateFixedTimingMinute").isNull() ? null : data.get("calculateFixedTimingMinute").intValue())
+            .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
+            .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
+            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
+            .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("categoryModelId", getCategoryModelId());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("minimumValue", getMinimumValue());
+                put("maximumValue", getMaximumValue());
+                put("orderDirection", getOrderDirection());
+                put("scope", getScope());
+                put("uniqueByUserId", getUniqueByUserId());
+                put("calculateFixedTimingHour", getCalculateFixedTimingHour());
+                put("calculateFixedTimingMinute", getCalculateFixedTimingMinute());
+                put("calculateIntervalMinutes", getCalculateIntervalMinutes());
+                put("entryPeriodEventId", getEntryPeriodEventId());
+                put("accessPeriodEventId", getAccessPeriodEventId());
+                put("generation", getGeneration());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(CategoryModelMaster o) {
 		return categoryModelId.compareTo(o.categoryModelId);

@@ -16,82 +16,62 @@
 
 package io.gs2.key.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.key.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 暗号鍵を取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetKeyRequest extends Gs2BasicRequest<GetKeyRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 暗号鍵を取得します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 暗号鍵を取得します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 暗号鍵を取得します
-     * @return this
-     */
-    public GetKeyRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 暗号鍵名 */
     private String keyName;
 
-    /**
-     * 暗号鍵名を取得
-     *
-     * @return 暗号鍵を取得します
-     */
-    public String getKeyName() {
-        return keyName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetKeyRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getKeyName() {
+		return keyName;
+	}
+
+	public void setKeyName(String keyName) {
+		this.keyName = keyName;
+	}
+
+	public GetKeyRequest withKeyName(String keyName) {
+		this.keyName = keyName;
+		return this;
+	}
+
+    public static GetKeyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetKeyRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withKeyName(data.get("keyName") == null || data.get("keyName").isNull() ? null : data.get("keyName").asText());
     }
 
-    /**
-     * 暗号鍵名を設定
-     *
-     * @param keyName 暗号鍵を取得します
-     */
-    public void setKeyName(String keyName) {
-        this.keyName = keyName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("keyName", getKeyName());
+            }}
+        );
     }
-
-    /**
-     * 暗号鍵名を設定
-     *
-     * @param keyName 暗号鍵を取得します
-     * @return this
-     */
-    public GetKeyRequest withKeyName(String keyName) {
-        setKeyName(keyName);
-        return this;
-    }
-
 }

@@ -16,124 +16,80 @@
 
 package io.gs2.mission.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * リセットタイミングまでの期間のカウンター値
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ScopedValue implements IModel, Serializable {
-	/** リセットタイミング */
-	protected String resetType;
+	private String resetType;
+	private Long value;
+	private Long updatedAt;
 
-	/**
-	 * リセットタイミングを取得
-	 *
-	 * @return リセットタイミング
-	 */
 	public String getResetType() {
 		return resetType;
 	}
 
-	/**
-	 * リセットタイミングを設定
-	 *
-	 * @param resetType リセットタイミング
-	 */
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
 
-	/**
-	 * リセットタイミングを設定
-	 *
-	 * @param resetType リセットタイミング
-	 * @return this
-	 */
 	public ScopedValue withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-	/** カウント */
-	protected Long value;
 
-	/**
-	 * カウントを取得
-	 *
-	 * @return カウント
-	 */
 	public Long getValue() {
 		return value;
 	}
 
-	/**
-	 * カウントを設定
-	 *
-	 * @param value カウント
-	 */
 	public void setValue(Long value) {
 		this.value = value;
 	}
 
-	/**
-	 * カウントを設定
-	 *
-	 * @param value カウント
-	 * @return this
-	 */
 	public ScopedValue withValue(Long value) {
 		this.value = value;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public ScopedValue withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("resetType", this.getResetType())
-            .put("value", this.getValue())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static ScopedValue fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ScopedValue()
+            .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
+            .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("resetType", getResetType());
+                put("value", getValue());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
     }
 
 	@Override

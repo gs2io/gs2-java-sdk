@@ -16,50 +16,46 @@
 
 package io.gs2.distributor.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.distributor.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 配信設定の一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeDistributorModelsRequest extends Gs2BasicRequest<DescribeDistributorModelsRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
 
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 配信設定の一覧を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeDistributorModelsRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+    public static DescribeDistributorModelsRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeDistributorModelsRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText());
     }
 
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 配信設定の一覧を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+            }}
+        );
     }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 配信設定の一覧を取得
-     * @return this
-     */
-    public DescribeDistributorModelsRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
 }

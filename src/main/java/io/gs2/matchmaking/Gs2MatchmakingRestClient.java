@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.matchmaking;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.matchmaking.request.*;
 import io.gs2.matchmaking.result.*;
-import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRestClient> {
 
-/**
- * GS2 Matchmaking API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2MatchmakingRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,68 +152,24 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getEnableRating() != null) {
-                json.put("enableRating", this.request.getEnableRating());
-            }
-            if (this.request.getCreateGatheringTriggerType() != null) {
-                json.put("createGatheringTriggerType", this.request.getCreateGatheringTriggerType());
-            }
-            if (this.request.getCreateGatheringTriggerRealtimeNamespaceId() != null) {
-                json.put("createGatheringTriggerRealtimeNamespaceId", this.request.getCreateGatheringTriggerRealtimeNamespaceId());
-            }
-            if (this.request.getCreateGatheringTriggerScriptId() != null) {
-                json.put("createGatheringTriggerScriptId", this.request.getCreateGatheringTriggerScriptId());
-            }
-            if (this.request.getCompleteMatchmakingTriggerType() != null) {
-                json.put("completeMatchmakingTriggerType", this.request.getCompleteMatchmakingTriggerType());
-            }
-            if (this.request.getCompleteMatchmakingTriggerRealtimeNamespaceId() != null) {
-                json.put("completeMatchmakingTriggerRealtimeNamespaceId", this.request.getCompleteMatchmakingTriggerRealtimeNamespaceId());
-            }
-            if (this.request.getCompleteMatchmakingTriggerScriptId() != null) {
-                json.put("completeMatchmakingTriggerScriptId", this.request.getCompleteMatchmakingTriggerScriptId());
-            }
-            if (this.request.getJoinNotification() != null) {
-                try {
-                    json.put("joinNotification", new JSONObject(mapper.writeValueAsString(this.request.getJoinNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLeaveNotification() != null) {
-                try {
-                    json.put("leaveNotification", new JSONObject(mapper.writeValueAsString(this.request.getLeaveNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCompleteNotification() != null) {
-                try {
-                    json.put("completeNotification", new JSONObject(mapper.writeValueAsString(this.request.getCompleteNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("enableRating", request.getEnableRating());
+                    put("createGatheringTriggerType", request.getCreateGatheringTriggerType());
+                    put("createGatheringTriggerRealtimeNamespaceId", request.getCreateGatheringTriggerRealtimeNamespaceId());
+                    put("createGatheringTriggerScriptId", request.getCreateGatheringTriggerScriptId());
+                    put("completeMatchmakingTriggerType", request.getCompleteMatchmakingTriggerType());
+                    put("completeMatchmakingTriggerRealtimeNamespaceId", request.getCompleteMatchmakingTriggerRealtimeNamespaceId());
+                    put("completeMatchmakingTriggerScriptId", request.getCompleteMatchmakingTriggerScriptId());
+                    put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
+                    put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
+                    put("completeNotification", request.getCompleteNotification() != null ? request.getCompleteNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -248,25 +187,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -293,15 +221,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -312,7 +243,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -336,25 +267,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -381,15 +301,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -400,7 +323,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -424,25 +347,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -469,15 +381,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -488,67 +403,25 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getEnableRating() != null) {
-                json.put("enableRating", this.request.getEnableRating());
-            }
-            if (this.request.getCreateGatheringTriggerType() != null) {
-                json.put("createGatheringTriggerType", this.request.getCreateGatheringTriggerType());
-            }
-            if (this.request.getCreateGatheringTriggerRealtimeNamespaceId() != null) {
-                json.put("createGatheringTriggerRealtimeNamespaceId", this.request.getCreateGatheringTriggerRealtimeNamespaceId());
-            }
-            if (this.request.getCreateGatheringTriggerScriptId() != null) {
-                json.put("createGatheringTriggerScriptId", this.request.getCreateGatheringTriggerScriptId());
-            }
-            if (this.request.getCompleteMatchmakingTriggerType() != null) {
-                json.put("completeMatchmakingTriggerType", this.request.getCompleteMatchmakingTriggerType());
-            }
-            if (this.request.getCompleteMatchmakingTriggerRealtimeNamespaceId() != null) {
-                json.put("completeMatchmakingTriggerRealtimeNamespaceId", this.request.getCompleteMatchmakingTriggerRealtimeNamespaceId());
-            }
-            if (this.request.getCompleteMatchmakingTriggerScriptId() != null) {
-                json.put("completeMatchmakingTriggerScriptId", this.request.getCompleteMatchmakingTriggerScriptId());
-            }
-            if (this.request.getJoinNotification() != null) {
-                try {
-                    json.put("joinNotification", new JSONObject(mapper.writeValueAsString(this.request.getJoinNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLeaveNotification() != null) {
-                try {
-                    json.put("leaveNotification", new JSONObject(mapper.writeValueAsString(this.request.getLeaveNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCompleteNotification() != null) {
-                try {
-                    json.put("completeNotification", new JSONObject(mapper.writeValueAsString(this.request.getCompleteNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("enableRating", request.getEnableRating());
+                    put("createGatheringTriggerType", request.getCreateGatheringTriggerType());
+                    put("createGatheringTriggerRealtimeNamespaceId", request.getCreateGatheringTriggerRealtimeNamespaceId());
+                    put("createGatheringTriggerScriptId", request.getCreateGatheringTriggerScriptId());
+                    put("completeMatchmakingTriggerType", request.getCompleteMatchmakingTriggerType());
+                    put("completeMatchmakingTriggerRealtimeNamespaceId", request.getCompleteMatchmakingTriggerRealtimeNamespaceId());
+                    put("completeMatchmakingTriggerScriptId", request.getCompleteMatchmakingTriggerScriptId());
+                    put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
+                    put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
+                    put("completeNotification", request.getCompleteNotification() != null ? request.getCompleteNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -566,25 +439,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -611,15 +473,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -630,7 +495,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -654,25 +519,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -699,15 +553,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DescribeGatheringsTask(
             DescribeGatheringsRequest request,
-            AsyncAction<AsyncResult<DescribeGatheringsResult>> userCallback,
-            Class<DescribeGatheringsResult> clazz
+            AsyncAction<AsyncResult<DescribeGatheringsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeGatheringsResult parse(JsonNode data) {
+            return DescribeGatheringsResult.fromJson(data);
         }
 
         @Override
@@ -718,7 +575,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -748,25 +605,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ギャザリングの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeGatheringsAsync(
             DescribeGatheringsRequest request,
             AsyncAction<AsyncResult<DescribeGatheringsResult>> callback
     ) {
-        DescribeGatheringsTask task = new DescribeGatheringsTask(request, callback, DescribeGatheringsResult.class);
+        DescribeGatheringsTask task = new DescribeGatheringsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ギャザリングの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeGatheringsResult describeGatherings(
             DescribeGatheringsRequest request
     ) {
@@ -793,15 +639,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public CreateGatheringTask(
             CreateGatheringRequest request,
-            AsyncAction<AsyncResult<CreateGatheringResult>> userCallback,
-            Class<CreateGatheringResult> clazz
+            AsyncAction<AsyncResult<CreateGatheringResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateGatheringResult parse(JsonNode data) {
+            return CreateGatheringResult.fromJson(data);
         }
 
         @Override
@@ -812,57 +661,32 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getPlayer() != null) {
-                try {
-                    json.put("player", new JSONObject(mapper.writeValueAsString(this.request.getPlayer())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getAttributeRanges() != null) {
-                JSONArray array = new JSONArray();
-                for(AttributeRange item : this.request.getAttributeRanges())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("attributeRanges", array);
-            }
-            if (this.request.getCapacityOfRoles() != null) {
-                JSONArray array = new JSONArray();
-                for(CapacityOfRole item : this.request.getCapacityOfRoles())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("capacityOfRoles", array);
-            }
-            if (this.request.getAllowUserIds() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getAllowUserIds())
-                {
-                    array.put(item);
-                }
-                json.put("allowUserIds", array);
-            }
-            if (this.request.getExpiresAt() != null) {
-                json.put("expiresAt", this.request.getExpiresAt());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("player", request.getPlayer() != null ? request.getPlayer().toJson() : null);
+                    put("attributeRanges", request.getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                        request.getAttributeRanges().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("capacityOfRoles", request.getCapacityOfRoles() == null ? new ArrayList<CapacityOfRole>() :
+                        request.getCapacityOfRoles().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                        request.getAllowUserIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("expiresAt", request.getExpiresAt());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -876,9 +700,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -886,73 +707,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ギャザリングを作成して募集を開始<br>
-     *   <br>
-     *   `募集条件` には、作成したギャザリングに参加を許可する各属性値の範囲を指定します。<br>
-     *   <br>
-     *   たとえば、同一ゲームモードを希望するプレイヤーを募集したい場合は、ゲームモードに対応した属性値が完全一致する参加条件プレイヤーとマッチメイキングするように<br>
-     *   `属性名：ゲームモード` `属性最小値: ゲームモードを表す数値` `属性最大値: ゲームモードを表す数値`<br>
-     *   とすることで、同一ゲームモードを希望するプレイヤー同士をマッチメイキングできます。<br>
-     *   <br>
-     *   他にレーティングをベースにしたマッチメイキングを実施したい場合は、<br>
-     *   ルーム作成者のレーティング値を中心とした属性値の範囲を指定することで、レーティング値の近いプレイヤー同士をマッチメイキングできます。<br>
-     *   この `募集条件` はあとで更新することができますので、徐々に条件を緩和していくことができます。<br>
-     *   <br>
-     *   ロール とは 盾役1人・回復役1人・攻撃役2人 などの役割ごとに募集人数を設定したい場合に使用します。<br>
-     *   ロールにはエイリアスを指定できます。<br>
-     *   たとえば、盾役は パラディン と ナイト の2種類の `ジョブ` に更に分類できるとします。<br>
-     *   この場合、ロール名 に `盾役` エイリアス に `パラディン` `ナイト` として募集を出すようにゲームを実装します。<br>
-     *   そして、プレイヤーは自分自身の `ジョブ` を自身のプレイヤー情報のロールに指定します。<br>
-     *   <br>
-     *   こうすることで、募集条件が `盾役` になっているギャザリングには `パラディン` も `ナイト` も参加できます。<br>
-     *   一方で、ギャザリングを作成するときに、 `パラディン` だけ募集したくて、 `ナイト` を募集したくない場合は、<br>
-     *   募集するロール名に `パラディン` を直接指定したり、エイリアスに `ナイト` を含めないようにすることで実現できます。<br>
-     *   <br>
-     *   `参加者` の `募集人数` はプレイヤーの募集人数を指定します。ロール名を指定することで、ロール名ごとの募集人数を設定できます。<br>
-     *   <br>
-     *   `参加者` の `参加者のプレイヤー情報リスト` には事前にプレイヤー間でパーティを構築している場合や、参加者が離脱したあとの追加募集で使用します。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createGatheringAsync(
             CreateGatheringRequest request,
             AsyncAction<AsyncResult<CreateGatheringResult>> callback
     ) {
-        CreateGatheringTask task = new CreateGatheringTask(request, callback, CreateGatheringResult.class);
+        CreateGatheringTask task = new CreateGatheringTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ギャザリングを作成して募集を開始<br>
-     *   <br>
-     *   `募集条件` には、作成したギャザリングに参加を許可する各属性値の範囲を指定します。<br>
-     *   <br>
-     *   たとえば、同一ゲームモードを希望するプレイヤーを募集したい場合は、ゲームモードに対応した属性値が完全一致する参加条件プレイヤーとマッチメイキングするように<br>
-     *   `属性名：ゲームモード` `属性最小値: ゲームモードを表す数値` `属性最大値: ゲームモードを表す数値`<br>
-     *   とすることで、同一ゲームモードを希望するプレイヤー同士をマッチメイキングできます。<br>
-     *   <br>
-     *   他にレーティングをベースにしたマッチメイキングを実施したい場合は、<br>
-     *   ルーム作成者のレーティング値を中心とした属性値の範囲を指定することで、レーティング値の近いプレイヤー同士をマッチメイキングできます。<br>
-     *   この `募集条件` はあとで更新することができますので、徐々に条件を緩和していくことができます。<br>
-     *   <br>
-     *   ロール とは 盾役1人・回復役1人・攻撃役2人 などの役割ごとに募集人数を設定したい場合に使用します。<br>
-     *   ロールにはエイリアスを指定できます。<br>
-     *   たとえば、盾役は パラディン と ナイト の2種類の `ジョブ` に更に分類できるとします。<br>
-     *   この場合、ロール名 に `盾役` エイリアス に `パラディン` `ナイト` として募集を出すようにゲームを実装します。<br>
-     *   そして、プレイヤーは自分自身の `ジョブ` を自身のプレイヤー情報のロールに指定します。<br>
-     *   <br>
-     *   こうすることで、募集条件が `盾役` になっているギャザリングには `パラディン` も `ナイト` も参加できます。<br>
-     *   一方で、ギャザリングを作成するときに、 `パラディン` だけ募集したくて、 `ナイト` を募集したくない場合は、<br>
-     *   募集するロール名に `パラディン` を直接指定したり、エイリアスに `ナイト` を含めないようにすることで実現できます。<br>
-     *   <br>
-     *   `参加者` の `募集人数` はプレイヤーの募集人数を指定します。ロール名を指定することで、ロール名ごとの募集人数を設定できます。<br>
-     *   <br>
-     *   `参加者` の `参加者のプレイヤー情報リスト` には事前にプレイヤー間でパーティを構築している場合や、参加者が離脱したあとの追加募集で使用します。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateGatheringResult createGathering(
             CreateGatheringRequest request
     ) {
@@ -979,15 +741,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public CreateGatheringByUserIdTask(
             CreateGatheringByUserIdRequest request,
-            AsyncAction<AsyncResult<CreateGatheringByUserIdResult>> userCallback,
-            Class<CreateGatheringByUserIdResult> clazz
+            AsyncAction<AsyncResult<CreateGatheringByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateGatheringByUserIdResult parse(JsonNode data) {
+            return CreateGatheringByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -998,58 +763,33 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering/user/{userId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getPlayer() != null) {
-                try {
-                    json.put("player", new JSONObject(mapper.writeValueAsString(this.request.getPlayer())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getAttributeRanges() != null) {
-                JSONArray array = new JSONArray();
-                for(AttributeRange item : this.request.getAttributeRanges())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("attributeRanges", array);
-            }
-            if (this.request.getCapacityOfRoles() != null) {
-                JSONArray array = new JSONArray();
-                for(CapacityOfRole item : this.request.getCapacityOfRoles())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("capacityOfRoles", array);
-            }
-            if (this.request.getAllowUserIds() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getAllowUserIds())
-                {
-                    array.put(item);
-                }
-                json.put("allowUserIds", array);
-            }
-            if (this.request.getExpiresAt() != null) {
-                json.put("expiresAt", this.request.getExpiresAt());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("player", request.getPlayer() != null ? request.getPlayer().toJson() : null);
+                    put("attributeRanges", request.getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                        request.getAttributeRanges().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("capacityOfRoles", request.getCapacityOfRoles() == null ? new ArrayList<CapacityOfRole>() :
+                        request.getCapacityOfRoles().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                        request.getAllowUserIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("expiresAt", request.getExpiresAt());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1060,9 +800,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1070,73 +807,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ギャザリングを作成して募集を開始<br>
-     *   <br>
-     *   `募集条件` には、作成したギャザリングに参加を許可する各属性値の範囲を指定します。<br>
-     *   <br>
-     *   たとえば、同一ゲームモードを希望するプレイヤーを募集したい場合は、ゲームモードに対応した属性値が完全一致する参加条件プレイヤーとマッチメイキングするように<br>
-     *   `属性名：ゲームモード` `属性最小値: ゲームモードを表す数値` `属性最大値: ゲームモードを表す数値`<br>
-     *   とすることで、同一ゲームモードを希望するプレイヤー同士をマッチメイキングできます。<br>
-     *   <br>
-     *   他にレーティングをベースにしたマッチメイキングを実施したい場合は、<br>
-     *   ルーム作成者のレーティング値を中心とした属性値の範囲を指定することで、レーティング値の近いプレイヤー同士をマッチメイキングできます。<br>
-     *   この `募集条件` はあとで更新することができますので、徐々に条件を緩和していくことができます。<br>
-     *   <br>
-     *   ロール とは 盾役1人・回復役1人・攻撃役2人 などの役割ごとに募集人数を設定したい場合に使用します。<br>
-     *   ロールにはエイリアスを指定できます。<br>
-     *   たとえば、盾役は パラディン と ナイト の2種類の `ジョブ` に更に分類できるとします。<br>
-     *   この場合、ロール名 に `盾役` エイリアス に `パラディン` `ナイト` として募集を出すようにゲームを実装します。<br>
-     *   そして、プレイヤーは自分自身の `ジョブ` を自身のプレイヤー情報のロールに指定します。<br>
-     *   <br>
-     *   こうすることで、募集条件が `盾役` になっているギャザリングには `パラディン` も `ナイト` も参加できます。<br>
-     *   一方で、ギャザリングを作成するときに、 `パラディン` だけ募集したくて、 `ナイト` を募集したくない場合は、<br>
-     *   募集するロール名に `パラディン` を直接指定したり、エイリアスに `ナイト` を含めないようにすることで実現できます。<br>
-     *   <br>
-     *   `参加者` の `募集人数` はプレイヤーの募集人数を指定します。ロール名を指定することで、ロール名ごとの募集人数を設定できます。<br>
-     *   <br>
-     *   `参加者` の `参加者のプレイヤー情報リスト` には事前にプレイヤー間でパーティを構築している場合や、参加者が離脱したあとの追加募集で使用します。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createGatheringByUserIdAsync(
             CreateGatheringByUserIdRequest request,
             AsyncAction<AsyncResult<CreateGatheringByUserIdResult>> callback
     ) {
-        CreateGatheringByUserIdTask task = new CreateGatheringByUserIdTask(request, callback, CreateGatheringByUserIdResult.class);
+        CreateGatheringByUserIdTask task = new CreateGatheringByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ギャザリングを作成して募集を開始<br>
-     *   <br>
-     *   `募集条件` には、作成したギャザリングに参加を許可する各属性値の範囲を指定します。<br>
-     *   <br>
-     *   たとえば、同一ゲームモードを希望するプレイヤーを募集したい場合は、ゲームモードに対応した属性値が完全一致する参加条件プレイヤーとマッチメイキングするように<br>
-     *   `属性名：ゲームモード` `属性最小値: ゲームモードを表す数値` `属性最大値: ゲームモードを表す数値`<br>
-     *   とすることで、同一ゲームモードを希望するプレイヤー同士をマッチメイキングできます。<br>
-     *   <br>
-     *   他にレーティングをベースにしたマッチメイキングを実施したい場合は、<br>
-     *   ルーム作成者のレーティング値を中心とした属性値の範囲を指定することで、レーティング値の近いプレイヤー同士をマッチメイキングできます。<br>
-     *   この `募集条件` はあとで更新することができますので、徐々に条件を緩和していくことができます。<br>
-     *   <br>
-     *   ロール とは 盾役1人・回復役1人・攻撃役2人 などの役割ごとに募集人数を設定したい場合に使用します。<br>
-     *   ロールにはエイリアスを指定できます。<br>
-     *   たとえば、盾役は パラディン と ナイト の2種類の `ジョブ` に更に分類できるとします。<br>
-     *   この場合、ロール名 に `盾役` エイリアス に `パラディン` `ナイト` として募集を出すようにゲームを実装します。<br>
-     *   そして、プレイヤーは自分自身の `ジョブ` を自身のプレイヤー情報のロールに指定します。<br>
-     *   <br>
-     *   こうすることで、募集条件が `盾役` になっているギャザリングには `パラディン` も `ナイト` も参加できます。<br>
-     *   一方で、ギャザリングを作成するときに、 `パラディン` だけ募集したくて、 `ナイト` を募集したくない場合は、<br>
-     *   募集するロール名に `パラディン` を直接指定したり、エイリアスに `ナイト` を含めないようにすることで実現できます。<br>
-     *   <br>
-     *   `参加者` の `募集人数` はプレイヤーの募集人数を指定します。ロール名を指定することで、ロール名ごとの募集人数を設定できます。<br>
-     *   <br>
-     *   `参加者` の `参加者のプレイヤー情報リスト` には事前にプレイヤー間でパーティを構築している場合や、参加者が離脱したあとの追加募集で使用します。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateGatheringByUserIdResult createGatheringByUserId(
             CreateGatheringByUserIdRequest request
     ) {
@@ -1163,15 +841,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public UpdateGatheringTask(
             UpdateGatheringRequest request,
-            AsyncAction<AsyncResult<UpdateGatheringResult>> userCallback,
-            Class<UpdateGatheringResult> clazz
+            AsyncAction<AsyncResult<UpdateGatheringResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateGatheringResult parse(JsonNode data) {
+            return UpdateGatheringResult.fromJson(data);
         }
 
         @Override
@@ -1182,28 +863,20 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering/{gatheringName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{gatheringName}", this.request.getGatheringName() == null|| this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAttributeRanges() != null) {
-                JSONArray array = new JSONArray();
-                for(AttributeRange item : this.request.getAttributeRanges())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("attributeRanges", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("attributeRanges", request.getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                        request.getAttributeRanges().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1217,9 +890,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1227,25 +897,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ギャザリングを更新する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateGatheringAsync(
             UpdateGatheringRequest request,
             AsyncAction<AsyncResult<UpdateGatheringResult>> callback
     ) {
-        UpdateGatheringTask task = new UpdateGatheringTask(request, callback, UpdateGatheringResult.class);
+        UpdateGatheringTask task = new UpdateGatheringTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ギャザリングを更新する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateGatheringResult updateGathering(
             UpdateGatheringRequest request
     ) {
@@ -1272,15 +931,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public UpdateGatheringByUserIdTask(
             UpdateGatheringByUserIdRequest request,
-            AsyncAction<AsyncResult<UpdateGatheringByUserIdResult>> userCallback,
-            Class<UpdateGatheringByUserIdResult> clazz
+            AsyncAction<AsyncResult<UpdateGatheringByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateGatheringByUserIdResult parse(JsonNode data) {
+            return UpdateGatheringByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1291,29 +953,21 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering/{gatheringName}/user/{userId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{gatheringName}", this.request.getGatheringName() == null|| this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAttributeRanges() != null) {
-                JSONArray array = new JSONArray();
-                for(AttributeRange item : this.request.getAttributeRanges())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("attributeRanges", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("attributeRanges", request.getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                        request.getAttributeRanges().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1324,9 +978,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1334,25 +985,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ギャザリングを更新する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateGatheringByUserIdAsync(
             UpdateGatheringByUserIdRequest request,
             AsyncAction<AsyncResult<UpdateGatheringByUserIdResult>> callback
     ) {
-        UpdateGatheringByUserIdTask task = new UpdateGatheringByUserIdTask(request, callback, UpdateGatheringByUserIdResult.class);
+        UpdateGatheringByUserIdTask task = new UpdateGatheringByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ギャザリングを更新する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateGatheringByUserIdResult updateGatheringByUserId(
             UpdateGatheringByUserIdRequest request
     ) {
@@ -1379,15 +1019,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DoMatchmakingByPlayerTask(
             DoMatchmakingByPlayerRequest request,
-            AsyncAction<AsyncResult<DoMatchmakingByPlayerResult>> userCallback,
-            Class<DoMatchmakingByPlayerResult> clazz
+            AsyncAction<AsyncResult<DoMatchmakingByPlayerResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DoMatchmakingByPlayerResult parse(JsonNode data) {
+            return DoMatchmakingByPlayerResult.fromJson(data);
         }
 
         @Override
@@ -1398,25 +1041,15 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering/player/do";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getPlayer() != null) {
-                try {
-                    json.put("player", new JSONObject(mapper.writeValueAsString(this.request.getPlayer())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getMatchmakingContextToken() != null) {
-                json.put("matchmakingContextToken", this.request.getMatchmakingContextToken());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("player", request.getPlayer() != null ? request.getPlayer().toJson() : null);
+                    put("matchmakingContextToken", request.getMatchmakingContextToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1434,33 +1067,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * Player が参加できるギャザリングを探して参加する<br>
-     *   <br>
-     *   一定時間 検索を行い、対象が見つからなかったときには `マッチメイキングの状態を保持するトークン` を返す。<br>
-     *   次回 `マッチメイキングの状態を保持するトークン` をつけて再度リクエストを出すことで、前回の続きから検索処理を再開できる。<br>
-     *   すべてのギャザリングを検索したが、参加できるギャザリングが存在しなかった場合はギャザリングもトークンもどちらも null が応答される。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void doMatchmakingByPlayerAsync(
             DoMatchmakingByPlayerRequest request,
             AsyncAction<AsyncResult<DoMatchmakingByPlayerResult>> callback
     ) {
-        DoMatchmakingByPlayerTask task = new DoMatchmakingByPlayerTask(request, callback, DoMatchmakingByPlayerResult.class);
+        DoMatchmakingByPlayerTask task = new DoMatchmakingByPlayerTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * Player が参加できるギャザリングを探して参加する<br>
-     *   <br>
-     *   一定時間 検索を行い、対象が見つからなかったときには `マッチメイキングの状態を保持するトークン` を返す。<br>
-     *   次回 `マッチメイキングの状態を保持するトークン` をつけて再度リクエストを出すことで、前回の続きから検索処理を再開できる。<br>
-     *   すべてのギャザリングを検索したが、参加できるギャザリングが存在しなかった場合はギャザリングもトークンもどちらも null が応答される。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DoMatchmakingByPlayerResult doMatchmakingByPlayer(
             DoMatchmakingByPlayerRequest request
     ) {
@@ -1487,15 +1101,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DoMatchmakingTask(
             DoMatchmakingRequest request,
-            AsyncAction<AsyncResult<DoMatchmakingResult>> userCallback,
-            Class<DoMatchmakingResult> clazz
+            AsyncAction<AsyncResult<DoMatchmakingResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DoMatchmakingResult parse(JsonNode data) {
+            return DoMatchmakingResult.fromJson(data);
         }
 
         @Override
@@ -1506,25 +1123,15 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering/do";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getPlayer() != null) {
-                try {
-                    json.put("player", new JSONObject(mapper.writeValueAsString(this.request.getPlayer())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getMatchmakingContextToken() != null) {
-                json.put("matchmakingContextToken", this.request.getMatchmakingContextToken());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("player", request.getPlayer() != null ? request.getPlayer().toJson() : null);
+                    put("matchmakingContextToken", request.getMatchmakingContextToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1538,9 +1145,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1548,33 +1152,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 自分が参加できるギャザリングを探して参加する<br>
-     *   <br>
-     *   一定時間 検索を行い、対象が見つからなかったときには `マッチメイキングの状態を保持するトークン` を返す。<br>
-     *   次回 `マッチメイキングの状態を保持するトークン` をつけて再度リクエストを出すことで、前回の続きから検索処理を再開できる。<br>
-     *   すべてのギャザリングを検索したが、参加できるギャザリングが存在しなかった場合はギャザリングもトークンもどちらも null が応答される。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void doMatchmakingAsync(
             DoMatchmakingRequest request,
             AsyncAction<AsyncResult<DoMatchmakingResult>> callback
     ) {
-        DoMatchmakingTask task = new DoMatchmakingTask(request, callback, DoMatchmakingResult.class);
+        DoMatchmakingTask task = new DoMatchmakingTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 自分が参加できるギャザリングを探して参加する<br>
-     *   <br>
-     *   一定時間 検索を行い、対象が見つからなかったときには `マッチメイキングの状態を保持するトークン` を返す。<br>
-     *   次回 `マッチメイキングの状態を保持するトークン` をつけて再度リクエストを出すことで、前回の続きから検索処理を再開できる。<br>
-     *   すべてのギャザリングを検索したが、参加できるギャザリングが存在しなかった場合はギャザリングもトークンもどちらも null が応答される。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DoMatchmakingResult doMatchmaking(
             DoMatchmakingRequest request
     ) {
@@ -1601,15 +1186,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetGatheringTask(
             GetGatheringRequest request,
-            AsyncAction<AsyncResult<GetGatheringResult>> userCallback,
-            Class<GetGatheringResult> clazz
+            AsyncAction<AsyncResult<GetGatheringResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetGatheringResult parse(JsonNode data) {
+            return GetGatheringResult.fromJson(data);
         }
 
         @Override
@@ -1620,8 +1208,8 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering/{gatheringName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{gatheringName}", this.request.getGatheringName() == null|| this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1645,25 +1233,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ギャザリングを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getGatheringAsync(
             GetGatheringRequest request,
             AsyncAction<AsyncResult<GetGatheringResult>> callback
     ) {
-        GetGatheringTask task = new GetGatheringTask(request, callback, GetGatheringResult.class);
+        GetGatheringTask task = new GetGatheringTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ギャザリングを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetGatheringResult getGathering(
             GetGatheringRequest request
     ) {
@@ -1690,15 +1267,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public CancelMatchmakingTask(
             CancelMatchmakingRequest request,
-            AsyncAction<AsyncResult<CancelMatchmakingResult>> userCallback,
-            Class<CancelMatchmakingResult> clazz
+            AsyncAction<AsyncResult<CancelMatchmakingResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CancelMatchmakingResult parse(JsonNode data) {
+            return CancelMatchmakingResult.fromJson(data);
         }
 
         @Override
@@ -1709,8 +1289,8 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering/{gatheringName}/user/me";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{gatheringName}", this.request.getGatheringName() == null|| this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1730,9 +1310,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1740,29 +1317,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * マッチメイキングをキャンセルする<br>
-     *   <br>
-     *   ギャザリングから離脱する前にマッチメイキングが完了した場合は、NotFoundException(404エラー) が発生し失敗します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void cancelMatchmakingAsync(
             CancelMatchmakingRequest request,
             AsyncAction<AsyncResult<CancelMatchmakingResult>> callback
     ) {
-        CancelMatchmakingTask task = new CancelMatchmakingTask(request, callback, CancelMatchmakingResult.class);
+        CancelMatchmakingTask task = new CancelMatchmakingTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * マッチメイキングをキャンセルする<br>
-     *   <br>
-     *   ギャザリングから離脱する前にマッチメイキングが完了した場合は、NotFoundException(404エラー) が発生し失敗します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CancelMatchmakingResult cancelMatchmaking(
             CancelMatchmakingRequest request
     ) {
@@ -1789,15 +1351,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public CancelMatchmakingByUserIdTask(
             CancelMatchmakingByUserIdRequest request,
-            AsyncAction<AsyncResult<CancelMatchmakingByUserIdResult>> userCallback,
-            Class<CancelMatchmakingByUserIdResult> clazz
+            AsyncAction<AsyncResult<CancelMatchmakingByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CancelMatchmakingByUserIdResult parse(JsonNode data) {
+            return CancelMatchmakingByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1808,9 +1373,9 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering/{gatheringName}/user/{userId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{gatheringName}", this.request.getGatheringName() == null|| this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1827,9 +1392,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1837,29 +1399,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ユーザIDを指定してマッチメイキングをキャンセルする<br>
-     *   <br>
-     *   ギャザリングから離脱する前にマッチメイキングが完了した場合は、NotFoundException(404エラー) が発生し失敗します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void cancelMatchmakingByUserIdAsync(
             CancelMatchmakingByUserIdRequest request,
             AsyncAction<AsyncResult<CancelMatchmakingByUserIdResult>> callback
     ) {
-        CancelMatchmakingByUserIdTask task = new CancelMatchmakingByUserIdTask(request, callback, CancelMatchmakingByUserIdResult.class);
+        CancelMatchmakingByUserIdTask task = new CancelMatchmakingByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してマッチメイキングをキャンセルする<br>
-     *   <br>
-     *   ギャザリングから離脱する前にマッチメイキングが完了した場合は、NotFoundException(404エラー) が発生し失敗します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CancelMatchmakingByUserIdResult cancelMatchmakingByUserId(
             CancelMatchmakingByUserIdRequest request
     ) {
@@ -1886,15 +1433,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DeleteGatheringTask(
             DeleteGatheringRequest request,
-            AsyncAction<AsyncResult<DeleteGatheringResult>> userCallback,
-            Class<DeleteGatheringResult> clazz
+            AsyncAction<AsyncResult<DeleteGatheringResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteGatheringResult parse(JsonNode data) {
+            return DeleteGatheringResult.fromJson(data);
         }
 
         @Override
@@ -1905,8 +1455,8 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/gathering/{gatheringName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{gatheringName}", this.request.getGatheringName() == null|| this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1930,25 +1480,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ギャザリングを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteGatheringAsync(
             DeleteGatheringRequest request,
             AsyncAction<AsyncResult<DeleteGatheringResult>> callback
     ) {
-        DeleteGatheringTask task = new DeleteGatheringTask(request, callback, DeleteGatheringResult.class);
+        DeleteGatheringTask task = new DeleteGatheringTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ギャザリングを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteGatheringResult deleteGathering(
             DeleteGatheringRequest request
     ) {
@@ -1975,15 +1514,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DescribeRatingModelMastersTask(
             DescribeRatingModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeRatingModelMastersResult>> userCallback,
-            Class<DescribeRatingModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeRatingModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRatingModelMastersResult parse(JsonNode data) {
+            return DescribeRatingModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -1994,7 +1536,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/rating";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2024,25 +1566,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングモデルマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRatingModelMastersAsync(
             DescribeRatingModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeRatingModelMastersResult>> callback
     ) {
-        DescribeRatingModelMastersTask task = new DescribeRatingModelMastersTask(request, callback, DescribeRatingModelMastersResult.class);
+        DescribeRatingModelMastersTask task = new DescribeRatingModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングモデルマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRatingModelMastersResult describeRatingModelMasters(
             DescribeRatingModelMastersRequest request
     ) {
@@ -2069,15 +1600,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public CreateRatingModelMasterTask(
             CreateRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateRatingModelMasterResult>> userCallback,
-            Class<CreateRatingModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateRatingModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateRatingModelMasterResult parse(JsonNode data) {
+            return CreateRatingModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -2088,27 +1622,17 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/rating";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getVolatility() != null) {
-                json.put("volatility", this.request.getVolatility());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("volatility", request.getVolatility());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2126,25 +1650,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングモデルマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createRatingModelMasterAsync(
             CreateRatingModelMasterRequest request,
             AsyncAction<AsyncResult<CreateRatingModelMasterResult>> callback
     ) {
-        CreateRatingModelMasterTask task = new CreateRatingModelMasterTask(request, callback, CreateRatingModelMasterResult.class);
+        CreateRatingModelMasterTask task = new CreateRatingModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングモデルマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateRatingModelMasterResult createRatingModelMaster(
             CreateRatingModelMasterRequest request
     ) {
@@ -2171,15 +1684,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetRatingModelMasterTask(
             GetRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<GetRatingModelMasterResult>> userCallback,
-            Class<GetRatingModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetRatingModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRatingModelMasterResult parse(JsonNode data) {
+            return GetRatingModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -2190,8 +1706,8 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/rating/{ratingName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2215,25 +1731,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングモデルマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRatingModelMasterAsync(
             GetRatingModelMasterRequest request,
             AsyncAction<AsyncResult<GetRatingModelMasterResult>> callback
     ) {
-        GetRatingModelMasterTask task = new GetRatingModelMasterTask(request, callback, GetRatingModelMasterResult.class);
+        GetRatingModelMasterTask task = new GetRatingModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングモデルマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRatingModelMasterResult getRatingModelMaster(
             GetRatingModelMasterRequest request
     ) {
@@ -2260,15 +1765,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public UpdateRatingModelMasterTask(
             UpdateRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateRatingModelMasterResult>> userCallback,
-            Class<UpdateRatingModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateRatingModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateRatingModelMasterResult parse(JsonNode data) {
+            return UpdateRatingModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -2279,25 +1787,17 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/rating/{ratingName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getVolatility() != null) {
-                json.put("volatility", this.request.getVolatility());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("volatility", request.getVolatility());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2315,25 +1815,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングモデルマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateRatingModelMasterAsync(
             UpdateRatingModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateRatingModelMasterResult>> callback
     ) {
-        UpdateRatingModelMasterTask task = new UpdateRatingModelMasterTask(request, callback, UpdateRatingModelMasterResult.class);
+        UpdateRatingModelMasterTask task = new UpdateRatingModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングモデルマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateRatingModelMasterResult updateRatingModelMaster(
             UpdateRatingModelMasterRequest request
     ) {
@@ -2360,15 +1849,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DeleteRatingModelMasterTask(
             DeleteRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteRatingModelMasterResult>> userCallback,
-            Class<DeleteRatingModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteRatingModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteRatingModelMasterResult parse(JsonNode data) {
+            return DeleteRatingModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -2379,8 +1871,8 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/rating/{ratingName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2404,25 +1896,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングモデルマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteRatingModelMasterAsync(
             DeleteRatingModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteRatingModelMasterResult>> callback
     ) {
-        DeleteRatingModelMasterTask task = new DeleteRatingModelMasterTask(request, callback, DeleteRatingModelMasterResult.class);
+        DeleteRatingModelMasterTask task = new DeleteRatingModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングモデルマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteRatingModelMasterResult deleteRatingModelMaster(
             DeleteRatingModelMasterRequest request
     ) {
@@ -2449,15 +1930,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DescribeRatingModelsTask(
             DescribeRatingModelsRequest request,
-            AsyncAction<AsyncResult<DescribeRatingModelsResult>> userCallback,
-            Class<DescribeRatingModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeRatingModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRatingModelsResult parse(JsonNode data) {
+            return DescribeRatingModelsResult.fromJson(data);
         }
 
         @Override
@@ -2468,7 +1952,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/rating";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2492,25 +1976,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングモデルの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRatingModelsAsync(
             DescribeRatingModelsRequest request,
             AsyncAction<AsyncResult<DescribeRatingModelsResult>> callback
     ) {
-        DescribeRatingModelsTask task = new DescribeRatingModelsTask(request, callback, DescribeRatingModelsResult.class);
+        DescribeRatingModelsTask task = new DescribeRatingModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングモデルの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRatingModelsResult describeRatingModels(
             DescribeRatingModelsRequest request
     ) {
@@ -2537,15 +2010,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetRatingModelTask(
             GetRatingModelRequest request,
-            AsyncAction<AsyncResult<GetRatingModelResult>> userCallback,
-            Class<GetRatingModelResult> clazz
+            AsyncAction<AsyncResult<GetRatingModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRatingModelResult parse(JsonNode data) {
+            return GetRatingModelResult.fromJson(data);
         }
 
         @Override
@@ -2556,8 +2032,8 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/rating/{ratingName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2581,25 +2057,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングモデルを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRatingModelAsync(
             GetRatingModelRequest request,
             AsyncAction<AsyncResult<GetRatingModelResult>> callback
     ) {
-        GetRatingModelTask task = new GetRatingModelTask(request, callback, GetRatingModelResult.class);
+        GetRatingModelTask task = new GetRatingModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングモデルを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRatingModelResult getRatingModel(
             GetRatingModelRequest request
     ) {
@@ -2626,15 +2091,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -2645,7 +2113,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2669,25 +2137,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 現在有効なレーティングマスターのマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なレーティングマスターのマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -2714,15 +2171,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetCurrentRatingModelMasterTask(
             GetCurrentRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentRatingModelMasterResult>> userCallback,
-            Class<GetCurrentRatingModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentRatingModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentRatingModelMasterResult parse(JsonNode data) {
+            return GetCurrentRatingModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -2733,7 +2193,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2757,25 +2217,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 現在有効なレーティングマスターを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentRatingModelMasterAsync(
             GetCurrentRatingModelMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentRatingModelMasterResult>> callback
     ) {
-        GetCurrentRatingModelMasterTask task = new GetCurrentRatingModelMasterTask(request, callback, GetCurrentRatingModelMasterResult.class);
+        GetCurrentRatingModelMasterTask task = new GetCurrentRatingModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なレーティングマスターを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentRatingModelMasterResult getCurrentRatingModelMaster(
             GetCurrentRatingModelMasterRequest request
     ) {
@@ -2802,15 +2251,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public UpdateCurrentRatingModelMasterTask(
             UpdateCurrentRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterResult>> userCallback,
-            Class<UpdateCurrentRatingModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentRatingModelMasterResult parse(JsonNode data) {
+            return UpdateCurrentRatingModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -2821,18 +2273,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2850,25 +2298,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 現在有効なレーティングマスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentRatingModelMasterAsync(
             UpdateCurrentRatingModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterResult>> callback
     ) {
-        UpdateCurrentRatingModelMasterTask task = new UpdateCurrentRatingModelMasterTask(request, callback, UpdateCurrentRatingModelMasterResult.class);
+        UpdateCurrentRatingModelMasterTask task = new UpdateCurrentRatingModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なレーティングマスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentRatingModelMasterResult updateCurrentRatingModelMaster(
             UpdateCurrentRatingModelMasterRequest request
     ) {
@@ -2895,15 +2332,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public UpdateCurrentRatingModelMasterFromGitHubTask(
             UpdateCurrentRatingModelMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentRatingModelMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentRatingModelMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentRatingModelMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2914,22 +2354,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2947,25 +2379,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 現在有効なレーティングマスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentRatingModelMasterFromGitHubAsync(
             UpdateCurrentRatingModelMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentRatingModelMasterFromGitHubTask task = new UpdateCurrentRatingModelMasterFromGitHubTask(request, callback, UpdateCurrentRatingModelMasterFromGitHubResult.class);
+        UpdateCurrentRatingModelMasterFromGitHubTask task = new UpdateCurrentRatingModelMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なレーティングマスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentRatingModelMasterFromGitHubResult updateCurrentRatingModelMasterFromGitHub(
             UpdateCurrentRatingModelMasterFromGitHubRequest request
     ) {
@@ -2992,15 +2413,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DescribeRatingsTask(
             DescribeRatingsRequest request,
-            AsyncAction<AsyncResult<DescribeRatingsResult>> userCallback,
-            Class<DescribeRatingsResult> clazz
+            AsyncAction<AsyncResult<DescribeRatingsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRatingsResult parse(JsonNode data) {
+            return DescribeRatingsResult.fromJson(data);
         }
 
         @Override
@@ -3011,7 +2435,7 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/rating";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3037,9 +2461,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3047,25 +2468,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRatingsAsync(
             DescribeRatingsRequest request,
             AsyncAction<AsyncResult<DescribeRatingsResult>> callback
     ) {
-        DescribeRatingsTask task = new DescribeRatingsTask(request, callback, DescribeRatingsResult.class);
+        DescribeRatingsTask task = new DescribeRatingsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRatingsResult describeRatings(
             DescribeRatingsRequest request
     ) {
@@ -3092,15 +2502,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DescribeRatingsByUserIdTask(
             DescribeRatingsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeRatingsByUserIdResult>> userCallback,
-            Class<DescribeRatingsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeRatingsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRatingsByUserIdResult parse(JsonNode data) {
+            return DescribeRatingsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3111,8 +2524,8 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/rating";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3135,9 +2548,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3145,25 +2555,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * ユーザIDを指定してレーティングの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRatingsByUserIdAsync(
             DescribeRatingsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeRatingsByUserIdResult>> callback
     ) {
-        DescribeRatingsByUserIdTask task = new DescribeRatingsByUserIdTask(request, callback, DescribeRatingsByUserIdResult.class);
+        DescribeRatingsByUserIdTask task = new DescribeRatingsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してレーティングの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRatingsByUserIdResult describeRatingsByUserId(
             DescribeRatingsByUserIdRequest request
     ) {
@@ -3190,15 +2589,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetRatingTask(
             GetRatingRequest request,
-            AsyncAction<AsyncResult<GetRatingResult>> userCallback,
-            Class<GetRatingResult> clazz
+            AsyncAction<AsyncResult<GetRatingResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRatingResult parse(JsonNode data) {
+            return GetRatingResult.fromJson(data);
         }
 
         @Override
@@ -3209,8 +2611,8 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/rating/{ratingName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3230,9 +2632,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3240,25 +2639,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRatingAsync(
             GetRatingRequest request,
             AsyncAction<AsyncResult<GetRatingResult>> callback
     ) {
-        GetRatingTask task = new GetRatingTask(request, callback, GetRatingResult.class);
+        GetRatingTask task = new GetRatingTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRatingResult getRating(
             GetRatingRequest request
     ) {
@@ -3285,15 +2673,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetRatingByUserIdTask(
             GetRatingByUserIdRequest request,
-            AsyncAction<AsyncResult<GetRatingByUserIdResult>> userCallback,
-            Class<GetRatingByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetRatingByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRatingByUserIdResult parse(JsonNode data) {
+            return GetRatingByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3304,9 +2695,9 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/rating/{ratingName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3323,9 +2714,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3333,25 +2721,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRatingByUserIdAsync(
             GetRatingByUserIdRequest request,
             AsyncAction<AsyncResult<GetRatingByUserIdResult>> callback
     ) {
-        GetRatingByUserIdTask task = new GetRatingByUserIdTask(request, callback, GetRatingByUserIdResult.class);
+        GetRatingByUserIdTask task = new GetRatingByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRatingByUserIdResult getRatingByUserId(
             GetRatingByUserIdRequest request
     ) {
@@ -3378,15 +2755,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public PutResultTask(
             PutResultRequest request,
-            AsyncAction<AsyncResult<PutResultResult>> userCallback,
-            Class<PutResultResult> clazz
+            AsyncAction<AsyncResult<PutResultResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PutResultResult parse(JsonNode data) {
+            return PutResultResult.fromJson(data);
         }
 
         @Override
@@ -3397,28 +2777,20 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/rating/{ratingName}/vote";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getGameResults() != null) {
-                JSONArray array = new JSONArray();
-                for(GameResult item : this.request.getGameResults())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("gameResults", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                        request.getGameResults().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3436,39 +2808,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティング値の再計算を実行<br>
-     *   <br>
-     *   レーティングの計算処理には Glicko-2 rating system をベースとした計算アルゴリズムを採用しています。<br>
-     *   レーティング値の初期値は1500で、レーティングの値が離れた相手に勝利するほど上昇幅は大きく、同じく負けた側は減少幅は大きくなります。<br>
-     *   <br>
-     *   レーティングの計算には参加したユーザIDのリストが必要となります。<br>
-     *   そのため、クライアントから直接このAPIを呼び出すのは適切ではありません。ゲームの勝敗を判断できるゲームサーバから呼び出すようにしてください。<br>
-     *   P2P 対戦など、クライアント主導で対戦を実現している場合は、投票機能を利用して勝敗を決定するようにしてください。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void putResultAsync(
             PutResultRequest request,
             AsyncAction<AsyncResult<PutResultResult>> callback
     ) {
-        PutResultTask task = new PutResultTask(request, callback, PutResultResult.class);
+        PutResultTask task = new PutResultTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティング値の再計算を実行<br>
-     *   <br>
-     *   レーティングの計算処理には Glicko-2 rating system をベースとした計算アルゴリズムを採用しています。<br>
-     *   レーティング値の初期値は1500で、レーティングの値が離れた相手に勝利するほど上昇幅は大きく、同じく負けた側は減少幅は大きくなります。<br>
-     *   <br>
-     *   レーティングの計算には参加したユーザIDのリストが必要となります。<br>
-     *   そのため、クライアントから直接このAPIを呼び出すのは適切ではありません。ゲームの勝敗を判断できるゲームサーバから呼び出すようにしてください。<br>
-     *   P2P 対戦など、クライアント主導で対戦を実現している場合は、投票機能を利用して勝敗を決定するようにしてください。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PutResultResult putResult(
             PutResultRequest request
     ) {
@@ -3495,15 +2842,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public DeleteRatingTask(
             DeleteRatingRequest request,
-            AsyncAction<AsyncResult<DeleteRatingResult>> userCallback,
-            Class<DeleteRatingResult> clazz
+            AsyncAction<AsyncResult<DeleteRatingResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteRatingResult parse(JsonNode data) {
+            return DeleteRatingResult.fromJson(data);
         }
 
         @Override
@@ -3514,9 +2864,9 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/rating/{ratingName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3533,9 +2883,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3543,25 +2890,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * レーティングを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteRatingAsync(
             DeleteRatingRequest request,
             AsyncAction<AsyncResult<DeleteRatingResult>> callback
     ) {
-        DeleteRatingTask task = new DeleteRatingTask(request, callback, DeleteRatingResult.class);
+        DeleteRatingTask task = new DeleteRatingTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * レーティングを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteRatingResult deleteRating(
             DeleteRatingRequest request
     ) {
@@ -3588,15 +2924,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetBallotTask(
             GetBallotRequest request,
-            AsyncAction<AsyncResult<GetBallotResult>> userCallback,
-            Class<GetBallotResult> clazz
+            AsyncAction<AsyncResult<GetBallotResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetBallotResult parse(JsonNode data) {
+            return GetBallotResult.fromJson(data);
         }
 
         @Override
@@ -3607,23 +2946,17 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/vote/{ratingName}/{gatheringName}/ballot";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
-            url = url.replace("{gatheringName}", this.request.getGatheringName() == null|| this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getNumberOfPlayer() != null) {
-                json.put("numberOfPlayer", this.request.getNumberOfPlayer());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("numberOfPlayer", request.getNumberOfPlayer());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3637,9 +2970,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3647,25 +2977,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 投票用紙を取得します。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getBallotAsync(
             GetBallotRequest request,
             AsyncAction<AsyncResult<GetBallotResult>> callback
     ) {
-        GetBallotTask task = new GetBallotTask(request, callback, GetBallotResult.class);
+        GetBallotTask task = new GetBallotTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 投票用紙を取得します。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetBallotResult getBallot(
             GetBallotRequest request
     ) {
@@ -3692,15 +3011,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public GetBallotByUserIdTask(
             GetBallotByUserIdRequest request,
-            AsyncAction<AsyncResult<GetBallotByUserIdResult>> userCallback,
-            Class<GetBallotByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetBallotByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetBallotByUserIdResult parse(JsonNode data) {
+            return GetBallotByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3711,24 +3033,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/vote/{ratingName}/{gatheringName}/ballot";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
-            url = url.replace("{gatheringName}", this.request.getGatheringName() == null|| this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getNumberOfPlayer() != null) {
-                json.put("numberOfPlayer", this.request.getNumberOfPlayer());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("numberOfPlayer", request.getNumberOfPlayer());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3739,9 +3055,6 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3749,25 +3062,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 投票用紙を取得します。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getBallotByUserIdAsync(
             GetBallotByUserIdRequest request,
             AsyncAction<AsyncResult<GetBallotByUserIdResult>> callback
     ) {
-        GetBallotByUserIdTask task = new GetBallotByUserIdTask(request, callback, GetBallotByUserIdResult.class);
+        GetBallotByUserIdTask task = new GetBallotByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 投票用紙を取得します。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetBallotByUserIdResult getBallotByUserId(
             GetBallotByUserIdRequest request
     ) {
@@ -3794,15 +3096,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public VoteTask(
             VoteRequest request,
-            AsyncAction<AsyncResult<VoteResult>> userCallback,
-            Class<VoteResult> clazz
+            AsyncAction<AsyncResult<VoteResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public VoteResult parse(JsonNode data) {
+            return VoteResult.fromJson(data);
         }
 
         @Override
@@ -3813,36 +3118,22 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/action/vote";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getBallotBody() != null) {
-                json.put("ballotBody", this.request.getBallotBody());
-            }
-            if (this.request.getBallotSignature() != null) {
-                json.put("ballotSignature", this.request.getBallotSignature());
-            }
-            if (this.request.getGameResults() != null) {
-                JSONArray array = new JSONArray();
-                for(GameResult item : this.request.getGameResults())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("gameResults", array);
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("ballotBody", request.getBallotBody());
+                    put("ballotSignature", request.getBallotSignature());
+                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                        request.getGameResults().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3860,39 +3151,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 対戦結果を投票します。<br>
-     *   <br>
-     *   投票は最初の投票が行われてから5分以内に行う必要があります。<br>
-     *   つまり、結果は即座に反映されず、投票開始からおよそ5分後または全てのプレイヤーが投票を行った際に結果が反映されます。<br>
-     *   5分以内に全ての投票用紙を回収できなかった場合はその時点の投票内容で多数決をとって結果を決定します。<br>
-     *   各結果の投票数が同一だった場合は結果は捨てられます（スクリプトで挙動を変更可）。<br>
-     *   <br>
-     *   結果を即座に反映したい場合は、勝利した側の代表プレイヤーが投票用紙を各プレイヤーから集めて voteMultiple を呼び出すことで結果を即座に反映できます。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void voteAsync(
             VoteRequest request,
             AsyncAction<AsyncResult<VoteResult>> callback
     ) {
-        VoteTask task = new VoteTask(request, callback, VoteResult.class);
+        VoteTask task = new VoteTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 対戦結果を投票します。<br>
-     *   <br>
-     *   投票は最初の投票が行われてから5分以内に行う必要があります。<br>
-     *   つまり、結果は即座に反映されず、投票開始からおよそ5分後または全てのプレイヤーが投票を行った際に結果が反映されます。<br>
-     *   5分以内に全ての投票用紙を回収できなかった場合はその時点の投票内容で多数決をとって結果を決定します。<br>
-     *   各結果の投票数が同一だった場合は結果は捨てられます（スクリプトで挙動を変更可）。<br>
-     *   <br>
-     *   結果を即座に反映したい場合は、勝利した側の代表プレイヤーが投票用紙を各プレイヤーから集めて voteMultiple を呼び出すことで結果を即座に反映できます。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public VoteResult vote(
             VoteRequest request
     ) {
@@ -3919,15 +3185,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public VoteMultipleTask(
             VoteMultipleRequest request,
-            AsyncAction<AsyncResult<VoteMultipleResult>> userCallback,
-            Class<VoteMultipleResult> clazz
+            AsyncAction<AsyncResult<VoteMultipleResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public VoteMultipleResult parse(JsonNode data) {
+            return VoteMultipleResult.fromJson(data);
         }
 
         @Override
@@ -3938,42 +3207,26 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/action/vote/multiple";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSignedBallots() != null) {
-                JSONArray array = new JSONArray();
-                for(SignedBallot item : this.request.getSignedBallots())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("signedBallots", array);
-            }
-            if (this.request.getGameResults() != null) {
-                JSONArray array = new JSONArray();
-                for(GameResult item : this.request.getGameResults())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("gameResults", array);
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("signedBallots", request.getSignedBallots() == null ? new ArrayList<SignedBallot>() :
+                        request.getSignedBallots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                        request.getGameResults().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3991,33 +3244,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 対戦結果をまとめて投票します。<br>
-     *   <br>
-     *   ゲームに勝利した側が他プレイヤーの投票用紙を集めてまとめて投票するのに使用します。<br>
-     *   『勝利した側』としているのは、敗北した側が自分たちが勝ったことにして報告することにインセンティブはありますが、その逆はないためです。<br>
-     *   負けた側が投票用紙を渡してこない可能性がありますが、その場合も過半数の投票用紙があれば結果を通すことができます。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void voteMultipleAsync(
             VoteMultipleRequest request,
             AsyncAction<AsyncResult<VoteMultipleResult>> callback
     ) {
-        VoteMultipleTask task = new VoteMultipleTask(request, callback, VoteMultipleResult.class);
+        VoteMultipleTask task = new VoteMultipleTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 対戦結果をまとめて投票します。<br>
-     *   <br>
-     *   ゲームに勝利した側が他プレイヤーの投票用紙を集めてまとめて投票するのに使用します。<br>
-     *   『勝利した側』としているのは、敗北した側が自分たちが勝ったことにして報告することにインセンティブはありますが、その逆はないためです。<br>
-     *   負けた側が投票用紙を渡してこない可能性がありますが、その場合も過半数の投票用紙があれば結果を通すことができます。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public VoteMultipleResult voteMultiple(
             VoteMultipleRequest request
     ) {
@@ -4044,15 +3278,18 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
 
         public CommitVoteTask(
             CommitVoteRequest request,
-            AsyncAction<AsyncResult<CommitVoteResult>> userCallback,
-            Class<CommitVoteResult> clazz
+            AsyncAction<AsyncResult<CommitVoteResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CommitVoteResult parse(JsonNode data) {
+            return CommitVoteResult.fromJson(data);
         }
 
         @Override
@@ -4061,19 +3298,17 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "matchmaking")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/vote/{ratingName}/{gatheringName}/action/vote/commit";
+                + "/{namespaceName}/vote/{ratingName}/{gatheringName}/action/vote/commit";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{ratingName}", this.request.getRatingName() == null|| this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
-            url = url.replace("{gatheringName}", this.request.getGatheringName() == null|| this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{ratingName}", this.request.getRatingName() == null || this.request.getRatingName().length() == 0 ? "null" : String.valueOf(this.request.getRatingName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4091,25 +3326,14 @@ public class Gs2MatchmakingRestClient extends AbstractGs2Client<Gs2MatchmakingRe
         }
     }
 
-    /**
-     * 投票状況を強制確定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void commitVoteAsync(
             CommitVoteRequest request,
             AsyncAction<AsyncResult<CommitVoteResult>> callback
     ) {
-        CommitVoteTask task = new CommitVoteTask(request, callback, CommitVoteResult.class);
+        CommitVoteTask task = new CommitVoteTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 投票状況を強制確定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CommitVoteResult commitVote(
             CommitVoteRequest request
     ) {

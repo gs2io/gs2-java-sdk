@@ -16,338 +16,193 @@
 
 package io.gs2.chat.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.chat.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.chat.model.ScriptSetting;
+import io.gs2.chat.model.NotificationSetting;
+import io.gs2.chat.model.LogSetting;
 
-/**
- * ネームスペースを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String name;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** ゲームプレイヤーによるルームの作成を許可するか */
     private Boolean allowCreateRoom;
-
-    /**
-     * ゲームプレイヤーによるルームの作成を許可するかを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public Boolean getAllowCreateRoom() {
-        return allowCreateRoom;
-    }
-
-    /**
-     * ゲームプレイヤーによるルームの作成を許可するかを設定
-     *
-     * @param allowCreateRoom ネームスペースを新規作成
-     */
-    public void setAllowCreateRoom(Boolean allowCreateRoom) {
-        this.allowCreateRoom = allowCreateRoom;
-    }
-
-    /**
-     * ゲームプレイヤーによるルームの作成を許可するかを設定
-     *
-     * @param allowCreateRoom ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withAllowCreateRoom(Boolean allowCreateRoom) {
-        setAllowCreateRoom(allowCreateRoom);
-        return this;
-    }
-
-    /** メッセージを投稿したときに実行するスクリプト */
     private ScriptSetting postMessageScript;
-
-    /**
-     * メッセージを投稿したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public ScriptSetting getPostMessageScript() {
-        return postMessageScript;
-    }
-
-    /**
-     * メッセージを投稿したときに実行するスクリプトを設定
-     *
-     * @param postMessageScript ネームスペースを新規作成
-     */
-    public void setPostMessageScript(ScriptSetting postMessageScript) {
-        this.postMessageScript = postMessageScript;
-    }
-
-    /**
-     * メッセージを投稿したときに実行するスクリプトを設定
-     *
-     * @param postMessageScript ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withPostMessageScript(ScriptSetting postMessageScript) {
-        setPostMessageScript(postMessageScript);
-        return this;
-    }
-
-    /** ルームを作成したときに実行するスクリプト */
     private ScriptSetting createRoomScript;
-
-    /**
-     * ルームを作成したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public ScriptSetting getCreateRoomScript() {
-        return createRoomScript;
-    }
-
-    /**
-     * ルームを作成したときに実行するスクリプトを設定
-     *
-     * @param createRoomScript ネームスペースを新規作成
-     */
-    public void setCreateRoomScript(ScriptSetting createRoomScript) {
-        this.createRoomScript = createRoomScript;
-    }
-
-    /**
-     * ルームを作成したときに実行するスクリプトを設定
-     *
-     * @param createRoomScript ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCreateRoomScript(ScriptSetting createRoomScript) {
-        setCreateRoomScript(createRoomScript);
-        return this;
-    }
-
-    /** ルームを削除したときに実行するスクリプト */
     private ScriptSetting deleteRoomScript;
-
-    /**
-     * ルームを削除したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public ScriptSetting getDeleteRoomScript() {
-        return deleteRoomScript;
-    }
-
-    /**
-     * ルームを削除したときに実行するスクリプトを設定
-     *
-     * @param deleteRoomScript ネームスペースを新規作成
-     */
-    public void setDeleteRoomScript(ScriptSetting deleteRoomScript) {
-        this.deleteRoomScript = deleteRoomScript;
-    }
-
-    /**
-     * ルームを削除したときに実行するスクリプトを設定
-     *
-     * @param deleteRoomScript ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withDeleteRoomScript(ScriptSetting deleteRoomScript) {
-        setDeleteRoomScript(deleteRoomScript);
-        return this;
-    }
-
-    /** ルームを購読したときに実行するスクリプト */
     private ScriptSetting subscribeRoomScript;
-
-    /**
-     * ルームを購読したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public ScriptSetting getSubscribeRoomScript() {
-        return subscribeRoomScript;
-    }
-
-    /**
-     * ルームを購読したときに実行するスクリプトを設定
-     *
-     * @param subscribeRoomScript ネームスペースを新規作成
-     */
-    public void setSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
-        this.subscribeRoomScript = subscribeRoomScript;
-    }
-
-    /**
-     * ルームを購読したときに実行するスクリプトを設定
-     *
-     * @param subscribeRoomScript ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
-        setSubscribeRoomScript(subscribeRoomScript);
-        return this;
-    }
-
-    /** ルームの購読を解除したときに実行するスクリプト */
     private ScriptSetting unsubscribeRoomScript;
-
-    /**
-     * ルームの購読を解除したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public ScriptSetting getUnsubscribeRoomScript() {
-        return unsubscribeRoomScript;
-    }
-
-    /**
-     * ルームの購読を解除したときに実行するスクリプトを設定
-     *
-     * @param unsubscribeRoomScript ネームスペースを新規作成
-     */
-    public void setUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
-        this.unsubscribeRoomScript = unsubscribeRoomScript;
-    }
-
-    /**
-     * ルームの購読を解除したときに実行するスクリプトを設定
-     *
-     * @param unsubscribeRoomScript ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
-        setUnsubscribeRoomScript(unsubscribeRoomScript);
-        return this;
-    }
-
-    /** 購読しているルームに新しい投稿がきたときのプッシュ通知 */
     private NotificationSetting postNotification;
-
-    /**
-     * 購読しているルームに新しい投稿がきたときのプッシュ通知を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public NotificationSetting getPostNotification() {
-        return postNotification;
-    }
-
-    /**
-     * 購読しているルームに新しい投稿がきたときのプッシュ通知を設定
-     *
-     * @param postNotification ネームスペースを新規作成
-     */
-    public void setPostNotification(NotificationSetting postNotification) {
-        this.postNotification = postNotification;
-    }
-
-    /**
-     * 購読しているルームに新しい投稿がきたときのプッシュ通知を設定
-     *
-     * @param postNotification ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withPostNotification(NotificationSetting postNotification) {
-        setPostNotification(postNotification);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateNamespaceRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public Boolean getAllowCreateRoom() {
+		return allowCreateRoom;
+	}
+
+	public void setAllowCreateRoom(Boolean allowCreateRoom) {
+		this.allowCreateRoom = allowCreateRoom;
+	}
+
+	public CreateNamespaceRequest withAllowCreateRoom(Boolean allowCreateRoom) {
+		this.allowCreateRoom = allowCreateRoom;
+		return this;
+	}
+
+	public ScriptSetting getPostMessageScript() {
+		return postMessageScript;
+	}
+
+	public void setPostMessageScript(ScriptSetting postMessageScript) {
+		this.postMessageScript = postMessageScript;
+	}
+
+	public CreateNamespaceRequest withPostMessageScript(ScriptSetting postMessageScript) {
+		this.postMessageScript = postMessageScript;
+		return this;
+	}
+
+	public ScriptSetting getCreateRoomScript() {
+		return createRoomScript;
+	}
+
+	public void setCreateRoomScript(ScriptSetting createRoomScript) {
+		this.createRoomScript = createRoomScript;
+	}
+
+	public CreateNamespaceRequest withCreateRoomScript(ScriptSetting createRoomScript) {
+		this.createRoomScript = createRoomScript;
+		return this;
+	}
+
+	public ScriptSetting getDeleteRoomScript() {
+		return deleteRoomScript;
+	}
+
+	public void setDeleteRoomScript(ScriptSetting deleteRoomScript) {
+		this.deleteRoomScript = deleteRoomScript;
+	}
+
+	public CreateNamespaceRequest withDeleteRoomScript(ScriptSetting deleteRoomScript) {
+		this.deleteRoomScript = deleteRoomScript;
+		return this;
+	}
+
+	public ScriptSetting getSubscribeRoomScript() {
+		return subscribeRoomScript;
+	}
+
+	public void setSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
+		this.subscribeRoomScript = subscribeRoomScript;
+	}
+
+	public CreateNamespaceRequest withSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
+		this.subscribeRoomScript = subscribeRoomScript;
+		return this;
+	}
+
+	public ScriptSetting getUnsubscribeRoomScript() {
+		return unsubscribeRoomScript;
+	}
+
+	public void setUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
+		this.unsubscribeRoomScript = unsubscribeRoomScript;
+	}
+
+	public CreateNamespaceRequest withUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
+		this.unsubscribeRoomScript = unsubscribeRoomScript;
+		return this;
+	}
+
+	public NotificationSetting getPostNotification() {
+		return postNotification;
+	}
+
+	public void setPostNotification(NotificationSetting postNotification) {
+		this.postNotification = postNotification;
+	}
+
+	public CreateNamespaceRequest withPostNotification(NotificationSetting postNotification) {
+		this.postNotification = postNotification;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static CreateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateNamespaceRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withAllowCreateRoom(data.get("allowCreateRoom") == null || data.get("allowCreateRoom").isNull() ? null : data.get("allowCreateRoom").booleanValue())
+            .withPostMessageScript(data.get("postMessageScript") == null || data.get("postMessageScript").isNull() ? null : ScriptSetting.fromJson(data.get("postMessageScript")))
+            .withCreateRoomScript(data.get("createRoomScript") == null || data.get("createRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("createRoomScript")))
+            .withDeleteRoomScript(data.get("deleteRoomScript") == null || data.get("deleteRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteRoomScript")))
+            .withSubscribeRoomScript(data.get("subscribeRoomScript") == null || data.get("subscribeRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("subscribeRoomScript")))
+            .withUnsubscribeRoomScript(data.get("unsubscribeRoomScript") == null || data.get("unsubscribeRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("unsubscribeRoomScript")))
+            .withPostNotification(data.get("postNotification") == null || data.get("postNotification").isNull() ? null : NotificationSetting.fromJson(data.get("postNotification")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("allowCreateRoom", getAllowCreateRoom());
+                put("postMessageScript", getPostMessageScript() != null ? getPostMessageScript().toJson() : null);
+                put("createRoomScript", getCreateRoomScript() != null ? getCreateRoomScript().toJson() : null);
+                put("deleteRoomScript", getDeleteRoomScript() != null ? getDeleteRoomScript().toJson() : null);
+                put("subscribeRoomScript", getSubscribeRoomScript() != null ? getSubscribeRoomScript().toJson() : null);
+                put("unsubscribeRoomScript", getUnsubscribeRoomScript() != null ? getUnsubscribeRoomScript().toJson() : null);
+                put("postNotification", getPostNotification() != null ? getPostNotification().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

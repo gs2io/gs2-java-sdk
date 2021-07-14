@@ -16,59 +16,64 @@
 
 package io.gs2.distributor.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.distributor.model.*;
+import io.gs2.distributor.model.DistributeResource;
 
-/**
- * 所持品を配布する(溢れた際の救済処置無し) のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DistributeWithoutOverflowProcessResult implements IResult, Serializable {
-	/** 処理した DistributeResource */
-	private DistributeResource distributeResource;
-	/** レスポンス内容 */
-	private String result;
+    private DistributeResource distributeResource;
+    private String result;
 
-	/**
-	 * 処理した DistributeResourceを取得
-	 *
-	 * @return 所持品を配布する(溢れた際の救済処置無し)
-	 */
 	public DistributeResource getDistributeResource() {
 		return distributeResource;
 	}
 
-	/**
-	 * 処理した DistributeResourceを設定
-	 *
-	 * @param distributeResource 所持品を配布する(溢れた際の救済処置無し)
-	 */
 	public void setDistributeResource(DistributeResource distributeResource) {
 		this.distributeResource = distributeResource;
 	}
 
-	/**
-	 * レスポンス内容を取得
-	 *
-	 * @return 所持品を配布する(溢れた際の救済処置無し)
-	 */
+	public DistributeWithoutOverflowProcessResult withDistributeResource(DistributeResource distributeResource) {
+		this.distributeResource = distributeResource;
+		return this;
+	}
+
 	public String getResult() {
 		return result;
 	}
 
-	/**
-	 * レスポンス内容を設定
-	 *
-	 * @param result 所持品を配布する(溢れた際の救済処置無し)
-	 */
 	public void setResult(String result) {
 		this.result = result;
 	}
+
+	public DistributeWithoutOverflowProcessResult withResult(String result) {
+		this.result = result;
+		return this;
+	}
+
+    public static DistributeWithoutOverflowProcessResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DistributeWithoutOverflowProcessResult()
+            .withDistributeResource(data.get("distributeResource") == null || data.get("distributeResource").isNull() ? null : DistributeResource.fromJson(data.get("distributeResource")))
+            .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("distributeResource", getDistributeResource() != null ? getDistributeResource().toJson() : null);
+                put("result", getResult());
+            }}
+        );
+    }
 }

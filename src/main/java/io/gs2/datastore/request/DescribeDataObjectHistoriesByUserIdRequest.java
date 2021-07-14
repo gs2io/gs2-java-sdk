@@ -16,210 +16,110 @@
 
 package io.gs2.datastore.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.datastore.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定してデータオブジェクト履歴の一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeDataObjectHistoriesByUserIdRequest extends Gs2BasicRequest<DescribeDataObjectHistoriesByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     * @return this
-     */
-    public DescribeDataObjectHistoriesByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     * @return this
-     */
-    public DescribeDataObjectHistoriesByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** データの名前 */
     private String dataObjectName;
-
-    /**
-     * データの名前を取得
-     *
-     * @return ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public String getDataObjectName() {
-        return dataObjectName;
-    }
-
-    /**
-     * データの名前を設定
-     *
-     * @param dataObjectName ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public void setDataObjectName(String dataObjectName) {
-        this.dataObjectName = dataObjectName;
-    }
-
-    /**
-     * データの名前を設定
-     *
-     * @param dataObjectName ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     * @return this
-     */
-    public DescribeDataObjectHistoriesByUserIdRequest withDataObjectName(String dataObjectName) {
-        setDataObjectName(dataObjectName);
-        return this;
-    }
-
-    /** データの取得を開始する位置を指定するトークン */
     private String pageToken;
+    private Integer limit;
 
-    /**
-     * データの取得を開始する位置を指定するトークンを取得
-     *
-     * @return ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public String getPageToken() {
-        return pageToken;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeDataObjectHistoriesByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public DescribeDataObjectHistoriesByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getDataObjectName() {
+		return dataObjectName;
+	}
+
+	public void setDataObjectName(String dataObjectName) {
+		this.dataObjectName = dataObjectName;
+	}
+
+	public DescribeDataObjectHistoriesByUserIdRequest withDataObjectName(String dataObjectName) {
+		this.dataObjectName = dataObjectName;
+		return this;
+	}
+
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public DescribeDataObjectHistoriesByUserIdRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeDataObjectHistoriesByUserIdRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static DescribeDataObjectHistoriesByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeDataObjectHistoriesByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withDataObjectName(data.get("dataObjectName") == null || data.get("dataObjectName").isNull() ? null : data.get("dataObjectName").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public void setPageToken(String pageToken) {
-        this.pageToken = pageToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("dataObjectName", getDataObjectName());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
+            }}
+        );
     }
-
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     * @return this
-     */
-    public DescribeDataObjectHistoriesByUserIdRequest withPageToken(String pageToken) {
-        setPageToken(pageToken);
-        return this;
-    }
-
-    /** データの取得件数 */
-    private Long limit;
-
-    /**
-     * データの取得件数を取得
-     *
-     * @return ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public Long getLimit() {
-        return limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     * @return this
-     */
-    public DescribeDataObjectHistoriesByUserIdRequest withLimit(Long limit) {
-        setLimit(limit);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してデータオブジェクト履歴の一覧を取得
-     * @return this
-     */
-    public DescribeDataObjectHistoriesByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

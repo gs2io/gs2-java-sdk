@@ -16,178 +16,118 @@
 
 package io.gs2.showcase.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.showcase.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 商品グループマスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateSalesItemGroupMasterRequest extends Gs2BasicRequest<UpdateSalesItemGroupMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 商品グループマスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 商品グループマスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 商品グループマスターを更新
-     * @return this
-     */
-    public UpdateSalesItemGroupMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 商品名 */
     private String salesItemGroupName;
-
-    /**
-     * 商品名を取得
-     *
-     * @return 商品グループマスターを更新
-     */
-    public String getSalesItemGroupName() {
-        return salesItemGroupName;
-    }
-
-    /**
-     * 商品名を設定
-     *
-     * @param salesItemGroupName 商品グループマスターを更新
-     */
-    public void setSalesItemGroupName(String salesItemGroupName) {
-        this.salesItemGroupName = salesItemGroupName;
-    }
-
-    /**
-     * 商品名を設定
-     *
-     * @param salesItemGroupName 商品グループマスターを更新
-     * @return this
-     */
-    public UpdateSalesItemGroupMasterRequest withSalesItemGroupName(String salesItemGroupName) {
-        setSalesItemGroupName(salesItemGroupName);
-        return this;
-    }
-
-    /** 商品グループマスターの説明 */
     private String description;
-
-    /**
-     * 商品グループマスターの説明を取得
-     *
-     * @return 商品グループマスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 商品グループマスターの説明を設定
-     *
-     * @param description 商品グループマスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 商品グループマスターの説明を設定
-     *
-     * @param description 商品グループマスターを更新
-     * @return this
-     */
-    public UpdateSalesItemGroupMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 商品のメタデータ */
     private String metadata;
-
-    /**
-     * 商品のメタデータを取得
-     *
-     * @return 商品グループマスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 商品のメタデータを設定
-     *
-     * @param metadata 商品グループマスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 商品のメタデータを設定
-     *
-     * @param metadata 商品グループマスターを更新
-     * @return this
-     */
-    public UpdateSalesItemGroupMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 商品グループに含める商品リスト */
     private List<String> salesItemNames;
 
-    /**
-     * 商品グループに含める商品リストを取得
-     *
-     * @return 商品グループマスターを更新
-     */
-    public List<String> getSalesItemNames() {
-        return salesItemNames;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateSalesItemGroupMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getSalesItemGroupName() {
+		return salesItemGroupName;
+	}
+
+	public void setSalesItemGroupName(String salesItemGroupName) {
+		this.salesItemGroupName = salesItemGroupName;
+	}
+
+	public UpdateSalesItemGroupMasterRequest withSalesItemGroupName(String salesItemGroupName) {
+		this.salesItemGroupName = salesItemGroupName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateSalesItemGroupMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateSalesItemGroupMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public List<String> getSalesItemNames() {
+		return salesItemNames;
+	}
+
+	public void setSalesItemNames(List<String> salesItemNames) {
+		this.salesItemNames = salesItemNames;
+	}
+
+	public UpdateSalesItemGroupMasterRequest withSalesItemNames(List<String> salesItemNames) {
+		this.salesItemNames = salesItemNames;
+		return this;
+	}
+
+    public static UpdateSalesItemGroupMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateSalesItemGroupMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withSalesItemGroupName(data.get("salesItemGroupName") == null || data.get("salesItemGroupName").isNull() ? null : data.get("salesItemGroupName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withSalesItemNames(data.get("salesItemNames") == null || data.get("salesItemNames").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("salesItemNames").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 商品グループに含める商品リストを設定
-     *
-     * @param salesItemNames 商品グループマスターを更新
-     */
-    public void setSalesItemNames(List<String> salesItemNames) {
-        this.salesItemNames = salesItemNames;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("salesItemGroupName", getSalesItemGroupName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("salesItemNames", getSalesItemNames() == null ? new ArrayList<String>() :
+                    getSalesItemNames().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 商品グループに含める商品リストを設定
-     *
-     * @param salesItemNames 商品グループマスターを更新
-     * @return this
-     */
-    public UpdateSalesItemGroupMasterRequest withSalesItemNames(List<String> salesItemNames) {
-        setSalesItemNames(salesItemNames);
-        return this;
-    }
-
 }

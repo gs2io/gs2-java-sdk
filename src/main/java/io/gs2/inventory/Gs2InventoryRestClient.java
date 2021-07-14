@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.inventory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.inventory.request.*;
 import io.gs2.inventory.result.*;
-import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestClient> {
 
-/**
- * GS2 Inventory API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2InventoryRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,47 +152,17 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getAcquireScript() != null) {
-                try {
-                    json.put("acquireScript", new JSONObject(mapper.writeValueAsString(this.request.getAcquireScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getOverflowScript() != null) {
-                try {
-                    json.put("overflowScript", new JSONObject(mapper.writeValueAsString(this.request.getOverflowScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getConsumeScript() != null) {
-                try {
-                    json.put("consumeScript", new JSONObject(mapper.writeValueAsString(this.request.getConsumeScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("acquireScript", request.getAcquireScript() != null ? request.getAcquireScript().toJson() : null);
+                    put("overflowScript", request.getOverflowScript() != null ? request.getOverflowScript().toJson() : null);
+                    put("consumeScript", request.getConsumeScript() != null ? request.getConsumeScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -227,25 +180,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -272,15 +214,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -291,7 +236,7 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -315,25 +260,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -360,15 +294,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -379,7 +316,7 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -403,25 +340,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -448,15 +374,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -467,46 +396,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getAcquireScript() != null) {
-                try {
-                    json.put("acquireScript", new JSONObject(mapper.writeValueAsString(this.request.getAcquireScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getOverflowScript() != null) {
-                try {
-                    json.put("overflowScript", new JSONObject(mapper.writeValueAsString(this.request.getOverflowScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getConsumeScript() != null) {
-                try {
-                    json.put("consumeScript", new JSONObject(mapper.writeValueAsString(this.request.getConsumeScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("acquireScript", request.getAcquireScript() != null ? request.getAcquireScript().toJson() : null);
+                    put("overflowScript", request.getOverflowScript() != null ? request.getOverflowScript().toJson() : null);
+                    put("consumeScript", request.getConsumeScript() != null ? request.getConsumeScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -524,25 +425,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -569,15 +459,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -588,7 +481,7 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -612,25 +505,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -657,15 +539,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeInventoryModelMastersTask(
             DescribeInventoryModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeInventoryModelMastersResult>> userCallback,
-            Class<DescribeInventoryModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeInventoryModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeInventoryModelMastersResult parse(JsonNode data) {
+            return DescribeInventoryModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -676,7 +561,7 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -706,25 +591,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリモデルマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeInventoryModelMastersAsync(
             DescribeInventoryModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeInventoryModelMastersResult>> callback
     ) {
-        DescribeInventoryModelMastersTask task = new DescribeInventoryModelMastersTask(request, callback, DescribeInventoryModelMastersResult.class);
+        DescribeInventoryModelMastersTask task = new DescribeInventoryModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリモデルマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeInventoryModelMastersResult describeInventoryModelMasters(
             DescribeInventoryModelMastersRequest request
     ) {
@@ -751,15 +625,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public CreateInventoryModelMasterTask(
             CreateInventoryModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateInventoryModelMasterResult>> userCallback,
-            Class<CreateInventoryModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateInventoryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateInventoryModelMasterResult parse(JsonNode data) {
+            return CreateInventoryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -770,33 +647,19 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getInitialCapacity() != null) {
-                json.put("initialCapacity", this.request.getInitialCapacity());
-            }
-            if (this.request.getMaxCapacity() != null) {
-                json.put("maxCapacity", this.request.getMaxCapacity());
-            }
-            if (this.request.getProtectReferencedItem() != null) {
-                json.put("protectReferencedItem", this.request.getProtectReferencedItem());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("initialCapacity", request.getInitialCapacity());
+                    put("maxCapacity", request.getMaxCapacity());
+                    put("protectReferencedItem", request.getProtectReferencedItem());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -814,25 +677,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリモデルマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createInventoryModelMasterAsync(
             CreateInventoryModelMasterRequest request,
             AsyncAction<AsyncResult<CreateInventoryModelMasterResult>> callback
     ) {
-        CreateInventoryModelMasterTask task = new CreateInventoryModelMasterTask(request, callback, CreateInventoryModelMasterResult.class);
+        CreateInventoryModelMasterTask task = new CreateInventoryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリモデルマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateInventoryModelMasterResult createInventoryModelMaster(
             CreateInventoryModelMasterRequest request
     ) {
@@ -859,15 +711,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetInventoryModelMasterTask(
             GetInventoryModelMasterRequest request,
-            AsyncAction<AsyncResult<GetInventoryModelMasterResult>> userCallback,
-            Class<GetInventoryModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetInventoryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetInventoryModelMasterResult parse(JsonNode data) {
+            return GetInventoryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -878,8 +733,8 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory/{inventoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -903,25 +758,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリモデルマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getInventoryModelMasterAsync(
             GetInventoryModelMasterRequest request,
             AsyncAction<AsyncResult<GetInventoryModelMasterResult>> callback
     ) {
-        GetInventoryModelMasterTask task = new GetInventoryModelMasterTask(request, callback, GetInventoryModelMasterResult.class);
+        GetInventoryModelMasterTask task = new GetInventoryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリモデルマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetInventoryModelMasterResult getInventoryModelMaster(
             GetInventoryModelMasterRequest request
     ) {
@@ -948,15 +792,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public UpdateInventoryModelMasterTask(
             UpdateInventoryModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateInventoryModelMasterResult>> userCallback,
-            Class<UpdateInventoryModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateInventoryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateInventoryModelMasterResult parse(JsonNode data) {
+            return UpdateInventoryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -967,31 +814,19 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory/{inventoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getInitialCapacity() != null) {
-                json.put("initialCapacity", this.request.getInitialCapacity());
-            }
-            if (this.request.getMaxCapacity() != null) {
-                json.put("maxCapacity", this.request.getMaxCapacity());
-            }
-            if (this.request.getProtectReferencedItem() != null) {
-                json.put("protectReferencedItem", this.request.getProtectReferencedItem());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("initialCapacity", request.getInitialCapacity());
+                    put("maxCapacity", request.getMaxCapacity());
+                    put("protectReferencedItem", request.getProtectReferencedItem());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1009,25 +844,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリモデルマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateInventoryModelMasterAsync(
             UpdateInventoryModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateInventoryModelMasterResult>> callback
     ) {
-        UpdateInventoryModelMasterTask task = new UpdateInventoryModelMasterTask(request, callback, UpdateInventoryModelMasterResult.class);
+        UpdateInventoryModelMasterTask task = new UpdateInventoryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリモデルマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateInventoryModelMasterResult updateInventoryModelMaster(
             UpdateInventoryModelMasterRequest request
     ) {
@@ -1054,15 +878,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DeleteInventoryModelMasterTask(
             DeleteInventoryModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteInventoryModelMasterResult>> userCallback,
-            Class<DeleteInventoryModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteInventoryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteInventoryModelMasterResult parse(JsonNode data) {
+            return DeleteInventoryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1073,8 +900,8 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory/{inventoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1098,25 +925,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリモデルマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteInventoryModelMasterAsync(
             DeleteInventoryModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteInventoryModelMasterResult>> callback
     ) {
-        DeleteInventoryModelMasterTask task = new DeleteInventoryModelMasterTask(request, callback, DeleteInventoryModelMasterResult.class);
+        DeleteInventoryModelMasterTask task = new DeleteInventoryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリモデルマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteInventoryModelMasterResult deleteInventoryModelMaster(
             DeleteInventoryModelMasterRequest request
     ) {
@@ -1143,15 +959,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeInventoryModelsTask(
             DescribeInventoryModelsRequest request,
-            AsyncAction<AsyncResult<DescribeInventoryModelsResult>> userCallback,
-            Class<DescribeInventoryModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeInventoryModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeInventoryModelsResult parse(JsonNode data) {
+            return DescribeInventoryModelsResult.fromJson(data);
         }
 
         @Override
@@ -1162,7 +981,7 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/inventory";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1186,25 +1005,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリモデルの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeInventoryModelsAsync(
             DescribeInventoryModelsRequest request,
             AsyncAction<AsyncResult<DescribeInventoryModelsResult>> callback
     ) {
-        DescribeInventoryModelsTask task = new DescribeInventoryModelsTask(request, callback, DescribeInventoryModelsResult.class);
+        DescribeInventoryModelsTask task = new DescribeInventoryModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリモデルの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeInventoryModelsResult describeInventoryModels(
             DescribeInventoryModelsRequest request
     ) {
@@ -1231,15 +1039,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetInventoryModelTask(
             GetInventoryModelRequest request,
-            AsyncAction<AsyncResult<GetInventoryModelResult>> userCallback,
-            Class<GetInventoryModelResult> clazz
+            AsyncAction<AsyncResult<GetInventoryModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetInventoryModelResult parse(JsonNode data) {
+            return GetInventoryModelResult.fromJson(data);
         }
 
         @Override
@@ -1250,8 +1061,8 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/inventory/{inventoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1275,25 +1086,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリモデルを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getInventoryModelAsync(
             GetInventoryModelRequest request,
             AsyncAction<AsyncResult<GetInventoryModelResult>> callback
     ) {
-        GetInventoryModelTask task = new GetInventoryModelTask(request, callback, GetInventoryModelResult.class);
+        GetInventoryModelTask task = new GetInventoryModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリモデルを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetInventoryModelResult getInventoryModel(
             GetInventoryModelRequest request
     ) {
@@ -1320,15 +1120,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeItemModelMastersTask(
             DescribeItemModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeItemModelMastersResult>> userCallback,
-            Class<DescribeItemModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeItemModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeItemModelMastersResult parse(JsonNode data) {
+            return DescribeItemModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -1339,8 +1142,8 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory/{inventoryName}/item";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1370,25 +1173,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * アイテムモデルマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeItemModelMastersAsync(
             DescribeItemModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeItemModelMastersResult>> callback
     ) {
-        DescribeItemModelMastersTask task = new DescribeItemModelMastersTask(request, callback, DescribeItemModelMastersResult.class);
+        DescribeItemModelMastersTask task = new DescribeItemModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アイテムモデルマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeItemModelMastersResult describeItemModelMasters(
             DescribeItemModelMastersRequest request
     ) {
@@ -1415,15 +1207,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public CreateItemModelMasterTask(
             CreateItemModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateItemModelMasterResult>> userCallback,
-            Class<CreateItemModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateItemModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateItemModelMasterResult parse(JsonNode data) {
+            return CreateItemModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1434,34 +1229,20 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory/{inventoryName}/item";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getStackingLimit() != null) {
-                json.put("stackingLimit", this.request.getStackingLimit());
-            }
-            if (this.request.getAllowMultipleStacks() != null) {
-                json.put("allowMultipleStacks", this.request.getAllowMultipleStacks());
-            }
-            if (this.request.getSortValue() != null) {
-                json.put("sortValue", this.request.getSortValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("stackingLimit", request.getStackingLimit());
+                    put("allowMultipleStacks", request.getAllowMultipleStacks());
+                    put("sortValue", request.getSortValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1479,25 +1260,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * アイテムモデルマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createItemModelMasterAsync(
             CreateItemModelMasterRequest request,
             AsyncAction<AsyncResult<CreateItemModelMasterResult>> callback
     ) {
-        CreateItemModelMasterTask task = new CreateItemModelMasterTask(request, callback, CreateItemModelMasterResult.class);
+        CreateItemModelMasterTask task = new CreateItemModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アイテムモデルマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateItemModelMasterResult createItemModelMaster(
             CreateItemModelMasterRequest request
     ) {
@@ -1524,15 +1294,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetItemModelMasterTask(
             GetItemModelMasterRequest request,
-            AsyncAction<AsyncResult<GetItemModelMasterResult>> userCallback,
-            Class<GetItemModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetItemModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetItemModelMasterResult parse(JsonNode data) {
+            return GetItemModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1543,9 +1316,9 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory/{inventoryName}/item/{itemName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1569,25 +1342,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * アイテムモデルマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getItemModelMasterAsync(
             GetItemModelMasterRequest request,
             AsyncAction<AsyncResult<GetItemModelMasterResult>> callback
     ) {
-        GetItemModelMasterTask task = new GetItemModelMasterTask(request, callback, GetItemModelMasterResult.class);
+        GetItemModelMasterTask task = new GetItemModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アイテムモデルマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetItemModelMasterResult getItemModelMaster(
             GetItemModelMasterRequest request
     ) {
@@ -1614,15 +1376,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public UpdateItemModelMasterTask(
             UpdateItemModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateItemModelMasterResult>> userCallback,
-            Class<UpdateItemModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateItemModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateItemModelMasterResult parse(JsonNode data) {
+            return UpdateItemModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1633,32 +1398,20 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory/{inventoryName}/item/{itemName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getStackingLimit() != null) {
-                json.put("stackingLimit", this.request.getStackingLimit());
-            }
-            if (this.request.getAllowMultipleStacks() != null) {
-                json.put("allowMultipleStacks", this.request.getAllowMultipleStacks());
-            }
-            if (this.request.getSortValue() != null) {
-                json.put("sortValue", this.request.getSortValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("stackingLimit", request.getStackingLimit());
+                    put("allowMultipleStacks", request.getAllowMultipleStacks());
+                    put("sortValue", request.getSortValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1676,25 +1429,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * アイテムモデルマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateItemModelMasterAsync(
             UpdateItemModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateItemModelMasterResult>> callback
     ) {
-        UpdateItemModelMasterTask task = new UpdateItemModelMasterTask(request, callback, UpdateItemModelMasterResult.class);
+        UpdateItemModelMasterTask task = new UpdateItemModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アイテムモデルマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateItemModelMasterResult updateItemModelMaster(
             UpdateItemModelMasterRequest request
     ) {
@@ -1721,15 +1463,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DeleteItemModelMasterTask(
             DeleteItemModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteItemModelMasterResult>> userCallback,
-            Class<DeleteItemModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteItemModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteItemModelMasterResult parse(JsonNode data) {
+            return DeleteItemModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1740,9 +1485,9 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/inventory/{inventoryName}/item/{itemName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1766,25 +1511,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * アイテムモデルマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteItemModelMasterAsync(
             DeleteItemModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteItemModelMasterResult>> callback
     ) {
-        DeleteItemModelMasterTask task = new DeleteItemModelMasterTask(request, callback, DeleteItemModelMasterResult.class);
+        DeleteItemModelMasterTask task = new DeleteItemModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アイテムモデルマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteItemModelMasterResult deleteItemModelMaster(
             DeleteItemModelMasterRequest request
     ) {
@@ -1811,15 +1545,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeItemModelsTask(
             DescribeItemModelsRequest request,
-            AsyncAction<AsyncResult<DescribeItemModelsResult>> userCallback,
-            Class<DescribeItemModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeItemModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeItemModelsResult parse(JsonNode data) {
+            return DescribeItemModelsResult.fromJson(data);
         }
 
         @Override
@@ -1830,8 +1567,8 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/inventory/{inventoryName}/item";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1855,25 +1592,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * Noneの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeItemModelsAsync(
             DescribeItemModelsRequest request,
             AsyncAction<AsyncResult<DescribeItemModelsResult>> callback
     ) {
-        DescribeItemModelsTask task = new DescribeItemModelsTask(request, callback, DescribeItemModelsResult.class);
+        DescribeItemModelsTask task = new DescribeItemModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * Noneの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeItemModelsResult describeItemModels(
             DescribeItemModelsRequest request
     ) {
@@ -1900,15 +1626,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetItemModelTask(
             GetItemModelRequest request,
-            AsyncAction<AsyncResult<GetItemModelResult>> userCallback,
-            Class<GetItemModelResult> clazz
+            AsyncAction<AsyncResult<GetItemModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetItemModelResult parse(JsonNode data) {
+            return GetItemModelResult.fromJson(data);
         }
 
         @Override
@@ -1919,9 +1648,9 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/inventory/{inventoryName}/item/{itemName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1945,25 +1674,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * Noneを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getItemModelAsync(
             GetItemModelRequest request,
             AsyncAction<AsyncResult<GetItemModelResult>> callback
     ) {
-        GetItemModelTask task = new GetItemModelTask(request, callback, GetItemModelResult.class);
+        GetItemModelTask task = new GetItemModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * Noneを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetItemModelResult getItemModel(
             GetItemModelRequest request
     ) {
@@ -1990,15 +1708,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -2009,7 +1730,7 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2033,25 +1754,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 現在有効な所持品マスターのマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な所持品マスターのマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -2078,15 +1788,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetCurrentItemModelMasterTask(
             GetCurrentItemModelMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentItemModelMasterResult>> userCallback,
-            Class<GetCurrentItemModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentItemModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentItemModelMasterResult parse(JsonNode data) {
+            return GetCurrentItemModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -2097,7 +1810,7 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2121,25 +1834,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 現在有効な所持品マスターを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentItemModelMasterAsync(
             GetCurrentItemModelMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentItemModelMasterResult>> callback
     ) {
-        GetCurrentItemModelMasterTask task = new GetCurrentItemModelMasterTask(request, callback, GetCurrentItemModelMasterResult.class);
+        GetCurrentItemModelMasterTask task = new GetCurrentItemModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な所持品マスターを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentItemModelMasterResult getCurrentItemModelMaster(
             GetCurrentItemModelMasterRequest request
     ) {
@@ -2166,15 +1868,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public UpdateCurrentItemModelMasterTask(
             UpdateCurrentItemModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentItemModelMasterResult>> userCallback,
-            Class<UpdateCurrentItemModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentItemModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentItemModelMasterResult parse(JsonNode data) {
+            return UpdateCurrentItemModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -2185,18 +1890,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2214,25 +1915,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 現在有効な所持品マスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentItemModelMasterAsync(
             UpdateCurrentItemModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentItemModelMasterResult>> callback
     ) {
-        UpdateCurrentItemModelMasterTask task = new UpdateCurrentItemModelMasterTask(request, callback, UpdateCurrentItemModelMasterResult.class);
+        UpdateCurrentItemModelMasterTask task = new UpdateCurrentItemModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な所持品マスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentItemModelMasterResult updateCurrentItemModelMaster(
             UpdateCurrentItemModelMasterRequest request
     ) {
@@ -2259,15 +1949,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public UpdateCurrentItemModelMasterFromGitHubTask(
             UpdateCurrentItemModelMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentItemModelMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentItemModelMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentItemModelMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentItemModelMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentItemModelMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2278,22 +1971,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2311,25 +1996,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 現在有効な所持品マスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentItemModelMasterFromGitHubAsync(
             UpdateCurrentItemModelMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentItemModelMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentItemModelMasterFromGitHubTask task = new UpdateCurrentItemModelMasterFromGitHubTask(request, callback, UpdateCurrentItemModelMasterFromGitHubResult.class);
+        UpdateCurrentItemModelMasterFromGitHubTask task = new UpdateCurrentItemModelMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な所持品マスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentItemModelMasterFromGitHubResult updateCurrentItemModelMasterFromGitHub(
             UpdateCurrentItemModelMasterFromGitHubRequest request
     ) {
@@ -2356,15 +2030,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeInventoriesTask(
             DescribeInventoriesRequest request,
-            AsyncAction<AsyncResult<DescribeInventoriesResult>> userCallback,
-            Class<DescribeInventoriesResult> clazz
+            AsyncAction<AsyncResult<DescribeInventoriesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeInventoriesResult parse(JsonNode data) {
+            return DescribeInventoriesResult.fromJson(data);
         }
 
         @Override
@@ -2375,7 +2052,7 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inventory";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2401,9 +2078,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2411,25 +2085,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeInventoriesAsync(
             DescribeInventoriesRequest request,
             AsyncAction<AsyncResult<DescribeInventoriesResult>> callback
     ) {
-        DescribeInventoriesTask task = new DescribeInventoriesTask(request, callback, DescribeInventoriesResult.class);
+        DescribeInventoriesTask task = new DescribeInventoriesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeInventoriesResult describeInventories(
             DescribeInventoriesRequest request
     ) {
@@ -2456,15 +2119,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeInventoriesByUserIdTask(
             DescribeInventoriesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeInventoriesByUserIdResult>> userCallback,
-            Class<DescribeInventoriesByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeInventoriesByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeInventoriesByUserIdResult parse(JsonNode data) {
+            return DescribeInventoriesByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2475,8 +2141,8 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2499,9 +2165,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2509,25 +2172,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeInventoriesByUserIdAsync(
             DescribeInventoriesByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeInventoriesByUserIdResult>> callback
     ) {
-        DescribeInventoriesByUserIdTask task = new DescribeInventoriesByUserIdTask(request, callback, DescribeInventoriesByUserIdResult.class);
+        DescribeInventoriesByUserIdTask task = new DescribeInventoriesByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeInventoriesByUserIdResult describeInventoriesByUserId(
             DescribeInventoriesByUserIdRequest request
     ) {
@@ -2554,15 +2206,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetInventoryTask(
             GetInventoryRequest request,
-            AsyncAction<AsyncResult<GetInventoryResult>> userCallback,
-            Class<GetInventoryResult> clazz
+            AsyncAction<AsyncResult<GetInventoryResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetInventoryResult parse(JsonNode data) {
+            return GetInventoryResult.fromJson(data);
         }
 
         @Override
@@ -2573,8 +2228,8 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inventory/{inventoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2594,9 +2249,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2604,25 +2256,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getInventoryAsync(
             GetInventoryRequest request,
             AsyncAction<AsyncResult<GetInventoryResult>> callback
     ) {
-        GetInventoryTask task = new GetInventoryTask(request, callback, GetInventoryResult.class);
+        GetInventoryTask task = new GetInventoryTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetInventoryResult getInventory(
             GetInventoryRequest request
     ) {
@@ -2649,15 +2290,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetInventoryByUserIdTask(
             GetInventoryByUserIdRequest request,
-            AsyncAction<AsyncResult<GetInventoryByUserIdResult>> userCallback,
-            Class<GetInventoryByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetInventoryByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetInventoryByUserIdResult parse(JsonNode data) {
+            return GetInventoryByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2668,9 +2312,9 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2687,9 +2331,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2697,25 +2338,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getInventoryByUserIdAsync(
             GetInventoryByUserIdRequest request,
             AsyncAction<AsyncResult<GetInventoryByUserIdResult>> callback
     ) {
-        GetInventoryByUserIdTask task = new GetInventoryByUserIdTask(request, callback, GetInventoryByUserIdResult.class);
+        GetInventoryByUserIdTask task = new GetInventoryByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetInventoryByUserIdResult getInventoryByUserId(
             GetInventoryByUserIdRequest request
     ) {
@@ -2742,15 +2372,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public AddCapacityByUserIdTask(
             AddCapacityByUserIdRequest request,
-            AsyncAction<AsyncResult<AddCapacityByUserIdResult>> userCallback,
-            Class<AddCapacityByUserIdResult> clazz
+            AsyncAction<AsyncResult<AddCapacityByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddCapacityByUserIdResult parse(JsonNode data) {
+            return AddCapacityByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2761,20 +2394,16 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/capacity";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAddCapacityValue() != null) {
-                json.put("addCapacityValue", this.request.getAddCapacityValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("addCapacityValue", request.getAddCapacityValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2785,9 +2414,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2795,25 +2421,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * キャパシティサイズを加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addCapacityByUserIdAsync(
             AddCapacityByUserIdRequest request,
             AsyncAction<AsyncResult<AddCapacityByUserIdResult>> callback
     ) {
-        AddCapacityByUserIdTask task = new AddCapacityByUserIdTask(request, callback, AddCapacityByUserIdResult.class);
+        AddCapacityByUserIdTask task = new AddCapacityByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * キャパシティサイズを加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddCapacityByUserIdResult addCapacityByUserId(
             AddCapacityByUserIdRequest request
     ) {
@@ -2840,15 +2455,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public SetCapacityByUserIdTask(
             SetCapacityByUserIdRequest request,
-            AsyncAction<AsyncResult<SetCapacityByUserIdResult>> userCallback,
-            Class<SetCapacityByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetCapacityByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetCapacityByUserIdResult parse(JsonNode data) {
+            return SetCapacityByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2859,20 +2477,16 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/capacity";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getNewCapacityValue() != null) {
-                json.put("newCapacityValue", this.request.getNewCapacityValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("newCapacityValue", request.getNewCapacityValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2883,9 +2497,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2893,25 +2504,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * キャパシティサイズを設定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setCapacityByUserIdAsync(
             SetCapacityByUserIdRequest request,
             AsyncAction<AsyncResult<SetCapacityByUserIdResult>> callback
     ) {
-        SetCapacityByUserIdTask task = new SetCapacityByUserIdTask(request, callback, SetCapacityByUserIdResult.class);
+        SetCapacityByUserIdTask task = new SetCapacityByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * キャパシティサイズを設定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetCapacityByUserIdResult setCapacityByUserId(
             SetCapacityByUserIdRequest request
     ) {
@@ -2938,15 +2538,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DeleteInventoryByUserIdTask(
             DeleteInventoryByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteInventoryByUserIdResult>> userCallback,
-            Class<DeleteInventoryByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteInventoryByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteInventoryByUserIdResult parse(JsonNode data) {
+            return DeleteInventoryByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2957,9 +2560,9 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2976,9 +2579,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2986,25 +2586,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteInventoryByUserIdAsync(
             DeleteInventoryByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteInventoryByUserIdResult>> callback
     ) {
-        DeleteInventoryByUserIdTask task = new DeleteInventoryByUserIdTask(request, callback, DeleteInventoryByUserIdResult.class);
+        DeleteInventoryByUserIdTask task = new DeleteInventoryByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteInventoryByUserIdResult deleteInventoryByUserId(
             DeleteInventoryByUserIdRequest request
     ) {
@@ -3031,15 +2620,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public AddCapacityByStampSheetTask(
             AddCapacityByStampSheetRequest request,
-            AsyncAction<AsyncResult<AddCapacityByStampSheetResult>> userCallback,
-            Class<AddCapacityByStampSheetResult> clazz
+            AsyncAction<AsyncResult<AddCapacityByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddCapacityByStampSheetResult parse(JsonNode data) {
+            return AddCapacityByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -3050,19 +2642,13 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/inventory/capacity/add";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3073,9 +2659,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3083,25 +2666,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * スタンプシートでキャパシティサイズを加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addCapacityByStampSheetAsync(
             AddCapacityByStampSheetRequest request,
             AsyncAction<AsyncResult<AddCapacityByStampSheetResult>> callback
     ) {
-        AddCapacityByStampSheetTask task = new AddCapacityByStampSheetTask(request, callback, AddCapacityByStampSheetResult.class);
+        AddCapacityByStampSheetTask task = new AddCapacityByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでキャパシティサイズを加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddCapacityByStampSheetResult addCapacityByStampSheet(
             AddCapacityByStampSheetRequest request
     ) {
@@ -3128,15 +2700,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public SetCapacityByStampSheetTask(
             SetCapacityByStampSheetRequest request,
-            AsyncAction<AsyncResult<SetCapacityByStampSheetResult>> userCallback,
-            Class<SetCapacityByStampSheetResult> clazz
+            AsyncAction<AsyncResult<SetCapacityByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetCapacityByStampSheetResult parse(JsonNode data) {
+            return SetCapacityByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -3147,19 +2722,13 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/inventory/capacity/set";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3170,9 +2739,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3180,25 +2746,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * スタンプシートでキャパシティサイズを設定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setCapacityByStampSheetAsync(
             SetCapacityByStampSheetRequest request,
             AsyncAction<AsyncResult<SetCapacityByStampSheetResult>> callback
     ) {
-        SetCapacityByStampSheetTask task = new SetCapacityByStampSheetTask(request, callback, SetCapacityByStampSheetResult.class);
+        SetCapacityByStampSheetTask task = new SetCapacityByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでキャパシティサイズを設定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetCapacityByStampSheetResult setCapacityByStampSheet(
             SetCapacityByStampSheetRequest request
     ) {
@@ -3225,15 +2780,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeItemSetsTask(
             DescribeItemSetsRequest request,
-            AsyncAction<AsyncResult<DescribeItemSetsResult>> userCallback,
-            Class<DescribeItemSetsResult> clazz
+            AsyncAction<AsyncResult<DescribeItemSetsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeItemSetsResult parse(JsonNode data) {
+            return DescribeItemSetsResult.fromJson(data);
         }
 
         @Override
@@ -3244,8 +2802,8 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inventory/{inventoryName}/item";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3271,9 +2829,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3281,25 +2836,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeItemSetsAsync(
             DescribeItemSetsRequest request,
             AsyncAction<AsyncResult<DescribeItemSetsResult>> callback
     ) {
-        DescribeItemSetsTask task = new DescribeItemSetsTask(request, callback, DescribeItemSetsResult.class);
+        DescribeItemSetsTask task = new DescribeItemSetsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeItemSetsResult describeItemSets(
             DescribeItemSetsRequest request
     ) {
@@ -3326,15 +2870,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeItemSetsByUserIdTask(
             DescribeItemSetsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeItemSetsByUserIdResult>> userCallback,
-            Class<DescribeItemSetsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeItemSetsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeItemSetsByUserIdResult parse(JsonNode data) {
+            return DescribeItemSetsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3345,9 +2892,9 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3370,9 +2917,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3380,25 +2924,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeItemSetsByUserIdAsync(
             DescribeItemSetsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeItemSetsByUserIdResult>> callback
     ) {
-        DescribeItemSetsByUserIdTask task = new DescribeItemSetsByUserIdTask(request, callback, DescribeItemSetsByUserIdResult.class);
+        DescribeItemSetsByUserIdTask task = new DescribeItemSetsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeItemSetsByUserIdResult describeItemSetsByUserId(
             DescribeItemSetsByUserIdRequest request
     ) {
@@ -3425,15 +2958,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetItemSetTask(
             GetItemSetRequest request,
-            AsyncAction<AsyncResult<GetItemSetResult>> userCallback,
-            Class<GetItemSetResult> clazz
+            AsyncAction<AsyncResult<GetItemSetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetItemSetResult parse(JsonNode data) {
+            return GetItemSetResult.fromJson(data);
         }
 
         @Override
@@ -3444,9 +2980,9 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3469,9 +3005,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3479,25 +3012,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getItemSetAsync(
             GetItemSetRequest request,
             AsyncAction<AsyncResult<GetItemSetResult>> callback
     ) {
-        GetItemSetTask task = new GetItemSetTask(request, callback, GetItemSetResult.class);
+        GetItemSetTask task = new GetItemSetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetItemSetResult getItemSet(
             GetItemSetRequest request
     ) {
@@ -3524,15 +3046,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetItemSetByUserIdTask(
             GetItemSetByUserIdRequest request,
-            AsyncAction<AsyncResult<GetItemSetByUserIdResult>> userCallback,
-            Class<GetItemSetByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetItemSetByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetItemSetByUserIdResult parse(JsonNode data) {
+            return GetItemSetByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3543,10 +3068,10 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3566,9 +3091,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3576,25 +3098,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getItemSetByUserIdAsync(
             GetItemSetByUserIdRequest request,
             AsyncAction<AsyncResult<GetItemSetByUserIdResult>> callback
     ) {
-        GetItemSetByUserIdTask task = new GetItemSetByUserIdTask(request, callback, GetItemSetByUserIdResult.class);
+        GetItemSetByUserIdTask task = new GetItemSetByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetItemSetByUserIdResult getItemSetByUserId(
             GetItemSetByUserIdRequest request
     ) {
@@ -3621,15 +3132,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetItemWithSignatureTask(
             GetItemWithSignatureRequest request,
-            AsyncAction<AsyncResult<GetItemWithSignatureResult>> userCallback,
-            Class<GetItemWithSignatureResult> clazz
+            AsyncAction<AsyncResult<GetItemWithSignatureResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetItemWithSignatureResult parse(JsonNode data) {
+            return GetItemWithSignatureResult.fromJson(data);
         }
 
         @Override
@@ -3640,9 +3154,9 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/signature";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3668,9 +3182,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3678,25 +3189,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getItemWithSignatureAsync(
             GetItemWithSignatureRequest request,
             AsyncAction<AsyncResult<GetItemWithSignatureResult>> callback
     ) {
-        GetItemWithSignatureTask task = new GetItemWithSignatureTask(request, callback, GetItemWithSignatureResult.class);
+        GetItemWithSignatureTask task = new GetItemWithSignatureTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetItemWithSignatureResult getItemWithSignature(
             GetItemWithSignatureRequest request
     ) {
@@ -3723,15 +3223,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetItemWithSignatureByUserIdTask(
             GetItemWithSignatureByUserIdRequest request,
-            AsyncAction<AsyncResult<GetItemWithSignatureByUserIdResult>> userCallback,
-            Class<GetItemWithSignatureByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetItemWithSignatureByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetItemWithSignatureByUserIdResult parse(JsonNode data) {
+            return GetItemWithSignatureByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3742,10 +3245,10 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/signature";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3768,9 +3271,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3778,25 +3278,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getItemWithSignatureByUserIdAsync(
             GetItemWithSignatureByUserIdRequest request,
             AsyncAction<AsyncResult<GetItemWithSignatureByUserIdResult>> callback
     ) {
-        GetItemWithSignatureByUserIdTask task = new GetItemWithSignatureByUserIdTask(request, callback, GetItemWithSignatureByUserIdResult.class);
+        GetItemWithSignatureByUserIdTask task = new GetItemWithSignatureByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetItemWithSignatureByUserIdResult getItemWithSignatureByUserId(
             GetItemWithSignatureByUserIdRequest request
     ) {
@@ -3823,15 +3312,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public AcquireItemSetByUserIdTask(
             AcquireItemSetByUserIdRequest request,
-            AsyncAction<AsyncResult<AcquireItemSetByUserIdResult>> userCallback,
-            Class<AcquireItemSetByUserIdResult> clazz
+            AsyncAction<AsyncResult<AcquireItemSetByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcquireItemSetByUserIdResult parse(JsonNode data) {
+            return AcquireItemSetByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3842,30 +3334,20 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/acquire";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAcquireCount() != null) {
-                json.put("acquireCount", this.request.getAcquireCount());
-            }
-            if (this.request.getExpiresAt() != null) {
-                json.put("expiresAt", this.request.getExpiresAt());
-            }
-            if (this.request.getCreateNewItemSet() != null) {
-                json.put("createNewItemSet", this.request.getCreateNewItemSet());
-            }
-            if (this.request.getItemSetName() != null) {
-                json.put("itemSetName", this.request.getItemSetName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("acquireCount", request.getAcquireCount());
+                    put("expiresAt", request.getExpiresAt());
+                    put("createNewItemSet", request.getCreateNewItemSet());
+                    put("itemSetName", request.getItemSetName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3876,9 +3358,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3886,25 +3365,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * アイテムをインベントリに追加<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acquireItemSetByUserIdAsync(
             AcquireItemSetByUserIdRequest request,
             AsyncAction<AsyncResult<AcquireItemSetByUserIdResult>> callback
     ) {
-        AcquireItemSetByUserIdTask task = new AcquireItemSetByUserIdTask(request, callback, AcquireItemSetByUserIdResult.class);
+        AcquireItemSetByUserIdTask task = new AcquireItemSetByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アイテムをインベントリに追加<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcquireItemSetByUserIdResult acquireItemSetByUserId(
             AcquireItemSetByUserIdRequest request
     ) {
@@ -3931,15 +3399,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public ConsumeItemSetTask(
             ConsumeItemSetRequest request,
-            AsyncAction<AsyncResult<ConsumeItemSetResult>> userCallback,
-            Class<ConsumeItemSetResult> clazz
+            AsyncAction<AsyncResult<ConsumeItemSetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ConsumeItemSetResult parse(JsonNode data) {
+            return ConsumeItemSetResult.fromJson(data);
         }
 
         @Override
@@ -3950,23 +3421,17 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/consume";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConsumeCount() != null) {
-                json.put("consumeCount", this.request.getConsumeCount());
-            }
-            if (this.request.getItemSetName() != null) {
-                json.put("itemSetName", this.request.getItemSetName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("consumeCount", request.getConsumeCount());
+                    put("itemSetName", request.getItemSetName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3980,9 +3445,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3990,25 +3452,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリのアイテムを消費<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void consumeItemSetAsync(
             ConsumeItemSetRequest request,
             AsyncAction<AsyncResult<ConsumeItemSetResult>> callback
     ) {
-        ConsumeItemSetTask task = new ConsumeItemSetTask(request, callback, ConsumeItemSetResult.class);
+        ConsumeItemSetTask task = new ConsumeItemSetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリのアイテムを消費<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ConsumeItemSetResult consumeItemSet(
             ConsumeItemSetRequest request
     ) {
@@ -4035,15 +3486,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public ConsumeItemSetByUserIdTask(
             ConsumeItemSetByUserIdRequest request,
-            AsyncAction<AsyncResult<ConsumeItemSetByUserIdResult>> userCallback,
-            Class<ConsumeItemSetByUserIdResult> clazz
+            AsyncAction<AsyncResult<ConsumeItemSetByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ConsumeItemSetByUserIdResult parse(JsonNode data) {
+            return ConsumeItemSetByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4054,24 +3508,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/consume";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConsumeCount() != null) {
-                json.put("consumeCount", this.request.getConsumeCount());
-            }
-            if (this.request.getItemSetName() != null) {
-                json.put("itemSetName", this.request.getItemSetName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("consumeCount", request.getConsumeCount());
+                    put("itemSetName", request.getItemSetName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4082,9 +3530,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4092,25 +3537,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * インベントリのアイテムを消費<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void consumeItemSetByUserIdAsync(
             ConsumeItemSetByUserIdRequest request,
             AsyncAction<AsyncResult<ConsumeItemSetByUserIdResult>> callback
     ) {
-        ConsumeItemSetByUserIdTask task = new ConsumeItemSetByUserIdTask(request, callback, ConsumeItemSetByUserIdResult.class);
+        ConsumeItemSetByUserIdTask task = new ConsumeItemSetByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * インベントリのアイテムを消費<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ConsumeItemSetByUserIdResult consumeItemSetByUserId(
             ConsumeItemSetByUserIdRequest request
     ) {
@@ -4137,15 +3571,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeReferenceOfTask(
             DescribeReferenceOfRequest request,
-            AsyncAction<AsyncResult<DescribeReferenceOfResult>> userCallback,
-            Class<DescribeReferenceOfResult> clazz
+            AsyncAction<AsyncResult<DescribeReferenceOfResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeReferenceOfResult parse(JsonNode data) {
+            return DescribeReferenceOfResult.fromJson(data);
         }
 
         @Override
@@ -4156,10 +3593,10 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4179,9 +3616,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4189,25 +3623,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeReferenceOfAsync(
             DescribeReferenceOfRequest request,
             AsyncAction<AsyncResult<DescribeReferenceOfResult>> callback
     ) {
-        DescribeReferenceOfTask task = new DescribeReferenceOfTask(request, callback, DescribeReferenceOfResult.class);
+        DescribeReferenceOfTask task = new DescribeReferenceOfTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeReferenceOfResult describeReferenceOf(
             DescribeReferenceOfRequest request
     ) {
@@ -4234,15 +3657,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DescribeReferenceOfByUserIdTask(
             DescribeReferenceOfByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeReferenceOfByUserIdResult>> userCallback,
-            Class<DescribeReferenceOfByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeReferenceOfByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeReferenceOfByUserIdResult parse(JsonNode data) {
+            return DescribeReferenceOfByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4253,11 +3679,11 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4274,9 +3700,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4284,25 +3707,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeReferenceOfByUserIdAsync(
             DescribeReferenceOfByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeReferenceOfByUserIdResult>> callback
     ) {
-        DescribeReferenceOfByUserIdTask task = new DescribeReferenceOfByUserIdTask(request, callback, DescribeReferenceOfByUserIdResult.class);
+        DescribeReferenceOfByUserIdTask task = new DescribeReferenceOfByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeReferenceOfByUserIdResult describeReferenceOfByUserId(
             DescribeReferenceOfByUserIdRequest request
     ) {
@@ -4329,15 +3741,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetReferenceOfTask(
             GetReferenceOfRequest request,
-            AsyncAction<AsyncResult<GetReferenceOfResult>> userCallback,
-            Class<GetReferenceOfResult> clazz
+            AsyncAction<AsyncResult<GetReferenceOfResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetReferenceOfResult parse(JsonNode data) {
+            return GetReferenceOfResult.fromJson(data);
         }
 
         @Override
@@ -4348,11 +3763,11 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/{referenceOf}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
-            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null|| this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null || this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4372,9 +3787,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4382,25 +3794,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getReferenceOfAsync(
             GetReferenceOfRequest request,
             AsyncAction<AsyncResult<GetReferenceOfResult>> callback
     ) {
-        GetReferenceOfTask task = new GetReferenceOfTask(request, callback, GetReferenceOfResult.class);
+        GetReferenceOfTask task = new GetReferenceOfTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetReferenceOfResult getReferenceOf(
             GetReferenceOfRequest request
     ) {
@@ -4427,15 +3828,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public GetReferenceOfByUserIdTask(
             GetReferenceOfByUserIdRequest request,
-            AsyncAction<AsyncResult<GetReferenceOfByUserIdResult>> userCallback,
-            Class<GetReferenceOfByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetReferenceOfByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetReferenceOfByUserIdResult parse(JsonNode data) {
+            return GetReferenceOfByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4446,12 +3850,12 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/{referenceOf}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
-            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null|| this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null || this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4468,9 +3872,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4478,25 +3879,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getReferenceOfByUserIdAsync(
             GetReferenceOfByUserIdRequest request,
             AsyncAction<AsyncResult<GetReferenceOfByUserIdResult>> callback
     ) {
-        GetReferenceOfByUserIdTask task = new GetReferenceOfByUserIdTask(request, callback, GetReferenceOfByUserIdResult.class);
+        GetReferenceOfByUserIdTask task = new GetReferenceOfByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetReferenceOfByUserIdResult getReferenceOfByUserId(
             GetReferenceOfByUserIdRequest request
     ) {
@@ -4523,15 +3913,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public VerifyReferenceOfTask(
             VerifyReferenceOfRequest request,
-            AsyncAction<AsyncResult<VerifyReferenceOfResult>> userCallback,
-            Class<VerifyReferenceOfResult> clazz
+            AsyncAction<AsyncResult<VerifyReferenceOfResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public VerifyReferenceOfResult parse(JsonNode data) {
+            return VerifyReferenceOfResult.fromJson(data);
         }
 
         @Override
@@ -4540,22 +3933,20 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/verify";
+                + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/{referenceOf}/verify/{verifyType}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
-            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null|| this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
-            url = url.replace("{verifyType}", this.request.getVerifyType() == null|| this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null || this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4569,9 +3960,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4579,25 +3967,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元に関する検証<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void verifyReferenceOfAsync(
             VerifyReferenceOfRequest request,
             AsyncAction<AsyncResult<VerifyReferenceOfResult>> callback
     ) {
-        VerifyReferenceOfTask task = new VerifyReferenceOfTask(request, callback, VerifyReferenceOfResult.class);
+        VerifyReferenceOfTask task = new VerifyReferenceOfTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元に関する検証<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public VerifyReferenceOfResult verifyReferenceOf(
             VerifyReferenceOfRequest request
     ) {
@@ -4624,15 +4001,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public VerifyReferenceOfByUserIdTask(
             VerifyReferenceOfByUserIdRequest request,
-            AsyncAction<AsyncResult<VerifyReferenceOfByUserIdResult>> userCallback,
-            Class<VerifyReferenceOfByUserIdResult> clazz
+            AsyncAction<AsyncResult<VerifyReferenceOfByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public VerifyReferenceOfByUserIdResult parse(JsonNode data) {
+            return VerifyReferenceOfByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4641,23 +4021,21 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/verify";
+                + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/{referenceOf}/verify/{verifyType}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
-            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null|| this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
-            url = url.replace("{verifyType}", this.request.getVerifyType() == null|| this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null || this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4668,9 +4046,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4678,25 +4053,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元に関する検証<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void verifyReferenceOfByUserIdAsync(
             VerifyReferenceOfByUserIdRequest request,
             AsyncAction<AsyncResult<VerifyReferenceOfByUserIdResult>> callback
     ) {
-        VerifyReferenceOfByUserIdTask task = new VerifyReferenceOfByUserIdTask(request, callback, VerifyReferenceOfByUserIdResult.class);
+        VerifyReferenceOfByUserIdTask task = new VerifyReferenceOfByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元に関する検証<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public VerifyReferenceOfByUserIdResult verifyReferenceOfByUserId(
             VerifyReferenceOfByUserIdRequest request
     ) {
@@ -4723,15 +4087,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public AddReferenceOfTask(
             AddReferenceOfRequest request,
-            AsyncAction<AsyncResult<AddReferenceOfResult>> userCallback,
-            Class<AddReferenceOfResult> clazz
+            AsyncAction<AsyncResult<AddReferenceOfResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddReferenceOfResult parse(JsonNode data) {
+            return AddReferenceOfResult.fromJson(data);
         }
 
         @Override
@@ -4742,21 +4109,17 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getReferenceOf() != null) {
-                json.put("referenceOf", this.request.getReferenceOf());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("referenceOf", request.getReferenceOf());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4770,9 +4133,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4780,25 +4140,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元を追加<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addReferenceOfAsync(
             AddReferenceOfRequest request,
             AsyncAction<AsyncResult<AddReferenceOfResult>> callback
     ) {
-        AddReferenceOfTask task = new AddReferenceOfTask(request, callback, AddReferenceOfResult.class);
+        AddReferenceOfTask task = new AddReferenceOfTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元を追加<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddReferenceOfResult addReferenceOf(
             AddReferenceOfRequest request
     ) {
@@ -4825,15 +4174,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public AddReferenceOfByUserIdTask(
             AddReferenceOfByUserIdRequest request,
-            AsyncAction<AsyncResult<AddReferenceOfByUserIdResult>> userCallback,
-            Class<AddReferenceOfByUserIdResult> clazz
+            AsyncAction<AsyncResult<AddReferenceOfByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddReferenceOfByUserIdResult parse(JsonNode data) {
+            return AddReferenceOfByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4844,22 +4196,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getReferenceOf() != null) {
-                json.put("referenceOf", this.request.getReferenceOf());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("referenceOf", request.getReferenceOf());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4870,9 +4218,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4880,25 +4225,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元を追加<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addReferenceOfByUserIdAsync(
             AddReferenceOfByUserIdRequest request,
             AsyncAction<AsyncResult<AddReferenceOfByUserIdResult>> callback
     ) {
-        AddReferenceOfByUserIdTask task = new AddReferenceOfByUserIdTask(request, callback, AddReferenceOfByUserIdResult.class);
+        AddReferenceOfByUserIdTask task = new AddReferenceOfByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元を追加<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddReferenceOfByUserIdResult addReferenceOfByUserId(
             AddReferenceOfByUserIdRequest request
     ) {
@@ -4925,15 +4259,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DeleteReferenceOfTask(
             DeleteReferenceOfRequest request,
-            AsyncAction<AsyncResult<DeleteReferenceOfResult>> userCallback,
-            Class<DeleteReferenceOfResult> clazz
+            AsyncAction<AsyncResult<DeleteReferenceOfResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteReferenceOfResult parse(JsonNode data) {
+            return DeleteReferenceOfResult.fromJson(data);
         }
 
         @Override
@@ -4942,12 +4279,13 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
+                + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/{referenceOf}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null || this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4967,9 +4305,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4977,25 +4312,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteReferenceOfAsync(
             DeleteReferenceOfRequest request,
             AsyncAction<AsyncResult<DeleteReferenceOfResult>> callback
     ) {
-        DeleteReferenceOfTask task = new DeleteReferenceOfTask(request, callback, DeleteReferenceOfResult.class);
+        DeleteReferenceOfTask task = new DeleteReferenceOfTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteReferenceOfResult deleteReferenceOf(
             DeleteReferenceOfRequest request
     ) {
@@ -5022,15 +4346,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DeleteReferenceOfByUserIdTask(
             DeleteReferenceOfByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteReferenceOfByUserIdResult>> userCallback,
-            Class<DeleteReferenceOfByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteReferenceOfByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteReferenceOfByUserIdResult parse(JsonNode data) {
+            return DeleteReferenceOfByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -5039,13 +4366,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
+                + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/{referenceOf}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-            url = url.replace("{itemSetName}", this.request.getItemSetName() == null|| this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{itemSetName}", this.request.getItemSetName() == null || this.request.getItemSetName().length() == 0 ? "null" : String.valueOf(this.request.getItemSetName()));
+            url = url.replace("{referenceOf}", this.request.getReferenceOf() == null || this.request.getReferenceOf().length() == 0 ? "null" : String.valueOf(this.request.getReferenceOf()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -5062,9 +4390,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5072,25 +4397,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 参照元を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteReferenceOfByUserIdAsync(
             DeleteReferenceOfByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteReferenceOfByUserIdResult>> callback
     ) {
-        DeleteReferenceOfByUserIdTask task = new DeleteReferenceOfByUserIdTask(request, callback, DeleteReferenceOfByUserIdResult.class);
+        DeleteReferenceOfByUserIdTask task = new DeleteReferenceOfByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 参照元を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteReferenceOfByUserIdResult deleteReferenceOfByUserId(
             DeleteReferenceOfByUserIdRequest request
     ) {
@@ -5117,15 +4431,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DeleteItemSetByUserIdTask(
             DeleteItemSetByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteItemSetByUserIdResult>> userCallback,
-            Class<DeleteItemSetByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteItemSetByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteItemSetByUserIdResult parse(JsonNode data) {
+            return DeleteItemSetByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -5136,10 +4453,10 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null|| this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null|| this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -5159,9 +4476,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5169,25 +4483,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteItemSetByUserIdAsync(
             DeleteItemSetByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteItemSetByUserIdResult>> callback
     ) {
-        DeleteItemSetByUserIdTask task = new DeleteItemSetByUserIdTask(request, callback, DeleteItemSetByUserIdResult.class);
+        DeleteItemSetByUserIdTask task = new DeleteItemSetByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 有効期限ごとのアイテム所持数量を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteItemSetByUserIdResult deleteItemSetByUserId(
             DeleteItemSetByUserIdRequest request
     ) {
@@ -5214,15 +4517,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public AcquireItemSetByStampSheetTask(
             AcquireItemSetByStampSheetRequest request,
-            AsyncAction<AsyncResult<AcquireItemSetByStampSheetResult>> userCallback,
-            Class<AcquireItemSetByStampSheetResult> clazz
+            AsyncAction<AsyncResult<AcquireItemSetByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcquireItemSetByStampSheetResult parse(JsonNode data) {
+            return AcquireItemSetByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -5233,19 +4539,13 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/item/acquire";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -5256,9 +4556,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5266,25 +4563,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * スタンプシートでアイテムをインベントリに追加<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acquireItemSetByStampSheetAsync(
             AcquireItemSetByStampSheetRequest request,
             AsyncAction<AsyncResult<AcquireItemSetByStampSheetResult>> callback
     ) {
-        AcquireItemSetByStampSheetTask task = new AcquireItemSetByStampSheetTask(request, callback, AcquireItemSetByStampSheetResult.class);
+        AcquireItemSetByStampSheetTask task = new AcquireItemSetByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでアイテムをインベントリに追加<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcquireItemSetByStampSheetResult acquireItemSetByStampSheet(
             AcquireItemSetByStampSheetRequest request
     ) {
@@ -5311,15 +4597,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public AddReferenceOfItemSetByStampSheetTask(
             AddReferenceOfItemSetByStampSheetRequest request,
-            AsyncAction<AsyncResult<AddReferenceOfItemSetByStampSheetResult>> userCallback,
-            Class<AddReferenceOfItemSetByStampSheetResult> clazz
+            AsyncAction<AsyncResult<AddReferenceOfItemSetByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddReferenceOfItemSetByStampSheetResult parse(JsonNode data) {
+            return AddReferenceOfItemSetByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -5330,19 +4619,13 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/item/reference/add";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -5353,9 +4636,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5363,25 +4643,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * スタンプシートでアイテムに参照元を追加<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addReferenceOfItemSetByStampSheetAsync(
             AddReferenceOfItemSetByStampSheetRequest request,
             AsyncAction<AsyncResult<AddReferenceOfItemSetByStampSheetResult>> callback
     ) {
-        AddReferenceOfItemSetByStampSheetTask task = new AddReferenceOfItemSetByStampSheetTask(request, callback, AddReferenceOfItemSetByStampSheetResult.class);
+        AddReferenceOfItemSetByStampSheetTask task = new AddReferenceOfItemSetByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでアイテムに参照元を追加<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddReferenceOfItemSetByStampSheetResult addReferenceOfItemSetByStampSheet(
             AddReferenceOfItemSetByStampSheetRequest request
     ) {
@@ -5408,15 +4677,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public DeleteReferenceOfItemSetByStampSheetTask(
             DeleteReferenceOfItemSetByStampSheetRequest request,
-            AsyncAction<AsyncResult<DeleteReferenceOfItemSetByStampSheetResult>> userCallback,
-            Class<DeleteReferenceOfItemSetByStampSheetResult> clazz
+            AsyncAction<AsyncResult<DeleteReferenceOfItemSetByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteReferenceOfItemSetByStampSheetResult parse(JsonNode data) {
+            return DeleteReferenceOfItemSetByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -5427,19 +4699,13 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/item/reference/delete";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -5450,9 +4716,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5460,25 +4723,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * スタンプシートでアイテムの参照元を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteReferenceOfItemSetByStampSheetAsync(
             DeleteReferenceOfItemSetByStampSheetRequest request,
             AsyncAction<AsyncResult<DeleteReferenceOfItemSetByStampSheetResult>> callback
     ) {
-        DeleteReferenceOfItemSetByStampSheetTask task = new DeleteReferenceOfItemSetByStampSheetTask(request, callback, DeleteReferenceOfItemSetByStampSheetResult.class);
+        DeleteReferenceOfItemSetByStampSheetTask task = new DeleteReferenceOfItemSetByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでアイテムの参照元を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteReferenceOfItemSetByStampSheetResult deleteReferenceOfItemSetByStampSheet(
             DeleteReferenceOfItemSetByStampSheetRequest request
     ) {
@@ -5505,15 +4757,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public ConsumeItemSetByStampTaskTask(
             ConsumeItemSetByStampTaskRequest request,
-            AsyncAction<AsyncResult<ConsumeItemSetByStampTaskResult>> userCallback,
-            Class<ConsumeItemSetByStampTaskResult> clazz
+            AsyncAction<AsyncResult<ConsumeItemSetByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ConsumeItemSetByStampTaskResult parse(JsonNode data) {
+            return ConsumeItemSetByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -5524,19 +4779,13 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/item/consume";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -5547,9 +4796,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5557,25 +4803,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * スタンプシートでインベントリのアイテムを消費<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void consumeItemSetByStampTaskAsync(
             ConsumeItemSetByStampTaskRequest request,
             AsyncAction<AsyncResult<ConsumeItemSetByStampTaskResult>> callback
     ) {
-        ConsumeItemSetByStampTaskTask task = new ConsumeItemSetByStampTaskTask(request, callback, ConsumeItemSetByStampTaskResult.class);
+        ConsumeItemSetByStampTaskTask task = new ConsumeItemSetByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでインベントリのアイテムを消費<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ConsumeItemSetByStampTaskResult consumeItemSetByStampTask(
             ConsumeItemSetByStampTaskRequest request
     ) {
@@ -5602,15 +4837,18 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
 
         public VerifyReferenceOfByStampTaskTask(
             VerifyReferenceOfByStampTaskRequest request,
-            AsyncAction<AsyncResult<VerifyReferenceOfByStampTaskResult>> userCallback,
-            Class<VerifyReferenceOfByStampTaskResult> clazz
+            AsyncAction<AsyncResult<VerifyReferenceOfByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public VerifyReferenceOfByStampTaskResult parse(JsonNode data) {
+            return VerifyReferenceOfByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -5621,19 +4859,13 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/item/verify";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -5644,9 +4876,6 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5654,25 +4883,14 @@ public class Gs2InventoryRestClient extends AbstractGs2Client<Gs2InventoryRestCl
         }
     }
 
-    /**
-     * スタンプシートでインベントリのアイテムを検証<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void verifyReferenceOfByStampTaskAsync(
             VerifyReferenceOfByStampTaskRequest request,
             AsyncAction<AsyncResult<VerifyReferenceOfByStampTaskResult>> callback
     ) {
-        VerifyReferenceOfByStampTaskTask task = new VerifyReferenceOfByStampTaskTask(request, callback, VerifyReferenceOfByStampTaskResult.class);
+        VerifyReferenceOfByStampTaskTask task = new VerifyReferenceOfByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでインベントリのアイテムを検証<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public VerifyReferenceOfByStampTaskResult verifyReferenceOfByStampTask(
             VerifyReferenceOfByStampTaskRequest request
     ) {

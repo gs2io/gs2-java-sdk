@@ -16,221 +16,130 @@
 
 package io.gs2.inventory.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * アイテムモデル
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ItemModel implements IModel, Serializable, Comparable<ItemModel> {
-	/** アイテムモデルマスター */
-	protected String itemModelId;
+	private String itemModelId;
+	private String name;
+	private String metadata;
+	private Long stackingLimit;
+	private Boolean allowMultipleStacks;
+	private Integer sortValue;
 
-	/**
-	 * アイテムモデルマスターを取得
-	 *
-	 * @return アイテムモデルマスター
-	 */
 	public String getItemModelId() {
 		return itemModelId;
 	}
 
-	/**
-	 * アイテムモデルマスターを設定
-	 *
-	 * @param itemModelId アイテムモデルマスター
-	 */
 	public void setItemModelId(String itemModelId) {
 		this.itemModelId = itemModelId;
 	}
 
-	/**
-	 * アイテムモデルマスターを設定
-	 *
-	 * @param itemModelId アイテムモデルマスター
-	 * @return this
-	 */
 	public ItemModel withItemModelId(String itemModelId) {
 		this.itemModelId = itemModelId;
 		return this;
 	}
-	/** アイテムモデルの種類名 */
-	protected String name;
 
-	/**
-	 * アイテムモデルの種類名を取得
-	 *
-	 * @return アイテムモデルの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * アイテムモデルの種類名を設定
-	 *
-	 * @param name アイテムモデルの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * アイテムモデルの種類名を設定
-	 *
-	 * @param name アイテムモデルの種類名
-	 * @return this
-	 */
 	public ItemModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** アイテムモデルの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * アイテムモデルの種類のメタデータを取得
-	 *
-	 * @return アイテムモデルの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * アイテムモデルの種類のメタデータを設定
-	 *
-	 * @param metadata アイテムモデルの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * アイテムモデルの種類のメタデータを設定
-	 *
-	 * @param metadata アイテムモデルの種類のメタデータ
-	 * @return this
-	 */
 	public ItemModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** スタック可能な最大数量 */
-	protected Long stackingLimit;
 
-	/**
-	 * スタック可能な最大数量を取得
-	 *
-	 * @return スタック可能な最大数量
-	 */
 	public Long getStackingLimit() {
 		return stackingLimit;
 	}
 
-	/**
-	 * スタック可能な最大数量を設定
-	 *
-	 * @param stackingLimit スタック可能な最大数量
-	 */
 	public void setStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 	}
 
-	/**
-	 * スタック可能な最大数量を設定
-	 *
-	 * @param stackingLimit スタック可能な最大数量
-	 * @return this
-	 */
 	public ItemModel withStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 		return this;
 	}
-	/** スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか */
-	protected Boolean allowMultipleStacks;
 
-	/**
-	 * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを取得
-	 *
-	 * @return スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか
-	 */
 	public Boolean getAllowMultipleStacks() {
 		return allowMultipleStacks;
 	}
 
-	/**
-	 * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
-	 *
-	 * @param allowMultipleStacks スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか
-	 */
 	public void setAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 	}
 
-	/**
-	 * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
-	 *
-	 * @param allowMultipleStacks スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか
-	 * @return this
-	 */
 	public ItemModel withAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 		return this;
 	}
-	/** 表示順番 */
-	protected Integer sortValue;
 
-	/**
-	 * 表示順番を取得
-	 *
-	 * @return 表示順番
-	 */
 	public Integer getSortValue() {
 		return sortValue;
 	}
 
-	/**
-	 * 表示順番を設定
-	 *
-	 * @param sortValue 表示順番
-	 */
 	public void setSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 	}
 
-	/**
-	 * 表示順番を設定
-	 *
-	 * @param sortValue 表示順番
-	 * @return this
-	 */
 	public ItemModel withSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("itemModelId", this.getItemModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("stackingLimit", this.getStackingLimit())
-            .put("allowMultipleStacks", this.getAllowMultipleStacks())
-            .put("sortValue", this.getSortValue());
-        return body_;
+    public static ItemModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ItemModel()
+            .withItemModelId(data.get("itemModelId") == null || data.get("itemModelId").isNull() ? null : data.get("itemModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withStackingLimit(data.get("stackingLimit") == null || data.get("stackingLimit").isNull() ? null : data.get("stackingLimit").longValue())
+            .withAllowMultipleStacks(data.get("allowMultipleStacks") == null || data.get("allowMultipleStacks").isNull() ? null : data.get("allowMultipleStacks").booleanValue())
+            .withSortValue(data.get("sortValue") == null || data.get("sortValue").isNull() ? null : data.get("sortValue").intValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("itemModelId", getItemModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("stackingLimit", getStackingLimit());
+                put("allowMultipleStacks", getAllowMultipleStacks());
+                put("sortValue", getSortValue());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(ItemModel o) {
 		return itemModelId.compareTo(o.itemModelId);

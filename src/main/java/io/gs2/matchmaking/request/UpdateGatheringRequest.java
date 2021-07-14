@@ -16,178 +16,105 @@
 
 package io.gs2.matchmaking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.matchmaking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.matchmaking.model.AttributeRange;
 
-/**
- * ギャザリングを更新する のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateGatheringRequest extends Gs2BasicRequest<UpdateGatheringRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ギャザリングを更新する
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ギャザリングを更新する
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ギャザリングを更新する
-     * @return this
-     */
-    public UpdateGatheringRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ギャザリング名 */
     private String gatheringName;
-
-    /**
-     * ギャザリング名を取得
-     *
-     * @return ギャザリングを更新する
-     */
-    public String getGatheringName() {
-        return gatheringName;
-    }
-
-    /**
-     * ギャザリング名を設定
-     *
-     * @param gatheringName ギャザリングを更新する
-     */
-    public void setGatheringName(String gatheringName) {
-        this.gatheringName = gatheringName;
-    }
-
-    /**
-     * ギャザリング名を設定
-     *
-     * @param gatheringName ギャザリングを更新する
-     * @return this
-     */
-    public UpdateGatheringRequest withGatheringName(String gatheringName) {
-        setGatheringName(gatheringName);
-        return this;
-    }
-
-    /** 募集条件 */
+    private String accessToken;
     private List<AttributeRange> attributeRanges;
 
-    /**
-     * 募集条件を取得
-     *
-     * @return ギャザリングを更新する
-     */
-    public List<AttributeRange> getAttributeRanges() {
-        return attributeRanges;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateGatheringRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getGatheringName() {
+		return gatheringName;
+	}
+
+	public void setGatheringName(String gatheringName) {
+		this.gatheringName = gatheringName;
+	}
+
+	public UpdateGatheringRequest withGatheringName(String gatheringName) {
+		this.gatheringName = gatheringName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public UpdateGatheringRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public List<AttributeRange> getAttributeRanges() {
+		return attributeRanges;
+	}
+
+	public void setAttributeRanges(List<AttributeRange> attributeRanges) {
+		this.attributeRanges = attributeRanges;
+	}
+
+	public UpdateGatheringRequest withAttributeRanges(List<AttributeRange> attributeRanges) {
+		this.attributeRanges = attributeRanges;
+		return this;
+	}
+
+    public static UpdateGatheringRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateGatheringRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withGatheringName(data.get("gatheringName") == null || data.get("gatheringName").isNull() ? null : data.get("gatheringName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withAttributeRanges(data.get("attributeRanges") == null || data.get("attributeRanges").isNull() ? new ArrayList<AttributeRange>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributeRanges").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AttributeRange.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 募集条件を設定
-     *
-     * @param attributeRanges ギャザリングを更新する
-     */
-    public void setAttributeRanges(List<AttributeRange> attributeRanges) {
-        this.attributeRanges = attributeRanges;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("gatheringName", getGatheringName());
+                put("accessToken", getAccessToken());
+                put("attributeRanges", getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                    getAttributeRanges().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 募集条件を設定
-     *
-     * @param attributeRanges ギャザリングを更新する
-     * @return this
-     */
-    public UpdateGatheringRequest withAttributeRanges(List<AttributeRange> attributeRanges) {
-        setAttributeRanges(attributeRanges);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ギャザリングを更新する
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ギャザリングを更新する
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ギャザリングを更新する
-     * @return this
-     */
-    public UpdateGatheringRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public UpdateGatheringRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

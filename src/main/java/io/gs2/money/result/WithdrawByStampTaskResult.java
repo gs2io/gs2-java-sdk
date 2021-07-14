@@ -16,59 +16,81 @@
 
 package io.gs2.money.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.money.model.*;
+import io.gs2.money.model.WalletDetail;
+import io.gs2.money.model.Wallet;
 
-/**
- * ウォレットから残高を消費します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WithdrawByStampTaskResult implements IResult, Serializable {
-	/** 消費後のウォレット */
-	private Wallet item;
-	/** スタンプタスクの実行結果を記録したコンテキスト */
-	private String newContextStack;
+    private Wallet item;
+    private Float price;
+    private String newContextStack;
 
-	/**
-	 * 消費後のウォレットを取得
-	 *
-	 * @return ウォレットから残高を消費します
-	 */
 	public Wallet getItem() {
 		return item;
 	}
 
-	/**
-	 * 消費後のウォレットを設定
-	 *
-	 * @param item ウォレットから残高を消費します
-	 */
 	public void setItem(Wallet item) {
 		this.item = item;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを取得
-	 *
-	 * @return ウォレットから残高を消費します
-	 */
+	public WithdrawByStampTaskResult withItem(Wallet item) {
+		this.item = item;
+		return this;
+	}
+
+	public Float getPrice() {
+		return price;
+	}
+
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+
+	public WithdrawByStampTaskResult withPrice(Float price) {
+		this.price = price;
+		return this;
+	}
+
 	public String getNewContextStack() {
 		return newContextStack;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを設定
-	 *
-	 * @param newContextStack ウォレットから残高を消費します
-	 */
 	public void setNewContextStack(String newContextStack) {
 		this.newContextStack = newContextStack;
 	}
+
+	public WithdrawByStampTaskResult withNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
+		return this;
+	}
+
+    public static WithdrawByStampTaskResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new WithdrawByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Wallet.fromJson(data.get("item")))
+            .withPrice(data.get("price") == null || data.get("price").isNull() ? null : data.get("price").floatValue())
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("price", getPrice());
+                put("newContextStack", getNewContextStack());
+            }}
+        );
+    }
 }

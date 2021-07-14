@@ -16,82 +16,62 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * プロジェクトを削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteProjectRequest extends Gs2BasicRequest<DeleteProjectRequest> {
-
-    /** GS2アカウントトークン */
     private String accountToken;
-
-    /**
-     * GS2アカウントトークンを取得
-     *
-     * @return プロジェクトを削除
-     */
-    public String getAccountToken() {
-        return accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトを削除
-     */
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトを削除
-     * @return this
-     */
-    public DeleteProjectRequest withAccountToken(String accountToken) {
-        setAccountToken(accountToken);
-        return this;
-    }
-
-    /** プロジェクト名 */
     private String projectName;
 
-    /**
-     * プロジェクト名を取得
-     *
-     * @return プロジェクトを削除
-     */
-    public String getProjectName() {
-        return projectName;
+	public String getAccountToken() {
+		return accountToken;
+	}
+
+	public void setAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+	}
+
+	public DeleteProjectRequest withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public DeleteProjectRequest withProjectName(String projectName) {
+		this.projectName = projectName;
+		return this;
+	}
+
+    public static DeleteProjectRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteProjectRequest()
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText())
+            .withProjectName(data.get("projectName") == null || data.get("projectName").isNull() ? null : data.get("projectName").asText());
     }
 
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトを削除
-     */
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountToken", getAccountToken());
+                put("projectName", getProjectName());
+            }}
+        );
     }
-
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトを削除
-     * @return this
-     */
-    public DeleteProjectRequest withProjectName(String projectName) {
-        setProjectName(projectName);
-        return this;
-    }
-
 }

@@ -16,156 +16,96 @@
 
 package io.gs2.quest.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * クリア報酬
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Reward implements IModel, Serializable {
-	/** スタンプシートで実行するアクションの種類 */
-	protected String action;
+	private String action;
+	private String request;
+	private String itemId;
+	private Integer value;
 
-	/**
-	 * スタンプシートで実行するアクションの種類を取得
-	 *
-	 * @return スタンプシートで実行するアクションの種類
-	 */
 	public String getAction() {
 		return action;
 	}
 
-	/**
-	 * スタンプシートで実行するアクションの種類を設定
-	 *
-	 * @param action スタンプシートで実行するアクションの種類
-	 */
 	public void setAction(String action) {
 		this.action = action;
 	}
 
-	/**
-	 * スタンプシートで実行するアクションの種類を設定
-	 *
-	 * @param action スタンプシートで実行するアクションの種類
-	 * @return this
-	 */
 	public Reward withAction(String action) {
 		this.action = action;
 		return this;
 	}
-	/** リクエストモデル */
-	protected String request;
 
-	/**
-	 * リクエストモデルを取得
-	 *
-	 * @return リクエストモデル
-	 */
 	public String getRequest() {
 		return request;
 	}
 
-	/**
-	 * リクエストモデルを設定
-	 *
-	 * @param request リクエストモデル
-	 */
 	public void setRequest(String request) {
 		this.request = request;
 	}
 
-	/**
-	 * リクエストモデルを設定
-	 *
-	 * @param request リクエストモデル
-	 * @return this
-	 */
 	public Reward withRequest(String request) {
 		this.request = request;
 		return this;
 	}
-	/** 入手するリソースGRN */
-	protected String itemId;
 
-	/**
-	 * 入手するリソースGRNを取得
-	 *
-	 * @return 入手するリソースGRN
-	 */
 	public String getItemId() {
 		return itemId;
 	}
 
-	/**
-	 * 入手するリソースGRNを設定
-	 *
-	 * @param itemId 入手するリソースGRN
-	 */
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
 
-	/**
-	 * 入手するリソースGRNを設定
-	 *
-	 * @param itemId 入手するリソースGRN
-	 * @return this
-	 */
 	public Reward withItemId(String itemId) {
 		this.itemId = itemId;
 		return this;
 	}
-	/** 入手する数量 */
-	protected Integer value;
 
-	/**
-	 * 入手する数量を取得
-	 *
-	 * @return 入手する数量
-	 */
 	public Integer getValue() {
 		return value;
 	}
 
-	/**
-	 * 入手する数量を設定
-	 *
-	 * @param value 入手する数量
-	 */
 	public void setValue(Integer value) {
 		this.value = value;
 	}
 
-	/**
-	 * 入手する数量を設定
-	 *
-	 * @param value 入手する数量
-	 * @return this
-	 */
 	public Reward withValue(Integer value) {
 		this.value = value;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("action", this.getAction())
-            .put("request", this.getRequest())
-            .put("itemId", this.getItemId())
-            .put("value", this.getValue());
-        return body_;
+    public static Reward fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Reward()
+            .withAction(data.get("action") == null || data.get("action").isNull() ? null : data.get("action").asText())
+            .withRequest(data.get("request") == null || data.get("request").isNull() ? null : data.get("request").asText())
+            .withItemId(data.get("itemId") == null || data.get("itemId").isNull() ? null : data.get("itemId").asText())
+            .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("action", getAction());
+                put("request", getRequest());
+                put("itemId", getItemId());
+                put("value", getValue());
+            }}
+        );
     }
 
 	@Override

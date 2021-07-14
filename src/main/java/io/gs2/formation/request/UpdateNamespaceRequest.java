@@ -16,178 +16,112 @@
 
 package io.gs2.formation.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.formation.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.formation.model.ScriptSetting;
+import io.gs2.formation.model.LogSetting;
 
-/**
- * ネームスペースを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** キャパシティを更新するときに実行するスクリプト */
     private ScriptSetting updateMoldScript;
-
-    /**
-     * キャパシティを更新するときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getUpdateMoldScript() {
-        return updateMoldScript;
-    }
-
-    /**
-     * キャパシティを更新するときに実行するスクリプトを設定
-     *
-     * @param updateMoldScript ネームスペースを更新
-     */
-    public void setUpdateMoldScript(ScriptSetting updateMoldScript) {
-        this.updateMoldScript = updateMoldScript;
-    }
-
-    /**
-     * キャパシティを更新するときに実行するスクリプトを設定
-     *
-     * @param updateMoldScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withUpdateMoldScript(ScriptSetting updateMoldScript) {
-        setUpdateMoldScript(updateMoldScript);
-        return this;
-    }
-
-    /** フォームを更新するときに実行するスクリプト */
     private ScriptSetting updateFormScript;
-
-    /**
-     * フォームを更新するときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getUpdateFormScript() {
-        return updateFormScript;
-    }
-
-    /**
-     * フォームを更新するときに実行するスクリプトを設定
-     *
-     * @param updateFormScript ネームスペースを更新
-     */
-    public void setUpdateFormScript(ScriptSetting updateFormScript) {
-        this.updateFormScript = updateFormScript;
-    }
-
-    /**
-     * フォームを更新するときに実行するスクリプトを設定
-     *
-     * @param updateFormScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withUpdateFormScript(ScriptSetting updateFormScript) {
-        setUpdateFormScript(updateFormScript);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public ScriptSetting getUpdateMoldScript() {
+		return updateMoldScript;
+	}
+
+	public void setUpdateMoldScript(ScriptSetting updateMoldScript) {
+		this.updateMoldScript = updateMoldScript;
+	}
+
+	public UpdateNamespaceRequest withUpdateMoldScript(ScriptSetting updateMoldScript) {
+		this.updateMoldScript = updateMoldScript;
+		return this;
+	}
+
+	public ScriptSetting getUpdateFormScript() {
+		return updateFormScript;
+	}
+
+	public void setUpdateFormScript(ScriptSetting updateFormScript) {
+		this.updateFormScript = updateFormScript;
+	}
+
+	public UpdateNamespaceRequest withUpdateFormScript(ScriptSetting updateFormScript) {
+		this.updateFormScript = updateFormScript;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static UpdateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateNamespaceRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withUpdateMoldScript(data.get("updateMoldScript") == null || data.get("updateMoldScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateMoldScript")))
+            .withUpdateFormScript(data.get("updateFormScript") == null || data.get("updateFormScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateFormScript")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("description", getDescription());
+                put("updateMoldScript", getUpdateMoldScript() != null ? getUpdateMoldScript().toJson() : null);
+                put("updateFormScript", getUpdateFormScript() != null ? getUpdateFormScript().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

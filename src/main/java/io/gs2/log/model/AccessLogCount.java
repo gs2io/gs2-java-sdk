@@ -16,156 +16,96 @@
 
 package io.gs2.log.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * アクセスログ集計
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AccessLogCount implements IModel, Serializable {
-	/** マイクロサービスの種類 */
-	protected String service;
+	private String service;
+	private String method;
+	private String userId;
+	private Long count;
 
-	/**
-	 * マイクロサービスの種類を取得
-	 *
-	 * @return マイクロサービスの種類
-	 */
 	public String getService() {
 		return service;
 	}
 
-	/**
-	 * マイクロサービスの種類を設定
-	 *
-	 * @param service マイクロサービスの種類
-	 */
 	public void setService(String service) {
 		this.service = service;
 	}
 
-	/**
-	 * マイクロサービスの種類を設定
-	 *
-	 * @param service マイクロサービスの種類
-	 * @return this
-	 */
 	public AccessLogCount withService(String service) {
 		this.service = service;
 		return this;
 	}
-	/** マイクロサービスのメソッド */
-	protected String method;
 
-	/**
-	 * マイクロサービスのメソッドを取得
-	 *
-	 * @return マイクロサービスのメソッド
-	 */
 	public String getMethod() {
 		return method;
 	}
 
-	/**
-	 * マイクロサービスのメソッドを設定
-	 *
-	 * @param method マイクロサービスのメソッド
-	 */
 	public void setMethod(String method) {
 		this.method = method;
 	}
 
-	/**
-	 * マイクロサービスのメソッドを設定
-	 *
-	 * @param method マイクロサービスのメソッド
-	 * @return this
-	 */
 	public AccessLogCount withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public AccessLogCount withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 回数 */
-	protected Long count;
 
-	/**
-	 * 回数を取得
-	 *
-	 * @return 回数
-	 */
 	public Long getCount() {
 		return count;
 	}
 
-	/**
-	 * 回数を設定
-	 *
-	 * @param count 回数
-	 */
 	public void setCount(Long count) {
 		this.count = count;
 	}
 
-	/**
-	 * 回数を設定
-	 *
-	 * @param count 回数
-	 * @return this
-	 */
 	public AccessLogCount withCount(Long count) {
 		this.count = count;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("service", this.getService())
-            .put("method", this.getMethod())
-            .put("userId", this.getUserId())
-            .put("count", this.getCount());
-        return body_;
+    public static AccessLogCount fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AccessLogCount()
+            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
+            .withMethod(data.get("method") == null || data.get("method").isNull() ? null : data.get("method").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("service", getService());
+                put("method", getMethod());
+                put("userId", getUserId());
+                put("count", getCount());
+            }}
+        );
     }
 
 	@Override

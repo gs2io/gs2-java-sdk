@@ -16,221 +16,114 @@
 
 package io.gs2.gateway.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * Firebaseデバイストークン
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseToken> {
-	/** Firebaseデバイストークン のGRN */
-	protected String firebaseTokenId;
+	private String firebaseTokenId;
+	private String userId;
+	private String token;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * Firebaseデバイストークン のGRNを取得
-	 *
-	 * @return Firebaseデバイストークン のGRN
-	 */
 	public String getFirebaseTokenId() {
 		return firebaseTokenId;
 	}
 
-	/**
-	 * Firebaseデバイストークン のGRNを設定
-	 *
-	 * @param firebaseTokenId Firebaseデバイストークン のGRN
-	 */
 	public void setFirebaseTokenId(String firebaseTokenId) {
 		this.firebaseTokenId = firebaseTokenId;
 	}
 
-	/**
-	 * Firebaseデバイストークン のGRNを設定
-	 *
-	 * @param firebaseTokenId Firebaseデバイストークン のGRN
-	 * @return this
-	 */
 	public FirebaseToken withFirebaseTokenId(String firebaseTokenId) {
 		this.firebaseTokenId = firebaseTokenId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public FirebaseToken withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ユーザーID */
-	protected String userId;
-
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public FirebaseToken withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** Firebase Cloud Messaging のデバイストークン */
-	protected String token;
 
-	/**
-	 * Firebase Cloud Messaging のデバイストークンを取得
-	 *
-	 * @return Firebase Cloud Messaging のデバイストークン
-	 */
 	public String getToken() {
 		return token;
 	}
 
-	/**
-	 * Firebase Cloud Messaging のデバイストークンを設定
-	 *
-	 * @param token Firebase Cloud Messaging のデバイストークン
-	 */
 	public void setToken(String token) {
 		this.token = token;
 	}
 
-	/**
-	 * Firebase Cloud Messaging のデバイストークンを設定
-	 *
-	 * @param token Firebase Cloud Messaging のデバイストークン
-	 * @return this
-	 */
 	public FirebaseToken withToken(String token) {
 		this.token = token;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public FirebaseToken withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public FirebaseToken withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("firebaseTokenId", this.getFirebaseTokenId())
-            .put("ownerId", this.getOwnerId())
-            .put("userId", this.getUserId())
-            .put("token", this.getToken())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static FirebaseToken fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new FirebaseToken()
+            .withFirebaseTokenId(data.get("firebaseTokenId") == null || data.get("firebaseTokenId").isNull() ? null : data.get("firebaseTokenId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("firebaseTokenId", getFirebaseTokenId());
+                put("userId", getUserId());
+                put("token", getToken());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(FirebaseToken o) {
 		return firebaseTokenId.compareTo(o.firebaseTokenId);
@@ -241,7 +134,6 @@ public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseT
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.firebaseTokenId == null) ? 0 : this.firebaseTokenId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.token == null) ? 0 : this.token.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -261,11 +153,6 @@ public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseT
 		if (firebaseTokenId == null) {
 			return other.firebaseTokenId == null;
 		} else if (!firebaseTokenId.equals(other.firebaseTokenId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (userId == null) {

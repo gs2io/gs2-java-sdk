@@ -16,39 +16,47 @@
 
 package io.gs2.gateway.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.gateway.model.*;
 
-/**
- * 通知を送信 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SendNotificationResult implements IResult, Serializable {
-	/** 通知に使用したプロトコル */
-	private String protocol;
+    private String protocol;
 
-	/**
-	 * 通知に使用したプロトコルを取得
-	 *
-	 * @return 通知を送信
-	 */
 	public String getProtocol() {
 		return protocol;
 	}
 
-	/**
-	 * 通知に使用したプロトコルを設定
-	 *
-	 * @param protocol 通知を送信
-	 */
 	public void setProtocol(String protocol) {
 		this.protocol = protocol;
 	}
+
+	public SendNotificationResult withProtocol(String protocol) {
+		this.protocol = protocol;
+		return this;
+	}
+
+    public static SendNotificationResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SendNotificationResult()
+            .withProtocol(data.get("protocol") == null || data.get("protocol").isNull() ? null : data.get("protocol").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("protocol", getProtocol());
+            }}
+        );
+    }
 }

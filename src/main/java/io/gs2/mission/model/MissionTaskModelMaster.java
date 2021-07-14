@@ -16,387 +16,220 @@
 
 package io.gs2.mission.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ミッションタスクマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MissionTaskModelMaster implements IModel, Serializable, Comparable<MissionTaskModelMaster> {
-	/** ミッションタスクマスター */
-	protected String missionTaskId;
+	private String missionTaskId;
+	private String name;
+	private String metadata;
+	private String description;
+	private String counterName;
+	private Long targetValue;
+	private List<AcquireAction> completeAcquireActions;
+	private String challengePeriodEventId;
+	private String premiseMissionTaskName;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ミッションタスクマスターを取得
-	 *
-	 * @return ミッションタスクマスター
-	 */
 	public String getMissionTaskId() {
 		return missionTaskId;
 	}
 
-	/**
-	 * ミッションタスクマスターを設定
-	 *
-	 * @param missionTaskId ミッションタスクマスター
-	 */
 	public void setMissionTaskId(String missionTaskId) {
 		this.missionTaskId = missionTaskId;
 	}
 
-	/**
-	 * ミッションタスクマスターを設定
-	 *
-	 * @param missionTaskId ミッションタスクマスター
-	 * @return this
-	 */
 	public MissionTaskModelMaster withMissionTaskId(String missionTaskId) {
 		this.missionTaskId = missionTaskId;
 		return this;
 	}
-	/** タスク名 */
-	protected String name;
 
-	/**
-	 * タスク名を取得
-	 *
-	 * @return タスク名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * タスク名を設定
-	 *
-	 * @param name タスク名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * タスク名を設定
-	 *
-	 * @param name タスク名
-	 * @return this
-	 */
 	public MissionTaskModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public MissionTaskModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** ミッションタスクの説明 */
-	protected String description;
 
-	/**
-	 * ミッションタスクの説明を取得
-	 *
-	 * @return ミッションタスクの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * ミッションタスクの説明を設定
-	 *
-	 * @param description ミッションタスクの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * ミッションタスクの説明を設定
-	 *
-	 * @param description ミッションタスクの説明
-	 * @return this
-	 */
 	public MissionTaskModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** カウンター名 */
-	protected String counterName;
 
-	/**
-	 * カウンター名を取得
-	 *
-	 * @return カウンター名
-	 */
 	public String getCounterName() {
 		return counterName;
 	}
 
-	/**
-	 * カウンター名を設定
-	 *
-	 * @param counterName カウンター名
-	 */
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
 
-	/**
-	 * カウンター名を設定
-	 *
-	 * @param counterName カウンター名
-	 * @return this
-	 */
 	public MissionTaskModelMaster withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;
 	}
-	/** 目標値 */
-	protected Long targetValue;
 
-	/**
-	 * 目標値を取得
-	 *
-	 * @return 目標値
-	 */
 	public Long getTargetValue() {
 		return targetValue;
 	}
 
-	/**
-	 * 目標値を設定
-	 *
-	 * @param targetValue 目標値
-	 */
 	public void setTargetValue(Long targetValue) {
 		this.targetValue = targetValue;
 	}
 
-	/**
-	 * 目標値を設定
-	 *
-	 * @param targetValue 目標値
-	 * @return this
-	 */
 	public MissionTaskModelMaster withTargetValue(Long targetValue) {
 		this.targetValue = targetValue;
 		return this;
 	}
-	/** ミッション達成時の報酬 */
-	protected List<AcquireAction> completeAcquireActions;
 
-	/**
-	 * ミッション達成時の報酬を取得
-	 *
-	 * @return ミッション達成時の報酬
-	 */
 	public List<AcquireAction> getCompleteAcquireActions() {
 		return completeAcquireActions;
 	}
 
-	/**
-	 * ミッション達成時の報酬を設定
-	 *
-	 * @param completeAcquireActions ミッション達成時の報酬
-	 */
 	public void setCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 	}
 
-	/**
-	 * ミッション達成時の報酬を設定
-	 *
-	 * @param completeAcquireActions ミッション達成時の報酬
-	 * @return this
-	 */
 	public MissionTaskModelMaster withCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 		return this;
 	}
-	/** 達成報酬の受け取り可能な期間を指定するイベントマスター のGRN */
-	protected String challengePeriodEventId;
 
-	/**
-	 * 達成報酬の受け取り可能な期間を指定するイベントマスター のGRNを取得
-	 *
-	 * @return 達成報酬の受け取り可能な期間を指定するイベントマスター のGRN
-	 */
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
 
-	/**
-	 * 達成報酬の受け取り可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId 達成報酬の受け取り可能な期間を指定するイベントマスター のGRN
-	 */
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
 
-	/**
-	 * 達成報酬の受け取り可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId 達成報酬の受け取り可能な期間を指定するイベントマスター のGRN
-	 * @return this
-	 */
 	public MissionTaskModelMaster withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-	/** このタスクに挑戦するために達成しておく必要のあるタスクの名前 */
-	protected String premiseMissionTaskName;
 
-	/**
-	 * このタスクに挑戦するために達成しておく必要のあるタスクの名前を取得
-	 *
-	 * @return このタスクに挑戦するために達成しておく必要のあるタスクの名前
-	 */
 	public String getPremiseMissionTaskName() {
 		return premiseMissionTaskName;
 	}
 
-	/**
-	 * このタスクに挑戦するために達成しておく必要のあるタスクの名前を設定
-	 *
-	 * @param premiseMissionTaskName このタスクに挑戦するために達成しておく必要のあるタスクの名前
-	 */
 	public void setPremiseMissionTaskName(String premiseMissionTaskName) {
 		this.premiseMissionTaskName = premiseMissionTaskName;
 	}
 
-	/**
-	 * このタスクに挑戦するために達成しておく必要のあるタスクの名前を設定
-	 *
-	 * @param premiseMissionTaskName このタスクに挑戦するために達成しておく必要のあるタスクの名前
-	 * @return this
-	 */
 	public MissionTaskModelMaster withPremiseMissionTaskName(String premiseMissionTaskName) {
 		this.premiseMissionTaskName = premiseMissionTaskName;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public MissionTaskModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public MissionTaskModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> completeAcquireActions = new ArrayList<>();
-        if(this.completeAcquireActions != null) {
-            for(AcquireAction item : this.completeAcquireActions) {
-                completeAcquireActions.add(item.toJson());
-            }
+    public static MissionTaskModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("missionTaskId", this.getMissionTaskId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("description", this.getDescription())
-            .put("counterName", this.getCounterName())
-            .put("targetValue", this.getTargetValue())
-            .put("challengePeriodEventId", this.getChallengePeriodEventId())
-            .put("premiseMissionTaskName", this.getPremiseMissionTaskName())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("completeAcquireActions", JsonNodeFactory.instance.arrayNode().addAll(completeAcquireActions));
-        return body_;
+        return new MissionTaskModelMaster()
+            .withMissionTaskId(data.get("missionTaskId") == null || data.get("missionTaskId").isNull() ? null : data.get("missionTaskId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
+            .withTargetValue(data.get("targetValue") == null || data.get("targetValue").isNull() ? null : data.get("targetValue").longValue())
+            .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
+            .withPremiseMissionTaskName(data.get("premiseMissionTaskName") == null || data.get("premiseMissionTaskName").isNull() ? null : data.get("premiseMissionTaskName").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("missionTaskId", getMissionTaskId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("counterName", getCounterName());
+                put("targetValue", getTargetValue());
+                put("completeAcquireActions", getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getCompleteAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("challengePeriodEventId", getChallengePeriodEventId());
+                put("premiseMissionTaskName", getPremiseMissionTaskName());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(MissionTaskModelMaster o) {
 		return missionTaskId.compareTo(o.missionTaskId);

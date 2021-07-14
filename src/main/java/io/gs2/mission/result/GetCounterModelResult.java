@@ -16,39 +16,49 @@
 
 package io.gs2.mission.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
+import io.gs2.mission.model.CounterScopeModel;
+import io.gs2.mission.model.CounterModel;
 
-/**
- * カウンターの種類を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetCounterModelResult implements IResult, Serializable {
-	/** カウンターの種類 */
-	private CounterModel item;
+    private CounterModel item;
 
-	/**
-	 * カウンターの種類を取得
-	 *
-	 * @return カウンターの種類を取得
-	 */
 	public CounterModel getItem() {
 		return item;
 	}
 
-	/**
-	 * カウンターの種類を設定
-	 *
-	 * @param item カウンターの種類を取得
-	 */
 	public void setItem(CounterModel item) {
 		this.item = item;
 	}
+
+	public GetCounterModelResult withItem(CounterModel item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetCounterModelResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetCounterModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CounterModel.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

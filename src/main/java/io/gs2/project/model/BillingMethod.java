@@ -16,413 +16,210 @@
 
 package io.gs2.project.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 支払い方法
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BillingMethod implements IModel, Serializable, Comparable<BillingMethod> {
-	/** 支払い方法 */
-	protected String billingMethodId;
+	private String billingMethodId;
+	private String accountName;
+	private String name;
+	private String description;
+	private String methodType;
+	private String cardSignatureName;
+	private String cardBrand;
+	private String cardLast4;
+	private String partnerId;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 支払い方法を取得
-	 *
-	 * @return 支払い方法
-	 */
 	public String getBillingMethodId() {
 		return billingMethodId;
 	}
 
-	/**
-	 * 支払い方法を設定
-	 *
-	 * @param billingMethodId 支払い方法
-	 */
 	public void setBillingMethodId(String billingMethodId) {
 		this.billingMethodId = billingMethodId;
 	}
 
-	/**
-	 * 支払い方法を設定
-	 *
-	 * @param billingMethodId 支払い方法
-	 * @return this
-	 */
 	public BillingMethod withBillingMethodId(String billingMethodId) {
 		this.billingMethodId = billingMethodId;
 		return this;
 	}
-	/** GS2アカウントの名前 */
-	protected String accountName;
 
-	/**
-	 * GS2アカウントの名前を取得
-	 *
-	 * @return GS2アカウントの名前
-	 */
 	public String getAccountName() {
 		return accountName;
 	}
 
-	/**
-	 * GS2アカウントの名前を設定
-	 *
-	 * @param accountName GS2アカウントの名前
-	 */
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
 
-	/**
-	 * GS2アカウントの名前を設定
-	 *
-	 * @param accountName GS2アカウントの名前
-	 * @return this
-	 */
 	public BillingMethod withAccountName(String accountName) {
 		this.accountName = accountName;
 		return this;
 	}
-	/** 名前 */
-	protected String name;
 
-	/**
-	 * 名前を取得
-	 *
-	 * @return 名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 名前を設定
-	 *
-	 * @param name 名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 名前を設定
-	 *
-	 * @param name 名前
-	 * @return this
-	 */
 	public BillingMethod withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 名前 */
-	protected String description;
 
-	/**
-	 * 名前を取得
-	 *
-	 * @return 名前
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 名前を設定
-	 *
-	 * @param description 名前
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 名前を設定
-	 *
-	 * @param description 名前
-	 * @return this
-	 */
 	public BillingMethod withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 支払い方法 */
-	protected String methodType;
 
-	/**
-	 * 支払い方法を取得
-	 *
-	 * @return 支払い方法
-	 */
 	public String getMethodType() {
 		return methodType;
 	}
 
-	/**
-	 * 支払い方法を設定
-	 *
-	 * @param methodType 支払い方法
-	 */
 	public void setMethodType(String methodType) {
 		this.methodType = methodType;
 	}
 
-	/**
-	 * 支払い方法を設定
-	 *
-	 * @param methodType 支払い方法
-	 * @return this
-	 */
 	public BillingMethod withMethodType(String methodType) {
 		this.methodType = methodType;
 		return this;
 	}
-	/** クレジットカードカスタマーID */
-	protected String cardCustomerId;
 
-	/**
-	 * クレジットカードカスタマーIDを取得
-	 *
-	 * @return クレジットカードカスタマーID
-	 */
-	public String getCardCustomerId() {
-		return cardCustomerId;
-	}
-
-	/**
-	 * クレジットカードカスタマーIDを設定
-	 *
-	 * @param cardCustomerId クレジットカードカスタマーID
-	 */
-	public void setCardCustomerId(String cardCustomerId) {
-		this.cardCustomerId = cardCustomerId;
-	}
-
-	/**
-	 * クレジットカードカスタマーIDを設定
-	 *
-	 * @param cardCustomerId クレジットカードカスタマーID
-	 * @return this
-	 */
-	public BillingMethod withCardCustomerId(String cardCustomerId) {
-		this.cardCustomerId = cardCustomerId;
-		return this;
-	}
-	/** カード署名 */
-	protected String cardSignatureName;
-
-	/**
-	 * カード署名を取得
-	 *
-	 * @return カード署名
-	 */
 	public String getCardSignatureName() {
 		return cardSignatureName;
 	}
 
-	/**
-	 * カード署名を設定
-	 *
-	 * @param cardSignatureName カード署名
-	 */
 	public void setCardSignatureName(String cardSignatureName) {
 		this.cardSignatureName = cardSignatureName;
 	}
 
-	/**
-	 * カード署名を設定
-	 *
-	 * @param cardSignatureName カード署名
-	 * @return this
-	 */
 	public BillingMethod withCardSignatureName(String cardSignatureName) {
 		this.cardSignatureName = cardSignatureName;
 		return this;
 	}
-	/** カードブランド */
-	protected String cardBrand;
 
-	/**
-	 * カードブランドを取得
-	 *
-	 * @return カードブランド
-	 */
 	public String getCardBrand() {
 		return cardBrand;
 	}
 
-	/**
-	 * カードブランドを設定
-	 *
-	 * @param cardBrand カードブランド
-	 */
 	public void setCardBrand(String cardBrand) {
 		this.cardBrand = cardBrand;
 	}
 
-	/**
-	 * カードブランドを設定
-	 *
-	 * @param cardBrand カードブランド
-	 * @return this
-	 */
 	public BillingMethod withCardBrand(String cardBrand) {
 		this.cardBrand = cardBrand;
 		return this;
 	}
-	/** 末尾4桁 */
-	protected String cardLast4;
 
-	/**
-	 * 末尾4桁を取得
-	 *
-	 * @return 末尾4桁
-	 */
 	public String getCardLast4() {
 		return cardLast4;
 	}
 
-	/**
-	 * 末尾4桁を設定
-	 *
-	 * @param cardLast4 末尾4桁
-	 */
 	public void setCardLast4(String cardLast4) {
 		this.cardLast4 = cardLast4;
 	}
 
-	/**
-	 * 末尾4桁を設定
-	 *
-	 * @param cardLast4 末尾4桁
-	 * @return this
-	 */
 	public BillingMethod withCardLast4(String cardLast4) {
 		this.cardLast4 = cardLast4;
 		return this;
 	}
-	/** パートナーID */
-	protected String partnerId;
 
-	/**
-	 * パートナーIDを取得
-	 *
-	 * @return パートナーID
-	 */
 	public String getPartnerId() {
 		return partnerId;
 	}
 
-	/**
-	 * パートナーIDを設定
-	 *
-	 * @param partnerId パートナーID
-	 */
 	public void setPartnerId(String partnerId) {
 		this.partnerId = partnerId;
 	}
 
-	/**
-	 * パートナーIDを設定
-	 *
-	 * @param partnerId パートナーID
-	 * @return this
-	 */
 	public BillingMethod withPartnerId(String partnerId) {
 		this.partnerId = partnerId;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public BillingMethod withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public BillingMethod withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("billingMethodId", this.getBillingMethodId())
-            .put("accountName", this.getAccountName())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("methodType", this.getMethodType())
-            .put("cardCustomerId", this.getCardCustomerId())
-            .put("cardSignatureName", this.getCardSignatureName())
-            .put("cardBrand", this.getCardBrand())
-            .put("cardLast4", this.getCardLast4())
-            .put("partnerId", this.getPartnerId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static BillingMethod fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new BillingMethod()
+            .withBillingMethodId(data.get("billingMethodId") == null || data.get("billingMethodId").isNull() ? null : data.get("billingMethodId").asText())
+            .withAccountName(data.get("accountName") == null || data.get("accountName").isNull() ? null : data.get("accountName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMethodType(data.get("methodType") == null || data.get("methodType").isNull() ? null : data.get("methodType").asText())
+            .withCardSignatureName(data.get("cardSignatureName") == null || data.get("cardSignatureName").isNull() ? null : data.get("cardSignatureName").asText())
+            .withCardBrand(data.get("cardBrand") == null || data.get("cardBrand").isNull() ? null : data.get("cardBrand").asText())
+            .withCardLast4(data.get("cardLast4") == null || data.get("cardLast4").isNull() ? null : data.get("cardLast4").asText())
+            .withPartnerId(data.get("partnerId") == null || data.get("partnerId").isNull() ? null : data.get("partnerId").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("billingMethodId", getBillingMethodId());
+                put("accountName", getAccountName());
+                put("name", getName());
+                put("description", getDescription());
+                put("methodType", getMethodType());
+                put("cardSignatureName", getCardSignatureName());
+                put("cardBrand", getCardBrand());
+                put("cardLast4", getCardLast4());
+                put("partnerId", getPartnerId());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(BillingMethod o) {
 		return billingMethodId.compareTo(o.billingMethodId);
@@ -437,7 +234,6 @@ public class BillingMethod implements IModel, Serializable, Comparable<BillingMe
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.methodType == null) ? 0 : this.methodType.hashCode());
-        result = prime * result + ((this.cardCustomerId == null) ? 0 : this.cardCustomerId.hashCode());
         result = prime * result + ((this.cardSignatureName == null) ? 0 : this.cardSignatureName.hashCode());
         result = prime * result + ((this.cardBrand == null) ? 0 : this.cardBrand.hashCode());
         result = prime * result + ((this.cardLast4 == null) ? 0 : this.cardLast4.hashCode());
@@ -479,11 +275,6 @@ public class BillingMethod implements IModel, Serializable, Comparable<BillingMe
 		if (methodType == null) {
 			return other.methodType == null;
 		} else if (!methodType.equals(other.methodType)) {
-			return false;
-		}
-		if (cardCustomerId == null) {
-			return other.cardCustomerId == null;
-		} else if (!cardCustomerId.equals(other.cardCustomerId)) {
 			return false;
 		}
 		if (cardSignatureName == null) {

@@ -16,79 +16,80 @@
 
 package io.gs2.matchmaking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.Ballot;
 
-/**
- * 投票用紙を取得します。 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetBallotResult implements IResult, Serializable {
-	/** 投票用紙 */
-	private Ballot item;
-	/** 署名対象のデータ */
-	private String body;
-	/** 署名データ */
-	private String signature;
+    private Ballot item;
+    private String body;
+    private String signature;
 
-	/**
-	 * 投票用紙を取得
-	 *
-	 * @return 投票用紙を取得します。
-	 */
 	public Ballot getItem() {
 		return item;
 	}
 
-	/**
-	 * 投票用紙を設定
-	 *
-	 * @param item 投票用紙を取得します。
-	 */
 	public void setItem(Ballot item) {
 		this.item = item;
 	}
 
-	/**
-	 * 署名対象のデータを取得
-	 *
-	 * @return 投票用紙を取得します。
-	 */
+	public GetBallotResult withItem(Ballot item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getBody() {
 		return body;
 	}
 
-	/**
-	 * 署名対象のデータを設定
-	 *
-	 * @param body 投票用紙を取得します。
-	 */
 	public void setBody(String body) {
 		this.body = body;
 	}
 
-	/**
-	 * 署名データを取得
-	 *
-	 * @return 投票用紙を取得します。
-	 */
+	public GetBallotResult withBody(String body) {
+		this.body = body;
+		return this;
+	}
+
 	public String getSignature() {
 		return signature;
 	}
 
-	/**
-	 * 署名データを設定
-	 *
-	 * @param signature 投票用紙を取得します。
-	 */
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
+
+	public GetBallotResult withSignature(String signature) {
+		this.signature = signature;
+		return this;
+	}
+
+    public static GetBallotResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetBallotResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Ballot.fromJson(data.get("item")))
+            .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
+            .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("body", getBody());
+                put("signature", getSignature());
+            }}
+        );
+    }
 }

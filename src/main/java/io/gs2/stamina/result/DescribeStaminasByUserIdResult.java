@@ -16,59 +16,74 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.Stamina;
 
-/**
- * ユーザIDを指定してスタミナを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeStaminasByUserIdResult implements IResult, Serializable {
-	/** スタミナのリスト */
-	private List<Stamina> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<Stamina> items;
+    private String nextPageToken;
 
-	/**
-	 * スタミナのリストを取得
-	 *
-	 * @return ユーザIDを指定してスタミナを取得
-	 */
 	public List<Stamina> getItems() {
 		return items;
 	}
 
-	/**
-	 * スタミナのリストを設定
-	 *
-	 * @param items ユーザIDを指定してスタミナを取得
-	 */
 	public void setItems(List<Stamina> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return ユーザIDを指定してスタミナを取得
-	 */
+	public DescribeStaminasByUserIdResult withItems(List<Stamina> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken ユーザIDを指定してスタミナを取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeStaminasByUserIdResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeStaminasByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeStaminasByUserIdResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Stamina>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Stamina.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<Stamina>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

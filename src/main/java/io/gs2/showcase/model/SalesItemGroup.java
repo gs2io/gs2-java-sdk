@@ -16,135 +16,91 @@
 
 package io.gs2.showcase.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 商品グループ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SalesItemGroup implements IModel, Serializable, Comparable<SalesItemGroup> {
-	/** 商品グループ名 */
-	protected String name;
+public class SalesItemGroup implements IModel, Serializable {
+	private String name;
+	private String metadata;
+	private List<SalesItem> salesItems;
 
-	/**
-	 * 商品グループ名を取得
-	 *
-	 * @return 商品グループ名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 商品グループ名を設定
-	 *
-	 * @param name 商品グループ名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 商品グループ名を設定
-	 *
-	 * @param name 商品グループ名
-	 * @return this
-	 */
 	public SalesItemGroup withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public SalesItemGroup withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 商品リスト */
-	protected List<SalesItem> salesItems;
 
-	/**
-	 * 商品リストを取得
-	 *
-	 * @return 商品リスト
-	 */
 	public List<SalesItem> getSalesItems() {
 		return salesItems;
 	}
 
-	/**
-	 * 商品リストを設定
-	 *
-	 * @param salesItems 商品リスト
-	 */
 	public void setSalesItems(List<SalesItem> salesItems) {
 		this.salesItems = salesItems;
 	}
 
-	/**
-	 * 商品リストを設定
-	 *
-	 * @param salesItems 商品リスト
-	 * @return this
-	 */
 	public SalesItemGroup withSalesItems(List<SalesItem> salesItems) {
 		this.salesItems = salesItems;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> salesItems = new ArrayList<>();
-        if(this.salesItems != null) {
-            for(SalesItem item : this.salesItems) {
-                salesItems.add(item.toJson());
-            }
+    public static SalesItemGroup fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata());
-        body_.set("salesItems", JsonNodeFactory.instance.arrayNode().addAll(salesItems));
-        return body_;
+        return new SalesItemGroup()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withSalesItems(data.get("salesItems") == null || data.get("salesItems").isNull() ? new ArrayList<SalesItem>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("salesItems").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return SalesItem.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
-	@Override
-	public int compareTo(SalesItemGroup o) {
-		return name.compareTo(o.name);
-	}
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("salesItems", getSalesItems() == null ? new ArrayList<SalesItem>() :
+                    getSalesItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 
 	@Override
 	public int hashCode() {

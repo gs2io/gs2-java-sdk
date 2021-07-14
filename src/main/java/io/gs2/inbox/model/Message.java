@@ -16,323 +16,188 @@
 
 package io.gs2.inbox.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * メッセージ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Message implements IModel, Serializable, Comparable<Message> {
-	/** メッセージ */
-	protected String messageId;
+	private String messageId;
+	private String name;
+	private String userId;
+	private String metadata;
+	private Boolean isRead;
+	private List<AcquireAction> readAcquireActions;
+	private Long receivedAt;
+	private Long readAt;
+	private Long expiresAt;
 
-	/**
-	 * メッセージを取得
-	 *
-	 * @return メッセージ
-	 */
 	public String getMessageId() {
 		return messageId;
 	}
 
-	/**
-	 * メッセージを設定
-	 *
-	 * @param messageId メッセージ
-	 */
 	public void setMessageId(String messageId) {
 		this.messageId = messageId;
 	}
 
-	/**
-	 * メッセージを設定
-	 *
-	 * @param messageId メッセージ
-	 * @return this
-	 */
 	public Message withMessageId(String messageId) {
 		this.messageId = messageId;
 		return this;
 	}
-	/** メッセージID */
-	protected String name;
 
-	/**
-	 * メッセージIDを取得
-	 *
-	 * @return メッセージID
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * メッセージIDを設定
-	 *
-	 * @param name メッセージID
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * メッセージIDを設定
-	 *
-	 * @param name メッセージID
-	 * @return this
-	 */
 	public Message withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Message withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** メッセージの内容に相当するメタデータ */
-	protected String metadata;
 
-	/**
-	 * メッセージの内容に相当するメタデータを取得
-	 *
-	 * @return メッセージの内容に相当するメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メッセージの内容に相当するメタデータを設定
-	 *
-	 * @param metadata メッセージの内容に相当するメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メッセージの内容に相当するメタデータを設定
-	 *
-	 * @param metadata メッセージの内容に相当するメタデータ
-	 * @return this
-	 */
 	public Message withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 既読状態 */
-	protected Boolean isRead;
 
-	/**
-	 * 既読状態を取得
-	 *
-	 * @return 既読状態
-	 */
 	public Boolean getIsRead() {
 		return isRead;
 	}
 
-	/**
-	 * 既読状態を設定
-	 *
-	 * @param isRead 既読状態
-	 */
 	public void setIsRead(Boolean isRead) {
 		this.isRead = isRead;
 	}
 
-	/**
-	 * 既読状態を設定
-	 *
-	 * @param isRead 既読状態
-	 * @return this
-	 */
 	public Message withIsRead(Boolean isRead) {
 		this.isRead = isRead;
 		return this;
 	}
-	/** 開封時に実行する入手アクション */
-	protected List<AcquireAction> readAcquireActions;
 
-	/**
-	 * 開封時に実行する入手アクションを取得
-	 *
-	 * @return 開封時に実行する入手アクション
-	 */
 	public List<AcquireAction> getReadAcquireActions() {
 		return readAcquireActions;
 	}
 
-	/**
-	 * 開封時に実行する入手アクションを設定
-	 *
-	 * @param readAcquireActions 開封時に実行する入手アクション
-	 */
 	public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 	}
 
-	/**
-	 * 開封時に実行する入手アクションを設定
-	 *
-	 * @param readAcquireActions 開封時に実行する入手アクション
-	 * @return this
-	 */
 	public Message withReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long receivedAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getReceivedAt() {
 		return receivedAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param receivedAt 作成日時
-	 */
 	public void setReceivedAt(Long receivedAt) {
 		this.receivedAt = receivedAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param receivedAt 作成日時
-	 * @return this
-	 */
 	public Message withReceivedAt(Long receivedAt) {
 		this.receivedAt = receivedAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long readAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getReadAt() {
 		return readAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param readAt 最終更新日時
-	 */
 	public void setReadAt(Long readAt) {
 		this.readAt = readAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param readAt 最終更新日時
-	 * @return this
-	 */
 	public Message withReadAt(Long readAt) {
 		this.readAt = readAt;
 		return this;
 	}
-	/** メッセージの有効期限 */
-	protected Long expiresAt;
 
-	/**
-	 * メッセージの有効期限を取得
-	 *
-	 * @return メッセージの有効期限
-	 */
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
 
-	/**
-	 * メッセージの有効期限を設定
-	 *
-	 * @param expiresAt メッセージの有効期限
-	 */
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
 
-	/**
-	 * メッセージの有効期限を設定
-	 *
-	 * @param expiresAt メッセージの有効期限
-	 * @return this
-	 */
 	public Message withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> readAcquireActions = new ArrayList<>();
-        if(this.readAcquireActions != null) {
-            for(AcquireAction item : this.readAcquireActions) {
-                readAcquireActions.add(item.toJson());
-            }
+    public static Message fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("messageId", this.getMessageId())
-            .put("name", this.getName())
-            .put("userId", this.getUserId())
-            .put("metadata", this.getMetadata())
-            .put("isRead", this.getIsRead())
-            .put("receivedAt", this.getReceivedAt())
-            .put("readAt", this.getReadAt())
-            .put("expiresAt", this.getExpiresAt());
-        body_.set("readAcquireActions", JsonNodeFactory.instance.arrayNode().addAll(readAcquireActions));
-        return body_;
+        return new Message()
+            .withMessageId(data.get("messageId") == null || data.get("messageId").isNull() ? null : data.get("messageId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withIsRead(data.get("isRead") == null || data.get("isRead").isNull() ? null : data.get("isRead").booleanValue())
+            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("readAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withReceivedAt(data.get("receivedAt") == null || data.get("receivedAt").isNull() ? null : data.get("receivedAt").longValue())
+            .withReadAt(data.get("readAt") == null || data.get("readAt").isNull() ? null : data.get("readAt").longValue())
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("messageId", getMessageId());
+                put("name", getName());
+                put("userId", getUserId());
+                put("metadata", getMetadata());
+                put("isRead", getIsRead());
+                put("readAcquireActions", getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getReadAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("receivedAt", getReceivedAt());
+                put("readAt", getReadAt());
+                put("expiresAt", getExpiresAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Message o) {
 		return messageId.compareTo(o.messageId);

@@ -16,178 +16,110 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 支払い方法を新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateBillingMethodRequest extends Gs2BasicRequest<CreateBillingMethodRequest> {
-
-    /** GS2アカウントトークン */
     private String accountToken;
-
-    /**
-     * GS2アカウントトークンを取得
-     *
-     * @return 支払い方法を新規作成
-     */
-    public String getAccountToken() {
-        return accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken 支払い方法を新規作成
-     */
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken 支払い方法を新規作成
-     * @return this
-     */
-    public CreateBillingMethodRequest withAccountToken(String accountToken) {
-        setAccountToken(accountToken);
-        return this;
-    }
-
-    /** 名前 */
     private String description;
-
-    /**
-     * 名前を取得
-     *
-     * @return 支払い方法を新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 名前を設定
-     *
-     * @param description 支払い方法を新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 名前を設定
-     *
-     * @param description 支払い方法を新規作成
-     * @return this
-     */
-    public CreateBillingMethodRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 支払い方法 */
     private String methodType;
-
-    /**
-     * 支払い方法を取得
-     *
-     * @return 支払い方法を新規作成
-     */
-    public String getMethodType() {
-        return methodType;
-    }
-
-    /**
-     * 支払い方法を設定
-     *
-     * @param methodType 支払い方法を新規作成
-     */
-    public void setMethodType(String methodType) {
-        this.methodType = methodType;
-    }
-
-    /**
-     * 支払い方法を設定
-     *
-     * @param methodType 支払い方法を新規作成
-     * @return this
-     */
-    public CreateBillingMethodRequest withMethodType(String methodType) {
-        setMethodType(methodType);
-        return this;
-    }
-
-    /** クレジットカードカスタマーID */
     private String cardCustomerId;
-
-    /**
-     * クレジットカードカスタマーIDを取得
-     *
-     * @return 支払い方法を新規作成
-     */
-    public String getCardCustomerId() {
-        return cardCustomerId;
-    }
-
-    /**
-     * クレジットカードカスタマーIDを設定
-     *
-     * @param cardCustomerId 支払い方法を新規作成
-     */
-    public void setCardCustomerId(String cardCustomerId) {
-        this.cardCustomerId = cardCustomerId;
-    }
-
-    /**
-     * クレジットカードカスタマーIDを設定
-     *
-     * @param cardCustomerId 支払い方法を新規作成
-     * @return this
-     */
-    public CreateBillingMethodRequest withCardCustomerId(String cardCustomerId) {
-        setCardCustomerId(cardCustomerId);
-        return this;
-    }
-
-    /** パートナーID */
     private String partnerId;
 
-    /**
-     * パートナーIDを取得
-     *
-     * @return 支払い方法を新規作成
-     */
-    public String getPartnerId() {
-        return partnerId;
+	public String getAccountToken() {
+		return accountToken;
+	}
+
+	public void setAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+	}
+
+	public CreateBillingMethodRequest withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateBillingMethodRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMethodType() {
+		return methodType;
+	}
+
+	public void setMethodType(String methodType) {
+		this.methodType = methodType;
+	}
+
+	public CreateBillingMethodRequest withMethodType(String methodType) {
+		this.methodType = methodType;
+		return this;
+	}
+
+	public String getCardCustomerId() {
+		return cardCustomerId;
+	}
+
+	public void setCardCustomerId(String cardCustomerId) {
+		this.cardCustomerId = cardCustomerId;
+	}
+
+	public CreateBillingMethodRequest withCardCustomerId(String cardCustomerId) {
+		this.cardCustomerId = cardCustomerId;
+		return this;
+	}
+
+	public String getPartnerId() {
+		return partnerId;
+	}
+
+	public void setPartnerId(String partnerId) {
+		this.partnerId = partnerId;
+	}
+
+	public CreateBillingMethodRequest withPartnerId(String partnerId) {
+		this.partnerId = partnerId;
+		return this;
+	}
+
+    public static CreateBillingMethodRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateBillingMethodRequest()
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMethodType(data.get("methodType") == null || data.get("methodType").isNull() ? null : data.get("methodType").asText())
+            .withCardCustomerId(data.get("cardCustomerId") == null || data.get("cardCustomerId").isNull() ? null : data.get("cardCustomerId").asText())
+            .withPartnerId(data.get("partnerId") == null || data.get("partnerId").isNull() ? null : data.get("partnerId").asText());
     }
 
-    /**
-     * パートナーIDを設定
-     *
-     * @param partnerId 支払い方法を新規作成
-     */
-    public void setPartnerId(String partnerId) {
-        this.partnerId = partnerId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountToken", getAccountToken());
+                put("description", getDescription());
+                put("methodType", getMethodType());
+                put("cardCustomerId", getCardCustomerId());
+                put("partnerId", getPartnerId());
+            }}
+        );
     }
-
-    /**
-     * パートナーIDを設定
-     *
-     * @param partnerId 支払い方法を新規作成
-     * @return this
-     */
-    public CreateBillingMethodRequest withPartnerId(String partnerId) {
-        setPartnerId(partnerId);
-        return this;
-    }
-
 }

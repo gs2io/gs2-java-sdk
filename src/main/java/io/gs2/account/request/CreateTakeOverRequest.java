@@ -16,210 +16,110 @@
 
 package io.gs2.account.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.account.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 引き継ぎ設定を新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateTakeOverRequest extends Gs2BasicRequest<CreateTakeOverRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 引き継ぎ設定を新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 引き継ぎ設定を新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 引き継ぎ設定を新規作成
-     * @return this
-     */
-    public CreateTakeOverRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** スロット番号 */
+    private String accessToken;
     private Integer type;
-
-    /**
-     * スロット番号を取得
-     *
-     * @return 引き継ぎ設定を新規作成
-     */
-    public Integer getType() {
-        return type;
-    }
-
-    /**
-     * スロット番号を設定
-     *
-     * @param type 引き継ぎ設定を新規作成
-     */
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    /**
-     * スロット番号を設定
-     *
-     * @param type 引き継ぎ設定を新規作成
-     * @return this
-     */
-    public CreateTakeOverRequest withType(Integer type) {
-        setType(type);
-        return this;
-    }
-
-    /** 引き継ぎ用ユーザーID */
     private String userIdentifier;
-
-    /**
-     * 引き継ぎ用ユーザーIDを取得
-     *
-     * @return 引き継ぎ設定を新規作成
-     */
-    public String getUserIdentifier() {
-        return userIdentifier;
-    }
-
-    /**
-     * 引き継ぎ用ユーザーIDを設定
-     *
-     * @param userIdentifier 引き継ぎ設定を新規作成
-     */
-    public void setUserIdentifier(String userIdentifier) {
-        this.userIdentifier = userIdentifier;
-    }
-
-    /**
-     * 引き継ぎ用ユーザーIDを設定
-     *
-     * @param userIdentifier 引き継ぎ設定を新規作成
-     * @return this
-     */
-    public CreateTakeOverRequest withUserIdentifier(String userIdentifier) {
-        setUserIdentifier(userIdentifier);
-        return this;
-    }
-
-    /** パスワード */
     private String password;
 
-    /**
-     * パスワードを取得
-     *
-     * @return 引き継ぎ設定を新規作成
-     */
-    public String getPassword() {
-        return password;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateTakeOverRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public CreateTakeOverRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public CreateTakeOverRequest withType(Integer type) {
+		this.type = type;
+		return this;
+	}
+
+	public String getUserIdentifier() {
+		return userIdentifier;
+	}
+
+	public void setUserIdentifier(String userIdentifier) {
+		this.userIdentifier = userIdentifier;
+	}
+
+	public CreateTakeOverRequest withUserIdentifier(String userIdentifier) {
+		this.userIdentifier = userIdentifier;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public CreateTakeOverRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+    public static CreateTakeOverRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateTakeOverRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
+            .withUserIdentifier(data.get("userIdentifier") == null || data.get("userIdentifier").isNull() ? null : data.get("userIdentifier").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
     }
 
-    /**
-     * パスワードを設定
-     *
-     * @param password 引き継ぎ設定を新規作成
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("accessToken", getAccessToken());
+                put("type", getType());
+                put("userIdentifier", getUserIdentifier());
+                put("password", getPassword());
+            }}
+        );
     }
-
-    /**
-     * パスワードを設定
-     *
-     * @param password 引き継ぎ設定を新規作成
-     * @return this
-     */
-    public CreateTakeOverRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 引き継ぎ設定を新規作成
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 引き継ぎ設定を新規作成
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 引き継ぎ設定を新規作成
-     * @return this
-     */
-    public CreateTakeOverRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public CreateTakeOverRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

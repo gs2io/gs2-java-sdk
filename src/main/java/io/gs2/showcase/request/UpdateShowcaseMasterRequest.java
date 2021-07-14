@@ -16,210 +16,137 @@
 
 package io.gs2.showcase.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.showcase.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.showcase.model.DisplayItemMaster;
 
-/**
- * 陳列棚マスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateShowcaseMasterRequest extends Gs2BasicRequest<UpdateShowcaseMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 陳列棚マスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 陳列棚マスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 陳列棚マスターを更新
-     * @return this
-     */
-    public UpdateShowcaseMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 陳列棚名 */
     private String showcaseName;
-
-    /**
-     * 陳列棚名を取得
-     *
-     * @return 陳列棚マスターを更新
-     */
-    public String getShowcaseName() {
-        return showcaseName;
-    }
-
-    /**
-     * 陳列棚名を設定
-     *
-     * @param showcaseName 陳列棚マスターを更新
-     */
-    public void setShowcaseName(String showcaseName) {
-        this.showcaseName = showcaseName;
-    }
-
-    /**
-     * 陳列棚名を設定
-     *
-     * @param showcaseName 陳列棚マスターを更新
-     * @return this
-     */
-    public UpdateShowcaseMasterRequest withShowcaseName(String showcaseName) {
-        setShowcaseName(showcaseName);
-        return this;
-    }
-
-    /** 陳列棚マスターの説明 */
     private String description;
-
-    /**
-     * 陳列棚マスターの説明を取得
-     *
-     * @return 陳列棚マスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 陳列棚マスターの説明を設定
-     *
-     * @param description 陳列棚マスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 陳列棚マスターの説明を設定
-     *
-     * @param description 陳列棚マスターを更新
-     * @return this
-     */
-    public UpdateShowcaseMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 商品のメタデータ */
     private String metadata;
-
-    /**
-     * 商品のメタデータを取得
-     *
-     * @return 陳列棚マスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 商品のメタデータを設定
-     *
-     * @param metadata 陳列棚マスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 商品のメタデータを設定
-     *
-     * @param metadata 陳列棚マスターを更新
-     * @return this
-     */
-    public UpdateShowcaseMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 陳列する商品モデル一覧 */
     private List<DisplayItemMaster> displayItems;
-
-    /**
-     * 陳列する商品モデル一覧を取得
-     *
-     * @return 陳列棚マスターを更新
-     */
-    public List<DisplayItemMaster> getDisplayItems() {
-        return displayItems;
-    }
-
-    /**
-     * 陳列する商品モデル一覧を設定
-     *
-     * @param displayItems 陳列棚マスターを更新
-     */
-    public void setDisplayItems(List<DisplayItemMaster> displayItems) {
-        this.displayItems = displayItems;
-    }
-
-    /**
-     * 陳列する商品モデル一覧を設定
-     *
-     * @param displayItems 陳列棚マスターを更新
-     * @return this
-     */
-    public UpdateShowcaseMasterRequest withDisplayItems(List<DisplayItemMaster> displayItems) {
-        setDisplayItems(displayItems);
-        return this;
-    }
-
-    /** 販売期間とするイベントマスター のGRN */
     private String salesPeriodEventId;
 
-    /**
-     * 販売期間とするイベントマスター のGRNを取得
-     *
-     * @return 陳列棚マスターを更新
-     */
-    public String getSalesPeriodEventId() {
-        return salesPeriodEventId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateShowcaseMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getShowcaseName() {
+		return showcaseName;
+	}
+
+	public void setShowcaseName(String showcaseName) {
+		this.showcaseName = showcaseName;
+	}
+
+	public UpdateShowcaseMasterRequest withShowcaseName(String showcaseName) {
+		this.showcaseName = showcaseName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateShowcaseMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateShowcaseMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public List<DisplayItemMaster> getDisplayItems() {
+		return displayItems;
+	}
+
+	public void setDisplayItems(List<DisplayItemMaster> displayItems) {
+		this.displayItems = displayItems;
+	}
+
+	public UpdateShowcaseMasterRequest withDisplayItems(List<DisplayItemMaster> displayItems) {
+		this.displayItems = displayItems;
+		return this;
+	}
+
+	public String getSalesPeriodEventId() {
+		return salesPeriodEventId;
+	}
+
+	public void setSalesPeriodEventId(String salesPeriodEventId) {
+		this.salesPeriodEventId = salesPeriodEventId;
+	}
+
+	public UpdateShowcaseMasterRequest withSalesPeriodEventId(String salesPeriodEventId) {
+		this.salesPeriodEventId = salesPeriodEventId;
+		return this;
+	}
+
+    public static UpdateShowcaseMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateShowcaseMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withShowcaseName(data.get("showcaseName") == null || data.get("showcaseName").isNull() ? null : data.get("showcaseName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDisplayItems(data.get("displayItems") == null || data.get("displayItems").isNull() ? new ArrayList<DisplayItemMaster>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("displayItems").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return DisplayItemMaster.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withSalesPeriodEventId(data.get("salesPeriodEventId") == null || data.get("salesPeriodEventId").isNull() ? null : data.get("salesPeriodEventId").asText());
     }
 
-    /**
-     * 販売期間とするイベントマスター のGRNを設定
-     *
-     * @param salesPeriodEventId 陳列棚マスターを更新
-     */
-    public void setSalesPeriodEventId(String salesPeriodEventId) {
-        this.salesPeriodEventId = salesPeriodEventId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("showcaseName", getShowcaseName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("displayItems", getDisplayItems() == null ? new ArrayList<DisplayItemMaster>() :
+                    getDisplayItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("salesPeriodEventId", getSalesPeriodEventId());
+            }}
+        );
     }
-
-    /**
-     * 販売期間とするイベントマスター のGRNを設定
-     *
-     * @param salesPeriodEventId 陳列棚マスターを更新
-     * @return this
-     */
-    public UpdateShowcaseMasterRequest withSalesPeriodEventId(String salesPeriodEventId) {
-        setSalesPeriodEventId(salesPeriodEventId);
-        return this;
-    }
-
 }

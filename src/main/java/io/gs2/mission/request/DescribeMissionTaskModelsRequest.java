@@ -16,82 +16,62 @@
 
 package io.gs2.mission.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.mission.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ミッションタスクの一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeMissionTaskModelsRequest extends Gs2BasicRequest<DescribeMissionTaskModelsRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ミッションタスクの一覧を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッションタスクの一覧を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッションタスクの一覧を取得
-     * @return this
-     */
-    public DescribeMissionTaskModelsRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** グループ名 */
     private String missionGroupName;
 
-    /**
-     * グループ名を取得
-     *
-     * @return ミッションタスクの一覧を取得
-     */
-    public String getMissionGroupName() {
-        return missionGroupName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeMissionTaskModelsRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getMissionGroupName() {
+		return missionGroupName;
+	}
+
+	public void setMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+	}
+
+	public DescribeMissionTaskModelsRequest withMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+		return this;
+	}
+
+    public static DescribeMissionTaskModelsRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeMissionTaskModelsRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText());
     }
 
-    /**
-     * グループ名を設定
-     *
-     * @param missionGroupName ミッションタスクの一覧を取得
-     */
-    public void setMissionGroupName(String missionGroupName) {
-        this.missionGroupName = missionGroupName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("missionGroupName", getMissionGroupName());
+            }}
+        );
     }
-
-    /**
-     * グループ名を設定
-     *
-     * @param missionGroupName ミッションタスクの一覧を取得
-     * @return this
-     */
-    public DescribeMissionTaskModelsRequest withMissionGroupName(String missionGroupName) {
-        setMissionGroupName(missionGroupName);
-        return this;
-    }
-
 }

@@ -16,114 +16,78 @@
 
 package io.gs2.script.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.script.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スクリプトの一覧を取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeScriptsRequest extends Gs2BasicRequest<DescribeScriptsRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return スクリプトの一覧を取得します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スクリプトの一覧を取得します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スクリプトの一覧を取得します
-     * @return this
-     */
-    public DescribeScriptsRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** データの取得を開始する位置を指定するトークン */
     private String pageToken;
+    private Integer limit;
 
-    /**
-     * データの取得を開始する位置を指定するトークンを取得
-     *
-     * @return スクリプトの一覧を取得します
-     */
-    public String getPageToken() {
-        return pageToken;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeScriptsRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public DescribeScriptsRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeScriptsRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static DescribeScriptsRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeScriptsRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken スクリプトの一覧を取得します
-     */
-    public void setPageToken(String pageToken) {
-        this.pageToken = pageToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
+            }}
+        );
     }
-
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken スクリプトの一覧を取得します
-     * @return this
-     */
-    public DescribeScriptsRequest withPageToken(String pageToken) {
-        setPageToken(pageToken);
-        return this;
-    }
-
-    /** データの取得件数 */
-    private Long limit;
-
-    /**
-     * データの取得件数を取得
-     *
-     * @return スクリプトの一覧を取得します
-     */
-    public Long getLimit() {
-        return limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit スクリプトの一覧を取得します
-     */
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit スクリプトの一覧を取得します
-     * @return this
-     */
-    public DescribeScriptsRequest withLimit(Long limit) {
-        setLimit(limit);
-        return this;
-    }
-
 }

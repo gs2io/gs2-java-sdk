@@ -16,114 +16,78 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * クレデンシャルの一覧を取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeIdentifiersRequest extends Gs2BasicRequest<DescribeIdentifiersRequest> {
-
-    /** ユーザー名 */
     private String userName;
-
-    /**
-     * ユーザー名を取得
-     *
-     * @return クレデンシャルの一覧を取得します
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName クレデンシャルの一覧を取得します
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName クレデンシャルの一覧を取得します
-     * @return this
-     */
-    public DescribeIdentifiersRequest withUserName(String userName) {
-        setUserName(userName);
-        return this;
-    }
-
-    /** データの取得を開始する位置を指定するトークン */
     private String pageToken;
+    private Integer limit;
 
-    /**
-     * データの取得を開始する位置を指定するトークンを取得
-     *
-     * @return クレデンシャルの一覧を取得します
-     */
-    public String getPageToken() {
-        return pageToken;
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public DescribeIdentifiersRequest withUserName(String userName) {
+		this.userName = userName;
+		return this;
+	}
+
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public DescribeIdentifiersRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeIdentifiersRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static DescribeIdentifiersRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeIdentifiersRequest()
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken クレデンシャルの一覧を取得します
-     */
-    public void setPageToken(String pageToken) {
-        this.pageToken = pageToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userName", getUserName());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
+            }}
+        );
     }
-
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken クレデンシャルの一覧を取得します
-     * @return this
-     */
-    public DescribeIdentifiersRequest withPageToken(String pageToken) {
-        setPageToken(pageToken);
-        return this;
-    }
-
-    /** データの取得件数 */
-    private Long limit;
-
-    /**
-     * データの取得件数を取得
-     *
-     * @return クレデンシャルの一覧を取得します
-     */
-    public Long getLimit() {
-        return limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit クレデンシャルの一覧を取得します
-     */
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit クレデンシャルの一覧を取得します
-     * @return this
-     */
-    public DescribeIdentifiersRequest withLimit(Long limit) {
-        setLimit(limit);
-        return this;
-    }
-
 }

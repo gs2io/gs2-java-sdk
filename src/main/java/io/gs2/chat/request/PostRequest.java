@@ -16,242 +16,126 @@
 
 package io.gs2.chat.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.chat.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * メッセージを投稿 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class PostRequest extends Gs2BasicRequest<PostRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return メッセージを投稿
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName メッセージを投稿
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName メッセージを投稿
-     * @return this
-     */
-    public PostRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ルーム名 */
     private String roomName;
-
-    /**
-     * ルーム名を取得
-     *
-     * @return メッセージを投稿
-     */
-    public String getRoomName() {
-        return roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName メッセージを投稿
-     */
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName メッセージを投稿
-     * @return this
-     */
-    public PostRequest withRoomName(String roomName) {
-        setRoomName(roomName);
-        return this;
-    }
-
-    /** メッセージの種類を分類したい時の種類番号 */
+    private String accessToken;
     private Integer category;
-
-    /**
-     * メッセージの種類を分類したい時の種類番号を取得
-     *
-     * @return メッセージを投稿
-     */
-    public Integer getCategory() {
-        return category;
-    }
-
-    /**
-     * メッセージの種類を分類したい時の種類番号を設定
-     *
-     * @param category メッセージを投稿
-     */
-    public void setCategory(Integer category) {
-        this.category = category;
-    }
-
-    /**
-     * メッセージの種類を分類したい時の種類番号を設定
-     *
-     * @param category メッセージを投稿
-     * @return this
-     */
-    public PostRequest withCategory(Integer category) {
-        setCategory(category);
-        return this;
-    }
-
-    /** メタデータ */
     private String metadata;
-
-    /**
-     * メタデータを取得
-     *
-     * @return メッセージを投稿
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata メッセージを投稿
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata メッセージを投稿
-     * @return this
-     */
-    public PostRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** メッセージを投稿するために必要となるパスワード */
     private String password;
 
-    /**
-     * メッセージを投稿するために必要となるパスワードを取得
-     *
-     * @return メッセージを投稿
-     */
-    public String getPassword() {
-        return password;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public PostRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public PostRequest withRoomName(String roomName) {
+		this.roomName = roomName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public PostRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public Integer getCategory() {
+		return category;
+	}
+
+	public void setCategory(Integer category) {
+		this.category = category;
+	}
+
+	public PostRequest withCategory(Integer category) {
+		this.category = category;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public PostRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public PostRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+    public static PostRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new PostRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withCategory(data.get("category") == null || data.get("category").isNull() ? null : data.get("category").intValue())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
     }
 
-    /**
-     * メッセージを投稿するために必要となるパスワードを設定
-     *
-     * @param password メッセージを投稿
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("roomName", getRoomName());
+                put("accessToken", getAccessToken());
+                put("category", getCategory());
+                put("metadata", getMetadata());
+                put("password", getPassword());
+            }}
+        );
     }
-
-    /**
-     * メッセージを投稿するために必要となるパスワードを設定
-     *
-     * @param password メッセージを投稿
-     * @return this
-     */
-    public PostRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return メッセージを投稿
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider メッセージを投稿
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider メッセージを投稿
-     * @return this
-     */
-    public PostRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public PostRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

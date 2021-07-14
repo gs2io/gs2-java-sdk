@@ -16,39 +16,48 @@
 
 package io.gs2.showcase.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.showcase.model.*;
+import io.gs2.showcase.model.CurrentShowcaseMaster;
 
-/**
- * 現在有効な陳列棚マスターのマスターデータをエクスポートします のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExportMasterResult implements IResult, Serializable {
-	/** 現在有効な陳列棚マスター */
-	private CurrentShowcaseMaster item;
+    private CurrentShowcaseMaster item;
 
-	/**
-	 * 現在有効な陳列棚マスターを取得
-	 *
-	 * @return 現在有効な陳列棚マスターのマスターデータをエクスポートします
-	 */
 	public CurrentShowcaseMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 現在有効な陳列棚マスターを設定
-	 *
-	 * @param item 現在有効な陳列棚マスターのマスターデータをエクスポートします
-	 */
 	public void setItem(CurrentShowcaseMaster item) {
 		this.item = item;
 	}
+
+	public ExportMasterResult withItem(CurrentShowcaseMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static ExportMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ExportMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentShowcaseMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

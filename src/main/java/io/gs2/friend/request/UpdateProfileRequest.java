@@ -16,210 +16,110 @@
 
 package io.gs2.friend.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.friend.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * プロフィールを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateProfileRequest extends Gs2BasicRequest<UpdateProfileRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return プロフィールを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName プロフィールを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName プロフィールを更新
-     * @return this
-     */
-    public UpdateProfileRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 公開されるプロフィール */
+    private String accessToken;
     private String publicProfile;
-
-    /**
-     * 公開されるプロフィールを取得
-     *
-     * @return プロフィールを更新
-     */
-    public String getPublicProfile() {
-        return publicProfile;
-    }
-
-    /**
-     * 公開されるプロフィールを設定
-     *
-     * @param publicProfile プロフィールを更新
-     */
-    public void setPublicProfile(String publicProfile) {
-        this.publicProfile = publicProfile;
-    }
-
-    /**
-     * 公開されるプロフィールを設定
-     *
-     * @param publicProfile プロフィールを更新
-     * @return this
-     */
-    public UpdateProfileRequest withPublicProfile(String publicProfile) {
-        setPublicProfile(publicProfile);
-        return this;
-    }
-
-    /** フォロワー向けに公開されるプロフィール */
     private String followerProfile;
-
-    /**
-     * フォロワー向けに公開されるプロフィールを取得
-     *
-     * @return プロフィールを更新
-     */
-    public String getFollowerProfile() {
-        return followerProfile;
-    }
-
-    /**
-     * フォロワー向けに公開されるプロフィールを設定
-     *
-     * @param followerProfile プロフィールを更新
-     */
-    public void setFollowerProfile(String followerProfile) {
-        this.followerProfile = followerProfile;
-    }
-
-    /**
-     * フォロワー向けに公開されるプロフィールを設定
-     *
-     * @param followerProfile プロフィールを更新
-     * @return this
-     */
-    public UpdateProfileRequest withFollowerProfile(String followerProfile) {
-        setFollowerProfile(followerProfile);
-        return this;
-    }
-
-    /** フレンド向けに公開されるプロフィール */
     private String friendProfile;
 
-    /**
-     * フレンド向けに公開されるプロフィールを取得
-     *
-     * @return プロフィールを更新
-     */
-    public String getFriendProfile() {
-        return friendProfile;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateProfileRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public UpdateProfileRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getPublicProfile() {
+		return publicProfile;
+	}
+
+	public void setPublicProfile(String publicProfile) {
+		this.publicProfile = publicProfile;
+	}
+
+	public UpdateProfileRequest withPublicProfile(String publicProfile) {
+		this.publicProfile = publicProfile;
+		return this;
+	}
+
+	public String getFollowerProfile() {
+		return followerProfile;
+	}
+
+	public void setFollowerProfile(String followerProfile) {
+		this.followerProfile = followerProfile;
+	}
+
+	public UpdateProfileRequest withFollowerProfile(String followerProfile) {
+		this.followerProfile = followerProfile;
+		return this;
+	}
+
+	public String getFriendProfile() {
+		return friendProfile;
+	}
+
+	public void setFriendProfile(String friendProfile) {
+		this.friendProfile = friendProfile;
+	}
+
+	public UpdateProfileRequest withFriendProfile(String friendProfile) {
+		this.friendProfile = friendProfile;
+		return this;
+	}
+
+    public static UpdateProfileRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateProfileRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withPublicProfile(data.get("publicProfile") == null || data.get("publicProfile").isNull() ? null : data.get("publicProfile").asText())
+            .withFollowerProfile(data.get("followerProfile") == null || data.get("followerProfile").isNull() ? null : data.get("followerProfile").asText())
+            .withFriendProfile(data.get("friendProfile") == null || data.get("friendProfile").isNull() ? null : data.get("friendProfile").asText());
     }
 
-    /**
-     * フレンド向けに公開されるプロフィールを設定
-     *
-     * @param friendProfile プロフィールを更新
-     */
-    public void setFriendProfile(String friendProfile) {
-        this.friendProfile = friendProfile;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("accessToken", getAccessToken());
+                put("publicProfile", getPublicProfile());
+                put("followerProfile", getFollowerProfile());
+                put("friendProfile", getFriendProfile());
+            }}
+        );
     }
-
-    /**
-     * フレンド向けに公開されるプロフィールを設定
-     *
-     * @param friendProfile プロフィールを更新
-     * @return this
-     */
-    public UpdateProfileRequest withFriendProfile(String friendProfile) {
-        setFriendProfile(friendProfile);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return プロフィールを更新
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider プロフィールを更新
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider プロフィールを更新
-     * @return this
-     */
-    public UpdateProfileRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public UpdateProfileRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

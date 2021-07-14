@@ -16,227 +16,140 @@
 
 package io.gs2.mission.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * カウンター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Counter implements IModel, Serializable, Comparable<Counter> {
-	/** カウンター */
-	protected String counterId;
+	private String counterId;
+	private String userId;
+	private String name;
+	private List<ScopedValue> values;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * カウンターを取得
-	 *
-	 * @return カウンター
-	 */
 	public String getCounterId() {
 		return counterId;
 	}
 
-	/**
-	 * カウンターを設定
-	 *
-	 * @param counterId カウンター
-	 */
 	public void setCounterId(String counterId) {
 		this.counterId = counterId;
 	}
 
-	/**
-	 * カウンターを設定
-	 *
-	 * @param counterId カウンター
-	 * @return this
-	 */
 	public Counter withCounterId(String counterId) {
 		this.counterId = counterId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Counter withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** カウンター名 */
-	protected String name;
 
-	/**
-	 * カウンター名を取得
-	 *
-	 * @return カウンター名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * カウンター名を設定
-	 *
-	 * @param name カウンター名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * カウンター名を設定
-	 *
-	 * @param name カウンター名
-	 * @return this
-	 */
 	public Counter withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 値 */
-	protected List<ScopedValue> values;
 
-	/**
-	 * 値を取得
-	 *
-	 * @return 値
-	 */
 	public List<ScopedValue> getValues() {
 		return values;
 	}
 
-	/**
-	 * 値を設定
-	 *
-	 * @param values 値
-	 */
 	public void setValues(List<ScopedValue> values) {
 		this.values = values;
 	}
 
-	/**
-	 * 値を設定
-	 *
-	 * @param values 値
-	 * @return this
-	 */
 	public Counter withValues(List<ScopedValue> values) {
 		this.values = values;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Counter withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Counter withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> values = new ArrayList<>();
-        if(this.values != null) {
-            for(ScopedValue item : this.values) {
-                values.add(item.toJson());
-            }
+    public static Counter fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("counterId", this.getCounterId())
-            .put("userId", this.getUserId())
-            .put("name", this.getName())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("values", JsonNodeFactory.instance.arrayNode().addAll(values));
-        return body_;
+        return new Counter()
+            .withCounterId(data.get("counterId") == null || data.get("counterId").isNull() ? null : data.get("counterId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<ScopedValue>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ScopedValue.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("counterId", getCounterId());
+                put("userId", getUserId());
+                put("name", getName());
+                put("values", getValues() == null ? new ArrayList<ScopedValue>() :
+                    getValues().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Counter o) {
 		return counterId.compareTo(o.counterId);

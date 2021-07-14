@@ -16,82 +16,62 @@
 
 package io.gs2.showcase.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.showcase.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 商品グループマスターを削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteSalesItemGroupMasterRequest extends Gs2BasicRequest<DeleteSalesItemGroupMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 商品グループマスターを削除
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 商品グループマスターを削除
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 商品グループマスターを削除
-     * @return this
-     */
-    public DeleteSalesItemGroupMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 商品名 */
     private String salesItemGroupName;
 
-    /**
-     * 商品名を取得
-     *
-     * @return 商品グループマスターを削除
-     */
-    public String getSalesItemGroupName() {
-        return salesItemGroupName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DeleteSalesItemGroupMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getSalesItemGroupName() {
+		return salesItemGroupName;
+	}
+
+	public void setSalesItemGroupName(String salesItemGroupName) {
+		this.salesItemGroupName = salesItemGroupName;
+	}
+
+	public DeleteSalesItemGroupMasterRequest withSalesItemGroupName(String salesItemGroupName) {
+		this.salesItemGroupName = salesItemGroupName;
+		return this;
+	}
+
+    public static DeleteSalesItemGroupMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteSalesItemGroupMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withSalesItemGroupName(data.get("salesItemGroupName") == null || data.get("salesItemGroupName").isNull() ? null : data.get("salesItemGroupName").asText());
     }
 
-    /**
-     * 商品名を設定
-     *
-     * @param salesItemGroupName 商品グループマスターを削除
-     */
-    public void setSalesItemGroupName(String salesItemGroupName) {
-        this.salesItemGroupName = salesItemGroupName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("salesItemGroupName", getSalesItemGroupName());
+            }}
+        );
     }
-
-    /**
-     * 商品名を設定
-     *
-     * @param salesItemGroupName 商品グループマスターを削除
-     * @return this
-     */
-    public DeleteSalesItemGroupMasterRequest withSalesItemGroupName(String salesItemGroupName) {
-        setSalesItemGroupName(salesItemGroupName);
-        return this;
-    }
-
 }

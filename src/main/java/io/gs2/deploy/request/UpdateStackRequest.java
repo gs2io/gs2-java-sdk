@@ -16,114 +16,78 @@
 
 package io.gs2.deploy.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.deploy.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタックを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateStackRequest extends Gs2BasicRequest<UpdateStackRequest> {
-
-    /** スタック名 */
     private String stackName;
-
-    /**
-     * スタック名を取得
-     *
-     * @return スタックを更新
-     */
-    public String getStackName() {
-        return stackName;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param stackName スタックを更新
-     */
-    public void setStackName(String stackName) {
-        this.stackName = stackName;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param stackName スタックを更新
-     * @return this
-     */
-    public UpdateStackRequest withStackName(String stackName) {
-        setStackName(stackName);
-        return this;
-    }
-
-    /** スタックの説明 */
     private String description;
-
-    /**
-     * スタックの説明を取得
-     *
-     * @return スタックを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * スタックの説明を設定
-     *
-     * @param description スタックを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * スタックの説明を設定
-     *
-     * @param description スタックを更新
-     * @return this
-     */
-    public UpdateStackRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** テンプレートデータ */
     private String template;
 
-    /**
-     * テンプレートデータを取得
-     *
-     * @return スタックを更新
-     */
-    public String getTemplate() {
-        return template;
+	public String getStackName() {
+		return stackName;
+	}
+
+	public void setStackName(String stackName) {
+		this.stackName = stackName;
+	}
+
+	public UpdateStackRequest withStackName(String stackName) {
+		this.stackName = stackName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateStackRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
+	public UpdateStackRequest withTemplate(String template) {
+		this.template = template;
+		return this;
+	}
+
+    public static UpdateStackRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateStackRequest()
+            .withStackName(data.get("stackName") == null || data.get("stackName").isNull() ? null : data.get("stackName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText());
     }
 
-    /**
-     * テンプレートデータを設定
-     *
-     * @param template スタックを更新
-     */
-    public void setTemplate(String template) {
-        this.template = template;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stackName", getStackName());
+                put("description", getDescription());
+                put("template", getTemplate());
+            }}
+        );
     }
-
-    /**
-     * テンプレートデータを設定
-     *
-     * @param template スタックを更新
-     * @return this
-     */
-    public UpdateStackRequest withTemplate(String template) {
-        setTemplate(template);
-        return this;
-    }
-
 }

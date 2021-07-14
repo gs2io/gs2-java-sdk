@@ -16,178 +16,118 @@
 
 package io.gs2.experience.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.experience.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ランクアップ閾値マスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateThresholdMasterRequest extends Gs2BasicRequest<UpdateThresholdMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ランクアップ閾値マスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ランクアップ閾値マスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ランクアップ閾値マスターを更新
-     * @return this
-     */
-    public UpdateThresholdMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ランクアップ閾値名 */
     private String thresholdName;
-
-    /**
-     * ランクアップ閾値名を取得
-     *
-     * @return ランクアップ閾値マスターを更新
-     */
-    public String getThresholdName() {
-        return thresholdName;
-    }
-
-    /**
-     * ランクアップ閾値名を設定
-     *
-     * @param thresholdName ランクアップ閾値マスターを更新
-     */
-    public void setThresholdName(String thresholdName) {
-        this.thresholdName = thresholdName;
-    }
-
-    /**
-     * ランクアップ閾値名を設定
-     *
-     * @param thresholdName ランクアップ閾値マスターを更新
-     * @return this
-     */
-    public UpdateThresholdMasterRequest withThresholdName(String thresholdName) {
-        setThresholdName(thresholdName);
-        return this;
-    }
-
-    /** ランクアップ閾値マスターの説明 */
     private String description;
-
-    /**
-     * ランクアップ閾値マスターの説明を取得
-     *
-     * @return ランクアップ閾値マスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ランクアップ閾値マスターの説明を設定
-     *
-     * @param description ランクアップ閾値マスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ランクアップ閾値マスターの説明を設定
-     *
-     * @param description ランクアップ閾値マスターを更新
-     * @return this
-     */
-    public UpdateThresholdMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** ランクアップ閾値のメタデータ */
     private String metadata;
-
-    /**
-     * ランクアップ閾値のメタデータを取得
-     *
-     * @return ランクアップ閾値マスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * ランクアップ閾値のメタデータを設定
-     *
-     * @param metadata ランクアップ閾値マスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * ランクアップ閾値のメタデータを設定
-     *
-     * @param metadata ランクアップ閾値マスターを更新
-     * @return this
-     */
-    public UpdateThresholdMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** ランクアップ経験値閾値リスト */
     private List<Long> values;
 
-    /**
-     * ランクアップ経験値閾値リストを取得
-     *
-     * @return ランクアップ閾値マスターを更新
-     */
-    public List<Long> getValues() {
-        return values;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateThresholdMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getThresholdName() {
+		return thresholdName;
+	}
+
+	public void setThresholdName(String thresholdName) {
+		this.thresholdName = thresholdName;
+	}
+
+	public UpdateThresholdMasterRequest withThresholdName(String thresholdName) {
+		this.thresholdName = thresholdName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateThresholdMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateThresholdMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public List<Long> getValues() {
+		return values;
+	}
+
+	public void setValues(List<Long> values) {
+		this.values = values;
+	}
+
+	public UpdateThresholdMasterRequest withValues(List<Long> values) {
+		this.values = values;
+		return this;
+	}
+
+    public static UpdateThresholdMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateThresholdMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withThresholdName(data.get("thresholdName") == null || data.get("thresholdName").isNull() ? null : data.get("thresholdName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Long>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.longValue();
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * ランクアップ経験値閾値リストを設定
-     *
-     * @param values ランクアップ閾値マスターを更新
-     */
-    public void setValues(List<Long> values) {
-        this.values = values;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("thresholdName", getThresholdName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("values", getValues() == null ? new ArrayList<Long>() :
+                    getValues().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * ランクアップ経験値閾値リストを設定
-     *
-     * @param values ランクアップ閾値マスターを更新
-     * @return this
-     */
-    public UpdateThresholdMasterRequest withValues(List<Long> values) {
-        setValues(values);
-        return this;
-    }
-
 }

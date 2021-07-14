@@ -16,82 +16,62 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザを新規作成します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateUserRequest extends Gs2BasicRequest<CreateUserRequest> {
-
-    /** ユーザー名 */
     private String name;
-
-    /**
-     * ユーザー名を取得
-     *
-     * @return ユーザを新規作成します
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param name ユーザを新規作成します
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param name ユーザを新規作成します
-     * @return this
-     */
-    public CreateUserRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** ユーザの説明 */
     private String description;
 
-    /**
-     * ユーザの説明を取得
-     *
-     * @return ユーザを新規作成します
-     */
-    public String getDescription() {
-        return description;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateUserRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateUserRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+    public static CreateUserRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateUserRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText());
     }
 
-    /**
-     * ユーザの説明を設定
-     *
-     * @param description ユーザを新規作成します
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+            }}
+        );
     }
-
-    /**
-     * ユーザの説明を設定
-     *
-     * @param description ユーザを新規作成します
-     * @return this
-     */
-    public CreateUserRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
 }

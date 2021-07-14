@@ -16,210 +16,121 @@
 
 package io.gs2.mission.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.mission.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.mission.model.Config;
 
-/**
- * 達成状況を新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CompleteByUserIdRequest extends Gs2BasicRequest<CompleteByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 達成状況を新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 達成状況を新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 達成状況を新規作成
-     * @return this
-     */
-    public CompleteByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ミッショングループ名 */
     private String missionGroupName;
-
-    /**
-     * ミッショングループ名を取得
-     *
-     * @return 達成状況を新規作成
-     */
-    public String getMissionGroupName() {
-        return missionGroupName;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param missionGroupName 達成状況を新規作成
-     */
-    public void setMissionGroupName(String missionGroupName) {
-        this.missionGroupName = missionGroupName;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param missionGroupName 達成状況を新規作成
-     * @return this
-     */
-    public CompleteByUserIdRequest withMissionGroupName(String missionGroupName) {
-        setMissionGroupName(missionGroupName);
-        return this;
-    }
-
-    /** タスク名 */
     private String missionTaskName;
-
-    /**
-     * タスク名を取得
-     *
-     * @return 達成状況を新規作成
-     */
-    public String getMissionTaskName() {
-        return missionTaskName;
-    }
-
-    /**
-     * タスク名を設定
-     *
-     * @param missionTaskName 達成状況を新規作成
-     */
-    public void setMissionTaskName(String missionTaskName) {
-        this.missionTaskName = missionTaskName;
-    }
-
-    /**
-     * タスク名を設定
-     *
-     * @param missionTaskName 達成状況を新規作成
-     * @return this
-     */
-    public CompleteByUserIdRequest withMissionTaskName(String missionTaskName) {
-        setMissionTaskName(missionTaskName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return 達成状況を新規作成
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId 達成状況を新規作成
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId 達成状況を新規作成
-     * @return this
-     */
-    public CompleteByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** スタンプシートの変数に適用する設定値 */
     private List<Config> config;
 
-    /**
-     * スタンプシートの変数に適用する設定値を取得
-     *
-     * @return 達成状況を新規作成
-     */
-    public List<Config> getConfig() {
-        return config;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CompleteByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getMissionGroupName() {
+		return missionGroupName;
+	}
+
+	public void setMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+	}
+
+	public CompleteByUserIdRequest withMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+		return this;
+	}
+
+	public String getMissionTaskName() {
+		return missionTaskName;
+	}
+
+	public void setMissionTaskName(String missionTaskName) {
+		this.missionTaskName = missionTaskName;
+	}
+
+	public CompleteByUserIdRequest withMissionTaskName(String missionTaskName) {
+		this.missionTaskName = missionTaskName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public CompleteByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public List<Config> getConfig() {
+		return config;
+	}
+
+	public void setConfig(List<Config> config) {
+		this.config = config;
+	}
+
+	public CompleteByUserIdRequest withConfig(List<Config> config) {
+		this.config = config;
+		return this;
+	}
+
+    public static CompleteByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CompleteByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
+            .withMissionTaskName(data.get("missionTaskName") == null || data.get("missionTaskName").isNull() ? null : data.get("missionTaskName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Config.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * スタンプシートの変数に適用する設定値を設定
-     *
-     * @param config 達成状況を新規作成
-     */
-    public void setConfig(List<Config> config) {
-        this.config = config;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("missionGroupName", getMissionGroupName());
+                put("missionTaskName", getMissionTaskName());
+                put("userId", getUserId());
+                put("config", getConfig() == null ? new ArrayList<Config>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * スタンプシートの変数に適用する設定値を設定
-     *
-     * @param config 達成状況を新規作成
-     * @return this
-     */
-    public CompleteByUserIdRequest withConfig(List<Config> config) {
-        setConfig(config);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 達成状況を新規作成
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 達成状況を新規作成
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 達成状況を新規作成
-     * @return this
-     */
-    public CompleteByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

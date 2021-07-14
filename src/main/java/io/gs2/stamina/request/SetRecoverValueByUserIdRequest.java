@@ -16,178 +16,94 @@
 
 package io.gs2.stamina.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.stamina.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定してスタミナの回復間隔(分)を更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SetRecoverValueByUserIdRequest extends Gs2BasicRequest<SetRecoverValueByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してスタミナの回復間隔(分)を更新
-     * @return this
-     */
-    public SetRecoverValueByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** スタミナの種類名 */
     private String staminaName;
-
-    /**
-     * スタミナの種類名を取得
-     *
-     * @return ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public String getStaminaName() {
-        return staminaName;
-    }
-
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public void setStaminaName(String staminaName) {
-        this.staminaName = staminaName;
-    }
-
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName ユーザIDを指定してスタミナの回復間隔(分)を更新
-     * @return this
-     */
-    public SetRecoverValueByUserIdRequest withStaminaName(String staminaName) {
-        setStaminaName(staminaName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してスタミナの回復間隔(分)を更新
-     * @return this
-     */
-    public SetRecoverValueByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** スタミナの回復量 */
     private Integer recoverValue;
 
-    /**
-     * スタミナの回復量を取得
-     *
-     * @return ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public Integer getRecoverValue() {
-        return recoverValue;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public SetRecoverValueByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getStaminaName() {
+		return staminaName;
+	}
+
+	public void setStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+	}
+
+	public SetRecoverValueByUserIdRequest withStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public SetRecoverValueByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Integer getRecoverValue() {
+		return recoverValue;
+	}
+
+	public void setRecoverValue(Integer recoverValue) {
+		this.recoverValue = recoverValue;
+	}
+
+	public SetRecoverValueByUserIdRequest withRecoverValue(Integer recoverValue) {
+		this.recoverValue = recoverValue;
+		return this;
+	}
+
+    public static SetRecoverValueByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SetRecoverValueByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withRecoverValue(data.get("recoverValue") == null || data.get("recoverValue").isNull() ? null : data.get("recoverValue").intValue());
     }
 
-    /**
-     * スタミナの回復量を設定
-     *
-     * @param recoverValue ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public void setRecoverValue(Integer recoverValue) {
-        this.recoverValue = recoverValue;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("staminaName", getStaminaName());
+                put("userId", getUserId());
+                put("recoverValue", getRecoverValue());
+            }}
+        );
     }
-
-    /**
-     * スタミナの回復量を設定
-     *
-     * @param recoverValue ユーザIDを指定してスタミナの回復間隔(分)を更新
-     * @return this
-     */
-    public SetRecoverValueByUserIdRequest withRecoverValue(Integer recoverValue) {
-        setRecoverValue(recoverValue);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してスタミナの回復間隔(分)を更新
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してスタミナの回復間隔(分)を更新
-     * @return this
-     */
-    public SetRecoverValueByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

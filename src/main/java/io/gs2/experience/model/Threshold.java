@@ -16,98 +16,72 @@
 
 package io.gs2.experience.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ランクアップ閾値
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Threshold implements IModel, Serializable {
-	/** ランクアップ閾値のメタデータ */
-	protected String metadata;
+	private String metadata;
+	private List<Long> values;
 
-	/**
-	 * ランクアップ閾値のメタデータを取得
-	 *
-	 * @return ランクアップ閾値のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * ランクアップ閾値のメタデータを設定
-	 *
-	 * @param metadata ランクアップ閾値のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * ランクアップ閾値のメタデータを設定
-	 *
-	 * @param metadata ランクアップ閾値のメタデータ
-	 * @return this
-	 */
 	public Threshold withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** ランクアップ経験値閾値リスト */
-	protected List<Long> values;
 
-	/**
-	 * ランクアップ経験値閾値リストを取得
-	 *
-	 * @return ランクアップ経験値閾値リスト
-	 */
 	public List<Long> getValues() {
 		return values;
 	}
 
-	/**
-	 * ランクアップ経験値閾値リストを設定
-	 *
-	 * @param values ランクアップ経験値閾値リスト
-	 */
 	public void setValues(List<Long> values) {
 		this.values = values;
 	}
 
-	/**
-	 * ランクアップ経験値閾値リストを設定
-	 *
-	 * @param values ランクアップ経験値閾値リスト
-	 * @return this
-	 */
 	public Threshold withValues(List<Long> values) {
 		this.values = values;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> values = new ArrayList<>();
-        if(this.values != null) {
-            for(Long item : this.values) {
-                values.add(JsonNodeFactory.instance.numberNode(item));
-            }
+    public static Threshold fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("metadata", this.getMetadata());
-        body_.set("values", JsonNodeFactory.instance.arrayNode().addAll(values));
-        return body_;
+        return new Threshold()
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Long>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.longValue();
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("metadata", getMetadata());
+                put("values", getValues() == null ? new ArrayList<Long>() :
+                    getValues().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
 
 	@Override

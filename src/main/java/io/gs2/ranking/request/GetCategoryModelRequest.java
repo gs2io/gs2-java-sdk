@@ -16,82 +16,62 @@
 
 package io.gs2.ranking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.ranking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * カテゴリを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetCategoryModelRequest extends Gs2BasicRequest<GetCategoryModelRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return カテゴリを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName カテゴリを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName カテゴリを取得
-     * @return this
-     */
-    public GetCategoryModelRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** カテゴリモデル名 */
     private String categoryName;
 
-    /**
-     * カテゴリモデル名を取得
-     *
-     * @return カテゴリを取得
-     */
-    public String getCategoryName() {
-        return categoryName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetCategoryModelRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public GetCategoryModelRequest withCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+		return this;
+	}
+
+    public static GetCategoryModelRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetCategoryModelRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText());
     }
 
-    /**
-     * カテゴリモデル名を設定
-     *
-     * @param categoryName カテゴリを取得
-     */
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("categoryName", getCategoryName());
+            }}
+        );
     }
-
-    /**
-     * カテゴリモデル名を設定
-     *
-     * @param categoryName カテゴリを取得
-     * @return this
-     */
-    public GetCategoryModelRequest withCategoryName(String categoryName) {
-        setCategoryName(categoryName);
-        return this;
-    }
-
 }

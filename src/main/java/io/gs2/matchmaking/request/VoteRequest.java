@@ -16,178 +16,121 @@
 
 package io.gs2.matchmaking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.matchmaking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.matchmaking.model.GameResult;
 
-/**
- * 対戦結果を投票します。 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class VoteRequest extends Gs2BasicRequest<VoteRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 対戦結果を投票します。
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 対戦結果を投票します。
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 対戦結果を投票します。
-     * @return this
-     */
-    public VoteRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 投票用紙の署名対象のデータ */
     private String ballotBody;
-
-    /**
-     * 投票用紙の署名対象のデータを取得
-     *
-     * @return 対戦結果を投票します。
-     */
-    public String getBallotBody() {
-        return ballotBody;
-    }
-
-    /**
-     * 投票用紙の署名対象のデータを設定
-     *
-     * @param ballotBody 対戦結果を投票します。
-     */
-    public void setBallotBody(String ballotBody) {
-        this.ballotBody = ballotBody;
-    }
-
-    /**
-     * 投票用紙の署名対象のデータを設定
-     *
-     * @param ballotBody 対戦結果を投票します。
-     * @return this
-     */
-    public VoteRequest withBallotBody(String ballotBody) {
-        setBallotBody(ballotBody);
-        return this;
-    }
-
-    /** 投票用紙の署名 */
     private String ballotSignature;
-
-    /**
-     * 投票用紙の署名を取得
-     *
-     * @return 対戦結果を投票します。
-     */
-    public String getBallotSignature() {
-        return ballotSignature;
-    }
-
-    /**
-     * 投票用紙の署名を設定
-     *
-     * @param ballotSignature 対戦結果を投票します。
-     */
-    public void setBallotSignature(String ballotSignature) {
-        this.ballotSignature = ballotSignature;
-    }
-
-    /**
-     * 投票用紙の署名を設定
-     *
-     * @param ballotSignature 対戦結果を投票します。
-     * @return this
-     */
-    public VoteRequest withBallotSignature(String ballotSignature) {
-        setBallotSignature(ballotSignature);
-        return this;
-    }
-
-    /** 投票内容。対戦を行ったプレイヤーグループ1に所属するユーザIDのリスト */
     private List<GameResult> gameResults;
-
-    /**
-     * 投票内容。対戦を行ったプレイヤーグループ1に所属するユーザIDのリストを取得
-     *
-     * @return 対戦結果を投票します。
-     */
-    public List<GameResult> getGameResults() {
-        return gameResults;
-    }
-
-    /**
-     * 投票内容。対戦を行ったプレイヤーグループ1に所属するユーザIDのリストを設定
-     *
-     * @param gameResults 対戦結果を投票します。
-     */
-    public void setGameResults(List<GameResult> gameResults) {
-        this.gameResults = gameResults;
-    }
-
-    /**
-     * 投票内容。対戦を行ったプレイヤーグループ1に所属するユーザIDのリストを設定
-     *
-     * @param gameResults 対戦結果を投票します。
-     * @return this
-     */
-    public VoteRequest withGameResults(List<GameResult> gameResults) {
-        setGameResults(gameResults);
-        return this;
-    }
-
-    /** 投票用紙の署名検証に使用する暗号鍵 のGRN */
     private String keyId;
 
-    /**
-     * 投票用紙の署名検証に使用する暗号鍵 のGRNを取得
-     *
-     * @return 対戦結果を投票します。
-     */
-    public String getKeyId() {
-        return keyId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public VoteRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getBallotBody() {
+		return ballotBody;
+	}
+
+	public void setBallotBody(String ballotBody) {
+		this.ballotBody = ballotBody;
+	}
+
+	public VoteRequest withBallotBody(String ballotBody) {
+		this.ballotBody = ballotBody;
+		return this;
+	}
+
+	public String getBallotSignature() {
+		return ballotSignature;
+	}
+
+	public void setBallotSignature(String ballotSignature) {
+		this.ballotSignature = ballotSignature;
+	}
+
+	public VoteRequest withBallotSignature(String ballotSignature) {
+		this.ballotSignature = ballotSignature;
+		return this;
+	}
+
+	public List<GameResult> getGameResults() {
+		return gameResults;
+	}
+
+	public void setGameResults(List<GameResult> gameResults) {
+		this.gameResults = gameResults;
+	}
+
+	public VoteRequest withGameResults(List<GameResult> gameResults) {
+		this.gameResults = gameResults;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public VoteRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+    public static VoteRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new VoteRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withBallotBody(data.get("ballotBody") == null || data.get("ballotBody").isNull() ? null : data.get("ballotBody").asText())
+            .withBallotSignature(data.get("ballotSignature") == null || data.get("ballotSignature").isNull() ? null : data.get("ballotSignature").asText())
+            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? new ArrayList<GameResult>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gameResults").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return GameResult.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
-    /**
-     * 投票用紙の署名検証に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId 対戦結果を投票します。
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("ballotBody", getBallotBody());
+                put("ballotSignature", getBallotSignature());
+                put("gameResults", getGameResults() == null ? new ArrayList<GameResult>() :
+                    getGameResults().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("keyId", getKeyId());
+            }}
+        );
     }
-
-    /**
-     * 投票用紙の署名検証に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId 対戦結果を投票します。
-     * @return this
-     */
-    public VoteRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
 }

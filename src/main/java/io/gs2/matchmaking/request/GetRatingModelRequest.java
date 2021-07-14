@@ -16,82 +16,62 @@
 
 package io.gs2.matchmaking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.matchmaking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * レーティングモデルを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetRatingModelRequest extends Gs2BasicRequest<GetRatingModelRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return レーティングモデルを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName レーティングモデルを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName レーティングモデルを取得
-     * @return this
-     */
-    public GetRatingModelRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** レーティングの種類名 */
     private String ratingName;
 
-    /**
-     * レーティングの種類名を取得
-     *
-     * @return レーティングモデルを取得
-     */
-    public String getRatingName() {
-        return ratingName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetRatingModelRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRatingName() {
+		return ratingName;
+	}
+
+	public void setRatingName(String ratingName) {
+		this.ratingName = ratingName;
+	}
+
+	public GetRatingModelRequest withRatingName(String ratingName) {
+		this.ratingName = ratingName;
+		return this;
+	}
+
+    public static GetRatingModelRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetRatingModelRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText());
     }
 
-    /**
-     * レーティングの種類名を設定
-     *
-     * @param ratingName レーティングモデルを取得
-     */
-    public void setRatingName(String ratingName) {
-        this.ratingName = ratingName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("ratingName", getRatingName());
+            }}
+        );
     }
-
-    /**
-     * レーティングの種類名を設定
-     *
-     * @param ratingName レーティングモデルを取得
-     * @return this
-     */
-    public GetRatingModelRequest withRatingName(String ratingName) {
-        setRatingName(ratingName);
-        return this;
-    }
-
 }

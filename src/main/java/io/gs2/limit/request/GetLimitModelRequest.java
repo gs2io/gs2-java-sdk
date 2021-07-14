@@ -16,82 +16,62 @@
 
 package io.gs2.limit.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.limit.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 回数制限の種類を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetLimitModelRequest extends Gs2BasicRequest<GetLimitModelRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 回数制限の種類を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 回数制限の種類を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 回数制限の種類を取得
-     * @return this
-     */
-    public GetLimitModelRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 回数制限の種類名 */
     private String limitName;
 
-    /**
-     * 回数制限の種類名を取得
-     *
-     * @return 回数制限の種類を取得
-     */
-    public String getLimitName() {
-        return limitName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetLimitModelRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getLimitName() {
+		return limitName;
+	}
+
+	public void setLimitName(String limitName) {
+		this.limitName = limitName;
+	}
+
+	public GetLimitModelRequest withLimitName(String limitName) {
+		this.limitName = limitName;
+		return this;
+	}
+
+    public static GetLimitModelRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetLimitModelRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withLimitName(data.get("limitName") == null || data.get("limitName").isNull() ? null : data.get("limitName").asText());
     }
 
-    /**
-     * 回数制限の種類名を設定
-     *
-     * @param limitName 回数制限の種類を取得
-     */
-    public void setLimitName(String limitName) {
-        this.limitName = limitName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("limitName", getLimitName());
+            }}
+        );
     }
-
-    /**
-     * 回数制限の種類名を設定
-     *
-     * @param limitName 回数制限の種類を取得
-     * @return this
-     */
-    public GetLimitModelRequest withLimitName(String limitName) {
-        setLimitName(limitName);
-        return this;
-    }
-
 }

@@ -16,39 +16,48 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.MaxStaminaTableMaster;
 
-/**
- * スタミナの最大値テーブルマスターを新規作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateMaxStaminaTableMasterResult implements IResult, Serializable {
-	/** 作成したスタミナの最大値テーブルマスター */
-	private MaxStaminaTableMaster item;
+    private MaxStaminaTableMaster item;
 
-	/**
-	 * 作成したスタミナの最大値テーブルマスターを取得
-	 *
-	 * @return スタミナの最大値テーブルマスターを新規作成
-	 */
 	public MaxStaminaTableMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 作成したスタミナの最大値テーブルマスターを設定
-	 *
-	 * @param item スタミナの最大値テーブルマスターを新規作成
-	 */
 	public void setItem(MaxStaminaTableMaster item) {
 		this.item = item;
 	}
+
+	public CreateMaxStaminaTableMasterResult withItem(MaxStaminaTableMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateMaxStaminaTableMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateMaxStaminaTableMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : MaxStaminaTableMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

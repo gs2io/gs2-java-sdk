@@ -16,39 +16,60 @@
 
 package io.gs2.lottery.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
+import io.gs2.lottery.model.AcquireAction;
+import io.gs2.lottery.model.Prize;
+import io.gs2.lottery.model.PrizeTable;
 
-/**
- * 排出確率テーブルの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribePrizeTablesResult implements IResult, Serializable {
-	/** 排出確率テーブルのリスト */
-	private List<PrizeTable> items;
+    private List<PrizeTable> items;
 
-	/**
-	 * 排出確率テーブルのリストを取得
-	 *
-	 * @return 排出確率テーブルの一覧を取得
-	 */
 	public List<PrizeTable> getItems() {
 		return items;
 	}
 
-	/**
-	 * 排出確率テーブルのリストを設定
-	 *
-	 * @param items 排出確率テーブルの一覧を取得
-	 */
 	public void setItems(List<PrizeTable> items) {
 		this.items = items;
 	}
+
+	public DescribePrizeTablesResult withItems(List<PrizeTable> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static DescribePrizeTablesResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribePrizeTablesResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<PrizeTable>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return PrizeTable.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<PrizeTable>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

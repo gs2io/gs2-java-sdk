@@ -16,382 +16,194 @@
 
 package io.gs2.lottery.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ネームスペース
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Namespace implements IModel, Serializable, Comparable<Namespace> {
-	/** ネームスペース */
-	protected String namespaceId;
+	private String namespaceId;
+	private String name;
+	private String description;
+	private String queueNamespaceId;
+	private String keyId;
+	private String lotteryTriggerScriptId;
+	private String choicePrizeTableScriptId;
+	private LogSetting logSetting;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ネームスペースを取得
-	 *
-	 * @return ネームスペース
-	 */
 	public String getNamespaceId() {
 		return namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 */
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 * @return this
-	 */
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Namespace withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ネームスペース名 */
-	protected String name;
-
-	/**
-	 * ネームスペース名を取得
-	 *
-	 * @return ネームスペース名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 * @return this
-	 */
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ネームスペースの説明 */
-	protected String description;
 
-	/**
-	 * ネームスペースの説明を取得
-	 *
-	 * @return ネームスペースの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 * @return this
-	 */
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 景品付与処理をジョブとして追加するキューのネームスペース のGRN */
-	protected String queueNamespaceId;
 
-	/**
-	 * 景品付与処理をジョブとして追加するキューのネームスペース のGRNを取得
-	 *
-	 * @return 景品付与処理をジョブとして追加するキューのネームスペース のGRN
-	 */
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
 
-	/**
-	 * 景品付与処理をジョブとして追加するキューのネームスペース のGRNを設定
-	 *
-	 * @param queueNamespaceId 景品付与処理をジョブとして追加するキューのネームスペース のGRN
-	 */
 	public void setQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 	}
 
-	/**
-	 * 景品付与処理をジョブとして追加するキューのネームスペース のGRNを設定
-	 *
-	 * @param queueNamespaceId 景品付与処理をジョブとして追加するキューのネームスペース のGRN
-	 * @return this
-	 */
 	public Namespace withQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 		return this;
 	}
-	/** 景品付与処理のスタンプシートで使用する暗号鍵GRN */
-	protected String keyId;
 
-	/**
-	 * 景品付与処理のスタンプシートで使用する暗号鍵GRNを取得
-	 *
-	 * @return 景品付与処理のスタンプシートで使用する暗号鍵GRN
-	 */
 	public String getKeyId() {
 		return keyId;
 	}
 
-	/**
-	 * 景品付与処理のスタンプシートで使用する暗号鍵GRNを設定
-	 *
-	 * @param keyId 景品付与処理のスタンプシートで使用する暗号鍵GRN
-	 */
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
 
-	/**
-	 * 景品付与処理のスタンプシートで使用する暗号鍵GRNを設定
-	 *
-	 * @param keyId 景品付与処理のスタンプシートで使用する暗号鍵GRN
-	 * @return this
-	 */
 	public Namespace withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
-	/** 抽選処理時 に実行されるスクリプト のGRN */
-	protected String lotteryTriggerScriptId;
 
-	/**
-	 * 抽選処理時 に実行されるスクリプト のGRNを取得
-	 *
-	 * @return 抽選処理時 に実行されるスクリプト のGRN
-	 */
 	public String getLotteryTriggerScriptId() {
 		return lotteryTriggerScriptId;
 	}
 
-	/**
-	 * 抽選処理時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param lotteryTriggerScriptId 抽選処理時 に実行されるスクリプト のGRN
-	 */
 	public void setLotteryTriggerScriptId(String lotteryTriggerScriptId) {
 		this.lotteryTriggerScriptId = lotteryTriggerScriptId;
 	}
 
-	/**
-	 * 抽選処理時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param lotteryTriggerScriptId 抽選処理時 に実行されるスクリプト のGRN
-	 * @return this
-	 */
 	public Namespace withLotteryTriggerScriptId(String lotteryTriggerScriptId) {
 		this.lotteryTriggerScriptId = lotteryTriggerScriptId;
 		return this;
 	}
-	/** 排出テーブル選択時 に実行されるスクリプト のGRN */
-	protected String choicePrizeTableScriptId;
 
-	/**
-	 * 排出テーブル選択時 に実行されるスクリプト のGRNを取得
-	 *
-	 * @return 排出テーブル選択時 に実行されるスクリプト のGRN
-	 */
 	public String getChoicePrizeTableScriptId() {
 		return choicePrizeTableScriptId;
 	}
 
-	/**
-	 * 排出テーブル選択時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param choicePrizeTableScriptId 排出テーブル選択時 に実行されるスクリプト のGRN
-	 */
 	public void setChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 	}
 
-	/**
-	 * 排出テーブル選択時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param choicePrizeTableScriptId 排出テーブル選択時 に実行されるスクリプト のGRN
-	 * @return this
-	 */
 	public Namespace withChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 		return this;
 	}
-	/** ログの出力設定 */
-	protected LogSetting logSetting;
 
-	/**
-	 * ログの出力設定を取得
-	 *
-	 * @return ログの出力設定
-	 */
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 */
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 * @return this
-	 */
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode logSetting = this.getLogSetting().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceId", this.getNamespaceId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("queueNamespaceId", this.getQueueNamespaceId())
-            .put("keyId", this.getKeyId())
-            .put("lotteryTriggerScriptId", this.getLotteryTriggerScriptId())
-            .put("choicePrizeTableScriptId", this.getChoicePrizeTableScriptId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("logSetting", logSetting);
-        return body_;
+    public static Namespace fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Namespace()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withLotteryTriggerScriptId(data.get("lotteryTriggerScriptId") == null || data.get("lotteryTriggerScriptId").isNull() ? null : data.get("lotteryTriggerScriptId").asText())
+            .withChoicePrizeTableScriptId(data.get("choicePrizeTableScriptId") == null || data.get("choicePrizeTableScriptId").isNull() ? null : data.get("choicePrizeTableScriptId").asText())
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("name", getName());
+                put("description", getDescription());
+                put("queueNamespaceId", getQueueNamespaceId());
+                put("keyId", getKeyId());
+                put("lotteryTriggerScriptId", getLotteryTriggerScriptId());
+                put("choicePrizeTableScriptId", getChoicePrizeTableScriptId());
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Namespace o) {
 		return namespaceId.compareTo(o.namespaceId);
@@ -402,7 +214,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
@@ -427,11 +238,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (namespaceId == null) {
 			return other.namespaceId == null;
 		} else if (!namespaceId.equals(other.namespaceId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {

@@ -16,242 +16,142 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * インベントリモデルマスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateInventoryModelMasterRequest extends Gs2BasicRequest<UpdateInventoryModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return インベントリモデルマスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName インベントリモデルマスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName インベントリモデルマスターを更新
-     * @return this
-     */
-    public UpdateInventoryModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** インベントリの種類名 */
     private String inventoryName;
-
-    /**
-     * インベントリの種類名を取得
-     *
-     * @return インベントリモデルマスターを更新
-     */
-    public String getInventoryName() {
-        return inventoryName;
-    }
-
-    /**
-     * インベントリの種類名を設定
-     *
-     * @param inventoryName インベントリモデルマスターを更新
-     */
-    public void setInventoryName(String inventoryName) {
-        this.inventoryName = inventoryName;
-    }
-
-    /**
-     * インベントリの種類名を設定
-     *
-     * @param inventoryName インベントリモデルマスターを更新
-     * @return this
-     */
-    public UpdateInventoryModelMasterRequest withInventoryName(String inventoryName) {
-        setInventoryName(inventoryName);
-        return this;
-    }
-
-    /** インベントリモデルマスターの説明 */
     private String description;
-
-    /**
-     * インベントリモデルマスターの説明を取得
-     *
-     * @return インベントリモデルマスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * インベントリモデルマスターの説明を設定
-     *
-     * @param description インベントリモデルマスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * インベントリモデルマスターの説明を設定
-     *
-     * @param description インベントリモデルマスターを更新
-     * @return this
-     */
-    public UpdateInventoryModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** インベントリの種類のメタデータ */
     private String metadata;
-
-    /**
-     * インベントリの種類のメタデータを取得
-     *
-     * @return インベントリモデルマスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * インベントリの種類のメタデータを設定
-     *
-     * @param metadata インベントリモデルマスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * インベントリの種類のメタデータを設定
-     *
-     * @param metadata インベントリモデルマスターを更新
-     * @return this
-     */
-    public UpdateInventoryModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** インベントリの初期サイズ */
     private Integer initialCapacity;
-
-    /**
-     * インベントリの初期サイズを取得
-     *
-     * @return インベントリモデルマスターを更新
-     */
-    public Integer getInitialCapacity() {
-        return initialCapacity;
-    }
-
-    /**
-     * インベントリの初期サイズを設定
-     *
-     * @param initialCapacity インベントリモデルマスターを更新
-     */
-    public void setInitialCapacity(Integer initialCapacity) {
-        this.initialCapacity = initialCapacity;
-    }
-
-    /**
-     * インベントリの初期サイズを設定
-     *
-     * @param initialCapacity インベントリモデルマスターを更新
-     * @return this
-     */
-    public UpdateInventoryModelMasterRequest withInitialCapacity(Integer initialCapacity) {
-        setInitialCapacity(initialCapacity);
-        return this;
-    }
-
-    /** インベントリの最大サイズ */
     private Integer maxCapacity;
-
-    /**
-     * インベントリの最大サイズを取得
-     *
-     * @return インベントリモデルマスターを更新
-     */
-    public Integer getMaxCapacity() {
-        return maxCapacity;
-    }
-
-    /**
-     * インベントリの最大サイズを設定
-     *
-     * @param maxCapacity インベントリモデルマスターを更新
-     */
-    public void setMaxCapacity(Integer maxCapacity) {
-        this.maxCapacity = maxCapacity;
-    }
-
-    /**
-     * インベントリの最大サイズを設定
-     *
-     * @param maxCapacity インベントリモデルマスターを更新
-     * @return this
-     */
-    public UpdateInventoryModelMasterRequest withMaxCapacity(Integer maxCapacity) {
-        setMaxCapacity(maxCapacity);
-        return this;
-    }
-
-    /** 参照元が登録されているアイテムセットは削除できなくする */
     private Boolean protectReferencedItem;
 
-    /**
-     * 参照元が登録されているアイテムセットは削除できなくするを取得
-     *
-     * @return インベントリモデルマスターを更新
-     */
-    public Boolean getProtectReferencedItem() {
-        return protectReferencedItem;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateInventoryModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+	}
+
+	public UpdateInventoryModelMasterRequest withInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateInventoryModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateInventoryModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public Integer getInitialCapacity() {
+		return initialCapacity;
+	}
+
+	public void setInitialCapacity(Integer initialCapacity) {
+		this.initialCapacity = initialCapacity;
+	}
+
+	public UpdateInventoryModelMasterRequest withInitialCapacity(Integer initialCapacity) {
+		this.initialCapacity = initialCapacity;
+		return this;
+	}
+
+	public Integer getMaxCapacity() {
+		return maxCapacity;
+	}
+
+	public void setMaxCapacity(Integer maxCapacity) {
+		this.maxCapacity = maxCapacity;
+	}
+
+	public UpdateInventoryModelMasterRequest withMaxCapacity(Integer maxCapacity) {
+		this.maxCapacity = maxCapacity;
+		return this;
+	}
+
+	public Boolean getProtectReferencedItem() {
+		return protectReferencedItem;
+	}
+
+	public void setProtectReferencedItem(Boolean protectReferencedItem) {
+		this.protectReferencedItem = protectReferencedItem;
+	}
+
+	public UpdateInventoryModelMasterRequest withProtectReferencedItem(Boolean protectReferencedItem) {
+		this.protectReferencedItem = protectReferencedItem;
+		return this;
+	}
+
+    public static UpdateInventoryModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateInventoryModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withInitialCapacity(data.get("initialCapacity") == null || data.get("initialCapacity").isNull() ? null : data.get("initialCapacity").intValue())
+            .withMaxCapacity(data.get("maxCapacity") == null || data.get("maxCapacity").isNull() ? null : data.get("maxCapacity").intValue())
+            .withProtectReferencedItem(data.get("protectReferencedItem") == null || data.get("protectReferencedItem").isNull() ? null : data.get("protectReferencedItem").booleanValue());
     }
 
-    /**
-     * 参照元が登録されているアイテムセットは削除できなくするを設定
-     *
-     * @param protectReferencedItem インベントリモデルマスターを更新
-     */
-    public void setProtectReferencedItem(Boolean protectReferencedItem) {
-        this.protectReferencedItem = protectReferencedItem;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("inventoryName", getInventoryName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("initialCapacity", getInitialCapacity());
+                put("maxCapacity", getMaxCapacity());
+                put("protectReferencedItem", getProtectReferencedItem());
+            }}
+        );
     }
-
-    /**
-     * 参照元が登録されているアイテムセットは削除できなくするを設定
-     *
-     * @param protectReferencedItem インベントリモデルマスターを更新
-     * @return this
-     */
-    public UpdateInventoryModelMasterRequest withProtectReferencedItem(Boolean protectReferencedItem) {
-        setProtectReferencedItem(protectReferencedItem);
-        return this;
-    }
-
 }

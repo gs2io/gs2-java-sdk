@@ -16,59 +16,76 @@
 
 package io.gs2.quest.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.quest.model.*;
+import io.gs2.quest.model.ScriptSetting;
+import io.gs2.quest.model.LogSetting;
+import io.gs2.quest.model.Namespace;
 
-/**
- * クエストを分類するカテゴリーの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeNamespacesResult implements IResult, Serializable {
-	/** クエストを分類するカテゴリーのリスト */
-	private List<Namespace> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<Namespace> items;
+    private String nextPageToken;
 
-	/**
-	 * クエストを分類するカテゴリーのリストを取得
-	 *
-	 * @return クエストを分類するカテゴリーの一覧を取得
-	 */
 	public List<Namespace> getItems() {
 		return items;
 	}
 
-	/**
-	 * クエストを分類するカテゴリーのリストを設定
-	 *
-	 * @param items クエストを分類するカテゴリーの一覧を取得
-	 */
 	public void setItems(List<Namespace> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return クエストを分類するカテゴリーの一覧を取得
-	 */
+	public DescribeNamespacesResult withItems(List<Namespace> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken クエストを分類するカテゴリーの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeNamespacesResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeNamespacesResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeNamespacesResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Namespace>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Namespace.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<Namespace>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

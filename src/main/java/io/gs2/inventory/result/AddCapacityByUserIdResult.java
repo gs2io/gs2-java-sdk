@@ -16,39 +16,48 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.Inventory;
 
-/**
- * キャパシティサイズを加算 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AddCapacityByUserIdResult implements IResult, Serializable {
-	/** キャパシティ加算後のインベントリ */
-	private Inventory item;
+    private Inventory item;
 
-	/**
-	 * キャパシティ加算後のインベントリを取得
-	 *
-	 * @return キャパシティサイズを加算
-	 */
 	public Inventory getItem() {
 		return item;
 	}
 
-	/**
-	 * キャパシティ加算後のインベントリを設定
-	 *
-	 * @param item キャパシティサイズを加算
-	 */
 	public void setItem(Inventory item) {
 		this.item = item;
 	}
+
+	public AddCapacityByUserIdResult withItem(Inventory item) {
+		this.item = item;
+		return this;
+	}
+
+    public static AddCapacityByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AddCapacityByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Inventory.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

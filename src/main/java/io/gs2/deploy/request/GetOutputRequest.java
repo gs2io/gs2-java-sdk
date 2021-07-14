@@ -16,82 +16,62 @@
 
 package io.gs2.deploy.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.deploy.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * アウトプットを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetOutputRequest extends Gs2BasicRequest<GetOutputRequest> {
-
-    /** スタック名 */
     private String stackName;
-
-    /**
-     * スタック名を取得
-     *
-     * @return アウトプットを取得
-     */
-    public String getStackName() {
-        return stackName;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param stackName アウトプットを取得
-     */
-    public void setStackName(String stackName) {
-        this.stackName = stackName;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param stackName アウトプットを取得
-     * @return this
-     */
-    public GetOutputRequest withStackName(String stackName) {
-        setStackName(stackName);
-        return this;
-    }
-
-    /** アウトプット名 */
     private String outputName;
 
-    /**
-     * アウトプット名を取得
-     *
-     * @return アウトプットを取得
-     */
-    public String getOutputName() {
-        return outputName;
+	public String getStackName() {
+		return stackName;
+	}
+
+	public void setStackName(String stackName) {
+		this.stackName = stackName;
+	}
+
+	public GetOutputRequest withStackName(String stackName) {
+		this.stackName = stackName;
+		return this;
+	}
+
+	public String getOutputName() {
+		return outputName;
+	}
+
+	public void setOutputName(String outputName) {
+		this.outputName = outputName;
+	}
+
+	public GetOutputRequest withOutputName(String outputName) {
+		this.outputName = outputName;
+		return this;
+	}
+
+    public static GetOutputRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetOutputRequest()
+            .withStackName(data.get("stackName") == null || data.get("stackName").isNull() ? null : data.get("stackName").asText())
+            .withOutputName(data.get("outputName") == null || data.get("outputName").isNull() ? null : data.get("outputName").asText());
     }
 
-    /**
-     * アウトプット名を設定
-     *
-     * @param outputName アウトプットを取得
-     */
-    public void setOutputName(String outputName) {
-        this.outputName = outputName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stackName", getStackName());
+                put("outputName", getOutputName());
+            }}
+        );
     }
-
-    /**
-     * アウトプット名を設定
-     *
-     * @param outputName アウトプットを取得
-     * @return this
-     */
-    public GetOutputRequest withOutputName(String outputName) {
-        setOutputName(outputName);
-        return this;
-    }
-
 }

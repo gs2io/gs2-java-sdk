@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.distributor;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.distributor.request.*;
 import io.gs2.distributor.result.*;
-import io.gs2.distributor.model.*;
+import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRestClient> {
 
-/**
- * GS2 Distributor API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2DistributorRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,29 +152,15 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getAssumeUserId() != null) {
-                json.put("assumeUserId", this.request.getAssumeUserId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("assumeUserId", request.getAssumeUserId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -209,25 +178,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -254,15 +212,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -273,7 +234,7 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -297,25 +258,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -342,15 +292,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -361,7 +314,7 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -385,25 +338,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -430,15 +372,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -449,28 +394,16 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getAssumeUserId() != null) {
-                json.put("assumeUserId", this.request.getAssumeUserId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("assumeUserId", request.getAssumeUserId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -488,25 +421,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -533,15 +455,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -552,7 +477,7 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -576,25 +501,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -621,15 +535,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public DescribeDistributorModelMastersTask(
             DescribeDistributorModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeDistributorModelMastersResult>> userCallback,
-            Class<DescribeDistributorModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeDistributorModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeDistributorModelMastersResult parse(JsonNode data) {
+            return DescribeDistributorModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -640,7 +557,7 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/distributor";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -670,25 +587,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 配信設定マスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeDistributorModelMastersAsync(
             DescribeDistributorModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeDistributorModelMastersResult>> callback
     ) {
-        DescribeDistributorModelMastersTask task = new DescribeDistributorModelMastersTask(request, callback, DescribeDistributorModelMastersResult.class);
+        DescribeDistributorModelMastersTask task = new DescribeDistributorModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 配信設定マスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeDistributorModelMastersResult describeDistributorModelMasters(
             DescribeDistributorModelMastersRequest request
     ) {
@@ -715,15 +621,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public CreateDistributorModelMasterTask(
             CreateDistributorModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateDistributorModelMasterResult>> userCallback,
-            Class<CreateDistributorModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateDistributorModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateDistributorModelMasterResult parse(JsonNode data) {
+            return CreateDistributorModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -734,35 +643,22 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/distributor";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getInboxNamespaceId() != null) {
-                json.put("inboxNamespaceId", this.request.getInboxNamespaceId());
-            }
-            if (this.request.getWhiteListTargetIds() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getWhiteListTargetIds())
-                {
-                    array.put(item);
-                }
-                json.put("whiteListTargetIds", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("inboxNamespaceId", request.getInboxNamespaceId());
+                    put("whiteListTargetIds", request.getWhiteListTargetIds() == null ? new ArrayList<String>() :
+                        request.getWhiteListTargetIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -780,25 +676,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 配信設定マスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createDistributorModelMasterAsync(
             CreateDistributorModelMasterRequest request,
             AsyncAction<AsyncResult<CreateDistributorModelMasterResult>> callback
     ) {
-        CreateDistributorModelMasterTask task = new CreateDistributorModelMasterTask(request, callback, CreateDistributorModelMasterResult.class);
+        CreateDistributorModelMasterTask task = new CreateDistributorModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 配信設定マスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateDistributorModelMasterResult createDistributorModelMaster(
             CreateDistributorModelMasterRequest request
     ) {
@@ -825,15 +710,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public GetDistributorModelMasterTask(
             GetDistributorModelMasterRequest request,
-            AsyncAction<AsyncResult<GetDistributorModelMasterResult>> userCallback,
-            Class<GetDistributorModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetDistributorModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetDistributorModelMasterResult parse(JsonNode data) {
+            return GetDistributorModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -844,8 +732,8 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/distributor/{distributorName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{distributorName}", this.request.getDistributorName() == null|| this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{distributorName}", this.request.getDistributorName() == null || this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -869,25 +757,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 配信設定マスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getDistributorModelMasterAsync(
             GetDistributorModelMasterRequest request,
             AsyncAction<AsyncResult<GetDistributorModelMasterResult>> callback
     ) {
-        GetDistributorModelMasterTask task = new GetDistributorModelMasterTask(request, callback, GetDistributorModelMasterResult.class);
+        GetDistributorModelMasterTask task = new GetDistributorModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 配信設定マスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetDistributorModelMasterResult getDistributorModelMaster(
             GetDistributorModelMasterRequest request
     ) {
@@ -914,15 +791,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public UpdateDistributorModelMasterTask(
             UpdateDistributorModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateDistributorModelMasterResult>> userCallback,
-            Class<UpdateDistributorModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateDistributorModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateDistributorModelMasterResult parse(JsonNode data) {
+            return UpdateDistributorModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -933,33 +813,22 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/distributor/{distributorName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{distributorName}", this.request.getDistributorName() == null|| this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{distributorName}", this.request.getDistributorName() == null || this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getInboxNamespaceId() != null) {
-                json.put("inboxNamespaceId", this.request.getInboxNamespaceId());
-            }
-            if (this.request.getWhiteListTargetIds() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getWhiteListTargetIds())
-                {
-                    array.put(item);
-                }
-                json.put("whiteListTargetIds", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("inboxNamespaceId", request.getInboxNamespaceId());
+                    put("whiteListTargetIds", request.getWhiteListTargetIds() == null ? new ArrayList<String>() :
+                        request.getWhiteListTargetIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -977,25 +846,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 配信設定マスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateDistributorModelMasterAsync(
             UpdateDistributorModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateDistributorModelMasterResult>> callback
     ) {
-        UpdateDistributorModelMasterTask task = new UpdateDistributorModelMasterTask(request, callback, UpdateDistributorModelMasterResult.class);
+        UpdateDistributorModelMasterTask task = new UpdateDistributorModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 配信設定マスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateDistributorModelMasterResult updateDistributorModelMaster(
             UpdateDistributorModelMasterRequest request
     ) {
@@ -1022,15 +880,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public DeleteDistributorModelMasterTask(
             DeleteDistributorModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteDistributorModelMasterResult>> userCallback,
-            Class<DeleteDistributorModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteDistributorModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteDistributorModelMasterResult parse(JsonNode data) {
+            return DeleteDistributorModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1041,8 +902,8 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/distributor/{distributorName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{distributorName}", this.request.getDistributorName() == null|| this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{distributorName}", this.request.getDistributorName() == null || this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1066,25 +927,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 配信設定マスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteDistributorModelMasterAsync(
             DeleteDistributorModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteDistributorModelMasterResult>> callback
     ) {
-        DeleteDistributorModelMasterTask task = new DeleteDistributorModelMasterTask(request, callback, DeleteDistributorModelMasterResult.class);
+        DeleteDistributorModelMasterTask task = new DeleteDistributorModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 配信設定マスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteDistributorModelMasterResult deleteDistributorModelMaster(
             DeleteDistributorModelMasterRequest request
     ) {
@@ -1111,15 +961,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public DescribeDistributorModelsTask(
             DescribeDistributorModelsRequest request,
-            AsyncAction<AsyncResult<DescribeDistributorModelsResult>> userCallback,
-            Class<DescribeDistributorModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeDistributorModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeDistributorModelsResult parse(JsonNode data) {
+            return DescribeDistributorModelsResult.fromJson(data);
         }
 
         @Override
@@ -1130,7 +983,7 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/distributor";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1154,25 +1007,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 配信設定の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeDistributorModelsAsync(
             DescribeDistributorModelsRequest request,
             AsyncAction<AsyncResult<DescribeDistributorModelsResult>> callback
     ) {
-        DescribeDistributorModelsTask task = new DescribeDistributorModelsTask(request, callback, DescribeDistributorModelsResult.class);
+        DescribeDistributorModelsTask task = new DescribeDistributorModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 配信設定の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeDistributorModelsResult describeDistributorModels(
             DescribeDistributorModelsRequest request
     ) {
@@ -1199,15 +1041,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public GetDistributorModelTask(
             GetDistributorModelRequest request,
-            AsyncAction<AsyncResult<GetDistributorModelResult>> userCallback,
-            Class<GetDistributorModelResult> clazz
+            AsyncAction<AsyncResult<GetDistributorModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetDistributorModelResult parse(JsonNode data) {
+            return GetDistributorModelResult.fromJson(data);
         }
 
         @Override
@@ -1218,8 +1063,8 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/distributor/{distributorName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{distributorName}", this.request.getDistributorName() == null|| this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{distributorName}", this.request.getDistributorName() == null || this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1243,25 +1088,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 配信設定を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getDistributorModelAsync(
             GetDistributorModelRequest request,
             AsyncAction<AsyncResult<GetDistributorModelResult>> callback
     ) {
-        GetDistributorModelTask task = new GetDistributorModelTask(request, callback, GetDistributorModelResult.class);
+        GetDistributorModelTask task = new GetDistributorModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 配信設定を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetDistributorModelResult getDistributorModel(
             GetDistributorModelRequest request
     ) {
@@ -1288,15 +1122,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -1307,7 +1144,7 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1331,25 +1168,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 現在有効な配信設定のマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な配信設定のマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -1376,15 +1202,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public GetCurrentDistributorMasterTask(
             GetCurrentDistributorMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentDistributorMasterResult>> userCallback,
-            Class<GetCurrentDistributorMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentDistributorMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentDistributorMasterResult parse(JsonNode data) {
+            return GetCurrentDistributorMasterResult.fromJson(data);
         }
 
         @Override
@@ -1395,7 +1224,7 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1419,25 +1248,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 現在有効な配信設定を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentDistributorMasterAsync(
             GetCurrentDistributorMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentDistributorMasterResult>> callback
     ) {
-        GetCurrentDistributorMasterTask task = new GetCurrentDistributorMasterTask(request, callback, GetCurrentDistributorMasterResult.class);
+        GetCurrentDistributorMasterTask task = new GetCurrentDistributorMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な配信設定を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentDistributorMasterResult getCurrentDistributorMaster(
             GetCurrentDistributorMasterRequest request
     ) {
@@ -1464,15 +1282,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public UpdateCurrentDistributorMasterTask(
             UpdateCurrentDistributorMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentDistributorMasterResult>> userCallback,
-            Class<UpdateCurrentDistributorMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentDistributorMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentDistributorMasterResult parse(JsonNode data) {
+            return UpdateCurrentDistributorMasterResult.fromJson(data);
         }
 
         @Override
@@ -1483,18 +1304,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1512,25 +1329,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 現在有効な配信設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentDistributorMasterAsync(
             UpdateCurrentDistributorMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentDistributorMasterResult>> callback
     ) {
-        UpdateCurrentDistributorMasterTask task = new UpdateCurrentDistributorMasterTask(request, callback, UpdateCurrentDistributorMasterResult.class);
+        UpdateCurrentDistributorMasterTask task = new UpdateCurrentDistributorMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な配信設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentDistributorMasterResult updateCurrentDistributorMaster(
             UpdateCurrentDistributorMasterRequest request
     ) {
@@ -1557,15 +1363,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public UpdateCurrentDistributorMasterFromGitHubTask(
             UpdateCurrentDistributorMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentDistributorMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentDistributorMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentDistributorMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentDistributorMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentDistributorMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -1576,22 +1385,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1609,25 +1410,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 現在有効な配信設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentDistributorMasterFromGitHubAsync(
             UpdateCurrentDistributorMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentDistributorMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentDistributorMasterFromGitHubTask task = new UpdateCurrentDistributorMasterFromGitHubTask(request, callback, UpdateCurrentDistributorMasterFromGitHubResult.class);
+        UpdateCurrentDistributorMasterFromGitHubTask task = new UpdateCurrentDistributorMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な配信設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentDistributorMasterFromGitHubResult updateCurrentDistributorMasterFromGitHub(
             UpdateCurrentDistributorMasterFromGitHubRequest request
     ) {
@@ -1654,15 +1444,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public DistributeTask(
             DistributeRequest request,
-            AsyncAction<AsyncResult<DistributeResult>> userCallback,
-            Class<DistributeResult> clazz
+            AsyncAction<AsyncResult<DistributeResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DistributeResult parse(JsonNode data) {
+            return DistributeResult.fromJson(data);
         }
 
         @Override
@@ -1671,25 +1464,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "distributor")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/distribute";
+                + "/{namespaceName}/distribute/{distributorName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{distributorName}", this.request.getDistributorName() == null|| this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{distributorName}", this.request.getDistributorName() == null || this.request.getDistributorName().length() == 0 ? "null" : String.valueOf(this.request.getDistributorName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDistributeResource() != null) {
-                try {
-                    json.put("distributeResource", new JSONObject(mapper.writeValueAsString(this.request.getDistributeResource())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userId", request.getUserId());
+                    put("distributeResource", request.getDistributeResource() != null ? request.getDistributeResource().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1700,12 +1486,6 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1713,25 +1493,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 所持品を配布する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void distributeAsync(
             DistributeRequest request,
             AsyncAction<AsyncResult<DistributeResult>> callback
     ) {
-        DistributeTask task = new DistributeTask(request, callback, DistributeResult.class);
+        DistributeTask task = new DistributeTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 所持品を配布する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DistributeResult distribute(
             DistributeRequest request
     ) {
@@ -1758,15 +1527,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public DistributeWithoutOverflowProcessTask(
             DistributeWithoutOverflowProcessRequest request,
-            AsyncAction<AsyncResult<DistributeWithoutOverflowProcessResult>> userCallback,
-            Class<DistributeWithoutOverflowProcessResult> clazz
+            AsyncAction<AsyncResult<DistributeWithoutOverflowProcessResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DistributeWithoutOverflowProcessResult parse(JsonNode data) {
+            return DistributeWithoutOverflowProcessResult.fromJson(data);
         }
 
         @Override
@@ -1777,20 +1549,13 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/distribute";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDistributeResource() != null) {
-                try {
-                    json.put("distributeResource", new JSONObject(mapper.writeValueAsString(this.request.getDistributeResource())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userId", request.getUserId());
+                    put("distributeResource", request.getDistributeResource() != null ? request.getDistributeResource().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1801,12 +1566,6 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1814,25 +1573,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * 所持品を配布する(溢れた際の救済処置無し)<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void distributeWithoutOverflowProcessAsync(
             DistributeWithoutOverflowProcessRequest request,
             AsyncAction<AsyncResult<DistributeWithoutOverflowProcessResult>> callback
     ) {
-        DistributeWithoutOverflowProcessTask task = new DistributeWithoutOverflowProcessTask(request, callback, DistributeWithoutOverflowProcessResult.class);
+        DistributeWithoutOverflowProcessTask task = new DistributeWithoutOverflowProcessTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 所持品を配布する(溢れた際の救済処置無し)<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DistributeWithoutOverflowProcessResult distributeWithoutOverflowProcess(
             DistributeWithoutOverflowProcessRequest request
     ) {
@@ -1859,15 +1607,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public RunStampTaskTask(
             RunStampTaskRequest request,
-            AsyncAction<AsyncResult<RunStampTaskResult>> userCallback,
-            Class<RunStampTaskResult> clazz
+            AsyncAction<AsyncResult<RunStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RunStampTaskResult parse(JsonNode data) {
+            return RunStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -1878,21 +1629,15 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/distribute/stamp/task/run";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1903,9 +1648,6 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1913,25 +1655,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * スタンプシートのタスクを実行する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void runStampTaskAsync(
             RunStampTaskRequest request,
             AsyncAction<AsyncResult<RunStampTaskResult>> callback
     ) {
-        RunStampTaskTask task = new RunStampTaskTask(request, callback, RunStampTaskResult.class);
+        RunStampTaskTask task = new RunStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートのタスクを実行する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RunStampTaskResult runStampTask(
             RunStampTaskRequest request
     ) {
@@ -1958,15 +1689,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public RunStampSheetTask(
             RunStampSheetRequest request,
-            AsyncAction<AsyncResult<RunStampSheetResult>> userCallback,
-            Class<RunStampSheetResult> clazz
+            AsyncAction<AsyncResult<RunStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RunStampSheetResult parse(JsonNode data) {
+            return RunStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -1977,21 +1711,15 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/distribute/stamp/sheet/run";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2002,9 +1730,6 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2012,25 +1737,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * スタンプシートの完了を報告する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void runStampSheetAsync(
             RunStampSheetRequest request,
             AsyncAction<AsyncResult<RunStampSheetResult>> callback
     ) {
-        RunStampSheetTask task = new RunStampSheetTask(request, callback, RunStampSheetResult.class);
+        RunStampSheetTask task = new RunStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートの完了を報告する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RunStampSheetResult runStampSheet(
             RunStampSheetRequest request
     ) {
@@ -2057,15 +1771,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public RunStampSheetExpressTask(
             RunStampSheetExpressRequest request,
-            AsyncAction<AsyncResult<RunStampSheetExpressResult>> userCallback,
-            Class<RunStampSheetExpressResult> clazz
+            AsyncAction<AsyncResult<RunStampSheetExpressResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RunStampSheetExpressResult parse(JsonNode data) {
+            return RunStampSheetExpressResult.fromJson(data);
         }
 
         @Override
@@ -2076,21 +1793,15 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/distribute/stamp/run";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2101,9 +1812,6 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2111,25 +1819,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * スタンプタスクおよびスタンプシートを実行する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void runStampSheetExpressAsync(
             RunStampSheetExpressRequest request,
             AsyncAction<AsyncResult<RunStampSheetExpressResult>> callback
     ) {
-        RunStampSheetExpressTask task = new RunStampSheetExpressTask(request, callback, RunStampSheetExpressResult.class);
+        RunStampSheetExpressTask task = new RunStampSheetExpressTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプタスクおよびスタンプシートを実行する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RunStampSheetExpressResult runStampSheetExpress(
             RunStampSheetExpressRequest request
     ) {
@@ -2156,15 +1853,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public RunStampTaskWithoutNamespaceTask(
             RunStampTaskWithoutNamespaceRequest request,
-            AsyncAction<AsyncResult<RunStampTaskWithoutNamespaceResult>> userCallback,
-            Class<RunStampTaskWithoutNamespaceResult> clazz
+            AsyncAction<AsyncResult<RunStampTaskWithoutNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RunStampTaskWithoutNamespaceResult parse(JsonNode data) {
+            return RunStampTaskWithoutNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -2175,19 +1875,13 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/task/run";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2198,9 +1892,6 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2208,31 +1899,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * スタンプシートのタスクを実行する<br>
-     *   <br>
-     *   ネームスペースの指定を省略することで、<br>
-     *   ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void runStampTaskWithoutNamespaceAsync(
             RunStampTaskWithoutNamespaceRequest request,
             AsyncAction<AsyncResult<RunStampTaskWithoutNamespaceResult>> callback
     ) {
-        RunStampTaskWithoutNamespaceTask task = new RunStampTaskWithoutNamespaceTask(request, callback, RunStampTaskWithoutNamespaceResult.class);
+        RunStampTaskWithoutNamespaceTask task = new RunStampTaskWithoutNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートのタスクを実行する<br>
-     *   <br>
-     *   ネームスペースの指定を省略することで、<br>
-     *   ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RunStampTaskWithoutNamespaceResult runStampTaskWithoutNamespace(
             RunStampTaskWithoutNamespaceRequest request
     ) {
@@ -2259,15 +1933,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public RunStampSheetWithoutNamespaceTask(
             RunStampSheetWithoutNamespaceRequest request,
-            AsyncAction<AsyncResult<RunStampSheetWithoutNamespaceResult>> userCallback,
-            Class<RunStampSheetWithoutNamespaceResult> clazz
+            AsyncAction<AsyncResult<RunStampSheetWithoutNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RunStampSheetWithoutNamespaceResult parse(JsonNode data) {
+            return RunStampSheetWithoutNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -2276,21 +1953,15 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "distributor")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/distribute/stamp/sheet/run";
+                + "/stamp/sheet/run";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2301,9 +1972,6 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2311,31 +1979,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * スタンプシートの完了を報告する<br>
-     *   <br>
-     *   ネームスペースの指定を省略することで、<br>
-     *   ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void runStampSheetWithoutNamespaceAsync(
             RunStampSheetWithoutNamespaceRequest request,
             AsyncAction<AsyncResult<RunStampSheetWithoutNamespaceResult>> callback
     ) {
-        RunStampSheetWithoutNamespaceTask task = new RunStampSheetWithoutNamespaceTask(request, callback, RunStampSheetWithoutNamespaceResult.class);
+        RunStampSheetWithoutNamespaceTask task = new RunStampSheetWithoutNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートの完了を報告する<br>
-     *   <br>
-     *   ネームスペースの指定を省略することで、<br>
-     *   ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RunStampSheetWithoutNamespaceResult runStampSheetWithoutNamespace(
             RunStampSheetWithoutNamespaceRequest request
     ) {
@@ -2362,15 +2013,18 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
 
         public RunStampSheetExpressWithoutNamespaceTask(
             RunStampSheetExpressWithoutNamespaceRequest request,
-            AsyncAction<AsyncResult<RunStampSheetExpressWithoutNamespaceResult>> userCallback,
-            Class<RunStampSheetExpressWithoutNamespaceResult> clazz
+            AsyncAction<AsyncResult<RunStampSheetExpressWithoutNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RunStampSheetExpressWithoutNamespaceResult parse(JsonNode data) {
+            return RunStampSheetExpressWithoutNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -2379,21 +2033,15 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "distributor")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/distribute/stamp/run";
+                + "/stamp/run";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2404,9 +2052,6 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2414,25 +2059,14 @@ public class Gs2DistributorRestClient extends AbstractGs2Client<Gs2DistributorRe
         }
     }
 
-    /**
-     * スタンプタスクおよびスタンプシートを実行する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void runStampSheetExpressWithoutNamespaceAsync(
             RunStampSheetExpressWithoutNamespaceRequest request,
             AsyncAction<AsyncResult<RunStampSheetExpressWithoutNamespaceResult>> callback
     ) {
-        RunStampSheetExpressWithoutNamespaceTask task = new RunStampSheetExpressWithoutNamespaceTask(request, callback, RunStampSheetExpressWithoutNamespaceResult.class);
+        RunStampSheetExpressWithoutNamespaceTask task = new RunStampSheetExpressWithoutNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプタスクおよびスタンプシートを実行する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RunStampSheetExpressWithoutNamespaceResult runStampSheetExpressWithoutNamespace(
             RunStampSheetExpressWithoutNamespaceRequest request
     ) {

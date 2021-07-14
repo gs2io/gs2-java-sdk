@@ -16,39 +16,48 @@
 
 package io.gs2.experience.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.experience.model.*;
+import io.gs2.experience.model.ThresholdMaster;
 
-/**
- * ランクアップ閾値マスターを削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteThresholdMasterResult implements IResult, Serializable {
-	/** 削除したランクアップ閾値マスター */
-	private ThresholdMaster item;
+    private ThresholdMaster item;
 
-	/**
-	 * 削除したランクアップ閾値マスターを取得
-	 *
-	 * @return ランクアップ閾値マスターを削除
-	 */
 	public ThresholdMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 削除したランクアップ閾値マスターを設定
-	 *
-	 * @param item ランクアップ閾値マスターを削除
-	 */
 	public void setItem(ThresholdMaster item) {
 		this.item = item;
 	}
+
+	public DeleteThresholdMasterResult withItem(ThresholdMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteThresholdMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteThresholdMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : ThresholdMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

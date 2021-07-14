@@ -16,39 +16,48 @@
 
 package io.gs2.identifier.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.identifier.model.*;
+import io.gs2.identifier.model.Identifier;
 
-/**
- * クレデンシャルを取得します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetIdentifierResult implements IResult, Serializable {
-	/** クレデンシャル */
-	private Identifier item;
+    private Identifier item;
 
-	/**
-	 * クレデンシャルを取得
-	 *
-	 * @return クレデンシャルを取得します
-	 */
 	public Identifier getItem() {
 		return item;
 	}
 
-	/**
-	 * クレデンシャルを設定
-	 *
-	 * @param item クレデンシャルを取得します
-	 */
 	public void setItem(Identifier item) {
 		this.item = item;
 	}
+
+	public GetIdentifierResult withItem(Identifier item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetIdentifierResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetIdentifierResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Identifier.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

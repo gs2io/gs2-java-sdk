@@ -16,114 +16,78 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * セキュリティポリシーを更新します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateSecurityPolicyRequest extends Gs2BasicRequest<UpdateSecurityPolicyRequest> {
-
-    /** セキュリティポリシー名 */
     private String securityPolicyName;
-
-    /**
-     * セキュリティポリシー名を取得
-     *
-     * @return セキュリティポリシーを更新します
-     */
-    public String getSecurityPolicyName() {
-        return securityPolicyName;
-    }
-
-    /**
-     * セキュリティポリシー名を設定
-     *
-     * @param securityPolicyName セキュリティポリシーを更新します
-     */
-    public void setSecurityPolicyName(String securityPolicyName) {
-        this.securityPolicyName = securityPolicyName;
-    }
-
-    /**
-     * セキュリティポリシー名を設定
-     *
-     * @param securityPolicyName セキュリティポリシーを更新します
-     * @return this
-     */
-    public UpdateSecurityPolicyRequest withSecurityPolicyName(String securityPolicyName) {
-        setSecurityPolicyName(securityPolicyName);
-        return this;
-    }
-
-    /** セキュリティポリシーの説明 */
     private String description;
-
-    /**
-     * セキュリティポリシーの説明を取得
-     *
-     * @return セキュリティポリシーを更新します
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * セキュリティポリシーの説明を設定
-     *
-     * @param description セキュリティポリシーを更新します
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * セキュリティポリシーの説明を設定
-     *
-     * @param description セキュリティポリシーを更新します
-     * @return this
-     */
-    public UpdateSecurityPolicyRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** ポリシードキュメント */
     private String policy;
 
-    /**
-     * ポリシードキュメントを取得
-     *
-     * @return セキュリティポリシーを更新します
-     */
-    public String getPolicy() {
-        return policy;
+	public String getSecurityPolicyName() {
+		return securityPolicyName;
+	}
+
+	public void setSecurityPolicyName(String securityPolicyName) {
+		this.securityPolicyName = securityPolicyName;
+	}
+
+	public UpdateSecurityPolicyRequest withSecurityPolicyName(String securityPolicyName) {
+		this.securityPolicyName = securityPolicyName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateSecurityPolicyRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getPolicy() {
+		return policy;
+	}
+
+	public void setPolicy(String policy) {
+		this.policy = policy;
+	}
+
+	public UpdateSecurityPolicyRequest withPolicy(String policy) {
+		this.policy = policy;
+		return this;
+	}
+
+    public static UpdateSecurityPolicyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateSecurityPolicyRequest()
+            .withSecurityPolicyName(data.get("securityPolicyName") == null || data.get("securityPolicyName").isNull() ? null : data.get("securityPolicyName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withPolicy(data.get("policy") == null || data.get("policy").isNull() ? null : data.get("policy").asText());
     }
 
-    /**
-     * ポリシードキュメントを設定
-     *
-     * @param policy セキュリティポリシーを更新します
-     */
-    public void setPolicy(String policy) {
-        this.policy = policy;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("securityPolicyName", getSecurityPolicyName());
+                put("description", getDescription());
+                put("policy", getPolicy());
+            }}
+        );
     }
-
-    /**
-     * ポリシードキュメントを設定
-     *
-     * @param policy セキュリティポリシーを更新します
-     * @return this
-     */
-    public UpdateSecurityPolicyRequest withPolicy(String policy) {
-        setPolicy(policy);
-        return this;
-    }
-
 }

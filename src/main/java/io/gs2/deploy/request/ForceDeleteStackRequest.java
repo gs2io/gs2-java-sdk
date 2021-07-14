@@ -16,50 +16,46 @@
 
 package io.gs2.deploy.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.deploy.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタックを強制的に最終削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ForceDeleteStackRequest extends Gs2BasicRequest<ForceDeleteStackRequest> {
-
-    /** スタック名 */
     private String stackName;
 
-    /**
-     * スタック名を取得
-     *
-     * @return スタックを強制的に最終削除
-     */
-    public String getStackName() {
-        return stackName;
+	public String getStackName() {
+		return stackName;
+	}
+
+	public void setStackName(String stackName) {
+		this.stackName = stackName;
+	}
+
+	public ForceDeleteStackRequest withStackName(String stackName) {
+		this.stackName = stackName;
+		return this;
+	}
+
+    public static ForceDeleteStackRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ForceDeleteStackRequest()
+            .withStackName(data.get("stackName") == null || data.get("stackName").isNull() ? null : data.get("stackName").asText());
     }
 
-    /**
-     * スタック名を設定
-     *
-     * @param stackName スタックを強制的に最終削除
-     */
-    public void setStackName(String stackName) {
-        this.stackName = stackName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stackName", getStackName());
+            }}
+        );
     }
-
-    /**
-     * スタック名を設定
-     *
-     * @param stackName スタックを強制的に最終削除
-     * @return this
-     */
-    public ForceDeleteStackRequest withStackName(String stackName) {
-        setStackName(stackName);
-        return this;
-    }
-
 }

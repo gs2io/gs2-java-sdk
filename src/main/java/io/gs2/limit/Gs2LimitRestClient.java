@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.limit;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.limit.request.*;
 import io.gs2.limit.result.*;
-import io.gs2.limit.model.*;
+import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
-/**
- * GS2 Limit API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2LimitRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,26 +152,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -206,25 +177,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -251,15 +211,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -270,7 +233,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -294,25 +257,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -339,15 +291,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -358,7 +313,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -382,25 +337,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -427,15 +371,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -446,25 +393,15 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -482,25 +419,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -527,15 +453,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -546,7 +475,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -570,25 +499,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -615,15 +533,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public DescribeCountersTask(
             DescribeCountersRequest request,
-            AsyncAction<AsyncResult<DescribeCountersResult>> userCallback,
-            Class<DescribeCountersResult> clazz
+            AsyncAction<AsyncResult<DescribeCountersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeCountersResult parse(JsonNode data) {
+            return DescribeCountersResult.fromJson(data);
         }
 
         @Override
@@ -634,7 +555,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/counter";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -663,9 +584,6 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -673,25 +591,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * カウンターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeCountersAsync(
             DescribeCountersRequest request,
             AsyncAction<AsyncResult<DescribeCountersResult>> callback
     ) {
-        DescribeCountersTask task = new DescribeCountersTask(request, callback, DescribeCountersResult.class);
+        DescribeCountersTask task = new DescribeCountersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カウンターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeCountersResult describeCounters(
             DescribeCountersRequest request
     ) {
@@ -718,15 +625,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public DescribeCountersByUserIdTask(
             DescribeCountersByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeCountersByUserIdResult>> userCallback,
-            Class<DescribeCountersByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeCountersByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeCountersByUserIdResult parse(JsonNode data) {
+            return DescribeCountersByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -737,8 +647,8 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/counter";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -764,9 +674,6 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -774,25 +681,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * カウンターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeCountersByUserIdAsync(
             DescribeCountersByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeCountersByUserIdResult>> callback
     ) {
-        DescribeCountersByUserIdTask task = new DescribeCountersByUserIdTask(request, callback, DescribeCountersByUserIdResult.class);
+        DescribeCountersByUserIdTask task = new DescribeCountersByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カウンターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeCountersByUserIdResult describeCountersByUserId(
             DescribeCountersByUserIdRequest request
     ) {
@@ -819,15 +715,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public GetCounterTask(
             GetCounterRequest request,
-            AsyncAction<AsyncResult<GetCounterResult>> userCallback,
-            Class<GetCounterResult> clazz
+            AsyncAction<AsyncResult<GetCounterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCounterResult parse(JsonNode data) {
+            return GetCounterResult.fromJson(data);
         }
 
         @Override
@@ -838,9 +737,9 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/counter/{limitName}/{counterName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{limitName}", this.request.getLimitName() == null|| this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
-            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -860,9 +759,6 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -870,25 +766,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * カウンターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCounterAsync(
             GetCounterRequest request,
             AsyncAction<AsyncResult<GetCounterResult>> callback
     ) {
-        GetCounterTask task = new GetCounterTask(request, callback, GetCounterResult.class);
+        GetCounterTask task = new GetCounterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カウンターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCounterResult getCounter(
             GetCounterRequest request
     ) {
@@ -915,15 +800,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public GetCounterByUserIdTask(
             GetCounterByUserIdRequest request,
-            AsyncAction<AsyncResult<GetCounterByUserIdResult>> userCallback,
-            Class<GetCounterByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetCounterByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCounterByUserIdResult parse(JsonNode data) {
+            return GetCounterByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -934,10 +822,10 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/counter/{limitName}/{counterName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{limitName}", this.request.getLimitName() == null|| this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -954,9 +842,6 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -964,25 +849,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してカウンターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCounterByUserIdAsync(
             GetCounterByUserIdRequest request,
             AsyncAction<AsyncResult<GetCounterByUserIdResult>> callback
     ) {
-        GetCounterByUserIdTask task = new GetCounterByUserIdTask(request, callback, GetCounterByUserIdResult.class);
+        GetCounterByUserIdTask task = new GetCounterByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してカウンターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCounterByUserIdResult getCounterByUserId(
             GetCounterByUserIdRequest request
     ) {
@@ -1009,15 +883,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public CountUpTask(
             CountUpRequest request,
-            AsyncAction<AsyncResult<CountUpResult>> userCallback,
-            Class<CountUpResult> clazz
+            AsyncAction<AsyncResult<CountUpResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CountUpResult parse(JsonNode data) {
+            return CountUpResult.fromJson(data);
         }
 
         @Override
@@ -1028,23 +905,17 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/counter/{limitName}/{counterName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{limitName}", this.request.getLimitName() == null|| this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
-            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCountUpValue() != null) {
-                json.put("countUpValue", this.request.getCountUpValue());
-            }
-            if (this.request.getMaxValue() != null) {
-                json.put("maxValue", this.request.getMaxValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("countUpValue", request.getCountUpValue());
+                    put("maxValue", request.getMaxValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1058,9 +929,6 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1068,25 +936,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * カウントアップ<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void countUpAsync(
             CountUpRequest request,
             AsyncAction<AsyncResult<CountUpResult>> callback
     ) {
-        CountUpTask task = new CountUpTask(request, callback, CountUpResult.class);
+        CountUpTask task = new CountUpTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カウントアップ<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CountUpResult countUp(
             CountUpRequest request
     ) {
@@ -1113,15 +970,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public CountUpByUserIdTask(
             CountUpByUserIdRequest request,
-            AsyncAction<AsyncResult<CountUpByUserIdResult>> userCallback,
-            Class<CountUpByUserIdResult> clazz
+            AsyncAction<AsyncResult<CountUpByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CountUpByUserIdResult parse(JsonNode data) {
+            return CountUpByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1132,24 +992,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/counter/{limitName}/{counterName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{limitName}", this.request.getLimitName() == null|| this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
-            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCountUpValue() != null) {
-                json.put("countUpValue", this.request.getCountUpValue());
-            }
-            if (this.request.getMaxValue() != null) {
-                json.put("maxValue", this.request.getMaxValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("countUpValue", request.getCountUpValue());
+                    put("maxValue", request.getMaxValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1160,9 +1014,6 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1170,25 +1021,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してカウントアップ<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void countUpByUserIdAsync(
             CountUpByUserIdRequest request,
             AsyncAction<AsyncResult<CountUpByUserIdResult>> callback
     ) {
-        CountUpByUserIdTask task = new CountUpByUserIdTask(request, callback, CountUpByUserIdResult.class);
+        CountUpByUserIdTask task = new CountUpByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してカウントアップ<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CountUpByUserIdResult countUpByUserId(
             CountUpByUserIdRequest request
     ) {
@@ -1215,15 +1055,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public DeleteCounterByUserIdTask(
             DeleteCounterByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteCounterByUserIdResult>> userCallback,
-            Class<DeleteCounterByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteCounterByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteCounterByUserIdResult parse(JsonNode data) {
+            return DeleteCounterByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1234,10 +1077,10 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/counter/{limitName}/{counterName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{limitName}", this.request.getLimitName() == null|| this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{counterName}", this.request.getCounterName() == null|| this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1254,9 +1097,6 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1264,25 +1104,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してカウンターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteCounterByUserIdAsync(
             DeleteCounterByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteCounterByUserIdResult>> callback
     ) {
-        DeleteCounterByUserIdTask task = new DeleteCounterByUserIdTask(request, callback, DeleteCounterByUserIdResult.class);
+        DeleteCounterByUserIdTask task = new DeleteCounterByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してカウンターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteCounterByUserIdResult deleteCounterByUserId(
             DeleteCounterByUserIdRequest request
     ) {
@@ -1309,15 +1138,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public CountUpByStampTaskTask(
             CountUpByStampTaskRequest request,
-            AsyncAction<AsyncResult<CountUpByStampTaskResult>> userCallback,
-            Class<CountUpByStampTaskResult> clazz
+            AsyncAction<AsyncResult<CountUpByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CountUpByStampTaskResult parse(JsonNode data) {
+            return CountUpByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -1328,19 +1160,13 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/counter/increase";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1351,9 +1177,6 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1361,25 +1184,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * スタンプシートでカウントアップ<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void countUpByStampTaskAsync(
             CountUpByStampTaskRequest request,
             AsyncAction<AsyncResult<CountUpByStampTaskResult>> callback
     ) {
-        CountUpByStampTaskTask task = new CountUpByStampTaskTask(request, callback, CountUpByStampTaskResult.class);
+        CountUpByStampTaskTask task = new CountUpByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでカウントアップ<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CountUpByStampTaskResult countUpByStampTask(
             CountUpByStampTaskRequest request
     ) {
@@ -1406,15 +1218,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public DeleteByStampSheetTask(
             DeleteByStampSheetRequest request,
-            AsyncAction<AsyncResult<DeleteByStampSheetResult>> userCallback,
-            Class<DeleteByStampSheetResult> clazz
+            AsyncAction<AsyncResult<DeleteByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteByStampSheetResult parse(JsonNode data) {
+            return DeleteByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -1425,19 +1240,13 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/counter/delete";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1448,9 +1257,6 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1458,25 +1264,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * スタンプシートでカウンターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteByStampSheetAsync(
             DeleteByStampSheetRequest request,
             AsyncAction<AsyncResult<DeleteByStampSheetResult>> callback
     ) {
-        DeleteByStampSheetTask task = new DeleteByStampSheetTask(request, callback, DeleteByStampSheetResult.class);
+        DeleteByStampSheetTask task = new DeleteByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでカウンターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteByStampSheetResult deleteByStampSheet(
             DeleteByStampSheetRequest request
     ) {
@@ -1503,15 +1298,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public DescribeLimitModelMastersTask(
             DescribeLimitModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeLimitModelMastersResult>> userCallback,
-            Class<DescribeLimitModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeLimitModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeLimitModelMastersResult parse(JsonNode data) {
+            return DescribeLimitModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -1522,7 +1320,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/limit";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1552,25 +1350,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 回数制限の種類マスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeLimitModelMastersAsync(
             DescribeLimitModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeLimitModelMastersResult>> callback
     ) {
-        DescribeLimitModelMastersTask task = new DescribeLimitModelMastersTask(request, callback, DescribeLimitModelMastersResult.class);
+        DescribeLimitModelMastersTask task = new DescribeLimitModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 回数制限の種類マスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeLimitModelMastersResult describeLimitModelMasters(
             DescribeLimitModelMastersRequest request
     ) {
@@ -1597,15 +1384,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public CreateLimitModelMasterTask(
             CreateLimitModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateLimitModelMasterResult>> userCallback,
-            Class<CreateLimitModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateLimitModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateLimitModelMasterResult parse(JsonNode data) {
+            return CreateLimitModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1616,36 +1406,20 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/limit";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getResetType() != null) {
-                json.put("resetType", this.request.getResetType());
-            }
-            if (this.request.getResetDayOfMonth() != null) {
-                json.put("resetDayOfMonth", this.request.getResetDayOfMonth());
-            }
-            if (this.request.getResetDayOfWeek() != null) {
-                json.put("resetDayOfWeek", this.request.getResetDayOfWeek());
-            }
-            if (this.request.getResetHour() != null) {
-                json.put("resetHour", this.request.getResetHour());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("resetType", request.getResetType());
+                    put("resetDayOfMonth", request.getResetDayOfMonth());
+                    put("resetDayOfWeek", request.getResetDayOfWeek());
+                    put("resetHour", request.getResetHour());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1663,25 +1437,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 回数制限の種類マスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createLimitModelMasterAsync(
             CreateLimitModelMasterRequest request,
             AsyncAction<AsyncResult<CreateLimitModelMasterResult>> callback
     ) {
-        CreateLimitModelMasterTask task = new CreateLimitModelMasterTask(request, callback, CreateLimitModelMasterResult.class);
+        CreateLimitModelMasterTask task = new CreateLimitModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 回数制限の種類マスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateLimitModelMasterResult createLimitModelMaster(
             CreateLimitModelMasterRequest request
     ) {
@@ -1708,15 +1471,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public GetLimitModelMasterTask(
             GetLimitModelMasterRequest request,
-            AsyncAction<AsyncResult<GetLimitModelMasterResult>> userCallback,
-            Class<GetLimitModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetLimitModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetLimitModelMasterResult parse(JsonNode data) {
+            return GetLimitModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1727,8 +1493,8 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/limit/{limitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{limitName}", this.request.getLimitName() == null|| this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1752,25 +1518,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 回数制限の種類マスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getLimitModelMasterAsync(
             GetLimitModelMasterRequest request,
             AsyncAction<AsyncResult<GetLimitModelMasterResult>> callback
     ) {
-        GetLimitModelMasterTask task = new GetLimitModelMasterTask(request, callback, GetLimitModelMasterResult.class);
+        GetLimitModelMasterTask task = new GetLimitModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 回数制限の種類マスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetLimitModelMasterResult getLimitModelMaster(
             GetLimitModelMasterRequest request
     ) {
@@ -1797,15 +1552,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public UpdateLimitModelMasterTask(
             UpdateLimitModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateLimitModelMasterResult>> userCallback,
-            Class<UpdateLimitModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateLimitModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateLimitModelMasterResult parse(JsonNode data) {
+            return UpdateLimitModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1816,34 +1574,20 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/limit/{limitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{limitName}", this.request.getLimitName() == null|| this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getResetType() != null) {
-                json.put("resetType", this.request.getResetType());
-            }
-            if (this.request.getResetDayOfMonth() != null) {
-                json.put("resetDayOfMonth", this.request.getResetDayOfMonth());
-            }
-            if (this.request.getResetDayOfWeek() != null) {
-                json.put("resetDayOfWeek", this.request.getResetDayOfWeek());
-            }
-            if (this.request.getResetHour() != null) {
-                json.put("resetHour", this.request.getResetHour());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("resetType", request.getResetType());
+                    put("resetDayOfMonth", request.getResetDayOfMonth());
+                    put("resetDayOfWeek", request.getResetDayOfWeek());
+                    put("resetHour", request.getResetHour());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1861,25 +1605,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 回数制限の種類マスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateLimitModelMasterAsync(
             UpdateLimitModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateLimitModelMasterResult>> callback
     ) {
-        UpdateLimitModelMasterTask task = new UpdateLimitModelMasterTask(request, callback, UpdateLimitModelMasterResult.class);
+        UpdateLimitModelMasterTask task = new UpdateLimitModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 回数制限の種類マスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateLimitModelMasterResult updateLimitModelMaster(
             UpdateLimitModelMasterRequest request
     ) {
@@ -1906,15 +1639,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public DeleteLimitModelMasterTask(
             DeleteLimitModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteLimitModelMasterResult>> userCallback,
-            Class<DeleteLimitModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteLimitModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteLimitModelMasterResult parse(JsonNode data) {
+            return DeleteLimitModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1925,8 +1661,8 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/limit/{limitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{limitName}", this.request.getLimitName() == null|| this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1950,25 +1686,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 回数制限の種類マスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteLimitModelMasterAsync(
             DeleteLimitModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteLimitModelMasterResult>> callback
     ) {
-        DeleteLimitModelMasterTask task = new DeleteLimitModelMasterTask(request, callback, DeleteLimitModelMasterResult.class);
+        DeleteLimitModelMasterTask task = new DeleteLimitModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 回数制限の種類マスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteLimitModelMasterResult deleteLimitModelMaster(
             DeleteLimitModelMasterRequest request
     ) {
@@ -1995,15 +1720,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -2014,7 +1742,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2038,25 +1766,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 現在有効な回数制限設定のマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な回数制限設定のマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -2083,15 +1800,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public GetCurrentLimitMasterTask(
             GetCurrentLimitMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentLimitMasterResult>> userCallback,
-            Class<GetCurrentLimitMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentLimitMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentLimitMasterResult parse(JsonNode data) {
+            return GetCurrentLimitMasterResult.fromJson(data);
         }
 
         @Override
@@ -2102,7 +1822,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2126,25 +1846,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 現在有効な回数制限設定を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentLimitMasterAsync(
             GetCurrentLimitMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentLimitMasterResult>> callback
     ) {
-        GetCurrentLimitMasterTask task = new GetCurrentLimitMasterTask(request, callback, GetCurrentLimitMasterResult.class);
+        GetCurrentLimitMasterTask task = new GetCurrentLimitMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な回数制限設定を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentLimitMasterResult getCurrentLimitMaster(
             GetCurrentLimitMasterRequest request
     ) {
@@ -2171,15 +1880,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public UpdateCurrentLimitMasterTask(
             UpdateCurrentLimitMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentLimitMasterResult>> userCallback,
-            Class<UpdateCurrentLimitMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentLimitMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentLimitMasterResult parse(JsonNode data) {
+            return UpdateCurrentLimitMasterResult.fromJson(data);
         }
 
         @Override
@@ -2190,18 +1902,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2219,25 +1927,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 現在有効な回数制限設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentLimitMasterAsync(
             UpdateCurrentLimitMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentLimitMasterResult>> callback
     ) {
-        UpdateCurrentLimitMasterTask task = new UpdateCurrentLimitMasterTask(request, callback, UpdateCurrentLimitMasterResult.class);
+        UpdateCurrentLimitMasterTask task = new UpdateCurrentLimitMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な回数制限設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentLimitMasterResult updateCurrentLimitMaster(
             UpdateCurrentLimitMasterRequest request
     ) {
@@ -2264,15 +1961,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public UpdateCurrentLimitMasterFromGitHubTask(
             UpdateCurrentLimitMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentLimitMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentLimitMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentLimitMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentLimitMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentLimitMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2283,22 +1983,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2316,25 +2008,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 現在有効な回数制限設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentLimitMasterFromGitHubAsync(
             UpdateCurrentLimitMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentLimitMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentLimitMasterFromGitHubTask task = new UpdateCurrentLimitMasterFromGitHubTask(request, callback, UpdateCurrentLimitMasterFromGitHubResult.class);
+        UpdateCurrentLimitMasterFromGitHubTask task = new UpdateCurrentLimitMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な回数制限設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentLimitMasterFromGitHubResult updateCurrentLimitMasterFromGitHub(
             UpdateCurrentLimitMasterFromGitHubRequest request
     ) {
@@ -2361,15 +2042,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public DescribeLimitModelsTask(
             DescribeLimitModelsRequest request,
-            AsyncAction<AsyncResult<DescribeLimitModelsResult>> userCallback,
-            Class<DescribeLimitModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeLimitModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeLimitModelsResult parse(JsonNode data) {
+            return DescribeLimitModelsResult.fromJson(data);
         }
 
         @Override
@@ -2380,7 +2064,7 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/limit";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2404,25 +2088,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 回数制限の種類の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeLimitModelsAsync(
             DescribeLimitModelsRequest request,
             AsyncAction<AsyncResult<DescribeLimitModelsResult>> callback
     ) {
-        DescribeLimitModelsTask task = new DescribeLimitModelsTask(request, callback, DescribeLimitModelsResult.class);
+        DescribeLimitModelsTask task = new DescribeLimitModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 回数制限の種類の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeLimitModelsResult describeLimitModels(
             DescribeLimitModelsRequest request
     ) {
@@ -2449,15 +2122,18 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
 
         public GetLimitModelTask(
             GetLimitModelRequest request,
-            AsyncAction<AsyncResult<GetLimitModelResult>> userCallback,
-            Class<GetLimitModelResult> clazz
+            AsyncAction<AsyncResult<GetLimitModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetLimitModelResult parse(JsonNode data) {
+            return GetLimitModelResult.fromJson(data);
         }
 
         @Override
@@ -2468,8 +2144,8 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/limit/{limitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{limitName}", this.request.getLimitName() == null|| this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2493,25 +2169,14 @@ public class Gs2LimitRestClient extends AbstractGs2Client<Gs2LimitRestClient> {
         }
     }
 
-    /**
-     * 回数制限の種類を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getLimitModelAsync(
             GetLimitModelRequest request,
             AsyncAction<AsyncResult<GetLimitModelResult>> callback
     ) {
-        GetLimitModelTask task = new GetLimitModelTask(request, callback, GetLimitModelResult.class);
+        GetLimitModelTask task = new GetLimitModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 回数制限の種類を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetLimitModelResult getLimitModel(
             GetLimitModelRequest request
     ) {

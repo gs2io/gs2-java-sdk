@@ -16,39 +16,48 @@
 
 package io.gs2.formation.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
+import io.gs2.formation.model.Mold;
 
-/**
- * 保存したフォームを削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteMoldResult implements IResult, Serializable {
-	/** 保存したフォーム */
-	private Mold item;
+    private Mold item;
 
-	/**
-	 * 保存したフォームを取得
-	 *
-	 * @return 保存したフォームを削除
-	 */
 	public Mold getItem() {
 		return item;
 	}
 
-	/**
-	 * 保存したフォームを設定
-	 *
-	 * @param item 保存したフォームを削除
-	 */
 	public void setItem(Mold item) {
 		this.item = item;
 	}
+
+	public DeleteMoldResult withItem(Mold item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteMoldResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteMoldResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Mold.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

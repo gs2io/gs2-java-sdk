@@ -16,93 +16,70 @@
 
 package io.gs2.experience.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 現在有効な経験値設定
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CurrentExperienceMaster implements IModel, Serializable {
-	/** ネームスペース */
-	protected String namespaceId;
+public class CurrentExperienceMaster implements IModel, Serializable, Comparable<CurrentExperienceMaster> {
+	private String namespaceId;
+	private String settings;
 
-	/**
-	 * ネームスペースを取得
-	 *
-	 * @return ネームスペース
-	 */
 	public String getNamespaceId() {
 		return namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 */
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 * @return this
-	 */
 	public CurrentExperienceMaster withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** マスターデータ */
-	protected String settings;
 
-	/**
-	 * マスターデータを取得
-	 *
-	 * @return マスターデータ
-	 */
 	public String getSettings() {
 		return settings;
 	}
 
-	/**
-	 * マスターデータを設定
-	 *
-	 * @param settings マスターデータ
-	 */
 	public void setSettings(String settings) {
 		this.settings = settings;
 	}
 
-	/**
-	 * マスターデータを設定
-	 *
-	 * @param settings マスターデータ
-	 * @return this
-	 */
 	public CurrentExperienceMaster withSettings(String settings) {
 		this.settings = settings;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceId", this.getNamespaceId())
-            .put("settings", this.getSettings());
-        return body_;
+    public static CurrentExperienceMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CurrentExperienceMaster()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withSettings(data.get("settings") == null || data.get("settings").isNull() ? null : data.get("settings").asText());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("settings", getSettings());
+            }}
+        );
+    }
+
+	@Override
+	public int compareTo(CurrentExperienceMaster o) {
+		return namespaceId.compareTo(o.namespaceId);
+	}
 
 	@Override
 	public int hashCode() {

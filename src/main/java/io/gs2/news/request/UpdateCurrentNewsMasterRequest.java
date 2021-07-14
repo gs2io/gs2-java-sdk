@@ -16,82 +16,62 @@
 
 package io.gs2.news.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.news.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 現在有効なお知らせを更新します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateCurrentNewsMasterRequest extends Gs2BasicRequest<UpdateCurrentNewsMasterRequest> {
-
-    /** ネームスペースの名前 */
     private String namespaceName;
-
-    /**
-     * ネームスペースの名前を取得
-     *
-     * @return 現在有効なお知らせを更新します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName 現在有効なお知らせを更新します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName 現在有効なお知らせを更新します
-     * @return this
-     */
-    public UpdateCurrentNewsMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** アップロード準備で受け取ったトークン */
     private String uploadToken;
 
-    /**
-     * アップロード準備で受け取ったトークンを取得
-     *
-     * @return 現在有効なお知らせを更新します
-     */
-    public String getUploadToken() {
-        return uploadToken;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateCurrentNewsMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUploadToken() {
+		return uploadToken;
+	}
+
+	public void setUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+	}
+
+	public UpdateCurrentNewsMasterRequest withUploadToken(String uploadToken) {
+		this.uploadToken = uploadToken;
+		return this;
+	}
+
+    public static UpdateCurrentNewsMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateCurrentNewsMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUploadToken(data.get("uploadToken") == null || data.get("uploadToken").isNull() ? null : data.get("uploadToken").asText());
     }
 
-    /**
-     * アップロード準備で受け取ったトークンを設定
-     *
-     * @param uploadToken 現在有効なお知らせを更新します
-     */
-    public void setUploadToken(String uploadToken) {
-        this.uploadToken = uploadToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("uploadToken", getUploadToken());
+            }}
+        );
     }
-
-    /**
-     * アップロード準備で受け取ったトークンを設定
-     *
-     * @param uploadToken 現在有効なお知らせを更新します
-     * @return this
-     */
-    public UpdateCurrentNewsMasterRequest withUploadToken(String uploadToken) {
-        setUploadToken(uploadToken);
-        return this;
-    }
-
 }

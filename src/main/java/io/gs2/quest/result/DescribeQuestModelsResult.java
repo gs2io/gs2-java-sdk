@@ -16,39 +16,61 @@
 
 package io.gs2.quest.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.quest.model.*;
+import io.gs2.quest.model.AcquireAction;
+import io.gs2.quest.model.Contents;
+import io.gs2.quest.model.ConsumeAction;
+import io.gs2.quest.model.QuestModel;
 
-/**
- * クエストモデルの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeQuestModelsResult implements IResult, Serializable {
-	/** Noneのリスト */
-	private List<QuestModel> items;
+    private List<QuestModel> items;
 
-	/**
-	 * Noneのリストを取得
-	 *
-	 * @return クエストモデルの一覧を取得
-	 */
 	public List<QuestModel> getItems() {
 		return items;
 	}
 
-	/**
-	 * Noneのリストを設定
-	 *
-	 * @param items クエストモデルの一覧を取得
-	 */
 	public void setItems(List<QuestModel> items) {
 		this.items = items;
 	}
+
+	public DescribeQuestModelsResult withItems(List<QuestModel> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static DescribeQuestModelsResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeQuestModelsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<QuestModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return QuestModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<QuestModel>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

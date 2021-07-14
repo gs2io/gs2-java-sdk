@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.lock;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.lock.request.*;
 import io.gs2.lock.result.*;
-import io.gs2.lock.model.*;
+import io.gs2.lock.model.*;public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
-/**
- * GS2 Lock API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2LockRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,26 +152,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -206,25 +177,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -251,15 +211,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -270,7 +233,7 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -294,25 +257,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -339,15 +291,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -358,7 +313,7 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -382,25 +337,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -427,15 +371,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -446,25 +393,15 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -482,25 +419,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -527,15 +453,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -546,7 +475,7 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -570,25 +499,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -615,15 +533,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public DescribeMutexesTask(
             DescribeMutexesRequest request,
-            AsyncAction<AsyncResult<DescribeMutexesResult>> userCallback,
-            Class<DescribeMutexesResult> clazz
+            AsyncAction<AsyncResult<DescribeMutexesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeMutexesResult parse(JsonNode data) {
+            return DescribeMutexesResult.fromJson(data);
         }
 
         @Override
@@ -634,7 +555,7 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mutex";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -660,9 +581,6 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -670,25 +588,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ミューテックスの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeMutexesAsync(
             DescribeMutexesRequest request,
             AsyncAction<AsyncResult<DescribeMutexesResult>> callback
     ) {
-        DescribeMutexesTask task = new DescribeMutexesTask(request, callback, DescribeMutexesResult.class);
+        DescribeMutexesTask task = new DescribeMutexesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ミューテックスの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeMutexesResult describeMutexes(
             DescribeMutexesRequest request
     ) {
@@ -715,15 +622,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public DescribeMutexesByUserIdTask(
             DescribeMutexesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeMutexesByUserIdResult>> userCallback,
-            Class<DescribeMutexesByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeMutexesByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeMutexesByUserIdResult parse(JsonNode data) {
+            return DescribeMutexesByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -734,8 +644,8 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mutex";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -758,9 +668,6 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -768,25 +675,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ミューテックスの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeMutexesByUserIdAsync(
             DescribeMutexesByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeMutexesByUserIdResult>> callback
     ) {
-        DescribeMutexesByUserIdTask task = new DescribeMutexesByUserIdTask(request, callback, DescribeMutexesByUserIdResult.class);
+        DescribeMutexesByUserIdTask task = new DescribeMutexesByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ミューテックスの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeMutexesByUserIdResult describeMutexesByUserId(
             DescribeMutexesByUserIdRequest request
     ) {
@@ -813,15 +709,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public LockTask(
             LockRequest request,
-            AsyncAction<AsyncResult<LockResult>> userCallback,
-            Class<LockResult> clazz
+            AsyncAction<AsyncResult<LockResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public LockResult parse(JsonNode data) {
+            return LockResult.fromJson(data);
         }
 
         @Override
@@ -832,22 +731,16 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mutex/{propertyId}/lock";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTransactionId() != null) {
-                json.put("transactionId", this.request.getTransactionId());
-            }
-            if (this.request.getTtl() != null) {
-                json.put("ttl", this.request.getTtl());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("transactionId", request.getTransactionId());
+                    put("ttl", request.getTtl());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -861,9 +754,6 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -871,25 +761,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ミューテックスを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void lockAsync(
             LockRequest request,
             AsyncAction<AsyncResult<LockResult>> callback
     ) {
-        LockTask task = new LockTask(request, callback, LockResult.class);
+        LockTask task = new LockTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ミューテックスを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public LockResult lock(
             LockRequest request
     ) {
@@ -916,15 +795,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public LockByUserIdTask(
             LockByUserIdRequest request,
-            AsyncAction<AsyncResult<LockByUserIdResult>> userCallback,
-            Class<LockByUserIdResult> clazz
+            AsyncAction<AsyncResult<LockByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public LockByUserIdResult parse(JsonNode data) {
+            return LockByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -935,23 +817,17 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mutex/{propertyId}/lock";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTransactionId() != null) {
-                json.put("transactionId", this.request.getTransactionId());
-            }
-            if (this.request.getTtl() != null) {
-                json.put("ttl", this.request.getTtl());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("transactionId", request.getTransactionId());
+                    put("ttl", request.getTtl());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -962,9 +838,6 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -972,25 +845,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してミューテックスを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void lockByUserIdAsync(
             LockByUserIdRequest request,
             AsyncAction<AsyncResult<LockByUserIdResult>> callback
     ) {
-        LockByUserIdTask task = new LockByUserIdTask(request, callback, LockByUserIdResult.class);
+        LockByUserIdTask task = new LockByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してミューテックスを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public LockByUserIdResult lockByUserId(
             LockByUserIdRequest request
     ) {
@@ -1017,15 +879,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public UnlockTask(
             UnlockRequest request,
-            AsyncAction<AsyncResult<UnlockResult>> userCallback,
-            Class<UnlockResult> clazz
+            AsyncAction<AsyncResult<UnlockResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UnlockResult parse(JsonNode data) {
+            return UnlockResult.fromJson(data);
         }
 
         @Override
@@ -1036,19 +901,15 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mutex/{propertyId}/unlock";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTransactionId() != null) {
-                json.put("transactionId", this.request.getTransactionId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("transactionId", request.getTransactionId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1062,9 +923,6 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1072,25 +930,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ミューテックスを解放<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void unlockAsync(
             UnlockRequest request,
             AsyncAction<AsyncResult<UnlockResult>> callback
     ) {
-        UnlockTask task = new UnlockTask(request, callback, UnlockResult.class);
+        UnlockTask task = new UnlockTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ミューテックスを解放<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UnlockResult unlock(
             UnlockRequest request
     ) {
@@ -1117,15 +964,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public UnlockByUserIdTask(
             UnlockByUserIdRequest request,
-            AsyncAction<AsyncResult<UnlockByUserIdResult>> userCallback,
-            Class<UnlockByUserIdResult> clazz
+            AsyncAction<AsyncResult<UnlockByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UnlockByUserIdResult parse(JsonNode data) {
+            return UnlockByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1136,20 +986,16 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mutex/{propertyId}/unlock";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTransactionId() != null) {
-                json.put("transactionId", this.request.getTransactionId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("transactionId", request.getTransactionId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1160,9 +1006,6 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1170,25 +1013,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してミューテックスを解放<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void unlockByUserIdAsync(
             UnlockByUserIdRequest request,
             AsyncAction<AsyncResult<UnlockByUserIdResult>> callback
     ) {
-        UnlockByUserIdTask task = new UnlockByUserIdTask(request, callback, UnlockByUserIdResult.class);
+        UnlockByUserIdTask task = new UnlockByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してミューテックスを解放<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UnlockByUserIdResult unlockByUserId(
             UnlockByUserIdRequest request
     ) {
@@ -1215,15 +1047,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public GetMutexTask(
             GetMutexRequest request,
-            AsyncAction<AsyncResult<GetMutexResult>> userCallback,
-            Class<GetMutexResult> clazz
+            AsyncAction<AsyncResult<GetMutexResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetMutexResult parse(JsonNode data) {
+            return GetMutexResult.fromJson(data);
         }
 
         @Override
@@ -1234,8 +1069,8 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mutex/{propertyId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1255,9 +1090,6 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1265,25 +1097,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ミューテックスを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getMutexAsync(
             GetMutexRequest request,
             AsyncAction<AsyncResult<GetMutexResult>> callback
     ) {
-        GetMutexTask task = new GetMutexTask(request, callback, GetMutexResult.class);
+        GetMutexTask task = new GetMutexTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ミューテックスを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetMutexResult getMutex(
             GetMutexRequest request
     ) {
@@ -1310,15 +1131,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public GetMutexByUserIdTask(
             GetMutexByUserIdRequest request,
-            AsyncAction<AsyncResult<GetMutexByUserIdResult>> userCallback,
-            Class<GetMutexByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetMutexByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetMutexByUserIdResult parse(JsonNode data) {
+            return GetMutexByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1329,9 +1153,9 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mutex/{propertyId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1348,9 +1172,6 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1358,25 +1179,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してミューテックスを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getMutexByUserIdAsync(
             GetMutexByUserIdRequest request,
             AsyncAction<AsyncResult<GetMutexByUserIdResult>> callback
     ) {
-        GetMutexByUserIdTask task = new GetMutexByUserIdTask(request, callback, GetMutexByUserIdResult.class);
+        GetMutexByUserIdTask task = new GetMutexByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してミューテックスを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetMutexByUserIdResult getMutexByUserId(
             GetMutexByUserIdRequest request
     ) {
@@ -1403,15 +1213,18 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
 
         public DeleteMutexByUserIdTask(
             DeleteMutexByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteMutexByUserIdResult>> userCallback,
-            Class<DeleteMutexByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteMutexByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteMutexByUserIdResult parse(JsonNode data) {
+            return DeleteMutexByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1422,9 +1235,9 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mutex/{propertyId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1441,9 +1254,6 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1451,25 +1261,14 @@ public class Gs2LockRestClient extends AbstractGs2Client<Gs2LockRestClient> {
         }
     }
 
-    /**
-     * ミューテックスを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteMutexByUserIdAsync(
             DeleteMutexByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteMutexByUserIdResult>> callback
     ) {
-        DeleteMutexByUserIdTask task = new DeleteMutexByUserIdTask(request, callback, DeleteMutexByUserIdResult.class);
+        DeleteMutexByUserIdTask task = new DeleteMutexByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ミューテックスを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteMutexByUserIdResult deleteMutexByUserId(
             DeleteMutexByUserIdRequest request
     ) {

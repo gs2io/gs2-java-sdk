@@ -16,93 +16,70 @@
 
 package io.gs2.version.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 現在有効なバージョン
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CurrentVersionMaster implements IModel, Serializable {
-	/** 現在有効なバージョン */
-	protected String namespaceId;
+public class CurrentVersionMaster implements IModel, Serializable, Comparable<CurrentVersionMaster> {
+	private String namespaceId;
+	private String settings;
 
-	/**
-	 * 現在有効なバージョンを取得
-	 *
-	 * @return 現在有効なバージョン
-	 */
 	public String getNamespaceId() {
 		return namespaceId;
 	}
 
-	/**
-	 * 現在有効なバージョンを設定
-	 *
-	 * @param namespaceId 現在有効なバージョン
-	 */
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * 現在有効なバージョンを設定
-	 *
-	 * @param namespaceId 現在有効なバージョン
-	 * @return this
-	 */
 	public CurrentVersionMaster withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** マスターデータ */
-	protected String settings;
 
-	/**
-	 * マスターデータを取得
-	 *
-	 * @return マスターデータ
-	 */
 	public String getSettings() {
 		return settings;
 	}
 
-	/**
-	 * マスターデータを設定
-	 *
-	 * @param settings マスターデータ
-	 */
 	public void setSettings(String settings) {
 		this.settings = settings;
 	}
 
-	/**
-	 * マスターデータを設定
-	 *
-	 * @param settings マスターデータ
-	 * @return this
-	 */
 	public CurrentVersionMaster withSettings(String settings) {
 		this.settings = settings;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceId", this.getNamespaceId())
-            .put("settings", this.getSettings());
-        return body_;
+    public static CurrentVersionMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CurrentVersionMaster()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withSettings(data.get("settings") == null || data.get("settings").isNull() ? null : data.get("settings").asText());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("settings", getSettings());
+            }}
+        );
+    }
+
+	@Override
+	public int compareTo(CurrentVersionMaster o) {
+		return namespaceId.compareTo(o.namespaceId);
+	}
 
 	@Override
 	public int hashCode() {

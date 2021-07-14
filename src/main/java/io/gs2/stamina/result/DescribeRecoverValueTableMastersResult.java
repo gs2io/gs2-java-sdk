@@ -16,59 +16,74 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.RecoverValueTableMaster;
 
-/**
- * スタミナ回復量テーブルマスターの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeRecoverValueTableMastersResult implements IResult, Serializable {
-	/** スタミナ回復量テーブルマスターのリスト */
-	private List<RecoverValueTableMaster> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<RecoverValueTableMaster> items;
+    private String nextPageToken;
 
-	/**
-	 * スタミナ回復量テーブルマスターのリストを取得
-	 *
-	 * @return スタミナ回復量テーブルマスターの一覧を取得
-	 */
 	public List<RecoverValueTableMaster> getItems() {
 		return items;
 	}
 
-	/**
-	 * スタミナ回復量テーブルマスターのリストを設定
-	 *
-	 * @param items スタミナ回復量テーブルマスターの一覧を取得
-	 */
 	public void setItems(List<RecoverValueTableMaster> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return スタミナ回復量テーブルマスターの一覧を取得
-	 */
+	public DescribeRecoverValueTableMastersResult withItems(List<RecoverValueTableMaster> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken スタミナ回復量テーブルマスターの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeRecoverValueTableMastersResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeRecoverValueTableMastersResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeRecoverValueTableMastersResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RecoverValueTableMaster>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return RecoverValueTableMaster.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<RecoverValueTableMaster>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

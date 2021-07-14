@@ -16,320 +16,178 @@
 
 package io.gs2.version.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * バージョン設定
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VersionModel implements IModel, Serializable, Comparable<VersionModel> {
-	/** バージョン設定 */
-	protected String versionModelId;
+	private String versionModelId;
+	private String name;
+	private String metadata;
+	private Version warningVersion;
+	private Version errorVersion;
+	private String scope;
+	private Version currentVersion;
+	private Boolean needSignature;
+	private String signatureKeyId;
 
-	/**
-	 * バージョン設定を取得
-	 *
-	 * @return バージョン設定
-	 */
 	public String getVersionModelId() {
 		return versionModelId;
 	}
 
-	/**
-	 * バージョン設定を設定
-	 *
-	 * @param versionModelId バージョン設定
-	 */
 	public void setVersionModelId(String versionModelId) {
 		this.versionModelId = versionModelId;
 	}
 
-	/**
-	 * バージョン設定を設定
-	 *
-	 * @param versionModelId バージョン設定
-	 * @return this
-	 */
 	public VersionModel withVersionModelId(String versionModelId) {
 		this.versionModelId = versionModelId;
 		return this;
 	}
-	/** バージョンの種類名 */
-	protected String name;
 
-	/**
-	 * バージョンの種類名を取得
-	 *
-	 * @return バージョンの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * バージョンの種類名を設定
-	 *
-	 * @param name バージョンの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * バージョンの種類名を設定
-	 *
-	 * @param name バージョンの種類名
-	 * @return this
-	 */
 	public VersionModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** バージョンの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * バージョンの種類のメタデータを取得
-	 *
-	 * @return バージョンの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * バージョンの種類のメタデータを設定
-	 *
-	 * @param metadata バージョンの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * バージョンの種類のメタデータを設定
-	 *
-	 * @param metadata バージョンの種類のメタデータ
-	 * @return this
-	 */
 	public VersionModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** バージョンアップを促すバージョン */
-	protected Version warningVersion;
 
-	/**
-	 * バージョンアップを促すバージョンを取得
-	 *
-	 * @return バージョンアップを促すバージョン
-	 */
 	public Version getWarningVersion() {
 		return warningVersion;
 	}
 
-	/**
-	 * バージョンアップを促すバージョンを設定
-	 *
-	 * @param warningVersion バージョンアップを促すバージョン
-	 */
 	public void setWarningVersion(Version warningVersion) {
 		this.warningVersion = warningVersion;
 	}
 
-	/**
-	 * バージョンアップを促すバージョンを設定
-	 *
-	 * @param warningVersion バージョンアップを促すバージョン
-	 * @return this
-	 */
 	public VersionModel withWarningVersion(Version warningVersion) {
 		this.warningVersion = warningVersion;
 		return this;
 	}
-	/** バージョンチェックを蹴るバージョン */
-	protected Version errorVersion;
 
-	/**
-	 * バージョンチェックを蹴るバージョンを取得
-	 *
-	 * @return バージョンチェックを蹴るバージョン
-	 */
 	public Version getErrorVersion() {
 		return errorVersion;
 	}
 
-	/**
-	 * バージョンチェックを蹴るバージョンを設定
-	 *
-	 * @param errorVersion バージョンチェックを蹴るバージョン
-	 */
 	public void setErrorVersion(Version errorVersion) {
 		this.errorVersion = errorVersion;
 	}
 
-	/**
-	 * バージョンチェックを蹴るバージョンを設定
-	 *
-	 * @param errorVersion バージョンチェックを蹴るバージョン
-	 * @return this
-	 */
 	public VersionModel withErrorVersion(Version errorVersion) {
 		this.errorVersion = errorVersion;
 		return this;
 	}
-	/** 判定に使用するバージョン値の種類 */
-	protected String scope;
 
-	/**
-	 * 判定に使用するバージョン値の種類を取得
-	 *
-	 * @return 判定に使用するバージョン値の種類
-	 */
 	public String getScope() {
 		return scope;
 	}
 
-	/**
-	 * 判定に使用するバージョン値の種類を設定
-	 *
-	 * @param scope 判定に使用するバージョン値の種類
-	 */
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
 
-	/**
-	 * 判定に使用するバージョン値の種類を設定
-	 *
-	 * @param scope 判定に使用するバージョン値の種類
-	 * @return this
-	 */
 	public VersionModel withScope(String scope) {
 		this.scope = scope;
 		return this;
 	}
-	/** 現在のバージョン */
-	protected Version currentVersion;
 
-	/**
-	 * 現在のバージョンを取得
-	 *
-	 * @return 現在のバージョン
-	 */
 	public Version getCurrentVersion() {
 		return currentVersion;
 	}
 
-	/**
-	 * 現在のバージョンを設定
-	 *
-	 * @param currentVersion 現在のバージョン
-	 */
 	public void setCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 	}
 
-	/**
-	 * 現在のバージョンを設定
-	 *
-	 * @param currentVersion 現在のバージョン
-	 * @return this
-	 */
 	public VersionModel withCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 		return this;
 	}
-	/** 判定するバージョン値に署名検証を必要とするか */
-	protected Boolean needSignature;
 
-	/**
-	 * 判定するバージョン値に署名検証を必要とするかを取得
-	 *
-	 * @return 判定するバージョン値に署名検証を必要とするか
-	 */
 	public Boolean getNeedSignature() {
 		return needSignature;
 	}
 
-	/**
-	 * 判定するバージョン値に署名検証を必要とするかを設定
-	 *
-	 * @param needSignature 判定するバージョン値に署名検証を必要とするか
-	 */
 	public void setNeedSignature(Boolean needSignature) {
 		this.needSignature = needSignature;
 	}
 
-	/**
-	 * 判定するバージョン値に署名検証を必要とするかを設定
-	 *
-	 * @param needSignature 判定するバージョン値に署名検証を必要とするか
-	 * @return this
-	 */
 	public VersionModel withNeedSignature(Boolean needSignature) {
 		this.needSignature = needSignature;
 		return this;
 	}
-	/** 署名検証に使用する暗号鍵 のGRN */
-	protected String signatureKeyId;
 
-	/**
-	 * 署名検証に使用する暗号鍵 のGRNを取得
-	 *
-	 * @return 署名検証に使用する暗号鍵 のGRN
-	 */
 	public String getSignatureKeyId() {
 		return signatureKeyId;
 	}
 
-	/**
-	 * 署名検証に使用する暗号鍵 のGRNを設定
-	 *
-	 * @param signatureKeyId 署名検証に使用する暗号鍵 のGRN
-	 */
 	public void setSignatureKeyId(String signatureKeyId) {
 		this.signatureKeyId = signatureKeyId;
 	}
 
-	/**
-	 * 署名検証に使用する暗号鍵 のGRNを設定
-	 *
-	 * @param signatureKeyId 署名検証に使用する暗号鍵 のGRN
-	 * @return this
-	 */
 	public VersionModel withSignatureKeyId(String signatureKeyId) {
 		this.signatureKeyId = signatureKeyId;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode warningVersion = this.getWarningVersion().toJson();
-        JsonNode errorVersion = this.getErrorVersion().toJson();
-        JsonNode currentVersion = this.getCurrentVersion().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("versionModelId", this.getVersionModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("scope", this.getScope())
-            .put("needSignature", this.getNeedSignature())
-            .put("signatureKeyId", this.getSignatureKeyId());
-        body_.set("warningVersion", warningVersion);
-        body_.set("errorVersion", errorVersion);
-        body_.set("currentVersion", currentVersion);
-        return body_;
+    public static VersionModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new VersionModel()
+            .withVersionModelId(data.get("versionModelId") == null || data.get("versionModelId").isNull() ? null : data.get("versionModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withWarningVersion(data.get("warningVersion") == null || data.get("warningVersion").isNull() ? null : Version.fromJson(data.get("warningVersion")))
+            .withErrorVersion(data.get("errorVersion") == null || data.get("errorVersion").isNull() ? null : Version.fromJson(data.get("errorVersion")))
+            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
+            .withCurrentVersion(data.get("currentVersion") == null || data.get("currentVersion").isNull() ? null : Version.fromJson(data.get("currentVersion")))
+            .withNeedSignature(data.get("needSignature") == null || data.get("needSignature").isNull() ? null : data.get("needSignature").booleanValue())
+            .withSignatureKeyId(data.get("signatureKeyId") == null || data.get("signatureKeyId").isNull() ? null : data.get("signatureKeyId").asText());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("versionModelId", getVersionModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("warningVersion", getWarningVersion() != null ? getWarningVersion().toJson() : null);
+                put("errorVersion", getErrorVersion() != null ? getErrorVersion().toJson() : null);
+                put("scope", getScope());
+                put("currentVersion", getCurrentVersion() != null ? getCurrentVersion().toJson() : null);
+                put("needSignature", getNeedSignature());
+                put("signatureKeyId", getSignatureKeyId());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(VersionModel o) {
 		return versionModelId.compareTo(o.versionModelId);

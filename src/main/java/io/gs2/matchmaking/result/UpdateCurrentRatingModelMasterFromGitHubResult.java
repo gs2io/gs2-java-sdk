@@ -16,39 +16,48 @@
 
 package io.gs2.matchmaking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.CurrentRatingModelMaster;
 
-/**
- * 現在有効なレーティングマスターを更新します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateCurrentRatingModelMasterFromGitHubResult implements IResult, Serializable {
-	/** 更新した現在有効なレーティングマスター */
-	private CurrentRatingModelMaster item;
+    private CurrentRatingModelMaster item;
 
-	/**
-	 * 更新した現在有効なレーティングマスターを取得
-	 *
-	 * @return 現在有効なレーティングマスターを更新します
-	 */
 	public CurrentRatingModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新した現在有効なレーティングマスターを設定
-	 *
-	 * @param item 現在有効なレーティングマスターを更新します
-	 */
 	public void setItem(CurrentRatingModelMaster item) {
 		this.item = item;
 	}
+
+	public UpdateCurrentRatingModelMasterFromGitHubResult withItem(CurrentRatingModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateCurrentRatingModelMasterFromGitHubResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateCurrentRatingModelMasterFromGitHubResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentRatingModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

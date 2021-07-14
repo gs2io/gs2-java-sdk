@@ -16,79 +16,90 @@
 
 package io.gs2.news.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.news.model.*;
+import io.gs2.news.model.SetCookieRequestEntry;
 
-/**
- * お知らせ記事に加算 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WantGrantResult implements IResult, Serializable {
-	/** お知らせコンテンツにアクセスするために設定の必要なクッキー のリスト */
-	private List<SetCookieRequestEntry> items;
-	/** お知らせコンテンツにアクセスするためのURL */
-	private String browserUrl;
-	/** ZIP形式のお知らせコンテンツにアクセスするためのURL Cookieの設定は不要 */
-	private String zipUrl;
+    private List<SetCookieRequestEntry> items;
+    private String browserUrl;
+    private String zipUrl;
 
-	/**
-	 * お知らせコンテンツにアクセスするために設定の必要なクッキー のリストを取得
-	 *
-	 * @return お知らせ記事に加算
-	 */
 	public List<SetCookieRequestEntry> getItems() {
 		return items;
 	}
 
-	/**
-	 * お知らせコンテンツにアクセスするために設定の必要なクッキー のリストを設定
-	 *
-	 * @param items お知らせ記事に加算
-	 */
 	public void setItems(List<SetCookieRequestEntry> items) {
 		this.items = items;
 	}
 
-	/**
-	 * お知らせコンテンツにアクセスするためのURLを取得
-	 *
-	 * @return お知らせ記事に加算
-	 */
+	public WantGrantResult withItems(List<SetCookieRequestEntry> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getBrowserUrl() {
 		return browserUrl;
 	}
 
-	/**
-	 * お知らせコンテンツにアクセスするためのURLを設定
-	 *
-	 * @param browserUrl お知らせ記事に加算
-	 */
 	public void setBrowserUrl(String browserUrl) {
 		this.browserUrl = browserUrl;
 	}
 
-	/**
-	 * ZIP形式のお知らせコンテンツにアクセスするためのURL Cookieの設定は不要を取得
-	 *
-	 * @return お知らせ記事に加算
-	 */
+	public WantGrantResult withBrowserUrl(String browserUrl) {
+		this.browserUrl = browserUrl;
+		return this;
+	}
+
 	public String getZipUrl() {
 		return zipUrl;
 	}
 
-	/**
-	 * ZIP形式のお知らせコンテンツにアクセスするためのURL Cookieの設定は不要を設定
-	 *
-	 * @param zipUrl お知らせ記事に加算
-	 */
 	public void setZipUrl(String zipUrl) {
 		this.zipUrl = zipUrl;
 	}
+
+	public WantGrantResult withZipUrl(String zipUrl) {
+		this.zipUrl = zipUrl;
+		return this;
+	}
+
+    public static WantGrantResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new WantGrantResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<SetCookieRequestEntry>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return SetCookieRequestEntry.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withBrowserUrl(data.get("browserUrl") == null || data.get("browserUrl").isNull() ? null : data.get("browserUrl").asText())
+            .withZipUrl(data.get("zipUrl") == null || data.get("zipUrl").isNull() ? null : data.get("zipUrl").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<SetCookieRequestEntry>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("browserUrl", getBrowserUrl());
+                put("zipUrl", getZipUrl());
+            }}
+        );
+    }
 }

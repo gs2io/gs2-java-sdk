@@ -16,39 +16,48 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.ItemModelMaster;
 
-/**
- * アイテムモデルマスターを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetItemModelMasterResult implements IResult, Serializable {
-	/** アイテムモデルマスター */
-	private ItemModelMaster item;
+    private ItemModelMaster item;
 
-	/**
-	 * アイテムモデルマスターを取得
-	 *
-	 * @return アイテムモデルマスターを取得
-	 */
 	public ItemModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * アイテムモデルマスターを設定
-	 *
-	 * @param item アイテムモデルマスターを取得
-	 */
 	public void setItem(ItemModelMaster item) {
 		this.item = item;
 	}
+
+	public GetItemModelMasterResult withItem(ItemModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetItemModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetItemModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : ItemModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

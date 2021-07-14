@@ -16,39 +16,48 @@
 
 package io.gs2.friend.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.friend.model.*;
+import io.gs2.friend.model.FriendRequest;
 
-/**
- * フレンドリクエストを送信 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SendRequestResult implements IResult, Serializable {
-	/** 送信したフレンドリクエスト */
-	private FriendRequest item;
+    private FriendRequest item;
 
-	/**
-	 * 送信したフレンドリクエストを取得
-	 *
-	 * @return フレンドリクエストを送信
-	 */
 	public FriendRequest getItem() {
 		return item;
 	}
 
-	/**
-	 * 送信したフレンドリクエストを設定
-	 *
-	 * @param item フレンドリクエストを送信
-	 */
 	public void setItem(FriendRequest item) {
 		this.item = item;
 	}
+
+	public SendRequestResult withItem(FriendRequest item) {
+		this.item = item;
+		return this;
+	}
+
+    public static SendRequestResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SendRequestResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : FriendRequest.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

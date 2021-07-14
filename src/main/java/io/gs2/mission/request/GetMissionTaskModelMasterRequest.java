@@ -16,114 +16,78 @@
 
 package io.gs2.mission.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.mission.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ミッションタスクマスターを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetMissionTaskModelMasterRequest extends Gs2BasicRequest<GetMissionTaskModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ミッションタスクマスターを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッションタスクマスターを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッションタスクマスターを取得
-     * @return this
-     */
-    public GetMissionTaskModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ミッショングループ名 */
     private String missionGroupName;
-
-    /**
-     * ミッショングループ名を取得
-     *
-     * @return ミッションタスクマスターを取得
-     */
-    public String getMissionGroupName() {
-        return missionGroupName;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param missionGroupName ミッションタスクマスターを取得
-     */
-    public void setMissionGroupName(String missionGroupName) {
-        this.missionGroupName = missionGroupName;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param missionGroupName ミッションタスクマスターを取得
-     * @return this
-     */
-    public GetMissionTaskModelMasterRequest withMissionGroupName(String missionGroupName) {
-        setMissionGroupName(missionGroupName);
-        return this;
-    }
-
-    /** タスク名 */
     private String missionTaskName;
 
-    /**
-     * タスク名を取得
-     *
-     * @return ミッションタスクマスターを取得
-     */
-    public String getMissionTaskName() {
-        return missionTaskName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetMissionTaskModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getMissionGroupName() {
+		return missionGroupName;
+	}
+
+	public void setMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+	}
+
+	public GetMissionTaskModelMasterRequest withMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+		return this;
+	}
+
+	public String getMissionTaskName() {
+		return missionTaskName;
+	}
+
+	public void setMissionTaskName(String missionTaskName) {
+		this.missionTaskName = missionTaskName;
+	}
+
+	public GetMissionTaskModelMasterRequest withMissionTaskName(String missionTaskName) {
+		this.missionTaskName = missionTaskName;
+		return this;
+	}
+
+    public static GetMissionTaskModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetMissionTaskModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
+            .withMissionTaskName(data.get("missionTaskName") == null || data.get("missionTaskName").isNull() ? null : data.get("missionTaskName").asText());
     }
 
-    /**
-     * タスク名を設定
-     *
-     * @param missionTaskName ミッションタスクマスターを取得
-     */
-    public void setMissionTaskName(String missionTaskName) {
-        this.missionTaskName = missionTaskName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("missionGroupName", getMissionGroupName());
+                put("missionTaskName", getMissionTaskName());
+            }}
+        );
     }
-
-    /**
-     * タスク名を設定
-     *
-     * @param missionTaskName ミッションタスクマスターを取得
-     * @return this
-     */
-    public GetMissionTaskModelMasterRequest withMissionTaskName(String missionTaskName) {
-        setMissionTaskName(missionTaskName);
-        return this;
-    }
-
 }

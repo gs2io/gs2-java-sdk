@@ -16,39 +16,48 @@
 
 package io.gs2.lottery.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
+import io.gs2.lottery.model.LotteryModelMaster;
 
-/**
- * 抽選の種類マスターを削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteLotteryModelMasterResult implements IResult, Serializable {
-	/** 削除した抽選の種類マスター */
-	private LotteryModelMaster item;
+    private LotteryModelMaster item;
 
-	/**
-	 * 削除した抽選の種類マスターを取得
-	 *
-	 * @return 抽選の種類マスターを削除
-	 */
 	public LotteryModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 削除した抽選の種類マスターを設定
-	 *
-	 * @param item 抽選の種類マスターを削除
-	 */
 	public void setItem(LotteryModelMaster item) {
 		this.item = item;
 	}
+
+	public DeleteLotteryModelMasterResult withItem(LotteryModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteLotteryModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteLotteryModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : LotteryModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

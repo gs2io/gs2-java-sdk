@@ -16,338 +16,193 @@
 
 package io.gs2.chat.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.chat.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.chat.model.ScriptSetting;
+import io.gs2.chat.model.NotificationSetting;
+import io.gs2.chat.model.LogSetting;
 
-/**
- * ネームスペースを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** ゲームプレイヤーによるルームの作成を許可するか */
     private Boolean allowCreateRoom;
-
-    /**
-     * ゲームプレイヤーによるルームの作成を許可するかを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public Boolean getAllowCreateRoom() {
-        return allowCreateRoom;
-    }
-
-    /**
-     * ゲームプレイヤーによるルームの作成を許可するかを設定
-     *
-     * @param allowCreateRoom ネームスペースを更新
-     */
-    public void setAllowCreateRoom(Boolean allowCreateRoom) {
-        this.allowCreateRoom = allowCreateRoom;
-    }
-
-    /**
-     * ゲームプレイヤーによるルームの作成を許可するかを設定
-     *
-     * @param allowCreateRoom ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withAllowCreateRoom(Boolean allowCreateRoom) {
-        setAllowCreateRoom(allowCreateRoom);
-        return this;
-    }
-
-    /** メッセージを投稿したときに実行するスクリプト */
     private ScriptSetting postMessageScript;
-
-    /**
-     * メッセージを投稿したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getPostMessageScript() {
-        return postMessageScript;
-    }
-
-    /**
-     * メッセージを投稿したときに実行するスクリプトを設定
-     *
-     * @param postMessageScript ネームスペースを更新
-     */
-    public void setPostMessageScript(ScriptSetting postMessageScript) {
-        this.postMessageScript = postMessageScript;
-    }
-
-    /**
-     * メッセージを投稿したときに実行するスクリプトを設定
-     *
-     * @param postMessageScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withPostMessageScript(ScriptSetting postMessageScript) {
-        setPostMessageScript(postMessageScript);
-        return this;
-    }
-
-    /** ルームを作成したときに実行するスクリプト */
     private ScriptSetting createRoomScript;
-
-    /**
-     * ルームを作成したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getCreateRoomScript() {
-        return createRoomScript;
-    }
-
-    /**
-     * ルームを作成したときに実行するスクリプトを設定
-     *
-     * @param createRoomScript ネームスペースを更新
-     */
-    public void setCreateRoomScript(ScriptSetting createRoomScript) {
-        this.createRoomScript = createRoomScript;
-    }
-
-    /**
-     * ルームを作成したときに実行するスクリプトを設定
-     *
-     * @param createRoomScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withCreateRoomScript(ScriptSetting createRoomScript) {
-        setCreateRoomScript(createRoomScript);
-        return this;
-    }
-
-    /** ルームを削除したときに実行するスクリプト */
     private ScriptSetting deleteRoomScript;
-
-    /**
-     * ルームを削除したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getDeleteRoomScript() {
-        return deleteRoomScript;
-    }
-
-    /**
-     * ルームを削除したときに実行するスクリプトを設定
-     *
-     * @param deleteRoomScript ネームスペースを更新
-     */
-    public void setDeleteRoomScript(ScriptSetting deleteRoomScript) {
-        this.deleteRoomScript = deleteRoomScript;
-    }
-
-    /**
-     * ルームを削除したときに実行するスクリプトを設定
-     *
-     * @param deleteRoomScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDeleteRoomScript(ScriptSetting deleteRoomScript) {
-        setDeleteRoomScript(deleteRoomScript);
-        return this;
-    }
-
-    /** ルームを購読したときに実行するスクリプト */
     private ScriptSetting subscribeRoomScript;
-
-    /**
-     * ルームを購読したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getSubscribeRoomScript() {
-        return subscribeRoomScript;
-    }
-
-    /**
-     * ルームを購読したときに実行するスクリプトを設定
-     *
-     * @param subscribeRoomScript ネームスペースを更新
-     */
-    public void setSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
-        this.subscribeRoomScript = subscribeRoomScript;
-    }
-
-    /**
-     * ルームを購読したときに実行するスクリプトを設定
-     *
-     * @param subscribeRoomScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
-        setSubscribeRoomScript(subscribeRoomScript);
-        return this;
-    }
-
-    /** ルームの購読を解除したときに実行するスクリプト */
     private ScriptSetting unsubscribeRoomScript;
-
-    /**
-     * ルームの購読を解除したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getUnsubscribeRoomScript() {
-        return unsubscribeRoomScript;
-    }
-
-    /**
-     * ルームの購読を解除したときに実行するスクリプトを設定
-     *
-     * @param unsubscribeRoomScript ネームスペースを更新
-     */
-    public void setUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
-        this.unsubscribeRoomScript = unsubscribeRoomScript;
-    }
-
-    /**
-     * ルームの購読を解除したときに実行するスクリプトを設定
-     *
-     * @param unsubscribeRoomScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
-        setUnsubscribeRoomScript(unsubscribeRoomScript);
-        return this;
-    }
-
-    /** 購読しているルームに新しい投稿がきたときのプッシュ通知 */
     private NotificationSetting postNotification;
-
-    /**
-     * 購読しているルームに新しい投稿がきたときのプッシュ通知を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public NotificationSetting getPostNotification() {
-        return postNotification;
-    }
-
-    /**
-     * 購読しているルームに新しい投稿がきたときのプッシュ通知を設定
-     *
-     * @param postNotification ネームスペースを更新
-     */
-    public void setPostNotification(NotificationSetting postNotification) {
-        this.postNotification = postNotification;
-    }
-
-    /**
-     * 購読しているルームに新しい投稿がきたときのプッシュ通知を設定
-     *
-     * @param postNotification ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withPostNotification(NotificationSetting postNotification) {
-        setPostNotification(postNotification);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public Boolean getAllowCreateRoom() {
+		return allowCreateRoom;
+	}
+
+	public void setAllowCreateRoom(Boolean allowCreateRoom) {
+		this.allowCreateRoom = allowCreateRoom;
+	}
+
+	public UpdateNamespaceRequest withAllowCreateRoom(Boolean allowCreateRoom) {
+		this.allowCreateRoom = allowCreateRoom;
+		return this;
+	}
+
+	public ScriptSetting getPostMessageScript() {
+		return postMessageScript;
+	}
+
+	public void setPostMessageScript(ScriptSetting postMessageScript) {
+		this.postMessageScript = postMessageScript;
+	}
+
+	public UpdateNamespaceRequest withPostMessageScript(ScriptSetting postMessageScript) {
+		this.postMessageScript = postMessageScript;
+		return this;
+	}
+
+	public ScriptSetting getCreateRoomScript() {
+		return createRoomScript;
+	}
+
+	public void setCreateRoomScript(ScriptSetting createRoomScript) {
+		this.createRoomScript = createRoomScript;
+	}
+
+	public UpdateNamespaceRequest withCreateRoomScript(ScriptSetting createRoomScript) {
+		this.createRoomScript = createRoomScript;
+		return this;
+	}
+
+	public ScriptSetting getDeleteRoomScript() {
+		return deleteRoomScript;
+	}
+
+	public void setDeleteRoomScript(ScriptSetting deleteRoomScript) {
+		this.deleteRoomScript = deleteRoomScript;
+	}
+
+	public UpdateNamespaceRequest withDeleteRoomScript(ScriptSetting deleteRoomScript) {
+		this.deleteRoomScript = deleteRoomScript;
+		return this;
+	}
+
+	public ScriptSetting getSubscribeRoomScript() {
+		return subscribeRoomScript;
+	}
+
+	public void setSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
+		this.subscribeRoomScript = subscribeRoomScript;
+	}
+
+	public UpdateNamespaceRequest withSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
+		this.subscribeRoomScript = subscribeRoomScript;
+		return this;
+	}
+
+	public ScriptSetting getUnsubscribeRoomScript() {
+		return unsubscribeRoomScript;
+	}
+
+	public void setUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
+		this.unsubscribeRoomScript = unsubscribeRoomScript;
+	}
+
+	public UpdateNamespaceRequest withUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
+		this.unsubscribeRoomScript = unsubscribeRoomScript;
+		return this;
+	}
+
+	public NotificationSetting getPostNotification() {
+		return postNotification;
+	}
+
+	public void setPostNotification(NotificationSetting postNotification) {
+		this.postNotification = postNotification;
+	}
+
+	public UpdateNamespaceRequest withPostNotification(NotificationSetting postNotification) {
+		this.postNotification = postNotification;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static UpdateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateNamespaceRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withAllowCreateRoom(data.get("allowCreateRoom") == null || data.get("allowCreateRoom").isNull() ? null : data.get("allowCreateRoom").booleanValue())
+            .withPostMessageScript(data.get("postMessageScript") == null || data.get("postMessageScript").isNull() ? null : ScriptSetting.fromJson(data.get("postMessageScript")))
+            .withCreateRoomScript(data.get("createRoomScript") == null || data.get("createRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("createRoomScript")))
+            .withDeleteRoomScript(data.get("deleteRoomScript") == null || data.get("deleteRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteRoomScript")))
+            .withSubscribeRoomScript(data.get("subscribeRoomScript") == null || data.get("subscribeRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("subscribeRoomScript")))
+            .withUnsubscribeRoomScript(data.get("unsubscribeRoomScript") == null || data.get("unsubscribeRoomScript").isNull() ? null : ScriptSetting.fromJson(data.get("unsubscribeRoomScript")))
+            .withPostNotification(data.get("postNotification") == null || data.get("postNotification").isNull() ? null : NotificationSetting.fromJson(data.get("postNotification")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("description", getDescription());
+                put("allowCreateRoom", getAllowCreateRoom());
+                put("postMessageScript", getPostMessageScript() != null ? getPostMessageScript().toJson() : null);
+                put("createRoomScript", getCreateRoomScript() != null ? getCreateRoomScript().toJson() : null);
+                put("deleteRoomScript", getDeleteRoomScript() != null ? getDeleteRoomScript().toJson() : null);
+                put("subscribeRoomScript", getSubscribeRoomScript() != null ? getSubscribeRoomScript().toJson() : null);
+                put("unsubscribeRoomScript", getUnsubscribeRoomScript() != null ? getUnsubscribeRoomScript().toJson() : null);
+                put("postNotification", getPostNotification() != null ? getPostNotification().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

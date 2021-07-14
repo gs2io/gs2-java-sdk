@@ -16,285 +16,162 @@
 
 package io.gs2.ranking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スコア
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Score implements IModel, Serializable, Comparable<Score> {
-	/** スコア */
-	protected String scoreId;
+	private String scoreId;
+	private String categoryName;
+	private String userId;
+	private String uniqueId;
+	private String scorerUserId;
+	private Long score;
+	private String metadata;
+	private Long createdAt;
 
-	/**
-	 * スコアを取得
-	 *
-	 * @return スコア
-	 */
 	public String getScoreId() {
 		return scoreId;
 	}
 
-	/**
-	 * スコアを設定
-	 *
-	 * @param scoreId スコア
-	 */
 	public void setScoreId(String scoreId) {
 		this.scoreId = scoreId;
 	}
 
-	/**
-	 * スコアを設定
-	 *
-	 * @param scoreId スコア
-	 * @return this
-	 */
 	public Score withScoreId(String scoreId) {
 		this.scoreId = scoreId;
 		return this;
 	}
-	/** カテゴリ名 */
-	protected String categoryName;
 
-	/**
-	 * カテゴリ名を取得
-	 *
-	 * @return カテゴリ名
-	 */
 	public String getCategoryName() {
 		return categoryName;
 	}
 
-	/**
-	 * カテゴリ名を設定
-	 *
-	 * @param categoryName カテゴリ名
-	 */
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
 
-	/**
-	 * カテゴリ名を設定
-	 *
-	 * @param categoryName カテゴリ名
-	 * @return this
-	 */
 	public Score withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-	/** ユーザID */
-	protected String userId;
 
-	/**
-	 * ユーザIDを取得
-	 *
-	 * @return ユーザID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザIDを設定
-	 *
-	 * @param userId ユーザID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザIDを設定
-	 *
-	 * @param userId ユーザID
-	 * @return this
-	 */
 	public Score withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** スコアのユニークID */
-	protected String uniqueId;
 
-	/**
-	 * スコアのユニークIDを取得
-	 *
-	 * @return スコアのユニークID
-	 */
 	public String getUniqueId() {
 		return uniqueId;
 	}
 
-	/**
-	 * スコアのユニークIDを設定
-	 *
-	 * @param uniqueId スコアのユニークID
-	 */
 	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
 
-	/**
-	 * スコアのユニークIDを設定
-	 *
-	 * @param uniqueId スコアのユニークID
-	 * @return this
-	 */
 	public Score withUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 		return this;
 	}
-	/** スコアを獲得したユーザID */
-	protected String scorerUserId;
 
-	/**
-	 * スコアを獲得したユーザIDを取得
-	 *
-	 * @return スコアを獲得したユーザID
-	 */
 	public String getScorerUserId() {
 		return scorerUserId;
 	}
 
-	/**
-	 * スコアを獲得したユーザIDを設定
-	 *
-	 * @param scorerUserId スコアを獲得したユーザID
-	 */
 	public void setScorerUserId(String scorerUserId) {
 		this.scorerUserId = scorerUserId;
 	}
 
-	/**
-	 * スコアを獲得したユーザIDを設定
-	 *
-	 * @param scorerUserId スコアを獲得したユーザID
-	 * @return this
-	 */
 	public Score withScorerUserId(String scorerUserId) {
 		this.scorerUserId = scorerUserId;
 		return this;
 	}
-	/** スコア */
-	protected Long score;
 
-	/**
-	 * スコアを取得
-	 *
-	 * @return スコア
-	 */
 	public Long getScore() {
 		return score;
 	}
 
-	/**
-	 * スコアを設定
-	 *
-	 * @param score スコア
-	 */
 	public void setScore(Long score) {
 		this.score = score;
 	}
 
-	/**
-	 * スコアを設定
-	 *
-	 * @param score スコア
-	 * @return this
-	 */
 	public Score withScore(Long score) {
 		this.score = score;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public Score withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Score withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("scoreId", this.getScoreId())
-            .put("categoryName", this.getCategoryName())
-            .put("userId", this.getUserId())
-            .put("uniqueId", this.getUniqueId())
-            .put("scorerUserId", this.getScorerUserId())
-            .put("score", this.getScore())
-            .put("metadata", this.getMetadata())
-            .put("createdAt", this.getCreatedAt());
-        return body_;
+    public static Score fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Score()
+            .withScoreId(data.get("scoreId") == null || data.get("scoreId").isNull() ? null : data.get("scoreId").asText())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withUniqueId(data.get("uniqueId") == null || data.get("uniqueId").isNull() ? null : data.get("uniqueId").asText())
+            .withScorerUserId(data.get("scorerUserId") == null || data.get("scorerUserId").isNull() ? null : data.get("scorerUserId").asText())
+            .withScore(data.get("score") == null || data.get("score").isNull() ? null : data.get("score").longValue())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("scoreId", getScoreId());
+                put("categoryName", getCategoryName());
+                put("userId", getUserId());
+                put("uniqueId", getUniqueId());
+                put("scorerUserId", getScorerUserId());
+                put("score", getScore());
+                put("metadata", getMetadata());
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Score o) {
 		return scoreId.compareTo(o.scoreId);

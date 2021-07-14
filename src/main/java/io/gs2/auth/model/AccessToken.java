@@ -16,157 +16,82 @@
 
 package io.gs2.auth.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * アクセストークン
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AccessToken implements IModel, Serializable, Comparable<AccessToken> {
-	/** オーナーID */
-	protected String ownerId;
+	private String token;
+	private String userId;
+	private Long expire;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public AccessToken withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** アクセストークン */
-	protected String token;
-
-	/**
-	 * アクセストークンを取得
-	 *
-	 * @return アクセストークン
-	 */
 	public String getToken() {
 		return token;
 	}
 
-	/**
-	 * アクセストークンを設定
-	 *
-	 * @param token アクセストークン
-	 */
 	public void setToken(String token) {
 		this.token = token;
 	}
 
-	/**
-	 * アクセストークンを設定
-	 *
-	 * @param token アクセストークン
-	 * @return this
-	 */
 	public AccessToken withToken(String token) {
 		this.token = token;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public AccessToken withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 有効期限 */
-	protected Long expire;
 
-	/**
-	 * 有効期限を取得
-	 *
-	 * @return 有効期限
-	 */
 	public Long getExpire() {
 		return expire;
 	}
 
-	/**
-	 * 有効期限を設定
-	 *
-	 * @param expire 有効期限
-	 */
 	public void setExpire(Long expire) {
 		this.expire = expire;
 	}
 
-	/**
-	 * 有効期限を設定
-	 *
-	 * @param expire 有効期限
-	 * @return this
-	 */
 	public AccessToken withExpire(Long expire) {
 		this.expire = expire;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("ownerId", this.getOwnerId())
-            .put("token", this.getToken())
-            .put("userId", this.getUserId())
-            .put("expire", this.getExpire());
-        return body_;
+    public static AccessToken fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AccessToken()
+            .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withExpire(data.get("expire") == null || data.get("expire").isNull() ? null : data.get("expire").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("token", getToken());
+                put("userId", getUserId());
+                put("expire", getExpire());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(AccessToken o) {
 		return token.compareTo(o.token);
@@ -176,7 +101,6 @@ public class AccessToken implements IModel, Serializable, Comparable<AccessToken
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.token == null) ? 0 : this.token.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.expire == null) ? 0 : this.expire.hashCode());
@@ -192,11 +116,6 @@ public class AccessToken implements IModel, Serializable, Comparable<AccessToken
 		if (getClass() != o.getClass())
 			return false;
 		AccessToken other = (AccessToken) o;
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
-			return false;
-		}
 		if (token == null) {
 			return other.token == null;
 		} else if (!token.equals(other.token)) {

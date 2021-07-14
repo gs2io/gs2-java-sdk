@@ -16,79 +16,79 @@
 
 package io.gs2.identifier.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.identifier.model.*;
 
-/**
- * プロジェクトトークン を取得します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LoginResult implements IResult, Serializable {
-	/** プロジェクトトークン */
-	private String access_token;
-	/** Bearer */
-	private String token_type;
-	/** 有効期間(秒) */
-	private Integer expires_in;
+    private String accessToken;
+    private String tokenType;
+    private Integer expiresIn;
 
-	/**
-	 * プロジェクトトークンを取得
-	 *
-	 * @return プロジェクトトークン を取得します
-	 */
 	public String getAccessToken() {
-		return access_token;
+		return accessToken;
 	}
 
-	/**
-	 * プロジェクトトークンを設定
-	 *
-	 * @param accessToken プロジェクトトークン を取得します
-	 */
 	public void setAccessToken(String accessToken) {
-		this.access_token = accessToken;
+		this.accessToken = accessToken;
 	}
 
-	/**
-	 * Bearerを取得
-	 *
-	 * @return プロジェクトトークン を取得します
-	 */
+	public LoginResult withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
 	public String getTokenType() {
-		return token_type;
+		return tokenType;
 	}
 
-	/**
-	 * Bearerを設定
-	 *
-	 * @param tokenType プロジェクトトークン を取得します
-	 */
 	public void setTokenType(String tokenType) {
-		this.token_type = tokenType;
+		this.tokenType = tokenType;
 	}
 
-	/**
-	 * 有効期間(秒)を取得
-	 *
-	 * @return プロジェクトトークン を取得します
-	 */
+	public LoginResult withTokenType(String tokenType) {
+		this.tokenType = tokenType;
+		return this;
+	}
+
 	public Integer getExpiresIn() {
-		return expires_in;
+		return expiresIn;
 	}
 
-	/**
-	 * 有効期間(秒)を設定
-	 *
-	 * @param expiresIn プロジェクトトークン を取得します
-	 */
 	public void setExpiresIn(Integer expiresIn) {
-		this.expires_in = expiresIn;
+		this.expiresIn = expiresIn;
 	}
+
+	public LoginResult withExpiresIn(Integer expiresIn) {
+		this.expiresIn = expiresIn;
+		return this;
+	}
+
+    public static LoginResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LoginResult()
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withTokenType(data.get("tokenType") == null || data.get("tokenType").isNull() ? null : data.get("tokenType").asText())
+            .withExpiresIn(data.get("expiresIn") == null || data.get("expiresIn").isNull() ? null : data.get("expiresIn").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accessToken", getAccessToken());
+                put("tokenType", getTokenType());
+                put("expiresIn", getExpiresIn());
+            }}
+        );
+    }
 }

@@ -16,99 +16,74 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 投票結果
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WrittenBallot implements IModel, Serializable {
-	/** 投票用紙 */
-	protected Ballot ballot;
+	private Ballot ballot;
+	private List<GameResult> gameResults;
 
-	/**
-	 * 投票用紙を取得
-	 *
-	 * @return 投票用紙
-	 */
 	public Ballot getBallot() {
 		return ballot;
 	}
 
-	/**
-	 * 投票用紙を設定
-	 *
-	 * @param ballot 投票用紙
-	 */
 	public void setBallot(Ballot ballot) {
 		this.ballot = ballot;
 	}
 
-	/**
-	 * 投票用紙を設定
-	 *
-	 * @param ballot 投票用紙
-	 * @return this
-	 */
 	public WrittenBallot withBallot(Ballot ballot) {
 		this.ballot = ballot;
 		return this;
 	}
-	/** 投票内容。対戦結果のリスト */
-	protected List<GameResult> gameResults;
 
-	/**
-	 * 投票内容。対戦結果のリストを取得
-	 *
-	 * @return 投票内容。対戦結果のリスト
-	 */
 	public List<GameResult> getGameResults() {
 		return gameResults;
 	}
 
-	/**
-	 * 投票内容。対戦結果のリストを設定
-	 *
-	 * @param gameResults 投票内容。対戦結果のリスト
-	 */
 	public void setGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 	}
 
-	/**
-	 * 投票内容。対戦結果のリストを設定
-	 *
-	 * @param gameResults 投票内容。対戦結果のリスト
-	 * @return this
-	 */
 	public WrittenBallot withGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode ballot = this.getBallot().toJson();
-        List<JsonNode> gameResults = new ArrayList<>();
-        if(this.gameResults != null) {
-            for(GameResult item : this.gameResults) {
-                gameResults.add(item.toJson());
-            }
+    public static WrittenBallot fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode();
-        body_.set("ballot", ballot);
-        body_.set("gameResults", JsonNodeFactory.instance.arrayNode().addAll(gameResults));
-        return body_;
+        return new WrittenBallot()
+            .withBallot(data.get("ballot") == null || data.get("ballot").isNull() ? null : Ballot.fromJson(data.get("ballot")))
+            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? new ArrayList<GameResult>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gameResults").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return GameResult.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("ballot", getBallot() != null ? getBallot().toJson() : null);
+                put("gameResults", getGameResults() == null ? new ArrayList<GameResult>() :
+                    getGameResults().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
 
 	@Override

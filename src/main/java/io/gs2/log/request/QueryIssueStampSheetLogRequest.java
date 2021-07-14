@@ -16,370 +16,190 @@
 
 package io.gs2.log.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.log.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタンプシート発行ログの一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class QueryIssueStampSheetLogRequest extends Gs2BasicRequest<QueryIssueStampSheetLogRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタンプシート発行ログの一覧を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** マイクロサービスの種類 */
     private String service;
-
-    /**
-     * マイクロサービスの種類を取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public String getService() {
-        return service;
-    }
-
-    /**
-     * マイクロサービスの種類を設定
-     *
-     * @param service スタンプシート発行ログの一覧を取得
-     */
-    public void setService(String service) {
-        this.service = service;
-    }
-
-    /**
-     * マイクロサービスの種類を設定
-     *
-     * @param service スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withService(String service) {
-        setService(service);
-        return this;
-    }
-
-    /** マイクロサービスのメソッド */
     private String method;
-
-    /**
-     * マイクロサービスのメソッドを取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public String getMethod() {
-        return method;
-    }
-
-    /**
-     * マイクロサービスのメソッドを設定
-     *
-     * @param method スタンプシート発行ログの一覧を取得
-     */
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    /**
-     * マイクロサービスのメソッドを設定
-     *
-     * @param method スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withMethod(String method) {
-        setMethod(method);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId スタンプシート発行ログの一覧を取得
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 報酬アクション */
     private String action;
-
-    /**
-     * 報酬アクションを取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public String getAction() {
-        return action;
-    }
-
-    /**
-     * 報酬アクションを設定
-     *
-     * @param action スタンプシート発行ログの一覧を取得
-     */
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    /**
-     * 報酬アクションを設定
-     *
-     * @param action スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withAction(String action) {
-        setAction(action);
-        return this;
-    }
-
-    /** 検索範囲開始日時 */
     private Long begin;
-
-    /**
-     * 検索範囲開始日時を取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public Long getBegin() {
-        return begin;
-    }
-
-    /**
-     * 検索範囲開始日時を設定
-     *
-     * @param begin スタンプシート発行ログの一覧を取得
-     */
-    public void setBegin(Long begin) {
-        this.begin = begin;
-    }
-
-    /**
-     * 検索範囲開始日時を設定
-     *
-     * @param begin スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withBegin(Long begin) {
-        setBegin(begin);
-        return this;
-    }
-
-    /** 検索範囲終了日時 */
     private Long end;
-
-    /**
-     * 検索範囲終了日時を取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public Long getEnd() {
-        return end;
-    }
-
-    /**
-     * 検索範囲終了日時を設定
-     *
-     * @param end スタンプシート発行ログの一覧を取得
-     */
-    public void setEnd(Long end) {
-        this.end = end;
-    }
-
-    /**
-     * 検索範囲終了日時を設定
-     *
-     * @param end スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withEnd(Long end) {
-        setEnd(end);
-        return this;
-    }
-
-    /** 7日より長い期間のログを検索対象とするか */
     private Boolean longTerm;
-
-    /**
-     * 7日より長い期間のログを検索対象とするかを取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public Boolean getLongTerm() {
-        return longTerm;
-    }
-
-    /**
-     * 7日より長い期間のログを検索対象とするかを設定
-     *
-     * @param longTerm スタンプシート発行ログの一覧を取得
-     */
-    public void setLongTerm(Boolean longTerm) {
-        this.longTerm = longTerm;
-    }
-
-    /**
-     * 7日より長い期間のログを検索対象とするかを設定
-     *
-     * @param longTerm スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withLongTerm(Boolean longTerm) {
-        setLongTerm(longTerm);
-        return this;
-    }
-
-    /** データの取得を開始する位置を指定するトークン */
     private String pageToken;
+    private Integer limit;
 
-    /**
-     * データの取得を開始する位置を指定するトークンを取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public String getPageToken() {
-        return pageToken;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public QueryIssueStampSheetLogRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getService() {
+		return service;
+	}
+
+	public void setService(String service) {
+		this.service = service;
+	}
+
+	public QueryIssueStampSheetLogRequest withService(String service) {
+		this.service = service;
+		return this;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	public QueryIssueStampSheetLogRequest withMethod(String method) {
+		this.method = method;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public QueryIssueStampSheetLogRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public QueryIssueStampSheetLogRequest withAction(String action) {
+		this.action = action;
+		return this;
+	}
+
+	public Long getBegin() {
+		return begin;
+	}
+
+	public void setBegin(Long begin) {
+		this.begin = begin;
+	}
+
+	public QueryIssueStampSheetLogRequest withBegin(Long begin) {
+		this.begin = begin;
+		return this;
+	}
+
+	public Long getEnd() {
+		return end;
+	}
+
+	public void setEnd(Long end) {
+		this.end = end;
+	}
+
+	public QueryIssueStampSheetLogRequest withEnd(Long end) {
+		this.end = end;
+		return this;
+	}
+
+	public Boolean getLongTerm() {
+		return longTerm;
+	}
+
+	public void setLongTerm(Boolean longTerm) {
+		this.longTerm = longTerm;
+	}
+
+	public QueryIssueStampSheetLogRequest withLongTerm(Boolean longTerm) {
+		this.longTerm = longTerm;
+		return this;
+	}
+
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public QueryIssueStampSheetLogRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public QueryIssueStampSheetLogRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static QueryIssueStampSheetLogRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new QueryIssueStampSheetLogRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
+            .withMethod(data.get("method") == null || data.get("method").isNull() ? null : data.get("method").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withAction(data.get("action") == null || data.get("action").isNull() ? null : data.get("action").asText())
+            .withBegin(data.get("begin") == null || data.get("begin").isNull() ? null : data.get("begin").longValue())
+            .withEnd(data.get("end") == null || data.get("end").isNull() ? null : data.get("end").longValue())
+            .withLongTerm(data.get("longTerm") == null || data.get("longTerm").isNull() ? null : data.get("longTerm").booleanValue())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken スタンプシート発行ログの一覧を取得
-     */
-    public void setPageToken(String pageToken) {
-        this.pageToken = pageToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("service", getService());
+                put("method", getMethod());
+                put("userId", getUserId());
+                put("action", getAction());
+                put("begin", getBegin());
+                put("end", getEnd());
+                put("longTerm", getLongTerm());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
+            }}
+        );
     }
-
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withPageToken(String pageToken) {
-        setPageToken(pageToken);
-        return this;
-    }
-
-    /** データの取得件数 */
-    private Long limit;
-
-    /**
-     * データの取得件数を取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public Long getLimit() {
-        return limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit スタンプシート発行ログの一覧を取得
-     */
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withLimit(Long limit) {
-        setLimit(limit);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return スタンプシート発行ログの一覧を取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider スタンプシート発行ログの一覧を取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider スタンプシート発行ログの一覧を取得
-     * @return this
-     */
-    public QueryIssueStampSheetLogRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

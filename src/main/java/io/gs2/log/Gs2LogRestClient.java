@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.log;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.log.request.*;
 import io.gs2.log.result.*;
-import io.gs2.log.model.*;
+import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
-/**
- * GS2 Log API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2LogRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,43 +152,21 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getType() != null) {
-                json.put("type", this.request.getType());
-            }
-            if (this.request.getGcpCredentialJson() != null) {
-                json.put("gcpCredentialJson", this.request.getGcpCredentialJson());
-            }
-            if (this.request.getBigQueryDatasetName() != null) {
-                json.put("bigQueryDatasetName", this.request.getBigQueryDatasetName());
-            }
-            if (this.request.getLogExpireDays() != null) {
-                json.put("logExpireDays", this.request.getLogExpireDays());
-            }
-            if (this.request.getAwsRegion() != null) {
-                json.put("awsRegion", this.request.getAwsRegion());
-            }
-            if (this.request.getAwsAccessKeyId() != null) {
-                json.put("awsAccessKeyId", this.request.getAwsAccessKeyId());
-            }
-            if (this.request.getAwsSecretAccessKey() != null) {
-                json.put("awsSecretAccessKey", this.request.getAwsSecretAccessKey());
-            }
-            if (this.request.getFirehoseStreamName() != null) {
-                json.put("firehoseStreamName", this.request.getFirehoseStreamName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("type", request.getType());
+                    put("gcpCredentialJson", request.getGcpCredentialJson());
+                    put("bigQueryDatasetName", request.getBigQueryDatasetName());
+                    put("logExpireDays", request.getLogExpireDays());
+                    put("awsRegion", request.getAwsRegion());
+                    put("awsAccessKeyId", request.getAwsAccessKeyId());
+                    put("awsSecretAccessKey", request.getAwsSecretAccessKey());
+                    put("firehoseStreamName", request.getFirehoseStreamName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -223,25 +184,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -268,15 +218,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -287,7 +240,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -311,25 +264,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -356,15 +298,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -375,7 +320,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -399,25 +344,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -444,15 +378,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -463,42 +400,22 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getType() != null) {
-                json.put("type", this.request.getType());
-            }
-            if (this.request.getGcpCredentialJson() != null) {
-                json.put("gcpCredentialJson", this.request.getGcpCredentialJson());
-            }
-            if (this.request.getBigQueryDatasetName() != null) {
-                json.put("bigQueryDatasetName", this.request.getBigQueryDatasetName());
-            }
-            if (this.request.getLogExpireDays() != null) {
-                json.put("logExpireDays", this.request.getLogExpireDays());
-            }
-            if (this.request.getAwsRegion() != null) {
-                json.put("awsRegion", this.request.getAwsRegion());
-            }
-            if (this.request.getAwsAccessKeyId() != null) {
-                json.put("awsAccessKeyId", this.request.getAwsAccessKeyId());
-            }
-            if (this.request.getAwsSecretAccessKey() != null) {
-                json.put("awsSecretAccessKey", this.request.getAwsSecretAccessKey());
-            }
-            if (this.request.getFirehoseStreamName() != null) {
-                json.put("firehoseStreamName", this.request.getFirehoseStreamName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("type", request.getType());
+                    put("gcpCredentialJson", request.getGcpCredentialJson());
+                    put("bigQueryDatasetName", request.getBigQueryDatasetName());
+                    put("logExpireDays", request.getLogExpireDays());
+                    put("awsRegion", request.getAwsRegion());
+                    put("awsAccessKeyId", request.getAwsAccessKeyId());
+                    put("awsSecretAccessKey", request.getAwsSecretAccessKey());
+                    put("firehoseStreamName", request.getFirehoseStreamName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -516,25 +433,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -561,15 +467,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -580,7 +489,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -604,25 +513,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -649,15 +547,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public QueryAccessLogTask(
             QueryAccessLogRequest request,
-            AsyncAction<AsyncResult<QueryAccessLogResult>> userCallback,
-            Class<QueryAccessLogResult> clazz
+            AsyncAction<AsyncResult<QueryAccessLogResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public QueryAccessLogResult parse(JsonNode data) {
+            return QueryAccessLogResult.fromJson(data);
         }
 
         @Override
@@ -668,7 +569,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/log/access";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -709,9 +610,6 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -719,25 +617,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * アクセスログの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void queryAccessLogAsync(
             QueryAccessLogRequest request,
             AsyncAction<AsyncResult<QueryAccessLogResult>> callback
     ) {
-        QueryAccessLogTask task = new QueryAccessLogTask(request, callback, QueryAccessLogResult.class);
+        QueryAccessLogTask task = new QueryAccessLogTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アクセスログの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public QueryAccessLogResult queryAccessLog(
             QueryAccessLogRequest request
     ) {
@@ -764,15 +651,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public CountAccessLogTask(
             CountAccessLogRequest request,
-            AsyncAction<AsyncResult<CountAccessLogResult>> userCallback,
-            Class<CountAccessLogResult> clazz
+            AsyncAction<AsyncResult<CountAccessLogResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CountAccessLogResult parse(JsonNode data) {
+            return CountAccessLogResult.fromJson(data);
         }
 
         @Override
@@ -783,7 +673,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/log/access/count";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -824,9 +714,6 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -834,25 +721,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * アクセスログの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void countAccessLogAsync(
             CountAccessLogRequest request,
             AsyncAction<AsyncResult<CountAccessLogResult>> callback
     ) {
-        CountAccessLogTask task = new CountAccessLogTask(request, callback, CountAccessLogResult.class);
+        CountAccessLogTask task = new CountAccessLogTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アクセスログの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CountAccessLogResult countAccessLog(
             CountAccessLogRequest request
     ) {
@@ -879,15 +755,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public QueryIssueStampSheetLogTask(
             QueryIssueStampSheetLogRequest request,
-            AsyncAction<AsyncResult<QueryIssueStampSheetLogResult>> userCallback,
-            Class<QueryIssueStampSheetLogResult> clazz
+            AsyncAction<AsyncResult<QueryIssueStampSheetLogResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public QueryIssueStampSheetLogResult parse(JsonNode data) {
+            return QueryIssueStampSheetLogResult.fromJson(data);
         }
 
         @Override
@@ -898,7 +777,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/log/issue/stamp/sheet";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -942,9 +821,6 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -952,25 +828,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * スタンプシート発行ログの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void queryIssueStampSheetLogAsync(
             QueryIssueStampSheetLogRequest request,
             AsyncAction<AsyncResult<QueryIssueStampSheetLogResult>> callback
     ) {
-        QueryIssueStampSheetLogTask task = new QueryIssueStampSheetLogTask(request, callback, QueryIssueStampSheetLogResult.class);
+        QueryIssueStampSheetLogTask task = new QueryIssueStampSheetLogTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシート発行ログの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public QueryIssueStampSheetLogResult queryIssueStampSheetLog(
             QueryIssueStampSheetLogRequest request
     ) {
@@ -997,15 +862,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public CountIssueStampSheetLogTask(
             CountIssueStampSheetLogRequest request,
-            AsyncAction<AsyncResult<CountIssueStampSheetLogResult>> userCallback,
-            Class<CountIssueStampSheetLogResult> clazz
+            AsyncAction<AsyncResult<CountIssueStampSheetLogResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CountIssueStampSheetLogResult parse(JsonNode data) {
+            return CountIssueStampSheetLogResult.fromJson(data);
         }
 
         @Override
@@ -1016,7 +884,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/log/issue/stamp/sheet/count";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1060,9 +928,6 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1070,25 +935,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * スタンプシート発行ログの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void countIssueStampSheetLogAsync(
             CountIssueStampSheetLogRequest request,
             AsyncAction<AsyncResult<CountIssueStampSheetLogResult>> callback
     ) {
-        CountIssueStampSheetLogTask task = new CountIssueStampSheetLogTask(request, callback, CountIssueStampSheetLogResult.class);
+        CountIssueStampSheetLogTask task = new CountIssueStampSheetLogTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシート発行ログの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CountIssueStampSheetLogResult countIssueStampSheetLog(
             CountIssueStampSheetLogRequest request
     ) {
@@ -1115,15 +969,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public QueryExecuteStampSheetLogTask(
             QueryExecuteStampSheetLogRequest request,
-            AsyncAction<AsyncResult<QueryExecuteStampSheetLogResult>> userCallback,
-            Class<QueryExecuteStampSheetLogResult> clazz
+            AsyncAction<AsyncResult<QueryExecuteStampSheetLogResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public QueryExecuteStampSheetLogResult parse(JsonNode data) {
+            return QueryExecuteStampSheetLogResult.fromJson(data);
         }
 
         @Override
@@ -1134,7 +991,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/log/execute/stamp/sheet";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1178,9 +1035,6 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1188,25 +1042,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * スタンプシート実行ログの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void queryExecuteStampSheetLogAsync(
             QueryExecuteStampSheetLogRequest request,
             AsyncAction<AsyncResult<QueryExecuteStampSheetLogResult>> callback
     ) {
-        QueryExecuteStampSheetLogTask task = new QueryExecuteStampSheetLogTask(request, callback, QueryExecuteStampSheetLogResult.class);
+        QueryExecuteStampSheetLogTask task = new QueryExecuteStampSheetLogTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシート実行ログの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public QueryExecuteStampSheetLogResult queryExecuteStampSheetLog(
             QueryExecuteStampSheetLogRequest request
     ) {
@@ -1233,15 +1076,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public CountExecuteStampSheetLogTask(
             CountExecuteStampSheetLogRequest request,
-            AsyncAction<AsyncResult<CountExecuteStampSheetLogResult>> userCallback,
-            Class<CountExecuteStampSheetLogResult> clazz
+            AsyncAction<AsyncResult<CountExecuteStampSheetLogResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CountExecuteStampSheetLogResult parse(JsonNode data) {
+            return CountExecuteStampSheetLogResult.fromJson(data);
         }
 
         @Override
@@ -1252,7 +1098,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/log/execute/stamp/sheet/count";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1296,9 +1142,6 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1306,25 +1149,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * スタンプシート実行ログの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void countExecuteStampSheetLogAsync(
             CountExecuteStampSheetLogRequest request,
             AsyncAction<AsyncResult<CountExecuteStampSheetLogResult>> callback
     ) {
-        CountExecuteStampSheetLogTask task = new CountExecuteStampSheetLogTask(request, callback, CountExecuteStampSheetLogResult.class);
+        CountExecuteStampSheetLogTask task = new CountExecuteStampSheetLogTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシート実行ログの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CountExecuteStampSheetLogResult countExecuteStampSheetLog(
             CountExecuteStampSheetLogRequest request
     ) {
@@ -1351,15 +1183,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public QueryExecuteStampTaskLogTask(
             QueryExecuteStampTaskLogRequest request,
-            AsyncAction<AsyncResult<QueryExecuteStampTaskLogResult>> userCallback,
-            Class<QueryExecuteStampTaskLogResult> clazz
+            AsyncAction<AsyncResult<QueryExecuteStampTaskLogResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public QueryExecuteStampTaskLogResult parse(JsonNode data) {
+            return QueryExecuteStampTaskLogResult.fromJson(data);
         }
 
         @Override
@@ -1370,7 +1205,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/log/execute/stamp/task";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1414,9 +1249,6 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1424,25 +1256,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * スタンプタスク実行ログの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void queryExecuteStampTaskLogAsync(
             QueryExecuteStampTaskLogRequest request,
             AsyncAction<AsyncResult<QueryExecuteStampTaskLogResult>> callback
     ) {
-        QueryExecuteStampTaskLogTask task = new QueryExecuteStampTaskLogTask(request, callback, QueryExecuteStampTaskLogResult.class);
+        QueryExecuteStampTaskLogTask task = new QueryExecuteStampTaskLogTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプタスク実行ログの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public QueryExecuteStampTaskLogResult queryExecuteStampTaskLog(
             QueryExecuteStampTaskLogRequest request
     ) {
@@ -1469,15 +1290,18 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
 
         public CountExecuteStampTaskLogTask(
             CountExecuteStampTaskLogRequest request,
-            AsyncAction<AsyncResult<CountExecuteStampTaskLogResult>> userCallback,
-            Class<CountExecuteStampTaskLogResult> clazz
+            AsyncAction<AsyncResult<CountExecuteStampTaskLogResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CountExecuteStampTaskLogResult parse(JsonNode data) {
+            return CountExecuteStampTaskLogResult.fromJson(data);
         }
 
         @Override
@@ -1488,7 +1312,7 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/log/execute/stamp/task/count";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1532,9 +1356,6 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1542,25 +1363,14 @@ public class Gs2LogRestClient extends AbstractGs2Client<Gs2LogRestClient> {
         }
     }
 
-    /**
-     * スタンプタスク実行ログの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void countExecuteStampTaskLogAsync(
             CountExecuteStampTaskLogRequest request,
             AsyncAction<AsyncResult<CountExecuteStampTaskLogResult>> callback
     ) {
-        CountExecuteStampTaskLogTask task = new CountExecuteStampTaskLogTask(request, callback, CountExecuteStampTaskLogResult.class);
+        CountExecuteStampTaskLogTask task = new CountExecuteStampTaskLogTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプタスク実行ログの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CountExecuteStampTaskLogResult countExecuteStampTaskLog(
             CountExecuteStampTaskLogRequest request
     ) {

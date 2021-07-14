@@ -16,59 +16,74 @@
 
 package io.gs2.script.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.script.model.*;
+import io.gs2.script.model.Script;
 
-/**
- * スクリプトの一覧を取得します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeScriptsResult implements IResult, Serializable {
-	/** スクリプトのリスト */
-	private List<Script> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<Script> items;
+    private String nextPageToken;
 
-	/**
-	 * スクリプトのリストを取得
-	 *
-	 * @return スクリプトの一覧を取得します
-	 */
 	public List<Script> getItems() {
 		return items;
 	}
 
-	/**
-	 * スクリプトのリストを設定
-	 *
-	 * @param items スクリプトの一覧を取得します
-	 */
 	public void setItems(List<Script> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return スクリプトの一覧を取得します
-	 */
+	public DescribeScriptsResult withItems(List<Script> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken スクリプトの一覧を取得します
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeScriptsResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeScriptsResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeScriptsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Script>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Script.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<Script>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

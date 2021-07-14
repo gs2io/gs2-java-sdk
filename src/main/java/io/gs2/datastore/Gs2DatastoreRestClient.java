@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.datastore;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.datastore.request.*;
 import io.gs2.datastore.result.*;
-import io.gs2.datastore.model.*;
+import io.gs2.datastore.model.*;public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestClient> {
 
-/**
- * GS2 Datastore API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2DatastoreRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,33 +152,15 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDoneUploadScript() != null) {
-                try {
-                    json.put("doneUploadScript", new JSONObject(mapper.writeValueAsString(this.request.getDoneUploadScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("doneUploadScript", request.getDoneUploadScript() != null ? request.getDoneUploadScript().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -213,25 +178,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -258,15 +212,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -277,7 +234,7 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -301,25 +258,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -346,15 +292,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -365,7 +314,7 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -389,25 +338,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -434,15 +372,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -453,32 +394,16 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDoneUploadScript() != null) {
-                try {
-                    json.put("doneUploadScript", new JSONObject(mapper.writeValueAsString(this.request.getDoneUploadScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("doneUploadScript", request.getDoneUploadScript() != null ? request.getDoneUploadScript().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -496,25 +421,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -541,15 +455,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -560,7 +477,7 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -584,25 +501,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -629,15 +535,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DescribeDataObjectsTask(
             DescribeDataObjectsRequest request,
-            AsyncAction<AsyncResult<DescribeDataObjectsResult>> userCallback,
-            Class<DescribeDataObjectsResult> clazz
+            AsyncAction<AsyncResult<DescribeDataObjectsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeDataObjectsResult parse(JsonNode data) {
+            return DescribeDataObjectsResult.fromJson(data);
         }
 
         @Override
@@ -648,7 +557,7 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/data";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -677,9 +586,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -687,25 +593,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeDataObjectsAsync(
             DescribeDataObjectsRequest request,
             AsyncAction<AsyncResult<DescribeDataObjectsResult>> callback
     ) {
-        DescribeDataObjectsTask task = new DescribeDataObjectsTask(request, callback, DescribeDataObjectsResult.class);
+        DescribeDataObjectsTask task = new DescribeDataObjectsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeDataObjectsResult describeDataObjects(
             DescribeDataObjectsRequest request
     ) {
@@ -732,15 +627,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DescribeDataObjectsByUserIdTask(
             DescribeDataObjectsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeDataObjectsByUserIdResult>> userCallback,
-            Class<DescribeDataObjectsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeDataObjectsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeDataObjectsByUserIdResult parse(JsonNode data) {
+            return DescribeDataObjectsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -751,8 +649,8 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/data";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -778,9 +676,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -788,25 +683,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * オーナーIDを指定してデータオブジェクトの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeDataObjectsByUserIdAsync(
             DescribeDataObjectsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeDataObjectsByUserIdResult>> callback
     ) {
-        DescribeDataObjectsByUserIdTask task = new DescribeDataObjectsByUserIdTask(request, callback, DescribeDataObjectsByUserIdResult.class);
+        DescribeDataObjectsByUserIdTask task = new DescribeDataObjectsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * オーナーIDを指定してデータオブジェクトの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeDataObjectsByUserIdResult describeDataObjectsByUserId(
             DescribeDataObjectsByUserIdRequest request
     ) {
@@ -833,15 +717,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareUploadTask(
             PrepareUploadRequest request,
-            AsyncAction<AsyncResult<PrepareUploadResult>> userCallback,
-            Class<PrepareUploadResult> clazz
+            AsyncAction<AsyncResult<PrepareUploadResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareUploadResult parse(JsonNode data) {
+            return PrepareUploadResult.fromJson(data);
         }
 
         @Override
@@ -852,35 +739,22 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/data/file";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getContentType() != null) {
-                json.put("contentType", this.request.getContentType());
-            }
-            if (this.request.getScope() != null) {
-                json.put("scope", this.request.getScope());
-            }
-            if (this.request.getAllowUserIds() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getAllowUserIds())
-                {
-                    array.put(item);
-                }
-                json.put("allowUserIds", array);
-            }
-            if (this.request.getUpdateIfExists() != null) {
-                json.put("updateIfExists", this.request.getUpdateIfExists());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("contentType", request.getContentType());
+                    put("scope", request.getScope());
+                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                        request.getAllowUserIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("updateIfExists", request.getUpdateIfExists());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -894,9 +768,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -904,25 +775,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトをアップロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareUploadAsync(
             PrepareUploadRequest request,
             AsyncAction<AsyncResult<PrepareUploadResult>> callback
     ) {
-        PrepareUploadTask task = new PrepareUploadTask(request, callback, PrepareUploadResult.class);
+        PrepareUploadTask task = new PrepareUploadTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトをアップロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareUploadResult prepareUpload(
             PrepareUploadRequest request
     ) {
@@ -949,15 +809,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareUploadByUserIdTask(
             PrepareUploadByUserIdRequest request,
-            AsyncAction<AsyncResult<PrepareUploadByUserIdResult>> userCallback,
-            Class<PrepareUploadByUserIdResult> clazz
+            AsyncAction<AsyncResult<PrepareUploadByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareUploadByUserIdResult parse(JsonNode data) {
+            return PrepareUploadByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -968,36 +831,23 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/data/file";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getContentType() != null) {
-                json.put("contentType", this.request.getContentType());
-            }
-            if (this.request.getScope() != null) {
-                json.put("scope", this.request.getScope());
-            }
-            if (this.request.getAllowUserIds() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getAllowUserIds())
-                {
-                    array.put(item);
-                }
-                json.put("allowUserIds", array);
-            }
-            if (this.request.getUpdateIfExists() != null) {
-                json.put("updateIfExists", this.request.getUpdateIfExists());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("contentType", request.getContentType());
+                    put("scope", request.getScope());
+                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                        request.getAllowUserIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("updateIfExists", request.getUpdateIfExists());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1008,9 +858,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1018,25 +865,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトをアップロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareUploadByUserIdAsync(
             PrepareUploadByUserIdRequest request,
             AsyncAction<AsyncResult<PrepareUploadByUserIdResult>> callback
     ) {
-        PrepareUploadByUserIdTask task = new PrepareUploadByUserIdTask(request, callback, PrepareUploadByUserIdResult.class);
+        PrepareUploadByUserIdTask task = new PrepareUploadByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトをアップロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareUploadByUserIdResult prepareUploadByUserId(
             PrepareUploadByUserIdRequest request
     ) {
@@ -1063,15 +899,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public UpdateDataObjectTask(
             UpdateDataObjectRequest request,
-            AsyncAction<AsyncResult<UpdateDataObjectResult>> userCallback,
-            Class<UpdateDataObjectResult> clazz
+            AsyncAction<AsyncResult<UpdateDataObjectResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateDataObjectResult parse(JsonNode data) {
+            return UpdateDataObjectResult.fromJson(data);
         }
 
         @Override
@@ -1082,27 +921,20 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/data/{dataObjectName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getScope() != null) {
-                json.put("scope", this.request.getScope());
-            }
-            if (this.request.getAllowUserIds() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getAllowUserIds())
-                {
-                    array.put(item);
-                }
-                json.put("allowUserIds", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("scope", request.getScope());
+                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                        request.getAllowUserIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1116,9 +948,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1126,25 +955,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトを更新する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateDataObjectAsync(
             UpdateDataObjectRequest request,
             AsyncAction<AsyncResult<UpdateDataObjectResult>> callback
     ) {
-        UpdateDataObjectTask task = new UpdateDataObjectTask(request, callback, UpdateDataObjectResult.class);
+        UpdateDataObjectTask task = new UpdateDataObjectTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトを更新する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateDataObjectResult updateDataObject(
             UpdateDataObjectRequest request
     ) {
@@ -1171,15 +989,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public UpdateDataObjectByUserIdTask(
             UpdateDataObjectByUserIdRequest request,
-            AsyncAction<AsyncResult<UpdateDataObjectByUserIdResult>> userCallback,
-            Class<UpdateDataObjectByUserIdResult> clazz
+            AsyncAction<AsyncResult<UpdateDataObjectByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateDataObjectByUserIdResult parse(JsonNode data) {
+            return UpdateDataObjectByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1190,28 +1011,21 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/data/{dataObjectName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getScope() != null) {
-                json.put("scope", this.request.getScope());
-            }
-            if (this.request.getAllowUserIds() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getAllowUserIds())
-                {
-                    array.put(item);
-                }
-                json.put("allowUserIds", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("scope", request.getScope());
+                    put("allowUserIds", request.getAllowUserIds() == null ? new ArrayList<String>() :
+                        request.getAllowUserIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1222,9 +1036,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1232,25 +1043,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを更新する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateDataObjectByUserIdAsync(
             UpdateDataObjectByUserIdRequest request,
             AsyncAction<AsyncResult<UpdateDataObjectByUserIdResult>> callback
     ) {
-        UpdateDataObjectByUserIdTask task = new UpdateDataObjectByUserIdTask(request, callback, UpdateDataObjectByUserIdResult.class);
+        UpdateDataObjectByUserIdTask task = new UpdateDataObjectByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを更新する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateDataObjectByUserIdResult updateDataObjectByUserId(
             UpdateDataObjectByUserIdRequest request
     ) {
@@ -1277,15 +1077,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareReUploadTask(
             PrepareReUploadRequest request,
-            AsyncAction<AsyncResult<PrepareReUploadResult>> userCallback,
-            Class<PrepareReUploadResult> clazz
+            AsyncAction<AsyncResult<PrepareReUploadResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareReUploadResult parse(JsonNode data) {
+            return PrepareReUploadResult.fromJson(data);
         }
 
         @Override
@@ -1294,21 +1097,17 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "datastore")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/data/{dataObjectName}/file";
+                + "/{namespaceName}/user/me/data/{dataObjectName}/file/reUpload";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContentType() != null) {
-                json.put("contentType", this.request.getContentType());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contentType", request.getContentType());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1322,9 +1121,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1332,25 +1128,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトを再アップロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareReUploadAsync(
             PrepareReUploadRequest request,
             AsyncAction<AsyncResult<PrepareReUploadResult>> callback
     ) {
-        PrepareReUploadTask task = new PrepareReUploadTask(request, callback, PrepareReUploadResult.class);
+        PrepareReUploadTask task = new PrepareReUploadTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトを再アップロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareReUploadResult prepareReUpload(
             PrepareReUploadRequest request
     ) {
@@ -1377,15 +1162,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareReUploadByUserIdTask(
             PrepareReUploadByUserIdRequest request,
-            AsyncAction<AsyncResult<PrepareReUploadByUserIdResult>> userCallback,
-            Class<PrepareReUploadByUserIdResult> clazz
+            AsyncAction<AsyncResult<PrepareReUploadByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareReUploadByUserIdResult parse(JsonNode data) {
+            return PrepareReUploadByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1394,22 +1182,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "datastore")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/data/{dataObjectName}/file";
+                + "/{namespaceName}/user/{userId}/data/{dataObjectName}/file/reUpload";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContentType() != null) {
-                json.put("contentType", this.request.getContentType());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contentType", request.getContentType());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1420,9 +1204,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1430,25 +1211,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを再アップロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareReUploadByUserIdAsync(
             PrepareReUploadByUserIdRequest request,
             AsyncAction<AsyncResult<PrepareReUploadByUserIdResult>> callback
     ) {
-        PrepareReUploadByUserIdTask task = new PrepareReUploadByUserIdTask(request, callback, PrepareReUploadByUserIdResult.class);
+        PrepareReUploadByUserIdTask task = new PrepareReUploadByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを再アップロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareReUploadByUserIdResult prepareReUploadByUserId(
             PrepareReUploadByUserIdRequest request
     ) {
@@ -1475,15 +1245,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DoneUploadTask(
             DoneUploadRequest request,
-            AsyncAction<AsyncResult<DoneUploadResult>> userCallback,
-            Class<DoneUploadResult> clazz
+            AsyncAction<AsyncResult<DoneUploadResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DoneUploadResult parse(JsonNode data) {
+            return DoneUploadResult.fromJson(data);
         }
 
         @Override
@@ -1494,16 +1267,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/data/{dataObjectName}/done";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1517,9 +1288,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1527,25 +1295,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトのアップロード完了を報告する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void doneUploadAsync(
             DoneUploadRequest request,
             AsyncAction<AsyncResult<DoneUploadResult>> callback
     ) {
-        DoneUploadTask task = new DoneUploadTask(request, callback, DoneUploadResult.class);
+        DoneUploadTask task = new DoneUploadTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトのアップロード完了を報告する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DoneUploadResult doneUpload(
             DoneUploadRequest request
     ) {
@@ -1572,15 +1329,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DoneUploadByUserIdTask(
             DoneUploadByUserIdRequest request,
-            AsyncAction<AsyncResult<DoneUploadByUserIdResult>> userCallback,
-            Class<DoneUploadByUserIdResult> clazz
+            AsyncAction<AsyncResult<DoneUploadByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DoneUploadByUserIdResult parse(JsonNode data) {
+            return DoneUploadByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1591,17 +1351,15 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/data/{dataObjectName}/done";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1612,9 +1370,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1622,25 +1377,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトのアップロード完了を報告する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void doneUploadByUserIdAsync(
             DoneUploadByUserIdRequest request,
             AsyncAction<AsyncResult<DoneUploadByUserIdResult>> callback
     ) {
-        DoneUploadByUserIdTask task = new DoneUploadByUserIdTask(request, callback, DoneUploadByUserIdResult.class);
+        DoneUploadByUserIdTask task = new DoneUploadByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトのアップロード完了を報告する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DoneUploadByUserIdResult doneUploadByUserId(
             DoneUploadByUserIdRequest request
     ) {
@@ -1667,15 +1411,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DeleteDataObjectTask(
             DeleteDataObjectRequest request,
-            AsyncAction<AsyncResult<DeleteDataObjectResult>> userCallback,
-            Class<DeleteDataObjectResult> clazz
+            AsyncAction<AsyncResult<DeleteDataObjectResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteDataObjectResult parse(JsonNode data) {
+            return DeleteDataObjectResult.fromJson(data);
         }
 
         @Override
@@ -1686,8 +1433,8 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/data/{dataObjectName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1707,9 +1454,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1717,25 +1461,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトを削除する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteDataObjectAsync(
             DeleteDataObjectRequest request,
             AsyncAction<AsyncResult<DeleteDataObjectResult>> callback
     ) {
-        DeleteDataObjectTask task = new DeleteDataObjectTask(request, callback, DeleteDataObjectResult.class);
+        DeleteDataObjectTask task = new DeleteDataObjectTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトを削除する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteDataObjectResult deleteDataObject(
             DeleteDataObjectRequest request
     ) {
@@ -1762,15 +1495,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DeleteDataObjectByUserIdTask(
             DeleteDataObjectByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteDataObjectByUserIdResult>> userCallback,
-            Class<DeleteDataObjectByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteDataObjectByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteDataObjectByUserIdResult parse(JsonNode data) {
+            return DeleteDataObjectByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1781,9 +1517,9 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/data/{dataObjectName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1800,9 +1536,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1810,25 +1543,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを削除する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteDataObjectByUserIdAsync(
             DeleteDataObjectByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteDataObjectByUserIdResult>> callback
     ) {
-        DeleteDataObjectByUserIdTask task = new DeleteDataObjectByUserIdTask(request, callback, DeleteDataObjectByUserIdResult.class);
+        DeleteDataObjectByUserIdTask task = new DeleteDataObjectByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを削除する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteDataObjectByUserIdResult deleteDataObjectByUserId(
             DeleteDataObjectByUserIdRequest request
     ) {
@@ -1855,15 +1577,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareDownloadTask(
             PrepareDownloadRequest request,
-            AsyncAction<AsyncResult<PrepareDownloadResult>> userCallback,
-            Class<PrepareDownloadResult> clazz
+            AsyncAction<AsyncResult<PrepareDownloadResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareDownloadResult parse(JsonNode data) {
+            return PrepareDownloadResult.fromJson(data);
         }
 
         @Override
@@ -1874,18 +1599,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/file";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDataObjectId() != null) {
-                json.put("dataObjectId", this.request.getDataObjectId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("dataObjectId", request.getDataObjectId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1899,9 +1620,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1909,25 +1627,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトをダウンロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareDownloadAsync(
             PrepareDownloadRequest request,
             AsyncAction<AsyncResult<PrepareDownloadResult>> callback
     ) {
-        PrepareDownloadTask task = new PrepareDownloadTask(request, callback, PrepareDownloadResult.class);
+        PrepareDownloadTask task = new PrepareDownloadTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトをダウンロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareDownloadResult prepareDownload(
             PrepareDownloadRequest request
     ) {
@@ -1954,15 +1661,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareDownloadByUserIdTask(
             PrepareDownloadByUserIdRequest request,
-            AsyncAction<AsyncResult<PrepareDownloadByUserIdResult>> userCallback,
-            Class<PrepareDownloadByUserIdResult> clazz
+            AsyncAction<AsyncResult<PrepareDownloadByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareDownloadByUserIdResult parse(JsonNode data) {
+            return PrepareDownloadByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1973,19 +1683,15 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/file";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDataObjectId() != null) {
-                json.put("dataObjectId", this.request.getDataObjectId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("dataObjectId", request.getDataObjectId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1996,9 +1702,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2006,25 +1709,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトをダウンロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareDownloadByUserIdAsync(
             PrepareDownloadByUserIdRequest request,
             AsyncAction<AsyncResult<PrepareDownloadByUserIdResult>> callback
     ) {
-        PrepareDownloadByUserIdTask task = new PrepareDownloadByUserIdTask(request, callback, PrepareDownloadByUserIdResult.class);
+        PrepareDownloadByUserIdTask task = new PrepareDownloadByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトをダウンロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareDownloadByUserIdResult prepareDownloadByUserId(
             PrepareDownloadByUserIdRequest request
     ) {
@@ -2051,15 +1743,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareDownloadByGenerationTask(
             PrepareDownloadByGenerationRequest request,
-            AsyncAction<AsyncResult<PrepareDownloadByGenerationResult>> userCallback,
-            Class<PrepareDownloadByGenerationResult> clazz
+            AsyncAction<AsyncResult<PrepareDownloadByGenerationResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareDownloadByGenerationResult parse(JsonNode data) {
+            return PrepareDownloadByGenerationResult.fromJson(data);
         }
 
         @Override
@@ -2070,19 +1765,15 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/file/generation/{generation}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{generation}", this.request.getGeneration() == null|| this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{generation}", this.request.getGeneration() == null || this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDataObjectId() != null) {
-                json.put("dataObjectId", this.request.getDataObjectId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("dataObjectId", request.getDataObjectId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2096,9 +1787,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2106,25 +1794,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトを世代を指定してダウンロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareDownloadByGenerationAsync(
             PrepareDownloadByGenerationRequest request,
             AsyncAction<AsyncResult<PrepareDownloadByGenerationResult>> callback
     ) {
-        PrepareDownloadByGenerationTask task = new PrepareDownloadByGenerationTask(request, callback, PrepareDownloadByGenerationResult.class);
+        PrepareDownloadByGenerationTask task = new PrepareDownloadByGenerationTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトを世代を指定してダウンロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareDownloadByGenerationResult prepareDownloadByGeneration(
             PrepareDownloadByGenerationRequest request
     ) {
@@ -2151,15 +1828,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareDownloadByGenerationAndUserIdTask(
             PrepareDownloadByGenerationAndUserIdRequest request,
-            AsyncAction<AsyncResult<PrepareDownloadByGenerationAndUserIdResult>> userCallback,
-            Class<PrepareDownloadByGenerationAndUserIdResult> clazz
+            AsyncAction<AsyncResult<PrepareDownloadByGenerationAndUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareDownloadByGenerationAndUserIdResult parse(JsonNode data) {
+            return PrepareDownloadByGenerationAndUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2170,20 +1850,16 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/file/generation/{generation}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{generation}", this.request.getGeneration() == null|| this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{generation}", this.request.getGeneration() == null || this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDataObjectId() != null) {
-                json.put("dataObjectId", this.request.getDataObjectId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("dataObjectId", request.getDataObjectId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2194,9 +1870,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2204,25 +1877,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを世代を指定してダウンロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareDownloadByGenerationAndUserIdAsync(
             PrepareDownloadByGenerationAndUserIdRequest request,
             AsyncAction<AsyncResult<PrepareDownloadByGenerationAndUserIdResult>> callback
     ) {
-        PrepareDownloadByGenerationAndUserIdTask task = new PrepareDownloadByGenerationAndUserIdTask(request, callback, PrepareDownloadByGenerationAndUserIdResult.class);
+        PrepareDownloadByGenerationAndUserIdTask task = new PrepareDownloadByGenerationAndUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを世代を指定してダウンロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareDownloadByGenerationAndUserIdResult prepareDownloadByGenerationAndUserId(
             PrepareDownloadByGenerationAndUserIdRequest request
     ) {
@@ -2249,15 +1911,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareDownloadOwnDataTask(
             PrepareDownloadOwnDataRequest request,
-            AsyncAction<AsyncResult<PrepareDownloadOwnDataResult>> userCallback,
-            Class<PrepareDownloadOwnDataResult> clazz
+            AsyncAction<AsyncResult<PrepareDownloadOwnDataResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareDownloadOwnDataResult parse(JsonNode data) {
+            return PrepareDownloadOwnDataResult.fromJson(data);
         }
 
         @Override
@@ -2266,18 +1931,16 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "datastore")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/file";
+                + "/{namespaceName}/user/me/data/{dataObjectName}/file";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2291,9 +1954,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2301,25 +1961,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトをダウンロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareDownloadOwnDataAsync(
             PrepareDownloadOwnDataRequest request,
             AsyncAction<AsyncResult<PrepareDownloadOwnDataResult>> callback
     ) {
-        PrepareDownloadOwnDataTask task = new PrepareDownloadOwnDataTask(request, callback, PrepareDownloadOwnDataResult.class);
+        PrepareDownloadOwnDataTask task = new PrepareDownloadOwnDataTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトをダウンロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareDownloadOwnDataResult prepareDownloadOwnData(
             PrepareDownloadOwnDataRequest request
     ) {
@@ -2346,15 +1995,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareDownloadByUserIdAndDataObjectNameTask(
             PrepareDownloadByUserIdAndDataObjectNameRequest request,
-            AsyncAction<AsyncResult<PrepareDownloadByUserIdAndDataObjectNameResult>> userCallback,
-            Class<PrepareDownloadByUserIdAndDataObjectNameResult> clazz
+            AsyncAction<AsyncResult<PrepareDownloadByUserIdAndDataObjectNameResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareDownloadByUserIdAndDataObjectNameResult parse(JsonNode data) {
+            return PrepareDownloadByUserIdAndDataObjectNameResult.fromJson(data);
         }
 
         @Override
@@ -2365,9 +2017,9 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/data/{dataObjectName}/file";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2384,9 +2036,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2394,25 +2043,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDとオブジェクト名を指定してデータオブジェクトをダウンロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareDownloadByUserIdAndDataObjectNameAsync(
             PrepareDownloadByUserIdAndDataObjectNameRequest request,
             AsyncAction<AsyncResult<PrepareDownloadByUserIdAndDataObjectNameResult>> callback
     ) {
-        PrepareDownloadByUserIdAndDataObjectNameTask task = new PrepareDownloadByUserIdAndDataObjectNameTask(request, callback, PrepareDownloadByUserIdAndDataObjectNameResult.class);
+        PrepareDownloadByUserIdAndDataObjectNameTask task = new PrepareDownloadByUserIdAndDataObjectNameTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDとオブジェクト名を指定してデータオブジェクトをダウンロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareDownloadByUserIdAndDataObjectNameResult prepareDownloadByUserIdAndDataObjectName(
             PrepareDownloadByUserIdAndDataObjectNameRequest request
     ) {
@@ -2439,15 +2077,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareDownloadOwnDataByGenerationTask(
             PrepareDownloadOwnDataByGenerationRequest request,
-            AsyncAction<AsyncResult<PrepareDownloadOwnDataByGenerationResult>> userCallback,
-            Class<PrepareDownloadOwnDataByGenerationResult> clazz
+            AsyncAction<AsyncResult<PrepareDownloadOwnDataByGenerationResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareDownloadOwnDataByGenerationResult parse(JsonNode data) {
+            return PrepareDownloadOwnDataByGenerationResult.fromJson(data);
         }
 
         @Override
@@ -2458,17 +2099,15 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/data/{dataObjectName}/generation/{generation}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
-            url = url.replace("{generation}", this.request.getGeneration() == null|| this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{generation}", this.request.getGeneration() == null || this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2482,9 +2121,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2492,25 +2128,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトを世代を指定してダウンロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareDownloadOwnDataByGenerationAsync(
             PrepareDownloadOwnDataByGenerationRequest request,
             AsyncAction<AsyncResult<PrepareDownloadOwnDataByGenerationResult>> callback
     ) {
-        PrepareDownloadOwnDataByGenerationTask task = new PrepareDownloadOwnDataByGenerationTask(request, callback, PrepareDownloadOwnDataByGenerationResult.class);
+        PrepareDownloadOwnDataByGenerationTask task = new PrepareDownloadOwnDataByGenerationTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトを世代を指定してダウンロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareDownloadOwnDataByGenerationResult prepareDownloadOwnDataByGeneration(
             PrepareDownloadOwnDataByGenerationRequest request
     ) {
@@ -2537,15 +2162,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public PrepareDownloadByUserIdAndDataObjectNameAndGenerationTask(
             PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest request,
-            AsyncAction<AsyncResult<PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult>> userCallback,
-            Class<PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult> clazz
+            AsyncAction<AsyncResult<PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult parse(JsonNode data) {
+            return PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult.fromJson(data);
         }
 
         @Override
@@ -2556,18 +2184,16 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/data/{dataObjectName}/generation/{generation}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
-            url = url.replace("{generation}", this.request.getGeneration() == null|| this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{generation}", this.request.getGeneration() == null || this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2578,9 +2204,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2588,25 +2211,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを世代を指定してダウンロード準備する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void prepareDownloadByUserIdAndDataObjectNameAndGenerationAsync(
             PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest request,
             AsyncAction<AsyncResult<PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult>> callback
     ) {
-        PrepareDownloadByUserIdAndDataObjectNameAndGenerationTask task = new PrepareDownloadByUserIdAndDataObjectNameAndGenerationTask(request, callback, PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult.class);
+        PrepareDownloadByUserIdAndDataObjectNameAndGenerationTask task = new PrepareDownloadByUserIdAndDataObjectNameAndGenerationTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクトを世代を指定してダウンロード準備する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult prepareDownloadByUserIdAndDataObjectNameAndGeneration(
             PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest request
     ) {
@@ -2633,15 +2245,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public RestoreDataObjectTask(
             RestoreDataObjectRequest request,
-            AsyncAction<AsyncResult<RestoreDataObjectResult>> userCallback,
-            Class<RestoreDataObjectResult> clazz
+            AsyncAction<AsyncResult<RestoreDataObjectResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RestoreDataObjectResult parse(JsonNode data) {
+            return RestoreDataObjectResult.fromJson(data);
         }
 
         @Override
@@ -2652,18 +2267,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/file/restore";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDataObjectId() != null) {
-                json.put("dataObjectId", this.request.getDataObjectId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("dataObjectId", request.getDataObjectId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2681,25 +2292,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクトの管理情報を修復する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void restoreDataObjectAsync(
             RestoreDataObjectRequest request,
             AsyncAction<AsyncResult<RestoreDataObjectResult>> callback
     ) {
-        RestoreDataObjectTask task = new RestoreDataObjectTask(request, callback, RestoreDataObjectResult.class);
+        RestoreDataObjectTask task = new RestoreDataObjectTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクトの管理情報を修復する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RestoreDataObjectResult restoreDataObject(
             RestoreDataObjectRequest request
     ) {
@@ -2726,15 +2326,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DescribeDataObjectHistoriesTask(
             DescribeDataObjectHistoriesRequest request,
-            AsyncAction<AsyncResult<DescribeDataObjectHistoriesResult>> userCallback,
-            Class<DescribeDataObjectHistoriesResult> clazz
+            AsyncAction<AsyncResult<DescribeDataObjectHistoriesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeDataObjectHistoriesResult parse(JsonNode data) {
+            return DescribeDataObjectHistoriesResult.fromJson(data);
         }
 
         @Override
@@ -2745,8 +2348,8 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/data/{dataObjectName}/history";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2772,9 +2375,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2782,25 +2382,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクト履歴の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeDataObjectHistoriesAsync(
             DescribeDataObjectHistoriesRequest request,
             AsyncAction<AsyncResult<DescribeDataObjectHistoriesResult>> callback
     ) {
-        DescribeDataObjectHistoriesTask task = new DescribeDataObjectHistoriesTask(request, callback, DescribeDataObjectHistoriesResult.class);
+        DescribeDataObjectHistoriesTask task = new DescribeDataObjectHistoriesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクト履歴の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeDataObjectHistoriesResult describeDataObjectHistories(
             DescribeDataObjectHistoriesRequest request
     ) {
@@ -2827,15 +2416,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public DescribeDataObjectHistoriesByUserIdTask(
             DescribeDataObjectHistoriesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeDataObjectHistoriesByUserIdResult>> userCallback,
-            Class<DescribeDataObjectHistoriesByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeDataObjectHistoriesByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeDataObjectHistoriesByUserIdResult parse(JsonNode data) {
+            return DescribeDataObjectHistoriesByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2846,9 +2438,9 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/data/{dataObjectName}/history";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2871,9 +2463,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2881,25 +2470,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクト履歴の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeDataObjectHistoriesByUserIdAsync(
             DescribeDataObjectHistoriesByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeDataObjectHistoriesByUserIdResult>> callback
     ) {
-        DescribeDataObjectHistoriesByUserIdTask task = new DescribeDataObjectHistoriesByUserIdTask(request, callback, DescribeDataObjectHistoriesByUserIdResult.class);
+        DescribeDataObjectHistoriesByUserIdTask task = new DescribeDataObjectHistoriesByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクト履歴の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeDataObjectHistoriesByUserIdResult describeDataObjectHistoriesByUserId(
             DescribeDataObjectHistoriesByUserIdRequest request
     ) {
@@ -2926,15 +2504,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public GetDataObjectHistoryTask(
             GetDataObjectHistoryRequest request,
-            AsyncAction<AsyncResult<GetDataObjectHistoryResult>> userCallback,
-            Class<GetDataObjectHistoryResult> clazz
+            AsyncAction<AsyncResult<GetDataObjectHistoryResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetDataObjectHistoryResult parse(JsonNode data) {
+            return GetDataObjectHistoryResult.fromJson(data);
         }
 
         @Override
@@ -2945,17 +2526,15 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/data/{dataObjectName}/history/{generation}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
-            url = url.replace("{generation}", this.request.getGeneration() == null|| this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{generation}", this.request.getGeneration() == null || this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2969,9 +2548,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2979,25 +2555,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * データオブジェクト履歴を取得する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getDataObjectHistoryAsync(
             GetDataObjectHistoryRequest request,
             AsyncAction<AsyncResult<GetDataObjectHistoryResult>> callback
     ) {
-        GetDataObjectHistoryTask task = new GetDataObjectHistoryTask(request, callback, GetDataObjectHistoryResult.class);
+        GetDataObjectHistoryTask task = new GetDataObjectHistoryTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データオブジェクト履歴を取得する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetDataObjectHistoryResult getDataObjectHistory(
             GetDataObjectHistoryRequest request
     ) {
@@ -3024,15 +2589,18 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
 
         public GetDataObjectHistoryByUserIdTask(
             GetDataObjectHistoryByUserIdRequest request,
-            AsyncAction<AsyncResult<GetDataObjectHistoryByUserIdResult>> userCallback,
-            Class<GetDataObjectHistoryByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetDataObjectHistoryByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetDataObjectHistoryByUserIdResult parse(JsonNode data) {
+            return GetDataObjectHistoryByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3043,18 +2611,16 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/data/{dataObjectName}/history/{generation}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null|| this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
-            url = url.replace("{generation}", this.request.getGeneration() == null|| this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{dataObjectName}", this.request.getDataObjectName() == null || this.request.getDataObjectName().length() == 0 ? "null" : String.valueOf(this.request.getDataObjectName()));
+            url = url.replace("{generation}", this.request.getGeneration() == null || this.request.getGeneration().length() == 0 ? "null" : String.valueOf(this.request.getGeneration()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3065,9 +2631,6 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3075,25 +2638,14 @@ public class Gs2DatastoreRestClient extends AbstractGs2Client<Gs2DatastoreRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクト履歴を取得する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getDataObjectHistoryByUserIdAsync(
             GetDataObjectHistoryByUserIdRequest request,
             AsyncAction<AsyncResult<GetDataObjectHistoryByUserIdResult>> callback
     ) {
-        GetDataObjectHistoryByUserIdTask task = new GetDataObjectHistoryByUserIdTask(request, callback, GetDataObjectHistoryByUserIdResult.class);
+        GetDataObjectHistoryByUserIdTask task = new GetDataObjectHistoryByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデータオブジェクト履歴を取得する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetDataObjectHistoryByUserIdResult getDataObjectHistoryByUserId(
             GetDataObjectHistoryByUserIdRequest request
     ) {

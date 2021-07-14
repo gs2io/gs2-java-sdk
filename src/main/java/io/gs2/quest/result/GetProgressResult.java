@@ -16,79 +16,86 @@
 
 package io.gs2.quest.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.quest.model.*;
+import io.gs2.quest.model.Reward;
+import io.gs2.quest.model.Progress;
+import io.gs2.quest.model.AcquireAction;
+import io.gs2.quest.model.Contents;
+import io.gs2.quest.model.ConsumeAction;
+import io.gs2.quest.model.QuestModel;
+import io.gs2.quest.model.QuestGroupModel;
 
-/**
- * クエスト挑戦を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetProgressResult implements IResult, Serializable {
-	/** クエスト挑戦 */
-	private Progress item;
-	/** クエストグループ */
-	private QuestGroupModel questGroup;
-	/** クエストモデル */
-	private QuestModel quest;
+    private Progress item;
+    private QuestGroupModel questGroup;
+    private QuestModel quest;
 
-	/**
-	 * クエスト挑戦を取得
-	 *
-	 * @return クエスト挑戦を取得
-	 */
 	public Progress getItem() {
 		return item;
 	}
 
-	/**
-	 * クエスト挑戦を設定
-	 *
-	 * @param item クエスト挑戦を取得
-	 */
 	public void setItem(Progress item) {
 		this.item = item;
 	}
 
-	/**
-	 * クエストグループを取得
-	 *
-	 * @return クエスト挑戦を取得
-	 */
+	public GetProgressResult withItem(Progress item) {
+		this.item = item;
+		return this;
+	}
+
 	public QuestGroupModel getQuestGroup() {
 		return questGroup;
 	}
 
-	/**
-	 * クエストグループを設定
-	 *
-	 * @param questGroup クエスト挑戦を取得
-	 */
 	public void setQuestGroup(QuestGroupModel questGroup) {
 		this.questGroup = questGroup;
 	}
 
-	/**
-	 * クエストモデルを取得
-	 *
-	 * @return クエスト挑戦を取得
-	 */
+	public GetProgressResult withQuestGroup(QuestGroupModel questGroup) {
+		this.questGroup = questGroup;
+		return this;
+	}
+
 	public QuestModel getQuest() {
 		return quest;
 	}
 
-	/**
-	 * クエストモデルを設定
-	 *
-	 * @param quest クエスト挑戦を取得
-	 */
 	public void setQuest(QuestModel quest) {
 		this.quest = quest;
 	}
+
+	public GetProgressResult withQuest(QuestModel quest) {
+		this.quest = quest;
+		return this;
+	}
+
+    public static GetProgressResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetProgressResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Progress.fromJson(data.get("item")))
+            .withQuestGroup(data.get("questGroup") == null || data.get("questGroup").isNull() ? null : QuestGroupModel.fromJson(data.get("questGroup")))
+            .withQuest(data.get("quest") == null || data.get("quest").isNull() ? null : QuestModel.fromJson(data.get("quest")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("questGroup", getQuestGroup() != null ? getQuestGroup().toJson() : null);
+                put("quest", getQuest() != null ? getQuest().toJson() : null);
+            }}
+        );
+    }
 }

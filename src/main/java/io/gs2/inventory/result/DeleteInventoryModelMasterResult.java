@@ -16,39 +16,48 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.InventoryModelMaster;
 
-/**
- * インベントリモデルマスターを削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteInventoryModelMasterResult implements IResult, Serializable {
-	/** 削除したインベントリモデルマスター */
-	private InventoryModelMaster item;
+    private InventoryModelMaster item;
 
-	/**
-	 * 削除したインベントリモデルマスターを取得
-	 *
-	 * @return インベントリモデルマスターを削除
-	 */
 	public InventoryModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 削除したインベントリモデルマスターを設定
-	 *
-	 * @param item インベントリモデルマスターを削除
-	 */
 	public void setItem(InventoryModelMaster item) {
 		this.item = item;
 	}
+
+	public DeleteInventoryModelMasterResult withItem(InventoryModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteInventoryModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteInventoryModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : InventoryModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

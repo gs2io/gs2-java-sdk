@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.watch;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.watch.request.*;
 import io.gs2.watch.result.*;
-import io.gs2.watch.model.*;
+import io.gs2.watch.model.*;public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
 
-/**
- * GS2 Watch API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2WatchRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
 
         public GetChartTask(
             GetChartRequest request,
-            AsyncAction<AsyncResult<GetChartResult>> userCallback,
-            Class<GetChartResult> clazz
+            AsyncAction<AsyncResult<GetChartResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetChartResult parse(JsonNode data) {
+            return GetChartResult.fromJson(data);
         }
 
         @Override
@@ -77,47 +68,26 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/chart/{metrics}";
 
-            url = url.replace("{metrics}", this.request.getMetrics() == null|| this.request.getMetrics().length() == 0 ? "null" : String.valueOf(this.request.getMetrics()));
+            url = url.replace("{metrics}", this.request.getMetrics() == null || this.request.getMetrics().length() == 0 ? "null" : String.valueOf(this.request.getMetrics()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getGrn() != null) {
-                json.put("grn", this.request.getGrn());
-            }
-            if (this.request.getQueries() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getQueries())
-                {
-                    array.put(item);
-                }
-                json.put("queries", array);
-            }
-            if (this.request.getBy() != null) {
-                json.put("by", this.request.getBy());
-            }
-            if (this.request.getTimeframe() != null) {
-                json.put("timeframe", this.request.getTimeframe());
-            }
-            if (this.request.getSize() != null) {
-                json.put("size", this.request.getSize());
-            }
-            if (this.request.getFormat() != null) {
-                json.put("format", this.request.getFormat());
-            }
-            if (this.request.getAggregator() != null) {
-                json.put("aggregator", this.request.getAggregator());
-            }
-            if (this.request.getStyle() != null) {
-                json.put("style", this.request.getStyle());
-            }
-            if (this.request.getTitle() != null) {
-                json.put("title", this.request.getTitle());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("grn", request.getGrn());
+                    put("queries", request.getQueries() == null ? new ArrayList<String>() :
+                        request.getQueries().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("by", request.getBy());
+                    put("timeframe", request.getTimeframe());
+                    put("size", request.getSize());
+                    put("format", request.getFormat());
+                    put("aggregator", request.getAggregator());
+                    put("style", request.getStyle());
+                    put("title", request.getTitle());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -135,25 +105,14 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
         }
     }
 
-    /**
-     * チャートを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getChartAsync(
             GetChartRequest request,
             AsyncAction<AsyncResult<GetChartResult>> callback
     ) {
-        GetChartTask task = new GetChartTask(request, callback, GetChartResult.class);
+        GetChartTask task = new GetChartTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * チャートを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetChartResult getChart(
             GetChartRequest request
     ) {
@@ -180,15 +139,18 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
 
         public GetCumulativeTask(
             GetCumulativeRequest request,
-            AsyncAction<AsyncResult<GetCumulativeResult>> userCallback,
-            Class<GetCumulativeResult> clazz
+            AsyncAction<AsyncResult<GetCumulativeResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCumulativeResult parse(JsonNode data) {
+            return GetCumulativeResult.fromJson(data);
         }
 
         @Override
@@ -199,18 +161,14 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/cumulative/{name}";
 
-            url = url.replace("{name}", this.request.getName() == null|| this.request.getName().length() == 0 ? "null" : String.valueOf(this.request.getName()));
+            url = url.replace("{name}", this.request.getName() == null || this.request.getName().length() == 0 ? "null" : String.valueOf(this.request.getName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getResourceGrn() != null) {
-                json.put("resourceGrn", this.request.getResourceGrn());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("resourceGrn", request.getResourceGrn());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -228,25 +186,14 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
         }
     }
 
-    /**
-     * 累積値を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCumulativeAsync(
             GetCumulativeRequest request,
             AsyncAction<AsyncResult<GetCumulativeResult>> callback
     ) {
-        GetCumulativeTask task = new GetCumulativeTask(request, callback, GetCumulativeResult.class);
+        GetCumulativeTask task = new GetCumulativeTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 累積値を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCumulativeResult getCumulative(
             GetCumulativeRequest request
     ) {
@@ -273,15 +220,18 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
 
         public DescribeBillingActivitiesTask(
             DescribeBillingActivitiesRequest request,
-            AsyncAction<AsyncResult<DescribeBillingActivitiesResult>> userCallback,
-            Class<DescribeBillingActivitiesResult> clazz
+            AsyncAction<AsyncResult<DescribeBillingActivitiesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeBillingActivitiesResult parse(JsonNode data) {
+            return DescribeBillingActivitiesResult.fromJson(data);
         }
 
         @Override
@@ -292,8 +242,8 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/billingActivity/{year}/{month}";
 
-            url = url.replace("{year}", this.request.getYear() == null ? "null" : String.valueOf(this.request.getYear()));
-            url = url.replace("{month}", this.request.getMonth() == null ? "null" : String.valueOf(this.request.getMonth()));
+            url = url.replace("{year}", this.request.getYear() == null  ? "null" : String.valueOf(this.request.getYear()));
+            url = url.replace("{month}", this.request.getMonth() == null  ? "null" : String.valueOf(this.request.getMonth()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -326,25 +276,14 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
         }
     }
 
-    /**
-     * 請求にまつわるアクティビティの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeBillingActivitiesAsync(
             DescribeBillingActivitiesRequest request,
             AsyncAction<AsyncResult<DescribeBillingActivitiesResult>> callback
     ) {
-        DescribeBillingActivitiesTask task = new DescribeBillingActivitiesTask(request, callback, DescribeBillingActivitiesResult.class);
+        DescribeBillingActivitiesTask task = new DescribeBillingActivitiesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 請求にまつわるアクティビティの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeBillingActivitiesResult describeBillingActivities(
             DescribeBillingActivitiesRequest request
     ) {
@@ -371,15 +310,18 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
 
         public GetBillingActivityTask(
             GetBillingActivityRequest request,
-            AsyncAction<AsyncResult<GetBillingActivityResult>> userCallback,
-            Class<GetBillingActivityResult> clazz
+            AsyncAction<AsyncResult<GetBillingActivityResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetBillingActivityResult parse(JsonNode data) {
+            return GetBillingActivityResult.fromJson(data);
         }
 
         @Override
@@ -390,18 +332,16 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/billingActivity/{year}/{month}/{service}/{activityType}";
 
-            url = url.replace("{year}", this.request.getYear() == null ? "null" : String.valueOf(this.request.getYear()));
-            url = url.replace("{month}", this.request.getMonth() == null ? "null" : String.valueOf(this.request.getMonth()));
-            url = url.replace("{service}", this.request.getService() == null|| this.request.getService().length() == 0 ? "null" : String.valueOf(this.request.getService()));
-            url = url.replace("{activityType}", this.request.getActivityType() == null|| this.request.getActivityType().length() == 0 ? "null" : String.valueOf(this.request.getActivityType()));
+            url = url.replace("{year}", this.request.getYear() == null  ? "null" : String.valueOf(this.request.getYear()));
+            url = url.replace("{month}", this.request.getMonth() == null  ? "null" : String.valueOf(this.request.getMonth()));
+            url = url.replace("{service}", this.request.getService() == null || this.request.getService().length() == 0 ? "null" : String.valueOf(this.request.getService()));
+            url = url.replace("{activityType}", this.request.getActivityType() == null || this.request.getActivityType().length() == 0 ? "null" : String.valueOf(this.request.getActivityType()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -419,25 +359,14 @@ public class Gs2WatchRestClient extends AbstractGs2Client<Gs2WatchRestClient> {
         }
     }
 
-    /**
-     * 請求にまつわるアクティビティを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getBillingActivityAsync(
             GetBillingActivityRequest request,
             AsyncAction<AsyncResult<GetBillingActivityResult>> callback
     ) {
-        GetBillingActivityTask task = new GetBillingActivityTask(request, callback, GetBillingActivityResult.class);
+        GetBillingActivityTask task = new GetBillingActivityTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 請求にまつわるアクティビティを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetBillingActivityResult getBillingActivity(
             GetBillingActivityRequest request
     ) {

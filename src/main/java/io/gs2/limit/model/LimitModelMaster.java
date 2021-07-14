@@ -16,349 +16,194 @@
 
 package io.gs2.limit.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 回数制限の種類マスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LimitModelMaster implements IModel, Serializable, Comparable<LimitModelMaster> {
-	/** 回数制限の種類マスター */
-	protected String limitModelId;
+	private String limitModelId;
+	private String name;
+	private String description;
+	private String metadata;
+	private String resetType;
+	private Integer resetDayOfMonth;
+	private String resetDayOfWeek;
+	private Integer resetHour;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 回数制限の種類マスターを取得
-	 *
-	 * @return 回数制限の種類マスター
-	 */
 	public String getLimitModelId() {
 		return limitModelId;
 	}
 
-	/**
-	 * 回数制限の種類マスターを設定
-	 *
-	 * @param limitModelId 回数制限の種類マスター
-	 */
 	public void setLimitModelId(String limitModelId) {
 		this.limitModelId = limitModelId;
 	}
 
-	/**
-	 * 回数制限の種類マスターを設定
-	 *
-	 * @param limitModelId 回数制限の種類マスター
-	 * @return this
-	 */
 	public LimitModelMaster withLimitModelId(String limitModelId) {
 		this.limitModelId = limitModelId;
 		return this;
 	}
-	/** 回数制限の種類名 */
-	protected String name;
 
-	/**
-	 * 回数制限の種類名を取得
-	 *
-	 * @return 回数制限の種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 回数制限の種類名を設定
-	 *
-	 * @param name 回数制限の種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 回数制限の種類名を設定
-	 *
-	 * @param name 回数制限の種類名
-	 * @return this
-	 */
 	public LimitModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 回数制限の種類マスターの説明 */
-	protected String description;
 
-	/**
-	 * 回数制限の種類マスターの説明を取得
-	 *
-	 * @return 回数制限の種類マスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 回数制限の種類マスターの説明を設定
-	 *
-	 * @param description 回数制限の種類マスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 回数制限の種類マスターの説明を設定
-	 *
-	 * @param description 回数制限の種類マスターの説明
-	 * @return this
-	 */
 	public LimitModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 回数制限の種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * 回数制限の種類のメタデータを取得
-	 *
-	 * @return 回数制限の種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 回数制限の種類のメタデータを設定
-	 *
-	 * @param metadata 回数制限の種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 回数制限の種類のメタデータを設定
-	 *
-	 * @param metadata 回数制限の種類のメタデータ
-	 * @return this
-	 */
 	public LimitModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** リセットタイミング */
-	protected String resetType;
 
-	/**
-	 * リセットタイミングを取得
-	 *
-	 * @return リセットタイミング
-	 */
 	public String getResetType() {
 		return resetType;
 	}
 
-	/**
-	 * リセットタイミングを設定
-	 *
-	 * @param resetType リセットタイミング
-	 */
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
 
-	/**
-	 * リセットタイミングを設定
-	 *
-	 * @param resetType リセットタイミング
-	 * @return this
-	 */
 	public LimitModelMaster withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-	/** リセットをする日にち */
-	protected Integer resetDayOfMonth;
 
-	/**
-	 * リセットをする日にちを取得
-	 *
-	 * @return リセットをする日にち
-	 */
 	public Integer getResetDayOfMonth() {
 		return resetDayOfMonth;
 	}
 
-	/**
-	 * リセットをする日にちを設定
-	 *
-	 * @param resetDayOfMonth リセットをする日にち
-	 */
 	public void setResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 	}
 
-	/**
-	 * リセットをする日にちを設定
-	 *
-	 * @param resetDayOfMonth リセットをする日にち
-	 * @return this
-	 */
 	public LimitModelMaster withResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 		return this;
 	}
-	/** リセットする曜日 */
-	protected String resetDayOfWeek;
 
-	/**
-	 * リセットする曜日を取得
-	 *
-	 * @return リセットする曜日
-	 */
 	public String getResetDayOfWeek() {
 		return resetDayOfWeek;
 	}
 
-	/**
-	 * リセットする曜日を設定
-	 *
-	 * @param resetDayOfWeek リセットする曜日
-	 */
 	public void setResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 	}
 
-	/**
-	 * リセットする曜日を設定
-	 *
-	 * @param resetDayOfWeek リセットする曜日
-	 * @return this
-	 */
 	public LimitModelMaster withResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 		return this;
 	}
-	/** リセット時刻 */
-	protected Integer resetHour;
 
-	/**
-	 * リセット時刻を取得
-	 *
-	 * @return リセット時刻
-	 */
 	public Integer getResetHour() {
 		return resetHour;
 	}
 
-	/**
-	 * リセット時刻を設定
-	 *
-	 * @param resetHour リセット時刻
-	 */
 	public void setResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 	}
 
-	/**
-	 * リセット時刻を設定
-	 *
-	 * @param resetHour リセット時刻
-	 * @return this
-	 */
 	public LimitModelMaster withResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public LimitModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public LimitModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("limitModelId", this.getLimitModelId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("resetType", this.getResetType())
-            .put("resetDayOfMonth", this.getResetDayOfMonth())
-            .put("resetDayOfWeek", this.getResetDayOfWeek())
-            .put("resetHour", this.getResetHour())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static LimitModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LimitModelMaster()
+            .withLimitModelId(data.get("limitModelId") == null || data.get("limitModelId").isNull() ? null : data.get("limitModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
+            .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
+            .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
+            .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("limitModelId", getLimitModelId());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("resetType", getResetType());
+                put("resetDayOfMonth", getResetDayOfMonth());
+                put("resetDayOfWeek", getResetDayOfWeek());
+                put("resetHour", getResetHour());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(LimitModelMaster o) {
 		return limitModelId.compareTo(o.limitModelId);

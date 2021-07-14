@@ -16,114 +16,78 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * プロジェクトの一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeProjectsRequest extends Gs2BasicRequest<DescribeProjectsRequest> {
-
-    /** GS2アカウントトークン */
     private String accountToken;
-
-    /**
-     * GS2アカウントトークンを取得
-     *
-     * @return プロジェクトの一覧を取得
-     */
-    public String getAccountToken() {
-        return accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトの一覧を取得
-     */
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトの一覧を取得
-     * @return this
-     */
-    public DescribeProjectsRequest withAccountToken(String accountToken) {
-        setAccountToken(accountToken);
-        return this;
-    }
-
-    /** データの取得を開始する位置を指定するトークン */
     private String pageToken;
+    private Integer limit;
 
-    /**
-     * データの取得を開始する位置を指定するトークンを取得
-     *
-     * @return プロジェクトの一覧を取得
-     */
-    public String getPageToken() {
-        return pageToken;
+	public String getAccountToken() {
+		return accountToken;
+	}
+
+	public void setAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+	}
+
+	public DescribeProjectsRequest withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public DescribeProjectsRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeProjectsRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static DescribeProjectsRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeProjectsRequest()
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken プロジェクトの一覧を取得
-     */
-    public void setPageToken(String pageToken) {
-        this.pageToken = pageToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountToken", getAccountToken());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
+            }}
+        );
     }
-
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken プロジェクトの一覧を取得
-     * @return this
-     */
-    public DescribeProjectsRequest withPageToken(String pageToken) {
-        setPageToken(pageToken);
-        return this;
-    }
-
-    /** データの取得件数 */
-    private Long limit;
-
-    /**
-     * データの取得件数を取得
-     *
-     * @return プロジェクトの一覧を取得
-     */
-    public Long getLimit() {
-        return limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit プロジェクトの一覧を取得
-     */
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit プロジェクトの一覧を取得
-     * @return this
-     */
-    public DescribeProjectsRequest withLimit(Long limit) {
-        setLimit(limit);
-        return this;
-    }
-
 }

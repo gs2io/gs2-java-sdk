@@ -16,82 +16,62 @@
 
 package io.gs2.formation.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.formation.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * フォームマスターを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetFormModelMasterRequest extends Gs2BasicRequest<GetFormModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return フォームマスターを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName フォームマスターを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName フォームマスターを取得
-     * @return this
-     */
-    public GetFormModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** フォーム名 */
     private String formModelName;
 
-    /**
-     * フォーム名を取得
-     *
-     * @return フォームマスターを取得
-     */
-    public String getFormModelName() {
-        return formModelName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetFormModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getFormModelName() {
+		return formModelName;
+	}
+
+	public void setFormModelName(String formModelName) {
+		this.formModelName = formModelName;
+	}
+
+	public GetFormModelMasterRequest withFormModelName(String formModelName) {
+		this.formModelName = formModelName;
+		return this;
+	}
+
+    public static GetFormModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetFormModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText());
     }
 
-    /**
-     * フォーム名を設定
-     *
-     * @param formModelName フォームマスターを取得
-     */
-    public void setFormModelName(String formModelName) {
-        this.formModelName = formModelName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("formModelName", getFormModelName());
+            }}
+        );
     }
-
-    /**
-     * フォーム名を設定
-     *
-     * @param formModelName フォームマスターを取得
-     * @return this
-     */
-    public GetFormModelMasterRequest withFormModelName(String formModelName) {
-        setFormModelName(formModelName);
-        return this;
-    }
-
 }

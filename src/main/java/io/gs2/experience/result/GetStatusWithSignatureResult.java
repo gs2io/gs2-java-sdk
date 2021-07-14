@@ -16,79 +16,80 @@
 
 package io.gs2.experience.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.experience.model.*;
+import io.gs2.experience.model.Status;
 
-/**
- * ステータスを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetStatusWithSignatureResult implements IResult, Serializable {
-	/** ステータス */
-	private Status item;
-	/** 検証対象のオブジェクト */
-	private String body;
-	/** 署名 */
-	private String signature;
+    private Status item;
+    private String body;
+    private String signature;
 
-	/**
-	 * ステータスを取得
-	 *
-	 * @return ステータスを取得
-	 */
 	public Status getItem() {
 		return item;
 	}
 
-	/**
-	 * ステータスを設定
-	 *
-	 * @param item ステータスを取得
-	 */
 	public void setItem(Status item) {
 		this.item = item;
 	}
 
-	/**
-	 * 検証対象のオブジェクトを取得
-	 *
-	 * @return ステータスを取得
-	 */
+	public GetStatusWithSignatureResult withItem(Status item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getBody() {
 		return body;
 	}
 
-	/**
-	 * 検証対象のオブジェクトを設定
-	 *
-	 * @param body ステータスを取得
-	 */
 	public void setBody(String body) {
 		this.body = body;
 	}
 
-	/**
-	 * 署名を取得
-	 *
-	 * @return ステータスを取得
-	 */
+	public GetStatusWithSignatureResult withBody(String body) {
+		this.body = body;
+		return this;
+	}
+
 	public String getSignature() {
 		return signature;
 	}
 
-	/**
-	 * 署名を設定
-	 *
-	 * @param signature ステータスを取得
-	 */
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
+
+	public GetStatusWithSignatureResult withSignature(String signature) {
+		this.signature = signature;
+		return this;
+	}
+
+    public static GetStatusWithSignatureResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetStatusWithSignatureResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")))
+            .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
+            .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("body", getBody());
+                put("signature", getSignature());
+            }}
+        );
+    }
 }

@@ -16,59 +16,64 @@
 
 package io.gs2.exchange.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.exchange.model.*;
+import io.gs2.exchange.model.Await;
 
-/**
- * スタンプタスクで 交換待機 を削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteAwaitByStampTaskResult implements IResult, Serializable {
-	/** 交換待機 */
-	private Await item;
-	/** スタンプタスクの実行結果を記録したコンテキスト */
-	private String newContextStack;
+    private Await item;
+    private String newContextStack;
 
-	/**
-	 * 交換待機を取得
-	 *
-	 * @return スタンプタスクで 交換待機 を削除
-	 */
 	public Await getItem() {
 		return item;
 	}
 
-	/**
-	 * 交換待機を設定
-	 *
-	 * @param item スタンプタスクで 交換待機 を削除
-	 */
 	public void setItem(Await item) {
 		this.item = item;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを取得
-	 *
-	 * @return スタンプタスクで 交換待機 を削除
-	 */
+	public DeleteAwaitByStampTaskResult withItem(Await item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getNewContextStack() {
 		return newContextStack;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを設定
-	 *
-	 * @param newContextStack スタンプタスクで 交換待機 を削除
-	 */
 	public void setNewContextStack(String newContextStack) {
 		this.newContextStack = newContextStack;
 	}
+
+	public DeleteAwaitByStampTaskResult withNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
+		return this;
+	}
+
+    public static DeleteAwaitByStampTaskResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteAwaitByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Await.fromJson(data.get("item")))
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("newContextStack", getNewContextStack());
+            }}
+        );
+    }
 }

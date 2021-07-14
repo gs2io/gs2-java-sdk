@@ -16,317 +16,178 @@
 
 package io.gs2.inventory.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * インベントリモデルマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InventoryModelMaster implements IModel, Serializable, Comparable<InventoryModelMaster> {
-	/** インベントリモデルマスター */
-	protected String inventoryModelId;
+	private String inventoryModelId;
+	private String name;
+	private String metadata;
+	private String description;
+	private Integer initialCapacity;
+	private Integer maxCapacity;
+	private Boolean protectReferencedItem;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * インベントリモデルマスターを取得
-	 *
-	 * @return インベントリモデルマスター
-	 */
 	public String getInventoryModelId() {
 		return inventoryModelId;
 	}
 
-	/**
-	 * インベントリモデルマスターを設定
-	 *
-	 * @param inventoryModelId インベントリモデルマスター
-	 */
 	public void setInventoryModelId(String inventoryModelId) {
 		this.inventoryModelId = inventoryModelId;
 	}
 
-	/**
-	 * インベントリモデルマスターを設定
-	 *
-	 * @param inventoryModelId インベントリモデルマスター
-	 * @return this
-	 */
 	public InventoryModelMaster withInventoryModelId(String inventoryModelId) {
 		this.inventoryModelId = inventoryModelId;
 		return this;
 	}
-	/** インベントリの種類名 */
-	protected String name;
 
-	/**
-	 * インベントリの種類名を取得
-	 *
-	 * @return インベントリの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * インベントリの種類名を設定
-	 *
-	 * @param name インベントリの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * インベントリの種類名を設定
-	 *
-	 * @param name インベントリの種類名
-	 * @return this
-	 */
 	public InventoryModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** インベントリの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * インベントリの種類のメタデータを取得
-	 *
-	 * @return インベントリの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * インベントリの種類のメタデータを設定
-	 *
-	 * @param metadata インベントリの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * インベントリの種類のメタデータを設定
-	 *
-	 * @param metadata インベントリの種類のメタデータ
-	 * @return this
-	 */
 	public InventoryModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** インベントリモデルマスターの説明 */
-	protected String description;
 
-	/**
-	 * インベントリモデルマスターの説明を取得
-	 *
-	 * @return インベントリモデルマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * インベントリモデルマスターの説明を設定
-	 *
-	 * @param description インベントリモデルマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * インベントリモデルマスターの説明を設定
-	 *
-	 * @param description インベントリモデルマスターの説明
-	 * @return this
-	 */
 	public InventoryModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** インベントリの初期サイズ */
-	protected Integer initialCapacity;
 
-	/**
-	 * インベントリの初期サイズを取得
-	 *
-	 * @return インベントリの初期サイズ
-	 */
 	public Integer getInitialCapacity() {
 		return initialCapacity;
 	}
 
-	/**
-	 * インベントリの初期サイズを設定
-	 *
-	 * @param initialCapacity インベントリの初期サイズ
-	 */
 	public void setInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 	}
 
-	/**
-	 * インベントリの初期サイズを設定
-	 *
-	 * @param initialCapacity インベントリの初期サイズ
-	 * @return this
-	 */
 	public InventoryModelMaster withInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 		return this;
 	}
-	/** インベントリの最大サイズ */
-	protected Integer maxCapacity;
 
-	/**
-	 * インベントリの最大サイズを取得
-	 *
-	 * @return インベントリの最大サイズ
-	 */
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
 
-	/**
-	 * インベントリの最大サイズを設定
-	 *
-	 * @param maxCapacity インベントリの最大サイズ
-	 */
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
 
-	/**
-	 * インベントリの最大サイズを設定
-	 *
-	 * @param maxCapacity インベントリの最大サイズ
-	 * @return this
-	 */
 	public InventoryModelMaster withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-	/** 参照元が登録されているアイテムセットは削除できなくする */
-	protected Boolean protectReferencedItem;
 
-	/**
-	 * 参照元が登録されているアイテムセットは削除できなくするを取得
-	 *
-	 * @return 参照元が登録されているアイテムセットは削除できなくする
-	 */
 	public Boolean getProtectReferencedItem() {
 		return protectReferencedItem;
 	}
 
-	/**
-	 * 参照元が登録されているアイテムセットは削除できなくするを設定
-	 *
-	 * @param protectReferencedItem 参照元が登録されているアイテムセットは削除できなくする
-	 */
 	public void setProtectReferencedItem(Boolean protectReferencedItem) {
 		this.protectReferencedItem = protectReferencedItem;
 	}
 
-	/**
-	 * 参照元が登録されているアイテムセットは削除できなくするを設定
-	 *
-	 * @param protectReferencedItem 参照元が登録されているアイテムセットは削除できなくする
-	 * @return this
-	 */
 	public InventoryModelMaster withProtectReferencedItem(Boolean protectReferencedItem) {
 		this.protectReferencedItem = protectReferencedItem;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public InventoryModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public InventoryModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("inventoryModelId", this.getInventoryModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("description", this.getDescription())
-            .put("initialCapacity", this.getInitialCapacity())
-            .put("maxCapacity", this.getMaxCapacity())
-            .put("protectReferencedItem", this.getProtectReferencedItem())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static InventoryModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new InventoryModelMaster()
+            .withInventoryModelId(data.get("inventoryModelId") == null || data.get("inventoryModelId").isNull() ? null : data.get("inventoryModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withInitialCapacity(data.get("initialCapacity") == null || data.get("initialCapacity").isNull() ? null : data.get("initialCapacity").intValue())
+            .withMaxCapacity(data.get("maxCapacity") == null || data.get("maxCapacity").isNull() ? null : data.get("maxCapacity").intValue())
+            .withProtectReferencedItem(data.get("protectReferencedItem") == null || data.get("protectReferencedItem").isNull() ? null : data.get("protectReferencedItem").booleanValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("inventoryModelId", getInventoryModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("initialCapacity", getInitialCapacity());
+                put("maxCapacity", getMaxCapacity());
+                put("protectReferencedItem", getProtectReferencedItem());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(InventoryModelMaster o) {
 		return inventoryModelId.compareTo(o.inventoryModelId);

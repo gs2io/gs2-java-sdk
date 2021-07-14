@@ -16,93 +16,64 @@
 
 package io.gs2.lottery.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 排出レート
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Probability implements IModel, Serializable {
-	/** 景品の種類 */
-	protected DrawnPrize prize;
+	private DrawnPrize prize;
+	private Float rate;
 
-	/**
-	 * 景品の種類を取得
-	 *
-	 * @return 景品の種類
-	 */
 	public DrawnPrize getPrize() {
 		return prize;
 	}
 
-	/**
-	 * 景品の種類を設定
-	 *
-	 * @param prize 景品の種類
-	 */
 	public void setPrize(DrawnPrize prize) {
 		this.prize = prize;
 	}
 
-	/**
-	 * 景品の種類を設定
-	 *
-	 * @param prize 景品の種類
-	 * @return this
-	 */
 	public Probability withPrize(DrawnPrize prize) {
 		this.prize = prize;
 		return this;
 	}
-	/** 排出確率(0.0〜1.0) */
-	protected Float rate;
 
-	/**
-	 * 排出確率(0.0〜1.0)を取得
-	 *
-	 * @return 排出確率(0.0〜1.0)
-	 */
 	public Float getRate() {
 		return rate;
 	}
 
-	/**
-	 * 排出確率(0.0〜1.0)を設定
-	 *
-	 * @param rate 排出確率(0.0〜1.0)
-	 */
 	public void setRate(Float rate) {
 		this.rate = rate;
 	}
 
-	/**
-	 * 排出確率(0.0〜1.0)を設定
-	 *
-	 * @param rate 排出確率(0.0〜1.0)
-	 * @return this
-	 */
 	public Probability withRate(Float rate) {
 		this.rate = rate;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode prize = this.getPrize().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("rate", this.getRate());
-        body_.set("prize", prize);
-        return body_;
+    public static Probability fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Probability()
+            .withPrize(data.get("prize") == null || data.get("prize").isNull() ? null : DrawnPrize.fromJson(data.get("prize")))
+            .withRate(data.get("rate") == null || data.get("rate").isNull() ? null : data.get("rate").floatValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("prize", getPrize() != null ? getPrize().toJson() : null);
+                put("rate", getRate());
+            }}
+        );
     }
 
 	@Override

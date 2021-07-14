@@ -16,39 +16,48 @@
 
 package io.gs2.friend.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.friend.model.*;
+import io.gs2.friend.model.FriendUser;
 
-/**
- * ユーザーIDを指定してフレンドを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteFriendByUserIdResult implements IResult, Serializable {
-	/** フレンドのユーザー */
-	private FriendUser item;
+    private FriendUser item;
 
-	/**
-	 * フレンドのユーザーを取得
-	 *
-	 * @return ユーザーIDを指定してフレンドを取得
-	 */
 	public FriendUser getItem() {
 		return item;
 	}
 
-	/**
-	 * フレンドのユーザーを設定
-	 *
-	 * @param item ユーザーIDを指定してフレンドを取得
-	 */
 	public void setItem(FriendUser item) {
 		this.item = item;
 	}
+
+	public DeleteFriendByUserIdResult withItem(FriendUser item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteFriendByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteFriendByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : FriendUser.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

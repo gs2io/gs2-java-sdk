@@ -16,242 +16,126 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 有効期限ごとのアイテム所持数量を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetItemWithSignatureRequest extends Gs2BasicRequest<GetItemWithSignatureRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 有効期限ごとのアイテム所持数量を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 有効期限ごとのアイテム所持数量を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 有効期限ごとのアイテム所持数量を取得
-     * @return this
-     */
-    public GetItemWithSignatureRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** インベントリの名前 */
     private String inventoryName;
-
-    /**
-     * インベントリの名前を取得
-     *
-     * @return 有効期限ごとのアイテム所持数量を取得
-     */
-    public String getInventoryName() {
-        return inventoryName;
-    }
-
-    /**
-     * インベントリの名前を設定
-     *
-     * @param inventoryName 有効期限ごとのアイテム所持数量を取得
-     */
-    public void setInventoryName(String inventoryName) {
-        this.inventoryName = inventoryName;
-    }
-
-    /**
-     * インベントリの名前を設定
-     *
-     * @param inventoryName 有効期限ごとのアイテム所持数量を取得
-     * @return this
-     */
-    public GetItemWithSignatureRequest withInventoryName(String inventoryName) {
-        setInventoryName(inventoryName);
-        return this;
-    }
-
-    /** アイテムマスターの名前 */
+    private String accessToken;
     private String itemName;
-
-    /**
-     * アイテムマスターの名前を取得
-     *
-     * @return 有効期限ごとのアイテム所持数量を取得
-     */
-    public String getItemName() {
-        return itemName;
-    }
-
-    /**
-     * アイテムマスターの名前を設定
-     *
-     * @param itemName 有効期限ごとのアイテム所持数量を取得
-     */
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    /**
-     * アイテムマスターの名前を設定
-     *
-     * @param itemName 有効期限ごとのアイテム所持数量を取得
-     * @return this
-     */
-    public GetItemWithSignatureRequest withItemName(String itemName) {
-        setItemName(itemName);
-        return this;
-    }
-
-    /** アイテムセットを識別する名前 */
     private String itemSetName;
-
-    /**
-     * アイテムセットを識別する名前を取得
-     *
-     * @return 有効期限ごとのアイテム所持数量を取得
-     */
-    public String getItemSetName() {
-        return itemSetName;
-    }
-
-    /**
-     * アイテムセットを識別する名前を設定
-     *
-     * @param itemSetName 有効期限ごとのアイテム所持数量を取得
-     */
-    public void setItemSetName(String itemSetName) {
-        this.itemSetName = itemSetName;
-    }
-
-    /**
-     * アイテムセットを識別する名前を設定
-     *
-     * @param itemSetName 有効期限ごとのアイテム所持数量を取得
-     * @return this
-     */
-    public GetItemWithSignatureRequest withItemSetName(String itemSetName) {
-        setItemSetName(itemSetName);
-        return this;
-    }
-
-    /** 署名の発行に使用する暗号鍵 のGRN */
     private String keyId;
 
-    /**
-     * 署名の発行に使用する暗号鍵 のGRNを取得
-     *
-     * @return 有効期限ごとのアイテム所持数量を取得
-     */
-    public String getKeyId() {
-        return keyId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetItemWithSignatureRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+	}
+
+	public GetItemWithSignatureRequest withInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public GetItemWithSignatureRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public GetItemWithSignatureRequest withItemName(String itemName) {
+		this.itemName = itemName;
+		return this;
+	}
+
+	public String getItemSetName() {
+		return itemSetName;
+	}
+
+	public void setItemSetName(String itemSetName) {
+		this.itemSetName = itemSetName;
+	}
+
+	public GetItemWithSignatureRequest withItemSetName(String itemSetName) {
+		this.itemSetName = itemSetName;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public GetItemWithSignatureRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+    public static GetItemWithSignatureRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetItemWithSignatureRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
+            .withItemSetName(data.get("itemSetName") == null || data.get("itemSetName").isNull() ? null : data.get("itemSetName").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
-    /**
-     * 署名の発行に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId 有効期限ごとのアイテム所持数量を取得
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("inventoryName", getInventoryName());
+                put("accessToken", getAccessToken());
+                put("itemName", getItemName());
+                put("itemSetName", getItemSetName());
+                put("keyId", getKeyId());
+            }}
+        );
     }
-
-    /**
-     * 署名の発行に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId 有効期限ごとのアイテム所持数量を取得
-     * @return this
-     */
-    public GetItemWithSignatureRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 有効期限ごとのアイテム所持数量を取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 有効期限ごとのアイテム所持数量を取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 有効期限ごとのアイテム所持数量を取得
-     * @return this
-     */
-    public GetItemWithSignatureRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public GetItemWithSignatureRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

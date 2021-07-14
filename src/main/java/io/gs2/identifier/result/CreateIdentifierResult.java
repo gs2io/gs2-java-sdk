@@ -16,59 +16,64 @@
 
 package io.gs2.identifier.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.identifier.model.*;
+import io.gs2.identifier.model.Identifier;
 
-/**
- * クレデンシャルを新規作成します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateIdentifierResult implements IResult, Serializable {
-	/** 作成したクレデンシャル */
-	private Identifier item;
-	/** クライアントシークレット */
-	private String clientSecret;
+    private Identifier item;
+    private String clientSecret;
 
-	/**
-	 * 作成したクレデンシャルを取得
-	 *
-	 * @return クレデンシャルを新規作成します
-	 */
 	public Identifier getItem() {
 		return item;
 	}
 
-	/**
-	 * 作成したクレデンシャルを設定
-	 *
-	 * @param item クレデンシャルを新規作成します
-	 */
 	public void setItem(Identifier item) {
 		this.item = item;
 	}
 
-	/**
-	 * クライアントシークレットを取得
-	 *
-	 * @return クレデンシャルを新規作成します
-	 */
+	public CreateIdentifierResult withItem(Identifier item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getClientSecret() {
 		return clientSecret;
 	}
 
-	/**
-	 * クライアントシークレットを設定
-	 *
-	 * @param clientSecret クレデンシャルを新規作成します
-	 */
 	public void setClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
 	}
+
+	public CreateIdentifierResult withClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
+		return this;
+	}
+
+    public static CreateIdentifierResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateIdentifierResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Identifier.fromJson(data.get("item")))
+            .withClientSecret(data.get("clientSecret") == null || data.get("clientSecret").isNull() ? null : data.get("clientSecret").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("clientSecret", getClientSecret());
+            }}
+        );
+    }
 }

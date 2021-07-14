@@ -16,178 +16,112 @@
 
 package io.gs2.dictionary.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.dictionary.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.dictionary.model.ScriptSetting;
+import io.gs2.dictionary.model.LogSetting;
 
-/**
- * ネームスペースを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** エントリー登録時に実行するスクリプト */
     private ScriptSetting entryScript;
-
-    /**
-     * エントリー登録時に実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getEntryScript() {
-        return entryScript;
-    }
-
-    /**
-     * エントリー登録時に実行するスクリプトを設定
-     *
-     * @param entryScript ネームスペースを更新
-     */
-    public void setEntryScript(ScriptSetting entryScript) {
-        this.entryScript = entryScript;
-    }
-
-    /**
-     * エントリー登録時に実行するスクリプトを設定
-     *
-     * @param entryScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withEntryScript(ScriptSetting entryScript) {
-        setEntryScript(entryScript);
-        return this;
-    }
-
-    /** 登録済みのエントリーを再度登録しようとした時に実行するスクリプト */
     private ScriptSetting duplicateEntryScript;
-
-    /**
-     * 登録済みのエントリーを再度登録しようとした時に実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getDuplicateEntryScript() {
-        return duplicateEntryScript;
-    }
-
-    /**
-     * 登録済みのエントリーを再度登録しようとした時に実行するスクリプトを設定
-     *
-     * @param duplicateEntryScript ネームスペースを更新
-     */
-    public void setDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
-        this.duplicateEntryScript = duplicateEntryScript;
-    }
-
-    /**
-     * 登録済みのエントリーを再度登録しようとした時に実行するスクリプトを設定
-     *
-     * @param duplicateEntryScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
-        setDuplicateEntryScript(duplicateEntryScript);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public ScriptSetting getEntryScript() {
+		return entryScript;
+	}
+
+	public void setEntryScript(ScriptSetting entryScript) {
+		this.entryScript = entryScript;
+	}
+
+	public UpdateNamespaceRequest withEntryScript(ScriptSetting entryScript) {
+		this.entryScript = entryScript;
+		return this;
+	}
+
+	public ScriptSetting getDuplicateEntryScript() {
+		return duplicateEntryScript;
+	}
+
+	public void setDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
+		this.duplicateEntryScript = duplicateEntryScript;
+	}
+
+	public UpdateNamespaceRequest withDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
+		this.duplicateEntryScript = duplicateEntryScript;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static UpdateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateNamespaceRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withEntryScript(data.get("entryScript") == null || data.get("entryScript").isNull() ? null : ScriptSetting.fromJson(data.get("entryScript")))
+            .withDuplicateEntryScript(data.get("duplicateEntryScript") == null || data.get("duplicateEntryScript").isNull() ? null : ScriptSetting.fromJson(data.get("duplicateEntryScript")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("description", getDescription());
+                put("entryScript", getEntryScript() != null ? getEntryScript().toJson() : null);
+                put("duplicateEntryScript", getDuplicateEntryScript() != null ? getDuplicateEntryScript().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

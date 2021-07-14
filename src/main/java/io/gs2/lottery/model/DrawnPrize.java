@@ -16,66 +16,58 @@
 
 package io.gs2.lottery.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 排出された景品
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DrawnPrize implements IModel, Serializable {
-	/** 入手アクションのリスト */
-	protected List<AcquireAction> acquireActions;
+	private List<AcquireAction> acquireActions;
 
-	/**
-	 * 入手アクションのリストを取得
-	 *
-	 * @return 入手アクションのリスト
-	 */
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
 
-	/**
-	 * 入手アクションのリストを設定
-	 *
-	 * @param acquireActions 入手アクションのリスト
-	 */
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
 
-	/**
-	 * 入手アクションのリストを設定
-	 *
-	 * @param acquireActions 入手アクションのリスト
-	 * @return this
-	 */
 	public DrawnPrize withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> acquireActions = new ArrayList<>();
-        if(this.acquireActions != null) {
-            for(AcquireAction item : this.acquireActions) {
-                acquireActions.add(item.toJson());
-            }
+    public static DrawnPrize fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode();
-        body_.set("acquireActions", JsonNodeFactory.instance.arrayNode().addAll(acquireActions));
-        return body_;
+        return new DrawnPrize()
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
 
 	@Override

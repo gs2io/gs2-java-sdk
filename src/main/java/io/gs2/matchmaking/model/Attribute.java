@@ -16,92 +16,64 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * プレイヤーの属性値
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Attribute implements IModel, Serializable {
-	/** 属性名 */
-	protected String name;
+	private String name;
+	private Integer value;
 
-	/**
-	 * 属性名を取得
-	 *
-	 * @return 属性名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 属性名を設定
-	 *
-	 * @param name 属性名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 属性名を設定
-	 *
-	 * @param name 属性名
-	 * @return this
-	 */
 	public Attribute withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 属性値 */
-	protected Integer value;
 
-	/**
-	 * 属性値を取得
-	 *
-	 * @return 属性値
-	 */
 	public Integer getValue() {
 		return value;
 	}
 
-	/**
-	 * 属性値を設定
-	 *
-	 * @param value 属性値
-	 */
 	public void setValue(Integer value) {
 		this.value = value;
 	}
 
-	/**
-	 * 属性値を設定
-	 *
-	 * @param value 属性値
-	 * @return this
-	 */
 	public Attribute withValue(Integer value) {
 		this.value = value;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("name", this.getName())
-            .put("value", this.getValue());
-        return body_;
+    public static Attribute fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Attribute()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("value", getValue());
+            }}
+        );
     }
 
 	@Override

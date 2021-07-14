@@ -16,39 +16,48 @@
 
 package io.gs2.ranking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.ranking.model.*;
+import io.gs2.ranking.model.CurrentRankingMaster;
 
-/**
- * 現在有効なランキング設定のマスターデータをエクスポートします のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExportMasterResult implements IResult, Serializable {
-	/** 現在有効なランキング設定 */
-	private CurrentRankingMaster item;
+    private CurrentRankingMaster item;
 
-	/**
-	 * 現在有効なランキング設定を取得
-	 *
-	 * @return 現在有効なランキング設定のマスターデータをエクスポートします
-	 */
 	public CurrentRankingMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 現在有効なランキング設定を設定
-	 *
-	 * @param item 現在有効なランキング設定のマスターデータをエクスポートします
-	 */
 	public void setItem(CurrentRankingMaster item) {
 		this.item = item;
 	}
+
+	public ExportMasterResult withItem(CurrentRankingMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static ExportMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ExportMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentRankingMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

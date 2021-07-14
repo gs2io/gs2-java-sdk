@@ -16,210 +16,110 @@
 
 package io.gs2.lock.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.lock.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ミューテックスを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class LockRequest extends Gs2BasicRequest<LockRequest> {
-
-    /** カテゴリー名 */
     private String namespaceName;
-
-    /**
-     * カテゴリー名を取得
-     *
-     * @return ミューテックスを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * カテゴリー名を設定
-     *
-     * @param namespaceName ミューテックスを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * カテゴリー名を設定
-     *
-     * @param namespaceName ミューテックスを取得
-     * @return this
-     */
-    public LockRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** プロパティID */
     private String propertyId;
-
-    /**
-     * プロパティIDを取得
-     *
-     * @return ミューテックスを取得
-     */
-    public String getPropertyId() {
-        return propertyId;
-    }
-
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ミューテックスを取得
-     */
-    public void setPropertyId(String propertyId) {
-        this.propertyId = propertyId;
-    }
-
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ミューテックスを取得
-     * @return this
-     */
-    public LockRequest withPropertyId(String propertyId) {
-        setPropertyId(propertyId);
-        return this;
-    }
-
-    /** ロックを取得するトランザクションID */
+    private String accessToken;
     private String transactionId;
-
-    /**
-     * ロックを取得するトランザクションIDを取得
-     *
-     * @return ミューテックスを取得
-     */
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    /**
-     * ロックを取得するトランザクションIDを設定
-     *
-     * @param transactionId ミューテックスを取得
-     */
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    /**
-     * ロックを取得するトランザクションIDを設定
-     *
-     * @param transactionId ミューテックスを取得
-     * @return this
-     */
-    public LockRequest withTransactionId(String transactionId) {
-        setTransactionId(transactionId);
-        return this;
-    }
-
-    /** ロックを取得する期限（秒） */
     private Long ttl;
 
-    /**
-     * ロックを取得する期限（秒）を取得
-     *
-     * @return ミューテックスを取得
-     */
-    public Long getTtl() {
-        return ttl;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public LockRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getPropertyId() {
+		return propertyId;
+	}
+
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+	}
+
+	public LockRequest withPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public LockRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public LockRequest withTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+		return this;
+	}
+
+	public Long getTtl() {
+		return ttl;
+	}
+
+	public void setTtl(Long ttl) {
+		this.ttl = ttl;
+	}
+
+	public LockRequest withTtl(Long ttl) {
+		this.ttl = ttl;
+		return this;
+	}
+
+    public static LockRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LockRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
+            .withTtl(data.get("ttl") == null || data.get("ttl").isNull() ? null : data.get("ttl").longValue());
     }
 
-    /**
-     * ロックを取得する期限（秒）を設定
-     *
-     * @param ttl ミューテックスを取得
-     */
-    public void setTtl(Long ttl) {
-        this.ttl = ttl;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("propertyId", getPropertyId());
+                put("accessToken", getAccessToken());
+                put("transactionId", getTransactionId());
+                put("ttl", getTtl());
+            }}
+        );
     }
-
-    /**
-     * ロックを取得する期限（秒）を設定
-     *
-     * @param ttl ミューテックスを取得
-     * @return this
-     */
-    public LockRequest withTtl(Long ttl) {
-        setTtl(ttl);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ミューテックスを取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ミューテックスを取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ミューテックスを取得
-     * @return this
-     */
-    public LockRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public LockRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

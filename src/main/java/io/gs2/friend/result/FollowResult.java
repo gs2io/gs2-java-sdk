@@ -16,39 +16,48 @@
 
 package io.gs2.friend.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.friend.model.*;
+import io.gs2.friend.model.FollowUser;
 
-/**
- * フォロー のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FollowResult implements IResult, Serializable {
-	/** フォローしたユーザ */
-	private FollowUser item;
+    private FollowUser item;
 
-	/**
-	 * フォローしたユーザを取得
-	 *
-	 * @return フォロー
-	 */
 	public FollowUser getItem() {
 		return item;
 	}
 
-	/**
-	 * フォローしたユーザを設定
-	 *
-	 * @param item フォロー
-	 */
 	public void setItem(FollowUser item) {
 		this.item = item;
 	}
+
+	public FollowResult withItem(FollowUser item) {
+		this.item = item;
+		return this;
+	}
+
+    public static FollowResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new FollowResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : FollowUser.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

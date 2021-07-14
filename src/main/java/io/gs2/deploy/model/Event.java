@@ -16,221 +16,130 @@
 
 package io.gs2.deploy.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 発生したイベント
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Event implements IModel, Serializable, Comparable<Event> {
-	/** 発生したイベント */
-	protected String eventId;
+	private String eventId;
+	private String name;
+	private String resourceName;
+	private String type;
+	private String message;
+	private Long eventAt;
 
-	/**
-	 * 発生したイベントを取得
-	 *
-	 * @return 発生したイベント
-	 */
 	public String getEventId() {
 		return eventId;
 	}
 
-	/**
-	 * 発生したイベントを設定
-	 *
-	 * @param eventId 発生したイベント
-	 */
 	public void setEventId(String eventId) {
 		this.eventId = eventId;
 	}
 
-	/**
-	 * 発生したイベントを設定
-	 *
-	 * @param eventId 発生したイベント
-	 * @return this
-	 */
 	public Event withEventId(String eventId) {
 		this.eventId = eventId;
 		return this;
 	}
-	/** イベント名 */
-	protected String name;
 
-	/**
-	 * イベント名を取得
-	 *
-	 * @return イベント名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * イベント名を設定
-	 *
-	 * @param name イベント名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * イベント名を設定
-	 *
-	 * @param name イベント名
-	 * @return this
-	 */
 	public Event withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** イベントの種類 */
-	protected String resourceName;
 
-	/**
-	 * イベントの種類を取得
-	 *
-	 * @return イベントの種類
-	 */
 	public String getResourceName() {
 		return resourceName;
 	}
 
-	/**
-	 * イベントの種類を設定
-	 *
-	 * @param resourceName イベントの種類
-	 */
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
 	}
 
-	/**
-	 * イベントの種類を設定
-	 *
-	 * @param resourceName イベントの種類
-	 * @return this
-	 */
 	public Event withResourceName(String resourceName) {
 		this.resourceName = resourceName;
 		return this;
 	}
-	/** イベントの種類 */
-	protected String type;
 
-	/**
-	 * イベントの種類を取得
-	 *
-	 * @return イベントの種類
-	 */
 	public String getType() {
 		return type;
 	}
 
-	/**
-	 * イベントの種類を設定
-	 *
-	 * @param type イベントの種類
-	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	/**
-	 * イベントの種類を設定
-	 *
-	 * @param type イベントの種類
-	 * @return this
-	 */
 	public Event withType(String type) {
 		this.type = type;
 		return this;
 	}
-	/** メッセージ */
-	protected String message;
 
-	/**
-	 * メッセージを取得
-	 *
-	 * @return メッセージ
-	 */
 	public String getMessage() {
 		return message;
 	}
 
-	/**
-	 * メッセージを設定
-	 *
-	 * @param message メッセージ
-	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
-	/**
-	 * メッセージを設定
-	 *
-	 * @param message メッセージ
-	 * @return this
-	 */
 	public Event withMessage(String message) {
 		this.message = message;
 		return this;
 	}
-	/** 日時 */
-	protected Long eventAt;
 
-	/**
-	 * 日時を取得
-	 *
-	 * @return 日時
-	 */
 	public Long getEventAt() {
 		return eventAt;
 	}
 
-	/**
-	 * 日時を設定
-	 *
-	 * @param eventAt 日時
-	 */
 	public void setEventAt(Long eventAt) {
 		this.eventAt = eventAt;
 	}
 
-	/**
-	 * 日時を設定
-	 *
-	 * @param eventAt 日時
-	 * @return this
-	 */
 	public Event withEventAt(Long eventAt) {
 		this.eventAt = eventAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("eventId", this.getEventId())
-            .put("name", this.getName())
-            .put("resourceName", this.getResourceName())
-            .put("type", this.getType())
-            .put("message", this.getMessage())
-            .put("eventAt", this.getEventAt());
-        return body_;
+    public static Event fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Event()
+            .withEventId(data.get("eventId") == null || data.get("eventId").isNull() ? null : data.get("eventId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withResourceName(data.get("resourceName") == null || data.get("resourceName").isNull() ? null : data.get("resourceName").asText())
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").asText())
+            .withMessage(data.get("message") == null || data.get("message").isNull() ? null : data.get("message").asText())
+            .withEventAt(data.get("eventAt") == null || data.get("eventAt").isNull() ? null : data.get("eventAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("eventId", getEventId());
+                put("name", getName());
+                put("resourceName", getResourceName());
+                put("type", getType());
+                put("message", getMessage());
+                put("eventAt", getEventAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Event o) {
 		return eventId.compareTo(o.eventId);

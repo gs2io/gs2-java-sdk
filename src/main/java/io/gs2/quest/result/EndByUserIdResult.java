@@ -16,79 +16,81 @@
 
 package io.gs2.quest.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.quest.model.*;
+import io.gs2.quest.model.Reward;
+import io.gs2.quest.model.Progress;
 
-/**
- * ユーザIDを指定してクエストを完了 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EndByUserIdResult implements IResult, Serializable {
-	/** クエスト挑戦 */
-	private Progress item;
-	/** 報酬付与処理の実行に使用するスタンプシート */
-	private String stampSheet;
-	/** スタンプシートの署名計算に使用した暗号鍵GRN */
-	private String stampSheetEncryptionKeyId;
+    private Progress item;
+    private String stampSheet;
+    private String stampSheetEncryptionKeyId;
 
-	/**
-	 * クエスト挑戦を取得
-	 *
-	 * @return ユーザIDを指定してクエストを完了
-	 */
 	public Progress getItem() {
 		return item;
 	}
 
-	/**
-	 * クエスト挑戦を設定
-	 *
-	 * @param item ユーザIDを指定してクエストを完了
-	 */
 	public void setItem(Progress item) {
 		this.item = item;
 	}
 
-	/**
-	 * 報酬付与処理の実行に使用するスタンプシートを取得
-	 *
-	 * @return ユーザIDを指定してクエストを完了
-	 */
+	public EndByUserIdResult withItem(Progress item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getStampSheet() {
 		return stampSheet;
 	}
 
-	/**
-	 * 報酬付与処理の実行に使用するスタンプシートを設定
-	 *
-	 * @param stampSheet ユーザIDを指定してクエストを完了
-	 */
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを取得
-	 *
-	 * @return ユーザIDを指定してクエストを完了
-	 */
+	public EndByUserIdResult withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
 	public String getStampSheetEncryptionKeyId() {
 		return stampSheetEncryptionKeyId;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを設定
-	 *
-	 * @param stampSheetEncryptionKeyId ユーザIDを指定してクエストを完了
-	 */
 	public void setStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
 		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
 	}
+
+	public EndByUserIdResult withStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
+		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
+		return this;
+	}
+
+    public static EndByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new EndByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Progress.fromJson(data.get("item")))
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("stampSheet", getStampSheet());
+                put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+            }}
+        );
+    }
 }

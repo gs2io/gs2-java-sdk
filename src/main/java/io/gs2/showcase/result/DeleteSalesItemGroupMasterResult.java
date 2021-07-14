@@ -16,39 +16,48 @@
 
 package io.gs2.showcase.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.showcase.model.*;
+import io.gs2.showcase.model.SalesItemGroupMaster;
 
-/**
- * 商品グループマスターを削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteSalesItemGroupMasterResult implements IResult, Serializable {
-	/** 削除した商品グループマスター */
-	private SalesItemGroupMaster item;
+    private SalesItemGroupMaster item;
 
-	/**
-	 * 削除した商品グループマスターを取得
-	 *
-	 * @return 商品グループマスターを削除
-	 */
 	public SalesItemGroupMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 削除した商品グループマスターを設定
-	 *
-	 * @param item 商品グループマスターを削除
-	 */
 	public void setItem(SalesItemGroupMaster item) {
 		this.item = item;
 	}
+
+	public DeleteSalesItemGroupMasterResult withItem(SalesItemGroupMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteSalesItemGroupMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteSalesItemGroupMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SalesItemGroupMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

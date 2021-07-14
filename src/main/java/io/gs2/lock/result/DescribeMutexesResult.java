@@ -16,59 +16,74 @@
 
 package io.gs2.lock.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lock.model.*;
+import io.gs2.lock.model.Mutex;
 
-/**
- * ミューテックスの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeMutexesResult implements IResult, Serializable {
-	/** ミューテックスのリスト */
-	private List<Mutex> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<Mutex> items;
+    private String nextPageToken;
 
-	/**
-	 * ミューテックスのリストを取得
-	 *
-	 * @return ミューテックスの一覧を取得
-	 */
 	public List<Mutex> getItems() {
 		return items;
 	}
 
-	/**
-	 * ミューテックスのリストを設定
-	 *
-	 * @param items ミューテックスの一覧を取得
-	 */
 	public void setItems(List<Mutex> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return ミューテックスの一覧を取得
-	 */
+	public DescribeMutexesResult withItems(List<Mutex> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken ミューテックスの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeMutexesResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeMutexesResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeMutexesResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Mutex>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Mutex.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<Mutex>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

@@ -16,82 +16,62 @@
 
 package io.gs2.quest.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.quest.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * クエストモデルの一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeQuestModelsRequest extends Gs2BasicRequest<DescribeQuestModelsRequest> {
-
-    /** カテゴリ名 */
     private String namespaceName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return クエストモデルの一覧を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName クエストモデルの一覧を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName クエストモデルの一覧を取得
-     * @return this
-     */
-    public DescribeQuestModelsRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** クエストグループモデル名 */
     private String questGroupName;
 
-    /**
-     * クエストグループモデル名を取得
-     *
-     * @return クエストモデルの一覧を取得
-     */
-    public String getQuestGroupName() {
-        return questGroupName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeQuestModelsRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getQuestGroupName() {
+		return questGroupName;
+	}
+
+	public void setQuestGroupName(String questGroupName) {
+		this.questGroupName = questGroupName;
+	}
+
+	public DescribeQuestModelsRequest withQuestGroupName(String questGroupName) {
+		this.questGroupName = questGroupName;
+		return this;
+	}
+
+    public static DescribeQuestModelsRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeQuestModelsRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withQuestGroupName(data.get("questGroupName") == null || data.get("questGroupName").isNull() ? null : data.get("questGroupName").asText());
     }
 
-    /**
-     * クエストグループモデル名を設定
-     *
-     * @param questGroupName クエストモデルの一覧を取得
-     */
-    public void setQuestGroupName(String questGroupName) {
-        this.questGroupName = questGroupName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("questGroupName", getQuestGroupName());
+            }}
+        );
     }
-
-    /**
-     * クエストグループモデル名を設定
-     *
-     * @param questGroupName クエストモデルの一覧を取得
-     * @return this
-     */
-    public DescribeQuestModelsRequest withQuestGroupName(String questGroupName) {
-        setQuestGroupName(questGroupName);
-        return this;
-    }
-
 }

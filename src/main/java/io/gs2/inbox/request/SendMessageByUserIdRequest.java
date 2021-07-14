@@ -16,242 +16,138 @@
 
 package io.gs2.inbox.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inbox.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.inbox.model.AcquireAction;
+import io.gs2.inbox.model.TimeSpan;
 
-/**
- * メッセージを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SendMessageByUserIdRequest extends Gs2BasicRequest<SendMessageByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return メッセージを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName メッセージを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName メッセージを新規作成
-     * @return this
-     */
-    public SendMessageByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return メッセージを新規作成
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId メッセージを新規作成
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId メッセージを新規作成
-     * @return this
-     */
-    public SendMessageByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** メッセージの内容に相当するメタデータ */
     private String metadata;
-
-    /**
-     * メッセージの内容に相当するメタデータを取得
-     *
-     * @return メッセージを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * メッセージの内容に相当するメタデータを設定
-     *
-     * @param metadata メッセージを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * メッセージの内容に相当するメタデータを設定
-     *
-     * @param metadata メッセージを新規作成
-     * @return this
-     */
-    public SendMessageByUserIdRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 開封時に実行する入手アクション */
     private List<AcquireAction> readAcquireActions;
-
-    /**
-     * 開封時に実行する入手アクションを取得
-     *
-     * @return メッセージを新規作成
-     */
-    public List<AcquireAction> getReadAcquireActions() {
-        return readAcquireActions;
-    }
-
-    /**
-     * 開封時に実行する入手アクションを設定
-     *
-     * @param readAcquireActions メッセージを新規作成
-     */
-    public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
-        this.readAcquireActions = readAcquireActions;
-    }
-
-    /**
-     * 開封時に実行する入手アクションを設定
-     *
-     * @param readAcquireActions メッセージを新規作成
-     * @return this
-     */
-    public SendMessageByUserIdRequest withReadAcquireActions(List<AcquireAction> readAcquireActions) {
-        setReadAcquireActions(readAcquireActions);
-        return this;
-    }
-
-    /** メッセージの有効期限 */
     private Long expiresAt;
-
-    /**
-     * メッセージの有効期限を取得
-     *
-     * @return メッセージを新規作成
-     */
-    public Long getExpiresAt() {
-        return expiresAt;
-    }
-
-    /**
-     * メッセージの有効期限を設定
-     *
-     * @param expiresAt メッセージを新規作成
-     */
-    public void setExpiresAt(Long expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
-    /**
-     * メッセージの有効期限を設定
-     *
-     * @param expiresAt メッセージを新規作成
-     * @return this
-     */
-    public SendMessageByUserIdRequest withExpiresAt(Long expiresAt) {
-        setExpiresAt(expiresAt);
-        return this;
-    }
-
-    /** メッセージの有効期限までの差分 */
     private TimeSpan expiresTimeSpan;
 
-    /**
-     * メッセージの有効期限までの差分を取得
-     *
-     * @return メッセージを新規作成
-     */
-    public TimeSpan getExpiresTimeSpan() {
-        return expiresTimeSpan;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public SendMessageByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public SendMessageByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public SendMessageByUserIdRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public List<AcquireAction> getReadAcquireActions() {
+		return readAcquireActions;
+	}
+
+	public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
+		this.readAcquireActions = readAcquireActions;
+	}
+
+	public SendMessageByUserIdRequest withReadAcquireActions(List<AcquireAction> readAcquireActions) {
+		this.readAcquireActions = readAcquireActions;
+		return this;
+	}
+
+	public Long getExpiresAt() {
+		return expiresAt;
+	}
+
+	public void setExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+	}
+
+	public SendMessageByUserIdRequest withExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+		return this;
+	}
+
+	public TimeSpan getExpiresTimeSpan() {
+		return expiresTimeSpan;
+	}
+
+	public void setExpiresTimeSpan(TimeSpan expiresTimeSpan) {
+		this.expiresTimeSpan = expiresTimeSpan;
+	}
+
+	public SendMessageByUserIdRequest withExpiresTimeSpan(TimeSpan expiresTimeSpan) {
+		this.expiresTimeSpan = expiresTimeSpan;
+		return this;
+	}
+
+    public static SendMessageByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SendMessageByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withReadAcquireActions(data.get("readAcquireActions") == null || data.get("readAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("readAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withExpiresTimeSpan(data.get("expiresTimeSpan") == null || data.get("expiresTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresTimeSpan")));
     }
 
-    /**
-     * メッセージの有効期限までの差分を設定
-     *
-     * @param expiresTimeSpan メッセージを新規作成
-     */
-    public void setExpiresTimeSpan(TimeSpan expiresTimeSpan) {
-        this.expiresTimeSpan = expiresTimeSpan;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("metadata", getMetadata());
+                put("readAcquireActions", getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getReadAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("expiresAt", getExpiresAt());
+                put("expiresTimeSpan", getExpiresTimeSpan() != null ? getExpiresTimeSpan().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * メッセージの有効期限までの差分を設定
-     *
-     * @param expiresTimeSpan メッセージを新規作成
-     * @return this
-     */
-    public SendMessageByUserIdRequest withExpiresTimeSpan(TimeSpan expiresTimeSpan) {
-        setExpiresTimeSpan(expiresTimeSpan);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return メッセージを新規作成
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider メッセージを新規作成
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider メッセージを新規作成
-     * @return this
-     */
-    public SendMessageByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

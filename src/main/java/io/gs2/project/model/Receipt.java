@@ -16,285 +16,162 @@
 
 package io.gs2.project.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 領収書
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Receipt implements IModel, Serializable, Comparable<Receipt> {
-	/** 領収書 */
-	protected String receiptId;
+	private String receiptId;
+	private String accountName;
+	private String name;
+	private Long date;
+	private String amount;
+	private String pdfUrl;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 領収書を取得
-	 *
-	 * @return 領収書
-	 */
 	public String getReceiptId() {
 		return receiptId;
 	}
 
-	/**
-	 * 領収書を設定
-	 *
-	 * @param receiptId 領収書
-	 */
 	public void setReceiptId(String receiptId) {
 		this.receiptId = receiptId;
 	}
 
-	/**
-	 * 領収書を設定
-	 *
-	 * @param receiptId 領収書
-	 * @return this
-	 */
 	public Receipt withReceiptId(String receiptId) {
 		this.receiptId = receiptId;
 		return this;
 	}
-	/** GS2アカウントの名前 */
-	protected String accountName;
 
-	/**
-	 * GS2アカウントの名前を取得
-	 *
-	 * @return GS2アカウントの名前
-	 */
 	public String getAccountName() {
 		return accountName;
 	}
 
-	/**
-	 * GS2アカウントの名前を設定
-	 *
-	 * @param accountName GS2アカウントの名前
-	 */
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
 
-	/**
-	 * GS2アカウントの名前を設定
-	 *
-	 * @param accountName GS2アカウントの名前
-	 * @return this
-	 */
 	public Receipt withAccountName(String accountName) {
 		this.accountName = accountName;
 		return this;
 	}
-	/** 請求書名 */
-	protected String name;
 
-	/**
-	 * 請求書名を取得
-	 *
-	 * @return 請求書名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 請求書名を設定
-	 *
-	 * @param name 請求書名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 請求書名を設定
-	 *
-	 * @param name 請求書名
-	 * @return this
-	 */
 	public Receipt withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 請求月 */
-	protected Long date;
 
-	/**
-	 * 請求月を取得
-	 *
-	 * @return 請求月
-	 */
 	public Long getDate() {
 		return date;
 	}
 
-	/**
-	 * 請求月を設定
-	 *
-	 * @param date 請求月
-	 */
 	public void setDate(Long date) {
 		this.date = date;
 	}
 
-	/**
-	 * 請求月を設定
-	 *
-	 * @param date 請求月
-	 * @return this
-	 */
 	public Receipt withDate(Long date) {
 		this.date = date;
 		return this;
 	}
-	/** 請求金額 */
-	protected String amount;
 
-	/**
-	 * 請求金額を取得
-	 *
-	 * @return 請求金額
-	 */
 	public String getAmount() {
 		return amount;
 	}
 
-	/**
-	 * 請求金額を設定
-	 *
-	 * @param amount 請求金額
-	 */
 	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 
-	/**
-	 * 請求金額を設定
-	 *
-	 * @param amount 請求金額
-	 * @return this
-	 */
 	public Receipt withAmount(String amount) {
 		this.amount = amount;
 		return this;
 	}
-	/** PDF URL */
-	protected String pdfUrl;
 
-	/**
-	 * PDF URLを取得
-	 *
-	 * @return PDF URL
-	 */
 	public String getPdfUrl() {
 		return pdfUrl;
 	}
 
-	/**
-	 * PDF URLを設定
-	 *
-	 * @param pdfUrl PDF URL
-	 */
 	public void setPdfUrl(String pdfUrl) {
 		this.pdfUrl = pdfUrl;
 	}
 
-	/**
-	 * PDF URLを設定
-	 *
-	 * @param pdfUrl PDF URL
-	 * @return this
-	 */
 	public Receipt withPdfUrl(String pdfUrl) {
 		this.pdfUrl = pdfUrl;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Receipt withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Receipt withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("receiptId", this.getReceiptId())
-            .put("accountName", this.getAccountName())
-            .put("name", this.getName())
-            .put("date", this.getDate())
-            .put("amount", this.getAmount())
-            .put("pdfUrl", this.getPdfUrl())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Receipt fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Receipt()
+            .withReceiptId(data.get("receiptId") == null || data.get("receiptId").isNull() ? null : data.get("receiptId").asText())
+            .withAccountName(data.get("accountName") == null || data.get("accountName").isNull() ? null : data.get("accountName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDate(data.get("date") == null || data.get("date").isNull() ? null : data.get("date").longValue())
+            .withAmount(data.get("amount") == null || data.get("amount").isNull() ? null : data.get("amount").asText())
+            .withPdfUrl(data.get("pdfUrl") == null || data.get("pdfUrl").isNull() ? null : data.get("pdfUrl").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("receiptId", getReceiptId());
+                put("accountName", getAccountName());
+                put("name", getName());
+                put("date", getDate());
+                put("amount", getAmount());
+                put("pdfUrl", getPdfUrl());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Receipt o) {
 		return receiptId.compareTo(o.receiptId);

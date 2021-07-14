@@ -16,259 +16,156 @@
 
 package io.gs2.lottery.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 排出確率テーブルマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrizeTableMaster implements IModel, Serializable, Comparable<PrizeTableMaster> {
-	/** 排出確率テーブルマスター */
-	protected String prizeTableId;
+	private String prizeTableId;
+	private String name;
+	private String metadata;
+	private String description;
+	private List<Prize> prizes;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 排出確率テーブルマスターを取得
-	 *
-	 * @return 排出確率テーブルマスター
-	 */
 	public String getPrizeTableId() {
 		return prizeTableId;
 	}
 
-	/**
-	 * 排出確率テーブルマスターを設定
-	 *
-	 * @param prizeTableId 排出確率テーブルマスター
-	 */
 	public void setPrizeTableId(String prizeTableId) {
 		this.prizeTableId = prizeTableId;
 	}
 
-	/**
-	 * 排出確率テーブルマスターを設定
-	 *
-	 * @param prizeTableId 排出確率テーブルマスター
-	 * @return this
-	 */
 	public PrizeTableMaster withPrizeTableId(String prizeTableId) {
 		this.prizeTableId = prizeTableId;
 		return this;
 	}
-	/** 排出確率テーブル名 */
-	protected String name;
 
-	/**
-	 * 排出確率テーブル名を取得
-	 *
-	 * @return 排出確率テーブル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 排出確率テーブル名を設定
-	 *
-	 * @param name 排出確率テーブル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 排出確率テーブル名を設定
-	 *
-	 * @param name 排出確率テーブル名
-	 * @return this
-	 */
 	public PrizeTableMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 排出確率テーブルのメタデータ */
-	protected String metadata;
 
-	/**
-	 * 排出確率テーブルのメタデータを取得
-	 *
-	 * @return 排出確率テーブルのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 排出確率テーブルのメタデータを設定
-	 *
-	 * @param metadata 排出確率テーブルのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 排出確率テーブルのメタデータを設定
-	 *
-	 * @param metadata 排出確率テーブルのメタデータ
-	 * @return this
-	 */
 	public PrizeTableMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 排出確率テーブルマスターの説明 */
-	protected String description;
 
-	/**
-	 * 排出確率テーブルマスターの説明を取得
-	 *
-	 * @return 排出確率テーブルマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 排出確率テーブルマスターの説明を設定
-	 *
-	 * @param description 排出確率テーブルマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 排出確率テーブルマスターの説明を設定
-	 *
-	 * @param description 排出確率テーブルマスターの説明
-	 * @return this
-	 */
 	public PrizeTableMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 景品リスト */
-	protected List<Prize> prizes;
 
-	/**
-	 * 景品リストを取得
-	 *
-	 * @return 景品リスト
-	 */
 	public List<Prize> getPrizes() {
 		return prizes;
 	}
 
-	/**
-	 * 景品リストを設定
-	 *
-	 * @param prizes 景品リスト
-	 */
 	public void setPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 	}
 
-	/**
-	 * 景品リストを設定
-	 *
-	 * @param prizes 景品リスト
-	 * @return this
-	 */
 	public PrizeTableMaster withPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public PrizeTableMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public PrizeTableMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> prizes = new ArrayList<>();
-        if(this.prizes != null) {
-            for(Prize item : this.prizes) {
-                prizes.add(item.toJson());
-            }
+    public static PrizeTableMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("prizeTableId", this.getPrizeTableId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("description", this.getDescription())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("prizes", JsonNodeFactory.instance.arrayNode().addAll(prizes));
-        return body_;
+        return new PrizeTableMaster()
+            .withPrizeTableId(data.get("prizeTableId") == null || data.get("prizeTableId").isNull() ? null : data.get("prizeTableId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withPrizes(data.get("prizes") == null || data.get("prizes").isNull() ? new ArrayList<Prize>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("prizes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Prize.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("prizeTableId", getPrizeTableId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("prizes", getPrizes() == null ? new ArrayList<Prize>() :
+                    getPrizes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(PrizeTableMaster o) {
 		return prizeTableId.compareTo(o.prizeTableId);

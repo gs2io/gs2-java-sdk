@@ -16,131 +16,90 @@
 
 package io.gs2.identifier.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 割り当てられたセキュリティポリシー
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AttachSecurityPolicy implements IModel, Serializable, Comparable<AttachSecurityPolicy> {
-	/** ユーザ のGRN */
-	protected String userId;
+	private String userId;
+	private List<String> securityPolicyIds;
+	private Long attachedAt;
 
-	/**
-	 * ユーザ のGRNを取得
-	 *
-	 * @return ユーザ のGRN
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザ のGRNを設定
-	 *
-	 * @param userId ユーザ のGRN
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザ のGRNを設定
-	 *
-	 * @param userId ユーザ のGRN
-	 * @return this
-	 */
 	public AttachSecurityPolicy withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** セキュリティポリシー のGRNのリスト */
-	protected List<String> securityPolicyIds;
 
-	/**
-	 * セキュリティポリシー のGRNのリストを取得
-	 *
-	 * @return セキュリティポリシー のGRNのリスト
-	 */
 	public List<String> getSecurityPolicyIds() {
 		return securityPolicyIds;
 	}
 
-	/**
-	 * セキュリティポリシー のGRNのリストを設定
-	 *
-	 * @param securityPolicyIds セキュリティポリシー のGRNのリスト
-	 */
 	public void setSecurityPolicyIds(List<String> securityPolicyIds) {
 		this.securityPolicyIds = securityPolicyIds;
 	}
 
-	/**
-	 * セキュリティポリシー のGRNのリストを設定
-	 *
-	 * @param securityPolicyIds セキュリティポリシー のGRNのリスト
-	 * @return this
-	 */
 	public AttachSecurityPolicy withSecurityPolicyIds(List<String> securityPolicyIds) {
 		this.securityPolicyIds = securityPolicyIds;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long attachedAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getAttachedAt() {
 		return attachedAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param attachedAt 作成日時
-	 */
 	public void setAttachedAt(Long attachedAt) {
 		this.attachedAt = attachedAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param attachedAt 作成日時
-	 * @return this
-	 */
 	public AttachSecurityPolicy withAttachedAt(Long attachedAt) {
 		this.attachedAt = attachedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> securityPolicyIds = new ArrayList<>();
-        if(this.securityPolicyIds != null) {
-            for(String item : this.securityPolicyIds) {
-                securityPolicyIds.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static AttachSecurityPolicy fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("userId", this.getUserId())
-            .put("attachedAt", this.getAttachedAt());
-        body_.set("securityPolicyIds", JsonNodeFactory.instance.arrayNode().addAll(securityPolicyIds));
-        return body_;
+        return new AttachSecurityPolicy()
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withSecurityPolicyIds(data.get("securityPolicyIds") == null || data.get("securityPolicyIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("securityPolicyIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withAttachedAt(data.get("attachedAt") == null || data.get("attachedAt").isNull() ? null : data.get("attachedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userId", getUserId());
+                put("securityPolicyIds", getSecurityPolicyIds() == null ? new ArrayList<String>() :
+                    getSecurityPolicyIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("attachedAt", getAttachedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(AttachSecurityPolicy o) {
 		return userId.compareTo(o.userId);

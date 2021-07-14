@@ -16,124 +16,80 @@
 
 package io.gs2.jobQueue.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ジョブ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class JobEntry implements IModel, Serializable {
-	/** スクリプト のGRN */
-	protected String scriptId;
+	private String scriptId;
+	private String args;
+	private Integer maxTryCount;
 
-	/**
-	 * スクリプト のGRNを取得
-	 *
-	 * @return スクリプト のGRN
-	 */
 	public String getScriptId() {
 		return scriptId;
 	}
 
-	/**
-	 * スクリプト のGRNを設定
-	 *
-	 * @param scriptId スクリプト のGRN
-	 */
 	public void setScriptId(String scriptId) {
 		this.scriptId = scriptId;
 	}
 
-	/**
-	 * スクリプト のGRNを設定
-	 *
-	 * @param scriptId スクリプト のGRN
-	 * @return this
-	 */
 	public JobEntry withScriptId(String scriptId) {
 		this.scriptId = scriptId;
 		return this;
 	}
-	/** 引数 */
-	protected String args;
 
-	/**
-	 * 引数を取得
-	 *
-	 * @return 引数
-	 */
 	public String getArgs() {
 		return args;
 	}
 
-	/**
-	 * 引数を設定
-	 *
-	 * @param args 引数
-	 */
 	public void setArgs(String args) {
 		this.args = args;
 	}
 
-	/**
-	 * 引数を設定
-	 *
-	 * @param args 引数
-	 * @return this
-	 */
 	public JobEntry withArgs(String args) {
 		this.args = args;
 		return this;
 	}
-	/** 最大試行回数 */
-	protected Integer maxTryCount;
 
-	/**
-	 * 最大試行回数を取得
-	 *
-	 * @return 最大試行回数
-	 */
 	public Integer getMaxTryCount() {
 		return maxTryCount;
 	}
 
-	/**
-	 * 最大試行回数を設定
-	 *
-	 * @param maxTryCount 最大試行回数
-	 */
 	public void setMaxTryCount(Integer maxTryCount) {
 		this.maxTryCount = maxTryCount;
 	}
 
-	/**
-	 * 最大試行回数を設定
-	 *
-	 * @param maxTryCount 最大試行回数
-	 * @return this
-	 */
 	public JobEntry withMaxTryCount(Integer maxTryCount) {
 		this.maxTryCount = maxTryCount;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("scriptId", this.getScriptId())
-            .put("args", this.getArgs())
-            .put("maxTryCount", this.getMaxTryCount());
-        return body_;
+    public static JobEntry fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new JobEntry()
+            .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
+            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
+            .withMaxTryCount(data.get("maxTryCount") == null || data.get("maxTryCount").isNull() ? null : data.get("maxTryCount").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("scriptId", getScriptId());
+                put("args", getArgs());
+                put("maxTryCount", getMaxTryCount());
+            }}
+        );
     }
 
 	@Override

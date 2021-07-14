@@ -16,59 +16,74 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.Inventory;
 
-/**
- * インベントリの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeInventoriesResult implements IResult, Serializable {
-	/** インベントリのリスト */
-	private List<Inventory> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<Inventory> items;
+    private String nextPageToken;
 
-	/**
-	 * インベントリのリストを取得
-	 *
-	 * @return インベントリの一覧を取得
-	 */
 	public List<Inventory> getItems() {
 		return items;
 	}
 
-	/**
-	 * インベントリのリストを設定
-	 *
-	 * @param items インベントリの一覧を取得
-	 */
 	public void setItems(List<Inventory> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return インベントリの一覧を取得
-	 */
+	public DescribeInventoriesResult withItems(List<Inventory> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken インベントリの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeInventoriesResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeInventoriesResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeInventoriesResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Inventory>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Inventory.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<Inventory>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

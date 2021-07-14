@@ -16,99 +16,108 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.ItemSet;
+import io.gs2.inventory.model.ItemModel;
+import io.gs2.inventory.model.Inventory;
 
-/**
- * アイテムをインベントリに追加 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AcquireItemSetByUserIdResult implements IResult, Serializable {
-	/** 加算後の有効期限ごとのアイテム所持数量のリスト */
-	private List<ItemSet> items;
-	/** アイテムモデル */
-	private ItemModel itemModel;
-	/** インベントリ */
-	private Inventory inventory;
-	/** 所持数量の上限を超えて受け取れずに GS2-Inbox に転送したアイテムの数量 */
-	private Long overflowCount;
+    private List<ItemSet> items;
+    private ItemModel itemModel;
+    private Inventory inventory;
+    private Long overflowCount;
 
-	/**
-	 * 加算後の有効期限ごとのアイテム所持数量のリストを取得
-	 *
-	 * @return アイテムをインベントリに追加
-	 */
 	public List<ItemSet> getItems() {
 		return items;
 	}
 
-	/**
-	 * 加算後の有効期限ごとのアイテム所持数量のリストを設定
-	 *
-	 * @param items アイテムをインベントリに追加
-	 */
 	public void setItems(List<ItemSet> items) {
 		this.items = items;
 	}
 
-	/**
-	 * アイテムモデルを取得
-	 *
-	 * @return アイテムをインベントリに追加
-	 */
+	public AcquireItemSetByUserIdResult withItems(List<ItemSet> items) {
+		this.items = items;
+		return this;
+	}
+
 	public ItemModel getItemModel() {
 		return itemModel;
 	}
 
-	/**
-	 * アイテムモデルを設定
-	 *
-	 * @param itemModel アイテムをインベントリに追加
-	 */
 	public void setItemModel(ItemModel itemModel) {
 		this.itemModel = itemModel;
 	}
 
-	/**
-	 * インベントリを取得
-	 *
-	 * @return アイテムをインベントリに追加
-	 */
+	public AcquireItemSetByUserIdResult withItemModel(ItemModel itemModel) {
+		this.itemModel = itemModel;
+		return this;
+	}
+
 	public Inventory getInventory() {
 		return inventory;
 	}
 
-	/**
-	 * インベントリを設定
-	 *
-	 * @param inventory アイテムをインベントリに追加
-	 */
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
 
-	/**
-	 * 所持数量の上限を超えて受け取れずに GS2-Inbox に転送したアイテムの数量を取得
-	 *
-	 * @return アイテムをインベントリに追加
-	 */
+	public AcquireItemSetByUserIdResult withInventory(Inventory inventory) {
+		this.inventory = inventory;
+		return this;
+	}
+
 	public Long getOverflowCount() {
 		return overflowCount;
 	}
 
-	/**
-	 * 所持数量の上限を超えて受け取れずに GS2-Inbox に転送したアイテムの数量を設定
-	 *
-	 * @param overflowCount アイテムをインベントリに追加
-	 */
 	public void setOverflowCount(Long overflowCount) {
 		this.overflowCount = overflowCount;
 	}
+
+	public AcquireItemSetByUserIdResult withOverflowCount(Long overflowCount) {
+		this.overflowCount = overflowCount;
+		return this;
+	}
+
+    public static AcquireItemSetByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AcquireItemSetByUserIdResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<ItemSet>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ItemSet.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withItemModel(data.get("itemModel") == null || data.get("itemModel").isNull() ? null : ItemModel.fromJson(data.get("itemModel")))
+            .withInventory(data.get("inventory") == null || data.get("inventory").isNull() ? null : Inventory.fromJson(data.get("inventory")))
+            .withOverflowCount(data.get("overflowCount") == null || data.get("overflowCount").isNull() ? null : data.get("overflowCount").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<ItemSet>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("itemModel", getItemModel() != null ? getItemModel().toJson() : null);
+                put("inventory", getInventory() != null ? getInventory().toJson() : null);
+                put("overflowCount", getOverflowCount());
+            }}
+        );
+    }
 }

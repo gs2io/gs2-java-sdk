@@ -16,39 +16,53 @@
 
 package io.gs2.showcase.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.showcase.model.*;
+import io.gs2.showcase.model.ConsumeAction;
+import io.gs2.showcase.model.AcquireAction;
+import io.gs2.showcase.model.SalesItem;
+import io.gs2.showcase.model.SalesItemGroup;
+import io.gs2.showcase.model.DisplayItem;
+import io.gs2.showcase.model.Showcase;
 
-/**
- * ユーザIDを指定して陳列棚を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetShowcaseByUserIdResult implements IResult, Serializable {
-	/** 陳列棚 */
-	private Showcase item;
+    private Showcase item;
 
-	/**
-	 * 陳列棚を取得
-	 *
-	 * @return ユーザIDを指定して陳列棚を取得
-	 */
 	public Showcase getItem() {
 		return item;
 	}
 
-	/**
-	 * 陳列棚を設定
-	 *
-	 * @param item ユーザIDを指定して陳列棚を取得
-	 */
 	public void setItem(Showcase item) {
 		this.item = item;
 	}
+
+	public GetShowcaseByUserIdResult withItem(Showcase item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetShowcaseByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetShowcaseByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Showcase.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,210 +16,118 @@
 
 package io.gs2.datastore.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.datastore.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定してデータオブジェクトを更新する のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateDataObjectByUserIdRequest extends Gs2BasicRequest<UpdateDataObjectByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してデータオブジェクトを更新する
-     * @return this
-     */
-    public UpdateDataObjectByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** データの名前 */
     private String dataObjectName;
-
-    /**
-     * データの名前を取得
-     *
-     * @return ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public String getDataObjectName() {
-        return dataObjectName;
-    }
-
-    /**
-     * データの名前を設定
-     *
-     * @param dataObjectName ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public void setDataObjectName(String dataObjectName) {
-        this.dataObjectName = dataObjectName;
-    }
-
-    /**
-     * データの名前を設定
-     *
-     * @param dataObjectName ユーザIDを指定してデータオブジェクトを更新する
-     * @return this
-     */
-    public UpdateDataObjectByUserIdRequest withDataObjectName(String dataObjectName) {
-        setDataObjectName(dataObjectName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してデータオブジェクトを更新する
-     * @return this
-     */
-    public UpdateDataObjectByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** ファイルのアクセス権 */
     private String scope;
-
-    /**
-     * ファイルのアクセス権を取得
-     *
-     * @return ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public String getScope() {
-        return scope;
-    }
-
-    /**
-     * ファイルのアクセス権を設定
-     *
-     * @param scope ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    /**
-     * ファイルのアクセス権を設定
-     *
-     * @param scope ユーザIDを指定してデータオブジェクトを更新する
-     * @return this
-     */
-    public UpdateDataObjectByUserIdRequest withScope(String scope) {
-        setScope(scope);
-        return this;
-    }
-
-    /** 公開するユーザIDリスト */
     private List<String> allowUserIds;
 
-    /**
-     * 公開するユーザIDリストを取得
-     *
-     * @return ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public List<String> getAllowUserIds() {
-        return allowUserIds;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateDataObjectByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDataObjectName() {
+		return dataObjectName;
+	}
+
+	public void setDataObjectName(String dataObjectName) {
+		this.dataObjectName = dataObjectName;
+	}
+
+	public UpdateDataObjectByUserIdRequest withDataObjectName(String dataObjectName) {
+		this.dataObjectName = dataObjectName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public UpdateDataObjectByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getScope() {
+		return scope;
+	}
+
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
+
+	public UpdateDataObjectByUserIdRequest withScope(String scope) {
+		this.scope = scope;
+		return this;
+	}
+
+	public List<String> getAllowUserIds() {
+		return allowUserIds;
+	}
+
+	public void setAllowUserIds(List<String> allowUserIds) {
+		this.allowUserIds = allowUserIds;
+	}
+
+	public UpdateDataObjectByUserIdRequest withAllowUserIds(List<String> allowUserIds) {
+		this.allowUserIds = allowUserIds;
+		return this;
+	}
+
+    public static UpdateDataObjectByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateDataObjectByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDataObjectName(data.get("dataObjectName") == null || data.get("dataObjectName").isNull() ? null : data.get("dataObjectName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
+            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("allowUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 公開するユーザIDリストを設定
-     *
-     * @param allowUserIds ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public void setAllowUserIds(List<String> allowUserIds) {
-        this.allowUserIds = allowUserIds;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("dataObjectName", getDataObjectName());
+                put("userId", getUserId());
+                put("scope", getScope());
+                put("allowUserIds", getAllowUserIds() == null ? new ArrayList<String>() :
+                    getAllowUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 公開するユーザIDリストを設定
-     *
-     * @param allowUserIds ユーザIDを指定してデータオブジェクトを更新する
-     * @return this
-     */
-    public UpdateDataObjectByUserIdRequest withAllowUserIds(List<String> allowUserIds) {
-        setAllowUserIds(allowUserIds);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してデータオブジェクトを更新する
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してデータオブジェクトを更新する
-     * @return this
-     */
-    public UpdateDataObjectByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

@@ -16,59 +16,74 @@
 
 package io.gs2.distributor.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.distributor.model.*;
+import io.gs2.distributor.model.DistributorModelMaster;
 
-/**
- * 配信設定マスターの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeDistributorModelMastersResult implements IResult, Serializable {
-	/** 配信設定マスターのリスト */
-	private List<DistributorModelMaster> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<DistributorModelMaster> items;
+    private String nextPageToken;
 
-	/**
-	 * 配信設定マスターのリストを取得
-	 *
-	 * @return 配信設定マスターの一覧を取得
-	 */
 	public List<DistributorModelMaster> getItems() {
 		return items;
 	}
 
-	/**
-	 * 配信設定マスターのリストを設定
-	 *
-	 * @param items 配信設定マスターの一覧を取得
-	 */
 	public void setItems(List<DistributorModelMaster> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return 配信設定マスターの一覧を取得
-	 */
+	public DescribeDistributorModelMastersResult withItems(List<DistributorModelMaster> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken 配信設定マスターの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeDistributorModelMastersResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeDistributorModelMastersResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeDistributorModelMastersResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<DistributorModelMaster>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return DistributorModelMaster.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<DistributorModelMaster>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

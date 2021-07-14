@@ -16,59 +16,68 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.Stamina;
+import io.gs2.stamina.model.MaxStaminaTable;
+import io.gs2.stamina.model.RecoverIntervalTable;
+import io.gs2.stamina.model.RecoverValueTable;
+import io.gs2.stamina.model.StaminaModel;
 
-/**
- * ユーザIDを指定してスタミナを消費 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConsumeStaminaByUserIdResult implements IResult, Serializable {
-	/** スタミナ */
-	private Stamina item;
-	/** スタミナモデル */
-	private StaminaModel staminaModel;
+    private Stamina item;
+    private StaminaModel staminaModel;
 
-	/**
-	 * スタミナを取得
-	 *
-	 * @return ユーザIDを指定してスタミナを消費
-	 */
 	public Stamina getItem() {
 		return item;
 	}
 
-	/**
-	 * スタミナを設定
-	 *
-	 * @param item ユーザIDを指定してスタミナを消費
-	 */
 	public void setItem(Stamina item) {
 		this.item = item;
 	}
 
-	/**
-	 * スタミナモデルを取得
-	 *
-	 * @return ユーザIDを指定してスタミナを消費
-	 */
+	public ConsumeStaminaByUserIdResult withItem(Stamina item) {
+		this.item = item;
+		return this;
+	}
+
 	public StaminaModel getStaminaModel() {
 		return staminaModel;
 	}
 
-	/**
-	 * スタミナモデルを設定
-	 *
-	 * @param staminaModel ユーザIDを指定してスタミナを消費
-	 */
 	public void setStaminaModel(StaminaModel staminaModel) {
 		this.staminaModel = staminaModel;
 	}
+
+	public ConsumeStaminaByUserIdResult withStaminaModel(StaminaModel staminaModel) {
+		this.staminaModel = staminaModel;
+		return this;
+	}
+
+    public static ConsumeStaminaByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ConsumeStaminaByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Stamina.fromJson(data.get("item")))
+            .withStaminaModel(data.get("staminaModel") == null || data.get("staminaModel").isNull() ? null : StaminaModel.fromJson(data.get("staminaModel")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("staminaModel", getStaminaModel() != null ? getStaminaModel().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,195 +16,124 @@
 
 package io.gs2.mission.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * カウンターの種類
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CounterModel implements IModel, Serializable, Comparable<CounterModel> {
-	/** カウンターの種類 */
-	protected String counterId;
+	private String counterId;
+	private String name;
+	private String metadata;
+	private List<CounterScopeModel> scopes;
+	private String challengePeriodEventId;
 
-	/**
-	 * カウンターの種類を取得
-	 *
-	 * @return カウンターの種類
-	 */
 	public String getCounterId() {
 		return counterId;
 	}
 
-	/**
-	 * カウンターの種類を設定
-	 *
-	 * @param counterId カウンターの種類
-	 */
 	public void setCounterId(String counterId) {
 		this.counterId = counterId;
 	}
 
-	/**
-	 * カウンターの種類を設定
-	 *
-	 * @param counterId カウンターの種類
-	 * @return this
-	 */
 	public CounterModel withCounterId(String counterId) {
 		this.counterId = counterId;
 		return this;
 	}
-	/** カウンター名 */
-	protected String name;
 
-	/**
-	 * カウンター名を取得
-	 *
-	 * @return カウンター名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * カウンター名を設定
-	 *
-	 * @param name カウンター名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * カウンター名を設定
-	 *
-	 * @param name カウンター名
-	 * @return this
-	 */
 	public CounterModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public CounterModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** カウンターのリセットタイミング */
-	protected List<CounterScopeModel> scopes;
 
-	/**
-	 * カウンターのリセットタイミングを取得
-	 *
-	 * @return カウンターのリセットタイミング
-	 */
 	public List<CounterScopeModel> getScopes() {
 		return scopes;
 	}
 
-	/**
-	 * カウンターのリセットタイミングを設定
-	 *
-	 * @param scopes カウンターのリセットタイミング
-	 */
 	public void setScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 	}
 
-	/**
-	 * カウンターのリセットタイミングを設定
-	 *
-	 * @param scopes カウンターのリセットタイミング
-	 * @return this
-	 */
 	public CounterModel withScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 		return this;
 	}
-	/** カウントアップ可能な期間を指定するイベントマスター のGRN */
-	protected String challengePeriodEventId;
 
-	/**
-	 * カウントアップ可能な期間を指定するイベントマスター のGRNを取得
-	 *
-	 * @return カウントアップ可能な期間を指定するイベントマスター のGRN
-	 */
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
 
-	/**
-	 * カウントアップ可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId カウントアップ可能な期間を指定するイベントマスター のGRN
-	 */
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
 
-	/**
-	 * カウントアップ可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId カウントアップ可能な期間を指定するイベントマスター のGRN
-	 * @return this
-	 */
 	public CounterModel withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> scopes = new ArrayList<>();
-        if(this.scopes != null) {
-            for(CounterScopeModel item : this.scopes) {
-                scopes.add(item.toJson());
-            }
+    public static CounterModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("counterId", this.getCounterId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("challengePeriodEventId", this.getChallengePeriodEventId());
-        body_.set("scopes", JsonNodeFactory.instance.arrayNode().addAll(scopes));
-        return body_;
+        return new CounterModel()
+            .withCounterId(data.get("counterId") == null || data.get("counterId").isNull() ? null : data.get("counterId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? new ArrayList<CounterScopeModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scopes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return CounterScopeModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("counterId", getCounterId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("scopes", getScopes() == null ? new ArrayList<CounterScopeModel>() :
+                    getScopes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("challengePeriodEventId", getChallengePeriodEventId());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(CounterModel o) {
 		return counterId.compareTo(o.counterId);

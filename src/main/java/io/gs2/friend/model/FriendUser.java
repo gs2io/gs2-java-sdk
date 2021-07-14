@@ -16,124 +16,80 @@
 
 package io.gs2.friend.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * フレンドのユーザー
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FriendUser implements IModel, Serializable {
-	/** ユーザーID */
-	protected String userId;
+	private String userId;
+	private String publicProfile;
+	private String friendProfile;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public FriendUser withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 公開されるプロフィール */
-	protected String publicProfile;
 
-	/**
-	 * 公開されるプロフィールを取得
-	 *
-	 * @return 公開されるプロフィール
-	 */
 	public String getPublicProfile() {
 		return publicProfile;
 	}
 
-	/**
-	 * 公開されるプロフィールを設定
-	 *
-	 * @param publicProfile 公開されるプロフィール
-	 */
 	public void setPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 	}
 
-	/**
-	 * 公開されるプロフィールを設定
-	 *
-	 * @param publicProfile 公開されるプロフィール
-	 * @return this
-	 */
 	public FriendUser withPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 		return this;
 	}
-	/** フレンド向けに公開されるプロフィール */
-	protected String friendProfile;
 
-	/**
-	 * フレンド向けに公開されるプロフィールを取得
-	 *
-	 * @return フレンド向けに公開されるプロフィール
-	 */
 	public String getFriendProfile() {
 		return friendProfile;
 	}
 
-	/**
-	 * フレンド向けに公開されるプロフィールを設定
-	 *
-	 * @param friendProfile フレンド向けに公開されるプロフィール
-	 */
 	public void setFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 	}
 
-	/**
-	 * フレンド向けに公開されるプロフィールを設定
-	 *
-	 * @param friendProfile フレンド向けに公開されるプロフィール
-	 * @return this
-	 */
 	public FriendUser withFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("userId", this.getUserId())
-            .put("publicProfile", this.getPublicProfile())
-            .put("friendProfile", this.getFriendProfile());
-        return body_;
+    public static FriendUser fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new FriendUser()
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPublicProfile(data.get("publicProfile") == null || data.get("publicProfile").isNull() ? null : data.get("publicProfile").asText())
+            .withFriendProfile(data.get("friendProfile") == null || data.get("friendProfile").isNull() ? null : data.get("friendProfile").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userId", getUserId());
+                put("publicProfile", getPublicProfile());
+                put("friendProfile", getFriendProfile());
+            }}
+        );
     }
 
 	@Override

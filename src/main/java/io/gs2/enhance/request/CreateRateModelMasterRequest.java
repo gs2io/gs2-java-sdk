@@ -16,338 +16,209 @@
 
 package io.gs2.enhance.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.enhance.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.enhance.model.BonusRate;
 
-/**
- * 強化レートマスターを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 強化レートマスターを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 強化レート名 */
     private String name;
-
-    /**
-     * 強化レート名を取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 強化レート名を設定
-     *
-     * @param name 強化レートマスターを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * 強化レート名を設定
-     *
-     * @param name 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** 強化レートマスターの説明 */
     private String description;
-
-    /**
-     * 強化レートマスターの説明を取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 強化レートマスターの説明を設定
-     *
-     * @param description 強化レートマスターを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 強化レートマスターの説明を設定
-     *
-     * @param description 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 強化レートのメタデータ */
     private String metadata;
-
-    /**
-     * 強化レートのメタデータを取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 強化レートのメタデータを設定
-     *
-     * @param metadata 強化レートマスターを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 強化レートのメタデータを設定
-     *
-     * @param metadata 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 強化対象に使用できるインベントリモデル のGRN */
     private String targetInventoryModelId;
-
-    /**
-     * 強化対象に使用できるインベントリモデル のGRNを取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public String getTargetInventoryModelId() {
-        return targetInventoryModelId;
-    }
-
-    /**
-     * 強化対象に使用できるインベントリモデル のGRNを設定
-     *
-     * @param targetInventoryModelId 強化レートマスターを新規作成
-     */
-    public void setTargetInventoryModelId(String targetInventoryModelId) {
-        this.targetInventoryModelId = targetInventoryModelId;
-    }
-
-    /**
-     * 強化対象に使用できるインベントリモデル のGRNを設定
-     *
-     * @param targetInventoryModelId 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withTargetInventoryModelId(String targetInventoryModelId) {
-        setTargetInventoryModelId(targetInventoryModelId);
-        return this;
-    }
-
-    /** GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックス */
     private String acquireExperienceSuffix;
-
-    /**
-     * GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックスを取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public String getAcquireExperienceSuffix() {
-        return acquireExperienceSuffix;
-    }
-
-    /**
-     * GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックスを設定
-     *
-     * @param acquireExperienceSuffix 強化レートマスターを新規作成
-     */
-    public void setAcquireExperienceSuffix(String acquireExperienceSuffix) {
-        this.acquireExperienceSuffix = acquireExperienceSuffix;
-    }
-
-    /**
-     * GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックスを設定
-     *
-     * @param acquireExperienceSuffix 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withAcquireExperienceSuffix(String acquireExperienceSuffix) {
-        setAcquireExperienceSuffix(acquireExperienceSuffix);
-        return this;
-    }
-
-    /** 強化素材に使用できるインベントリモデル のGRN */
     private String materialInventoryModelId;
-
-    /**
-     * 強化素材に使用できるインベントリモデル のGRNを取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public String getMaterialInventoryModelId() {
-        return materialInventoryModelId;
-    }
-
-    /**
-     * 強化素材に使用できるインベントリモデル のGRNを設定
-     *
-     * @param materialInventoryModelId 強化レートマスターを新規作成
-     */
-    public void setMaterialInventoryModelId(String materialInventoryModelId) {
-        this.materialInventoryModelId = materialInventoryModelId;
-    }
-
-    /**
-     * 強化素材に使用できるインベントリモデル のGRNを設定
-     *
-     * @param materialInventoryModelId 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withMaterialInventoryModelId(String materialInventoryModelId) {
-        setMaterialInventoryModelId(materialInventoryModelId);
-        return this;
-    }
-
-    /** 入手経験値を格納しているメタデータのJSON階層 */
     private List<String> acquireExperienceHierarchy;
-
-    /**
-     * 入手経験値を格納しているメタデータのJSON階層を取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public List<String> getAcquireExperienceHierarchy() {
-        return acquireExperienceHierarchy;
-    }
-
-    /**
-     * 入手経験値を格納しているメタデータのJSON階層を設定
-     *
-     * @param acquireExperienceHierarchy 強化レートマスターを新規作成
-     */
-    public void setAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
-        this.acquireExperienceHierarchy = acquireExperienceHierarchy;
-    }
-
-    /**
-     * 入手経験値を格納しているメタデータのJSON階層を設定
-     *
-     * @param acquireExperienceHierarchy 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
-        setAcquireExperienceHierarchy(acquireExperienceHierarchy);
-        return this;
-    }
-
-    /** 獲得できる経験値の種類マスター のGRN */
     private String experienceModelId;
-
-    /**
-     * 獲得できる経験値の種類マスター のGRNを取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public String getExperienceModelId() {
-        return experienceModelId;
-    }
-
-    /**
-     * 獲得できる経験値の種類マスター のGRNを設定
-     *
-     * @param experienceModelId 強化レートマスターを新規作成
-     */
-    public void setExperienceModelId(String experienceModelId) {
-        this.experienceModelId = experienceModelId;
-    }
-
-    /**
-     * 獲得できる経験値の種類マスター のGRNを設定
-     *
-     * @param experienceModelId 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withExperienceModelId(String experienceModelId) {
-        setExperienceModelId(experienceModelId);
-        return this;
-    }
-
-    /** 経験値獲得量ボーナス */
     private List<BonusRate> bonusRates;
 
-    /**
-     * 経験値獲得量ボーナスを取得
-     *
-     * @return 強化レートマスターを新規作成
-     */
-    public List<BonusRate> getBonusRates() {
-        return bonusRates;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateRateModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateRateModelMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateRateModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateRateModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getTargetInventoryModelId() {
+		return targetInventoryModelId;
+	}
+
+	public void setTargetInventoryModelId(String targetInventoryModelId) {
+		this.targetInventoryModelId = targetInventoryModelId;
+	}
+
+	public CreateRateModelMasterRequest withTargetInventoryModelId(String targetInventoryModelId) {
+		this.targetInventoryModelId = targetInventoryModelId;
+		return this;
+	}
+
+	public String getAcquireExperienceSuffix() {
+		return acquireExperienceSuffix;
+	}
+
+	public void setAcquireExperienceSuffix(String acquireExperienceSuffix) {
+		this.acquireExperienceSuffix = acquireExperienceSuffix;
+	}
+
+	public CreateRateModelMasterRequest withAcquireExperienceSuffix(String acquireExperienceSuffix) {
+		this.acquireExperienceSuffix = acquireExperienceSuffix;
+		return this;
+	}
+
+	public String getMaterialInventoryModelId() {
+		return materialInventoryModelId;
+	}
+
+	public void setMaterialInventoryModelId(String materialInventoryModelId) {
+		this.materialInventoryModelId = materialInventoryModelId;
+	}
+
+	public CreateRateModelMasterRequest withMaterialInventoryModelId(String materialInventoryModelId) {
+		this.materialInventoryModelId = materialInventoryModelId;
+		return this;
+	}
+
+	public List<String> getAcquireExperienceHierarchy() {
+		return acquireExperienceHierarchy;
+	}
+
+	public void setAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
+		this.acquireExperienceHierarchy = acquireExperienceHierarchy;
+	}
+
+	public CreateRateModelMasterRequest withAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
+		this.acquireExperienceHierarchy = acquireExperienceHierarchy;
+		return this;
+	}
+
+	public String getExperienceModelId() {
+		return experienceModelId;
+	}
+
+	public void setExperienceModelId(String experienceModelId) {
+		this.experienceModelId = experienceModelId;
+	}
+
+	public CreateRateModelMasterRequest withExperienceModelId(String experienceModelId) {
+		this.experienceModelId = experienceModelId;
+		return this;
+	}
+
+	public List<BonusRate> getBonusRates() {
+		return bonusRates;
+	}
+
+	public void setBonusRates(List<BonusRate> bonusRates) {
+		this.bonusRates = bonusRates;
+	}
+
+	public CreateRateModelMasterRequest withBonusRates(List<BonusRate> bonusRates) {
+		this.bonusRates = bonusRates;
+		return this;
+	}
+
+    public static CreateRateModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateRateModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withTargetInventoryModelId(data.get("targetInventoryModelId") == null || data.get("targetInventoryModelId").isNull() ? null : data.get("targetInventoryModelId").asText())
+            .withAcquireExperienceSuffix(data.get("acquireExperienceSuffix") == null || data.get("acquireExperienceSuffix").isNull() ? null : data.get("acquireExperienceSuffix").asText())
+            .withMaterialInventoryModelId(data.get("materialInventoryModelId") == null || data.get("materialInventoryModelId").isNull() ? null : data.get("materialInventoryModelId").asText())
+            .withAcquireExperienceHierarchy(data.get("acquireExperienceHierarchy") == null || data.get("acquireExperienceHierarchy").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireExperienceHierarchy").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withBonusRates(data.get("bonusRates") == null || data.get("bonusRates").isNull() ? new ArrayList<BonusRate>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("bonusRates").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return BonusRate.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 経験値獲得量ボーナスを設定
-     *
-     * @param bonusRates 強化レートマスターを新規作成
-     */
-    public void setBonusRates(List<BonusRate> bonusRates) {
-        this.bonusRates = bonusRates;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("targetInventoryModelId", getTargetInventoryModelId());
+                put("acquireExperienceSuffix", getAcquireExperienceSuffix());
+                put("materialInventoryModelId", getMaterialInventoryModelId());
+                put("acquireExperienceHierarchy", getAcquireExperienceHierarchy() == null ? new ArrayList<String>() :
+                    getAcquireExperienceHierarchy().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("experienceModelId", getExperienceModelId());
+                put("bonusRates", getBonusRates() == null ? new ArrayList<BonusRate>() :
+                    getBonusRates().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 経験値獲得量ボーナスを設定
-     *
-     * @param bonusRates 強化レートマスターを新規作成
-     * @return this
-     */
-    public CreateRateModelMasterRequest withBonusRates(List<BonusRate> bonusRates) {
-        setBonusRates(bonusRates);
-        return this;
-    }
-
 }

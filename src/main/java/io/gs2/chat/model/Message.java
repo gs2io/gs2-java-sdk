@@ -16,253 +16,146 @@
 
 package io.gs2.chat.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * メッセージ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Message implements IModel, Serializable, Comparable<Message> {
-	/** メッセージ */
-	protected String messageId;
+	private String messageId;
+	private String roomName;
+	private String name;
+	private String userId;
+	private Integer category;
+	private String metadata;
+	private Long createdAt;
 
-	/**
-	 * メッセージを取得
-	 *
-	 * @return メッセージ
-	 */
 	public String getMessageId() {
 		return messageId;
 	}
 
-	/**
-	 * メッセージを設定
-	 *
-	 * @param messageId メッセージ
-	 */
 	public void setMessageId(String messageId) {
 		this.messageId = messageId;
 	}
 
-	/**
-	 * メッセージを設定
-	 *
-	 * @param messageId メッセージ
-	 * @return this
-	 */
 	public Message withMessageId(String messageId) {
 		this.messageId = messageId;
 		return this;
 	}
-	/** ルーム名 */
-	protected String roomName;
 
-	/**
-	 * ルーム名を取得
-	 *
-	 * @return ルーム名
-	 */
 	public String getRoomName() {
 		return roomName;
 	}
 
-	/**
-	 * ルーム名を設定
-	 *
-	 * @param roomName ルーム名
-	 */
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
 
-	/**
-	 * ルーム名を設定
-	 *
-	 * @param roomName ルーム名
-	 * @return this
-	 */
 	public Message withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-	/** メッセージ名 */
-	protected String name;
 
-	/**
-	 * メッセージ名を取得
-	 *
-	 * @return メッセージ名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * メッセージ名を設定
-	 *
-	 * @param name メッセージ名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * メッセージ名を設定
-	 *
-	 * @param name メッセージ名
-	 * @return this
-	 */
 	public Message withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 発言したユーザID */
-	protected String userId;
 
-	/**
-	 * 発言したユーザIDを取得
-	 *
-	 * @return 発言したユーザID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * 発言したユーザIDを設定
-	 *
-	 * @param userId 発言したユーザID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * 発言したユーザIDを設定
-	 *
-	 * @param userId 発言したユーザID
-	 * @return this
-	 */
 	public Message withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** メッセージの種類を分類したい時の種類番号 */
-	protected Integer category;
 
-	/**
-	 * メッセージの種類を分類したい時の種類番号を取得
-	 *
-	 * @return メッセージの種類を分類したい時の種類番号
-	 */
 	public Integer getCategory() {
 		return category;
 	}
 
-	/**
-	 * メッセージの種類を分類したい時の種類番号を設定
-	 *
-	 * @param category メッセージの種類を分類したい時の種類番号
-	 */
 	public void setCategory(Integer category) {
 		this.category = category;
 	}
 
-	/**
-	 * メッセージの種類を分類したい時の種類番号を設定
-	 *
-	 * @param category メッセージの種類を分類したい時の種類番号
-	 * @return this
-	 */
 	public Message withCategory(Integer category) {
 		this.category = category;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public Message withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Message withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("messageId", this.getMessageId())
-            .put("roomName", this.getRoomName())
-            .put("name", this.getName())
-            .put("userId", this.getUserId())
-            .put("category", this.getCategory())
-            .put("metadata", this.getMetadata())
-            .put("createdAt", this.getCreatedAt());
-        return body_;
+    public static Message fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Message()
+            .withMessageId(data.get("messageId") == null || data.get("messageId").isNull() ? null : data.get("messageId").asText())
+            .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withCategory(data.get("category") == null || data.get("category").isNull() ? null : data.get("category").intValue())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("messageId", getMessageId());
+                put("roomName", getRoomName());
+                put("name", getName());
+                put("userId", getUserId());
+                put("category", getCategory());
+                put("metadata", getMetadata());
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Message o) {
 		return messageId.compareTo(o.messageId);

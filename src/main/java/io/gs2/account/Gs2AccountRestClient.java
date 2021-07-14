@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.account;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.account.request.*;
 import io.gs2.account.result.*;
-import io.gs2.account.model.*;
+import io.gs2.account.model.*;public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient> {
 
-/**
- * GS2 Account API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2AccountRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,57 +152,19 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getChangePasswordIfTakeOver() != null) {
-                json.put("changePasswordIfTakeOver", this.request.getChangePasswordIfTakeOver());
-            }
-            if (this.request.getCreateAccountScript() != null) {
-                try {
-                    json.put("createAccountScript", new JSONObject(mapper.writeValueAsString(this.request.getCreateAccountScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getAuthenticationScript() != null) {
-                try {
-                    json.put("authenticationScript", new JSONObject(mapper.writeValueAsString(this.request.getAuthenticationScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCreateTakeOverScript() != null) {
-                try {
-                    json.put("createTakeOverScript", new JSONObject(mapper.writeValueAsString(this.request.getCreateTakeOverScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDoTakeOverScript() != null) {
-                try {
-                    json.put("doTakeOverScript", new JSONObject(mapper.writeValueAsString(this.request.getDoTakeOverScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("changePasswordIfTakeOver", request.getChangePasswordIfTakeOver());
+                    put("createAccountScript", request.getCreateAccountScript() != null ? request.getCreateAccountScript().toJson() : null);
+                    put("authenticationScript", request.getAuthenticationScript() != null ? request.getAuthenticationScript().toJson() : null);
+                    put("createTakeOverScript", request.getCreateTakeOverScript() != null ? request.getCreateTakeOverScript().toJson() : null);
+                    put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -237,25 +182,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -282,15 +216,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -301,7 +238,7 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -325,25 +262,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -370,15 +296,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -389,7 +318,7 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -413,25 +342,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -458,15 +376,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -477,56 +398,20 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getChangePasswordIfTakeOver() != null) {
-                json.put("changePasswordIfTakeOver", this.request.getChangePasswordIfTakeOver());
-            }
-            if (this.request.getCreateAccountScript() != null) {
-                try {
-                    json.put("createAccountScript", new JSONObject(mapper.writeValueAsString(this.request.getCreateAccountScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getAuthenticationScript() != null) {
-                try {
-                    json.put("authenticationScript", new JSONObject(mapper.writeValueAsString(this.request.getAuthenticationScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCreateTakeOverScript() != null) {
-                try {
-                    json.put("createTakeOverScript", new JSONObject(mapper.writeValueAsString(this.request.getCreateTakeOverScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDoTakeOverScript() != null) {
-                try {
-                    json.put("doTakeOverScript", new JSONObject(mapper.writeValueAsString(this.request.getDoTakeOverScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("changePasswordIfTakeOver", request.getChangePasswordIfTakeOver());
+                    put("createAccountScript", request.getCreateAccountScript() != null ? request.getCreateAccountScript().toJson() : null);
+                    put("authenticationScript", request.getAuthenticationScript() != null ? request.getAuthenticationScript().toJson() : null);
+                    put("createTakeOverScript", request.getCreateTakeOverScript() != null ? request.getCreateTakeOverScript().toJson() : null);
+                    put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -544,25 +429,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -589,15 +463,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -608,7 +485,7 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -632,25 +509,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -677,15 +543,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public DescribeAccountsTask(
             DescribeAccountsRequest request,
-            AsyncAction<AsyncResult<DescribeAccountsResult>> userCallback,
-            Class<DescribeAccountsResult> clazz
+            AsyncAction<AsyncResult<DescribeAccountsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeAccountsResult parse(JsonNode data) {
+            return DescribeAccountsResult.fromJson(data);
         }
 
         @Override
@@ -696,7 +565,7 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -726,25 +595,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ゲームプレイヤーアカウントの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeAccountsAsync(
             DescribeAccountsRequest request,
             AsyncAction<AsyncResult<DescribeAccountsResult>> callback
     ) {
-        DescribeAccountsTask task = new DescribeAccountsTask(request, callback, DescribeAccountsResult.class);
+        DescribeAccountsTask task = new DescribeAccountsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ゲームプレイヤーアカウントの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeAccountsResult describeAccounts(
             DescribeAccountsRequest request
     ) {
@@ -771,15 +629,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public CreateAccountTask(
             CreateAccountRequest request,
-            AsyncAction<AsyncResult<CreateAccountResult>> userCallback,
-            Class<CreateAccountResult> clazz
+            AsyncAction<AsyncResult<CreateAccountResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateAccountResult parse(JsonNode data) {
+            return CreateAccountResult.fromJson(data);
         }
 
         @Override
@@ -790,15 +651,13 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -816,25 +675,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ゲームプレイヤーアカウントを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createAccountAsync(
             CreateAccountRequest request,
             AsyncAction<AsyncResult<CreateAccountResult>> callback
     ) {
-        CreateAccountTask task = new CreateAccountTask(request, callback, CreateAccountResult.class);
+        CreateAccountTask task = new CreateAccountTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ゲームプレイヤーアカウントを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateAccountResult createAccount(
             CreateAccountRequest request
     ) {
@@ -861,15 +709,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public UpdateTimeOffsetTask(
             UpdateTimeOffsetRequest request,
-            AsyncAction<AsyncResult<UpdateTimeOffsetResult>> userCallback,
-            Class<UpdateTimeOffsetResult> clazz
+            AsyncAction<AsyncResult<UpdateTimeOffsetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateTimeOffsetResult parse(JsonNode data) {
+            return UpdateTimeOffsetResult.fromJson(data);
         }
 
         @Override
@@ -880,19 +731,15 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/{userId}/time_offset";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTimeOffset() != null) {
-                json.put("timeOffset", this.request.getTimeOffset());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("timeOffset", request.getTimeOffset());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -903,9 +750,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -913,25 +757,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ゲームプレイヤーアカウントの現在時刻に対する補正値を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateTimeOffsetAsync(
             UpdateTimeOffsetRequest request,
             AsyncAction<AsyncResult<UpdateTimeOffsetResult>> callback
     ) {
-        UpdateTimeOffsetTask task = new UpdateTimeOffsetTask(request, callback, UpdateTimeOffsetResult.class);
+        UpdateTimeOffsetTask task = new UpdateTimeOffsetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ゲームプレイヤーアカウントの現在時刻に対する補正値を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateTimeOffsetResult updateTimeOffset(
             UpdateTimeOffsetRequest request
     ) {
@@ -958,15 +791,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public GetAccountTask(
             GetAccountRequest request,
-            AsyncAction<AsyncResult<GetAccountResult>> userCallback,
-            Class<GetAccountResult> clazz
+            AsyncAction<AsyncResult<GetAccountResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetAccountResult parse(JsonNode data) {
+            return GetAccountResult.fromJson(data);
         }
 
         @Override
@@ -977,8 +813,8 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/{userId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -995,9 +831,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1005,25 +838,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ゲームプレイヤーアカウントを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getAccountAsync(
             GetAccountRequest request,
             AsyncAction<AsyncResult<GetAccountResult>> callback
     ) {
-        GetAccountTask task = new GetAccountTask(request, callback, GetAccountResult.class);
+        GetAccountTask task = new GetAccountTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ゲームプレイヤーアカウントを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetAccountResult getAccount(
             GetAccountRequest request
     ) {
@@ -1050,15 +872,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public DeleteAccountTask(
             DeleteAccountRequest request,
-            AsyncAction<AsyncResult<DeleteAccountResult>> userCallback,
-            Class<DeleteAccountResult> clazz
+            AsyncAction<AsyncResult<DeleteAccountResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteAccountResult parse(JsonNode data) {
+            return DeleteAccountResult.fromJson(data);
         }
 
         @Override
@@ -1069,8 +894,8 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/{userId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1087,9 +912,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1097,25 +919,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ゲームプレイヤーアカウントを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteAccountAsync(
             DeleteAccountRequest request,
             AsyncAction<AsyncResult<DeleteAccountResult>> callback
     ) {
-        DeleteAccountTask task = new DeleteAccountTask(request, callback, DeleteAccountResult.class);
+        DeleteAccountTask task = new DeleteAccountTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ゲームプレイヤーアカウントを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteAccountResult deleteAccount(
             DeleteAccountRequest request
     ) {
@@ -1142,15 +953,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public AuthenticationTask(
             AuthenticationRequest request,
-            AsyncAction<AsyncResult<AuthenticationResult>> userCallback,
-            Class<AuthenticationResult> clazz
+            AsyncAction<AsyncResult<AuthenticationResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AuthenticationResult parse(JsonNode data) {
+            return AuthenticationResult.fromJson(data);
         }
 
         @Override
@@ -1161,22 +975,16 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/{userId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("keyId", request.getKeyId());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1187,9 +995,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1197,25 +1002,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ゲームプレイヤーアカウントを認証<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void authenticationAsync(
             AuthenticationRequest request,
             AsyncAction<AsyncResult<AuthenticationResult>> callback
     ) {
-        AuthenticationTask task = new AuthenticationTask(request, callback, AuthenticationResult.class);
+        AuthenticationTask task = new AuthenticationTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ゲームプレイヤーアカウントを認証<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AuthenticationResult authentication(
             AuthenticationRequest request
     ) {
@@ -1242,15 +1036,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public DescribeTakeOversTask(
             DescribeTakeOversRequest request,
-            AsyncAction<AsyncResult<DescribeTakeOversResult>> userCallback,
-            Class<DescribeTakeOversResult> clazz
+            AsyncAction<AsyncResult<DescribeTakeOversResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeTakeOversResult parse(JsonNode data) {
+            return DescribeTakeOversResult.fromJson(data);
         }
 
         @Override
@@ -1261,7 +1058,7 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/me/takeover";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1287,9 +1084,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1297,25 +1091,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * 引き継ぎ設定の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeTakeOversAsync(
             DescribeTakeOversRequest request,
             AsyncAction<AsyncResult<DescribeTakeOversResult>> callback
     ) {
-        DescribeTakeOversTask task = new DescribeTakeOversTask(request, callback, DescribeTakeOversResult.class);
+        DescribeTakeOversTask task = new DescribeTakeOversTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 引き継ぎ設定の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeTakeOversResult describeTakeOvers(
             DescribeTakeOversRequest request
     ) {
@@ -1342,15 +1125,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public DescribeTakeOversByUserIdTask(
             DescribeTakeOversByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeTakeOversByUserIdResult>> userCallback,
-            Class<DescribeTakeOversByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeTakeOversByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeTakeOversByUserIdResult parse(JsonNode data) {
+            return DescribeTakeOversByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1361,8 +1147,8 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/{userId}/takeover";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1385,9 +1171,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1395,25 +1178,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ユーザーIDを指定して引き継ぎ設定の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeTakeOversByUserIdAsync(
             DescribeTakeOversByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeTakeOversByUserIdResult>> callback
     ) {
-        DescribeTakeOversByUserIdTask task = new DescribeTakeOversByUserIdTask(request, callback, DescribeTakeOversByUserIdResult.class);
+        DescribeTakeOversByUserIdTask task = new DescribeTakeOversByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して引き継ぎ設定の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeTakeOversByUserIdResult describeTakeOversByUserId(
             DescribeTakeOversByUserIdRequest request
     ) {
@@ -1440,15 +1212,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public CreateTakeOverTask(
             CreateTakeOverRequest request,
-            AsyncAction<AsyncResult<CreateTakeOverResult>> userCallback,
-            Class<CreateTakeOverResult> clazz
+            AsyncAction<AsyncResult<CreateTakeOverResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateTakeOverResult parse(JsonNode data) {
+            return CreateTakeOverResult.fromJson(data);
         }
 
         @Override
@@ -1459,24 +1234,16 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/me/takeover";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getType() != null) {
-                json.put("type", this.request.getType());
-            }
-            if (this.request.getUserIdentifier() != null) {
-                json.put("userIdentifier", this.request.getUserIdentifier());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("type", request.getType());
+                    put("userIdentifier", request.getUserIdentifier());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1490,9 +1257,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1500,25 +1264,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * 引き継ぎ設定を新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createTakeOverAsync(
             CreateTakeOverRequest request,
             AsyncAction<AsyncResult<CreateTakeOverResult>> callback
     ) {
-        CreateTakeOverTask task = new CreateTakeOverTask(request, callback, CreateTakeOverResult.class);
+        CreateTakeOverTask task = new CreateTakeOverTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 引き継ぎ設定を新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateTakeOverResult createTakeOver(
             CreateTakeOverRequest request
     ) {
@@ -1545,15 +1298,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public CreateTakeOverByUserIdTask(
             CreateTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<CreateTakeOverByUserIdResult>> userCallback,
-            Class<CreateTakeOverByUserIdResult> clazz
+            AsyncAction<AsyncResult<CreateTakeOverByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateTakeOverByUserIdResult parse(JsonNode data) {
+            return CreateTakeOverByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1564,25 +1320,17 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/{userId}/takeover";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getType() != null) {
-                json.put("type", this.request.getType());
-            }
-            if (this.request.getUserIdentifier() != null) {
-                json.put("userIdentifier", this.request.getUserIdentifier());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("type", request.getType());
+                    put("userIdentifier", request.getUserIdentifier());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1593,9 +1341,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1603,25 +1348,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ユーザーIDを指定して引き継ぎ設定を新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createTakeOverByUserIdAsync(
             CreateTakeOverByUserIdRequest request,
             AsyncAction<AsyncResult<CreateTakeOverByUserIdResult>> callback
     ) {
-        CreateTakeOverByUserIdTask task = new CreateTakeOverByUserIdTask(request, callback, CreateTakeOverByUserIdResult.class);
+        CreateTakeOverByUserIdTask task = new CreateTakeOverByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して引き継ぎ設定を新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateTakeOverByUserIdResult createTakeOverByUserId(
             CreateTakeOverByUserIdRequest request
     ) {
@@ -1648,15 +1382,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public GetTakeOverTask(
             GetTakeOverRequest request,
-            AsyncAction<AsyncResult<GetTakeOverResult>> userCallback,
-            Class<GetTakeOverResult> clazz
+            AsyncAction<AsyncResult<GetTakeOverResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetTakeOverResult parse(JsonNode data) {
+            return GetTakeOverResult.fromJson(data);
         }
 
         @Override
@@ -1667,8 +1404,8 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/me/takeover/type/{type}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{type}", this.request.getType() == null ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1688,9 +1425,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1698,25 +1432,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * 引き継ぎ設定を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getTakeOverAsync(
             GetTakeOverRequest request,
             AsyncAction<AsyncResult<GetTakeOverResult>> callback
     ) {
-        GetTakeOverTask task = new GetTakeOverTask(request, callback, GetTakeOverResult.class);
+        GetTakeOverTask task = new GetTakeOverTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 引き継ぎ設定を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetTakeOverResult getTakeOver(
             GetTakeOverRequest request
     ) {
@@ -1743,15 +1466,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public GetTakeOverByUserIdTask(
             GetTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<GetTakeOverByUserIdResult>> userCallback,
-            Class<GetTakeOverByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetTakeOverByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetTakeOverByUserIdResult parse(JsonNode data) {
+            return GetTakeOverByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1762,9 +1488,9 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/{userId}/takeover/type/{type}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{type}", this.request.getType() == null ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1781,9 +1507,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1791,25 +1514,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * ユーザーIDを指定して引き継ぎ設定を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getTakeOverByUserIdAsync(
             GetTakeOverByUserIdRequest request,
             AsyncAction<AsyncResult<GetTakeOverByUserIdResult>> callback
     ) {
-        GetTakeOverByUserIdTask task = new GetTakeOverByUserIdTask(request, callback, GetTakeOverByUserIdResult.class);
+        GetTakeOverByUserIdTask task = new GetTakeOverByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して引き継ぎ設定を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetTakeOverByUserIdResult getTakeOverByUserId(
             GetTakeOverByUserIdRequest request
     ) {
@@ -1836,15 +1548,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public UpdateTakeOverTask(
             UpdateTakeOverRequest request,
-            AsyncAction<AsyncResult<UpdateTakeOverResult>> userCallback,
-            Class<UpdateTakeOverResult> clazz
+            AsyncAction<AsyncResult<UpdateTakeOverResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateTakeOverResult parse(JsonNode data) {
+            return UpdateTakeOverResult.fromJson(data);
         }
 
         @Override
@@ -1855,22 +1570,16 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/me/takeover/type/{type}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{type}", this.request.getType() == null ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getOldPassword() != null) {
-                json.put("oldPassword", this.request.getOldPassword());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("oldPassword", request.getOldPassword());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1884,9 +1593,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1894,25 +1600,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * 引き継ぎ設定を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateTakeOverAsync(
             UpdateTakeOverRequest request,
             AsyncAction<AsyncResult<UpdateTakeOverResult>> callback
     ) {
-        UpdateTakeOverTask task = new UpdateTakeOverTask(request, callback, UpdateTakeOverResult.class);
+        UpdateTakeOverTask task = new UpdateTakeOverTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 引き継ぎ設定を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateTakeOverResult updateTakeOver(
             UpdateTakeOverRequest request
     ) {
@@ -1939,15 +1634,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public UpdateTakeOverByUserIdTask(
             UpdateTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<UpdateTakeOverByUserIdResult>> userCallback,
-            Class<UpdateTakeOverByUserIdResult> clazz
+            AsyncAction<AsyncResult<UpdateTakeOverByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateTakeOverByUserIdResult parse(JsonNode data) {
+            return UpdateTakeOverByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1958,23 +1656,17 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/{userId}/takeover/type/{type}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{type}", this.request.getType() == null ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getOldPassword() != null) {
-                json.put("oldPassword", this.request.getOldPassword());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("oldPassword", request.getOldPassword());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1985,9 +1677,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1995,25 +1684,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * 引き継ぎ設定を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateTakeOverByUserIdAsync(
             UpdateTakeOverByUserIdRequest request,
             AsyncAction<AsyncResult<UpdateTakeOverByUserIdResult>> callback
     ) {
-        UpdateTakeOverByUserIdTask task = new UpdateTakeOverByUserIdTask(request, callback, UpdateTakeOverByUserIdResult.class);
+        UpdateTakeOverByUserIdTask task = new UpdateTakeOverByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 引き継ぎ設定を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateTakeOverByUserIdResult updateTakeOverByUserId(
             UpdateTakeOverByUserIdRequest request
     ) {
@@ -2040,15 +1718,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public DeleteTakeOverTask(
             DeleteTakeOverRequest request,
-            AsyncAction<AsyncResult<DeleteTakeOverResult>> userCallback,
-            Class<DeleteTakeOverResult> clazz
+            AsyncAction<AsyncResult<DeleteTakeOverResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteTakeOverResult parse(JsonNode data) {
+            return DeleteTakeOverResult.fromJson(data);
         }
 
         @Override
@@ -2059,8 +1740,8 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/account/me/takeover/type/{type}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{type}", this.request.getType() == null ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2083,9 +1764,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2093,25 +1771,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * 引き継ぎ設定を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteTakeOverAsync(
             DeleteTakeOverRequest request,
             AsyncAction<AsyncResult<DeleteTakeOverResult>> callback
     ) {
-        DeleteTakeOverTask task = new DeleteTakeOverTask(request, callback, DeleteTakeOverResult.class);
+        DeleteTakeOverTask task = new DeleteTakeOverTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 引き継ぎ設定を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteTakeOverResult deleteTakeOver(
             DeleteTakeOverRequest request
     ) {
@@ -2138,15 +1805,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public DeleteTakeOverByUserIdentifierTask(
             DeleteTakeOverByUserIdentifierRequest request,
-            AsyncAction<AsyncResult<DeleteTakeOverByUserIdentifierResult>> userCallback,
-            Class<DeleteTakeOverByUserIdentifierResult> clazz
+            AsyncAction<AsyncResult<DeleteTakeOverByUserIdentifierResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteTakeOverByUserIdentifierResult parse(JsonNode data) {
+            return DeleteTakeOverByUserIdentifierResult.fromJson(data);
         }
 
         @Override
@@ -2157,9 +1827,9 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/takeover/type/{type}/userIdentifier/{userIdentifier}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{type}", this.request.getType() == null ? "null" : String.valueOf(this.request.getType()));
-            url = url.replace("{userIdentifier}", this.request.getUserIdentifier() == null|| this.request.getUserIdentifier().length() == 0 ? "null" : String.valueOf(this.request.getUserIdentifier()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{userIdentifier}", this.request.getUserIdentifier() == null || this.request.getUserIdentifier().length() == 0 ? "null" : String.valueOf(this.request.getUserIdentifier()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2176,9 +1846,6 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2186,25 +1853,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * 引き継ぎ設定を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteTakeOverByUserIdentifierAsync(
             DeleteTakeOverByUserIdentifierRequest request,
             AsyncAction<AsyncResult<DeleteTakeOverByUserIdentifierResult>> callback
     ) {
-        DeleteTakeOverByUserIdentifierTask task = new DeleteTakeOverByUserIdentifierTask(request, callback, DeleteTakeOverByUserIdentifierResult.class);
+        DeleteTakeOverByUserIdentifierTask task = new DeleteTakeOverByUserIdentifierTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 引き継ぎ設定を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteTakeOverByUserIdentifierResult deleteTakeOverByUserIdentifier(
             DeleteTakeOverByUserIdentifierRequest request
     ) {
@@ -2231,15 +1887,18 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
 
         public DoTakeOverTask(
             DoTakeOverRequest request,
-            AsyncAction<AsyncResult<DoTakeOverResult>> userCallback,
-            Class<DoTakeOverResult> clazz
+            AsyncAction<AsyncResult<DoTakeOverResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DoTakeOverResult parse(JsonNode data) {
+            return DoTakeOverResult.fromJson(data);
         }
 
         @Override
@@ -2250,22 +1909,16 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/takeover/type/{type}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{type}", this.request.getType() == null ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getUserIdentifier() != null) {
-                json.put("userIdentifier", this.request.getUserIdentifier());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userIdentifier", request.getUserIdentifier());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2283,25 +1936,14 @@ public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient
         }
     }
 
-    /**
-     * 引き継ぎ設定を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void doTakeOverAsync(
             DoTakeOverRequest request,
             AsyncAction<AsyncResult<DoTakeOverResult>> callback
     ) {
-        DoTakeOverTask task = new DoTakeOverTask(request, callback, DoTakeOverResult.class);
+        DoTakeOverTask task = new DoTakeOverTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 引き継ぎ設定を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DoTakeOverResult doTakeOver(
             DoTakeOverRequest request
     ) {

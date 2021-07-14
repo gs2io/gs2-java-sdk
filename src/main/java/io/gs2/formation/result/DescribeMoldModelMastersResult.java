@@ -16,59 +16,74 @@
 
 package io.gs2.formation.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
+import io.gs2.formation.model.MoldModelMaster;
 
-/**
- * フォームの保存領域マスターの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeMoldModelMastersResult implements IResult, Serializable {
-	/** フォームの保存領域マスターのリスト */
-	private List<MoldModelMaster> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<MoldModelMaster> items;
+    private String nextPageToken;
 
-	/**
-	 * フォームの保存領域マスターのリストを取得
-	 *
-	 * @return フォームの保存領域マスターの一覧を取得
-	 */
 	public List<MoldModelMaster> getItems() {
 		return items;
 	}
 
-	/**
-	 * フォームの保存領域マスターのリストを設定
-	 *
-	 * @param items フォームの保存領域マスターの一覧を取得
-	 */
 	public void setItems(List<MoldModelMaster> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return フォームの保存領域マスターの一覧を取得
-	 */
+	public DescribeMoldModelMastersResult withItems(List<MoldModelMaster> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken フォームの保存領域マスターの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeMoldModelMastersResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeMoldModelMastersResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeMoldModelMastersResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<MoldModelMaster>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return MoldModelMaster.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<MoldModelMaster>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

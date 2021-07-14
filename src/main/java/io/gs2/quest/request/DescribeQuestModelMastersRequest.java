@@ -16,146 +16,94 @@
 
 package io.gs2.quest.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.quest.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * クエストモデルマスターの一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeQuestModelMastersRequest extends Gs2BasicRequest<DescribeQuestModelMastersRequest> {
-
-    /** カテゴリ名 */
     private String namespaceName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return クエストモデルマスターの一覧を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName クエストモデルマスターの一覧を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName クエストモデルマスターの一覧を取得
-     * @return this
-     */
-    public DescribeQuestModelMastersRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** クエストグループモデル名 */
     private String questGroupName;
-
-    /**
-     * クエストグループモデル名を取得
-     *
-     * @return クエストモデルマスターの一覧を取得
-     */
-    public String getQuestGroupName() {
-        return questGroupName;
-    }
-
-    /**
-     * クエストグループモデル名を設定
-     *
-     * @param questGroupName クエストモデルマスターの一覧を取得
-     */
-    public void setQuestGroupName(String questGroupName) {
-        this.questGroupName = questGroupName;
-    }
-
-    /**
-     * クエストグループモデル名を設定
-     *
-     * @param questGroupName クエストモデルマスターの一覧を取得
-     * @return this
-     */
-    public DescribeQuestModelMastersRequest withQuestGroupName(String questGroupName) {
-        setQuestGroupName(questGroupName);
-        return this;
-    }
-
-    /** データの取得を開始する位置を指定するトークン */
     private String pageToken;
+    private Integer limit;
 
-    /**
-     * データの取得を開始する位置を指定するトークンを取得
-     *
-     * @return クエストモデルマスターの一覧を取得
-     */
-    public String getPageToken() {
-        return pageToken;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeQuestModelMastersRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getQuestGroupName() {
+		return questGroupName;
+	}
+
+	public void setQuestGroupName(String questGroupName) {
+		this.questGroupName = questGroupName;
+	}
+
+	public DescribeQuestModelMastersRequest withQuestGroupName(String questGroupName) {
+		this.questGroupName = questGroupName;
+		return this;
+	}
+
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public DescribeQuestModelMastersRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeQuestModelMastersRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static DescribeQuestModelMastersRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeQuestModelMastersRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withQuestGroupName(data.get("questGroupName") == null || data.get("questGroupName").isNull() ? null : data.get("questGroupName").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken クエストモデルマスターの一覧を取得
-     */
-    public void setPageToken(String pageToken) {
-        this.pageToken = pageToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("questGroupName", getQuestGroupName());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
+            }}
+        );
     }
-
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken クエストモデルマスターの一覧を取得
-     * @return this
-     */
-    public DescribeQuestModelMastersRequest withPageToken(String pageToken) {
-        setPageToken(pageToken);
-        return this;
-    }
-
-    /** データの取得件数 */
-    private Long limit;
-
-    /**
-     * データの取得件数を取得
-     *
-     * @return クエストモデルマスターの一覧を取得
-     */
-    public Long getLimit() {
-        return limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit クエストモデルマスターの一覧を取得
-     */
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit クエストモデルマスターの一覧を取得
-     * @return this
-     */
-    public DescribeQuestModelMastersRequest withLimit(Long limit) {
-        setLimit(limit);
-        return this;
-    }
-
 }

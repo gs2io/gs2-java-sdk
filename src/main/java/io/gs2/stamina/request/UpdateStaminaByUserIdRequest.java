@@ -16,274 +16,142 @@
 
 package io.gs2.stamina.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.stamina.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定してスタミナを作成・更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateStaminaByUserIdRequest extends Gs2BasicRequest<UpdateStaminaByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定してスタミナを作成・更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してスタミナを作成・更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してスタミナを作成・更新
-     * @return this
-     */
-    public UpdateStaminaByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** スタミナの種類名 */
     private String staminaName;
-
-    /**
-     * スタミナの種類名を取得
-     *
-     * @return ユーザIDを指定してスタミナを作成・更新
-     */
-    public String getStaminaName() {
-        return staminaName;
-    }
-
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName ユーザIDを指定してスタミナを作成・更新
-     */
-    public void setStaminaName(String staminaName) {
-        this.staminaName = staminaName;
-    }
-
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName ユーザIDを指定してスタミナを作成・更新
-     * @return this
-     */
-    public UpdateStaminaByUserIdRequest withStaminaName(String staminaName) {
-        setStaminaName(staminaName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してスタミナを作成・更新
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してスタミナを作成・更新
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してスタミナを作成・更新
-     * @return this
-     */
-    public UpdateStaminaByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 最終更新時におけるスタミナ値 */
     private Integer value;
-
-    /**
-     * 最終更新時におけるスタミナ値を取得
-     *
-     * @return ユーザIDを指定してスタミナを作成・更新
-     */
-    public Integer getValue() {
-        return value;
-    }
-
-    /**
-     * 最終更新時におけるスタミナ値を設定
-     *
-     * @param value ユーザIDを指定してスタミナを作成・更新
-     */
-    public void setValue(Integer value) {
-        this.value = value;
-    }
-
-    /**
-     * 最終更新時におけるスタミナ値を設定
-     *
-     * @param value ユーザIDを指定してスタミナを作成・更新
-     * @return this
-     */
-    public UpdateStaminaByUserIdRequest withValue(Integer value) {
-        setValue(value);
-        return this;
-    }
-
-    /** スタミナの最大値 */
     private Integer maxValue;
-
-    /**
-     * スタミナの最大値を取得
-     *
-     * @return ユーザIDを指定してスタミナを作成・更新
-     */
-    public Integer getMaxValue() {
-        return maxValue;
-    }
-
-    /**
-     * スタミナの最大値を設定
-     *
-     * @param maxValue ユーザIDを指定してスタミナを作成・更新
-     */
-    public void setMaxValue(Integer maxValue) {
-        this.maxValue = maxValue;
-    }
-
-    /**
-     * スタミナの最大値を設定
-     *
-     * @param maxValue ユーザIDを指定してスタミナを作成・更新
-     * @return this
-     */
-    public UpdateStaminaByUserIdRequest withMaxValue(Integer maxValue) {
-        setMaxValue(maxValue);
-        return this;
-    }
-
-    /** スタミナの回復間隔(分) */
     private Integer recoverIntervalMinutes;
-
-    /**
-     * スタミナの回復間隔(分)を取得
-     *
-     * @return ユーザIDを指定してスタミナを作成・更新
-     */
-    public Integer getRecoverIntervalMinutes() {
-        return recoverIntervalMinutes;
-    }
-
-    /**
-     * スタミナの回復間隔(分)を設定
-     *
-     * @param recoverIntervalMinutes ユーザIDを指定してスタミナを作成・更新
-     */
-    public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
-        this.recoverIntervalMinutes = recoverIntervalMinutes;
-    }
-
-    /**
-     * スタミナの回復間隔(分)を設定
-     *
-     * @param recoverIntervalMinutes ユーザIDを指定してスタミナを作成・更新
-     * @return this
-     */
-    public UpdateStaminaByUserIdRequest withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
-        setRecoverIntervalMinutes(recoverIntervalMinutes);
-        return this;
-    }
-
-    /** スタミナの回復量 */
     private Integer recoverValue;
 
-    /**
-     * スタミナの回復量を取得
-     *
-     * @return ユーザIDを指定してスタミナを作成・更新
-     */
-    public Integer getRecoverValue() {
-        return recoverValue;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateStaminaByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getStaminaName() {
+		return staminaName;
+	}
+
+	public void setStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+	}
+
+	public UpdateStaminaByUserIdRequest withStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public UpdateStaminaByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Integer getValue() {
+		return value;
+	}
+
+	public void setValue(Integer value) {
+		this.value = value;
+	}
+
+	public UpdateStaminaByUserIdRequest withValue(Integer value) {
+		this.value = value;
+		return this;
+	}
+
+	public Integer getMaxValue() {
+		return maxValue;
+	}
+
+	public void setMaxValue(Integer maxValue) {
+		this.maxValue = maxValue;
+	}
+
+	public UpdateStaminaByUserIdRequest withMaxValue(Integer maxValue) {
+		this.maxValue = maxValue;
+		return this;
+	}
+
+	public Integer getRecoverIntervalMinutes() {
+		return recoverIntervalMinutes;
+	}
+
+	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
+		this.recoverIntervalMinutes = recoverIntervalMinutes;
+	}
+
+	public UpdateStaminaByUserIdRequest withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
+		this.recoverIntervalMinutes = recoverIntervalMinutes;
+		return this;
+	}
+
+	public Integer getRecoverValue() {
+		return recoverValue;
+	}
+
+	public void setRecoverValue(Integer recoverValue) {
+		this.recoverValue = recoverValue;
+	}
+
+	public UpdateStaminaByUserIdRequest withRecoverValue(Integer recoverValue) {
+		this.recoverValue = recoverValue;
+		return this;
+	}
+
+    public static UpdateStaminaByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateStaminaByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").intValue())
+            .withMaxValue(data.get("maxValue") == null || data.get("maxValue").isNull() ? null : data.get("maxValue").intValue())
+            .withRecoverIntervalMinutes(data.get("recoverIntervalMinutes") == null || data.get("recoverIntervalMinutes").isNull() ? null : data.get("recoverIntervalMinutes").intValue())
+            .withRecoverValue(data.get("recoverValue") == null || data.get("recoverValue").isNull() ? null : data.get("recoverValue").intValue());
     }
 
-    /**
-     * スタミナの回復量を設定
-     *
-     * @param recoverValue ユーザIDを指定してスタミナを作成・更新
-     */
-    public void setRecoverValue(Integer recoverValue) {
-        this.recoverValue = recoverValue;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("staminaName", getStaminaName());
+                put("userId", getUserId());
+                put("value", getValue());
+                put("maxValue", getMaxValue());
+                put("recoverIntervalMinutes", getRecoverIntervalMinutes());
+                put("recoverValue", getRecoverValue());
+            }}
+        );
     }
-
-    /**
-     * スタミナの回復量を設定
-     *
-     * @param recoverValue ユーザIDを指定してスタミナを作成・更新
-     * @return this
-     */
-    public UpdateStaminaByUserIdRequest withRecoverValue(Integer recoverValue) {
-        setRecoverValue(recoverValue);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してスタミナを作成・更新
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してスタミナを作成・更新
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してスタミナを作成・更新
-     * @return this
-     */
-    public UpdateStaminaByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

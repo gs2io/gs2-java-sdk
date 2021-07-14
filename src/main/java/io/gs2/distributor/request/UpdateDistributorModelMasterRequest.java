@@ -16,210 +16,134 @@
 
 package io.gs2.distributor.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.distributor.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 配信設定マスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateDistributorModelMasterRequest extends Gs2BasicRequest<UpdateDistributorModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 配信設定マスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 配信設定マスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 配信設定マスターを更新
-     * @return this
-     */
-    public UpdateDistributorModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 配信設定名 */
     private String distributorName;
-
-    /**
-     * 配信設定名を取得
-     *
-     * @return 配信設定マスターを更新
-     */
-    public String getDistributorName() {
-        return distributorName;
-    }
-
-    /**
-     * 配信設定名を設定
-     *
-     * @param distributorName 配信設定マスターを更新
-     */
-    public void setDistributorName(String distributorName) {
-        this.distributorName = distributorName;
-    }
-
-    /**
-     * 配信設定名を設定
-     *
-     * @param distributorName 配信設定マスターを更新
-     * @return this
-     */
-    public UpdateDistributorModelMasterRequest withDistributorName(String distributorName) {
-        setDistributorName(distributorName);
-        return this;
-    }
-
-    /** 配信設定マスターの説明 */
     private String description;
-
-    /**
-     * 配信設定マスターの説明を取得
-     *
-     * @return 配信設定マスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 配信設定マスターの説明を設定
-     *
-     * @param description 配信設定マスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 配信設定マスターの説明を設定
-     *
-     * @param description 配信設定マスターを更新
-     * @return this
-     */
-    public UpdateDistributorModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 配信設定のメタデータ */
     private String metadata;
-
-    /**
-     * 配信設定のメタデータを取得
-     *
-     * @return 配信設定マスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 配信設定のメタデータを設定
-     *
-     * @param metadata 配信設定マスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 配信設定のメタデータを設定
-     *
-     * @param metadata 配信設定マスターを更新
-     * @return this
-     */
-    public UpdateDistributorModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN */
     private String inboxNamespaceId;
-
-    /**
-     * 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRNを取得
-     *
-     * @return 配信設定マスターを更新
-     */
-    public String getInboxNamespaceId() {
-        return inboxNamespaceId;
-    }
-
-    /**
-     * 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRNを設定
-     *
-     * @param inboxNamespaceId 配信設定マスターを更新
-     */
-    public void setInboxNamespaceId(String inboxNamespaceId) {
-        this.inboxNamespaceId = inboxNamespaceId;
-    }
-
-    /**
-     * 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRNを設定
-     *
-     * @param inboxNamespaceId 配信設定マスターを更新
-     * @return this
-     */
-    public UpdateDistributorModelMasterRequest withInboxNamespaceId(String inboxNamespaceId) {
-        setInboxNamespaceId(inboxNamespaceId);
-        return this;
-    }
-
-    /** ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリスト */
     private List<String> whiteListTargetIds;
 
-    /**
-     * ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリストを取得
-     *
-     * @return 配信設定マスターを更新
-     */
-    public List<String> getWhiteListTargetIds() {
-        return whiteListTargetIds;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateDistributorModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDistributorName() {
+		return distributorName;
+	}
+
+	public void setDistributorName(String distributorName) {
+		this.distributorName = distributorName;
+	}
+
+	public UpdateDistributorModelMasterRequest withDistributorName(String distributorName) {
+		this.distributorName = distributorName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateDistributorModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateDistributorModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getInboxNamespaceId() {
+		return inboxNamespaceId;
+	}
+
+	public void setInboxNamespaceId(String inboxNamespaceId) {
+		this.inboxNamespaceId = inboxNamespaceId;
+	}
+
+	public UpdateDistributorModelMasterRequest withInboxNamespaceId(String inboxNamespaceId) {
+		this.inboxNamespaceId = inboxNamespaceId;
+		return this;
+	}
+
+	public List<String> getWhiteListTargetIds() {
+		return whiteListTargetIds;
+	}
+
+	public void setWhiteListTargetIds(List<String> whiteListTargetIds) {
+		this.whiteListTargetIds = whiteListTargetIds;
+	}
+
+	public UpdateDistributorModelMasterRequest withWhiteListTargetIds(List<String> whiteListTargetIds) {
+		this.whiteListTargetIds = whiteListTargetIds;
+		return this;
+	}
+
+    public static UpdateDistributorModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateDistributorModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDistributorName(data.get("distributorName") == null || data.get("distributorName").isNull() ? null : data.get("distributorName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withInboxNamespaceId(data.get("inboxNamespaceId") == null || data.get("inboxNamespaceId").isNull() ? null : data.get("inboxNamespaceId").asText())
+            .withWhiteListTargetIds(data.get("whiteListTargetIds") == null || data.get("whiteListTargetIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("whiteListTargetIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリストを設定
-     *
-     * @param whiteListTargetIds 配信設定マスターを更新
-     */
-    public void setWhiteListTargetIds(List<String> whiteListTargetIds) {
-        this.whiteListTargetIds = whiteListTargetIds;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("distributorName", getDistributorName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("inboxNamespaceId", getInboxNamespaceId());
+                put("whiteListTargetIds", getWhiteListTargetIds() == null ? new ArrayList<String>() :
+                    getWhiteListTargetIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリストを設定
-     *
-     * @param whiteListTargetIds 配信設定マスターを更新
-     * @return this
-     */
-    public UpdateDistributorModelMasterRequest withWhiteListTargetIds(List<String> whiteListTargetIds) {
-        setWhiteListTargetIds(whiteListTargetIds);
-        return this;
-    }
-
 }

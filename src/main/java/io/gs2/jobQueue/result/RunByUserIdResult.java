@@ -16,79 +16,81 @@
 
 package io.gs2.jobQueue.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.jobQueue.model.*;
+import io.gs2.jobQueue.model.Job;
+import io.gs2.jobQueue.model.JobResultBody;
 
-/**
- * ユーザIDを指定してジョブを実行 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RunByUserIdResult implements IResult, Serializable {
-	/** ジョブ */
-	private Job item;
-	/** ジョブの実行結果 */
-	private JobResultBody result;
-	/** None */
-	private Boolean isLastJob;
+    private Job item;
+    private JobResultBody result;
+    private Boolean isLastJob;
 
-	/**
-	 * ジョブを取得
-	 *
-	 * @return ユーザIDを指定してジョブを実行
-	 */
 	public Job getItem() {
 		return item;
 	}
 
-	/**
-	 * ジョブを設定
-	 *
-	 * @param item ユーザIDを指定してジョブを実行
-	 */
 	public void setItem(Job item) {
 		this.item = item;
 	}
 
-	/**
-	 * ジョブの実行結果を取得
-	 *
-	 * @return ユーザIDを指定してジョブを実行
-	 */
+	public RunByUserIdResult withItem(Job item) {
+		this.item = item;
+		return this;
+	}
+
 	public JobResultBody getResult() {
 		return result;
 	}
 
-	/**
-	 * ジョブの実行結果を設定
-	 *
-	 * @param result ユーザIDを指定してジョブを実行
-	 */
 	public void setResult(JobResultBody result) {
 		this.result = result;
 	}
 
-	/**
-	 * Noneを取得
-	 *
-	 * @return ユーザIDを指定してジョブを実行
-	 */
+	public RunByUserIdResult withResult(JobResultBody result) {
+		this.result = result;
+		return this;
+	}
+
 	public Boolean getIsLastJob() {
 		return isLastJob;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param isLastJob ユーザIDを指定してジョブを実行
-	 */
 	public void setIsLastJob(Boolean isLastJob) {
 		this.isLastJob = isLastJob;
 	}
+
+	public RunByUserIdResult withIsLastJob(Boolean isLastJob) {
+		this.isLastJob = isLastJob;
+		return this;
+	}
+
+    public static RunByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new RunByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Job.fromJson(data.get("item")))
+            .withResult(data.get("result") == null || data.get("result").isNull() ? null : JobResultBody.fromJson(data.get("result")))
+            .withIsLastJob(data.get("isLastJob") == null || data.get("isLastJob").isNull() ? null : data.get("isLastJob").booleanValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("result", getResult() != null ? getResult().toJson() : null);
+                put("isLastJob", getIsLastJob());
+            }}
+        );
+    }
 }

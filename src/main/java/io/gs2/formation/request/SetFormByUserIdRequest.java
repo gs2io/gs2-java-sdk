@@ -16,210 +16,121 @@
 
 package io.gs2.formation.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.formation.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.formation.model.Slot;
 
-/**
- * ユーザIDを指定してフォームを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SetFormByUserIdRequest extends Gs2BasicRequest<SetFormByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定してフォームを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してフォームを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してフォームを更新
-     * @return this
-     */
-    public SetFormByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してフォームを更新
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してフォームを更新
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してフォームを更新
-     * @return this
-     */
-    public SetFormByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** フォームの保存領域の名前 */
     private String moldName;
-
-    /**
-     * フォームの保存領域の名前を取得
-     *
-     * @return ユーザIDを指定してフォームを更新
-     */
-    public String getMoldName() {
-        return moldName;
-    }
-
-    /**
-     * フォームの保存領域の名前を設定
-     *
-     * @param moldName ユーザIDを指定してフォームを更新
-     */
-    public void setMoldName(String moldName) {
-        this.moldName = moldName;
-    }
-
-    /**
-     * フォームの保存領域の名前を設定
-     *
-     * @param moldName ユーザIDを指定してフォームを更新
-     * @return this
-     */
-    public SetFormByUserIdRequest withMoldName(String moldName) {
-        setMoldName(moldName);
-        return this;
-    }
-
-    /** 保存領域のインデックス */
     private Integer index;
-
-    /**
-     * 保存領域のインデックスを取得
-     *
-     * @return ユーザIDを指定してフォームを更新
-     */
-    public Integer getIndex() {
-        return index;
-    }
-
-    /**
-     * 保存領域のインデックスを設定
-     *
-     * @param index ユーザIDを指定してフォームを更新
-     */
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
-
-    /**
-     * 保存領域のインデックスを設定
-     *
-     * @param index ユーザIDを指定してフォームを更新
-     * @return this
-     */
-    public SetFormByUserIdRequest withIndex(Integer index) {
-        setIndex(index);
-        return this;
-    }
-
-    /** スロットリスト */
     private List<Slot> slots;
 
-    /**
-     * スロットリストを取得
-     *
-     * @return ユーザIDを指定してフォームを更新
-     */
-    public List<Slot> getSlots() {
-        return slots;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public SetFormByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public SetFormByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getMoldName() {
+		return moldName;
+	}
+
+	public void setMoldName(String moldName) {
+		this.moldName = moldName;
+	}
+
+	public SetFormByUserIdRequest withMoldName(String moldName) {
+		this.moldName = moldName;
+		return this;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+
+	public SetFormByUserIdRequest withIndex(Integer index) {
+		this.index = index;
+		return this;
+	}
+
+	public List<Slot> getSlots() {
+		return slots;
+	}
+
+	public void setSlots(List<Slot> slots) {
+		this.slots = slots;
+	}
+
+	public SetFormByUserIdRequest withSlots(List<Slot> slots) {
+		this.slots = slots;
+		return this;
+	}
+
+    public static SetFormByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SetFormByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<Slot>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Slot.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * スロットリストを設定
-     *
-     * @param slots ユーザIDを指定してフォームを更新
-     */
-    public void setSlots(List<Slot> slots) {
-        this.slots = slots;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("moldName", getMoldName());
+                put("index", getIndex());
+                put("slots", getSlots() == null ? new ArrayList<Slot>() :
+                    getSlots().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * スロットリストを設定
-     *
-     * @param slots ユーザIDを指定してフォームを更新
-     * @return this
-     */
-    public SetFormByUserIdRequest withSlots(List<Slot> slots) {
-        setSlots(slots);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してフォームを更新
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してフォームを更新
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してフォームを更新
-     * @return this
-     */
-    public SetFormByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

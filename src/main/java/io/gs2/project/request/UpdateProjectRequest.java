@@ -16,274 +16,158 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * プロジェクトを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateProjectRequest extends Gs2BasicRequest<UpdateProjectRequest> {
-
-    /** GS2アカウントトークン */
     private String accountToken;
-
-    /**
-     * GS2アカウントトークンを取得
-     *
-     * @return プロジェクトを更新
-     */
-    public String getAccountToken() {
-        return accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトを更新
-     */
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトを更新
-     * @return this
-     */
-    public UpdateProjectRequest withAccountToken(String accountToken) {
-        setAccountToken(accountToken);
-        return this;
-    }
-
-    /** プロジェクト名 */
     private String projectName;
-
-    /**
-     * プロジェクト名を取得
-     *
-     * @return プロジェクトを更新
-     */
-    public String getProjectName() {
-        return projectName;
-    }
-
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトを更新
-     */
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトを更新
-     * @return this
-     */
-    public UpdateProjectRequest withProjectName(String projectName) {
-        setProjectName(projectName);
-        return this;
-    }
-
-    /** プロジェクトの説明 */
     private String description;
-
-    /**
-     * プロジェクトの説明を取得
-     *
-     * @return プロジェクトを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * プロジェクトの説明を設定
-     *
-     * @param description プロジェクトを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * プロジェクトの説明を設定
-     *
-     * @param description プロジェクトを更新
-     * @return this
-     */
-    public UpdateProjectRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 契約プラン */
     private String plan;
-
-    /**
-     * 契約プランを取得
-     *
-     * @return プロジェクトを更新
-     */
-    public String getPlan() {
-        return plan;
-    }
-
-    /**
-     * 契約プランを設定
-     *
-     * @param plan プロジェクトを更新
-     */
-    public void setPlan(String plan) {
-        this.plan = plan;
-    }
-
-    /**
-     * 契約プランを設定
-     *
-     * @param plan プロジェクトを更新
-     * @return this
-     */
-    public UpdateProjectRequest withPlan(String plan) {
-        setPlan(plan);
-        return this;
-    }
-
-    /** 支払い方法名 */
     private String billingMethodName;
-
-    /**
-     * 支払い方法名を取得
-     *
-     * @return プロジェクトを更新
-     */
-    public String getBillingMethodName() {
-        return billingMethodName;
-    }
-
-    /**
-     * 支払い方法名を設定
-     *
-     * @param billingMethodName プロジェクトを更新
-     */
-    public void setBillingMethodName(String billingMethodName) {
-        this.billingMethodName = billingMethodName;
-    }
-
-    /**
-     * 支払い方法名を設定
-     *
-     * @param billingMethodName プロジェクトを更新
-     * @return this
-     */
-    public UpdateProjectRequest withBillingMethodName(String billingMethodName) {
-        setBillingMethodName(billingMethodName);
-        return this;
-    }
-
-    /** AWS EventBridge の設定 */
     private String enableEventBridge;
-
-    /**
-     * AWS EventBridge の設定を取得
-     *
-     * @return プロジェクトを更新
-     */
-    public String getEnableEventBridge() {
-        return enableEventBridge;
-    }
-
-    /**
-     * AWS EventBridge の設定を設定
-     *
-     * @param enableEventBridge プロジェクトを更新
-     */
-    public void setEnableEventBridge(String enableEventBridge) {
-        this.enableEventBridge = enableEventBridge;
-    }
-
-    /**
-     * AWS EventBridge の設定を設定
-     *
-     * @param enableEventBridge プロジェクトを更新
-     * @return this
-     */
-    public UpdateProjectRequest withEnableEventBridge(String enableEventBridge) {
-        setEnableEventBridge(enableEventBridge);
-        return this;
-    }
-
-    /** 通知に使用するAWSアカウントのID */
     private String eventBridgeAwsAccountId;
-
-    /**
-     * 通知に使用するAWSアカウントのIDを取得
-     *
-     * @return プロジェクトを更新
-     */
-    public String getEventBridgeAwsAccountId() {
-        return eventBridgeAwsAccountId;
-    }
-
-    /**
-     * 通知に使用するAWSアカウントのIDを設定
-     *
-     * @param eventBridgeAwsAccountId プロジェクトを更新
-     */
-    public void setEventBridgeAwsAccountId(String eventBridgeAwsAccountId) {
-        this.eventBridgeAwsAccountId = eventBridgeAwsAccountId;
-    }
-
-    /**
-     * 通知に使用するAWSアカウントのIDを設定
-     *
-     * @param eventBridgeAwsAccountId プロジェクトを更新
-     * @return this
-     */
-    public UpdateProjectRequest withEventBridgeAwsAccountId(String eventBridgeAwsAccountId) {
-        setEventBridgeAwsAccountId(eventBridgeAwsAccountId);
-        return this;
-    }
-
-    /** 通知に使用するAWSリージョン */
     private String eventBridgeAwsRegion;
 
-    /**
-     * 通知に使用するAWSリージョンを取得
-     *
-     * @return プロジェクトを更新
-     */
-    public String getEventBridgeAwsRegion() {
-        return eventBridgeAwsRegion;
+	public String getAccountToken() {
+		return accountToken;
+	}
+
+	public void setAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+	}
+
+	public UpdateProjectRequest withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public UpdateProjectRequest withProjectName(String projectName) {
+		this.projectName = projectName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateProjectRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getPlan() {
+		return plan;
+	}
+
+	public void setPlan(String plan) {
+		this.plan = plan;
+	}
+
+	public UpdateProjectRequest withPlan(String plan) {
+		this.plan = plan;
+		return this;
+	}
+
+	public String getBillingMethodName() {
+		return billingMethodName;
+	}
+
+	public void setBillingMethodName(String billingMethodName) {
+		this.billingMethodName = billingMethodName;
+	}
+
+	public UpdateProjectRequest withBillingMethodName(String billingMethodName) {
+		this.billingMethodName = billingMethodName;
+		return this;
+	}
+
+	public String getEnableEventBridge() {
+		return enableEventBridge;
+	}
+
+	public void setEnableEventBridge(String enableEventBridge) {
+		this.enableEventBridge = enableEventBridge;
+	}
+
+	public UpdateProjectRequest withEnableEventBridge(String enableEventBridge) {
+		this.enableEventBridge = enableEventBridge;
+		return this;
+	}
+
+	public String getEventBridgeAwsAccountId() {
+		return eventBridgeAwsAccountId;
+	}
+
+	public void setEventBridgeAwsAccountId(String eventBridgeAwsAccountId) {
+		this.eventBridgeAwsAccountId = eventBridgeAwsAccountId;
+	}
+
+	public UpdateProjectRequest withEventBridgeAwsAccountId(String eventBridgeAwsAccountId) {
+		this.eventBridgeAwsAccountId = eventBridgeAwsAccountId;
+		return this;
+	}
+
+	public String getEventBridgeAwsRegion() {
+		return eventBridgeAwsRegion;
+	}
+
+	public void setEventBridgeAwsRegion(String eventBridgeAwsRegion) {
+		this.eventBridgeAwsRegion = eventBridgeAwsRegion;
+	}
+
+	public UpdateProjectRequest withEventBridgeAwsRegion(String eventBridgeAwsRegion) {
+		this.eventBridgeAwsRegion = eventBridgeAwsRegion;
+		return this;
+	}
+
+    public static UpdateProjectRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateProjectRequest()
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText())
+            .withProjectName(data.get("projectName") == null || data.get("projectName").isNull() ? null : data.get("projectName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withPlan(data.get("plan") == null || data.get("plan").isNull() ? null : data.get("plan").asText())
+            .withBillingMethodName(data.get("billingMethodName") == null || data.get("billingMethodName").isNull() ? null : data.get("billingMethodName").asText())
+            .withEnableEventBridge(data.get("enableEventBridge") == null || data.get("enableEventBridge").isNull() ? null : data.get("enableEventBridge").asText())
+            .withEventBridgeAwsAccountId(data.get("eventBridgeAwsAccountId") == null || data.get("eventBridgeAwsAccountId").isNull() ? null : data.get("eventBridgeAwsAccountId").asText())
+            .withEventBridgeAwsRegion(data.get("eventBridgeAwsRegion") == null || data.get("eventBridgeAwsRegion").isNull() ? null : data.get("eventBridgeAwsRegion").asText());
     }
 
-    /**
-     * 通知に使用するAWSリージョンを設定
-     *
-     * @param eventBridgeAwsRegion プロジェクトを更新
-     */
-    public void setEventBridgeAwsRegion(String eventBridgeAwsRegion) {
-        this.eventBridgeAwsRegion = eventBridgeAwsRegion;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountToken", getAccountToken());
+                put("projectName", getProjectName());
+                put("description", getDescription());
+                put("plan", getPlan());
+                put("billingMethodName", getBillingMethodName());
+                put("enableEventBridge", getEnableEventBridge());
+                put("eventBridgeAwsAccountId", getEventBridgeAwsAccountId());
+                put("eventBridgeAwsRegion", getEventBridgeAwsRegion());
+            }}
+        );
     }
-
-    /**
-     * 通知に使用するAWSリージョンを設定
-     *
-     * @param eventBridgeAwsRegion プロジェクトを更新
-     * @return this
-     */
-    public UpdateProjectRequest withEventBridgeAwsRegion(String eventBridgeAwsRegion) {
-        setEventBridgeAwsRegion(eventBridgeAwsRegion);
-        return this;
-    }
-
 }

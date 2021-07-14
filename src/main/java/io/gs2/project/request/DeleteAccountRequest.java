@@ -16,50 +16,30 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * GS2アカウントを削除します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteAccountRequest extends Gs2BasicRequest<DeleteAccountRequest> {
 
-    /** GS2アカウントの名前 */
-    private String accountName;
-
-    /**
-     * GS2アカウントの名前を取得
-     *
-     * @return GS2アカウントを削除します
-     */
-    public String getAccountName() {
-        return accountName;
+    public static DeleteAccountRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteAccountRequest();
     }
 
-    /**
-     * GS2アカウントの名前を設定
-     *
-     * @param accountName GS2アカウントを削除します
-     */
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+            }}
+        );
     }
-
-    /**
-     * GS2アカウントの名前を設定
-     *
-     * @param accountName GS2アカウントを削除します
-     * @return this
-     */
-    public DeleteAccountRequest withAccountName(String accountName) {
-        setAccountName(accountName);
-        return this;
-    }
-
 }

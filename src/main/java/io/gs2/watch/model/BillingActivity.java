@@ -16,253 +16,130 @@
 
 package io.gs2.watch.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 請求にまつわるアクティビティ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BillingActivity implements IModel, Serializable, Comparable<BillingActivity> {
-	/** 請求にまつわるアクティビティ */
-	protected String billingActivityId;
+	private String billingActivityId;
+	private Integer year;
+	private Integer month;
+	private String service;
+	private String activityType;
+	private Long value;
 
-	/**
-	 * 請求にまつわるアクティビティを取得
-	 *
-	 * @return 請求にまつわるアクティビティ
-	 */
 	public String getBillingActivityId() {
 		return billingActivityId;
 	}
 
-	/**
-	 * 請求にまつわるアクティビティを設定
-	 *
-	 * @param billingActivityId 請求にまつわるアクティビティ
-	 */
 	public void setBillingActivityId(String billingActivityId) {
 		this.billingActivityId = billingActivityId;
 	}
 
-	/**
-	 * 請求にまつわるアクティビティを設定
-	 *
-	 * @param billingActivityId 請求にまつわるアクティビティ
-	 * @return this
-	 */
 	public BillingActivity withBillingActivityId(String billingActivityId) {
 		this.billingActivityId = billingActivityId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public BillingActivity withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** イベントの発生年 */
-	protected Integer year;
-
-	/**
-	 * イベントの発生年を取得
-	 *
-	 * @return イベントの発生年
-	 */
 	public Integer getYear() {
 		return year;
 	}
 
-	/**
-	 * イベントの発生年を設定
-	 *
-	 * @param year イベントの発生年
-	 */
 	public void setYear(Integer year) {
 		this.year = year;
 	}
 
-	/**
-	 * イベントの発生年を設定
-	 *
-	 * @param year イベントの発生年
-	 * @return this
-	 */
 	public BillingActivity withYear(Integer year) {
 		this.year = year;
 		return this;
 	}
-	/** イベントの発生月 */
-	protected Integer month;
 
-	/**
-	 * イベントの発生月を取得
-	 *
-	 * @return イベントの発生月
-	 */
 	public Integer getMonth() {
 		return month;
 	}
 
-	/**
-	 * イベントの発生月を設定
-	 *
-	 * @param month イベントの発生月
-	 */
 	public void setMonth(Integer month) {
 		this.month = month;
 	}
 
-	/**
-	 * イベントの発生月を設定
-	 *
-	 * @param month イベントの発生月
-	 * @return this
-	 */
 	public BillingActivity withMonth(Integer month) {
 		this.month = month;
 		return this;
 	}
-	/** サービスの種類 */
-	protected String service;
 
-	/**
-	 * サービスの種類を取得
-	 *
-	 * @return サービスの種類
-	 */
 	public String getService() {
 		return service;
 	}
 
-	/**
-	 * サービスの種類を設定
-	 *
-	 * @param service サービスの種類
-	 */
 	public void setService(String service) {
 		this.service = service;
 	}
 
-	/**
-	 * サービスの種類を設定
-	 *
-	 * @param service サービスの種類
-	 * @return this
-	 */
 	public BillingActivity withService(String service) {
 		this.service = service;
 		return this;
 	}
-	/** イベントの種類 */
-	protected String activityType;
 
-	/**
-	 * イベントの種類を取得
-	 *
-	 * @return イベントの種類
-	 */
 	public String getActivityType() {
 		return activityType;
 	}
 
-	/**
-	 * イベントの種類を設定
-	 *
-	 * @param activityType イベントの種類
-	 */
 	public void setActivityType(String activityType) {
 		this.activityType = activityType;
 	}
 
-	/**
-	 * イベントの種類を設定
-	 *
-	 * @param activityType イベントの種類
-	 * @return this
-	 */
 	public BillingActivity withActivityType(String activityType) {
 		this.activityType = activityType;
 		return this;
 	}
-	/** イベントの値 */
-	protected Long value;
 
-	/**
-	 * イベントの値を取得
-	 *
-	 * @return イベントの値
-	 */
 	public Long getValue() {
 		return value;
 	}
 
-	/**
-	 * イベントの値を設定
-	 *
-	 * @param value イベントの値
-	 */
 	public void setValue(Long value) {
 		this.value = value;
 	}
 
-	/**
-	 * イベントの値を設定
-	 *
-	 * @param value イベントの値
-	 * @return this
-	 */
 	public BillingActivity withValue(Long value) {
 		this.value = value;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("billingActivityId", this.getBillingActivityId())
-            .put("ownerId", this.getOwnerId())
-            .put("year", this.getYear())
-            .put("month", this.getMonth())
-            .put("service", this.getService())
-            .put("activityType", this.getActivityType())
-            .put("value", this.getValue());
-        return body_;
+    public static BillingActivity fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new BillingActivity()
+            .withBillingActivityId(data.get("billingActivityId") == null || data.get("billingActivityId").isNull() ? null : data.get("billingActivityId").asText())
+            .withYear(data.get("year") == null || data.get("year").isNull() ? null : data.get("year").intValue())
+            .withMonth(data.get("month") == null || data.get("month").isNull() ? null : data.get("month").intValue())
+            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
+            .withActivityType(data.get("activityType") == null || data.get("activityType").isNull() ? null : data.get("activityType").asText())
+            .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("billingActivityId", getBillingActivityId());
+                put("year", getYear());
+                put("month", getMonth());
+                put("service", getService());
+                put("activityType", getActivityType());
+                put("value", getValue());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(BillingActivity o) {
 		return billingActivityId.compareTo(o.billingActivityId);
@@ -273,7 +150,6 @@ public class BillingActivity implements IModel, Serializable, Comparable<Billing
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.billingActivityId == null) ? 0 : this.billingActivityId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.year == null) ? 0 : this.year.hashCode());
         result = prime * result + ((this.month == null) ? 0 : this.month.hashCode());
         result = prime * result + ((this.service == null) ? 0 : this.service.hashCode());
@@ -294,11 +170,6 @@ public class BillingActivity implements IModel, Serializable, Comparable<Billing
 		if (billingActivityId == null) {
 			return other.billingActivityId == null;
 		} else if (!billingActivityId.equals(other.billingActivityId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (year == null) {

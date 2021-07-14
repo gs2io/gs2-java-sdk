@@ -16,253 +16,146 @@
 
 package io.gs2.quest.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * クエストグループマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class QuestGroupModelMaster implements IModel, Serializable, Comparable<QuestGroupModelMaster> {
-	/** クエストグループマスター */
-	protected String questGroupModelId;
+	private String questGroupModelId;
+	private String name;
+	private String description;
+	private String metadata;
+	private String challengePeriodEventId;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * クエストグループマスターを取得
-	 *
-	 * @return クエストグループマスター
-	 */
 	public String getQuestGroupModelId() {
 		return questGroupModelId;
 	}
 
-	/**
-	 * クエストグループマスターを設定
-	 *
-	 * @param questGroupModelId クエストグループマスター
-	 */
 	public void setQuestGroupModelId(String questGroupModelId) {
 		this.questGroupModelId = questGroupModelId;
 	}
 
-	/**
-	 * クエストグループマスターを設定
-	 *
-	 * @param questGroupModelId クエストグループマスター
-	 * @return this
-	 */
 	public QuestGroupModelMaster withQuestGroupModelId(String questGroupModelId) {
 		this.questGroupModelId = questGroupModelId;
 		return this;
 	}
-	/** クエストグループモデル名 */
-	protected String name;
 
-	/**
-	 * クエストグループモデル名を取得
-	 *
-	 * @return クエストグループモデル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * クエストグループモデル名を設定
-	 *
-	 * @param name クエストグループモデル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * クエストグループモデル名を設定
-	 *
-	 * @param name クエストグループモデル名
-	 * @return this
-	 */
 	public QuestGroupModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** クエストグループマスターの説明 */
-	protected String description;
 
-	/**
-	 * クエストグループマスターの説明を取得
-	 *
-	 * @return クエストグループマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * クエストグループマスターの説明を設定
-	 *
-	 * @param description クエストグループマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * クエストグループマスターの説明を設定
-	 *
-	 * @param description クエストグループマスターの説明
-	 * @return this
-	 */
 	public QuestGroupModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** クエストグループのメタデータ */
-	protected String metadata;
 
-	/**
-	 * クエストグループのメタデータを取得
-	 *
-	 * @return クエストグループのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * クエストグループのメタデータを設定
-	 *
-	 * @param metadata クエストグループのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * クエストグループのメタデータを設定
-	 *
-	 * @param metadata クエストグループのメタデータ
-	 * @return this
-	 */
 	public QuestGroupModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 挑戦可能な期間を指定するイベントマスター のGRN */
-	protected String challengePeriodEventId;
 
-	/**
-	 * 挑戦可能な期間を指定するイベントマスター のGRNを取得
-	 *
-	 * @return 挑戦可能な期間を指定するイベントマスター のGRN
-	 */
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
 
-	/**
-	 * 挑戦可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId 挑戦可能な期間を指定するイベントマスター のGRN
-	 */
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
 
-	/**
-	 * 挑戦可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId 挑戦可能な期間を指定するイベントマスター のGRN
-	 * @return this
-	 */
 	public QuestGroupModelMaster withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public QuestGroupModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public QuestGroupModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("questGroupModelId", this.getQuestGroupModelId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("challengePeriodEventId", this.getChallengePeriodEventId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static QuestGroupModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new QuestGroupModelMaster()
+            .withQuestGroupModelId(data.get("questGroupModelId") == null || data.get("questGroupModelId").isNull() ? null : data.get("questGroupModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("questGroupModelId", getQuestGroupModelId());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("challengePeriodEventId", getChallengePeriodEventId());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(QuestGroupModelMaster o) {
 		return questGroupModelId.compareTo(o.questGroupModelId);

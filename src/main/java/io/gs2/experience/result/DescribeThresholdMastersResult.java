@@ -16,59 +16,74 @@
 
 package io.gs2.experience.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.experience.model.*;
+import io.gs2.experience.model.ThresholdMaster;
 
-/**
- * ランクアップ閾値マスターの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeThresholdMastersResult implements IResult, Serializable {
-	/** ランクアップ閾値マスターのリスト */
-	private List<ThresholdMaster> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<ThresholdMaster> items;
+    private String nextPageToken;
 
-	/**
-	 * ランクアップ閾値マスターのリストを取得
-	 *
-	 * @return ランクアップ閾値マスターの一覧を取得
-	 */
 	public List<ThresholdMaster> getItems() {
 		return items;
 	}
 
-	/**
-	 * ランクアップ閾値マスターのリストを設定
-	 *
-	 * @param items ランクアップ閾値マスターの一覧を取得
-	 */
 	public void setItems(List<ThresholdMaster> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return ランクアップ閾値マスターの一覧を取得
-	 */
+	public DescribeThresholdMastersResult withItems(List<ThresholdMaster> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken ランクアップ閾値マスターの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeThresholdMastersResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeThresholdMastersResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeThresholdMastersResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<ThresholdMaster>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ThresholdMaster.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<ThresholdMaster>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

@@ -16,291 +16,170 @@
 
 package io.gs2.chat.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ルーム
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Room implements IModel, Serializable, Comparable<Room> {
-	/** ルーム */
-	protected String roomId;
+	private String roomId;
+	private String name;
+	private String userId;
+	private String metadata;
+	private String password;
+	private List<String> whiteListUserIds;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ルームを取得
-	 *
-	 * @return ルーム
-	 */
 	public String getRoomId() {
 		return roomId;
 	}
 
-	/**
-	 * ルームを設定
-	 *
-	 * @param roomId ルーム
-	 */
 	public void setRoomId(String roomId) {
 		this.roomId = roomId;
 	}
 
-	/**
-	 * ルームを設定
-	 *
-	 * @param roomId ルーム
-	 * @return this
-	 */
 	public Room withRoomId(String roomId) {
 		this.roomId = roomId;
 		return this;
 	}
-	/** ルーム名 */
-	protected String name;
 
-	/**
-	 * ルーム名を取得
-	 *
-	 * @return ルーム名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ルーム名を設定
-	 *
-	 * @param name ルーム名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ルーム名を設定
-	 *
-	 * @param name ルーム名
-	 * @return this
-	 */
 	public Room withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ルームを作成したユーザID */
-	protected String userId;
 
-	/**
-	 * ルームを作成したユーザIDを取得
-	 *
-	 * @return ルームを作成したユーザID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ルームを作成したユーザIDを設定
-	 *
-	 * @param userId ルームを作成したユーザID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ルームを作成したユーザIDを設定
-	 *
-	 * @param userId ルームを作成したユーザID
-	 * @return this
-	 */
 	public Room withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public Room withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** メッセージを投稿するために必要となるパスワード */
-	protected String password;
 
-	/**
-	 * メッセージを投稿するために必要となるパスワードを取得
-	 *
-	 * @return メッセージを投稿するために必要となるパスワード
-	 */
 	public String getPassword() {
 		return password;
 	}
 
-	/**
-	 * メッセージを投稿するために必要となるパスワードを設定
-	 *
-	 * @param password メッセージを投稿するために必要となるパスワード
-	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	/**
-	 * メッセージを投稿するために必要となるパスワードを設定
-	 *
-	 * @param password メッセージを投稿するために必要となるパスワード
-	 * @return this
-	 */
 	public Room withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-	/** ルームに参加可能なユーザIDリスト */
-	protected List<String> whiteListUserIds;
 
-	/**
-	 * ルームに参加可能なユーザIDリストを取得
-	 *
-	 * @return ルームに参加可能なユーザIDリスト
-	 */
 	public List<String> getWhiteListUserIds() {
 		return whiteListUserIds;
 	}
 
-	/**
-	 * ルームに参加可能なユーザIDリストを設定
-	 *
-	 * @param whiteListUserIds ルームに参加可能なユーザIDリスト
-	 */
 	public void setWhiteListUserIds(List<String> whiteListUserIds) {
 		this.whiteListUserIds = whiteListUserIds;
 	}
 
-	/**
-	 * ルームに参加可能なユーザIDリストを設定
-	 *
-	 * @param whiteListUserIds ルームに参加可能なユーザIDリスト
-	 * @return this
-	 */
 	public Room withWhiteListUserIds(List<String> whiteListUserIds) {
 		this.whiteListUserIds = whiteListUserIds;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Room withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Room withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> whiteListUserIds = new ArrayList<>();
-        if(this.whiteListUserIds != null) {
-            for(String item : this.whiteListUserIds) {
-                whiteListUserIds.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static Room fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("roomId", this.getRoomId())
-            .put("name", this.getName())
-            .put("userId", this.getUserId())
-            .put("metadata", this.getMetadata())
-            .put("password", this.getPassword())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("whiteListUserIds", JsonNodeFactory.instance.arrayNode().addAll(whiteListUserIds));
-        return body_;
+        return new Room()
+            .withRoomId(data.get("roomId") == null || data.get("roomId").isNull() ? null : data.get("roomId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withWhiteListUserIds(data.get("whiteListUserIds") == null || data.get("whiteListUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("whiteListUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("roomId", getRoomId());
+                put("name", getName());
+                put("userId", getUserId());
+                put("metadata", getMetadata());
+                put("password", getPassword());
+                put("whiteListUserIds", getWhiteListUserIds() == null ? new ArrayList<String>() :
+                    getWhiteListUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Room o) {
 		return roomId.compareTo(o.roomId);

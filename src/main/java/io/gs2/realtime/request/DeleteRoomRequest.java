@@ -16,82 +16,62 @@
 
 package io.gs2.realtime.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.realtime.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ルームを削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteRoomRequest extends Gs2BasicRequest<DeleteRoomRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ルームを削除
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームを削除
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームを削除
-     * @return this
-     */
-    public DeleteRoomRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ルーム名 */
     private String roomName;
 
-    /**
-     * ルーム名を取得
-     *
-     * @return ルームを削除
-     */
-    public String getRoomName() {
-        return roomName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DeleteRoomRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public DeleteRoomRequest withRoomName(String roomName) {
+		this.roomName = roomName;
+		return this;
+	}
+
+    public static DeleteRoomRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteRoomRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText());
     }
 
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ルームを削除
-     */
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("roomName", getRoomName());
+            }}
+        );
     }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ルームを削除
-     * @return this
-     */
-    public DeleteRoomRequest withRoomName(String roomName) {
-        setRoomName(roomName);
-        return this;
-    }
-
 }

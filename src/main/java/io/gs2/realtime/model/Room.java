@@ -16,291 +16,170 @@
 
 package io.gs2.realtime.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ルーム
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Room implements IModel, Serializable, Comparable<Room> {
-	/** ルーム */
-	protected String roomId;
+	private String roomId;
+	private String name;
+	private String ipAddress;
+	private Integer port;
+	private String encryptionKey;
+	private List<String> notificationUserIds;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ルームを取得
-	 *
-	 * @return ルーム
-	 */
 	public String getRoomId() {
 		return roomId;
 	}
 
-	/**
-	 * ルームを設定
-	 *
-	 * @param roomId ルーム
-	 */
 	public void setRoomId(String roomId) {
 		this.roomId = roomId;
 	}
 
-	/**
-	 * ルームを設定
-	 *
-	 * @param roomId ルーム
-	 * @return this
-	 */
 	public Room withRoomId(String roomId) {
 		this.roomId = roomId;
 		return this;
 	}
-	/** ルーム名 */
-	protected String name;
 
-	/**
-	 * ルーム名を取得
-	 *
-	 * @return ルーム名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ルーム名を設定
-	 *
-	 * @param name ルーム名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ルーム名を設定
-	 *
-	 * @param name ルーム名
-	 * @return this
-	 */
 	public Room withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** IPアドレス */
-	protected String ipAddress;
 
-	/**
-	 * IPアドレスを取得
-	 *
-	 * @return IPアドレス
-	 */
 	public String getIpAddress() {
 		return ipAddress;
 	}
 
-	/**
-	 * IPアドレスを設定
-	 *
-	 * @param ipAddress IPアドレス
-	 */
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
 
-	/**
-	 * IPアドレスを設定
-	 *
-	 * @param ipAddress IPアドレス
-	 * @return this
-	 */
 	public Room withIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 		return this;
 	}
-	/** 待受ポート */
-	protected Integer port;
 
-	/**
-	 * 待受ポートを取得
-	 *
-	 * @return 待受ポート
-	 */
 	public Integer getPort() {
 		return port;
 	}
 
-	/**
-	 * 待受ポートを設定
-	 *
-	 * @param port 待受ポート
-	 */
 	public void setPort(Integer port) {
 		this.port = port;
 	}
 
-	/**
-	 * 待受ポートを設定
-	 *
-	 * @param port 待受ポート
-	 * @return this
-	 */
 	public Room withPort(Integer port) {
 		this.port = port;
 		return this;
 	}
-	/** 暗号鍵 */
-	protected String encryptionKey;
 
-	/**
-	 * 暗号鍵を取得
-	 *
-	 * @return 暗号鍵
-	 */
 	public String getEncryptionKey() {
 		return encryptionKey;
 	}
 
-	/**
-	 * 暗号鍵を設定
-	 *
-	 * @param encryptionKey 暗号鍵
-	 */
 	public void setEncryptionKey(String encryptionKey) {
 		this.encryptionKey = encryptionKey;
 	}
 
-	/**
-	 * 暗号鍵を設定
-	 *
-	 * @param encryptionKey 暗号鍵
-	 * @return this
-	 */
 	public Room withEncryptionKey(String encryptionKey) {
 		this.encryptionKey = encryptionKey;
 		return this;
 	}
-	/** ルームの作成が終わったときに通知を受けるユーザIDリスト */
-	protected List<String> notificationUserIds;
 
-	/**
-	 * ルームの作成が終わったときに通知を受けるユーザIDリストを取得
-	 *
-	 * @return ルームの作成が終わったときに通知を受けるユーザIDリスト
-	 */
 	public List<String> getNotificationUserIds() {
 		return notificationUserIds;
 	}
 
-	/**
-	 * ルームの作成が終わったときに通知を受けるユーザIDリストを設定
-	 *
-	 * @param notificationUserIds ルームの作成が終わったときに通知を受けるユーザIDリスト
-	 */
 	public void setNotificationUserIds(List<String> notificationUserIds) {
 		this.notificationUserIds = notificationUserIds;
 	}
 
-	/**
-	 * ルームの作成が終わったときに通知を受けるユーザIDリストを設定
-	 *
-	 * @param notificationUserIds ルームの作成が終わったときに通知を受けるユーザIDリスト
-	 * @return this
-	 */
 	public Room withNotificationUserIds(List<String> notificationUserIds) {
 		this.notificationUserIds = notificationUserIds;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Room withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Room withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> notificationUserIds = new ArrayList<>();
-        if(this.notificationUserIds != null) {
-            for(String item : this.notificationUserIds) {
-                notificationUserIds.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static Room fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("roomId", this.getRoomId())
-            .put("name", this.getName())
-            .put("ipAddress", this.getIpAddress())
-            .put("port", this.getPort())
-            .put("encryptionKey", this.getEncryptionKey())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("notificationUserIds", JsonNodeFactory.instance.arrayNode().addAll(notificationUserIds));
-        return body_;
+        return new Room()
+            .withRoomId(data.get("roomId") == null || data.get("roomId").isNull() ? null : data.get("roomId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withIpAddress(data.get("ipAddress") == null || data.get("ipAddress").isNull() ? null : data.get("ipAddress").asText())
+            .withPort(data.get("port") == null || data.get("port").isNull() ? null : data.get("port").intValue())
+            .withEncryptionKey(data.get("encryptionKey") == null || data.get("encryptionKey").isNull() ? null : data.get("encryptionKey").asText())
+            .withNotificationUserIds(data.get("notificationUserIds") == null || data.get("notificationUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("notificationUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("roomId", getRoomId());
+                put("name", getName());
+                put("ipAddress", getIpAddress());
+                put("port", getPort());
+                put("encryptionKey", getEncryptionKey());
+                put("notificationUserIds", getNotificationUserIds() == null ? new ArrayList<String>() :
+                    getNotificationUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Room o) {
 		return roomId.compareTo(o.roomId);

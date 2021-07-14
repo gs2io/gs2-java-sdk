@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.key;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.key.request.*;
 import io.gs2.key.result.*;
-import io.gs2.key.model.*;
+import io.gs2.key.model.*;public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
-/**
- * GS2 Key API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2KeyRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,26 +152,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -206,25 +177,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -251,15 +211,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -270,7 +233,7 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -294,25 +257,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -339,15 +291,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -358,7 +313,7 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -382,25 +337,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -427,15 +371,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -446,25 +393,15 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -482,25 +419,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -527,15 +453,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -546,7 +475,7 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -570,25 +499,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -615,15 +533,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public DescribeKeysTask(
             DescribeKeysRequest request,
-            AsyncAction<AsyncResult<DescribeKeysResult>> userCallback,
-            Class<DescribeKeysResult> clazz
+            AsyncAction<AsyncResult<DescribeKeysResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeKeysResult parse(JsonNode data) {
+            return DescribeKeysResult.fromJson(data);
         }
 
         @Override
@@ -634,7 +555,7 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/key";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -664,25 +585,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * 暗号鍵の一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeKeysAsync(
             DescribeKeysRequest request,
             AsyncAction<AsyncResult<DescribeKeysResult>> callback
     ) {
-        DescribeKeysTask task = new DescribeKeysTask(request, callback, DescribeKeysResult.class);
+        DescribeKeysTask task = new DescribeKeysTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 暗号鍵の一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeKeysResult describeKeys(
             DescribeKeysRequest request
     ) {
@@ -709,15 +619,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public CreateKeyTask(
             CreateKeyRequest request,
-            AsyncAction<AsyncResult<CreateKeyResult>> userCallback,
-            Class<CreateKeyResult> clazz
+            AsyncAction<AsyncResult<CreateKeyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateKeyResult parse(JsonNode data) {
+            return CreateKeyResult.fromJson(data);
         }
 
         @Override
@@ -728,21 +641,15 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/key";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -760,25 +667,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * 暗号鍵を新規作成します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createKeyAsync(
             CreateKeyRequest request,
             AsyncAction<AsyncResult<CreateKeyResult>> callback
     ) {
-        CreateKeyTask task = new CreateKeyTask(request, callback, CreateKeyResult.class);
+        CreateKeyTask task = new CreateKeyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 暗号鍵を新規作成します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateKeyResult createKey(
             CreateKeyRequest request
     ) {
@@ -805,15 +701,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public UpdateKeyTask(
             UpdateKeyRequest request,
-            AsyncAction<AsyncResult<UpdateKeyResult>> userCallback,
-            Class<UpdateKeyResult> clazz
+            AsyncAction<AsyncResult<UpdateKeyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateKeyResult parse(JsonNode data) {
+            return UpdateKeyResult.fromJson(data);
         }
 
         @Override
@@ -824,19 +723,15 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/key/{keyName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{keyName}", this.request.getKeyName() == null|| this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{keyName}", this.request.getKeyName() == null || this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -854,25 +749,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * 暗号鍵を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateKeyAsync(
             UpdateKeyRequest request,
             AsyncAction<AsyncResult<UpdateKeyResult>> callback
     ) {
-        UpdateKeyTask task = new UpdateKeyTask(request, callback, UpdateKeyResult.class);
+        UpdateKeyTask task = new UpdateKeyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 暗号鍵を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateKeyResult updateKey(
             UpdateKeyRequest request
     ) {
@@ -899,15 +783,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public GetKeyTask(
             GetKeyRequest request,
-            AsyncAction<AsyncResult<GetKeyResult>> userCallback,
-            Class<GetKeyResult> clazz
+            AsyncAction<AsyncResult<GetKeyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetKeyResult parse(JsonNode data) {
+            return GetKeyResult.fromJson(data);
         }
 
         @Override
@@ -918,8 +805,8 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/key/{keyName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{keyName}", this.request.getKeyName() == null|| this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{keyName}", this.request.getKeyName() == null || this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -943,25 +830,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * 暗号鍵を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getKeyAsync(
             GetKeyRequest request,
             AsyncAction<AsyncResult<GetKeyResult>> callback
     ) {
-        GetKeyTask task = new GetKeyTask(request, callback, GetKeyResult.class);
+        GetKeyTask task = new GetKeyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 暗号鍵を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetKeyResult getKey(
             GetKeyRequest request
     ) {
@@ -988,15 +864,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public DeleteKeyTask(
             DeleteKeyRequest request,
-            AsyncAction<AsyncResult<DeleteKeyResult>> userCallback,
-            Class<DeleteKeyResult> clazz
+            AsyncAction<AsyncResult<DeleteKeyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteKeyResult parse(JsonNode data) {
+            return DeleteKeyResult.fromJson(data);
         }
 
         @Override
@@ -1007,8 +886,8 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/key/{keyName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{keyName}", this.request.getKeyName() == null|| this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{keyName}", this.request.getKeyName() == null || this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1032,25 +911,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * 暗号鍵を削除します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteKeyAsync(
             DeleteKeyRequest request,
             AsyncAction<AsyncResult<DeleteKeyResult>> callback
     ) {
-        DeleteKeyTask task = new DeleteKeyTask(request, callback, DeleteKeyResult.class);
+        DeleteKeyTask task = new DeleteKeyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 暗号鍵を削除します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteKeyResult deleteKey(
             DeleteKeyRequest request
     ) {
@@ -1077,15 +945,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public EncryptTask(
             EncryptRequest request,
-            AsyncAction<AsyncResult<EncryptResult>> userCallback,
-            Class<EncryptResult> clazz
+            AsyncAction<AsyncResult<EncryptResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public EncryptResult parse(JsonNode data) {
+            return EncryptResult.fromJson(data);
         }
 
         @Override
@@ -1096,19 +967,15 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/key/{keyName}/encrypt";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{keyName}", this.request.getKeyName() == null|| this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{keyName}", this.request.getKeyName() == null || this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getData() != null) {
-                json.put("data", this.request.getData());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("data", request.getData());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1126,25 +993,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * データを暗号化します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void encryptAsync(
             EncryptRequest request,
             AsyncAction<AsyncResult<EncryptResult>> callback
     ) {
-        EncryptTask task = new EncryptTask(request, callback, EncryptResult.class);
+        EncryptTask task = new EncryptTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データを暗号化します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public EncryptResult encrypt(
             EncryptRequest request
     ) {
@@ -1171,15 +1027,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public DecryptTask(
             DecryptRequest request,
-            AsyncAction<AsyncResult<DecryptResult>> userCallback,
-            Class<DecryptResult> clazz
+            AsyncAction<AsyncResult<DecryptResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DecryptResult parse(JsonNode data) {
+            return DecryptResult.fromJson(data);
         }
 
         @Override
@@ -1190,19 +1049,15 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/key/{keyName}/decrypt";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{keyName}", this.request.getKeyName() == null|| this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{keyName}", this.request.getKeyName() == null || this.request.getKeyName().length() == 0 ? "null" : String.valueOf(this.request.getKeyName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getData() != null) {
-                json.put("data", this.request.getData());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("data", request.getData());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1220,25 +1075,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * データを復号します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void decryptAsync(
             DecryptRequest request,
             AsyncAction<AsyncResult<DecryptResult>> callback
     ) {
-        DecryptTask task = new DecryptTask(request, callback, DecryptResult.class);
+        DecryptTask task = new DecryptTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * データを復号します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DecryptResult decrypt(
             DecryptRequest request
     ) {
@@ -1265,15 +1109,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public DescribeGitHubApiKeysTask(
             DescribeGitHubApiKeysRequest request,
-            AsyncAction<AsyncResult<DescribeGitHubApiKeysResult>> userCallback,
-            Class<DescribeGitHubApiKeysResult> clazz
+            AsyncAction<AsyncResult<DescribeGitHubApiKeysResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeGitHubApiKeysResult parse(JsonNode data) {
+            return DescribeGitHubApiKeysResult.fromJson(data);
         }
 
         @Override
@@ -1284,7 +1131,7 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/github";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1314,25 +1161,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * GitHub のAPIキーの一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeGitHubApiKeysAsync(
             DescribeGitHubApiKeysRequest request,
             AsyncAction<AsyncResult<DescribeGitHubApiKeysResult>> callback
     ) {
-        DescribeGitHubApiKeysTask task = new DescribeGitHubApiKeysTask(request, callback, DescribeGitHubApiKeysResult.class);
+        DescribeGitHubApiKeysTask task = new DescribeGitHubApiKeysTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GitHub のAPIキーの一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeGitHubApiKeysResult describeGitHubApiKeys(
             DescribeGitHubApiKeysRequest request
     ) {
@@ -1359,15 +1195,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public CreateGitHubApiKeyTask(
             CreateGitHubApiKeyRequest request,
-            AsyncAction<AsyncResult<CreateGitHubApiKeyResult>> userCallback,
-            Class<CreateGitHubApiKeyResult> clazz
+            AsyncAction<AsyncResult<CreateGitHubApiKeyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateGitHubApiKeyResult parse(JsonNode data) {
+            return CreateGitHubApiKeyResult.fromJson(data);
         }
 
         @Override
@@ -1378,27 +1217,17 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/github";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getApiKey() != null) {
-                json.put("apiKey", this.request.getApiKey());
-            }
-            if (this.request.getEncryptionKeyName() != null) {
-                json.put("encryptionKeyName", this.request.getEncryptionKeyName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("apiKey", request.getApiKey());
+                    put("encryptionKeyName", request.getEncryptionKeyName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1416,25 +1245,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * GitHub のAPIキーを新規作成します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createGitHubApiKeyAsync(
             CreateGitHubApiKeyRequest request,
             AsyncAction<AsyncResult<CreateGitHubApiKeyResult>> callback
     ) {
-        CreateGitHubApiKeyTask task = new CreateGitHubApiKeyTask(request, callback, CreateGitHubApiKeyResult.class);
+        CreateGitHubApiKeyTask task = new CreateGitHubApiKeyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GitHub のAPIキーを新規作成します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateGitHubApiKeyResult createGitHubApiKey(
             CreateGitHubApiKeyRequest request
     ) {
@@ -1461,15 +1279,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public UpdateGitHubApiKeyTask(
             UpdateGitHubApiKeyRequest request,
-            AsyncAction<AsyncResult<UpdateGitHubApiKeyResult>> userCallback,
-            Class<UpdateGitHubApiKeyResult> clazz
+            AsyncAction<AsyncResult<UpdateGitHubApiKeyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateGitHubApiKeyResult parse(JsonNode data) {
+            return UpdateGitHubApiKeyResult.fromJson(data);
         }
 
         @Override
@@ -1480,25 +1301,17 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/github/{apiKeyName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{apiKeyName}", this.request.getApiKeyName() == null|| this.request.getApiKeyName().length() == 0 ? "null" : String.valueOf(this.request.getApiKeyName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{apiKeyName}", this.request.getApiKeyName() == null || this.request.getApiKeyName().length() == 0 ? "null" : String.valueOf(this.request.getApiKeyName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getApiKey() != null) {
-                json.put("apiKey", this.request.getApiKey());
-            }
-            if (this.request.getEncryptionKeyName() != null) {
-                json.put("encryptionKeyName", this.request.getEncryptionKeyName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("apiKey", request.getApiKey());
+                    put("encryptionKeyName", request.getEncryptionKeyName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1516,25 +1329,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * GitHub のAPIキーを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateGitHubApiKeyAsync(
             UpdateGitHubApiKeyRequest request,
             AsyncAction<AsyncResult<UpdateGitHubApiKeyResult>> callback
     ) {
-        UpdateGitHubApiKeyTask task = new UpdateGitHubApiKeyTask(request, callback, UpdateGitHubApiKeyResult.class);
+        UpdateGitHubApiKeyTask task = new UpdateGitHubApiKeyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GitHub のAPIキーを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateGitHubApiKeyResult updateGitHubApiKey(
             UpdateGitHubApiKeyRequest request
     ) {
@@ -1561,15 +1363,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public GetGitHubApiKeyTask(
             GetGitHubApiKeyRequest request,
-            AsyncAction<AsyncResult<GetGitHubApiKeyResult>> userCallback,
-            Class<GetGitHubApiKeyResult> clazz
+            AsyncAction<AsyncResult<GetGitHubApiKeyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetGitHubApiKeyResult parse(JsonNode data) {
+            return GetGitHubApiKeyResult.fromJson(data);
         }
 
         @Override
@@ -1580,8 +1385,8 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/github/{apiKeyName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{apiKeyName}", this.request.getApiKeyName() == null|| this.request.getApiKeyName().length() == 0 ? "null" : String.valueOf(this.request.getApiKeyName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{apiKeyName}", this.request.getApiKeyName() == null || this.request.getApiKeyName().length() == 0 ? "null" : String.valueOf(this.request.getApiKeyName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1605,25 +1410,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * GitHub のAPIキーを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getGitHubApiKeyAsync(
             GetGitHubApiKeyRequest request,
             AsyncAction<AsyncResult<GetGitHubApiKeyResult>> callback
     ) {
-        GetGitHubApiKeyTask task = new GetGitHubApiKeyTask(request, callback, GetGitHubApiKeyResult.class);
+        GetGitHubApiKeyTask task = new GetGitHubApiKeyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GitHub のAPIキーを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetGitHubApiKeyResult getGitHubApiKey(
             GetGitHubApiKeyRequest request
     ) {
@@ -1650,15 +1444,18 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
 
         public DeleteGitHubApiKeyTask(
             DeleteGitHubApiKeyRequest request,
-            AsyncAction<AsyncResult<DeleteGitHubApiKeyResult>> userCallback,
-            Class<DeleteGitHubApiKeyResult> clazz
+            AsyncAction<AsyncResult<DeleteGitHubApiKeyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteGitHubApiKeyResult parse(JsonNode data) {
+            return DeleteGitHubApiKeyResult.fromJson(data);
         }
 
         @Override
@@ -1669,8 +1466,8 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/github/{apiKeyName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{apiKeyName}", this.request.getApiKeyName() == null|| this.request.getApiKeyName().length() == 0 ? "null" : String.valueOf(this.request.getApiKeyName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{apiKeyName}", this.request.getApiKeyName() == null || this.request.getApiKeyName().length() == 0 ? "null" : String.valueOf(this.request.getApiKeyName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1694,25 +1491,14 @@ public class Gs2KeyRestClient extends AbstractGs2Client<Gs2KeyRestClient> {
         }
     }
 
-    /**
-     * GitHub のAPIキーを削除します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteGitHubApiKeyAsync(
             DeleteGitHubApiKeyRequest request,
             AsyncAction<AsyncResult<DeleteGitHubApiKeyResult>> callback
     ) {
-        DeleteGitHubApiKeyTask task = new DeleteGitHubApiKeyTask(request, callback, DeleteGitHubApiKeyResult.class);
+        DeleteGitHubApiKeyTask task = new DeleteGitHubApiKeyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GitHub のAPIキーを削除します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteGitHubApiKeyResult deleteGitHubApiKey(
             DeleteGitHubApiKeyRequest request
     ) {

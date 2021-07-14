@@ -16,210 +16,127 @@
 
 package io.gs2.enhance.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.enhance.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.enhance.model.LogSetting;
 
-/**
- * ネームスペースを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String name;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** DirectEnhance を利用できるようにするか */
     private Boolean enableDirectEnhance;
-
-    /**
-     * DirectEnhance を利用できるようにするかを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public Boolean getEnableDirectEnhance() {
-        return enableDirectEnhance;
-    }
-
-    /**
-     * DirectEnhance を利用できるようにするかを設定
-     *
-     * @param enableDirectEnhance ネームスペースを新規作成
-     */
-    public void setEnableDirectEnhance(Boolean enableDirectEnhance) {
-        this.enableDirectEnhance = enableDirectEnhance;
-    }
-
-    /**
-     * DirectEnhance を利用できるようにするかを設定
-     *
-     * @param enableDirectEnhance ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withEnableDirectEnhance(Boolean enableDirectEnhance) {
-        setEnableDirectEnhance(enableDirectEnhance);
-        return this;
-    }
-
-    /** 交換処理をジョブとして追加するキューのネームスペース のGRN */
     private String queueNamespaceId;
-
-    /**
-     * 交換処理をジョブとして追加するキューのネームスペース のGRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getQueueNamespaceId() {
-        return queueNamespaceId;
-    }
-
-    /**
-     * 交換処理をジョブとして追加するキューのネームスペース のGRNを設定
-     *
-     * @param queueNamespaceId ネームスペースを新規作成
-     */
-    public void setQueueNamespaceId(String queueNamespaceId) {
-        this.queueNamespaceId = queueNamespaceId;
-    }
-
-    /**
-     * 交換処理をジョブとして追加するキューのネームスペース のGRNを設定
-     *
-     * @param queueNamespaceId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
-        setQueueNamespaceId(queueNamespaceId);
-        return this;
-    }
-
-    /** 交換処理のスタンプシートで使用する暗号鍵GRN */
     private String keyId;
-
-    /**
-     * 交換処理のスタンプシートで使用する暗号鍵GRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getKeyId() {
-        return keyId;
-    }
-
-    /**
-     * 交換処理のスタンプシートで使用する暗号鍵GRNを設定
-     *
-     * @param keyId ネームスペースを新規作成
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
-    }
-
-    /**
-     * 交換処理のスタンプシートで使用する暗号鍵GRNを設定
-     *
-     * @param keyId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateNamespaceRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public Boolean getEnableDirectEnhance() {
+		return enableDirectEnhance;
+	}
+
+	public void setEnableDirectEnhance(Boolean enableDirectEnhance) {
+		this.enableDirectEnhance = enableDirectEnhance;
+	}
+
+	public CreateNamespaceRequest withEnableDirectEnhance(Boolean enableDirectEnhance) {
+		this.enableDirectEnhance = enableDirectEnhance;
+		return this;
+	}
+
+	public String getQueueNamespaceId() {
+		return queueNamespaceId;
+	}
+
+	public void setQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+	}
+
+	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public CreateNamespaceRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static CreateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateNamespaceRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withEnableDirectEnhance(data.get("enableDirectEnhance") == null || data.get("enableDirectEnhance").isNull() ? null : data.get("enableDirectEnhance").booleanValue())
+            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("enableDirectEnhance", getEnableDirectEnhance());
+                put("queueNamespaceId", getQueueNamespaceId());
+                put("keyId", getKeyId());
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

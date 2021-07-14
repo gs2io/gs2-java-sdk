@@ -16,39 +16,48 @@
 
 package io.gs2.gateway.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.gateway.model.*;
+import io.gs2.gateway.model.FirebaseToken;
 
-/**
- * ユーザIDを指定してFirebaseデバイストークンを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetFirebaseTokenByUserIdResult implements IResult, Serializable {
-	/** 取得したFirebaseデバイストークン */
-	private FirebaseToken item;
+    private FirebaseToken item;
 
-	/**
-	 * 取得したFirebaseデバイストークンを取得
-	 *
-	 * @return ユーザIDを指定してFirebaseデバイストークンを取得
-	 */
 	public FirebaseToken getItem() {
 		return item;
 	}
 
-	/**
-	 * 取得したFirebaseデバイストークンを設定
-	 *
-	 * @param item ユーザIDを指定してFirebaseデバイストークンを取得
-	 */
 	public void setItem(FirebaseToken item) {
 		this.item = item;
 	}
+
+	public GetFirebaseTokenByUserIdResult withItem(FirebaseToken item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetFirebaseTokenByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetFirebaseTokenByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : FirebaseToken.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

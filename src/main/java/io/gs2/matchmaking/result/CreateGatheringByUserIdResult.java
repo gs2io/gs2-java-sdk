@@ -16,39 +16,52 @@
 
 package io.gs2.matchmaking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.AttributeRange;
+import io.gs2.matchmaking.model.Attribute;
+import io.gs2.matchmaking.model.Player;
+import io.gs2.matchmaking.model.CapacityOfRole;
+import io.gs2.matchmaking.model.Gathering;
 
-/**
- * ギャザリングを作成して募集を開始 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateGatheringByUserIdResult implements IResult, Serializable {
-	/** ギャザリング */
-	private Gathering item;
+    private Gathering item;
 
-	/**
-	 * ギャザリングを取得
-	 *
-	 * @return ギャザリングを作成して募集を開始
-	 */
 	public Gathering getItem() {
 		return item;
 	}
 
-	/**
-	 * ギャザリングを設定
-	 *
-	 * @param item ギャザリングを作成して募集を開始
-	 */
 	public void setItem(Gathering item) {
 		this.item = item;
 	}
+
+	public CreateGatheringByUserIdResult withItem(Gathering item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateGatheringByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateGatheringByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Gathering.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

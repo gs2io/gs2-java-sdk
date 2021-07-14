@@ -16,114 +16,78 @@
 
 package io.gs2.matchmaking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.matchmaking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 投票状況を強制確定 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CommitVoteRequest extends Gs2BasicRequest<CommitVoteRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 投票状況を強制確定
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 投票状況を強制確定
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 投票状況を強制確定
-     * @return this
-     */
-    public CommitVoteRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** レーティング名 */
     private String ratingName;
-
-    /**
-     * レーティング名を取得
-     *
-     * @return 投票状況を強制確定
-     */
-    public String getRatingName() {
-        return ratingName;
-    }
-
-    /**
-     * レーティング名を設定
-     *
-     * @param ratingName 投票状況を強制確定
-     */
-    public void setRatingName(String ratingName) {
-        this.ratingName = ratingName;
-    }
-
-    /**
-     * レーティング名を設定
-     *
-     * @param ratingName 投票状況を強制確定
-     * @return this
-     */
-    public CommitVoteRequest withRatingName(String ratingName) {
-        setRatingName(ratingName);
-        return this;
-    }
-
-    /** 投票対象のギャザリング名 */
     private String gatheringName;
 
-    /**
-     * 投票対象のギャザリング名を取得
-     *
-     * @return 投票状況を強制確定
-     */
-    public String getGatheringName() {
-        return gatheringName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CommitVoteRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRatingName() {
+		return ratingName;
+	}
+
+	public void setRatingName(String ratingName) {
+		this.ratingName = ratingName;
+	}
+
+	public CommitVoteRequest withRatingName(String ratingName) {
+		this.ratingName = ratingName;
+		return this;
+	}
+
+	public String getGatheringName() {
+		return gatheringName;
+	}
+
+	public void setGatheringName(String gatheringName) {
+		this.gatheringName = gatheringName;
+	}
+
+	public CommitVoteRequest withGatheringName(String gatheringName) {
+		this.gatheringName = gatheringName;
+		return this;
+	}
+
+    public static CommitVoteRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CommitVoteRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText())
+            .withGatheringName(data.get("gatheringName") == null || data.get("gatheringName").isNull() ? null : data.get("gatheringName").asText());
     }
 
-    /**
-     * 投票対象のギャザリング名を設定
-     *
-     * @param gatheringName 投票状況を強制確定
-     */
-    public void setGatheringName(String gatheringName) {
-        this.gatheringName = gatheringName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("ratingName", getRatingName());
+                put("gatheringName", getGatheringName());
+            }}
+        );
     }
-
-    /**
-     * 投票対象のギャザリング名を設定
-     *
-     * @param gatheringName 投票状況を強制確定
-     * @return this
-     */
-    public CommitVoteRequest withGatheringName(String gatheringName) {
-        setGatheringName(gatheringName);
-        return this;
-    }
-
 }

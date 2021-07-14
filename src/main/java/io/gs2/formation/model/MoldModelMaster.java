@@ -16,317 +16,178 @@
 
 package io.gs2.formation.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * フォームの保存領域マスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MoldModelMaster implements IModel, Serializable, Comparable<MoldModelMaster> {
-	/** フォームの保存領域マスター */
-	protected String moldModelId;
+	private String moldModelId;
+	private String name;
+	private String description;
+	private String metadata;
+	private Integer initialMaxCapacity;
+	private Integer maxCapacity;
+	private String formModelName;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * フォームの保存領域マスターを取得
-	 *
-	 * @return フォームの保存領域マスター
-	 */
 	public String getMoldModelId() {
 		return moldModelId;
 	}
 
-	/**
-	 * フォームの保存領域マスターを設定
-	 *
-	 * @param moldModelId フォームの保存領域マスター
-	 */
 	public void setMoldModelId(String moldModelId) {
 		this.moldModelId = moldModelId;
 	}
 
-	/**
-	 * フォームの保存領域マスターを設定
-	 *
-	 * @param moldModelId フォームの保存領域マスター
-	 * @return this
-	 */
 	public MoldModelMaster withMoldModelId(String moldModelId) {
 		this.moldModelId = moldModelId;
 		return this;
 	}
-	/** フォームの保存領域名 */
-	protected String name;
 
-	/**
-	 * フォームの保存領域名を取得
-	 *
-	 * @return フォームの保存領域名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * フォームの保存領域名を設定
-	 *
-	 * @param name フォームの保存領域名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * フォームの保存領域名を設定
-	 *
-	 * @param name フォームの保存領域名
-	 * @return this
-	 */
 	public MoldModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** フォームの保存領域マスターの説明 */
-	protected String description;
 
-	/**
-	 * フォームの保存領域マスターの説明を取得
-	 *
-	 * @return フォームの保存領域マスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * フォームの保存領域マスターの説明を設定
-	 *
-	 * @param description フォームの保存領域マスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * フォームの保存領域マスターの説明を設定
-	 *
-	 * @param description フォームの保存領域マスターの説明
-	 * @return this
-	 */
 	public MoldModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** フォームの保存領域のメタデータ */
-	protected String metadata;
 
-	/**
-	 * フォームの保存領域のメタデータを取得
-	 *
-	 * @return フォームの保存領域のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * フォームの保存領域のメタデータを設定
-	 *
-	 * @param metadata フォームの保存領域のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * フォームの保存領域のメタデータを設定
-	 *
-	 * @param metadata フォームの保存領域のメタデータ
-	 * @return this
-	 */
 	public MoldModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** フォームを保存できる初期キャパシティ */
-	protected Integer initialMaxCapacity;
 
-	/**
-	 * フォームを保存できる初期キャパシティを取得
-	 *
-	 * @return フォームを保存できる初期キャパシティ
-	 */
 	public Integer getInitialMaxCapacity() {
 		return initialMaxCapacity;
 	}
 
-	/**
-	 * フォームを保存できる初期キャパシティを設定
-	 *
-	 * @param initialMaxCapacity フォームを保存できる初期キャパシティ
-	 */
 	public void setInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 	}
 
-	/**
-	 * フォームを保存できる初期キャパシティを設定
-	 *
-	 * @param initialMaxCapacity フォームを保存できる初期キャパシティ
-	 * @return this
-	 */
 	public MoldModelMaster withInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 		return this;
 	}
-	/** フォームを保存できるキャパシティ */
-	protected Integer maxCapacity;
 
-	/**
-	 * フォームを保存できるキャパシティを取得
-	 *
-	 * @return フォームを保存できるキャパシティ
-	 */
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
 
-	/**
-	 * フォームを保存できるキャパシティを設定
-	 *
-	 * @param maxCapacity フォームを保存できるキャパシティ
-	 */
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
 
-	/**
-	 * フォームを保存できるキャパシティを設定
-	 *
-	 * @param maxCapacity フォームを保存できるキャパシティ
-	 * @return this
-	 */
 	public MoldModelMaster withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-	/** フォーム名 */
-	protected String formModelName;
 
-	/**
-	 * フォーム名を取得
-	 *
-	 * @return フォーム名
-	 */
 	public String getFormModelName() {
 		return formModelName;
 	}
 
-	/**
-	 * フォーム名を設定
-	 *
-	 * @param formModelName フォーム名
-	 */
 	public void setFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 	}
 
-	/**
-	 * フォーム名を設定
-	 *
-	 * @param formModelName フォーム名
-	 * @return this
-	 */
 	public MoldModelMaster withFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public MoldModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public MoldModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("moldModelId", this.getMoldModelId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("initialMaxCapacity", this.getInitialMaxCapacity())
-            .put("maxCapacity", this.getMaxCapacity())
-            .put("formModelName", this.getFormModelName())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static MoldModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new MoldModelMaster()
+            .withMoldModelId(data.get("moldModelId") == null || data.get("moldModelId").isNull() ? null : data.get("moldModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withInitialMaxCapacity(data.get("initialMaxCapacity") == null || data.get("initialMaxCapacity").isNull() ? null : data.get("initialMaxCapacity").intValue())
+            .withMaxCapacity(data.get("maxCapacity") == null || data.get("maxCapacity").isNull() ? null : data.get("maxCapacity").intValue())
+            .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("moldModelId", getMoldModelId());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("initialMaxCapacity", getInitialMaxCapacity());
+                put("maxCapacity", getMaxCapacity());
+                put("formModelName", getFormModelName());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(MoldModelMaster o) {
 		return moldModelId.compareTo(o.moldModelId);

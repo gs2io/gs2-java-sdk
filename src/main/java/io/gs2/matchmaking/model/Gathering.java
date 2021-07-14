@@ -16,335 +16,206 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ギャザリング
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Gathering implements IModel, Serializable, Comparable<Gathering> {
-	/** ギャザリング */
-	protected String gatheringId;
+	private String gatheringId;
+	private String name;
+	private List<AttributeRange> attributeRanges;
+	private List<CapacityOfRole> capacityOfRoles;
+	private List<String> allowUserIds;
+	private String metadata;
+	private Long expiresAt;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ギャザリングを取得
-	 *
-	 * @return ギャザリング
-	 */
 	public String getGatheringId() {
 		return gatheringId;
 	}
 
-	/**
-	 * ギャザリングを設定
-	 *
-	 * @param gatheringId ギャザリング
-	 */
 	public void setGatheringId(String gatheringId) {
 		this.gatheringId = gatheringId;
 	}
 
-	/**
-	 * ギャザリングを設定
-	 *
-	 * @param gatheringId ギャザリング
-	 * @return this
-	 */
 	public Gathering withGatheringId(String gatheringId) {
 		this.gatheringId = gatheringId;
 		return this;
 	}
-	/** ギャザリング名 */
-	protected String name;
 
-	/**
-	 * ギャザリング名を取得
-	 *
-	 * @return ギャザリング名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ギャザリング名を設定
-	 *
-	 * @param name ギャザリング名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ギャザリング名を設定
-	 *
-	 * @param name ギャザリング名
-	 * @return this
-	 */
 	public Gathering withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 募集条件 */
-	protected List<AttributeRange> attributeRanges;
 
-	/**
-	 * 募集条件を取得
-	 *
-	 * @return 募集条件
-	 */
 	public List<AttributeRange> getAttributeRanges() {
 		return attributeRanges;
 	}
 
-	/**
-	 * 募集条件を設定
-	 *
-	 * @param attributeRanges 募集条件
-	 */
 	public void setAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 	}
 
-	/**
-	 * 募集条件を設定
-	 *
-	 * @param attributeRanges 募集条件
-	 * @return this
-	 */
 	public Gathering withAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 		return this;
 	}
-	/** 参加者 */
-	protected List<CapacityOfRole> capacityOfRoles;
 
-	/**
-	 * 参加者を取得
-	 *
-	 * @return 参加者
-	 */
 	public List<CapacityOfRole> getCapacityOfRoles() {
 		return capacityOfRoles;
 	}
 
-	/**
-	 * 参加者を設定
-	 *
-	 * @param capacityOfRoles 参加者
-	 */
 	public void setCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
 		this.capacityOfRoles = capacityOfRoles;
 	}
 
-	/**
-	 * 参加者を設定
-	 *
-	 * @param capacityOfRoles 参加者
-	 * @return this
-	 */
 	public Gathering withCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
 		this.capacityOfRoles = capacityOfRoles;
 		return this;
 	}
-	/** 参加を許可するユーザIDリスト */
-	protected List<String> allowUserIds;
 
-	/**
-	 * 参加を許可するユーザIDリストを取得
-	 *
-	 * @return 参加を許可するユーザIDリスト
-	 */
 	public List<String> getAllowUserIds() {
 		return allowUserIds;
 	}
 
-	/**
-	 * 参加を許可するユーザIDリストを設定
-	 *
-	 * @param allowUserIds 参加を許可するユーザIDリスト
-	 */
 	public void setAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 	}
 
-	/**
-	 * 参加を許可するユーザIDリストを設定
-	 *
-	 * @param allowUserIds 参加を許可するユーザIDリスト
-	 * @return this
-	 */
 	public Gathering withAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public Gathering withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** ギャザリングの有効期限 */
-	protected Long expiresAt;
 
-	/**
-	 * ギャザリングの有効期限を取得
-	 *
-	 * @return ギャザリングの有効期限
-	 */
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
 
-	/**
-	 * ギャザリングの有効期限を設定
-	 *
-	 * @param expiresAt ギャザリングの有効期限
-	 */
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
 
-	/**
-	 * ギャザリングの有効期限を設定
-	 *
-	 * @param expiresAt ギャザリングの有効期限
-	 * @return this
-	 */
 	public Gathering withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Gathering withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Gathering withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> attributeRanges = new ArrayList<>();
-        if(this.attributeRanges != null) {
-            for(AttributeRange item : this.attributeRanges) {
-                attributeRanges.add(item.toJson());
-            }
+    public static Gathering fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-        List<JsonNode> capacityOfRoles = new ArrayList<>();
-        if(this.capacityOfRoles != null) {
-            for(CapacityOfRole item : this.capacityOfRoles) {
-                capacityOfRoles.add(item.toJson());
-            }
-        }
-        List<JsonNode> allowUserIds = new ArrayList<>();
-        if(this.allowUserIds != null) {
-            for(String item : this.allowUserIds) {
-                allowUserIds.add(JsonNodeFactory.instance.textNode(item));
-            }
-        }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("gatheringId", this.getGatheringId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("expiresAt", this.getExpiresAt())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("attributeRanges", JsonNodeFactory.instance.arrayNode().addAll(attributeRanges));
-        body_.set("capacityOfRoles", JsonNodeFactory.instance.arrayNode().addAll(capacityOfRoles));
-        body_.set("allowUserIds", JsonNodeFactory.instance.arrayNode().addAll(allowUserIds));
-        return body_;
+        return new Gathering()
+            .withGatheringId(data.get("gatheringId") == null || data.get("gatheringId").isNull() ? null : data.get("gatheringId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withAttributeRanges(data.get("attributeRanges") == null || data.get("attributeRanges").isNull() ? new ArrayList<AttributeRange>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributeRanges").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AttributeRange.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCapacityOfRoles(data.get("capacityOfRoles") == null || data.get("capacityOfRoles").isNull() ? new ArrayList<CapacityOfRole>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("capacityOfRoles").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return CapacityOfRole.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("allowUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("gatheringId", getGatheringId());
+                put("name", getName());
+                put("attributeRanges", getAttributeRanges() == null ? new ArrayList<AttributeRange>() :
+                    getAttributeRanges().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("capacityOfRoles", getCapacityOfRoles() == null ? new ArrayList<CapacityOfRole>() :
+                    getCapacityOfRoles().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("allowUserIds", getAllowUserIds() == null ? new ArrayList<String>() :
+                    getAllowUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("metadata", getMetadata());
+                put("expiresAt", getExpiresAt());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Gathering o) {
 		return gatheringId.compareTo(o.gatheringId);

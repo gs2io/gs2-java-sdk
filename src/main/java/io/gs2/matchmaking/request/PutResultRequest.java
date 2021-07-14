@@ -16,114 +16,89 @@
 
 package io.gs2.matchmaking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.matchmaking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.matchmaking.model.GameResult;
 
-/**
- * レーティング値の再計算を実行 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class PutResultRequest extends Gs2BasicRequest<PutResultRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return レーティング値の再計算を実行
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName レーティング値の再計算を実行
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName レーティング値の再計算を実行
-     * @return this
-     */
-    public PutResultRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** レーティング名 */
     private String ratingName;
-
-    /**
-     * レーティング名を取得
-     *
-     * @return レーティング値の再計算を実行
-     */
-    public String getRatingName() {
-        return ratingName;
-    }
-
-    /**
-     * レーティング名を設定
-     *
-     * @param ratingName レーティング値の再計算を実行
-     */
-    public void setRatingName(String ratingName) {
-        this.ratingName = ratingName;
-    }
-
-    /**
-     * レーティング名を設定
-     *
-     * @param ratingName レーティング値の再計算を実行
-     * @return this
-     */
-    public PutResultRequest withRatingName(String ratingName) {
-        setRatingName(ratingName);
-        return this;
-    }
-
-    /** 対戦結果 */
     private List<GameResult> gameResults;
 
-    /**
-     * 対戦結果を取得
-     *
-     * @return レーティング値の再計算を実行
-     */
-    public List<GameResult> getGameResults() {
-        return gameResults;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public PutResultRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRatingName() {
+		return ratingName;
+	}
+
+	public void setRatingName(String ratingName) {
+		this.ratingName = ratingName;
+	}
+
+	public PutResultRequest withRatingName(String ratingName) {
+		this.ratingName = ratingName;
+		return this;
+	}
+
+	public List<GameResult> getGameResults() {
+		return gameResults;
+	}
+
+	public void setGameResults(List<GameResult> gameResults) {
+		this.gameResults = gameResults;
+	}
+
+	public PutResultRequest withGameResults(List<GameResult> gameResults) {
+		this.gameResults = gameResults;
+		return this;
+	}
+
+    public static PutResultRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new PutResultRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText())
+            .withGameResults(data.get("gameResults") == null || data.get("gameResults").isNull() ? new ArrayList<GameResult>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("gameResults").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return GameResult.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 対戦結果を設定
-     *
-     * @param gameResults レーティング値の再計算を実行
-     */
-    public void setGameResults(List<GameResult> gameResults) {
-        this.gameResults = gameResults;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("ratingName", getRatingName());
+                put("gameResults", getGameResults() == null ? new ArrayList<GameResult>() :
+                    getGameResults().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 対戦結果を設定
-     *
-     * @param gameResults レーティング値の再計算を実行
-     * @return this
-     */
-    public PutResultRequest withGameResults(List<GameResult> gameResults) {
-        setGameResults(gameResults);
-        return this;
-    }
-
 }

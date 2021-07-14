@@ -16,253 +16,130 @@
 
 package io.gs2.identifier.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * セキュリティポリシー
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecurityPolicy implements IModel, Serializable, Comparable<SecurityPolicy> {
-	/** セキュリティポリシー */
-	protected String securityPolicyId;
+	private String securityPolicyId;
+	private String name;
+	private String description;
+	private String policy;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * セキュリティポリシーを取得
-	 *
-	 * @return セキュリティポリシー
-	 */
 	public String getSecurityPolicyId() {
 		return securityPolicyId;
 	}
 
-	/**
-	 * セキュリティポリシーを設定
-	 *
-	 * @param securityPolicyId セキュリティポリシー
-	 */
 	public void setSecurityPolicyId(String securityPolicyId) {
 		this.securityPolicyId = securityPolicyId;
 	}
 
-	/**
-	 * セキュリティポリシーを設定
-	 *
-	 * @param securityPolicyId セキュリティポリシー
-	 * @return this
-	 */
 	public SecurityPolicy withSecurityPolicyId(String securityPolicyId) {
 		this.securityPolicyId = securityPolicyId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public SecurityPolicy withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** セキュリティポリシー名 */
-	protected String name;
-
-	/**
-	 * セキュリティポリシー名を取得
-	 *
-	 * @return セキュリティポリシー名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * セキュリティポリシー名を設定
-	 *
-	 * @param name セキュリティポリシー名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * セキュリティポリシー名を設定
-	 *
-	 * @param name セキュリティポリシー名
-	 * @return this
-	 */
 	public SecurityPolicy withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** セキュリティポリシーの説明 */
-	protected String description;
 
-	/**
-	 * セキュリティポリシーの説明を取得
-	 *
-	 * @return セキュリティポリシーの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * セキュリティポリシーの説明を設定
-	 *
-	 * @param description セキュリティポリシーの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * セキュリティポリシーの説明を設定
-	 *
-	 * @param description セキュリティポリシーの説明
-	 * @return this
-	 */
 	public SecurityPolicy withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** ポリシードキュメント */
-	protected String policy;
 
-	/**
-	 * ポリシードキュメントを取得
-	 *
-	 * @return ポリシードキュメント
-	 */
 	public String getPolicy() {
 		return policy;
 	}
 
-	/**
-	 * ポリシードキュメントを設定
-	 *
-	 * @param policy ポリシードキュメント
-	 */
 	public void setPolicy(String policy) {
 		this.policy = policy;
 	}
 
-	/**
-	 * ポリシードキュメントを設定
-	 *
-	 * @param policy ポリシードキュメント
-	 * @return this
-	 */
 	public SecurityPolicy withPolicy(String policy) {
 		this.policy = policy;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public SecurityPolicy withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public SecurityPolicy withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("securityPolicyId", this.getSecurityPolicyId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("policy", this.getPolicy())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static SecurityPolicy fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SecurityPolicy()
+            .withSecurityPolicyId(data.get("securityPolicyId") == null || data.get("securityPolicyId").isNull() ? null : data.get("securityPolicyId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withPolicy(data.get("policy") == null || data.get("policy").isNull() ? null : data.get("policy").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("securityPolicyId", getSecurityPolicyId());
+                put("name", getName());
+                put("description", getDescription());
+                put("policy", getPolicy());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(SecurityPolicy o) {
 		return securityPolicyId.compareTo(o.securityPolicyId);
@@ -273,7 +150,6 @@ public class SecurityPolicy implements IModel, Serializable, Comparable<Security
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.securityPolicyId == null) ? 0 : this.securityPolicyId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.policy == null) ? 0 : this.policy.hashCode());
@@ -294,11 +170,6 @@ public class SecurityPolicy implements IModel, Serializable, Comparable<Security
 		if (securityPolicyId == null) {
 			return other.securityPolicyId == null;
 		} else if (!securityPolicyId.equals(other.securityPolicyId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {

@@ -16,146 +16,95 @@
 
 package io.gs2.script.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.script.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.script.model.GitHubCheckoutSetting;
 
-/**
- * GithHub をデータソースとしてスクリプトを更新します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateScriptFromGitHubRequest extends Gs2BasicRequest<UpdateScriptFromGitHubRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return GithHub をデータソースとしてスクリプトを更新します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName GithHub をデータソースとしてスクリプトを更新します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName GithHub をデータソースとしてスクリプトを更新します
-     * @return this
-     */
-    public UpdateScriptFromGitHubRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** スクリプト名 */
     private String scriptName;
-
-    /**
-     * スクリプト名を取得
-     *
-     * @return GithHub をデータソースとしてスクリプトを更新します
-     */
-    public String getScriptName() {
-        return scriptName;
-    }
-
-    /**
-     * スクリプト名を設定
-     *
-     * @param scriptName GithHub をデータソースとしてスクリプトを更新します
-     */
-    public void setScriptName(String scriptName) {
-        this.scriptName = scriptName;
-    }
-
-    /**
-     * スクリプト名を設定
-     *
-     * @param scriptName GithHub をデータソースとしてスクリプトを更新します
-     * @return this
-     */
-    public UpdateScriptFromGitHubRequest withScriptName(String scriptName) {
-        setScriptName(scriptName);
-        return this;
-    }
-
-    /** 説明文 */
     private String description;
-
-    /**
-     * 説明文を取得
-     *
-     * @return GithHub をデータソースとしてスクリプトを更新します
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description GithHub をデータソースとしてスクリプトを更新します
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description GithHub をデータソースとしてスクリプトを更新します
-     * @return this
-     */
-    public UpdateScriptFromGitHubRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** GitHubからソースコードをチェックアウトしてくる設定 */
     private GitHubCheckoutSetting checkoutSetting;
 
-    /**
-     * GitHubからソースコードをチェックアウトしてくる設定を取得
-     *
-     * @return GithHub をデータソースとしてスクリプトを更新します
-     */
-    public GitHubCheckoutSetting getCheckoutSetting() {
-        return checkoutSetting;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateScriptFromGitHubRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getScriptName() {
+		return scriptName;
+	}
+
+	public void setScriptName(String scriptName) {
+		this.scriptName = scriptName;
+	}
+
+	public UpdateScriptFromGitHubRequest withScriptName(String scriptName) {
+		this.scriptName = scriptName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateScriptFromGitHubRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public GitHubCheckoutSetting getCheckoutSetting() {
+		return checkoutSetting;
+	}
+
+	public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+		this.checkoutSetting = checkoutSetting;
+	}
+
+	public UpdateScriptFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+		this.checkoutSetting = checkoutSetting;
+		return this;
+	}
+
+    public static UpdateScriptFromGitHubRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateScriptFromGitHubRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withScriptName(data.get("scriptName") == null || data.get("scriptName").isNull() ? null : data.get("scriptName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withCheckoutSetting(data.get("checkoutSetting") == null || data.get("checkoutSetting").isNull() ? null : GitHubCheckoutSetting.fromJson(data.get("checkoutSetting")));
     }
 
-    /**
-     * GitHubからソースコードをチェックアウトしてくる設定を設定
-     *
-     * @param checkoutSetting GithHub をデータソースとしてスクリプトを更新します
-     */
-    public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
-        this.checkoutSetting = checkoutSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("scriptName", getScriptName());
+                put("description", getDescription());
+                put("checkoutSetting", getCheckoutSetting() != null ? getCheckoutSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * GitHubからソースコードをチェックアウトしてくる設定を設定
-     *
-     * @param checkoutSetting GithHub をデータソースとしてスクリプトを更新します
-     * @return this
-     */
-    public UpdateScriptFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
-        setCheckoutSetting(checkoutSetting);
-        return this;
-    }
-
 }

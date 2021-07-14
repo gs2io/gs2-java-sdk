@@ -16,242 +16,142 @@
 
 package io.gs2.formation.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.formation.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * フォームの保存領域マスターを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateMoldModelMasterRequest extends Gs2BasicRequest<CreateMoldModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return フォームの保存領域マスターを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName フォームの保存領域マスターを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName フォームの保存領域マスターを新規作成
-     * @return this
-     */
-    public CreateMoldModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** フォームの保存領域名 */
     private String name;
-
-    /**
-     * フォームの保存領域名を取得
-     *
-     * @return フォームの保存領域マスターを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * フォームの保存領域名を設定
-     *
-     * @param name フォームの保存領域マスターを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * フォームの保存領域名を設定
-     *
-     * @param name フォームの保存領域マスターを新規作成
-     * @return this
-     */
-    public CreateMoldModelMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** フォームの保存領域マスターの説明 */
     private String description;
-
-    /**
-     * フォームの保存領域マスターの説明を取得
-     *
-     * @return フォームの保存領域マスターを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * フォームの保存領域マスターの説明を設定
-     *
-     * @param description フォームの保存領域マスターを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * フォームの保存領域マスターの説明を設定
-     *
-     * @param description フォームの保存領域マスターを新規作成
-     * @return this
-     */
-    public CreateMoldModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** フォームの保存領域のメタデータ */
     private String metadata;
-
-    /**
-     * フォームの保存領域のメタデータを取得
-     *
-     * @return フォームの保存領域マスターを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * フォームの保存領域のメタデータを設定
-     *
-     * @param metadata フォームの保存領域マスターを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * フォームの保存領域のメタデータを設定
-     *
-     * @param metadata フォームの保存領域マスターを新規作成
-     * @return this
-     */
-    public CreateMoldModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** フォーム名 */
     private String formModelName;
-
-    /**
-     * フォーム名を取得
-     *
-     * @return フォームの保存領域マスターを新規作成
-     */
-    public String getFormModelName() {
-        return formModelName;
-    }
-
-    /**
-     * フォーム名を設定
-     *
-     * @param formModelName フォームの保存領域マスターを新規作成
-     */
-    public void setFormModelName(String formModelName) {
-        this.formModelName = formModelName;
-    }
-
-    /**
-     * フォーム名を設定
-     *
-     * @param formModelName フォームの保存領域マスターを新規作成
-     * @return this
-     */
-    public CreateMoldModelMasterRequest withFormModelName(String formModelName) {
-        setFormModelName(formModelName);
-        return this;
-    }
-
-    /** フォームを保存できる初期キャパシティ */
     private Integer initialMaxCapacity;
-
-    /**
-     * フォームを保存できる初期キャパシティを取得
-     *
-     * @return フォームの保存領域マスターを新規作成
-     */
-    public Integer getInitialMaxCapacity() {
-        return initialMaxCapacity;
-    }
-
-    /**
-     * フォームを保存できる初期キャパシティを設定
-     *
-     * @param initialMaxCapacity フォームの保存領域マスターを新規作成
-     */
-    public void setInitialMaxCapacity(Integer initialMaxCapacity) {
-        this.initialMaxCapacity = initialMaxCapacity;
-    }
-
-    /**
-     * フォームを保存できる初期キャパシティを設定
-     *
-     * @param initialMaxCapacity フォームの保存領域マスターを新規作成
-     * @return this
-     */
-    public CreateMoldModelMasterRequest withInitialMaxCapacity(Integer initialMaxCapacity) {
-        setInitialMaxCapacity(initialMaxCapacity);
-        return this;
-    }
-
-    /** フォームを保存できるキャパシティ */
     private Integer maxCapacity;
 
-    /**
-     * フォームを保存できるキャパシティを取得
-     *
-     * @return フォームの保存領域マスターを新規作成
-     */
-    public Integer getMaxCapacity() {
-        return maxCapacity;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateMoldModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateMoldModelMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateMoldModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateMoldModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getFormModelName() {
+		return formModelName;
+	}
+
+	public void setFormModelName(String formModelName) {
+		this.formModelName = formModelName;
+	}
+
+	public CreateMoldModelMasterRequest withFormModelName(String formModelName) {
+		this.formModelName = formModelName;
+		return this;
+	}
+
+	public Integer getInitialMaxCapacity() {
+		return initialMaxCapacity;
+	}
+
+	public void setInitialMaxCapacity(Integer initialMaxCapacity) {
+		this.initialMaxCapacity = initialMaxCapacity;
+	}
+
+	public CreateMoldModelMasterRequest withInitialMaxCapacity(Integer initialMaxCapacity) {
+		this.initialMaxCapacity = initialMaxCapacity;
+		return this;
+	}
+
+	public Integer getMaxCapacity() {
+		return maxCapacity;
+	}
+
+	public void setMaxCapacity(Integer maxCapacity) {
+		this.maxCapacity = maxCapacity;
+	}
+
+	public CreateMoldModelMasterRequest withMaxCapacity(Integer maxCapacity) {
+		this.maxCapacity = maxCapacity;
+		return this;
+	}
+
+    public static CreateMoldModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateMoldModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText())
+            .withInitialMaxCapacity(data.get("initialMaxCapacity") == null || data.get("initialMaxCapacity").isNull() ? null : data.get("initialMaxCapacity").intValue())
+            .withMaxCapacity(data.get("maxCapacity") == null || data.get("maxCapacity").isNull() ? null : data.get("maxCapacity").intValue());
     }
 
-    /**
-     * フォームを保存できるキャパシティを設定
-     *
-     * @param maxCapacity フォームの保存領域マスターを新規作成
-     */
-    public void setMaxCapacity(Integer maxCapacity) {
-        this.maxCapacity = maxCapacity;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("formModelName", getFormModelName());
+                put("initialMaxCapacity", getInitialMaxCapacity());
+                put("maxCapacity", getMaxCapacity());
+            }}
+        );
     }
-
-    /**
-     * フォームを保存できるキャパシティを設定
-     *
-     * @param maxCapacity フォームの保存領域マスターを新規作成
-     * @return this
-     */
-    public CreateMoldModelMasterRequest withMaxCapacity(Integer maxCapacity) {
-        setMaxCapacity(maxCapacity);
-        return this;
-    }
-
 }

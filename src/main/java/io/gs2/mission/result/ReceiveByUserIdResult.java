@@ -16,39 +16,48 @@
 
 package io.gs2.mission.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
+import io.gs2.mission.model.Complete;
 
-/**
- * ミッション達成報酬を受領する のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReceiveByUserIdResult implements IResult, Serializable {
-	/** 受領した達成状況 */
-	private Complete item;
+    private Complete item;
 
-	/**
-	 * 受領した達成状況を取得
-	 *
-	 * @return ミッション達成報酬を受領する
-	 */
 	public Complete getItem() {
 		return item;
 	}
 
-	/**
-	 * 受領した達成状況を設定
-	 *
-	 * @param item ミッション達成報酬を受領する
-	 */
 	public void setItem(Complete item) {
 		this.item = item;
 	}
+
+	public ReceiveByUserIdResult withItem(Complete item) {
+		this.item = item;
+		return this;
+	}
+
+    public static ReceiveByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ReceiveByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Complete.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

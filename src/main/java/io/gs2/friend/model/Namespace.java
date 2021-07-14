@@ -16,649 +16,306 @@
 
 package io.gs2.friend.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ネームスペース
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Namespace implements IModel, Serializable, Comparable<Namespace> {
-	/** ネームスペース */
-	protected String namespaceId;
+	private String namespaceId;
+	private String name;
+	private String description;
+	private ScriptSetting followScript;
+	private ScriptSetting unfollowScript;
+	private ScriptSetting sendRequestScript;
+	private ScriptSetting cancelRequestScript;
+	private ScriptSetting acceptRequestScript;
+	private ScriptSetting rejectRequestScript;
+	private ScriptSetting deleteFriendScript;
+	private ScriptSetting updateProfileScript;
+	private NotificationSetting followNotification;
+	private NotificationSetting receiveRequestNotification;
+	private NotificationSetting acceptRequestNotification;
+	private LogSetting logSetting;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ネームスペースを取得
-	 *
-	 * @return ネームスペース
-	 */
 	public String getNamespaceId() {
 		return namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 */
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 * @return this
-	 */
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Namespace withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ネームスペース名 */
-	protected String name;
-
-	/**
-	 * ネームスペース名を取得
-	 *
-	 * @return ネームスペース名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 * @return this
-	 */
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ネームスペースの説明 */
-	protected String description;
 
-	/**
-	 * ネームスペースの説明を取得
-	 *
-	 * @return ネームスペースの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 * @return this
-	 */
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** フォローされたときに実行するスクリプト */
-	protected ScriptSetting followScript;
 
-	/**
-	 * フォローされたときに実行するスクリプトを取得
-	 *
-	 * @return フォローされたときに実行するスクリプト
-	 */
 	public ScriptSetting getFollowScript() {
 		return followScript;
 	}
 
-	/**
-	 * フォローされたときに実行するスクリプトを設定
-	 *
-	 * @param followScript フォローされたときに実行するスクリプト
-	 */
 	public void setFollowScript(ScriptSetting followScript) {
 		this.followScript = followScript;
 	}
 
-	/**
-	 * フォローされたときに実行するスクリプトを設定
-	 *
-	 * @param followScript フォローされたときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withFollowScript(ScriptSetting followScript) {
 		this.followScript = followScript;
 		return this;
 	}
-	/** アンフォローされたときに実行するスクリプト */
-	protected ScriptSetting unfollowScript;
 
-	/**
-	 * アンフォローされたときに実行するスクリプトを取得
-	 *
-	 * @return アンフォローされたときに実行するスクリプト
-	 */
 	public ScriptSetting getUnfollowScript() {
 		return unfollowScript;
 	}
 
-	/**
-	 * アンフォローされたときに実行するスクリプトを設定
-	 *
-	 * @param unfollowScript アンフォローされたときに実行するスクリプト
-	 */
 	public void setUnfollowScript(ScriptSetting unfollowScript) {
 		this.unfollowScript = unfollowScript;
 	}
 
-	/**
-	 * アンフォローされたときに実行するスクリプトを設定
-	 *
-	 * @param unfollowScript アンフォローされたときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withUnfollowScript(ScriptSetting unfollowScript) {
 		this.unfollowScript = unfollowScript;
 		return this;
 	}
-	/** フレンドリクエストを発行したときに実行するスクリプト */
-	protected ScriptSetting sendRequestScript;
 
-	/**
-	 * フレンドリクエストを発行したときに実行するスクリプトを取得
-	 *
-	 * @return フレンドリクエストを発行したときに実行するスクリプト
-	 */
 	public ScriptSetting getSendRequestScript() {
 		return sendRequestScript;
 	}
 
-	/**
-	 * フレンドリクエストを発行したときに実行するスクリプトを設定
-	 *
-	 * @param sendRequestScript フレンドリクエストを発行したときに実行するスクリプト
-	 */
 	public void setSendRequestScript(ScriptSetting sendRequestScript) {
 		this.sendRequestScript = sendRequestScript;
 	}
 
-	/**
-	 * フレンドリクエストを発行したときに実行するスクリプトを設定
-	 *
-	 * @param sendRequestScript フレンドリクエストを発行したときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withSendRequestScript(ScriptSetting sendRequestScript) {
 		this.sendRequestScript = sendRequestScript;
 		return this;
 	}
-	/** フレンドリクエストをキャンセルしたときに実行するスクリプト */
-	protected ScriptSetting cancelRequestScript;
 
-	/**
-	 * フレンドリクエストをキャンセルしたときに実行するスクリプトを取得
-	 *
-	 * @return フレンドリクエストをキャンセルしたときに実行するスクリプト
-	 */
 	public ScriptSetting getCancelRequestScript() {
 		return cancelRequestScript;
 	}
 
-	/**
-	 * フレンドリクエストをキャンセルしたときに実行するスクリプトを設定
-	 *
-	 * @param cancelRequestScript フレンドリクエストをキャンセルしたときに実行するスクリプト
-	 */
 	public void setCancelRequestScript(ScriptSetting cancelRequestScript) {
 		this.cancelRequestScript = cancelRequestScript;
 	}
 
-	/**
-	 * フレンドリクエストをキャンセルしたときに実行するスクリプトを設定
-	 *
-	 * @param cancelRequestScript フレンドリクエストをキャンセルしたときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withCancelRequestScript(ScriptSetting cancelRequestScript) {
 		this.cancelRequestScript = cancelRequestScript;
 		return this;
 	}
-	/** フレンドリクエストを承諾したときに実行するスクリプト */
-	protected ScriptSetting acceptRequestScript;
 
-	/**
-	 * フレンドリクエストを承諾したときに実行するスクリプトを取得
-	 *
-	 * @return フレンドリクエストを承諾したときに実行するスクリプト
-	 */
 	public ScriptSetting getAcceptRequestScript() {
 		return acceptRequestScript;
 	}
 
-	/**
-	 * フレンドリクエストを承諾したときに実行するスクリプトを設定
-	 *
-	 * @param acceptRequestScript フレンドリクエストを承諾したときに実行するスクリプト
-	 */
 	public void setAcceptRequestScript(ScriptSetting acceptRequestScript) {
 		this.acceptRequestScript = acceptRequestScript;
 	}
 
-	/**
-	 * フレンドリクエストを承諾したときに実行するスクリプトを設定
-	 *
-	 * @param acceptRequestScript フレンドリクエストを承諾したときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withAcceptRequestScript(ScriptSetting acceptRequestScript) {
 		this.acceptRequestScript = acceptRequestScript;
 		return this;
 	}
-	/** フレンドリクエストを拒否したときに実行するスクリプト */
-	protected ScriptSetting rejectRequestScript;
 
-	/**
-	 * フレンドリクエストを拒否したときに実行するスクリプトを取得
-	 *
-	 * @return フレンドリクエストを拒否したときに実行するスクリプト
-	 */
 	public ScriptSetting getRejectRequestScript() {
 		return rejectRequestScript;
 	}
 
-	/**
-	 * フレンドリクエストを拒否したときに実行するスクリプトを設定
-	 *
-	 * @param rejectRequestScript フレンドリクエストを拒否したときに実行するスクリプト
-	 */
 	public void setRejectRequestScript(ScriptSetting rejectRequestScript) {
 		this.rejectRequestScript = rejectRequestScript;
 	}
 
-	/**
-	 * フレンドリクエストを拒否したときに実行するスクリプトを設定
-	 *
-	 * @param rejectRequestScript フレンドリクエストを拒否したときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withRejectRequestScript(ScriptSetting rejectRequestScript) {
 		this.rejectRequestScript = rejectRequestScript;
 		return this;
 	}
-	/** フレンドを削除したときに実行するスクリプト */
-	protected ScriptSetting deleteFriendScript;
 
-	/**
-	 * フレンドを削除したときに実行するスクリプトを取得
-	 *
-	 * @return フレンドを削除したときに実行するスクリプト
-	 */
 	public ScriptSetting getDeleteFriendScript() {
 		return deleteFriendScript;
 	}
 
-	/**
-	 * フレンドを削除したときに実行するスクリプトを設定
-	 *
-	 * @param deleteFriendScript フレンドを削除したときに実行するスクリプト
-	 */
 	public void setDeleteFriendScript(ScriptSetting deleteFriendScript) {
 		this.deleteFriendScript = deleteFriendScript;
 	}
 
-	/**
-	 * フレンドを削除したときに実行するスクリプトを設定
-	 *
-	 * @param deleteFriendScript フレンドを削除したときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withDeleteFriendScript(ScriptSetting deleteFriendScript) {
 		this.deleteFriendScript = deleteFriendScript;
 		return this;
 	}
-	/** プロフィールを更新したときに実行するスクリプト */
-	protected ScriptSetting updateProfileScript;
 
-	/**
-	 * プロフィールを更新したときに実行するスクリプトを取得
-	 *
-	 * @return プロフィールを更新したときに実行するスクリプト
-	 */
 	public ScriptSetting getUpdateProfileScript() {
 		return updateProfileScript;
 	}
 
-	/**
-	 * プロフィールを更新したときに実行するスクリプトを設定
-	 *
-	 * @param updateProfileScript プロフィールを更新したときに実行するスクリプト
-	 */
 	public void setUpdateProfileScript(ScriptSetting updateProfileScript) {
 		this.updateProfileScript = updateProfileScript;
 	}
 
-	/**
-	 * プロフィールを更新したときに実行するスクリプトを設定
-	 *
-	 * @param updateProfileScript プロフィールを更新したときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withUpdateProfileScript(ScriptSetting updateProfileScript) {
 		this.updateProfileScript = updateProfileScript;
 		return this;
 	}
-	/** フォローされたときのプッシュ通知 */
-	protected NotificationSetting followNotification;
 
-	/**
-	 * フォローされたときのプッシュ通知を取得
-	 *
-	 * @return フォローされたときのプッシュ通知
-	 */
 	public NotificationSetting getFollowNotification() {
 		return followNotification;
 	}
 
-	/**
-	 * フォローされたときのプッシュ通知を設定
-	 *
-	 * @param followNotification フォローされたときのプッシュ通知
-	 */
 	public void setFollowNotification(NotificationSetting followNotification) {
 		this.followNotification = followNotification;
 	}
 
-	/**
-	 * フォローされたときのプッシュ通知を設定
-	 *
-	 * @param followNotification フォローされたときのプッシュ通知
-	 * @return this
-	 */
 	public Namespace withFollowNotification(NotificationSetting followNotification) {
 		this.followNotification = followNotification;
 		return this;
 	}
-	/** フレンドリクエストが届いたときのプッシュ通知 */
-	protected NotificationSetting receiveRequestNotification;
 
-	/**
-	 * フレンドリクエストが届いたときのプッシュ通知を取得
-	 *
-	 * @return フレンドリクエストが届いたときのプッシュ通知
-	 */
 	public NotificationSetting getReceiveRequestNotification() {
 		return receiveRequestNotification;
 	}
 
-	/**
-	 * フレンドリクエストが届いたときのプッシュ通知を設定
-	 *
-	 * @param receiveRequestNotification フレンドリクエストが届いたときのプッシュ通知
-	 */
 	public void setReceiveRequestNotification(NotificationSetting receiveRequestNotification) {
 		this.receiveRequestNotification = receiveRequestNotification;
 	}
 
-	/**
-	 * フレンドリクエストが届いたときのプッシュ通知を設定
-	 *
-	 * @param receiveRequestNotification フレンドリクエストが届いたときのプッシュ通知
-	 * @return this
-	 */
 	public Namespace withReceiveRequestNotification(NotificationSetting receiveRequestNotification) {
 		this.receiveRequestNotification = receiveRequestNotification;
 		return this;
 	}
-	/** フレンドリクエストが承認されたときのプッシュ通知 */
-	protected NotificationSetting acceptRequestNotification;
 
-	/**
-	 * フレンドリクエストが承認されたときのプッシュ通知を取得
-	 *
-	 * @return フレンドリクエストが承認されたときのプッシュ通知
-	 */
 	public NotificationSetting getAcceptRequestNotification() {
 		return acceptRequestNotification;
 	}
 
-	/**
-	 * フレンドリクエストが承認されたときのプッシュ通知を設定
-	 *
-	 * @param acceptRequestNotification フレンドリクエストが承認されたときのプッシュ通知
-	 */
 	public void setAcceptRequestNotification(NotificationSetting acceptRequestNotification) {
 		this.acceptRequestNotification = acceptRequestNotification;
 	}
 
-	/**
-	 * フレンドリクエストが承認されたときのプッシュ通知を設定
-	 *
-	 * @param acceptRequestNotification フレンドリクエストが承認されたときのプッシュ通知
-	 * @return this
-	 */
 	public Namespace withAcceptRequestNotification(NotificationSetting acceptRequestNotification) {
 		this.acceptRequestNotification = acceptRequestNotification;
 		return this;
 	}
-	/** ログの出力設定 */
-	protected LogSetting logSetting;
 
-	/**
-	 * ログの出力設定を取得
-	 *
-	 * @return ログの出力設定
-	 */
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 */
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 * @return this
-	 */
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-	/** None */
-	protected String status;
 
-	/**
-	 * Noneを取得
-	 *
-	 * @return None
-	 */
-	public String getStatus() {
-		return status;
-	}
-
-	/**
-	 * Noneを設定
-	 *
-	 * @param status None
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	/**
-	 * Noneを設定
-	 *
-	 * @param status None
-	 * @return this
-	 */
-	public Namespace withStatus(String status) {
-		this.status = status;
-		return this;
-	}
-	/** 作成日時 */
-	protected Long createdAt;
-
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode followScript = this.getFollowScript().toJson();
-        JsonNode unfollowScript = this.getUnfollowScript().toJson();
-        JsonNode sendRequestScript = this.getSendRequestScript().toJson();
-        JsonNode cancelRequestScript = this.getCancelRequestScript().toJson();
-        JsonNode acceptRequestScript = this.getAcceptRequestScript().toJson();
-        JsonNode rejectRequestScript = this.getRejectRequestScript().toJson();
-        JsonNode deleteFriendScript = this.getDeleteFriendScript().toJson();
-        JsonNode updateProfileScript = this.getUpdateProfileScript().toJson();
-        JsonNode followNotification = this.getFollowNotification().toJson();
-        JsonNode receiveRequestNotification = this.getReceiveRequestNotification().toJson();
-        JsonNode acceptRequestNotification = this.getAcceptRequestNotification().toJson();
-        JsonNode logSetting = this.getLogSetting().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceId", this.getNamespaceId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("status", this.getStatus())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("followScript", followScript);
-        body_.set("unfollowScript", unfollowScript);
-        body_.set("sendRequestScript", sendRequestScript);
-        body_.set("cancelRequestScript", cancelRequestScript);
-        body_.set("acceptRequestScript", acceptRequestScript);
-        body_.set("rejectRequestScript", rejectRequestScript);
-        body_.set("deleteFriendScript", deleteFriendScript);
-        body_.set("updateProfileScript", updateProfileScript);
-        body_.set("followNotification", followNotification);
-        body_.set("receiveRequestNotification", receiveRequestNotification);
-        body_.set("acceptRequestNotification", acceptRequestNotification);
-        body_.set("logSetting", logSetting);
-        return body_;
+    public static Namespace fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Namespace()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withFollowScript(data.get("followScript") == null || data.get("followScript").isNull() ? null : ScriptSetting.fromJson(data.get("followScript")))
+            .withUnfollowScript(data.get("unfollowScript") == null || data.get("unfollowScript").isNull() ? null : ScriptSetting.fromJson(data.get("unfollowScript")))
+            .withSendRequestScript(data.get("sendRequestScript") == null || data.get("sendRequestScript").isNull() ? null : ScriptSetting.fromJson(data.get("sendRequestScript")))
+            .withCancelRequestScript(data.get("cancelRequestScript") == null || data.get("cancelRequestScript").isNull() ? null : ScriptSetting.fromJson(data.get("cancelRequestScript")))
+            .withAcceptRequestScript(data.get("acceptRequestScript") == null || data.get("acceptRequestScript").isNull() ? null : ScriptSetting.fromJson(data.get("acceptRequestScript")))
+            .withRejectRequestScript(data.get("rejectRequestScript") == null || data.get("rejectRequestScript").isNull() ? null : ScriptSetting.fromJson(data.get("rejectRequestScript")))
+            .withDeleteFriendScript(data.get("deleteFriendScript") == null || data.get("deleteFriendScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteFriendScript")))
+            .withUpdateProfileScript(data.get("updateProfileScript") == null || data.get("updateProfileScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateProfileScript")))
+            .withFollowNotification(data.get("followNotification") == null || data.get("followNotification").isNull() ? null : NotificationSetting.fromJson(data.get("followNotification")))
+            .withReceiveRequestNotification(data.get("receiveRequestNotification") == null || data.get("receiveRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("receiveRequestNotification")))
+            .withAcceptRequestNotification(data.get("acceptRequestNotification") == null || data.get("acceptRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("acceptRequestNotification")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("name", getName());
+                put("description", getDescription());
+                put("followScript", getFollowScript() != null ? getFollowScript().toJson() : null);
+                put("unfollowScript", getUnfollowScript() != null ? getUnfollowScript().toJson() : null);
+                put("sendRequestScript", getSendRequestScript() != null ? getSendRequestScript().toJson() : null);
+                put("cancelRequestScript", getCancelRequestScript() != null ? getCancelRequestScript().toJson() : null);
+                put("acceptRequestScript", getAcceptRequestScript() != null ? getAcceptRequestScript().toJson() : null);
+                put("rejectRequestScript", getRejectRequestScript() != null ? getRejectRequestScript().toJson() : null);
+                put("deleteFriendScript", getDeleteFriendScript() != null ? getDeleteFriendScript().toJson() : null);
+                put("updateProfileScript", getUpdateProfileScript() != null ? getUpdateProfileScript().toJson() : null);
+                put("followNotification", getFollowNotification() != null ? getFollowNotification().toJson() : null);
+                put("receiveRequestNotification", getReceiveRequestNotification() != null ? getReceiveRequestNotification().toJson() : null);
+                put("acceptRequestNotification", getAcceptRequestNotification() != null ? getAcceptRequestNotification().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Namespace o) {
 		return namespaceId.compareTo(o.namespaceId);
@@ -669,7 +326,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.followScript == null) ? 0 : this.followScript.hashCode());
@@ -684,7 +340,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.receiveRequestNotification == null) ? 0 : this.receiveRequestNotification.hashCode());
         result = prime * result + ((this.acceptRequestNotification == null) ? 0 : this.acceptRequestNotification.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
-        result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
@@ -702,11 +357,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (namespaceId == null) {
 			return other.namespaceId == null;
 		} else if (!namespaceId.equals(other.namespaceId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {
@@ -777,11 +427,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (logSetting == null) {
 			return other.logSetting == null;
 		} else if (!logSetting.equals(other.logSetting)) {
-			return false;
-		}
-		if (status == null) {
-			return other.status == null;
-		} else if (!status.equals(other.status)) {
 			return false;
 		}
 		if (createdAt == null) {

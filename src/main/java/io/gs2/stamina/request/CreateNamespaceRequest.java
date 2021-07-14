@@ -16,178 +16,96 @@
 
 package io.gs2.stamina.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.stamina.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.stamina.model.ScriptSetting;
+import io.gs2.stamina.model.LogSetting;
 
-/**
- * ネームスペースを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String name;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** 説明文 */
     private String description;
-
-    /**
-     * 説明文を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description ネームスペースを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRN */
-    private String overflowTriggerScriptId;
-
-    /**
-     * スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getOverflowTriggerScriptId() {
-        return overflowTriggerScriptId;
-    }
-
-    /**
-     * スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRNを設定
-     *
-     * @param overflowTriggerScriptId ネームスペースを新規作成
-     */
-    public void setOverflowTriggerScriptId(String overflowTriggerScriptId) {
-        this.overflowTriggerScriptId = overflowTriggerScriptId;
-    }
-
-    /**
-     * スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRNを設定
-     *
-     * @param overflowTriggerScriptId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withOverflowTriggerScriptId(String overflowTriggerScriptId) {
-        setOverflowTriggerScriptId(overflowTriggerScriptId);
-        return this;
-    }
-
-    /** スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN */
-    private String overflowTriggerNamespaceId;
-
-    /**
-     * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getOverflowTriggerNamespaceId() {
-        return overflowTriggerNamespaceId;
-    }
-
-    /**
-     * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを設定
-     *
-     * @param overflowTriggerNamespaceId ネームスペースを新規作成
-     */
-    public void setOverflowTriggerNamespaceId(String overflowTriggerNamespaceId) {
-        this.overflowTriggerNamespaceId = overflowTriggerNamespaceId;
-    }
-
-    /**
-     * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを設定
-     *
-     * @param overflowTriggerNamespaceId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withOverflowTriggerNamespaceId(String overflowTriggerNamespaceId) {
-        setOverflowTriggerNamespaceId(overflowTriggerNamespaceId);
-        return this;
-    }
-
-    /** ログの出力設定 */
+    private ScriptSetting overflowTriggerScript;
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateNamespaceRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public ScriptSetting getOverflowTriggerScript() {
+		return overflowTriggerScript;
+	}
+
+	public void setOverflowTriggerScript(ScriptSetting overflowTriggerScript) {
+		this.overflowTriggerScript = overflowTriggerScript;
+	}
+
+	public CreateNamespaceRequest withOverflowTriggerScript(ScriptSetting overflowTriggerScript) {
+		this.overflowTriggerScript = overflowTriggerScript;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static CreateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateNamespaceRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withOverflowTriggerScript(data.get("overflowTriggerScript") == null || data.get("overflowTriggerScript").isNull() ? null : ScriptSetting.fromJson(data.get("overflowTriggerScript")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("overflowTriggerScript", getOverflowTriggerScript() != null ? getOverflowTriggerScript().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

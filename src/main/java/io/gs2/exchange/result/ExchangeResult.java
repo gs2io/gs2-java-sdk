@@ -16,79 +16,82 @@
 
 package io.gs2.exchange.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.exchange.model.*;
+import io.gs2.exchange.model.ConsumeAction;
+import io.gs2.exchange.model.AcquireAction;
+import io.gs2.exchange.model.RateModel;
 
-/**
- * 交換を実行 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExchangeResult implements IResult, Serializable {
-	/** 交換レートモデル */
-	private RateModel item;
-	/** 交換処理の実行に使用するスタンプシート */
-	private String stampSheet;
-	/** スタンプシートの署名計算に使用した暗号鍵GRN */
-	private String stampSheetEncryptionKeyId;
+    private RateModel item;
+    private String stampSheet;
+    private String stampSheetEncryptionKeyId;
 
-	/**
-	 * 交換レートモデルを取得
-	 *
-	 * @return 交換を実行
-	 */
 	public RateModel getItem() {
 		return item;
 	}
 
-	/**
-	 * 交換レートモデルを設定
-	 *
-	 * @param item 交換を実行
-	 */
 	public void setItem(RateModel item) {
 		this.item = item;
 	}
 
-	/**
-	 * 交換処理の実行に使用するスタンプシートを取得
-	 *
-	 * @return 交換を実行
-	 */
+	public ExchangeResult withItem(RateModel item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getStampSheet() {
 		return stampSheet;
 	}
 
-	/**
-	 * 交換処理の実行に使用するスタンプシートを設定
-	 *
-	 * @param stampSheet 交換を実行
-	 */
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを取得
-	 *
-	 * @return 交換を実行
-	 */
+	public ExchangeResult withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
 	public String getStampSheetEncryptionKeyId() {
 		return stampSheetEncryptionKeyId;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを設定
-	 *
-	 * @param stampSheetEncryptionKeyId 交換を実行
-	 */
 	public void setStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
 		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
 	}
+
+	public ExchangeResult withStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
+		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
+		return this;
+	}
+
+    public static ExchangeResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ExchangeResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RateModel.fromJson(data.get("item")))
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("stampSheet", getStampSheet());
+                put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+            }}
+        );
+    }
 }

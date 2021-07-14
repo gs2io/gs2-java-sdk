@@ -16,114 +16,79 @@
 
 package io.gs2.deploy.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.deploy.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.deploy.model.GitHubCheckoutSetting;
 
-/**
- * スタックを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateStackFromGitHubRequest extends Gs2BasicRequest<UpdateStackFromGitHubRequest> {
-
-    /** スタック名 */
     private String stackName;
-
-    /**
-     * スタック名を取得
-     *
-     * @return スタックを更新
-     */
-    public String getStackName() {
-        return stackName;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param stackName スタックを更新
-     */
-    public void setStackName(String stackName) {
-        this.stackName = stackName;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param stackName スタックを更新
-     * @return this
-     */
-    public UpdateStackFromGitHubRequest withStackName(String stackName) {
-        setStackName(stackName);
-        return this;
-    }
-
-    /** スタックの説明 */
     private String description;
-
-    /**
-     * スタックの説明を取得
-     *
-     * @return スタックを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * スタックの説明を設定
-     *
-     * @param description スタックを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * スタックの説明を設定
-     *
-     * @param description スタックを更新
-     * @return this
-     */
-    public UpdateStackFromGitHubRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** GitHubからソースコードをチェックアウトしてくる設定 */
     private GitHubCheckoutSetting checkoutSetting;
 
-    /**
-     * GitHubからソースコードをチェックアウトしてくる設定を取得
-     *
-     * @return スタックを更新
-     */
-    public GitHubCheckoutSetting getCheckoutSetting() {
-        return checkoutSetting;
+	public String getStackName() {
+		return stackName;
+	}
+
+	public void setStackName(String stackName) {
+		this.stackName = stackName;
+	}
+
+	public UpdateStackFromGitHubRequest withStackName(String stackName) {
+		this.stackName = stackName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateStackFromGitHubRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public GitHubCheckoutSetting getCheckoutSetting() {
+		return checkoutSetting;
+	}
+
+	public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+		this.checkoutSetting = checkoutSetting;
+	}
+
+	public UpdateStackFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+		this.checkoutSetting = checkoutSetting;
+		return this;
+	}
+
+    public static UpdateStackFromGitHubRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateStackFromGitHubRequest()
+            .withStackName(data.get("stackName") == null || data.get("stackName").isNull() ? null : data.get("stackName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withCheckoutSetting(data.get("checkoutSetting") == null || data.get("checkoutSetting").isNull() ? null : GitHubCheckoutSetting.fromJson(data.get("checkoutSetting")));
     }
 
-    /**
-     * GitHubからソースコードをチェックアウトしてくる設定を設定
-     *
-     * @param checkoutSetting スタックを更新
-     */
-    public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
-        this.checkoutSetting = checkoutSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stackName", getStackName());
+                put("description", getDescription());
+                put("checkoutSetting", getCheckoutSetting() != null ? getCheckoutSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * GitHubからソースコードをチェックアウトしてくる設定を設定
-     *
-     * @param checkoutSetting スタックを更新
-     * @return this
-     */
-    public UpdateStackFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
-        setCheckoutSetting(checkoutSetting);
-        return this;
-    }
-
 }

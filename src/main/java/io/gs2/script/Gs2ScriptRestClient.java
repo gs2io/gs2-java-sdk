@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.script;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.script.request.*;
 import io.gs2.script.result.*;
-import io.gs2.script.model.*;
+import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> {
 
-/**
- * GS2 Script API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2ScriptRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,26 +152,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -206,25 +177,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -251,15 +211,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -270,7 +233,7 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -294,25 +257,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -339,15 +291,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -358,7 +313,7 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -382,25 +337,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -427,15 +371,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -446,25 +393,15 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -482,25 +419,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -527,15 +453,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -546,7 +475,7 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -570,25 +499,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -615,15 +533,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public DescribeScriptsTask(
             DescribeScriptsRequest request,
-            AsyncAction<AsyncResult<DescribeScriptsResult>> userCallback,
-            Class<DescribeScriptsResult> clazz
+            AsyncAction<AsyncResult<DescribeScriptsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeScriptsResult parse(JsonNode data) {
+            return DescribeScriptsResult.fromJson(data);
         }
 
         @Override
@@ -634,7 +555,7 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/script";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -664,25 +585,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * スクリプトの一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeScriptsAsync(
             DescribeScriptsRequest request,
             AsyncAction<AsyncResult<DescribeScriptsResult>> callback
     ) {
-        DescribeScriptsTask task = new DescribeScriptsTask(request, callback, DescribeScriptsResult.class);
+        DescribeScriptsTask task = new DescribeScriptsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スクリプトの一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeScriptsResult describeScripts(
             DescribeScriptsRequest request
     ) {
@@ -709,15 +619,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public CreateScriptTask(
             CreateScriptRequest request,
-            AsyncAction<AsyncResult<CreateScriptResult>> userCallback,
-            Class<CreateScriptResult> clazz
+            AsyncAction<AsyncResult<CreateScriptResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateScriptResult parse(JsonNode data) {
+            return CreateScriptResult.fromJson(data);
         }
 
         @Override
@@ -728,24 +641,16 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/script";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getScript() != null) {
-                json.put("script", this.request.getScript());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("script", request.getScript());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -763,25 +668,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * スクリプトを新規作成します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createScriptAsync(
             CreateScriptRequest request,
             AsyncAction<AsyncResult<CreateScriptResult>> callback
     ) {
-        CreateScriptTask task = new CreateScriptTask(request, callback, CreateScriptResult.class);
+        CreateScriptTask task = new CreateScriptTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スクリプトを新規作成します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateScriptResult createScript(
             CreateScriptRequest request
     ) {
@@ -808,15 +702,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public CreateScriptFromGitHubTask(
             CreateScriptFromGitHubRequest request,
-            AsyncAction<AsyncResult<CreateScriptFromGitHubResult>> userCallback,
-            Class<CreateScriptFromGitHubResult> clazz
+            AsyncAction<AsyncResult<CreateScriptFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateScriptFromGitHubResult parse(JsonNode data) {
+            return CreateScriptFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -827,28 +724,16 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/script/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -866,25 +751,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * GitHubリポジトリのコードからスクリプトを新規作成します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createScriptFromGitHubAsync(
             CreateScriptFromGitHubRequest request,
             AsyncAction<AsyncResult<CreateScriptFromGitHubResult>> callback
     ) {
-        CreateScriptFromGitHubTask task = new CreateScriptFromGitHubTask(request, callback, CreateScriptFromGitHubResult.class);
+        CreateScriptFromGitHubTask task = new CreateScriptFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GitHubリポジトリのコードからスクリプトを新規作成します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateScriptFromGitHubResult createScriptFromGitHub(
             CreateScriptFromGitHubRequest request
     ) {
@@ -911,15 +785,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public GetScriptTask(
             GetScriptRequest request,
-            AsyncAction<AsyncResult<GetScriptResult>> userCallback,
-            Class<GetScriptResult> clazz
+            AsyncAction<AsyncResult<GetScriptResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetScriptResult parse(JsonNode data) {
+            return GetScriptResult.fromJson(data);
         }
 
         @Override
@@ -930,8 +807,8 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/script/{scriptName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{scriptName}", this.request.getScriptName() == null|| this.request.getScriptName().length() == 0 ? "null" : String.valueOf(this.request.getScriptName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{scriptName}", this.request.getScriptName() == null || this.request.getScriptName().length() == 0 ? "null" : String.valueOf(this.request.getScriptName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -955,25 +832,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * スクリプトを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getScriptAsync(
             GetScriptRequest request,
             AsyncAction<AsyncResult<GetScriptResult>> callback
     ) {
-        GetScriptTask task = new GetScriptTask(request, callback, GetScriptResult.class);
+        GetScriptTask task = new GetScriptTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スクリプトを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetScriptResult getScript(
             GetScriptRequest request
     ) {
@@ -1000,15 +866,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public UpdateScriptTask(
             UpdateScriptRequest request,
-            AsyncAction<AsyncResult<UpdateScriptResult>> userCallback,
-            Class<UpdateScriptResult> clazz
+            AsyncAction<AsyncResult<UpdateScriptResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateScriptResult parse(JsonNode data) {
+            return UpdateScriptResult.fromJson(data);
         }
 
         @Override
@@ -1019,22 +888,16 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/script/{scriptName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{scriptName}", this.request.getScriptName() == null|| this.request.getScriptName().length() == 0 ? "null" : String.valueOf(this.request.getScriptName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{scriptName}", this.request.getScriptName() == null || this.request.getScriptName().length() == 0 ? "null" : String.valueOf(this.request.getScriptName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getScript() != null) {
-                json.put("script", this.request.getScript());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("script", request.getScript());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1052,25 +915,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * スクリプトを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateScriptAsync(
             UpdateScriptRequest request,
             AsyncAction<AsyncResult<UpdateScriptResult>> callback
     ) {
-        UpdateScriptTask task = new UpdateScriptTask(request, callback, UpdateScriptResult.class);
+        UpdateScriptTask task = new UpdateScriptTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スクリプトを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateScriptResult updateScript(
             UpdateScriptRequest request
     ) {
@@ -1097,15 +949,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public UpdateScriptFromGitHubTask(
             UpdateScriptFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateScriptFromGitHubResult>> userCallback,
-            Class<UpdateScriptFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateScriptFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateScriptFromGitHubResult parse(JsonNode data) {
+            return UpdateScriptFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -1116,26 +971,16 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/script/{scriptName}/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{scriptName}", this.request.getScriptName() == null|| this.request.getScriptName().length() == 0 ? "null" : String.valueOf(this.request.getScriptName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{scriptName}", this.request.getScriptName() == null || this.request.getScriptName().length() == 0 ? "null" : String.valueOf(this.request.getScriptName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1153,25 +998,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * GithHub をデータソースとしてスクリプトを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateScriptFromGitHubAsync(
             UpdateScriptFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateScriptFromGitHubResult>> callback
     ) {
-        UpdateScriptFromGitHubTask task = new UpdateScriptFromGitHubTask(request, callback, UpdateScriptFromGitHubResult.class);
+        UpdateScriptFromGitHubTask task = new UpdateScriptFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GithHub をデータソースとしてスクリプトを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateScriptFromGitHubResult updateScriptFromGitHub(
             UpdateScriptFromGitHubRequest request
     ) {
@@ -1198,15 +1032,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public DeleteScriptTask(
             DeleteScriptRequest request,
-            AsyncAction<AsyncResult<DeleteScriptResult>> userCallback,
-            Class<DeleteScriptResult> clazz
+            AsyncAction<AsyncResult<DeleteScriptResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteScriptResult parse(JsonNode data) {
+            return DeleteScriptResult.fromJson(data);
         }
 
         @Override
@@ -1217,8 +1054,8 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/script/{scriptName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{scriptName}", this.request.getScriptName() == null|| this.request.getScriptName().length() == 0 ? "null" : String.valueOf(this.request.getScriptName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{scriptName}", this.request.getScriptName() == null || this.request.getScriptName().length() == 0 ? "null" : String.valueOf(this.request.getScriptName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1242,25 +1079,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * スクリプトを削除します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteScriptAsync(
             DeleteScriptRequest request,
             AsyncAction<AsyncResult<DeleteScriptResult>> callback
     ) {
-        DeleteScriptTask task = new DeleteScriptTask(request, callback, DeleteScriptResult.class);
+        DeleteScriptTask task = new DeleteScriptTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スクリプトを削除します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteScriptResult deleteScript(
             DeleteScriptRequest request
     ) {
@@ -1287,15 +1113,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public InvokeScriptTask(
             InvokeScriptRequest request,
-            AsyncAction<AsyncResult<InvokeScriptResult>> userCallback,
-            Class<InvokeScriptResult> clazz
+            AsyncAction<AsyncResult<InvokeScriptResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public InvokeScriptResult parse(JsonNode data) {
+            return InvokeScriptResult.fromJson(data);
         }
 
         @Override
@@ -1306,19 +1135,13 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/invoke";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getScriptId() != null) {
-                json.put("scriptId", this.request.getScriptId());
-            }
-            if (this.request.getArgs() != null) {
-                json.put("args", this.request.getArgs());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("scriptId", request.getScriptId());
+                    put("args", request.getArgs());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1336,25 +1159,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * スクリプトを実行します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void invokeScriptAsync(
             InvokeScriptRequest request,
             AsyncAction<AsyncResult<InvokeScriptResult>> callback
     ) {
-        InvokeScriptTask task = new InvokeScriptTask(request, callback, InvokeScriptResult.class);
+        InvokeScriptTask task = new InvokeScriptTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スクリプトを実行します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public InvokeScriptResult invokeScript(
             InvokeScriptRequest request
     ) {
@@ -1381,15 +1193,18 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
 
         public DebugInvokeTask(
             DebugInvokeRequest request,
-            AsyncAction<AsyncResult<DebugInvokeResult>> userCallback,
-            Class<DebugInvokeResult> clazz
+            AsyncAction<AsyncResult<DebugInvokeResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DebugInvokeResult parse(JsonNode data) {
+            return DebugInvokeResult.fromJson(data);
         }
 
         @Override
@@ -1400,19 +1215,13 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/debug/invoke";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getScript() != null) {
-                json.put("script", this.request.getScript());
-            }
-            if (this.request.getArgs() != null) {
-                json.put("args", this.request.getArgs());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("script", request.getScript());
+                    put("args", request.getArgs());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1430,25 +1239,14 @@ public class Gs2ScriptRestClient extends AbstractGs2Client<Gs2ScriptRestClient> 
         }
     }
 
-    /**
-     * スクリプトを実行します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void debugInvokeAsync(
             DebugInvokeRequest request,
             AsyncAction<AsyncResult<DebugInvokeResult>> callback
     ) {
-        DebugInvokeTask task = new DebugInvokeTask(request, callback, DebugInvokeResult.class);
+        DebugInvokeTask task = new DebugInvokeTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スクリプトを実行します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DebugInvokeResult debugInvoke(
             DebugInvokeRequest request
     ) {

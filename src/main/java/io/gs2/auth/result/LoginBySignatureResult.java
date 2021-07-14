@@ -16,79 +16,79 @@
 
 package io.gs2.auth.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.auth.model.*;
 
-/**
- * 指定したユーザIDでGS2にログインし、アクセストークンを取得します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LoginBySignatureResult implements IResult, Serializable {
-	/** アクセストークン */
-	private String token;
-	/** ユーザーID */
-	private String userId;
-	/** 有効期限 */
-	private Long expire;
+    private String token;
+    private String userId;
+    private Long expire;
 
-	/**
-	 * アクセストークンを取得
-	 *
-	 * @return 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-	 */
 	public String getToken() {
 		return token;
 	}
 
-	/**
-	 * アクセストークンを設定
-	 *
-	 * @param token 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-	 */
 	public void setToken(String token) {
 		this.token = token;
 	}
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-	 */
+	public LoginBySignatureResult withToken(String token) {
+		this.token = token;
+		return this;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * 有効期限を取得
-	 *
-	 * @return 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-	 */
+	public LoginBySignatureResult withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
 	public Long getExpire() {
 		return expire;
 	}
 
-	/**
-	 * 有効期限を設定
-	 *
-	 * @param expire 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-	 */
 	public void setExpire(Long expire) {
 		this.expire = expire;
 	}
+
+	public LoginBySignatureResult withExpire(Long expire) {
+		this.expire = expire;
+		return this;
+	}
+
+    public static LoginBySignatureResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LoginBySignatureResult()
+            .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withExpire(data.get("expire") == null || data.get("expire").isNull() ? null : data.get("expire").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("token", getToken());
+                put("userId", getUserId());
+                put("expire", getExpire());
+            }}
+        );
+    }
 }

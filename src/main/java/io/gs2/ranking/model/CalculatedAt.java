@@ -16,92 +16,64 @@
 
 package io.gs2.ranking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 集計日時
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CalculatedAt implements IModel, Serializable {
-	/** カテゴリ名 */
-	protected String categoryName;
+	private String categoryName;
+	private Long calculatedAt;
 
-	/**
-	 * カテゴリ名を取得
-	 *
-	 * @return カテゴリ名
-	 */
 	public String getCategoryName() {
 		return categoryName;
 	}
 
-	/**
-	 * カテゴリ名を設定
-	 *
-	 * @param categoryName カテゴリ名
-	 */
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
 
-	/**
-	 * カテゴリ名を設定
-	 *
-	 * @param categoryName カテゴリ名
-	 * @return this
-	 */
 	public CalculatedAt withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-	/** 集計日時 */
-	protected Long calculatedAt;
 
-	/**
-	 * 集計日時を取得
-	 *
-	 * @return 集計日時
-	 */
 	public Long getCalculatedAt() {
 		return calculatedAt;
 	}
 
-	/**
-	 * 集計日時を設定
-	 *
-	 * @param calculatedAt 集計日時
-	 */
 	public void setCalculatedAt(Long calculatedAt) {
 		this.calculatedAt = calculatedAt;
 	}
 
-	/**
-	 * 集計日時を設定
-	 *
-	 * @param calculatedAt 集計日時
-	 * @return this
-	 */
 	public CalculatedAt withCalculatedAt(Long calculatedAt) {
 		this.calculatedAt = calculatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("categoryName", this.getCategoryName())
-            .put("calculatedAt", this.getCalculatedAt());
-        return body_;
+    public static CalculatedAt fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CalculatedAt()
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withCalculatedAt(data.get("calculatedAt") == null || data.get("calculatedAt").isNull() ? null : data.get("calculatedAt").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("categoryName", getCategoryName());
+                put("calculatedAt", getCalculatedAt());
+            }}
+        );
     }
 
 	@Override

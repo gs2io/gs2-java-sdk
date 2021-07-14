@@ -16,431 +16,256 @@
 
 package io.gs2.exchange.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 交換レートマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RateModelMaster implements IModel, Serializable, Comparable<RateModelMaster> {
-	/** 交換レートマスター */
-	protected String rateModelId;
+	private String rateModelId;
+	private String name;
+	private String description;
+	private String metadata;
+	private List<ConsumeAction> consumeActions;
+	private String timingType;
+	private Integer lockTime;
+	private Boolean enableSkip;
+	private List<ConsumeAction> skipConsumeActions;
+	private List<AcquireAction> acquireActions;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 交換レートマスターを取得
-	 *
-	 * @return 交換レートマスター
-	 */
 	public String getRateModelId() {
 		return rateModelId;
 	}
 
-	/**
-	 * 交換レートマスターを設定
-	 *
-	 * @param rateModelId 交換レートマスター
-	 */
 	public void setRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 	}
 
-	/**
-	 * 交換レートマスターを設定
-	 *
-	 * @param rateModelId 交換レートマスター
-	 * @return this
-	 */
 	public RateModelMaster withRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 		return this;
 	}
-	/** 交換レート名 */
-	protected String name;
 
-	/**
-	 * 交換レート名を取得
-	 *
-	 * @return 交換レート名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 交換レート名を設定
-	 *
-	 * @param name 交換レート名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 交換レート名を設定
-	 *
-	 * @param name 交換レート名
-	 * @return this
-	 */
 	public RateModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 交換レートマスターの説明 */
-	protected String description;
 
-	/**
-	 * 交換レートマスターの説明を取得
-	 *
-	 * @return 交換レートマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 交換レートマスターの説明を設定
-	 *
-	 * @param description 交換レートマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 交換レートマスターの説明を設定
-	 *
-	 * @param description 交換レートマスターの説明
-	 * @return this
-	 */
 	public RateModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 交換レートのメタデータ */
-	protected String metadata;
 
-	/**
-	 * 交換レートのメタデータを取得
-	 *
-	 * @return 交換レートのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 交換レートのメタデータを設定
-	 *
-	 * @param metadata 交換レートのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 交換レートのメタデータを設定
-	 *
-	 * @param metadata 交換レートのメタデータ
-	 * @return this
-	 */
 	public RateModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 消費アクションリスト */
-	protected List<ConsumeAction> consumeActions;
 
-	/**
-	 * 消費アクションリストを取得
-	 *
-	 * @return 消費アクションリスト
-	 */
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
 
-	/**
-	 * 消費アクションリストを設定
-	 *
-	 * @param consumeActions 消費アクションリスト
-	 */
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
 
-	/**
-	 * 消費アクションリストを設定
-	 *
-	 * @param consumeActions 消費アクションリスト
-	 * @return this
-	 */
 	public RateModelMaster withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;
 	}
-	/** 交換の種類 */
-	protected String timingType;
 
-	/**
-	 * 交換の種類を取得
-	 *
-	 * @return 交換の種類
-	 */
 	public String getTimingType() {
 		return timingType;
 	}
 
-	/**
-	 * 交換の種類を設定
-	 *
-	 * @param timingType 交換の種類
-	 */
 	public void setTimingType(String timingType) {
 		this.timingType = timingType;
 	}
 
-	/**
-	 * 交換の種類を設定
-	 *
-	 * @param timingType 交換の種類
-	 * @return this
-	 */
 	public RateModelMaster withTimingType(String timingType) {
 		this.timingType = timingType;
 		return this;
 	}
-	/** 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分） */
-	protected Integer lockTime;
 
-	/**
-	 * 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）を取得
-	 *
-	 * @return 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）
-	 */
 	public Integer getLockTime() {
 		return lockTime;
 	}
 
-	/**
-	 * 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）を設定
-	 *
-	 * @param lockTime 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）
-	 */
 	public void setLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 	}
 
-	/**
-	 * 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）を設定
-	 *
-	 * @param lockTime 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）
-	 * @return this
-	 */
 	public RateModelMaster withLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 		return this;
 	}
-	/** スキップをすることができるか */
-	protected Boolean enableSkip;
 
-	/**
-	 * スキップをすることができるかを取得
-	 *
-	 * @return スキップをすることができるか
-	 */
 	public Boolean getEnableSkip() {
 		return enableSkip;
 	}
 
-	/**
-	 * スキップをすることができるかを設定
-	 *
-	 * @param enableSkip スキップをすることができるか
-	 */
 	public void setEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 	}
 
-	/**
-	 * スキップをすることができるかを設定
-	 *
-	 * @param enableSkip スキップをすることができるか
-	 * @return this
-	 */
 	public RateModelMaster withEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 		return this;
 	}
-	/** 時短消費アクションリスト */
-	protected List<ConsumeAction> skipConsumeActions;
 
-	/**
-	 * 時短消費アクションリストを取得
-	 *
-	 * @return 時短消費アクションリスト
-	 */
 	public List<ConsumeAction> getSkipConsumeActions() {
 		return skipConsumeActions;
 	}
 
-	/**
-	 * 時短消費アクションリストを設定
-	 *
-	 * @param skipConsumeActions 時短消費アクションリスト
-	 */
 	public void setSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 	}
 
-	/**
-	 * 時短消費アクションリストを設定
-	 *
-	 * @param skipConsumeActions 時短消費アクションリスト
-	 * @return this
-	 */
 	public RateModelMaster withSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 		return this;
 	}
-	/** 入手アクションリスト */
-	protected List<AcquireAction> acquireActions;
 
-	/**
-	 * 入手アクションリストを取得
-	 *
-	 * @return 入手アクションリスト
-	 */
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
 
-	/**
-	 * 入手アクションリストを設定
-	 *
-	 * @param acquireActions 入手アクションリスト
-	 */
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
 
-	/**
-	 * 入手アクションリストを設定
-	 *
-	 * @param acquireActions 入手アクションリスト
-	 * @return this
-	 */
 	public RateModelMaster withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public RateModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public RateModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> consumeActions = new ArrayList<>();
-        if(this.consumeActions != null) {
-            for(ConsumeAction item : this.consumeActions) {
-                consumeActions.add(item.toJson());
-            }
+    public static RateModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-        List<JsonNode> skipConsumeActions = new ArrayList<>();
-        if(this.skipConsumeActions != null) {
-            for(ConsumeAction item : this.skipConsumeActions) {
-                skipConsumeActions.add(item.toJson());
-            }
-        }
-        List<JsonNode> acquireActions = new ArrayList<>();
-        if(this.acquireActions != null) {
-            for(AcquireAction item : this.acquireActions) {
-                acquireActions.add(item.toJson());
-            }
-        }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("rateModelId", this.getRateModelId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("timingType", this.getTimingType())
-            .put("lockTime", this.getLockTime())
-            .put("enableSkip", this.getEnableSkip())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("consumeActions", JsonNodeFactory.instance.arrayNode().addAll(consumeActions));
-        body_.set("skipConsumeActions", JsonNodeFactory.instance.arrayNode().addAll(skipConsumeActions));
-        body_.set("acquireActions", JsonNodeFactory.instance.arrayNode().addAll(acquireActions));
-        return body_;
+        return new RateModelMaster()
+            .withRateModelId(data.get("rateModelId") == null || data.get("rateModelId").isNull() ? null : data.get("rateModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ConsumeAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withTimingType(data.get("timingType") == null || data.get("timingType").isNull() ? null : data.get("timingType").asText())
+            .withLockTime(data.get("lockTime") == null || data.get("lockTime").isNull() ? null : data.get("lockTime").intValue())
+            .withEnableSkip(data.get("enableSkip") == null || data.get("enableSkip").isNull() ? null : data.get("enableSkip").booleanValue())
+            .withSkipConsumeActions(data.get("skipConsumeActions") == null || data.get("skipConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("skipConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ConsumeAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("rateModelId", getRateModelId());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    getConsumeActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("timingType", getTimingType());
+                put("lockTime", getLockTime());
+                put("enableSkip", getEnableSkip());
+                put("skipConsumeActions", getSkipConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    getSkipConsumeActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(RateModelMaster o) {
 		return rateModelId.compareTo(o.rateModelId);

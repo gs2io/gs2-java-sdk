@@ -16,318 +16,146 @@
 
 package io.gs2.stamina.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ネームスペース
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Namespace implements IModel, Serializable, Comparable<Namespace> {
-	/** ネームスペース */
-	protected String namespaceId;
+	private String namespaceId;
+	private String name;
+	private String description;
+	private ScriptSetting overflowTriggerScript;
+	private LogSetting logSetting;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ネームスペースを取得
-	 *
-	 * @return ネームスペース
-	 */
 	public String getNamespaceId() {
 		return namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 */
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 * @return this
-	 */
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Namespace withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ネームスペース名 */
-	protected String name;
-
-	/**
-	 * ネームスペース名を取得
-	 *
-	 * @return ネームスペース名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 * @return this
-	 */
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 説明文 */
-	protected String description;
 
-	/**
-	 * 説明文を取得
-	 *
-	 * @return 説明文
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 説明文を設定
-	 *
-	 * @param description 説明文
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 説明文を設定
-	 *
-	 * @param description 説明文
-	 * @return this
-	 */
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRN */
-	protected String overflowTriggerScriptId;
 
-	/**
-	 * スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRNを取得
-	 *
-	 * @return スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRN
-	 */
-	public String getOverflowTriggerScriptId() {
-		return overflowTriggerScriptId;
+	public ScriptSetting getOverflowTriggerScript() {
+		return overflowTriggerScript;
 	}
 
-	/**
-	 * スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRNを設定
-	 *
-	 * @param overflowTriggerScriptId スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRN
-	 */
-	public void setOverflowTriggerScriptId(String overflowTriggerScriptId) {
-		this.overflowTriggerScriptId = overflowTriggerScriptId;
+	public void setOverflowTriggerScript(ScriptSetting overflowTriggerScript) {
+		this.overflowTriggerScript = overflowTriggerScript;
 	}
 
-	/**
-	 * スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRNを設定
-	 *
-	 * @param overflowTriggerScriptId スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRN
-	 * @return this
-	 */
-	public Namespace withOverflowTriggerScriptId(String overflowTriggerScriptId) {
-		this.overflowTriggerScriptId = overflowTriggerScriptId;
+	public Namespace withOverflowTriggerScript(ScriptSetting overflowTriggerScript) {
+		this.overflowTriggerScript = overflowTriggerScript;
 		return this;
 	}
-	/** スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN */
-	protected String overflowTriggerQueueId;
 
-	/**
-	 * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを取得
-	 *
-	 * @return スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN
-	 */
-	public String getOverflowTriggerQueueId() {
-		return overflowTriggerQueueId;
-	}
-
-	/**
-	 * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを設定
-	 *
-	 * @param overflowTriggerQueueId スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN
-	 */
-	public void setOverflowTriggerQueueId(String overflowTriggerQueueId) {
-		this.overflowTriggerQueueId = overflowTriggerQueueId;
-	}
-
-	/**
-	 * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを設定
-	 *
-	 * @param overflowTriggerQueueId スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN
-	 * @return this
-	 */
-	public Namespace withOverflowTriggerQueueId(String overflowTriggerQueueId) {
-		this.overflowTriggerQueueId = overflowTriggerQueueId;
-		return this;
-	}
-	/** ログの出力設定 */
-	protected LogSetting logSetting;
-
-	/**
-	 * ログの出力設定を取得
-	 *
-	 * @return ログの出力設定
-	 */
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 */
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 * @return this
-	 */
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode logSetting = this.getLogSetting().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceId", this.getNamespaceId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("overflowTriggerScriptId", this.getOverflowTriggerScriptId())
-            .put("overflowTriggerQueueId", this.getOverflowTriggerQueueId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("logSetting", logSetting);
-        return body_;
+    public static Namespace fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Namespace()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withOverflowTriggerScript(data.get("overflowTriggerScript") == null || data.get("overflowTriggerScript").isNull() ? null : ScriptSetting.fromJson(data.get("overflowTriggerScript")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("name", getName());
+                put("description", getDescription());
+                put("overflowTriggerScript", getOverflowTriggerScript() != null ? getOverflowTriggerScript().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Namespace o) {
 		return namespaceId.compareTo(o.namespaceId);
@@ -338,11 +166,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
-        result = prime * result + ((this.overflowTriggerScriptId == null) ? 0 : this.overflowTriggerScriptId.hashCode());
-        result = prime * result + ((this.overflowTriggerQueueId == null) ? 0 : this.overflowTriggerQueueId.hashCode());
+        result = prime * result + ((this.overflowTriggerScript == null) ? 0 : this.overflowTriggerScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -363,11 +189,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		} else if (!namespaceId.equals(other.namespaceId)) {
 			return false;
 		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
-			return false;
-		}
 		if (name == null) {
 			return other.name == null;
 		} else if (!name.equals(other.name)) {
@@ -378,14 +199,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		} else if (!description.equals(other.description)) {
 			return false;
 		}
-		if (overflowTriggerScriptId == null) {
-			return other.overflowTriggerScriptId == null;
-		} else if (!overflowTriggerScriptId.equals(other.overflowTriggerScriptId)) {
-			return false;
-		}
-		if (overflowTriggerQueueId == null) {
-			return other.overflowTriggerQueueId == null;
-		} else if (!overflowTriggerQueueId.equals(other.overflowTriggerQueueId)) {
+		if (overflowTriggerScript == null) {
+			return other.overflowTriggerScript == null;
+		} else if (!overflowTriggerScript.equals(other.overflowTriggerScript)) {
 			return false;
 		}
 		if (logSetting == null) {

@@ -16,157 +16,82 @@
 
 package io.gs2.watch.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * チャート
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Chart implements IModel, Serializable, Comparable<Chart> {
-	/** Datadog のJSON 形式のグラフ定義 */
-	protected String chartId;
+	private String chartId;
+	private String embedId;
+	private String html;
 
-	/**
-	 * Datadog のJSON 形式のグラフ定義を取得
-	 *
-	 * @return Datadog のJSON 形式のグラフ定義
-	 */
 	public String getChartId() {
 		return chartId;
 	}
 
-	/**
-	 * Datadog のJSON 形式のグラフ定義を設定
-	 *
-	 * @param chartId Datadog のJSON 形式のグラフ定義
-	 */
 	public void setChartId(String chartId) {
 		this.chartId = chartId;
 	}
 
-	/**
-	 * Datadog のJSON 形式のグラフ定義を設定
-	 *
-	 * @param chartId Datadog のJSON 形式のグラフ定義
-	 * @return this
-	 */
 	public Chart withChartId(String chartId) {
 		this.chartId = chartId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Chart withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** Datadog から払い出された組み込みID */
-	protected String embedId;
-
-	/**
-	 * Datadog から払い出された組み込みIDを取得
-	 *
-	 * @return Datadog から払い出された組み込みID
-	 */
 	public String getEmbedId() {
 		return embedId;
 	}
 
-	/**
-	 * Datadog から払い出された組み込みIDを設定
-	 *
-	 * @param embedId Datadog から払い出された組み込みID
-	 */
 	public void setEmbedId(String embedId) {
 		this.embedId = embedId;
 	}
 
-	/**
-	 * Datadog から払い出された組み込みIDを設定
-	 *
-	 * @param embedId Datadog から払い出された組み込みID
-	 * @return this
-	 */
 	public Chart withEmbedId(String embedId) {
 		this.embedId = embedId;
 		return this;
 	}
-	/** Datadog から払い出された組み込み用HTML */
-	protected String html;
 
-	/**
-	 * Datadog から払い出された組み込み用HTMLを取得
-	 *
-	 * @return Datadog から払い出された組み込み用HTML
-	 */
 	public String getHtml() {
 		return html;
 	}
 
-	/**
-	 * Datadog から払い出された組み込み用HTMLを設定
-	 *
-	 * @param html Datadog から払い出された組み込み用HTML
-	 */
 	public void setHtml(String html) {
 		this.html = html;
 	}
 
-	/**
-	 * Datadog から払い出された組み込み用HTMLを設定
-	 *
-	 * @param html Datadog から払い出された組み込み用HTML
-	 * @return this
-	 */
 	public Chart withHtml(String html) {
 		this.html = html;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("chartId", this.getChartId())
-            .put("ownerId", this.getOwnerId())
-            .put("embedId", this.getEmbedId())
-            .put("html", this.getHtml());
-        return body_;
+    public static Chart fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Chart()
+            .withChartId(data.get("chartId") == null || data.get("chartId").isNull() ? null : data.get("chartId").asText())
+            .withEmbedId(data.get("embedId") == null || data.get("embedId").isNull() ? null : data.get("embedId").asText())
+            .withHtml(data.get("html") == null || data.get("html").isNull() ? null : data.get("html").asText());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("chartId", getChartId());
+                put("embedId", getEmbedId());
+                put("html", getHtml());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Chart o) {
 		return chartId.compareTo(o.chartId);
@@ -177,7 +102,6 @@ public class Chart implements IModel, Serializable, Comparable<Chart> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.chartId == null) ? 0 : this.chartId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.embedId == null) ? 0 : this.embedId.hashCode());
         result = prime * result + ((this.html == null) ? 0 : this.html.hashCode());
 		return result;
@@ -195,11 +119,6 @@ public class Chart implements IModel, Serializable, Comparable<Chart> {
 		if (chartId == null) {
 			return other.chartId == null;
 		} else if (!chartId.equals(other.chartId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (embedId == null) {

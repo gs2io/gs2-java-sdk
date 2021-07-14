@@ -16,92 +16,64 @@
 
 package io.gs2.news.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ニュース記事
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SetCookieRequestEntry implements IModel, Serializable {
-	/** 記事を閲覧できるようにするために設定してほしい Cookie のキー値 */
-	protected String key;
+	private String key;
+	private String value;
 
-	/**
-	 * 記事を閲覧できるようにするために設定してほしい Cookie のキー値を取得
-	 *
-	 * @return 記事を閲覧できるようにするために設定してほしい Cookie のキー値
-	 */
 	public String getKey() {
 		return key;
 	}
 
-	/**
-	 * 記事を閲覧できるようにするために設定してほしい Cookie のキー値を設定
-	 *
-	 * @param key 記事を閲覧できるようにするために設定してほしい Cookie のキー値
-	 */
 	public void setKey(String key) {
 		this.key = key;
 	}
 
-	/**
-	 * 記事を閲覧できるようにするために設定してほしい Cookie のキー値を設定
-	 *
-	 * @param key 記事を閲覧できるようにするために設定してほしい Cookie のキー値
-	 * @return this
-	 */
 	public SetCookieRequestEntry withKey(String key) {
 		this.key = key;
 		return this;
 	}
-	/** 記事を閲覧できるようにするために設定してほしい Cookie の値 */
-	protected String value;
 
-	/**
-	 * 記事を閲覧できるようにするために設定してほしい Cookie の値を取得
-	 *
-	 * @return 記事を閲覧できるようにするために設定してほしい Cookie の値
-	 */
 	public String getValue() {
 		return value;
 	}
 
-	/**
-	 * 記事を閲覧できるようにするために設定してほしい Cookie の値を設定
-	 *
-	 * @param value 記事を閲覧できるようにするために設定してほしい Cookie の値
-	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
 
-	/**
-	 * 記事を閲覧できるようにするために設定してほしい Cookie の値を設定
-	 *
-	 * @param value 記事を閲覧できるようにするために設定してほしい Cookie の値
-	 * @return this
-	 */
 	public SetCookieRequestEntry withValue(String value) {
 		this.value = value;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("key", this.getKey())
-            .put("value", this.getValue());
-        return body_;
+    public static SetCookieRequestEntry fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SetCookieRequestEntry()
+            .withKey(data.get("key") == null || data.get("key").isNull() ? null : data.get("key").asText())
+            .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("key", getKey());
+                put("value", getValue());
+            }}
+        );
     }
 
 	@Override

@@ -16,178 +16,94 @@
 
 package io.gs2.auth.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.auth.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 指定したユーザIDでGS2にログインし、アクセストークンを取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class LoginBySignatureRequest extends Gs2BasicRequest<LoginBySignatureRequest> {
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     * @return this
-     */
-    public LoginBySignatureRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 署名の作成に使用した暗号鍵 のGRN */
     private String keyId;
-
-    /**
-     * 署名の作成に使用した暗号鍵 のGRNを取得
-     *
-     * @return 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public String getKeyId() {
-        return keyId;
-    }
-
-    /**
-     * 署名の作成に使用した暗号鍵 のGRNを設定
-     *
-     * @param keyId 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
-    }
-
-    /**
-     * 署名の作成に使用した暗号鍵 のGRNを設定
-     *
-     * @param keyId 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     * @return this
-     */
-    public LoginBySignatureRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** アカウント認証情報の署名対象 */
     private String body;
-
-    /**
-     * アカウント認証情報の署名対象を取得
-     *
-     * @return 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public String getBody() {
-        return body;
-    }
-
-    /**
-     * アカウント認証情報の署名対象を設定
-     *
-     * @param body 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    /**
-     * アカウント認証情報の署名対象を設定
-     *
-     * @param body 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     * @return this
-     */
-    public LoginBySignatureRequest withBody(String body) {
-        setBody(body);
-        return this;
-    }
-
-    /** 署名 */
     private String signature;
 
-    /**
-     * 署名を取得
-     *
-     * @return 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public String getSignature() {
-        return signature;
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public LoginBySignatureRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public LoginBySignatureRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public LoginBySignatureRequest withBody(String body) {
+		this.body = body;
+		return this;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	public LoginBySignatureRequest withSignature(String signature) {
+		this.signature = signature;
+		return this;
+	}
+
+    public static LoginBySignatureRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LoginBySignatureRequest()
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
+            .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText());
     }
 
-    /**
-     * 署名を設定
-     *
-     * @param signature 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public void setSignature(String signature) {
-        this.signature = signature;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userId", getUserId());
+                put("keyId", getKeyId());
+                put("body", getBody());
+                put("signature", getSignature());
+            }}
+        );
     }
-
-    /**
-     * 署名を設定
-     *
-     * @param signature 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     * @return this
-     */
-    public LoginBySignatureRequest withSignature(String signature) {
-        setSignature(signature);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 指定したユーザIDでGS2にログインし、アクセストークンを取得します
-     * @return this
-     */
-    public LoginBySignatureRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

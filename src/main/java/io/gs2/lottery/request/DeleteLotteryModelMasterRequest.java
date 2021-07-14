@@ -16,82 +16,62 @@
 
 package io.gs2.lottery.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.lottery.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 抽選の種類マスターを削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteLotteryModelMasterRequest extends Gs2BasicRequest<DeleteLotteryModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 抽選の種類マスターを削除
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 抽選の種類マスターを削除
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 抽選の種類マスターを削除
-     * @return this
-     */
-    public DeleteLotteryModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 抽選モデルの種類名 */
     private String lotteryName;
 
-    /**
-     * 抽選モデルの種類名を取得
-     *
-     * @return 抽選の種類マスターを削除
-     */
-    public String getLotteryName() {
-        return lotteryName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DeleteLotteryModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getLotteryName() {
+		return lotteryName;
+	}
+
+	public void setLotteryName(String lotteryName) {
+		this.lotteryName = lotteryName;
+	}
+
+	public DeleteLotteryModelMasterRequest withLotteryName(String lotteryName) {
+		this.lotteryName = lotteryName;
+		return this;
+	}
+
+    public static DeleteLotteryModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteLotteryModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withLotteryName(data.get("lotteryName") == null || data.get("lotteryName").isNull() ? null : data.get("lotteryName").asText());
     }
 
-    /**
-     * 抽選モデルの種類名を設定
-     *
-     * @param lotteryName 抽選の種類マスターを削除
-     */
-    public void setLotteryName(String lotteryName) {
-        this.lotteryName = lotteryName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("lotteryName", getLotteryName());
+            }}
+        );
     }
-
-    /**
-     * 抽選モデルの種類名を設定
-     *
-     * @param lotteryName 抽選の種類マスターを削除
-     * @return this
-     */
-    public DeleteLotteryModelMasterRequest withLotteryName(String lotteryName) {
-        setLotteryName(lotteryName);
-        return this;
-    }
-
 }

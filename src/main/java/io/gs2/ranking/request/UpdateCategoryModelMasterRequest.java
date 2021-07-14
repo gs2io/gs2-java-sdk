@@ -16,498 +16,270 @@
 
 package io.gs2.ranking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.ranking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * カテゴリマスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCategoryModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName カテゴリマスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** カテゴリモデル名 */
     private String categoryName;
-
-    /**
-     * カテゴリモデル名を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    /**
-     * カテゴリモデル名を設定
-     *
-     * @param categoryName カテゴリマスターを更新
-     */
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    /**
-     * カテゴリモデル名を設定
-     *
-     * @param categoryName カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withCategoryName(String categoryName) {
-        setCategoryName(categoryName);
-        return this;
-    }
-
-    /** カテゴリマスターの説明 */
     private String description;
-
-    /**
-     * カテゴリマスターの説明を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * カテゴリマスターの説明を設定
-     *
-     * @param description カテゴリマスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * カテゴリマスターの説明を設定
-     *
-     * @param description カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** カテゴリマスターのメタデータ */
     private String metadata;
-
-    /**
-     * カテゴリマスターのメタデータを取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * カテゴリマスターのメタデータを設定
-     *
-     * @param metadata カテゴリマスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * カテゴリマスターのメタデータを設定
-     *
-     * @param metadata カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** スコアの最小値 */
     private Long minimumValue;
-
-    /**
-     * スコアの最小値を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public Long getMinimumValue() {
-        return minimumValue;
-    }
-
-    /**
-     * スコアの最小値を設定
-     *
-     * @param minimumValue カテゴリマスターを更新
-     */
-    public void setMinimumValue(Long minimumValue) {
-        this.minimumValue = minimumValue;
-    }
-
-    /**
-     * スコアの最小値を設定
-     *
-     * @param minimumValue カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withMinimumValue(Long minimumValue) {
-        setMinimumValue(minimumValue);
-        return this;
-    }
-
-    /** スコアの最大値 */
     private Long maximumValue;
-
-    /**
-     * スコアの最大値を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public Long getMaximumValue() {
-        return maximumValue;
-    }
-
-    /**
-     * スコアの最大値を設定
-     *
-     * @param maximumValue カテゴリマスターを更新
-     */
-    public void setMaximumValue(Long maximumValue) {
-        this.maximumValue = maximumValue;
-    }
-
-    /**
-     * スコアの最大値を設定
-     *
-     * @param maximumValue カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withMaximumValue(Long maximumValue) {
-        setMaximumValue(maximumValue);
-        return this;
-    }
-
-    /** スコアのソート方向 */
     private String orderDirection;
-
-    /**
-     * スコアのソート方向を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public String getOrderDirection() {
-        return orderDirection;
-    }
-
-    /**
-     * スコアのソート方向を設定
-     *
-     * @param orderDirection カテゴリマスターを更新
-     */
-    public void setOrderDirection(String orderDirection) {
-        this.orderDirection = orderDirection;
-    }
-
-    /**
-     * スコアのソート方向を設定
-     *
-     * @param orderDirection カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withOrderDirection(String orderDirection) {
-        setOrderDirection(orderDirection);
-        return this;
-    }
-
-    /** ランキングの種類 */
     private String scope;
-
-    /**
-     * ランキングの種類を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public String getScope() {
-        return scope;
-    }
-
-    /**
-     * ランキングの種類を設定
-     *
-     * @param scope カテゴリマスターを更新
-     */
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    /**
-     * ランキングの種類を設定
-     *
-     * @param scope カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withScope(String scope) {
-        setScope(scope);
-        return this;
-    }
-
-    /** ユーザID毎にスコアを1つしか登録されないようにする */
     private Boolean uniqueByUserId;
-
-    /**
-     * ユーザID毎にスコアを1つしか登録されないようにするを取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public Boolean getUniqueByUserId() {
-        return uniqueByUserId;
-    }
-
-    /**
-     * ユーザID毎にスコアを1つしか登録されないようにするを設定
-     *
-     * @param uniqueByUserId カテゴリマスターを更新
-     */
-    public void setUniqueByUserId(Boolean uniqueByUserId) {
-        this.uniqueByUserId = uniqueByUserId;
-    }
-
-    /**
-     * ユーザID毎にスコアを1つしか登録されないようにするを設定
-     *
-     * @param uniqueByUserId カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withUniqueByUserId(Boolean uniqueByUserId) {
-        setUniqueByUserId(uniqueByUserId);
-        return this;
-    }
-
-    /** スコアの固定集計開始時刻(時) */
     private Integer calculateFixedTimingHour;
-
-    /**
-     * スコアの固定集計開始時刻(時)を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public Integer getCalculateFixedTimingHour() {
-        return calculateFixedTimingHour;
-    }
-
-    /**
-     * スコアの固定集計開始時刻(時)を設定
-     *
-     * @param calculateFixedTimingHour カテゴリマスターを更新
-     */
-    public void setCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
-        this.calculateFixedTimingHour = calculateFixedTimingHour;
-    }
-
-    /**
-     * スコアの固定集計開始時刻(時)を設定
-     *
-     * @param calculateFixedTimingHour カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
-        setCalculateFixedTimingHour(calculateFixedTimingHour);
-        return this;
-    }
-
-    /** スコアの固定集計開始時刻(分) */
     private Integer calculateFixedTimingMinute;
-
-    /**
-     * スコアの固定集計開始時刻(分)を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public Integer getCalculateFixedTimingMinute() {
-        return calculateFixedTimingMinute;
-    }
-
-    /**
-     * スコアの固定集計開始時刻(分)を設定
-     *
-     * @param calculateFixedTimingMinute カテゴリマスターを更新
-     */
-    public void setCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
-        this.calculateFixedTimingMinute = calculateFixedTimingMinute;
-    }
-
-    /**
-     * スコアの固定集計開始時刻(分)を設定
-     *
-     * @param calculateFixedTimingMinute カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
-        setCalculateFixedTimingMinute(calculateFixedTimingMinute);
-        return this;
-    }
-
-    /** スコアの集計間隔(分) */
     private Integer calculateIntervalMinutes;
-
-    /**
-     * スコアの集計間隔(分)を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public Integer getCalculateIntervalMinutes() {
-        return calculateIntervalMinutes;
-    }
-
-    /**
-     * スコアの集計間隔(分)を設定
-     *
-     * @param calculateIntervalMinutes カテゴリマスターを更新
-     */
-    public void setCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
-        this.calculateIntervalMinutes = calculateIntervalMinutes;
-    }
-
-    /**
-     * スコアの集計間隔(分)を設定
-     *
-     * @param calculateIntervalMinutes カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
-        setCalculateIntervalMinutes(calculateIntervalMinutes);
-        return this;
-    }
-
-    /** スコアの登録可能期間とするイベントマスター のGRN */
     private String entryPeriodEventId;
-
-    /**
-     * スコアの登録可能期間とするイベントマスター のGRNを取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public String getEntryPeriodEventId() {
-        return entryPeriodEventId;
-    }
-
-    /**
-     * スコアの登録可能期間とするイベントマスター のGRNを設定
-     *
-     * @param entryPeriodEventId カテゴリマスターを更新
-     */
-    public void setEntryPeriodEventId(String entryPeriodEventId) {
-        this.entryPeriodEventId = entryPeriodEventId;
-    }
-
-    /**
-     * スコアの登録可能期間とするイベントマスター のGRNを設定
-     *
-     * @param entryPeriodEventId カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withEntryPeriodEventId(String entryPeriodEventId) {
-        setEntryPeriodEventId(entryPeriodEventId);
-        return this;
-    }
-
-    /** アクセス可能期間とするイベントマスター のGRN */
     private String accessPeriodEventId;
-
-    /**
-     * アクセス可能期間とするイベントマスター のGRNを取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public String getAccessPeriodEventId() {
-        return accessPeriodEventId;
-    }
-
-    /**
-     * アクセス可能期間とするイベントマスター のGRNを設定
-     *
-     * @param accessPeriodEventId カテゴリマスターを更新
-     */
-    public void setAccessPeriodEventId(String accessPeriodEventId) {
-        this.accessPeriodEventId = accessPeriodEventId;
-    }
-
-    /**
-     * アクセス可能期間とするイベントマスター のGRNを設定
-     *
-     * @param accessPeriodEventId カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withAccessPeriodEventId(String accessPeriodEventId) {
-        setAccessPeriodEventId(accessPeriodEventId);
-        return this;
-    }
-
-    /** ランキングの世代 */
     private String generation;
 
-    /**
-     * ランキングの世代を取得
-     *
-     * @return カテゴリマスターを更新
-     */
-    public String getGeneration() {
-        return generation;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateCategoryModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public UpdateCategoryModelMasterRequest withCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateCategoryModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateCategoryModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public Long getMinimumValue() {
+		return minimumValue;
+	}
+
+	public void setMinimumValue(Long minimumValue) {
+		this.minimumValue = minimumValue;
+	}
+
+	public UpdateCategoryModelMasterRequest withMinimumValue(Long minimumValue) {
+		this.minimumValue = minimumValue;
+		return this;
+	}
+
+	public Long getMaximumValue() {
+		return maximumValue;
+	}
+
+	public void setMaximumValue(Long maximumValue) {
+		this.maximumValue = maximumValue;
+	}
+
+	public UpdateCategoryModelMasterRequest withMaximumValue(Long maximumValue) {
+		this.maximumValue = maximumValue;
+		return this;
+	}
+
+	public String getOrderDirection() {
+		return orderDirection;
+	}
+
+	public void setOrderDirection(String orderDirection) {
+		this.orderDirection = orderDirection;
+	}
+
+	public UpdateCategoryModelMasterRequest withOrderDirection(String orderDirection) {
+		this.orderDirection = orderDirection;
+		return this;
+	}
+
+	public String getScope() {
+		return scope;
+	}
+
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
+
+	public UpdateCategoryModelMasterRequest withScope(String scope) {
+		this.scope = scope;
+		return this;
+	}
+
+	public Boolean getUniqueByUserId() {
+		return uniqueByUserId;
+	}
+
+	public void setUniqueByUserId(Boolean uniqueByUserId) {
+		this.uniqueByUserId = uniqueByUserId;
+	}
+
+	public UpdateCategoryModelMasterRequest withUniqueByUserId(Boolean uniqueByUserId) {
+		this.uniqueByUserId = uniqueByUserId;
+		return this;
+	}
+
+	public Integer getCalculateFixedTimingHour() {
+		return calculateFixedTimingHour;
+	}
+
+	public void setCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
+		this.calculateFixedTimingHour = calculateFixedTimingHour;
+	}
+
+	public UpdateCategoryModelMasterRequest withCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
+		this.calculateFixedTimingHour = calculateFixedTimingHour;
+		return this;
+	}
+
+	public Integer getCalculateFixedTimingMinute() {
+		return calculateFixedTimingMinute;
+	}
+
+	public void setCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
+		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
+	}
+
+	public UpdateCategoryModelMasterRequest withCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
+		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
+		return this;
+	}
+
+	public Integer getCalculateIntervalMinutes() {
+		return calculateIntervalMinutes;
+	}
+
+	public void setCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
+		this.calculateIntervalMinutes = calculateIntervalMinutes;
+	}
+
+	public UpdateCategoryModelMasterRequest withCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
+		this.calculateIntervalMinutes = calculateIntervalMinutes;
+		return this;
+	}
+
+	public String getEntryPeriodEventId() {
+		return entryPeriodEventId;
+	}
+
+	public void setEntryPeriodEventId(String entryPeriodEventId) {
+		this.entryPeriodEventId = entryPeriodEventId;
+	}
+
+	public UpdateCategoryModelMasterRequest withEntryPeriodEventId(String entryPeriodEventId) {
+		this.entryPeriodEventId = entryPeriodEventId;
+		return this;
+	}
+
+	public String getAccessPeriodEventId() {
+		return accessPeriodEventId;
+	}
+
+	public void setAccessPeriodEventId(String accessPeriodEventId) {
+		this.accessPeriodEventId = accessPeriodEventId;
+	}
+
+	public UpdateCategoryModelMasterRequest withAccessPeriodEventId(String accessPeriodEventId) {
+		this.accessPeriodEventId = accessPeriodEventId;
+		return this;
+	}
+
+	public String getGeneration() {
+		return generation;
+	}
+
+	public void setGeneration(String generation) {
+		this.generation = generation;
+	}
+
+	public UpdateCategoryModelMasterRequest withGeneration(String generation) {
+		this.generation = generation;
+		return this;
+	}
+
+    public static UpdateCategoryModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateCategoryModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withMinimumValue(data.get("minimumValue") == null || data.get("minimumValue").isNull() ? null : data.get("minimumValue").longValue())
+            .withMaximumValue(data.get("maximumValue") == null || data.get("maximumValue").isNull() ? null : data.get("maximumValue").longValue())
+            .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
+            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
+            .withUniqueByUserId(data.get("uniqueByUserId") == null || data.get("uniqueByUserId").isNull() ? null : data.get("uniqueByUserId").booleanValue())
+            .withCalculateFixedTimingHour(data.get("calculateFixedTimingHour") == null || data.get("calculateFixedTimingHour").isNull() ? null : data.get("calculateFixedTimingHour").intValue())
+            .withCalculateFixedTimingMinute(data.get("calculateFixedTimingMinute") == null || data.get("calculateFixedTimingMinute").isNull() ? null : data.get("calculateFixedTimingMinute").intValue())
+            .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
+            .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
+            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
+            .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText());
     }
 
-    /**
-     * ランキングの世代を設定
-     *
-     * @param generation カテゴリマスターを更新
-     */
-    public void setGeneration(String generation) {
-        this.generation = generation;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("categoryName", getCategoryName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("minimumValue", getMinimumValue());
+                put("maximumValue", getMaximumValue());
+                put("orderDirection", getOrderDirection());
+                put("scope", getScope());
+                put("uniqueByUserId", getUniqueByUserId());
+                put("calculateFixedTimingHour", getCalculateFixedTimingHour());
+                put("calculateFixedTimingMinute", getCalculateFixedTimingMinute());
+                put("calculateIntervalMinutes", getCalculateIntervalMinutes());
+                put("entryPeriodEventId", getEntryPeriodEventId());
+                put("accessPeriodEventId", getAccessPeriodEventId());
+                put("generation", getGeneration());
+            }}
+        );
     }
-
-    /**
-     * ランキングの世代を設定
-     *
-     * @param generation カテゴリマスターを更新
-     * @return this
-     */
-    public UpdateCategoryModelMasterRequest withGeneration(String generation) {
-        setGeneration(generation);
-        return this;
-    }
-
 }

@@ -16,124 +16,80 @@
 
 package io.gs2.version.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * バージョン
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Version implements IModel, Serializable {
-	/** メジャーバージョン */
-	protected Integer major;
+	private Integer major;
+	private Integer minor;
+	private Integer micro;
 
-	/**
-	 * メジャーバージョンを取得
-	 *
-	 * @return メジャーバージョン
-	 */
 	public Integer getMajor() {
 		return major;
 	}
 
-	/**
-	 * メジャーバージョンを設定
-	 *
-	 * @param major メジャーバージョン
-	 */
 	public void setMajor(Integer major) {
 		this.major = major;
 	}
 
-	/**
-	 * メジャーバージョンを設定
-	 *
-	 * @param major メジャーバージョン
-	 * @return this
-	 */
 	public Version withMajor(Integer major) {
 		this.major = major;
 		return this;
 	}
-	/** マイナーバージョン */
-	protected Integer minor;
 
-	/**
-	 * マイナーバージョンを取得
-	 *
-	 * @return マイナーバージョン
-	 */
 	public Integer getMinor() {
 		return minor;
 	}
 
-	/**
-	 * マイナーバージョンを設定
-	 *
-	 * @param minor マイナーバージョン
-	 */
 	public void setMinor(Integer minor) {
 		this.minor = minor;
 	}
 
-	/**
-	 * マイナーバージョンを設定
-	 *
-	 * @param minor マイナーバージョン
-	 * @return this
-	 */
 	public Version withMinor(Integer minor) {
 		this.minor = minor;
 		return this;
 	}
-	/** マイクロバージョン */
-	protected Integer micro;
 
-	/**
-	 * マイクロバージョンを取得
-	 *
-	 * @return マイクロバージョン
-	 */
 	public Integer getMicro() {
 		return micro;
 	}
 
-	/**
-	 * マイクロバージョンを設定
-	 *
-	 * @param micro マイクロバージョン
-	 */
 	public void setMicro(Integer micro) {
 		this.micro = micro;
 	}
 
-	/**
-	 * マイクロバージョンを設定
-	 *
-	 * @param micro マイクロバージョン
-	 * @return this
-	 */
 	public Version withMicro(Integer micro) {
 		this.micro = micro;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("major", this.getMajor())
-            .put("minor", this.getMinor())
-            .put("micro", this.getMicro());
-        return body_;
+    public static Version fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Version()
+            .withMajor(data.get("major") == null || data.get("major").isNull() ? null : data.get("major").intValue())
+            .withMinor(data.get("minor") == null || data.get("minor").isNull() ? null : data.get("minor").intValue())
+            .withMicro(data.get("micro") == null || data.get("micro").isNull() ? null : data.get("micro").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("major", getMajor());
+                put("minor", getMinor());
+                put("micro", getMicro());
+            }}
+        );
     }
 
 	@Override

@@ -16,39 +16,49 @@
 
 package io.gs2.jobQueue.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.jobQueue.model.*;
+import io.gs2.jobQueue.model.JobResultBody;
+import io.gs2.jobQueue.model.DeadLetterJob;
 
-/**
- * デッドレタージョブを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetDeadLetterJobByUserIdResult implements IResult, Serializable {
-	/** デッドレタージョブ */
-	private DeadLetterJob item;
+    private DeadLetterJob item;
 
-	/**
-	 * デッドレタージョブを取得
-	 *
-	 * @return デッドレタージョブを取得
-	 */
 	public DeadLetterJob getItem() {
 		return item;
 	}
 
-	/**
-	 * デッドレタージョブを設定
-	 *
-	 * @param item デッドレタージョブを取得
-	 */
 	public void setItem(DeadLetterJob item) {
 		this.item = item;
 	}
+
+	public GetDeadLetterJobByUserIdResult withItem(DeadLetterJob item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetDeadLetterJobByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetDeadLetterJobByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : DeadLetterJob.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

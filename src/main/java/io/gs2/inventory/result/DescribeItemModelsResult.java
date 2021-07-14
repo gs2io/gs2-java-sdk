@@ -16,39 +16,58 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.ItemModel;
 
-/**
- * Noneの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeItemModelsResult implements IResult, Serializable {
-	/** アイテムモデルのリスト */
-	private List<ItemModel> items;
+    private List<ItemModel> items;
 
-	/**
-	 * アイテムモデルのリストを取得
-	 *
-	 * @return Noneの一覧を取得
-	 */
 	public List<ItemModel> getItems() {
 		return items;
 	}
 
-	/**
-	 * アイテムモデルのリストを設定
-	 *
-	 * @param items Noneの一覧を取得
-	 */
 	public void setItems(List<ItemModel> items) {
 		this.items = items;
 	}
+
+	public DescribeItemModelsResult withItems(List<ItemModel> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static DescribeItemModelsResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeItemModelsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<ItemModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ItemModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<ItemModel>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

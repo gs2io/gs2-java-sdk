@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.version;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.version.request.*;
 import io.gs2.version.result.*;
-import io.gs2.version.model.*;
+import io.gs2.version.model.*;public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient> {
 
-/**
- * GS2 Version API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2VersionRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,39 +152,17 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getAssumeUserId() != null) {
-                json.put("assumeUserId", this.request.getAssumeUserId());
-            }
-            if (this.request.getAcceptVersionScript() != null) {
-                try {
-                    json.put("acceptVersionScript", new JSONObject(mapper.writeValueAsString(this.request.getAcceptVersionScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCheckVersionTriggerScriptId() != null) {
-                json.put("checkVersionTriggerScriptId", this.request.getCheckVersionTriggerScriptId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("assumeUserId", request.getAssumeUserId());
+                    put("acceptVersionScript", request.getAcceptVersionScript() != null ? request.getAcceptVersionScript().toJson() : null);
+                    put("checkVersionTriggerScriptId", request.getCheckVersionTriggerScriptId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -219,25 +180,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -264,15 +214,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -283,7 +236,7 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -307,25 +260,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -352,15 +294,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -371,7 +316,7 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -395,25 +340,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -440,15 +374,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -459,38 +396,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getAssumeUserId() != null) {
-                json.put("assumeUserId", this.request.getAssumeUserId());
-            }
-            if (this.request.getAcceptVersionScript() != null) {
-                try {
-                    json.put("acceptVersionScript", new JSONObject(mapper.writeValueAsString(this.request.getAcceptVersionScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCheckVersionTriggerScriptId() != null) {
-                json.put("checkVersionTriggerScriptId", this.request.getCheckVersionTriggerScriptId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("assumeUserId", request.getAssumeUserId());
+                    put("acceptVersionScript", request.getAcceptVersionScript() != null ? request.getAcceptVersionScript().toJson() : null);
+                    put("checkVersionTriggerScriptId", request.getCheckVersionTriggerScriptId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -508,25 +425,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -553,15 +459,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -572,7 +481,7 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -596,25 +505,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -641,15 +539,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public DescribeVersionModelMastersTask(
             DescribeVersionModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeVersionModelMastersResult>> userCallback,
-            Class<DescribeVersionModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeVersionModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeVersionModelMastersResult parse(JsonNode data) {
+            return DescribeVersionModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -660,7 +561,7 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/version";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -690,25 +591,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * バージョンマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeVersionModelMastersAsync(
             DescribeVersionModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeVersionModelMastersResult>> callback
     ) {
-        DescribeVersionModelMastersTask task = new DescribeVersionModelMastersTask(request, callback, DescribeVersionModelMastersResult.class);
+        DescribeVersionModelMastersTask task = new DescribeVersionModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * バージョンマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeVersionModelMastersResult describeVersionModelMasters(
             DescribeVersionModelMastersRequest request
     ) {
@@ -735,15 +625,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public CreateVersionModelMasterTask(
             CreateVersionModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateVersionModelMasterResult>> userCallback,
-            Class<CreateVersionModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateVersionModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateVersionModelMasterResult parse(JsonNode data) {
+            return CreateVersionModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -754,54 +647,22 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/version";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getWarningVersion() != null) {
-                try {
-                    json.put("warningVersion", new JSONObject(mapper.writeValueAsString(this.request.getWarningVersion())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getErrorVersion() != null) {
-                try {
-                    json.put("errorVersion", new JSONObject(mapper.writeValueAsString(this.request.getErrorVersion())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getScope() != null) {
-                json.put("scope", this.request.getScope());
-            }
-            if (this.request.getCurrentVersion() != null) {
-                try {
-                    json.put("currentVersion", new JSONObject(mapper.writeValueAsString(this.request.getCurrentVersion())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getNeedSignature() != null) {
-                json.put("needSignature", this.request.getNeedSignature());
-            }
-            if (this.request.getSignatureKeyId() != null) {
-                json.put("signatureKeyId", this.request.getSignatureKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("warningVersion", request.getWarningVersion() != null ? request.getWarningVersion().toJson() : null);
+                    put("errorVersion", request.getErrorVersion() != null ? request.getErrorVersion().toJson() : null);
+                    put("scope", request.getScope());
+                    put("currentVersion", request.getCurrentVersion() != null ? request.getCurrentVersion().toJson() : null);
+                    put("needSignature", request.getNeedSignature());
+                    put("signatureKeyId", request.getSignatureKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -819,25 +680,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * バージョンマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createVersionModelMasterAsync(
             CreateVersionModelMasterRequest request,
             AsyncAction<AsyncResult<CreateVersionModelMasterResult>> callback
     ) {
-        CreateVersionModelMasterTask task = new CreateVersionModelMasterTask(request, callback, CreateVersionModelMasterResult.class);
+        CreateVersionModelMasterTask task = new CreateVersionModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * バージョンマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateVersionModelMasterResult createVersionModelMaster(
             CreateVersionModelMasterRequest request
     ) {
@@ -864,15 +714,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public GetVersionModelMasterTask(
             GetVersionModelMasterRequest request,
-            AsyncAction<AsyncResult<GetVersionModelMasterResult>> userCallback,
-            Class<GetVersionModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetVersionModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetVersionModelMasterResult parse(JsonNode data) {
+            return GetVersionModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -883,8 +736,8 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/version/{versionName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{versionName}", this.request.getVersionName() == null|| this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{versionName}", this.request.getVersionName() == null || this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -908,25 +761,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * バージョンマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getVersionModelMasterAsync(
             GetVersionModelMasterRequest request,
             AsyncAction<AsyncResult<GetVersionModelMasterResult>> callback
     ) {
-        GetVersionModelMasterTask task = new GetVersionModelMasterTask(request, callback, GetVersionModelMasterResult.class);
+        GetVersionModelMasterTask task = new GetVersionModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * バージョンマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetVersionModelMasterResult getVersionModelMaster(
             GetVersionModelMasterRequest request
     ) {
@@ -953,15 +795,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public UpdateVersionModelMasterTask(
             UpdateVersionModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateVersionModelMasterResult>> userCallback,
-            Class<UpdateVersionModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateVersionModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateVersionModelMasterResult parse(JsonNode data) {
+            return UpdateVersionModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -972,52 +817,22 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/version/{versionName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{versionName}", this.request.getVersionName() == null|| this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{versionName}", this.request.getVersionName() == null || this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getWarningVersion() != null) {
-                try {
-                    json.put("warningVersion", new JSONObject(mapper.writeValueAsString(this.request.getWarningVersion())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getErrorVersion() != null) {
-                try {
-                    json.put("errorVersion", new JSONObject(mapper.writeValueAsString(this.request.getErrorVersion())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getScope() != null) {
-                json.put("scope", this.request.getScope());
-            }
-            if (this.request.getCurrentVersion() != null) {
-                try {
-                    json.put("currentVersion", new JSONObject(mapper.writeValueAsString(this.request.getCurrentVersion())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getNeedSignature() != null) {
-                json.put("needSignature", this.request.getNeedSignature());
-            }
-            if (this.request.getSignatureKeyId() != null) {
-                json.put("signatureKeyId", this.request.getSignatureKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("warningVersion", request.getWarningVersion() != null ? request.getWarningVersion().toJson() : null);
+                    put("errorVersion", request.getErrorVersion() != null ? request.getErrorVersion().toJson() : null);
+                    put("scope", request.getScope());
+                    put("currentVersion", request.getCurrentVersion() != null ? request.getCurrentVersion().toJson() : null);
+                    put("needSignature", request.getNeedSignature());
+                    put("signatureKeyId", request.getSignatureKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1035,25 +850,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * バージョンマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateVersionModelMasterAsync(
             UpdateVersionModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateVersionModelMasterResult>> callback
     ) {
-        UpdateVersionModelMasterTask task = new UpdateVersionModelMasterTask(request, callback, UpdateVersionModelMasterResult.class);
+        UpdateVersionModelMasterTask task = new UpdateVersionModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * バージョンマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateVersionModelMasterResult updateVersionModelMaster(
             UpdateVersionModelMasterRequest request
     ) {
@@ -1080,15 +884,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public DeleteVersionModelMasterTask(
             DeleteVersionModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteVersionModelMasterResult>> userCallback,
-            Class<DeleteVersionModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteVersionModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteVersionModelMasterResult parse(JsonNode data) {
+            return DeleteVersionModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1099,8 +906,8 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/version/{versionName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{versionName}", this.request.getVersionName() == null|| this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{versionName}", this.request.getVersionName() == null || this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1124,25 +931,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * バージョンマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteVersionModelMasterAsync(
             DeleteVersionModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteVersionModelMasterResult>> callback
     ) {
-        DeleteVersionModelMasterTask task = new DeleteVersionModelMasterTask(request, callback, DeleteVersionModelMasterResult.class);
+        DeleteVersionModelMasterTask task = new DeleteVersionModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * バージョンマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteVersionModelMasterResult deleteVersionModelMaster(
             DeleteVersionModelMasterRequest request
     ) {
@@ -1169,15 +965,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public DescribeVersionModelsTask(
             DescribeVersionModelsRequest request,
-            AsyncAction<AsyncResult<DescribeVersionModelsResult>> userCallback,
-            Class<DescribeVersionModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeVersionModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeVersionModelsResult parse(JsonNode data) {
+            return DescribeVersionModelsResult.fromJson(data);
         }
 
         @Override
@@ -1188,7 +987,7 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/version";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1212,25 +1011,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * バージョン設定の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeVersionModelsAsync(
             DescribeVersionModelsRequest request,
             AsyncAction<AsyncResult<DescribeVersionModelsResult>> callback
     ) {
-        DescribeVersionModelsTask task = new DescribeVersionModelsTask(request, callback, DescribeVersionModelsResult.class);
+        DescribeVersionModelsTask task = new DescribeVersionModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * バージョン設定の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeVersionModelsResult describeVersionModels(
             DescribeVersionModelsRequest request
     ) {
@@ -1257,15 +1045,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public GetVersionModelTask(
             GetVersionModelRequest request,
-            AsyncAction<AsyncResult<GetVersionModelResult>> userCallback,
-            Class<GetVersionModelResult> clazz
+            AsyncAction<AsyncResult<GetVersionModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetVersionModelResult parse(JsonNode data) {
+            return GetVersionModelResult.fromJson(data);
         }
 
         @Override
@@ -1276,8 +1067,8 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/version/{versionName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{versionName}", this.request.getVersionName() == null|| this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{versionName}", this.request.getVersionName() == null || this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1301,25 +1092,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * バージョン設定を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getVersionModelAsync(
             GetVersionModelRequest request,
             AsyncAction<AsyncResult<GetVersionModelResult>> callback
     ) {
-        GetVersionModelTask task = new GetVersionModelTask(request, callback, GetVersionModelResult.class);
+        GetVersionModelTask task = new GetVersionModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * バージョン設定を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetVersionModelResult getVersionModel(
             GetVersionModelRequest request
     ) {
@@ -1346,15 +1126,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public DescribeAcceptVersionsTask(
             DescribeAcceptVersionsRequest request,
-            AsyncAction<AsyncResult<DescribeAcceptVersionsResult>> userCallback,
-            Class<DescribeAcceptVersionsResult> clazz
+            AsyncAction<AsyncResult<DescribeAcceptVersionsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeAcceptVersionsResult parse(JsonNode data) {
+            return DescribeAcceptVersionsResult.fromJson(data);
         }
 
         @Override
@@ -1365,7 +1148,7 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/acceptVersion";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1391,9 +1174,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1401,25 +1181,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * 承認したバージョンの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeAcceptVersionsAsync(
             DescribeAcceptVersionsRequest request,
             AsyncAction<AsyncResult<DescribeAcceptVersionsResult>> callback
     ) {
-        DescribeAcceptVersionsTask task = new DescribeAcceptVersionsTask(request, callback, DescribeAcceptVersionsResult.class);
+        DescribeAcceptVersionsTask task = new DescribeAcceptVersionsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 承認したバージョンの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeAcceptVersionsResult describeAcceptVersions(
             DescribeAcceptVersionsRequest request
     ) {
@@ -1446,15 +1215,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public DescribeAcceptVersionsByUserIdTask(
             DescribeAcceptVersionsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeAcceptVersionsByUserIdResult>> userCallback,
-            Class<DescribeAcceptVersionsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeAcceptVersionsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeAcceptVersionsByUserIdResult parse(JsonNode data) {
+            return DescribeAcceptVersionsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1465,7 +1237,7 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/acceptVersion";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1491,9 +1263,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1501,25 +1270,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * 承認したバージョンの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeAcceptVersionsByUserIdAsync(
             DescribeAcceptVersionsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeAcceptVersionsByUserIdResult>> callback
     ) {
-        DescribeAcceptVersionsByUserIdTask task = new DescribeAcceptVersionsByUserIdTask(request, callback, DescribeAcceptVersionsByUserIdResult.class);
+        DescribeAcceptVersionsByUserIdTask task = new DescribeAcceptVersionsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 承認したバージョンの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeAcceptVersionsByUserIdResult describeAcceptVersionsByUserId(
             DescribeAcceptVersionsByUserIdRequest request
     ) {
@@ -1546,15 +1304,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public AcceptTask(
             AcceptRequest request,
-            AsyncAction<AsyncResult<AcceptResult>> userCallback,
-            Class<AcceptResult> clazz
+            AsyncAction<AsyncResult<AcceptResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcceptResult parse(JsonNode data) {
+            return AcceptResult.fromJson(data);
         }
 
         @Override
@@ -1563,20 +1324,16 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "version")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/acceptVersion";
+                + "/{namespaceName}/user/me/acceptVersion";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getVersionName() != null) {
-                json.put("versionName", this.request.getVersionName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("versionName", request.getVersionName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1590,9 +1347,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1600,25 +1354,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * 現在のバージョンを承認<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acceptAsync(
             AcceptRequest request,
             AsyncAction<AsyncResult<AcceptResult>> callback
     ) {
-        AcceptTask task = new AcceptTask(request, callback, AcceptResult.class);
+        AcceptTask task = new AcceptTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在のバージョンを承認<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcceptResult accept(
             AcceptRequest request
     ) {
@@ -1645,15 +1388,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public AcceptByUserIdTask(
             AcceptByUserIdRequest request,
-            AsyncAction<AsyncResult<AcceptByUserIdResult>> userCallback,
-            Class<AcceptByUserIdResult> clazz
+            AsyncAction<AsyncResult<AcceptByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcceptByUserIdResult parse(JsonNode data) {
+            return AcceptByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1664,21 +1410,15 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/acceptVersion";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getVersionName() != null) {
-                json.put("versionName", this.request.getVersionName());
-            }
-            if (this.request.getUserId() != null) {
-                json.put("userId", this.request.getUserId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("versionName", request.getVersionName());
+                    put("userId", request.getUserId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1689,9 +1429,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1699,25 +1436,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して現在のバージョンを承認<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acceptByUserIdAsync(
             AcceptByUserIdRequest request,
             AsyncAction<AsyncResult<AcceptByUserIdResult>> callback
     ) {
-        AcceptByUserIdTask task = new AcceptByUserIdTask(request, callback, AcceptByUserIdResult.class);
+        AcceptByUserIdTask task = new AcceptByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して現在のバージョンを承認<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcceptByUserIdResult acceptByUserId(
             AcceptByUserIdRequest request
     ) {
@@ -1744,15 +1470,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public GetAcceptVersionTask(
             GetAcceptVersionRequest request,
-            AsyncAction<AsyncResult<GetAcceptVersionResult>> userCallback,
-            Class<GetAcceptVersionResult> clazz
+            AsyncAction<AsyncResult<GetAcceptVersionResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetAcceptVersionResult parse(JsonNode data) {
+            return GetAcceptVersionResult.fromJson(data);
         }
 
         @Override
@@ -1763,8 +1492,8 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/{versionName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{versionName}", this.request.getVersionName() == null|| this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{versionName}", this.request.getVersionName() == null || this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1784,9 +1513,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1794,25 +1520,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * 承認したバージョンを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getAcceptVersionAsync(
             GetAcceptVersionRequest request,
             AsyncAction<AsyncResult<GetAcceptVersionResult>> callback
     ) {
-        GetAcceptVersionTask task = new GetAcceptVersionTask(request, callback, GetAcceptVersionResult.class);
+        GetAcceptVersionTask task = new GetAcceptVersionTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 承認したバージョンを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetAcceptVersionResult getAcceptVersion(
             GetAcceptVersionRequest request
     ) {
@@ -1839,15 +1554,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public GetAcceptVersionByUserIdTask(
             GetAcceptVersionByUserIdRequest request,
-            AsyncAction<AsyncResult<GetAcceptVersionByUserIdResult>> userCallback,
-            Class<GetAcceptVersionByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetAcceptVersionByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetAcceptVersionByUserIdResult parse(JsonNode data) {
+            return GetAcceptVersionByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1858,9 +1576,9 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/{versionName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{versionName}", this.request.getVersionName() == null|| this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{versionName}", this.request.getVersionName() == null || this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1877,9 +1595,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1887,25 +1602,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * ユーザーIDを指定して承認したバージョンを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getAcceptVersionByUserIdAsync(
             GetAcceptVersionByUserIdRequest request,
             AsyncAction<AsyncResult<GetAcceptVersionByUserIdResult>> callback
     ) {
-        GetAcceptVersionByUserIdTask task = new GetAcceptVersionByUserIdTask(request, callback, GetAcceptVersionByUserIdResult.class);
+        GetAcceptVersionByUserIdTask task = new GetAcceptVersionByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して承認したバージョンを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetAcceptVersionByUserIdResult getAcceptVersionByUserId(
             GetAcceptVersionByUserIdRequest request
     ) {
@@ -1932,15 +1636,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public DeleteAcceptVersionTask(
             DeleteAcceptVersionRequest request,
-            AsyncAction<AsyncResult<DeleteAcceptVersionResult>> userCallback,
-            Class<DeleteAcceptVersionResult> clazz
+            AsyncAction<AsyncResult<DeleteAcceptVersionResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteAcceptVersionResult parse(JsonNode data) {
+            return DeleteAcceptVersionResult.fromJson(data);
         }
 
         @Override
@@ -1951,8 +1658,8 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/{versionName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{versionName}", this.request.getVersionName() == null|| this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{versionName}", this.request.getVersionName() == null || this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1972,9 +1679,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1982,25 +1686,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * 承認したバージョンを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteAcceptVersionAsync(
             DeleteAcceptVersionRequest request,
             AsyncAction<AsyncResult<DeleteAcceptVersionResult>> callback
     ) {
-        DeleteAcceptVersionTask task = new DeleteAcceptVersionTask(request, callback, DeleteAcceptVersionResult.class);
+        DeleteAcceptVersionTask task = new DeleteAcceptVersionTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 承認したバージョンを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteAcceptVersionResult deleteAcceptVersion(
             DeleteAcceptVersionRequest request
     ) {
@@ -2027,15 +1720,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public DeleteAcceptVersionByUserIdTask(
             DeleteAcceptVersionByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteAcceptVersionByUserIdResult>> userCallback,
-            Class<DeleteAcceptVersionByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteAcceptVersionByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteAcceptVersionByUserIdResult parse(JsonNode data) {
+            return DeleteAcceptVersionByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2046,9 +1742,9 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/{versionName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{versionName}", this.request.getVersionName() == null|| this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{versionName}", this.request.getVersionName() == null || this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2065,9 +1761,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2075,25 +1768,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * ユーザーIDを指定して承認したバージョンを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteAcceptVersionByUserIdAsync(
             DeleteAcceptVersionByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteAcceptVersionByUserIdResult>> callback
     ) {
-        DeleteAcceptVersionByUserIdTask task = new DeleteAcceptVersionByUserIdTask(request, callback, DeleteAcceptVersionByUserIdResult.class);
+        DeleteAcceptVersionByUserIdTask task = new DeleteAcceptVersionByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して承認したバージョンを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteAcceptVersionByUserIdResult deleteAcceptVersionByUserId(
             DeleteAcceptVersionByUserIdRequest request
     ) {
@@ -2120,15 +1802,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public CheckVersionTask(
             CheckVersionRequest request,
-            AsyncAction<AsyncResult<CheckVersionResult>> userCallback,
-            Class<CheckVersionResult> clazz
+            AsyncAction<AsyncResult<CheckVersionResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CheckVersionResult parse(JsonNode data) {
+            return CheckVersionResult.fromJson(data);
         }
 
         @Override
@@ -2139,27 +1824,19 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/check";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTargetVersions() != null) {
-                JSONArray array = new JSONArray();
-                for(TargetVersion item : this.request.getTargetVersions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("targetVersions", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("targetVersions", request.getTargetVersions() == null ? new ArrayList<TargetVersion>() :
+                        request.getTargetVersions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2173,9 +1850,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2183,25 +1857,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * バージョンチェック<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void checkVersionAsync(
             CheckVersionRequest request,
             AsyncAction<AsyncResult<CheckVersionResult>> callback
     ) {
-        CheckVersionTask task = new CheckVersionTask(request, callback, CheckVersionResult.class);
+        CheckVersionTask task = new CheckVersionTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * バージョンチェック<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CheckVersionResult checkVersion(
             CheckVersionRequest request
     ) {
@@ -2228,15 +1891,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public CheckVersionByUserIdTask(
             CheckVersionByUserIdRequest request,
-            AsyncAction<AsyncResult<CheckVersionByUserIdResult>> userCallback,
-            Class<CheckVersionByUserIdResult> clazz
+            AsyncAction<AsyncResult<CheckVersionByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CheckVersionByUserIdResult parse(JsonNode data) {
+            return CheckVersionByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2247,28 +1913,20 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/check";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTargetVersions() != null) {
-                JSONArray array = new JSONArray();
-                for(TargetVersion item : this.request.getTargetVersions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("targetVersions", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("targetVersions", request.getTargetVersions() == null ? new ArrayList<TargetVersion>() :
+                        request.getTargetVersions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2279,9 +1937,6 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2289,25 +1944,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * バージョンチェック<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void checkVersionByUserIdAsync(
             CheckVersionByUserIdRequest request,
             AsyncAction<AsyncResult<CheckVersionByUserIdResult>> callback
     ) {
-        CheckVersionByUserIdTask task = new CheckVersionByUserIdTask(request, callback, CheckVersionByUserIdResult.class);
+        CheckVersionByUserIdTask task = new CheckVersionByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * バージョンチェック<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CheckVersionByUserIdResult checkVersionByUserId(
             CheckVersionByUserIdRequest request
     ) {
@@ -2334,15 +1978,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public CalculateSignatureTask(
             CalculateSignatureRequest request,
-            AsyncAction<AsyncResult<CalculateSignatureResult>> userCallback,
-            Class<CalculateSignatureResult> clazz
+            AsyncAction<AsyncResult<CalculateSignatureResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CalculateSignatureResult parse(JsonNode data) {
+            return CalculateSignatureResult.fromJson(data);
         }
 
         @Override
@@ -2353,23 +2000,15 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/version/{versionName}/calculate/signature";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{versionName}", this.request.getVersionName() == null|| this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{versionName}", this.request.getVersionName() == null || this.request.getVersionName().length() == 0 ? "null" : String.valueOf(this.request.getVersionName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getVersion() != null) {
-                try {
-                    json.put("version", new JSONObject(mapper.writeValueAsString(this.request.getVersion())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("version", request.getVersion() != null ? request.getVersion().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2387,25 +2026,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * スタンプシートのタスクを実行する<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void calculateSignatureAsync(
             CalculateSignatureRequest request,
             AsyncAction<AsyncResult<CalculateSignatureResult>> callback
     ) {
-        CalculateSignatureTask task = new CalculateSignatureTask(request, callback, CalculateSignatureResult.class);
+        CalculateSignatureTask task = new CalculateSignatureTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートのタスクを実行する<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CalculateSignatureResult calculateSignature(
             CalculateSignatureRequest request
     ) {
@@ -2432,15 +2060,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -2451,7 +2082,7 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2475,25 +2106,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * 現在有効なバージョンのマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なバージョンのマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -2520,15 +2140,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public GetCurrentVersionMasterTask(
             GetCurrentVersionMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentVersionMasterResult>> userCallback,
-            Class<GetCurrentVersionMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentVersionMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentVersionMasterResult parse(JsonNode data) {
+            return GetCurrentVersionMasterResult.fromJson(data);
         }
 
         @Override
@@ -2539,7 +2162,7 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2563,25 +2186,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * 現在有効なバージョンを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentVersionMasterAsync(
             GetCurrentVersionMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentVersionMasterResult>> callback
     ) {
-        GetCurrentVersionMasterTask task = new GetCurrentVersionMasterTask(request, callback, GetCurrentVersionMasterResult.class);
+        GetCurrentVersionMasterTask task = new GetCurrentVersionMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なバージョンを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentVersionMasterResult getCurrentVersionMaster(
             GetCurrentVersionMasterRequest request
     ) {
@@ -2608,15 +2220,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public UpdateCurrentVersionMasterTask(
             UpdateCurrentVersionMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentVersionMasterResult>> userCallback,
-            Class<UpdateCurrentVersionMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentVersionMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentVersionMasterResult parse(JsonNode data) {
+            return UpdateCurrentVersionMasterResult.fromJson(data);
         }
 
         @Override
@@ -2627,18 +2242,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2656,25 +2267,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * 現在有効なバージョンを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentVersionMasterAsync(
             UpdateCurrentVersionMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentVersionMasterResult>> callback
     ) {
-        UpdateCurrentVersionMasterTask task = new UpdateCurrentVersionMasterTask(request, callback, UpdateCurrentVersionMasterResult.class);
+        UpdateCurrentVersionMasterTask task = new UpdateCurrentVersionMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なバージョンを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentVersionMasterResult updateCurrentVersionMaster(
             UpdateCurrentVersionMasterRequest request
     ) {
@@ -2701,15 +2301,18 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
 
         public UpdateCurrentVersionMasterFromGitHubTask(
             UpdateCurrentVersionMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentVersionMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentVersionMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentVersionMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentVersionMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentVersionMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2720,22 +2323,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2753,25 +2348,14 @@ public class Gs2VersionRestClient extends AbstractGs2Client<Gs2VersionRestClient
         }
     }
 
-    /**
-     * 現在有効なバージョンを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentVersionMasterFromGitHubAsync(
             UpdateCurrentVersionMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentVersionMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentVersionMasterFromGitHubTask task = new UpdateCurrentVersionMasterFromGitHubTask(request, callback, UpdateCurrentVersionMasterFromGitHubResult.class);
+        UpdateCurrentVersionMasterFromGitHubTask task = new UpdateCurrentVersionMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なバージョンを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentVersionMasterFromGitHubResult updateCurrentVersionMasterFromGitHub(
             UpdateCurrentVersionMasterFromGitHubRequest request
     ) {

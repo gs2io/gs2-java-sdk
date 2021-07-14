@@ -16,50 +16,46 @@
 
 package io.gs2.deploy.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.deploy.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * テンプレートを検証 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidateRequest extends Gs2BasicRequest<ValidateRequest> {
-
-    /** テンプレートデータ */
     private String template;
 
-    /**
-     * テンプレートデータを取得
-     *
-     * @return テンプレートを検証
-     */
-    public String getTemplate() {
-        return template;
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
+	public ValidateRequest withTemplate(String template) {
+		this.template = template;
+		return this;
+	}
+
+    public static ValidateRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ValidateRequest()
+            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText());
     }
 
-    /**
-     * テンプレートデータを設定
-     *
-     * @param template テンプレートを検証
-     */
-    public void setTemplate(String template) {
-        this.template = template;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("template", getTemplate());
+            }}
+        );
     }
-
-    /**
-     * テンプレートデータを設定
-     *
-     * @param template テンプレートを検証
-     * @return this
-     */
-    public ValidateRequest withTemplate(String template) {
-        setTemplate(template);
-        return this;
-    }
-
 }

@@ -16,210 +16,121 @@
 
 package io.gs2.quest.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.quest.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.quest.model.Config;
 
-/**
- * ユーザIDを指定してクエスト挑戦を作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgressByUserIdRequest> {
-
-    /** カテゴリ名 */
     private String namespaceName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return ユーザIDを指定してクエスト挑戦を作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName ユーザIDを指定してクエスト挑戦を作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName ユーザIDを指定してクエスト挑戦を作成
-     * @return this
-     */
-    public CreateProgressByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してクエスト挑戦を作成
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してクエスト挑戦を作成
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してクエスト挑戦を作成
-     * @return this
-     */
-    public CreateProgressByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** クエストモデル */
     private String questModelId;
-
-    /**
-     * クエストモデルを取得
-     *
-     * @return ユーザIDを指定してクエスト挑戦を作成
-     */
-    public String getQuestModelId() {
-        return questModelId;
-    }
-
-    /**
-     * クエストモデルを設定
-     *
-     * @param questModelId ユーザIDを指定してクエスト挑戦を作成
-     */
-    public void setQuestModelId(String questModelId) {
-        this.questModelId = questModelId;
-    }
-
-    /**
-     * クエストモデルを設定
-     *
-     * @param questModelId ユーザIDを指定してクエスト挑戦を作成
-     * @return this
-     */
-    public CreateProgressByUserIdRequest withQuestModelId(String questModelId) {
-        setQuestModelId(questModelId);
-        return this;
-    }
-
-    /** すでに開始しているクエストがある場合にそれを破棄して開始するか */
     private Boolean force;
-
-    /**
-     * すでに開始しているクエストがある場合にそれを破棄して開始するかを取得
-     *
-     * @return ユーザIDを指定してクエスト挑戦を作成
-     */
-    public Boolean getForce() {
-        return force;
-    }
-
-    /**
-     * すでに開始しているクエストがある場合にそれを破棄して開始するかを設定
-     *
-     * @param force ユーザIDを指定してクエスト挑戦を作成
-     */
-    public void setForce(Boolean force) {
-        this.force = force;
-    }
-
-    /**
-     * すでに開始しているクエストがある場合にそれを破棄して開始するかを設定
-     *
-     * @param force ユーザIDを指定してクエスト挑戦を作成
-     * @return this
-     */
-    public CreateProgressByUserIdRequest withForce(Boolean force) {
-        setForce(force);
-        return this;
-    }
-
-    /** スタンプシートの変数に適用する設定値 */
     private List<Config> config;
 
-    /**
-     * スタンプシートの変数に適用する設定値を取得
-     *
-     * @return ユーザIDを指定してクエスト挑戦を作成
-     */
-    public List<Config> getConfig() {
-        return config;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateProgressByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public CreateProgressByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getQuestModelId() {
+		return questModelId;
+	}
+
+	public void setQuestModelId(String questModelId) {
+		this.questModelId = questModelId;
+	}
+
+	public CreateProgressByUserIdRequest withQuestModelId(String questModelId) {
+		this.questModelId = questModelId;
+		return this;
+	}
+
+	public Boolean getForce() {
+		return force;
+	}
+
+	public void setForce(Boolean force) {
+		this.force = force;
+	}
+
+	public CreateProgressByUserIdRequest withForce(Boolean force) {
+		this.force = force;
+		return this;
+	}
+
+	public List<Config> getConfig() {
+		return config;
+	}
+
+	public void setConfig(List<Config> config) {
+		this.config = config;
+	}
+
+	public CreateProgressByUserIdRequest withConfig(List<Config> config) {
+		this.config = config;
+		return this;
+	}
+
+    public static CreateProgressByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateProgressByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withQuestModelId(data.get("questModelId") == null || data.get("questModelId").isNull() ? null : data.get("questModelId").asText())
+            .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Config.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * スタンプシートの変数に適用する設定値を設定
-     *
-     * @param config ユーザIDを指定してクエスト挑戦を作成
-     */
-    public void setConfig(List<Config> config) {
-        this.config = config;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("questModelId", getQuestModelId());
+                put("force", getForce());
+                put("config", getConfig() == null ? new ArrayList<Config>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * スタンプシートの変数に適用する設定値を設定
-     *
-     * @param config ユーザIDを指定してクエスト挑戦を作成
-     * @return this
-     */
-    public CreateProgressByUserIdRequest withConfig(List<Config> config) {
-        setConfig(config);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してクエスト挑戦を作成
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してクエスト挑戦を作成
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してクエスト挑戦を作成
-     * @return this
-     */
-    public CreateProgressByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

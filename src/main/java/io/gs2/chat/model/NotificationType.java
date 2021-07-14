@@ -16,92 +16,64 @@
 
 package io.gs2.chat.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 購読
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NotificationType implements IModel, Serializable {
-	/** 新着メッセージ通知を受け取るカテゴリ */
-	protected Integer category;
+	private Integer category;
+	private Boolean enableTransferMobilePushNotification;
 
-	/**
-	 * 新着メッセージ通知を受け取るカテゴリを取得
-	 *
-	 * @return 新着メッセージ通知を受け取るカテゴリ
-	 */
 	public Integer getCategory() {
 		return category;
 	}
 
-	/**
-	 * 新着メッセージ通知を受け取るカテゴリを設定
-	 *
-	 * @param category 新着メッセージ通知を受け取るカテゴリ
-	 */
 	public void setCategory(Integer category) {
 		this.category = category;
 	}
 
-	/**
-	 * 新着メッセージ通知を受け取るカテゴリを設定
-	 *
-	 * @param category 新着メッセージ通知を受け取るカテゴリ
-	 * @return this
-	 */
 	public NotificationType withCategory(Integer category) {
 		this.category = category;
 		return this;
 	}
-	/** オフラインだった時にモバイルプッシュ通知に転送するか */
-	protected Boolean enableTransferMobilePushNotification;
 
-	/**
-	 * オフラインだった時にモバイルプッシュ通知に転送するかを取得
-	 *
-	 * @return オフラインだった時にモバイルプッシュ通知に転送するか
-	 */
 	public Boolean getEnableTransferMobilePushNotification() {
 		return enableTransferMobilePushNotification;
 	}
 
-	/**
-	 * オフラインだった時にモバイルプッシュ通知に転送するかを設定
-	 *
-	 * @param enableTransferMobilePushNotification オフラインだった時にモバイルプッシュ通知に転送するか
-	 */
 	public void setEnableTransferMobilePushNotification(Boolean enableTransferMobilePushNotification) {
 		this.enableTransferMobilePushNotification = enableTransferMobilePushNotification;
 	}
 
-	/**
-	 * オフラインだった時にモバイルプッシュ通知に転送するかを設定
-	 *
-	 * @param enableTransferMobilePushNotification オフラインだった時にモバイルプッシュ通知に転送するか
-	 * @return this
-	 */
 	public NotificationType withEnableTransferMobilePushNotification(Boolean enableTransferMobilePushNotification) {
 		this.enableTransferMobilePushNotification = enableTransferMobilePushNotification;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("category", this.getCategory())
-            .put("enableTransferMobilePushNotification", this.getEnableTransferMobilePushNotification());
-        return body_;
+    public static NotificationType fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new NotificationType()
+            .withCategory(data.get("category") == null || data.get("category").isNull() ? null : data.get("category").intValue())
+            .withEnableTransferMobilePushNotification(data.get("enableTransferMobilePushNotification") == null || data.get("enableTransferMobilePushNotification").isNull() ? null : data.get("enableTransferMobilePushNotification").booleanValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("category", getCategory());
+                put("enableTransferMobilePushNotification", getEnableTransferMobilePushNotification());
+            }}
+        );
     }
 
 	@Override

@@ -16,178 +16,110 @@
 
 package io.gs2.quest.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.quest.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * クエストグループマスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateQuestGroupModelMasterRequest extends Gs2BasicRequest<UpdateQuestGroupModelMasterRequest> {
-
-    /** カテゴリ名 */
     private String namespaceName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return クエストグループマスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName クエストグループマスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName クエストグループマスターを更新
-     * @return this
-     */
-    public UpdateQuestGroupModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** クエストグループモデル名 */
     private String questGroupName;
-
-    /**
-     * クエストグループモデル名を取得
-     *
-     * @return クエストグループマスターを更新
-     */
-    public String getQuestGroupName() {
-        return questGroupName;
-    }
-
-    /**
-     * クエストグループモデル名を設定
-     *
-     * @param questGroupName クエストグループマスターを更新
-     */
-    public void setQuestGroupName(String questGroupName) {
-        this.questGroupName = questGroupName;
-    }
-
-    /**
-     * クエストグループモデル名を設定
-     *
-     * @param questGroupName クエストグループマスターを更新
-     * @return this
-     */
-    public UpdateQuestGroupModelMasterRequest withQuestGroupName(String questGroupName) {
-        setQuestGroupName(questGroupName);
-        return this;
-    }
-
-    /** クエストグループマスターの説明 */
     private String description;
-
-    /**
-     * クエストグループマスターの説明を取得
-     *
-     * @return クエストグループマスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * クエストグループマスターの説明を設定
-     *
-     * @param description クエストグループマスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * クエストグループマスターの説明を設定
-     *
-     * @param description クエストグループマスターを更新
-     * @return this
-     */
-    public UpdateQuestGroupModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** クエストグループのメタデータ */
     private String metadata;
-
-    /**
-     * クエストグループのメタデータを取得
-     *
-     * @return クエストグループマスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * クエストグループのメタデータを設定
-     *
-     * @param metadata クエストグループマスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * クエストグループのメタデータを設定
-     *
-     * @param metadata クエストグループマスターを更新
-     * @return this
-     */
-    public UpdateQuestGroupModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 挑戦可能な期間を指定するイベントマスター のGRN */
     private String challengePeriodEventId;
 
-    /**
-     * 挑戦可能な期間を指定するイベントマスター のGRNを取得
-     *
-     * @return クエストグループマスターを更新
-     */
-    public String getChallengePeriodEventId() {
-        return challengePeriodEventId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateQuestGroupModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getQuestGroupName() {
+		return questGroupName;
+	}
+
+	public void setQuestGroupName(String questGroupName) {
+		this.questGroupName = questGroupName;
+	}
+
+	public UpdateQuestGroupModelMasterRequest withQuestGroupName(String questGroupName) {
+		this.questGroupName = questGroupName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateQuestGroupModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateQuestGroupModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getChallengePeriodEventId() {
+		return challengePeriodEventId;
+	}
+
+	public void setChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+	}
+
+	public UpdateQuestGroupModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+		return this;
+	}
+
+    public static UpdateQuestGroupModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateQuestGroupModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withQuestGroupName(data.get("questGroupName") == null || data.get("questGroupName").isNull() ? null : data.get("questGroupName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText());
     }
 
-    /**
-     * 挑戦可能な期間を指定するイベントマスター のGRNを設定
-     *
-     * @param challengePeriodEventId クエストグループマスターを更新
-     */
-    public void setChallengePeriodEventId(String challengePeriodEventId) {
-        this.challengePeriodEventId = challengePeriodEventId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("questGroupName", getQuestGroupName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("challengePeriodEventId", getChallengePeriodEventId());
+            }}
+        );
     }
-
-    /**
-     * 挑戦可能な期間を指定するイベントマスター のGRNを設定
-     *
-     * @param challengePeriodEventId クエストグループマスターを更新
-     * @return this
-     */
-    public UpdateQuestGroupModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
-        setChallengePeriodEventId(challengePeriodEventId);
-        return this;
-    }
-
 }

@@ -16,79 +16,80 @@
 
 package io.gs2.project.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.project.model.*;
+import io.gs2.project.model.Project;
 
-/**
- * プロジェクトトークンを発行します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetProjectTokenResult implements IResult, Serializable {
-	/** サインインしたプロジェクト */
-	private Project item;
-	/** オーナーID */
-	private String ownerId;
-	/** プロジェクトトークン */
-	private String projectToken;
+    private Project item;
+    private String ownerId;
+    private String projectToken;
 
-	/**
-	 * サインインしたプロジェクトを取得
-	 *
-	 * @return プロジェクトトークンを発行します
-	 */
 	public Project getItem() {
 		return item;
 	}
 
-	/**
-	 * サインインしたプロジェクトを設定
-	 *
-	 * @param item プロジェクトトークンを発行します
-	 */
 	public void setItem(Project item) {
 		this.item = item;
 	}
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return プロジェクトトークンを発行します
-	 */
+	public GetProjectTokenResult withItem(Project item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getOwnerId() {
 		return ownerId;
 	}
 
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId プロジェクトトークンを発行します
-	 */
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
 	}
 
-	/**
-	 * プロジェクトトークンを取得
-	 *
-	 * @return プロジェクトトークンを発行します
-	 */
+	public GetProjectTokenResult withOwnerId(String ownerId) {
+		this.ownerId = ownerId;
+		return this;
+	}
+
 	public String getProjectToken() {
 		return projectToken;
 	}
 
-	/**
-	 * プロジェクトトークンを設定
-	 *
-	 * @param projectToken プロジェクトトークンを発行します
-	 */
 	public void setProjectToken(String projectToken) {
 		this.projectToken = projectToken;
 	}
+
+	public GetProjectTokenResult withProjectToken(String projectToken) {
+		this.projectToken = projectToken;
+		return this;
+	}
+
+    public static GetProjectTokenResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetProjectTokenResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Project.fromJson(data.get("item")))
+            .withOwnerId(data.get("ownerId") == null || data.get("ownerId").isNull() ? null : data.get("ownerId").asText())
+            .withProjectToken(data.get("projectToken") == null || data.get("projectToken").isNull() ? null : data.get("projectToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("ownerId", getOwnerId());
+                put("projectToken", getProjectToken());
+            }}
+        );
+    }
 }

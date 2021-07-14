@@ -16,39 +16,48 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.CurrentStaminaMaster;
 
-/**
- * 現在有効なスタミナマスターを更新します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateCurrentStaminaMasterFromGitHubResult implements IResult, Serializable {
-	/** 更新した現在有効なスタミナマスター */
-	private CurrentStaminaMaster item;
+    private CurrentStaminaMaster item;
 
-	/**
-	 * 更新した現在有効なスタミナマスターを取得
-	 *
-	 * @return 現在有効なスタミナマスターを更新します
-	 */
 	public CurrentStaminaMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新した現在有効なスタミナマスターを設定
-	 *
-	 * @param item 現在有効なスタミナマスターを更新します
-	 */
 	public void setItem(CurrentStaminaMaster item) {
 		this.item = item;
 	}
+
+	public UpdateCurrentStaminaMasterFromGitHubResult withItem(CurrentStaminaMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateCurrentStaminaMasterFromGitHubResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateCurrentStaminaMasterFromGitHubResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentStaminaMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

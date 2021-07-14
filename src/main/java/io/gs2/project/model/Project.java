@@ -16,381 +16,210 @@
 
 package io.gs2.project.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * プロジェクト
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Project implements IModel, Serializable, Comparable<Project> {
-	/** プロジェクト */
-	protected String projectId;
+	private String projectId;
+	private String accountName;
+	private String name;
+	private String description;
+	private String plan;
+	private String billingMethodName;
+	private String enableEventBridge;
+	private String eventBridgeAwsAccountId;
+	private String eventBridgeAwsRegion;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * プロジェクトを取得
-	 *
-	 * @return プロジェクト
-	 */
 	public String getProjectId() {
 		return projectId;
 	}
 
-	/**
-	 * プロジェクトを設定
-	 *
-	 * @param projectId プロジェクト
-	 */
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
 
-	/**
-	 * プロジェクトを設定
-	 *
-	 * @param projectId プロジェクト
-	 * @return this
-	 */
 	public Project withProjectId(String projectId) {
 		this.projectId = projectId;
 		return this;
 	}
-	/** GS2アカウントの名前 */
-	protected String accountName;
 
-	/**
-	 * GS2アカウントの名前を取得
-	 *
-	 * @return GS2アカウントの名前
-	 */
 	public String getAccountName() {
 		return accountName;
 	}
 
-	/**
-	 * GS2アカウントの名前を設定
-	 *
-	 * @param accountName GS2アカウントの名前
-	 */
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
 
-	/**
-	 * GS2アカウントの名前を設定
-	 *
-	 * @param accountName GS2アカウントの名前
-	 * @return this
-	 */
 	public Project withAccountName(String accountName) {
 		this.accountName = accountName;
 		return this;
 	}
-	/** プロジェクト名 */
-	protected String name;
 
-	/**
-	 * プロジェクト名を取得
-	 *
-	 * @return プロジェクト名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * プロジェクト名を設定
-	 *
-	 * @param name プロジェクト名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * プロジェクト名を設定
-	 *
-	 * @param name プロジェクト名
-	 * @return this
-	 */
 	public Project withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** プロジェクトの説明 */
-	protected String description;
 
-	/**
-	 * プロジェクトの説明を取得
-	 *
-	 * @return プロジェクトの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * プロジェクトの説明を設定
-	 *
-	 * @param description プロジェクトの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * プロジェクトの説明を設定
-	 *
-	 * @param description プロジェクトの説明
-	 * @return this
-	 */
 	public Project withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 契約プラン */
-	protected String plan;
 
-	/**
-	 * 契約プランを取得
-	 *
-	 * @return 契約プラン
-	 */
 	public String getPlan() {
 		return plan;
 	}
 
-	/**
-	 * 契約プランを設定
-	 *
-	 * @param plan 契約プラン
-	 */
 	public void setPlan(String plan) {
 		this.plan = plan;
 	}
 
-	/**
-	 * 契約プランを設定
-	 *
-	 * @param plan 契約プラン
-	 * @return this
-	 */
 	public Project withPlan(String plan) {
 		this.plan = plan;
 		return this;
 	}
-	/** 支払い方法名 */
-	protected String billingMethodName;
 
-	/**
-	 * 支払い方法名を取得
-	 *
-	 * @return 支払い方法名
-	 */
 	public String getBillingMethodName() {
 		return billingMethodName;
 	}
 
-	/**
-	 * 支払い方法名を設定
-	 *
-	 * @param billingMethodName 支払い方法名
-	 */
 	public void setBillingMethodName(String billingMethodName) {
 		this.billingMethodName = billingMethodName;
 	}
 
-	/**
-	 * 支払い方法名を設定
-	 *
-	 * @param billingMethodName 支払い方法名
-	 * @return this
-	 */
 	public Project withBillingMethodName(String billingMethodName) {
 		this.billingMethodName = billingMethodName;
 		return this;
 	}
-	/** AWS EventBridge の設定 */
-	protected String enableEventBridge;
 
-	/**
-	 * AWS EventBridge の設定を取得
-	 *
-	 * @return AWS EventBridge の設定
-	 */
 	public String getEnableEventBridge() {
 		return enableEventBridge;
 	}
 
-	/**
-	 * AWS EventBridge の設定を設定
-	 *
-	 * @param enableEventBridge AWS EventBridge の設定
-	 */
 	public void setEnableEventBridge(String enableEventBridge) {
 		this.enableEventBridge = enableEventBridge;
 	}
 
-	/**
-	 * AWS EventBridge の設定を設定
-	 *
-	 * @param enableEventBridge AWS EventBridge の設定
-	 * @return this
-	 */
 	public Project withEnableEventBridge(String enableEventBridge) {
 		this.enableEventBridge = enableEventBridge;
 		return this;
 	}
-	/** 通知に使用するAWSアカウントのID */
-	protected String eventBridgeAwsAccountId;
 
-	/**
-	 * 通知に使用するAWSアカウントのIDを取得
-	 *
-	 * @return 通知に使用するAWSアカウントのID
-	 */
 	public String getEventBridgeAwsAccountId() {
 		return eventBridgeAwsAccountId;
 	}
 
-	/**
-	 * 通知に使用するAWSアカウントのIDを設定
-	 *
-	 * @param eventBridgeAwsAccountId 通知に使用するAWSアカウントのID
-	 */
 	public void setEventBridgeAwsAccountId(String eventBridgeAwsAccountId) {
 		this.eventBridgeAwsAccountId = eventBridgeAwsAccountId;
 	}
 
-	/**
-	 * 通知に使用するAWSアカウントのIDを設定
-	 *
-	 * @param eventBridgeAwsAccountId 通知に使用するAWSアカウントのID
-	 * @return this
-	 */
 	public Project withEventBridgeAwsAccountId(String eventBridgeAwsAccountId) {
 		this.eventBridgeAwsAccountId = eventBridgeAwsAccountId;
 		return this;
 	}
-	/** 通知に使用するAWSリージョン */
-	protected String eventBridgeAwsRegion;
 
-	/**
-	 * 通知に使用するAWSリージョンを取得
-	 *
-	 * @return 通知に使用するAWSリージョン
-	 */
 	public String getEventBridgeAwsRegion() {
 		return eventBridgeAwsRegion;
 	}
 
-	/**
-	 * 通知に使用するAWSリージョンを設定
-	 *
-	 * @param eventBridgeAwsRegion 通知に使用するAWSリージョン
-	 */
 	public void setEventBridgeAwsRegion(String eventBridgeAwsRegion) {
 		this.eventBridgeAwsRegion = eventBridgeAwsRegion;
 	}
 
-	/**
-	 * 通知に使用するAWSリージョンを設定
-	 *
-	 * @param eventBridgeAwsRegion 通知に使用するAWSリージョン
-	 * @return this
-	 */
 	public Project withEventBridgeAwsRegion(String eventBridgeAwsRegion) {
 		this.eventBridgeAwsRegion = eventBridgeAwsRegion;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Project withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Project withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("projectId", this.getProjectId())
-            .put("accountName", this.getAccountName())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("plan", this.getPlan())
-            .put("billingMethodName", this.getBillingMethodName())
-            .put("enableEventBridge", this.getEnableEventBridge())
-            .put("eventBridgeAwsAccountId", this.getEventBridgeAwsAccountId())
-            .put("eventBridgeAwsRegion", this.getEventBridgeAwsRegion())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Project fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Project()
+            .withProjectId(data.get("projectId") == null || data.get("projectId").isNull() ? null : data.get("projectId").asText())
+            .withAccountName(data.get("accountName") == null || data.get("accountName").isNull() ? null : data.get("accountName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withPlan(data.get("plan") == null || data.get("plan").isNull() ? null : data.get("plan").asText())
+            .withBillingMethodName(data.get("billingMethodName") == null || data.get("billingMethodName").isNull() ? null : data.get("billingMethodName").asText())
+            .withEnableEventBridge(data.get("enableEventBridge") == null || data.get("enableEventBridge").isNull() ? null : data.get("enableEventBridge").asText())
+            .withEventBridgeAwsAccountId(data.get("eventBridgeAwsAccountId") == null || data.get("eventBridgeAwsAccountId").isNull() ? null : data.get("eventBridgeAwsAccountId").asText())
+            .withEventBridgeAwsRegion(data.get("eventBridgeAwsRegion") == null || data.get("eventBridgeAwsRegion").isNull() ? null : data.get("eventBridgeAwsRegion").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("projectId", getProjectId());
+                put("accountName", getAccountName());
+                put("name", getName());
+                put("description", getDescription());
+                put("plan", getPlan());
+                put("billingMethodName", getBillingMethodName());
+                put("enableEventBridge", getEnableEventBridge());
+                put("eventBridgeAwsAccountId", getEventBridgeAwsAccountId());
+                put("eventBridgeAwsRegion", getEventBridgeAwsRegion());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Project o) {
 		return projectId.compareTo(o.projectId);

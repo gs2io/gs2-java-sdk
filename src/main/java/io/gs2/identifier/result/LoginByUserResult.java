@@ -16,39 +16,48 @@
 
 package io.gs2.identifier.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.identifier.model.*;
+import io.gs2.identifier.model.ProjectToken;
 
-/**
- * プロジェクトトークン を取得します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LoginByUserResult implements IResult, Serializable {
-	/** プロジェクトトークン */
-	private ProjectToken item;
+    private ProjectToken item;
 
-	/**
-	 * プロジェクトトークンを取得
-	 *
-	 * @return プロジェクトトークン を取得します
-	 */
 	public ProjectToken getItem() {
 		return item;
 	}
 
-	/**
-	 * プロジェクトトークンを設定
-	 *
-	 * @param item プロジェクトトークン を取得します
-	 */
 	public void setItem(ProjectToken item) {
 		this.item = item;
 	}
+
+	public LoginByUserResult withItem(ProjectToken item) {
+		this.item = item;
+		return this;
+	}
+
+    public static LoginByUserResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LoginByUserResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : ProjectToken.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

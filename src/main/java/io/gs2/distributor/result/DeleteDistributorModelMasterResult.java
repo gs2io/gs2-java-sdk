@@ -16,39 +16,48 @@
 
 package io.gs2.distributor.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.distributor.model.*;
+import io.gs2.distributor.model.DistributorModelMaster;
 
-/**
- * 配信設定マスターを削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteDistributorModelMasterResult implements IResult, Serializable {
-	/** 削除した配信設定マスター */
-	private DistributorModelMaster item;
+    private DistributorModelMaster item;
 
-	/**
-	 * 削除した配信設定マスターを取得
-	 *
-	 * @return 配信設定マスターを削除
-	 */
 	public DistributorModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 削除した配信設定マスターを設定
-	 *
-	 * @param item 配信設定マスターを削除
-	 */
 	public void setItem(DistributorModelMaster item) {
 		this.item = item;
 	}
+
+	public DeleteDistributorModelMasterResult withItem(DistributorModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteDistributorModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteDistributorModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : DistributorModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

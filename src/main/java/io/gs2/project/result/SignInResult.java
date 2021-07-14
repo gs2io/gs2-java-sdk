@@ -16,59 +16,64 @@
 
 package io.gs2.project.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.project.model.*;
+import io.gs2.project.model.Account;
 
-/**
- * サインインします のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SignInResult implements IResult, Serializable {
-	/** サインインしたGS2アカウント */
-	private Account item;
-	/** GS2-Console にアクセスするのに使用するトークン */
-	private String accountToken;
+    private Account item;
+    private String accountToken;
 
-	/**
-	 * サインインしたGS2アカウントを取得
-	 *
-	 * @return サインインします
-	 */
 	public Account getItem() {
 		return item;
 	}
 
-	/**
-	 * サインインしたGS2アカウントを設定
-	 *
-	 * @param item サインインします
-	 */
 	public void setItem(Account item) {
 		this.item = item;
 	}
 
-	/**
-	 * GS2-Console にアクセスするのに使用するトークンを取得
-	 *
-	 * @return サインインします
-	 */
+	public SignInResult withItem(Account item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getAccountToken() {
 		return accountToken;
 	}
 
-	/**
-	 * GS2-Console にアクセスするのに使用するトークンを設定
-	 *
-	 * @param accountToken サインインします
-	 */
 	public void setAccountToken(String accountToken) {
 		this.accountToken = accountToken;
 	}
+
+	public SignInResult withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+    public static SignInResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SignInResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Account.fromJson(data.get("item")))
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("accountToken", getAccountToken());
+            }}
+        );
+    }
 }

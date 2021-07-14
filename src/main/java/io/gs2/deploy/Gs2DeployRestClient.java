@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.deploy;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.deploy.request.*;
 import io.gs2.deploy.result.*;
-import io.gs2.deploy.model.*;
+import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> {
 
-/**
- * GS2 Deploy API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2DeployRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public DescribeStacksTask(
             DescribeStacksRequest request,
-            AsyncAction<AsyncResult<DescribeStacksResult>> userCallback,
-            Class<DescribeStacksResult> clazz
+            AsyncAction<AsyncResult<DescribeStacksResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeStacksResult parse(JsonNode data) {
+            return DescribeStacksResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeStacksAsync(
             DescribeStacksRequest request,
             AsyncAction<AsyncResult<DescribeStacksResult>> callback
     ) {
-        DescribeStacksTask task = new DescribeStacksTask(request, callback, DescribeStacksResult.class);
+        DescribeStacksTask task = new DescribeStacksTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeStacksResult describeStacks(
             DescribeStacksRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public CreateStackTask(
             CreateStackRequest request,
-            AsyncAction<AsyncResult<CreateStackResult>> userCallback,
-            Class<CreateStackResult> clazz
+            AsyncAction<AsyncResult<CreateStackResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateStackResult parse(JsonNode data) {
+            return CreateStackResult.fromJson(data);
         }
 
         @Override
@@ -169,22 +152,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getTemplate() != null) {
-                json.put("template", this.request.getTemplate());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("template", request.getTemplate());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -202,25 +177,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createStackAsync(
             CreateStackRequest request,
             AsyncAction<AsyncResult<CreateStackResult>> callback
     ) {
-        CreateStackTask task = new CreateStackTask(request, callback, CreateStackResult.class);
+        CreateStackTask task = new CreateStackTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateStackResult createStack(
             CreateStackRequest request
     ) {
@@ -247,15 +211,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public CreateStackFromGitHubTask(
             CreateStackFromGitHubRequest request,
-            AsyncAction<AsyncResult<CreateStackFromGitHubResult>> userCallback,
-            Class<CreateStackFromGitHubResult> clazz
+            AsyncAction<AsyncResult<CreateStackFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateStackFromGitHubResult parse(JsonNode data) {
+            return CreateStackFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -266,26 +233,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/from_git_hub";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -303,25 +258,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createStackFromGitHubAsync(
             CreateStackFromGitHubRequest request,
             AsyncAction<AsyncResult<CreateStackFromGitHubResult>> callback
     ) {
-        CreateStackFromGitHubTask task = new CreateStackFromGitHubTask(request, callback, CreateStackFromGitHubResult.class);
+        CreateStackFromGitHubTask task = new CreateStackFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateStackFromGitHubResult createStackFromGitHub(
             CreateStackFromGitHubRequest request
     ) {
@@ -348,15 +292,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public ValidateTask(
             ValidateRequest request,
-            AsyncAction<AsyncResult<ValidateResult>> userCallback,
-            Class<ValidateResult> clazz
+            AsyncAction<AsyncResult<ValidateResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ValidateResult parse(JsonNode data) {
+            return ValidateResult.fromJson(data);
         }
 
         @Override
@@ -367,16 +314,12 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/validate";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTemplate() != null) {
-                json.put("template", this.request.getTemplate());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("template", request.getTemplate());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -394,31 +337,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * テンプレートを検証<br>
-     *   <br>
-     *   このAPIの検証内容は簡易検証を行うに過ぎず、<br>
-     *   このAPIで検証をパスしたとしても、実行したらエラーが発生する場合もあります<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void validateAsync(
             ValidateRequest request,
             AsyncAction<AsyncResult<ValidateResult>> callback
     ) {
-        ValidateTask task = new ValidateTask(request, callback, ValidateResult.class);
+        ValidateTask task = new ValidateTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * テンプレートを検証<br>
-     *   <br>
-     *   このAPIの検証内容は簡易検証を行うに過ぎず、<br>
-     *   このAPIで検証をパスしたとしても、実行したらエラーが発生する場合もあります<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ValidateResult validate(
             ValidateRequest request
     ) {
@@ -445,15 +371,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public GetStackStatusTask(
             GetStackStatusRequest request,
-            AsyncAction<AsyncResult<GetStackStatusResult>> userCallback,
-            Class<GetStackStatusResult> clazz
+            AsyncAction<AsyncResult<GetStackStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetStackStatusResult parse(JsonNode data) {
+            return GetStackStatusResult.fromJson(data);
         }
 
         @Override
@@ -464,7 +393,7 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/status";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -488,25 +417,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getStackStatusAsync(
             GetStackStatusRequest request,
             AsyncAction<AsyncResult<GetStackStatusResult>> callback
     ) {
-        GetStackStatusTask task = new GetStackStatusTask(request, callback, GetStackStatusResult.class);
+        GetStackStatusTask task = new GetStackStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetStackStatusResult getStackStatus(
             GetStackStatusRequest request
     ) {
@@ -533,15 +451,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public GetStackTask(
             GetStackRequest request,
-            AsyncAction<AsyncResult<GetStackResult>> userCallback,
-            Class<GetStackResult> clazz
+            AsyncAction<AsyncResult<GetStackResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetStackResult parse(JsonNode data) {
+            return GetStackResult.fromJson(data);
         }
 
         @Override
@@ -552,7 +473,7 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -576,25 +497,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getStackAsync(
             GetStackRequest request,
             AsyncAction<AsyncResult<GetStackResult>> callback
     ) {
-        GetStackTask task = new GetStackTask(request, callback, GetStackResult.class);
+        GetStackTask task = new GetStackTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetStackResult getStack(
             GetStackRequest request
     ) {
@@ -621,15 +531,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public UpdateStackTask(
             UpdateStackRequest request,
-            AsyncAction<AsyncResult<UpdateStackResult>> userCallback,
-            Class<UpdateStackResult> clazz
+            AsyncAction<AsyncResult<UpdateStackResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateStackResult parse(JsonNode data) {
+            return UpdateStackResult.fromJson(data);
         }
 
         @Override
@@ -640,21 +553,15 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getTemplate() != null) {
-                json.put("template", this.request.getTemplate());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("template", request.getTemplate());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -672,25 +579,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateStackAsync(
             UpdateStackRequest request,
             AsyncAction<AsyncResult<UpdateStackResult>> callback
     ) {
-        UpdateStackTask task = new UpdateStackTask(request, callback, UpdateStackResult.class);
+        UpdateStackTask task = new UpdateStackTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateStackResult updateStack(
             UpdateStackRequest request
     ) {
@@ -717,15 +613,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public UpdateStackFromGitHubTask(
             UpdateStackFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateStackFromGitHubResult>> userCallback,
-            Class<UpdateStackFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateStackFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateStackFromGitHubResult parse(JsonNode data) {
+            return UpdateStackFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -736,25 +635,15 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/from_git_hub";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -772,25 +661,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateStackFromGitHubAsync(
             UpdateStackFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateStackFromGitHubResult>> callback
     ) {
-        UpdateStackFromGitHubTask task = new UpdateStackFromGitHubTask(request, callback, UpdateStackFromGitHubResult.class);
+        UpdateStackFromGitHubTask task = new UpdateStackFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateStackFromGitHubResult updateStackFromGitHub(
             UpdateStackFromGitHubRequest request
     ) {
@@ -817,15 +695,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public DeleteStackTask(
             DeleteStackRequest request,
-            AsyncAction<AsyncResult<DeleteStackResult>> userCallback,
-            Class<DeleteStackResult> clazz
+            AsyncAction<AsyncResult<DeleteStackResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteStackResult parse(JsonNode data) {
+            return DeleteStackResult.fromJson(data);
         }
 
         @Override
@@ -836,7 +717,7 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -860,31 +741,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックを削除<br>
-     *   <br>
-     *   スタックによって作成されたリソースの削除を行い、成功すればエンティティを削除します。<br>
-     *   何らかの理由でリソースの削除に失敗した場合はエンティティが残ります。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteStackAsync(
             DeleteStackRequest request,
             AsyncAction<AsyncResult<DeleteStackResult>> callback
     ) {
-        DeleteStackTask task = new DeleteStackTask(request, callback, DeleteStackResult.class);
+        DeleteStackTask task = new DeleteStackTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックを削除<br>
-     *   <br>
-     *   スタックによって作成されたリソースの削除を行い、成功すればエンティティを削除します。<br>
-     *   何らかの理由でリソースの削除に失敗した場合はエンティティが残ります。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteStackResult deleteStack(
             DeleteStackRequest request
     ) {
@@ -911,15 +775,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public ForceDeleteStackTask(
             ForceDeleteStackRequest request,
-            AsyncAction<AsyncResult<ForceDeleteStackResult>> userCallback,
-            Class<ForceDeleteStackResult> clazz
+            AsyncAction<AsyncResult<ForceDeleteStackResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ForceDeleteStackResult parse(JsonNode data) {
+            return ForceDeleteStackResult.fromJson(data);
         }
 
         @Override
@@ -930,7 +797,7 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/force";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -954,31 +821,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックを強制的に最終削除<br>
-     *   <br>
-     *   スタックのエンティティを強制的に削除します。<br>
-     *   スタックが作成したリソースが残っていても、それらは削除されません。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void forceDeleteStackAsync(
             ForceDeleteStackRequest request,
             AsyncAction<AsyncResult<ForceDeleteStackResult>> callback
     ) {
-        ForceDeleteStackTask task = new ForceDeleteStackTask(request, callback, ForceDeleteStackResult.class);
+        ForceDeleteStackTask task = new ForceDeleteStackTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックを強制的に最終削除<br>
-     *   <br>
-     *   スタックのエンティティを強制的に削除します。<br>
-     *   スタックが作成したリソースが残っていても、それらは削除されません。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ForceDeleteStackResult forceDeleteStack(
             ForceDeleteStackRequest request
     ) {
@@ -1005,15 +855,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public DeleteStackResourcesTask(
             DeleteStackResourcesRequest request,
-            AsyncAction<AsyncResult<DeleteStackResourcesResult>> userCallback,
-            Class<DeleteStackResourcesResult> clazz
+            AsyncAction<AsyncResult<DeleteStackResourcesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteStackResourcesResult parse(JsonNode data) {
+            return DeleteStackResourcesResult.fromJson(data);
         }
 
         @Override
@@ -1024,7 +877,7 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/resources";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1048,31 +901,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックのリソースを削除<br>
-     *   <br>
-     *   スタックによって作成されたリソースの削除を行います。<br>
-     *   空のテンプレートでスタックを更新するのとほぼ同様の挙動ですが、スタックに適用されていたテンプレートが残るため、誤操作時に、残ったテンプレートからリソースを復元することができます。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteStackResourcesAsync(
             DeleteStackResourcesRequest request,
             AsyncAction<AsyncResult<DeleteStackResourcesResult>> callback
     ) {
-        DeleteStackResourcesTask task = new DeleteStackResourcesTask(request, callback, DeleteStackResourcesResult.class);
+        DeleteStackResourcesTask task = new DeleteStackResourcesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックのリソースを削除<br>
-     *   <br>
-     *   スタックによって作成されたリソースの削除を行います。<br>
-     *   空のテンプレートでスタックを更新するのとほぼ同様の挙動ですが、スタックに適用されていたテンプレートが残るため、誤操作時に、残ったテンプレートからリソースを復元することができます。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteStackResourcesResult deleteStackResources(
             DeleteStackResourcesRequest request
     ) {
@@ -1099,15 +935,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public DeleteStackEntityTask(
             DeleteStackEntityRequest request,
-            AsyncAction<AsyncResult<DeleteStackEntityResult>> userCallback,
-            Class<DeleteStackEntityResult> clazz
+            AsyncAction<AsyncResult<DeleteStackEntityResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteStackEntityResult parse(JsonNode data) {
+            return DeleteStackEntityResult.fromJson(data);
         }
 
         @Override
@@ -1118,7 +957,7 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/entity";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1142,31 +981,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * スタックを最終削除<br>
-     *   <br>
-     *   スタックのエンティティを削除します。<br>
-     *   リソースの残っているスタックを削除しようとするとエラーになります。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteStackEntityAsync(
             DeleteStackEntityRequest request,
             AsyncAction<AsyncResult<DeleteStackEntityResult>> callback
     ) {
-        DeleteStackEntityTask task = new DeleteStackEntityTask(request, callback, DeleteStackEntityResult.class);
+        DeleteStackEntityTask task = new DeleteStackEntityTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタックを最終削除<br>
-     *   <br>
-     *   スタックのエンティティを削除します。<br>
-     *   リソースの残っているスタックを削除しようとするとエラーになります。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteStackEntityResult deleteStackEntity(
             DeleteStackEntityRequest request
     ) {
@@ -1193,15 +1015,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public DescribeResourcesTask(
             DescribeResourcesRequest request,
-            AsyncAction<AsyncResult<DescribeResourcesResult>> userCallback,
-            Class<DescribeResourcesResult> clazz
+            AsyncAction<AsyncResult<DescribeResourcesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeResourcesResult parse(JsonNode data) {
+            return DescribeResourcesResult.fromJson(data);
         }
 
         @Override
@@ -1212,7 +1037,7 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/resource";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1242,25 +1067,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * 作成されたのリソースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeResourcesAsync(
             DescribeResourcesRequest request,
             AsyncAction<AsyncResult<DescribeResourcesResult>> callback
     ) {
-        DescribeResourcesTask task = new DescribeResourcesTask(request, callback, DescribeResourcesResult.class);
+        DescribeResourcesTask task = new DescribeResourcesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 作成されたのリソースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeResourcesResult describeResources(
             DescribeResourcesRequest request
     ) {
@@ -1287,15 +1101,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public GetResourceTask(
             GetResourceRequest request,
-            AsyncAction<AsyncResult<GetResourceResult>> userCallback,
-            Class<GetResourceResult> clazz
+            AsyncAction<AsyncResult<GetResourceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetResourceResult parse(JsonNode data) {
+            return GetResourceResult.fromJson(data);
         }
 
         @Override
@@ -1306,8 +1123,8 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/resource/{resourceName}";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
-            url = url.replace("{resourceName}", this.request.getResourceName() == null|| this.request.getResourceName().length() == 0 ? "null" : String.valueOf(this.request.getResourceName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{resourceName}", this.request.getResourceName() == null || this.request.getResourceName().length() == 0 ? "null" : String.valueOf(this.request.getResourceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1331,25 +1148,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * 作成されたのリソースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getResourceAsync(
             GetResourceRequest request,
             AsyncAction<AsyncResult<GetResourceResult>> callback
     ) {
-        GetResourceTask task = new GetResourceTask(request, callback, GetResourceResult.class);
+        GetResourceTask task = new GetResourceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 作成されたのリソースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetResourceResult getResource(
             GetResourceRequest request
     ) {
@@ -1376,15 +1182,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public DescribeEventsTask(
             DescribeEventsRequest request,
-            AsyncAction<AsyncResult<DescribeEventsResult>> userCallback,
-            Class<DescribeEventsResult> clazz
+            AsyncAction<AsyncResult<DescribeEventsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeEventsResult parse(JsonNode data) {
+            return DescribeEventsResult.fromJson(data);
         }
 
         @Override
@@ -1395,7 +1204,7 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/event";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1425,25 +1234,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * 発生したイベントの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeEventsAsync(
             DescribeEventsRequest request,
             AsyncAction<AsyncResult<DescribeEventsResult>> callback
     ) {
-        DescribeEventsTask task = new DescribeEventsTask(request, callback, DescribeEventsResult.class);
+        DescribeEventsTask task = new DescribeEventsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 発生したイベントの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeEventsResult describeEvents(
             DescribeEventsRequest request
     ) {
@@ -1470,15 +1268,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public GetEventTask(
             GetEventRequest request,
-            AsyncAction<AsyncResult<GetEventResult>> userCallback,
-            Class<GetEventResult> clazz
+            AsyncAction<AsyncResult<GetEventResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEventResult parse(JsonNode data) {
+            return GetEventResult.fromJson(data);
         }
 
         @Override
@@ -1489,8 +1290,8 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/event/{eventName}";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
-            url = url.replace("{eventName}", this.request.getEventName() == null|| this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{eventName}", this.request.getEventName() == null || this.request.getEventName().length() == 0 ? "null" : String.valueOf(this.request.getEventName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1514,25 +1315,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * 発生したイベントを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEventAsync(
             GetEventRequest request,
             AsyncAction<AsyncResult<GetEventResult>> callback
     ) {
-        GetEventTask task = new GetEventTask(request, callback, GetEventResult.class);
+        GetEventTask task = new GetEventTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 発生したイベントを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEventResult getEvent(
             GetEventRequest request
     ) {
@@ -1559,15 +1349,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public DescribeOutputsTask(
             DescribeOutputsRequest request,
-            AsyncAction<AsyncResult<DescribeOutputsResult>> userCallback,
-            Class<DescribeOutputsResult> clazz
+            AsyncAction<AsyncResult<DescribeOutputsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeOutputsResult parse(JsonNode data) {
+            return DescribeOutputsResult.fromJson(data);
         }
 
         @Override
@@ -1578,7 +1371,7 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/output";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1608,25 +1401,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * アウトプットの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeOutputsAsync(
             DescribeOutputsRequest request,
             AsyncAction<AsyncResult<DescribeOutputsResult>> callback
     ) {
-        DescribeOutputsTask task = new DescribeOutputsTask(request, callback, DescribeOutputsResult.class);
+        DescribeOutputsTask task = new DescribeOutputsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アウトプットの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeOutputsResult describeOutputs(
             DescribeOutputsRequest request
     ) {
@@ -1653,15 +1435,18 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
 
         public GetOutputTask(
             GetOutputRequest request,
-            AsyncAction<AsyncResult<GetOutputResult>> userCallback,
-            Class<GetOutputResult> clazz
+            AsyncAction<AsyncResult<GetOutputResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetOutputResult parse(JsonNode data) {
+            return GetOutputResult.fromJson(data);
         }
 
         @Override
@@ -1672,8 +1457,8 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/stack/{stackName}/output/{outputName}";
 
-            url = url.replace("{stackName}", this.request.getStackName() == null|| this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
-            url = url.replace("{outputName}", this.request.getOutputName() == null|| this.request.getOutputName().length() == 0 ? "null" : String.valueOf(this.request.getOutputName()));
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+            url = url.replace("{outputName}", this.request.getOutputName() == null || this.request.getOutputName().length() == 0 ? "null" : String.valueOf(this.request.getOutputName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1697,25 +1482,14 @@ public class Gs2DeployRestClient extends AbstractGs2Client<Gs2DeployRestClient> 
         }
     }
 
-    /**
-     * アウトプットを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getOutputAsync(
             GetOutputRequest request,
             AsyncAction<AsyncResult<GetOutputResult>> callback
     ) {
-        GetOutputTask task = new GetOutputTask(request, callback, GetOutputResult.class);
+        GetOutputTask task = new GetOutputTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アウトプットを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetOutputResult getOutput(
             GetOutputRequest request
     ) {

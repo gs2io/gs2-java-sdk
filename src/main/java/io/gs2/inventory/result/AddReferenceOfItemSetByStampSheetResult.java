@@ -16,99 +16,106 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.ItemSet;
+import io.gs2.inventory.model.ItemModel;
+import io.gs2.inventory.model.Inventory;
 
-/**
- * スタンプシートでアイテムに参照元を追加 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AddReferenceOfItemSetByStampSheetResult implements IResult, Serializable {
-	/** この所持品の参照元リスト */
-	private List<String> item;
-	/** 参照元追加後の有効期限ごとのアイテム所持数量 */
-	private ItemSet itemSet;
-	/** アイテムモデル */
-	private ItemModel itemModel;
-	/** インベントリ */
-	private Inventory inventory;
+    private List<String> item;
+    private ItemSet itemSet;
+    private ItemModel itemModel;
+    private Inventory inventory;
 
-	/**
-	 * この所持品の参照元リストを取得
-	 *
-	 * @return スタンプシートでアイテムに参照元を追加
-	 */
 	public List<String> getItem() {
 		return item;
 	}
 
-	/**
-	 * この所持品の参照元リストを設定
-	 *
-	 * @param item スタンプシートでアイテムに参照元を追加
-	 */
 	public void setItem(List<String> item) {
 		this.item = item;
 	}
 
-	/**
-	 * 参照元追加後の有効期限ごとのアイテム所持数量を取得
-	 *
-	 * @return スタンプシートでアイテムに参照元を追加
-	 */
+	public AddReferenceOfItemSetByStampSheetResult withItem(List<String> item) {
+		this.item = item;
+		return this;
+	}
+
 	public ItemSet getItemSet() {
 		return itemSet;
 	}
 
-	/**
-	 * 参照元追加後の有効期限ごとのアイテム所持数量を設定
-	 *
-	 * @param itemSet スタンプシートでアイテムに参照元を追加
-	 */
 	public void setItemSet(ItemSet itemSet) {
 		this.itemSet = itemSet;
 	}
 
-	/**
-	 * アイテムモデルを取得
-	 *
-	 * @return スタンプシートでアイテムに参照元を追加
-	 */
+	public AddReferenceOfItemSetByStampSheetResult withItemSet(ItemSet itemSet) {
+		this.itemSet = itemSet;
+		return this;
+	}
+
 	public ItemModel getItemModel() {
 		return itemModel;
 	}
 
-	/**
-	 * アイテムモデルを設定
-	 *
-	 * @param itemModel スタンプシートでアイテムに参照元を追加
-	 */
 	public void setItemModel(ItemModel itemModel) {
 		this.itemModel = itemModel;
 	}
 
-	/**
-	 * インベントリを取得
-	 *
-	 * @return スタンプシートでアイテムに参照元を追加
-	 */
+	public AddReferenceOfItemSetByStampSheetResult withItemModel(ItemModel itemModel) {
+		this.itemModel = itemModel;
+		return this;
+	}
+
 	public Inventory getInventory() {
 		return inventory;
 	}
 
-	/**
-	 * インベントリを設定
-	 *
-	 * @param inventory スタンプシートでアイテムに参照元を追加
-	 */
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
+
+	public AddReferenceOfItemSetByStampSheetResult withInventory(Inventory inventory) {
+		this.inventory = inventory;
+		return this;
+	}
+
+    public static AddReferenceOfItemSetByStampSheetResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AddReferenceOfItemSetByStampSheetResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("item").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withItemSet(data.get("itemSet") == null || data.get("itemSet").isNull() ? null : ItemSet.fromJson(data.get("itemSet")))
+            .withItemModel(data.get("itemModel") == null || data.get("itemModel").isNull() ? null : ItemModel.fromJson(data.get("itemModel")))
+            .withInventory(data.get("inventory") == null || data.get("inventory").isNull() ? null : Inventory.fromJson(data.get("inventory")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() == null ? new ArrayList<String>() :
+                    getItem().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("itemSet", getItemSet() != null ? getItemSet().toJson() : null);
+                put("itemModel", getItemModel() != null ? getItemModel().toJson() : null);
+                put("inventory", getInventory() != null ? getInventory().toJson() : null);
+            }}
+        );
+    }
 }

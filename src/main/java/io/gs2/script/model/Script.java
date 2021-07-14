@@ -16,253 +16,130 @@
 
 package io.gs2.script.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スクリプト
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Script implements IModel, Serializable, Comparable<Script> {
-	/** スクリプト */
-	protected String scriptId;
+	private String scriptId;
+	private String name;
+	private String description;
+	private String script;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * スクリプトを取得
-	 *
-	 * @return スクリプト
-	 */
 	public String getScriptId() {
 		return scriptId;
 	}
 
-	/**
-	 * スクリプトを設定
-	 *
-	 * @param scriptId スクリプト
-	 */
 	public void setScriptId(String scriptId) {
 		this.scriptId = scriptId;
 	}
 
-	/**
-	 * スクリプトを設定
-	 *
-	 * @param scriptId スクリプト
-	 * @return this
-	 */
 	public Script withScriptId(String scriptId) {
 		this.scriptId = scriptId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Script withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** スクリプト名 */
-	protected String name;
-
-	/**
-	 * スクリプト名を取得
-	 *
-	 * @return スクリプト名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * スクリプト名を設定
-	 *
-	 * @param name スクリプト名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * スクリプト名を設定
-	 *
-	 * @param name スクリプト名
-	 * @return this
-	 */
 	public Script withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 説明文 */
-	protected String description;
 
-	/**
-	 * 説明文を取得
-	 *
-	 * @return 説明文
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 説明文を設定
-	 *
-	 * @param description 説明文
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 説明文を設定
-	 *
-	 * @param description 説明文
-	 * @return this
-	 */
 	public Script withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** Luaスクリプト */
-	protected String script;
 
-	/**
-	 * Luaスクリプトを取得
-	 *
-	 * @return Luaスクリプト
-	 */
 	public String getScript() {
 		return script;
 	}
 
-	/**
-	 * Luaスクリプトを設定
-	 *
-	 * @param script Luaスクリプト
-	 */
 	public void setScript(String script) {
 		this.script = script;
 	}
 
-	/**
-	 * Luaスクリプトを設定
-	 *
-	 * @param script Luaスクリプト
-	 * @return this
-	 */
 	public Script withScript(String script) {
 		this.script = script;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Script withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Script withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("scriptId", this.getScriptId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("script", this.getScript())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Script fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Script()
+            .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("scriptId", getScriptId());
+                put("name", getName());
+                put("description", getDescription());
+                put("script", getScript());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Script o) {
 		return scriptId.compareTo(o.scriptId);
@@ -273,7 +150,6 @@ public class Script implements IModel, Serializable, Comparable<Script> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.scriptId == null) ? 0 : this.scriptId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.script == null) ? 0 : this.script.hashCode());
@@ -294,11 +170,6 @@ public class Script implements IModel, Serializable, Comparable<Script> {
 		if (scriptId == null) {
 			return other.scriptId == null;
 		} else if (!scriptId.equals(other.scriptId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {

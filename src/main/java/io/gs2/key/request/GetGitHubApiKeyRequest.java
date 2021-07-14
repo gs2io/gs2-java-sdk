@@ -16,82 +16,62 @@
 
 package io.gs2.key.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.key.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * GitHub のAPIキーを取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetGitHubApiKeyRequest extends Gs2BasicRequest<GetGitHubApiKeyRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return GitHub のAPIキーを取得します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName GitHub のAPIキーを取得します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName GitHub のAPIキーを取得します
-     * @return this
-     */
-    public GetGitHubApiKeyRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** GitHub APIキー名 */
     private String apiKeyName;
 
-    /**
-     * GitHub APIキー名を取得
-     *
-     * @return GitHub のAPIキーを取得します
-     */
-    public String getApiKeyName() {
-        return apiKeyName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetGitHubApiKeyRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getApiKeyName() {
+		return apiKeyName;
+	}
+
+	public void setApiKeyName(String apiKeyName) {
+		this.apiKeyName = apiKeyName;
+	}
+
+	public GetGitHubApiKeyRequest withApiKeyName(String apiKeyName) {
+		this.apiKeyName = apiKeyName;
+		return this;
+	}
+
+    public static GetGitHubApiKeyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetGitHubApiKeyRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withApiKeyName(data.get("apiKeyName") == null || data.get("apiKeyName").isNull() ? null : data.get("apiKeyName").asText());
     }
 
-    /**
-     * GitHub APIキー名を設定
-     *
-     * @param apiKeyName GitHub のAPIキーを取得します
-     */
-    public void setApiKeyName(String apiKeyName) {
-        this.apiKeyName = apiKeyName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("apiKeyName", getApiKeyName());
+            }}
+        );
     }
-
-    /**
-     * GitHub APIキー名を設定
-     *
-     * @param apiKeyName GitHub のAPIキーを取得します
-     * @return this
-     */
-    public GetGitHubApiKeyRequest withApiKeyName(String apiKeyName) {
-        setApiKeyName(apiKeyName);
-        return this;
-    }
-
 }

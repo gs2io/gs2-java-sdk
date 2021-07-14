@@ -16,168 +16,114 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * プレイヤー情報
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Player implements IModel, Serializable {
-	/** ユーザーID */
-	protected String userId;
+	private String userId;
+	private List<Attribute> attributes;
+	private String roleName;
+	private List<String> denyUserIds;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Player withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 属性値のリスト */
-	protected List<Attribute> attributes;
 
-	/**
-	 * 属性値のリストを取得
-	 *
-	 * @return 属性値のリスト
-	 */
 	public List<Attribute> getAttributes() {
 		return attributes;
 	}
 
-	/**
-	 * 属性値のリストを設定
-	 *
-	 * @param attributes 属性値のリスト
-	 */
 	public void setAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
 	}
 
-	/**
-	 * 属性値のリストを設定
-	 *
-	 * @param attributes 属性値のリスト
-	 * @return this
-	 */
 	public Player withAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
 		return this;
 	}
-	/** ロール名 */
-	protected String roleName;
 
-	/**
-	 * ロール名を取得
-	 *
-	 * @return ロール名
-	 */
 	public String getRoleName() {
 		return roleName;
 	}
 
-	/**
-	 * ロール名を設定
-	 *
-	 * @param roleName ロール名
-	 */
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
 
-	/**
-	 * ロール名を設定
-	 *
-	 * @param roleName ロール名
-	 * @return this
-	 */
 	public Player withRoleName(String roleName) {
 		this.roleName = roleName;
 		return this;
 	}
-	/** 参加を拒否するユーザIDリスト */
-	protected List<String> denyUserIds;
 
-	/**
-	 * 参加を拒否するユーザIDリストを取得
-	 *
-	 * @return 参加を拒否するユーザIDリスト
-	 */
 	public List<String> getDenyUserIds() {
 		return denyUserIds;
 	}
 
-	/**
-	 * 参加を拒否するユーザIDリストを設定
-	 *
-	 * @param denyUserIds 参加を拒否するユーザIDリスト
-	 */
 	public void setDenyUserIds(List<String> denyUserIds) {
 		this.denyUserIds = denyUserIds;
 	}
 
-	/**
-	 * 参加を拒否するユーザIDリストを設定
-	 *
-	 * @param denyUserIds 参加を拒否するユーザIDリスト
-	 * @return this
-	 */
 	public Player withDenyUserIds(List<String> denyUserIds) {
 		this.denyUserIds = denyUserIds;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> attributes = new ArrayList<>();
-        if(this.attributes != null) {
-            for(Attribute item : this.attributes) {
-                attributes.add(item.toJson());
-            }
+    public static Player fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-        List<JsonNode> denyUserIds = new ArrayList<>();
-        if(this.denyUserIds != null) {
-            for(String item : this.denyUserIds) {
-                denyUserIds.add(JsonNodeFactory.instance.textNode(item));
-            }
-        }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("userId", this.getUserId())
-            .put("roleName", this.getRoleName());
-        body_.set("attributes", JsonNodeFactory.instance.arrayNode().addAll(attributes));
-        body_.set("denyUserIds", JsonNodeFactory.instance.arrayNode().addAll(denyUserIds));
-        return body_;
+        return new Player()
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withAttributes(data.get("attributes") == null || data.get("attributes").isNull() ? new ArrayList<Attribute>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("attributes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Attribute.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withRoleName(data.get("roleName") == null || data.get("roleName").isNull() ? null : data.get("roleName").asText())
+            .withDenyUserIds(data.get("denyUserIds") == null || data.get("denyUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("denyUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userId", getUserId());
+                put("attributes", getAttributes() == null ? new ArrayList<Attribute>() :
+                    getAttributes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("roleName", getRoleName());
+                put("denyUserIds", getDenyUserIds() == null ? new ArrayList<String>() :
+                    getDenyUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
 
 	@Override

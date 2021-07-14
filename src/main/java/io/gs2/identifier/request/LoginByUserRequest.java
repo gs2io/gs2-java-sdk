@@ -16,82 +16,62 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * プロジェクトトークン を取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class LoginByUserRequest extends Gs2BasicRequest<LoginByUserRequest> {
-
-    /** GS2-Identifier のユーザ名 */
     private String userName;
-
-    /**
-     * GS2-Identifier のユーザ名を取得
-     *
-     * @return プロジェクトトークン を取得します
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * GS2-Identifier のユーザ名を設定
-     *
-     * @param userName プロジェクトトークン を取得します
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * GS2-Identifier のユーザ名を設定
-     *
-     * @param userName プロジェクトトークン を取得します
-     * @return this
-     */
-    public LoginByUserRequest withUserName(String userName) {
-        setUserName(userName);
-        return this;
-    }
-
-    /** GS2-Identifier のユーザのパスワード */
     private String password;
 
-    /**
-     * GS2-Identifier のユーザのパスワードを取得
-     *
-     * @return プロジェクトトークン を取得します
-     */
-    public String getPassword() {
-        return password;
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public LoginByUserRequest withUserName(String userName) {
+		this.userName = userName;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public LoginByUserRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+    public static LoginByUserRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LoginByUserRequest()
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
     }
 
-    /**
-     * GS2-Identifier のユーザのパスワードを設定
-     *
-     * @param password プロジェクトトークン を取得します
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userName", getUserName());
+                put("password", getPassword());
+            }}
+        );
     }
-
-    /**
-     * GS2-Identifier のユーザのパスワードを設定
-     *
-     * @param password プロジェクトトークン を取得します
-     * @return this
-     */
-    public LoginByUserRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
 }

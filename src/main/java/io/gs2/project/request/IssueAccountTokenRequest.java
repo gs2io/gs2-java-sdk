@@ -16,50 +16,46 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 指定したアカウント名のアカウントトークンを発行 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class IssueAccountTokenRequest extends Gs2BasicRequest<IssueAccountTokenRequest> {
-
-    /** GS2アカウントの名前 */
     private String accountName;
 
-    /**
-     * GS2アカウントの名前を取得
-     *
-     * @return 指定したアカウント名のアカウントトークンを発行
-     */
-    public String getAccountName() {
-        return accountName;
+	public String getAccountName() {
+		return accountName;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	public IssueAccountTokenRequest withAccountName(String accountName) {
+		this.accountName = accountName;
+		return this;
+	}
+
+    public static IssueAccountTokenRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new IssueAccountTokenRequest()
+            .withAccountName(data.get("accountName") == null || data.get("accountName").isNull() ? null : data.get("accountName").asText());
     }
 
-    /**
-     * GS2アカウントの名前を設定
-     *
-     * @param accountName 指定したアカウント名のアカウントトークンを発行
-     */
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountName", getAccountName());
+            }}
+        );
     }
-
-    /**
-     * GS2アカウントの名前を設定
-     *
-     * @param accountName 指定したアカウント名のアカウントトークンを発行
-     * @return this
-     */
-    public IssueAccountTokenRequest withAccountName(String accountName) {
-        setAccountName(accountName);
-        return this;
-    }
-
 }

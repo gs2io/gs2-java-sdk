@@ -16,82 +16,62 @@
 
 package io.gs2.script.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.script.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スクリプトを実行します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
-
-    /** スクリプト */
     private String scriptId;
-
-    /**
-     * スクリプトを取得
-     *
-     * @return スクリプトを実行します
-     */
-    public String getScriptId() {
-        return scriptId;
-    }
-
-    /**
-     * スクリプトを設定
-     *
-     * @param scriptId スクリプトを実行します
-     */
-    public void setScriptId(String scriptId) {
-        this.scriptId = scriptId;
-    }
-
-    /**
-     * スクリプトを設定
-     *
-     * @param scriptId スクリプトを実行します
-     * @return this
-     */
-    public InvokeScriptRequest withScriptId(String scriptId) {
-        setScriptId(scriptId);
-        return this;
-    }
-
-    /** None */
     private String args;
 
-    /**
-     * Noneを取得
-     *
-     * @return スクリプトを実行します
-     */
-    public String getArgs() {
-        return args;
+	public String getScriptId() {
+		return scriptId;
+	}
+
+	public void setScriptId(String scriptId) {
+		this.scriptId = scriptId;
+	}
+
+	public InvokeScriptRequest withScriptId(String scriptId) {
+		this.scriptId = scriptId;
+		return this;
+	}
+
+	public String getArgs() {
+		return args;
+	}
+
+	public void setArgs(String args) {
+		this.args = args;
+	}
+
+	public InvokeScriptRequest withArgs(String args) {
+		this.args = args;
+		return this;
+	}
+
+    public static InvokeScriptRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new InvokeScriptRequest()
+            .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
+            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText());
     }
 
-    /**
-     * Noneを設定
-     *
-     * @param args スクリプトを実行します
-     */
-    public void setArgs(String args) {
-        this.args = args;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("scriptId", getScriptId());
+                put("args", getArgs());
+            }}
+        );
     }
-
-    /**
-     * Noneを設定
-     *
-     * @param args スクリプトを実行します
-     * @return this
-     */
-    public InvokeScriptRequest withArgs(String args) {
-        setArgs(args);
-        return this;
-    }
-
 }

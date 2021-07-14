@@ -16,178 +16,94 @@
 
 package io.gs2.friend.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.friend.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * フレンドを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetFriendRequest extends Gs2BasicRequest<GetFriendRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return フレンドを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName フレンドを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName フレンドを取得
-     * @return this
-     */
-    public GetFriendRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
+    private String accessToken;
     private String targetUserId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return フレンドを取得
-     */
-    public String getTargetUserId() {
-        return targetUserId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param targetUserId フレンドを取得
-     */
-    public void setTargetUserId(String targetUserId) {
-        this.targetUserId = targetUserId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param targetUserId フレンドを取得
-     * @return this
-     */
-    public GetFriendRequest withTargetUserId(String targetUserId) {
-        setTargetUserId(targetUserId);
-        return this;
-    }
-
-    /** プロフィールも一緒に取得するか */
     private Boolean withProfile;
 
-    /**
-     * プロフィールも一緒に取得するかを取得
-     *
-     * @return フレンドを取得
-     */
-    public Boolean getWithProfile() {
-        return withProfile;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetFriendRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public GetFriendRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getTargetUserId() {
+		return targetUserId;
+	}
+
+	public void setTargetUserId(String targetUserId) {
+		this.targetUserId = targetUserId;
+	}
+
+	public GetFriendRequest withTargetUserId(String targetUserId) {
+		this.targetUserId = targetUserId;
+		return this;
+	}
+
+	public Boolean getWithProfile() {
+		return withProfile;
+	}
+
+	public void setWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+	}
+
+	public GetFriendRequest withWithProfile(Boolean withProfile) {
+		this.withProfile = withProfile;
+		return this;
+	}
+
+    public static GetFriendRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetFriendRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText())
+            .withWithProfile(data.get("withProfile") == null || data.get("withProfile").isNull() ? null : data.get("withProfile").booleanValue());
     }
 
-    /**
-     * プロフィールも一緒に取得するかを設定
-     *
-     * @param withProfile フレンドを取得
-     */
-    public void setWithProfile(Boolean withProfile) {
-        this.withProfile = withProfile;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("accessToken", getAccessToken());
+                put("targetUserId", getTargetUserId());
+                put("withProfile", getWithProfile());
+            }}
+        );
     }
-
-    /**
-     * プロフィールも一緒に取得するかを設定
-     *
-     * @param withProfile フレンドを取得
-     * @return this
-     */
-    public GetFriendRequest withWithProfile(Boolean withProfile) {
-        setWithProfile(withProfile);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return フレンドを取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider フレンドを取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider フレンドを取得
-     * @return this
-     */
-    public GetFriendRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public GetFriendRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

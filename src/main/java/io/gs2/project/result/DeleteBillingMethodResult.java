@@ -16,39 +16,48 @@
 
 package io.gs2.project.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.project.model.*;
+import io.gs2.project.model.BillingMethod;
 
-/**
- * 支払い方法を削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteBillingMethodResult implements IResult, Serializable {
-	/** 削除した支払い方法 */
-	private BillingMethod item;
+    private BillingMethod item;
 
-	/**
-	 * 削除した支払い方法を取得
-	 *
-	 * @return 支払い方法を削除
-	 */
 	public BillingMethod getItem() {
 		return item;
 	}
 
-	/**
-	 * 削除した支払い方法を設定
-	 *
-	 * @param item 支払い方法を削除
-	 */
 	public void setItem(BillingMethod item) {
 		this.item = item;
 	}
+
+	public DeleteBillingMethodResult withItem(BillingMethod item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteBillingMethodResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteBillingMethodResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : BillingMethod.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

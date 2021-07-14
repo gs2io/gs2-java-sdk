@@ -16,189 +16,114 @@
 
 package io.gs2.schedule.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * トリガー
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Trigger implements IModel, Serializable, Comparable<Trigger> {
-	/** トリガー */
-	protected String triggerId;
+	private String triggerId;
+	private String name;
+	private String userId;
+	private Long createdAt;
+	private Long expiresAt;
 
-	/**
-	 * トリガーを取得
-	 *
-	 * @return トリガー
-	 */
 	public String getTriggerId() {
 		return triggerId;
 	}
 
-	/**
-	 * トリガーを設定
-	 *
-	 * @param triggerId トリガー
-	 */
 	public void setTriggerId(String triggerId) {
 		this.triggerId = triggerId;
 	}
 
-	/**
-	 * トリガーを設定
-	 *
-	 * @param triggerId トリガー
-	 * @return this
-	 */
 	public Trigger withTriggerId(String triggerId) {
 		this.triggerId = triggerId;
 		return this;
 	}
-	/** トリガーの名前 */
-	protected String name;
 
-	/**
-	 * トリガーの名前を取得
-	 *
-	 * @return トリガーの名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * トリガーの名前を設定
-	 *
-	 * @param name トリガーの名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * トリガーの名前を設定
-	 *
-	 * @param name トリガーの名前
-	 * @return this
-	 */
 	public Trigger withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Trigger withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Trigger withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** トリガーの有効期限 */
-	protected Long expiresAt;
 
-	/**
-	 * トリガーの有効期限を取得
-	 *
-	 * @return トリガーの有効期限
-	 */
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
 
-	/**
-	 * トリガーの有効期限を設定
-	 *
-	 * @param expiresAt トリガーの有効期限
-	 */
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
 
-	/**
-	 * トリガーの有効期限を設定
-	 *
-	 * @param expiresAt トリガーの有効期限
-	 * @return this
-	 */
 	public Trigger withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("triggerId", this.getTriggerId())
-            .put("name", this.getName())
-            .put("userId", this.getUserId())
-            .put("createdAt", this.getCreatedAt())
-            .put("expiresAt", this.getExpiresAt());
-        return body_;
+    public static Trigger fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Trigger()
+            .withTriggerId(data.get("triggerId") == null || data.get("triggerId").isNull() ? null : data.get("triggerId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("triggerId", getTriggerId());
+                put("name", getName());
+                put("userId", getUserId());
+                put("createdAt", getCreatedAt());
+                put("expiresAt", getExpiresAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Trigger o) {
 		return triggerId.compareTo(o.triggerId);

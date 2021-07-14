@@ -16,274 +16,158 @@
 
 package io.gs2.lottery.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.lottery.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 抽選の種類マスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateLotteryModelMasterRequest extends Gs2BasicRequest<UpdateLotteryModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 抽選の種類マスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 抽選の種類マスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 抽選の種類マスターを更新
-     * @return this
-     */
-    public UpdateLotteryModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 抽選モデルの種類名 */
     private String lotteryName;
-
-    /**
-     * 抽選モデルの種類名を取得
-     *
-     * @return 抽選の種類マスターを更新
-     */
-    public String getLotteryName() {
-        return lotteryName;
-    }
-
-    /**
-     * 抽選モデルの種類名を設定
-     *
-     * @param lotteryName 抽選の種類マスターを更新
-     */
-    public void setLotteryName(String lotteryName) {
-        this.lotteryName = lotteryName;
-    }
-
-    /**
-     * 抽選モデルの種類名を設定
-     *
-     * @param lotteryName 抽選の種類マスターを更新
-     * @return this
-     */
-    public UpdateLotteryModelMasterRequest withLotteryName(String lotteryName) {
-        setLotteryName(lotteryName);
-        return this;
-    }
-
-    /** 抽選の種類マスターの説明 */
     private String description;
-
-    /**
-     * 抽選の種類マスターの説明を取得
-     *
-     * @return 抽選の種類マスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 抽選の種類マスターの説明を設定
-     *
-     * @param description 抽選の種類マスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 抽選の種類マスターの説明を設定
-     *
-     * @param description 抽選の種類マスターを更新
-     * @return this
-     */
-    public UpdateLotteryModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 抽選モデルの種類のメタデータ */
     private String metadata;
-
-    /**
-     * 抽選モデルの種類のメタデータを取得
-     *
-     * @return 抽選の種類マスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 抽選モデルの種類のメタデータを設定
-     *
-     * @param metadata 抽選の種類マスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 抽選モデルの種類のメタデータを設定
-     *
-     * @param metadata 抽選の種類マスターを更新
-     * @return this
-     */
-    public UpdateLotteryModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 抽選モード */
     private String mode;
-
-    /**
-     * 抽選モードを取得
-     *
-     * @return 抽選の種類マスターを更新
-     */
-    public String getMode() {
-        return mode;
-    }
-
-    /**
-     * 抽選モードを設定
-     *
-     * @param mode 抽選の種類マスターを更新
-     */
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
-    /**
-     * 抽選モードを設定
-     *
-     * @param mode 抽選の種類マスターを更新
-     * @return this
-     */
-    public UpdateLotteryModelMasterRequest withMode(String mode) {
-        setMode(mode);
-        return this;
-    }
-
-    /** 抽選方法 */
     private String method;
-
-    /**
-     * 抽選方法を取得
-     *
-     * @return 抽選の種類マスターを更新
-     */
-    public String getMethod() {
-        return method;
-    }
-
-    /**
-     * 抽選方法を設定
-     *
-     * @param method 抽選の種類マスターを更新
-     */
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    /**
-     * 抽選方法を設定
-     *
-     * @param method 抽選の種類マスターを更新
-     * @return this
-     */
-    public UpdateLotteryModelMasterRequest withMethod(String method) {
-        setMethod(method);
-        return this;
-    }
-
-    /** 景品テーブルの名前 */
     private String prizeTableName;
-
-    /**
-     * 景品テーブルの名前を取得
-     *
-     * @return 抽選の種類マスターを更新
-     */
-    public String getPrizeTableName() {
-        return prizeTableName;
-    }
-
-    /**
-     * 景品テーブルの名前を設定
-     *
-     * @param prizeTableName 抽選の種類マスターを更新
-     */
-    public void setPrizeTableName(String prizeTableName) {
-        this.prizeTableName = prizeTableName;
-    }
-
-    /**
-     * 景品テーブルの名前を設定
-     *
-     * @param prizeTableName 抽選の種類マスターを更新
-     * @return this
-     */
-    public UpdateLotteryModelMasterRequest withPrizeTableName(String prizeTableName) {
-        setPrizeTableName(prizeTableName);
-        return this;
-    }
-
-    /** 抽選テーブルを確定するスクリプト のGRN */
     private String choicePrizeTableScriptId;
 
-    /**
-     * 抽選テーブルを確定するスクリプト のGRNを取得
-     *
-     * @return 抽選の種類マスターを更新
-     */
-    public String getChoicePrizeTableScriptId() {
-        return choicePrizeTableScriptId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateLotteryModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getLotteryName() {
+		return lotteryName;
+	}
+
+	public void setLotteryName(String lotteryName) {
+		this.lotteryName = lotteryName;
+	}
+
+	public UpdateLotteryModelMasterRequest withLotteryName(String lotteryName) {
+		this.lotteryName = lotteryName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateLotteryModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateLotteryModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getMode() {
+		return mode;
+	}
+
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+
+	public UpdateLotteryModelMasterRequest withMode(String mode) {
+		this.mode = mode;
+		return this;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	public UpdateLotteryModelMasterRequest withMethod(String method) {
+		this.method = method;
+		return this;
+	}
+
+	public String getPrizeTableName() {
+		return prizeTableName;
+	}
+
+	public void setPrizeTableName(String prizeTableName) {
+		this.prizeTableName = prizeTableName;
+	}
+
+	public UpdateLotteryModelMasterRequest withPrizeTableName(String prizeTableName) {
+		this.prizeTableName = prizeTableName;
+		return this;
+	}
+
+	public String getChoicePrizeTableScriptId() {
+		return choicePrizeTableScriptId;
+	}
+
+	public void setChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
+		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
+	}
+
+	public UpdateLotteryModelMasterRequest withChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
+		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
+		return this;
+	}
+
+    public static UpdateLotteryModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateLotteryModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withLotteryName(data.get("lotteryName") == null || data.get("lotteryName").isNull() ? null : data.get("lotteryName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withMode(data.get("mode") == null || data.get("mode").isNull() ? null : data.get("mode").asText())
+            .withMethod(data.get("method") == null || data.get("method").isNull() ? null : data.get("method").asText())
+            .withPrizeTableName(data.get("prizeTableName") == null || data.get("prizeTableName").isNull() ? null : data.get("prizeTableName").asText())
+            .withChoicePrizeTableScriptId(data.get("choicePrizeTableScriptId") == null || data.get("choicePrizeTableScriptId").isNull() ? null : data.get("choicePrizeTableScriptId").asText());
     }
 
-    /**
-     * 抽選テーブルを確定するスクリプト のGRNを設定
-     *
-     * @param choicePrizeTableScriptId 抽選の種類マスターを更新
-     */
-    public void setChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
-        this.choicePrizeTableScriptId = choicePrizeTableScriptId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("lotteryName", getLotteryName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("mode", getMode());
+                put("method", getMethod());
+                put("prizeTableName", getPrizeTableName());
+                put("choicePrizeTableScriptId", getChoicePrizeTableScriptId());
+            }}
+        );
     }
-
-    /**
-     * 抽選テーブルを確定するスクリプト のGRNを設定
-     *
-     * @param choicePrizeTableScriptId 抽選の種類マスターを更新
-     * @return this
-     */
-    public UpdateLotteryModelMasterRequest withChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
-        setChoicePrizeTableScriptId(choicePrizeTableScriptId);
-        return this;
-    }
-
 }

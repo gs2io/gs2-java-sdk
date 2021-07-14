@@ -16,39 +16,48 @@
 
 package io.gs2.dictionary.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.dictionary.model.*;
+import io.gs2.dictionary.model.EntryModelMaster;
 
-/**
- * エントリーモデルマスターを新規作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateEntryModelMasterResult implements IResult, Serializable {
-	/** 作成したエントリーモデルマスター */
-	private EntryModelMaster item;
+    private EntryModelMaster item;
 
-	/**
-	 * 作成したエントリーモデルマスターを取得
-	 *
-	 * @return エントリーモデルマスターを新規作成
-	 */
 	public EntryModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 作成したエントリーモデルマスターを設定
-	 *
-	 * @param item エントリーモデルマスターを新規作成
-	 */
 	public void setItem(EntryModelMaster item) {
 		this.item = item;
 	}
+
+	public CreateEntryModelMasterResult withItem(EntryModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateEntryModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateEntryModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : EntryModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

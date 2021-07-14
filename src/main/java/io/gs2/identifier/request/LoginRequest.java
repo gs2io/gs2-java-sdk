@@ -16,82 +16,62 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * プロジェクトトークン を取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class LoginRequest extends Gs2BasicRequest<LoginRequest> {
+    private String clientId;
+    private String clientSecret;
 
-    /** クライアントID */
-    private String client_id;
+	public String getClientId() {
+		return clientId;
+	}
 
-    /**
-     * クライアントIDを取得
-     *
-     * @return プロジェクトトークン を取得します
-     */
-    public String getClientId() {
-        return client_id;
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
+	public LoginRequest withClientId(String clientId) {
+		this.clientId = clientId;
+		return this;
+	}
+
+	public String getClientSecret() {
+		return clientSecret;
+	}
+
+	public void setClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
+	}
+
+	public LoginRequest withClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
+		return this;
+	}
+
+    public static LoginRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LoginRequest()
+            .withClientId(data.get("clientId") == null || data.get("clientId").isNull() ? null : data.get("clientId").asText())
+            .withClientSecret(data.get("clientSecret") == null || data.get("clientSecret").isNull() ? null : data.get("clientSecret").asText());
     }
 
-    /**
-     * クライアントIDを設定
-     *
-     * @param clientId プロジェクトトークン を取得します
-     */
-    public void setClientId(String clientId) {
-        this.client_id = clientId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("clientId", getClientId());
+                put("clientSecret", getClientSecret());
+            }}
+        );
     }
-
-    /**
-     * クライアントIDを設定
-     *
-     * @param clientId プロジェクトトークン を取得します
-     * @return this
-     */
-    public LoginRequest withClientId(String clientId) {
-        setClientId(clientId);
-        return this;
-    }
-
-    /** クライアントシークレット */
-    private String client_secret;
-
-    /**
-     * クライアントシークレットを取得
-     *
-     * @return プロジェクトトークン を取得します
-     */
-    public String getClientSecret() {
-        return client_secret;
-    }
-
-    /**
-     * クライアントシークレットを設定
-     *
-     * @param clientSecret プロジェクトトークン を取得します
-     */
-    public void setClientSecret(String clientSecret) {
-        this.client_secret = clientSecret;
-    }
-
-    /**
-     * クライアントシークレットを設定
-     *
-     * @param clientSecret プロジェクトトークン を取得します
-     * @return this
-     */
-    public LoginRequest withClientSecret(String clientSecret) {
-        setClientSecret(clientSecret);
-        return this;
-    }
-
 }

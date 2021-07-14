@@ -16,50 +16,46 @@
 
 package io.gs2.experience.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.experience.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 経験値・ランクアップ閾値モデルの一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeExperienceModelsRequest extends Gs2BasicRequest<DescribeExperienceModelsRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
 
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 経験値・ランクアップ閾値モデルの一覧を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeExperienceModelsRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+    public static DescribeExperienceModelsRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeExperienceModelsRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText());
     }
 
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 経験値・ランクアップ閾値モデルの一覧を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+            }}
+        );
     }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 経験値・ランクアップ閾値モデルの一覧を取得
-     * @return this
-     */
-    public DescribeExperienceModelsRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
 }

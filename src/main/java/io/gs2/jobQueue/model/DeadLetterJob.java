@@ -16,291 +16,172 @@
 
 package io.gs2.jobQueue.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * デッドレタージョブ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeadLetterJob implements IModel, Serializable, Comparable<DeadLetterJob> {
-	/** デッドレタージョブ */
-	protected String deadLetterJobId;
+	private String deadLetterJobId;
+	private String name;
+	private String userId;
+	private String scriptId;
+	private String args;
+	private List<JobResultBody> result;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * デッドレタージョブを取得
-	 *
-	 * @return デッドレタージョブ
-	 */
 	public String getDeadLetterJobId() {
 		return deadLetterJobId;
 	}
 
-	/**
-	 * デッドレタージョブを設定
-	 *
-	 * @param deadLetterJobId デッドレタージョブ
-	 */
 	public void setDeadLetterJobId(String deadLetterJobId) {
 		this.deadLetterJobId = deadLetterJobId;
 	}
 
-	/**
-	 * デッドレタージョブを設定
-	 *
-	 * @param deadLetterJobId デッドレタージョブ
-	 * @return this
-	 */
 	public DeadLetterJob withDeadLetterJobId(String deadLetterJobId) {
 		this.deadLetterJobId = deadLetterJobId;
 		return this;
 	}
-	/** ジョブの名前 */
-	protected String name;
 
-	/**
-	 * ジョブの名前を取得
-	 *
-	 * @return ジョブの名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ジョブの名前を設定
-	 *
-	 * @param name ジョブの名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ジョブの名前を設定
-	 *
-	 * @param name ジョブの名前
-	 * @return this
-	 */
 	public DeadLetterJob withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public DeadLetterJob withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** ジョブの実行に使用するスクリプト のGRN */
-	protected String scriptId;
 
-	/**
-	 * ジョブの実行に使用するスクリプト のGRNを取得
-	 *
-	 * @return ジョブの実行に使用するスクリプト のGRN
-	 */
 	public String getScriptId() {
 		return scriptId;
 	}
 
-	/**
-	 * ジョブの実行に使用するスクリプト のGRNを設定
-	 *
-	 * @param scriptId ジョブの実行に使用するスクリプト のGRN
-	 */
 	public void setScriptId(String scriptId) {
 		this.scriptId = scriptId;
 	}
 
-	/**
-	 * ジョブの実行に使用するスクリプト のGRNを設定
-	 *
-	 * @param scriptId ジョブの実行に使用するスクリプト のGRN
-	 * @return this
-	 */
 	public DeadLetterJob withScriptId(String scriptId) {
 		this.scriptId = scriptId;
 		return this;
 	}
-	/** 引数 */
-	protected String args;
 
-	/**
-	 * 引数を取得
-	 *
-	 * @return 引数
-	 */
 	public String getArgs() {
 		return args;
 	}
 
-	/**
-	 * 引数を設定
-	 *
-	 * @param args 引数
-	 */
 	public void setArgs(String args) {
 		this.args = args;
 	}
 
-	/**
-	 * 引数を設定
-	 *
-	 * @param args 引数
-	 * @return this
-	 */
 	public DeadLetterJob withArgs(String args) {
 		this.args = args;
 		return this;
 	}
-	/** ジョブ実行結果 */
-	protected List<JobResultBody> result;
 
-	/**
-	 * ジョブ実行結果を取得
-	 *
-	 * @return ジョブ実行結果
-	 */
 	public List<JobResultBody> getResult() {
 		return result;
 	}
 
-	/**
-	 * ジョブ実行結果を設定
-	 *
-	 * @param result ジョブ実行結果
-	 */
 	public void setResult(List<JobResultBody> result) {
 		this.result = result;
 	}
 
-	/**
-	 * ジョブ実行結果を設定
-	 *
-	 * @param result ジョブ実行結果
-	 * @return this
-	 */
 	public DeadLetterJob withResult(List<JobResultBody> result) {
 		this.result = result;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public DeadLetterJob withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public DeadLetterJob withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> result = new ArrayList<>();
-        if(this.result != null) {
-            for(JobResultBody item : this.result) {
-                result.add(item.toJson());
-            }
+    public static DeadLetterJob fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("deadLetterJobId", this.getDeadLetterJobId())
-            .put("name", this.getName())
-            .put("userId", this.getUserId())
-            .put("scriptId", this.getScriptId())
-            .put("args", this.getArgs())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("result", JsonNodeFactory.instance.arrayNode().addAll(result));
-        return body_;
+        return new DeadLetterJob()
+            .withDeadLetterJobId(data.get("deadLetterJobId") == null || data.get("deadLetterJobId").isNull() ? null : data.get("deadLetterJobId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
+            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
+            .withResult(data.get("result") == null || data.get("result").isNull() ? new ArrayList<JobResultBody>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("result").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return JobResultBody.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("deadLetterJobId", getDeadLetterJobId());
+                put("name", getName());
+                put("userId", getUserId());
+                put("scriptId", getScriptId());
+                put("args", getArgs());
+                put("result", getResult() == null ? new ArrayList<JobResultBody>() :
+                    getResult().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(DeadLetterJob o) {
 		return deadLetterJobId.compareTo(o.deadLetterJobId);

@@ -16,178 +16,94 @@
 
 package io.gs2.account.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.account.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ゲームプレイヤーアカウントを認証 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class AuthenticationRequest extends Gs2BasicRequest<AuthenticationRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ゲームプレイヤーアカウントを認証
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ゲームプレイヤーアカウントを認証
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ゲームプレイヤーアカウントを認証
-     * @return this
-     */
-    public AuthenticationRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** アカウントID */
     private String userId;
-
-    /**
-     * アカウントIDを取得
-     *
-     * @return ゲームプレイヤーアカウントを認証
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * アカウントIDを設定
-     *
-     * @param userId ゲームプレイヤーアカウントを認証
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * アカウントIDを設定
-     *
-     * @param userId ゲームプレイヤーアカウントを認証
-     * @return this
-     */
-    public AuthenticationRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 認証トークンの暗号化に使用する暗号鍵 のGRN */
     private String keyId;
-
-    /**
-     * 認証トークンの暗号化に使用する暗号鍵 のGRNを取得
-     *
-     * @return ゲームプレイヤーアカウントを認証
-     */
-    public String getKeyId() {
-        return keyId;
-    }
-
-    /**
-     * 認証トークンの暗号化に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId ゲームプレイヤーアカウントを認証
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
-    }
-
-    /**
-     * 認証トークンの暗号化に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId ゲームプレイヤーアカウントを認証
-     * @return this
-     */
-    public AuthenticationRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** パスワード */
     private String password;
 
-    /**
-     * パスワードを取得
-     *
-     * @return ゲームプレイヤーアカウントを認証
-     */
-    public String getPassword() {
-        return password;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public AuthenticationRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public AuthenticationRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public AuthenticationRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public AuthenticationRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+    public static AuthenticationRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AuthenticationRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
     }
 
-    /**
-     * パスワードを設定
-     *
-     * @param password ゲームプレイヤーアカウントを認証
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("keyId", getKeyId());
+                put("password", getPassword());
+            }}
+        );
     }
-
-    /**
-     * パスワードを設定
-     *
-     * @param password ゲームプレイヤーアカウントを認証
-     * @return this
-     */
-    public AuthenticationRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ゲームプレイヤーアカウントを認証
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ゲームプレイヤーアカウントを認証
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ゲームプレイヤーアカウントを認証
-     * @return this
-     */
-    public AuthenticationRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

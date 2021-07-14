@@ -16,82 +16,62 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザを更新します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateUserRequest extends Gs2BasicRequest<UpdateUserRequest> {
-
-    /** ユーザー名 */
     private String userName;
-
-    /**
-     * ユーザー名を取得
-     *
-     * @return ユーザを更新します
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName ユーザを更新します
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName ユーザを更新します
-     * @return this
-     */
-    public UpdateUserRequest withUserName(String userName) {
-        setUserName(userName);
-        return this;
-    }
-
-    /** ユーザの説明 */
     private String description;
 
-    /**
-     * ユーザの説明を取得
-     *
-     * @return ユーザを更新します
-     */
-    public String getDescription() {
-        return description;
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public UpdateUserRequest withUserName(String userName) {
+		this.userName = userName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateUserRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+    public static UpdateUserRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateUserRequest()
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText());
     }
 
-    /**
-     * ユーザの説明を設定
-     *
-     * @param description ユーザを更新します
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userName", getUserName());
+                put("description", getDescription());
+            }}
+        );
     }
-
-    /**
-     * ユーザの説明を設定
-     *
-     * @param description ユーザを更新します
-     * @return this
-     */
-    public UpdateUserRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
 }

@@ -16,163 +16,108 @@
 
 package io.gs2.lottery.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 排出確率テーブル
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrizeTable implements IModel, Serializable, Comparable<PrizeTable> {
-	/** 排出確率テーブルマスター */
-	protected String prizeTableId;
+	private String prizeTableId;
+	private String name;
+	private String metadata;
+	private List<Prize> prizes;
 
-	/**
-	 * 排出確率テーブルマスターを取得
-	 *
-	 * @return 排出確率テーブルマスター
-	 */
 	public String getPrizeTableId() {
 		return prizeTableId;
 	}
 
-	/**
-	 * 排出確率テーブルマスターを設定
-	 *
-	 * @param prizeTableId 排出確率テーブルマスター
-	 */
 	public void setPrizeTableId(String prizeTableId) {
 		this.prizeTableId = prizeTableId;
 	}
 
-	/**
-	 * 排出確率テーブルマスターを設定
-	 *
-	 * @param prizeTableId 排出確率テーブルマスター
-	 * @return this
-	 */
 	public PrizeTable withPrizeTableId(String prizeTableId) {
 		this.prizeTableId = prizeTableId;
 		return this;
 	}
-	/** 景品テーブル名 */
-	protected String name;
 
-	/**
-	 * 景品テーブル名を取得
-	 *
-	 * @return 景品テーブル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 景品テーブル名を設定
-	 *
-	 * @param name 景品テーブル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 景品テーブル名を設定
-	 *
-	 * @param name 景品テーブル名
-	 * @return this
-	 */
 	public PrizeTable withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 景品テーブルのメタデータ */
-	protected String metadata;
 
-	/**
-	 * 景品テーブルのメタデータを取得
-	 *
-	 * @return 景品テーブルのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 景品テーブルのメタデータを設定
-	 *
-	 * @param metadata 景品テーブルのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 景品テーブルのメタデータを設定
-	 *
-	 * @param metadata 景品テーブルのメタデータ
-	 * @return this
-	 */
 	public PrizeTable withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 景品リスト */
-	protected List<Prize> prizes;
 
-	/**
-	 * 景品リストを取得
-	 *
-	 * @return 景品リスト
-	 */
 	public List<Prize> getPrizes() {
 		return prizes;
 	}
 
-	/**
-	 * 景品リストを設定
-	 *
-	 * @param prizes 景品リスト
-	 */
 	public void setPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 	}
 
-	/**
-	 * 景品リストを設定
-	 *
-	 * @param prizes 景品リスト
-	 * @return this
-	 */
 	public PrizeTable withPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> prizes = new ArrayList<>();
-        if(this.prizes != null) {
-            for(Prize item : this.prizes) {
-                prizes.add(item.toJson());
-            }
+    public static PrizeTable fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("prizeTableId", this.getPrizeTableId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata());
-        body_.set("prizes", JsonNodeFactory.instance.arrayNode().addAll(prizes));
-        return body_;
+        return new PrizeTable()
+            .withPrizeTableId(data.get("prizeTableId") == null || data.get("prizeTableId").isNull() ? null : data.get("prizeTableId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withPrizes(data.get("prizes") == null || data.get("prizes").isNull() ? new ArrayList<Prize>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("prizes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Prize.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("prizeTableId", getPrizeTableId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("prizes", getPrizes() == null ? new ArrayList<Prize>() :
+                    getPrizes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(PrizeTable o) {
 		return prizeTableId.compareTo(o.prizeTableId);

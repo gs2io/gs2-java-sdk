@@ -16,146 +16,78 @@
 
 package io.gs2.lock.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.lock.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定してミューテックスを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetMutexByUserIdRequest extends Gs2BasicRequest<GetMutexByUserIdRequest> {
-
-    /** カテゴリー名 */
     private String namespaceName;
-
-    /**
-     * カテゴリー名を取得
-     *
-     * @return ユーザIDを指定してミューテックスを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * カテゴリー名を設定
-     *
-     * @param namespaceName ユーザIDを指定してミューテックスを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * カテゴリー名を設定
-     *
-     * @param namespaceName ユーザIDを指定してミューテックスを取得
-     * @return this
-     */
-    public GetMutexByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** プロパティID */
+    private String userId;
     private String propertyId;
 
-    /**
-     * プロパティIDを取得
-     *
-     * @return ユーザIDを指定してミューテックスを取得
-     */
-    public String getPropertyId() {
-        return propertyId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetMutexByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public GetMutexByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getPropertyId() {
+		return propertyId;
+	}
+
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+	}
+
+	public GetMutexByUserIdRequest withPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+		return this;
+	}
+
+    public static GetMutexByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetMutexByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText());
     }
 
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ユーザIDを指定してミューテックスを取得
-     */
-    public void setPropertyId(String propertyId) {
-        this.propertyId = propertyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("propertyId", getPropertyId());
+            }}
+        );
     }
-
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ユーザIDを指定してミューテックスを取得
-     * @return this
-     */
-    public GetMutexByUserIdRequest withPropertyId(String propertyId) {
-        setPropertyId(propertyId);
-        return this;
-    }
-
-    /** ユーザーID */
-    private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してミューテックスを取得
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してミューテックスを取得
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してミューテックスを取得
-     * @return this
-     */
-    public GetMutexByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してミューテックスを取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してミューテックスを取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してミューテックスを取得
-     * @return this
-     */
-    public GetMutexByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

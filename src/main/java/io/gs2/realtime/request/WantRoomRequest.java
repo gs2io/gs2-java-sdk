@@ -16,114 +16,86 @@
 
 package io.gs2.realtime.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.realtime.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ルームの作成依頼。 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class WantRoomRequest extends Gs2BasicRequest<WantRoomRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ルームの作成依頼。
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームの作成依頼。
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームの作成依頼。
-     * @return this
-     */
-    public WantRoomRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ルーム名 */
     private String name;
-
-    /**
-     * ルーム名を取得
-     *
-     * @return ルームの作成依頼。
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param name ルームの作成依頼。
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param name ルームの作成依頼。
-     * @return this
-     */
-    public WantRoomRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** ルームの作成が終わったときに通知を受けるユーザIDリスト */
     private List<String> notificationUserIds;
 
-    /**
-     * ルームの作成が終わったときに通知を受けるユーザIDリストを取得
-     *
-     * @return ルームの作成依頼。
-     */
-    public List<String> getNotificationUserIds() {
-        return notificationUserIds;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public WantRoomRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public WantRoomRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public List<String> getNotificationUserIds() {
+		return notificationUserIds;
+	}
+
+	public void setNotificationUserIds(List<String> notificationUserIds) {
+		this.notificationUserIds = notificationUserIds;
+	}
+
+	public WantRoomRequest withNotificationUserIds(List<String> notificationUserIds) {
+		this.notificationUserIds = notificationUserIds;
+		return this;
+	}
+
+    public static WantRoomRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new WantRoomRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withNotificationUserIds(data.get("notificationUserIds") == null || data.get("notificationUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("notificationUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * ルームの作成が終わったときに通知を受けるユーザIDリストを設定
-     *
-     * @param notificationUserIds ルームの作成依頼。
-     */
-    public void setNotificationUserIds(List<String> notificationUserIds) {
-        this.notificationUserIds = notificationUserIds;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("notificationUserIds", getNotificationUserIds() == null ? new ArrayList<String>() :
+                    getNotificationUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * ルームの作成が終わったときに通知を受けるユーザIDリストを設定
-     *
-     * @param notificationUserIds ルームの作成依頼。
-     * @return this
-     */
-    public WantRoomRequest withNotificationUserIds(List<String> notificationUserIds) {
-        setNotificationUserIds(notificationUserIds);
-        return this;
-    }
-
 }

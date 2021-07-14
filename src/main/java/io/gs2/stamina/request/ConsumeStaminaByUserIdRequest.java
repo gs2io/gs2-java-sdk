@@ -16,178 +16,94 @@
 
 package io.gs2.stamina.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.stamina.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定してスタミナを消費 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ConsumeStaminaByUserIdRequest extends Gs2BasicRequest<ConsumeStaminaByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定してスタミナを消費
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してスタミナを消費
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してスタミナを消費
-     * @return this
-     */
-    public ConsumeStaminaByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** スタミナの種類名 */
     private String staminaName;
-
-    /**
-     * スタミナの種類名を取得
-     *
-     * @return ユーザIDを指定してスタミナを消費
-     */
-    public String getStaminaName() {
-        return staminaName;
-    }
-
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName ユーザIDを指定してスタミナを消費
-     */
-    public void setStaminaName(String staminaName) {
-        this.staminaName = staminaName;
-    }
-
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName ユーザIDを指定してスタミナを消費
-     * @return this
-     */
-    public ConsumeStaminaByUserIdRequest withStaminaName(String staminaName) {
-        setStaminaName(staminaName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してスタミナを消費
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してスタミナを消費
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してスタミナを消費
-     * @return this
-     */
-    public ConsumeStaminaByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 消費するスタミナ量 */
     private Integer consumeValue;
 
-    /**
-     * 消費するスタミナ量を取得
-     *
-     * @return ユーザIDを指定してスタミナを消費
-     */
-    public Integer getConsumeValue() {
-        return consumeValue;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public ConsumeStaminaByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getStaminaName() {
+		return staminaName;
+	}
+
+	public void setStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+	}
+
+	public ConsumeStaminaByUserIdRequest withStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public ConsumeStaminaByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Integer getConsumeValue() {
+		return consumeValue;
+	}
+
+	public void setConsumeValue(Integer consumeValue) {
+		this.consumeValue = consumeValue;
+	}
+
+	public ConsumeStaminaByUserIdRequest withConsumeValue(Integer consumeValue) {
+		this.consumeValue = consumeValue;
+		return this;
+	}
+
+    public static ConsumeStaminaByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ConsumeStaminaByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withConsumeValue(data.get("consumeValue") == null || data.get("consumeValue").isNull() ? null : data.get("consumeValue").intValue());
     }
 
-    /**
-     * 消費するスタミナ量を設定
-     *
-     * @param consumeValue ユーザIDを指定してスタミナを消費
-     */
-    public void setConsumeValue(Integer consumeValue) {
-        this.consumeValue = consumeValue;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("staminaName", getStaminaName());
+                put("userId", getUserId());
+                put("consumeValue", getConsumeValue());
+            }}
+        );
     }
-
-    /**
-     * 消費するスタミナ量を設定
-     *
-     * @param consumeValue ユーザIDを指定してスタミナを消費
-     * @return this
-     */
-    public ConsumeStaminaByUserIdRequest withConsumeValue(Integer consumeValue) {
-        setConsumeValue(consumeValue);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してスタミナを消費
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してスタミナを消費
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してスタミナを消費
-     * @return this
-     */
-    public ConsumeStaminaByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.exchange;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.exchange.request.*;
 import io.gs2.exchange.result.*;
-import io.gs2.exchange.model.*;
+import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClient> {
 
-/**
- * GS2 Exchange API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2ExchangeRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,38 +152,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getEnableAwaitExchange() != null) {
-                json.put("enableAwaitExchange", this.request.getEnableAwaitExchange());
-            }
-            if (this.request.getEnableDirectExchange() != null) {
-                json.put("enableDirectExchange", this.request.getEnableDirectExchange());
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("enableAwaitExchange", request.getEnableAwaitExchange());
+                    put("enableDirectExchange", request.getEnableDirectExchange());
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -218,25 +181,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -263,15 +215,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -282,7 +237,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -306,25 +261,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -351,15 +295,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -370,7 +317,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -394,25 +341,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -439,15 +375,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -458,37 +397,19 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getEnableAwaitExchange() != null) {
-                json.put("enableAwaitExchange", this.request.getEnableAwaitExchange());
-            }
-            if (this.request.getEnableDirectExchange() != null) {
-                json.put("enableDirectExchange", this.request.getEnableDirectExchange());
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("enableAwaitExchange", request.getEnableAwaitExchange());
+                    put("enableDirectExchange", request.getEnableDirectExchange());
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -506,25 +427,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -551,15 +461,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -570,7 +483,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -594,25 +507,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -639,15 +541,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DescribeRateModelsTask(
             DescribeRateModelsRequest request,
-            AsyncAction<AsyncResult<DescribeRateModelsResult>> userCallback,
-            Class<DescribeRateModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeRateModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRateModelsResult parse(JsonNode data) {
+            return DescribeRateModelsResult.fromJson(data);
         }
 
         @Override
@@ -658,7 +563,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -682,25 +587,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換レートモデルの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRateModelsAsync(
             DescribeRateModelsRequest request,
             AsyncAction<AsyncResult<DescribeRateModelsResult>> callback
     ) {
-        DescribeRateModelsTask task = new DescribeRateModelsTask(request, callback, DescribeRateModelsResult.class);
+        DescribeRateModelsTask task = new DescribeRateModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換レートモデルの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRateModelsResult describeRateModels(
             DescribeRateModelsRequest request
     ) {
@@ -727,15 +621,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public GetRateModelTask(
             GetRateModelRequest request,
-            AsyncAction<AsyncResult<GetRateModelResult>> userCallback,
-            Class<GetRateModelResult> clazz
+            AsyncAction<AsyncResult<GetRateModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRateModelResult parse(JsonNode data) {
+            return GetRateModelResult.fromJson(data);
         }
 
         @Override
@@ -746,8 +643,8 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -771,25 +668,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換レートモデルを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRateModelAsync(
             GetRateModelRequest request,
             AsyncAction<AsyncResult<GetRateModelResult>> callback
     ) {
-        GetRateModelTask task = new GetRateModelTask(request, callback, GetRateModelResult.class);
+        GetRateModelTask task = new GetRateModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換レートモデルを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRateModelResult getRateModel(
             GetRateModelRequest request
     ) {
@@ -816,15 +702,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DescribeRateModelMastersTask(
             DescribeRateModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeRateModelMastersResult>> userCallback,
-            Class<DescribeRateModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeRateModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRateModelMastersResult parse(JsonNode data) {
+            return DescribeRateModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -835,7 +724,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -865,25 +754,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換レートマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRateModelMastersAsync(
             DescribeRateModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeRateModelMastersResult>> callback
     ) {
-        DescribeRateModelMastersTask task = new DescribeRateModelMastersTask(request, callback, DescribeRateModelMastersResult.class);
+        DescribeRateModelMastersTask task = new DescribeRateModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換レートマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRateModelMastersResult describeRateModelMasters(
             DescribeRateModelMastersRequest request
     ) {
@@ -910,15 +788,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public CreateRateModelMasterTask(
             CreateRateModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateRateModelMasterResult>> userCallback,
-            Class<CreateRateModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateRateModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateRateModelMasterResult parse(JsonNode data) {
+            return CreateRateModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -929,69 +810,37 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getTimingType() != null) {
-                json.put("timingType", this.request.getTimingType());
-            }
-            if (this.request.getLockTime() != null) {
-                json.put("lockTime", this.request.getLockTime());
-            }
-            if (this.request.getEnableSkip() != null) {
-                json.put("enableSkip", this.request.getEnableSkip());
-            }
-            if (this.request.getSkipConsumeActions() != null) {
-                JSONArray array = new JSONArray();
-                for(ConsumeAction item : this.request.getSkipConsumeActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("skipConsumeActions", array);
-            }
-            if (this.request.getAcquireActions() != null) {
-                JSONArray array = new JSONArray();
-                for(AcquireAction item : this.request.getAcquireActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("acquireActions", array);
-            }
-            if (this.request.getConsumeActions() != null) {
-                JSONArray array = new JSONArray();
-                for(ConsumeAction item : this.request.getConsumeActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("consumeActions", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("timingType", request.getTimingType());
+                    put("lockTime", request.getLockTime());
+                    put("enableSkip", request.getEnableSkip());
+                    put("skipConsumeActions", request.getSkipConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getSkipConsumeActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getConsumeActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1009,25 +858,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換レートマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createRateModelMasterAsync(
             CreateRateModelMasterRequest request,
             AsyncAction<AsyncResult<CreateRateModelMasterResult>> callback
     ) {
-        CreateRateModelMasterTask task = new CreateRateModelMasterTask(request, callback, CreateRateModelMasterResult.class);
+        CreateRateModelMasterTask task = new CreateRateModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換レートマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateRateModelMasterResult createRateModelMaster(
             CreateRateModelMasterRequest request
     ) {
@@ -1054,15 +892,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public GetRateModelMasterTask(
             GetRateModelMasterRequest request,
-            AsyncAction<AsyncResult<GetRateModelMasterResult>> userCallback,
-            Class<GetRateModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetRateModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRateModelMasterResult parse(JsonNode data) {
+            return GetRateModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1073,8 +914,8 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1098,25 +939,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換レートマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRateModelMasterAsync(
             GetRateModelMasterRequest request,
             AsyncAction<AsyncResult<GetRateModelMasterResult>> callback
     ) {
-        GetRateModelMasterTask task = new GetRateModelMasterTask(request, callback, GetRateModelMasterResult.class);
+        GetRateModelMasterTask task = new GetRateModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換レートマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRateModelMasterResult getRateModelMaster(
             GetRateModelMasterRequest request
     ) {
@@ -1143,15 +973,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public UpdateRateModelMasterTask(
             UpdateRateModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateRateModelMasterResult>> userCallback,
-            Class<UpdateRateModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateRateModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateRateModelMasterResult parse(JsonNode data) {
+            return UpdateRateModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1162,67 +995,37 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getTimingType() != null) {
-                json.put("timingType", this.request.getTimingType());
-            }
-            if (this.request.getLockTime() != null) {
-                json.put("lockTime", this.request.getLockTime());
-            }
-            if (this.request.getEnableSkip() != null) {
-                json.put("enableSkip", this.request.getEnableSkip());
-            }
-            if (this.request.getSkipConsumeActions() != null) {
-                JSONArray array = new JSONArray();
-                for(ConsumeAction item : this.request.getSkipConsumeActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("skipConsumeActions", array);
-            }
-            if (this.request.getAcquireActions() != null) {
-                JSONArray array = new JSONArray();
-                for(AcquireAction item : this.request.getAcquireActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("acquireActions", array);
-            }
-            if (this.request.getConsumeActions() != null) {
-                JSONArray array = new JSONArray();
-                for(ConsumeAction item : this.request.getConsumeActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("consumeActions", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("timingType", request.getTimingType());
+                    put("lockTime", request.getLockTime());
+                    put("enableSkip", request.getEnableSkip());
+                    put("skipConsumeActions", request.getSkipConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getSkipConsumeActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getConsumeActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1240,25 +1043,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換レートマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateRateModelMasterAsync(
             UpdateRateModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateRateModelMasterResult>> callback
     ) {
-        UpdateRateModelMasterTask task = new UpdateRateModelMasterTask(request, callback, UpdateRateModelMasterResult.class);
+        UpdateRateModelMasterTask task = new UpdateRateModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換レートマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateRateModelMasterResult updateRateModelMaster(
             UpdateRateModelMasterRequest request
     ) {
@@ -1285,15 +1077,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DeleteRateModelMasterTask(
             DeleteRateModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteRateModelMasterResult>> userCallback,
-            Class<DeleteRateModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteRateModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteRateModelMasterResult parse(JsonNode data) {
+            return DeleteRateModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1304,8 +1099,8 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1329,25 +1124,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換レートマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteRateModelMasterAsync(
             DeleteRateModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteRateModelMasterResult>> callback
     ) {
-        DeleteRateModelMasterTask task = new DeleteRateModelMasterTask(request, callback, DeleteRateModelMasterResult.class);
+        DeleteRateModelMasterTask task = new DeleteRateModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換レートマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteRateModelMasterResult deleteRateModelMaster(
             DeleteRateModelMasterRequest request
     ) {
@@ -1374,15 +1158,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public ExchangeTask(
             ExchangeRequest request,
-            AsyncAction<AsyncResult<ExchangeResult>> userCallback,
-            Class<ExchangeResult> clazz
+            AsyncAction<AsyncResult<ExchangeResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExchangeResult parse(JsonNode data) {
+            return ExchangeResult.fromJson(data);
         }
 
         @Override
@@ -1393,31 +1180,21 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/exchange/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCount() != null) {
-                json.put("count", this.request.getCount());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1431,9 +1208,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1441,25 +1215,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換を実行<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exchangeAsync(
             ExchangeRequest request,
             AsyncAction<AsyncResult<ExchangeResult>> callback
     ) {
-        ExchangeTask task = new ExchangeTask(request, callback, ExchangeResult.class);
+        ExchangeTask task = new ExchangeTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換を実行<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExchangeResult exchange(
             ExchangeRequest request
     ) {
@@ -1486,15 +1249,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public ExchangeByUserIdTask(
             ExchangeByUserIdRequest request,
-            AsyncAction<AsyncResult<ExchangeByUserIdResult>> userCallback,
-            Class<ExchangeByUserIdResult> clazz
+            AsyncAction<AsyncResult<ExchangeByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExchangeByUserIdResult parse(JsonNode data) {
+            return ExchangeByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1505,32 +1271,22 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/exchange/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCount() != null) {
-                json.put("count", this.request.getCount());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1541,9 +1297,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1551,25 +1304,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * ユーザIDを指定して交換を実行<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exchangeByUserIdAsync(
             ExchangeByUserIdRequest request,
             AsyncAction<AsyncResult<ExchangeByUserIdResult>> callback
     ) {
-        ExchangeByUserIdTask task = new ExchangeByUserIdTask(request, callback, ExchangeByUserIdResult.class);
+        ExchangeByUserIdTask task = new ExchangeByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して交換を実行<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExchangeByUserIdResult exchangeByUserId(
             ExchangeByUserIdRequest request
     ) {
@@ -1596,15 +1338,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public ExchangeByStampSheetTask(
             ExchangeByStampSheetRequest request,
-            AsyncAction<AsyncResult<ExchangeByStampSheetResult>> userCallback,
-            Class<ExchangeByStampSheetResult> clazz
+            AsyncAction<AsyncResult<ExchangeByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExchangeByStampSheetResult parse(JsonNode data) {
+            return ExchangeByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -1615,19 +1360,13 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/exchange";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1638,9 +1377,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1648,25 +1384,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * スタンプシートで交換を実行<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exchangeByStampSheetAsync(
             ExchangeByStampSheetRequest request,
             AsyncAction<AsyncResult<ExchangeByStampSheetResult>> callback
     ) {
-        ExchangeByStampSheetTask task = new ExchangeByStampSheetTask(request, callback, ExchangeByStampSheetResult.class);
+        ExchangeByStampSheetTask task = new ExchangeByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートで交換を実行<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExchangeByStampSheetResult exchangeByStampSheet(
             ExchangeByStampSheetRequest request
     ) {
@@ -1693,15 +1418,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -1712,7 +1440,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1736,25 +1464,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 現在有効な交換レート設定のマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な交換レート設定のマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -1781,15 +1498,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public GetCurrentRateMasterTask(
             GetCurrentRateMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentRateMasterResult>> userCallback,
-            Class<GetCurrentRateMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentRateMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentRateMasterResult parse(JsonNode data) {
+            return GetCurrentRateMasterResult.fromJson(data);
         }
 
         @Override
@@ -1800,7 +1520,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1824,25 +1544,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 現在有効な交換レート設定を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentRateMasterAsync(
             GetCurrentRateMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentRateMasterResult>> callback
     ) {
-        GetCurrentRateMasterTask task = new GetCurrentRateMasterTask(request, callback, GetCurrentRateMasterResult.class);
+        GetCurrentRateMasterTask task = new GetCurrentRateMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な交換レート設定を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentRateMasterResult getCurrentRateMaster(
             GetCurrentRateMasterRequest request
     ) {
@@ -1869,15 +1578,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public UpdateCurrentRateMasterTask(
             UpdateCurrentRateMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRateMasterResult>> userCallback,
-            Class<UpdateCurrentRateMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentRateMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentRateMasterResult parse(JsonNode data) {
+            return UpdateCurrentRateMasterResult.fromJson(data);
         }
 
         @Override
@@ -1888,18 +1600,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1917,25 +1625,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 現在有効な交換レート設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentRateMasterAsync(
             UpdateCurrentRateMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentRateMasterResult>> callback
     ) {
-        UpdateCurrentRateMasterTask task = new UpdateCurrentRateMasterTask(request, callback, UpdateCurrentRateMasterResult.class);
+        UpdateCurrentRateMasterTask task = new UpdateCurrentRateMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な交換レート設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentRateMasterResult updateCurrentRateMaster(
             UpdateCurrentRateMasterRequest request
     ) {
@@ -1962,15 +1659,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public UpdateCurrentRateMasterFromGitHubTask(
             UpdateCurrentRateMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRateMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentRateMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentRateMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentRateMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentRateMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -1981,22 +1681,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2014,25 +1706,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 現在有効な交換レート設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentRateMasterFromGitHubAsync(
             UpdateCurrentRateMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentRateMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentRateMasterFromGitHubTask task = new UpdateCurrentRateMasterFromGitHubTask(request, callback, UpdateCurrentRateMasterFromGitHubResult.class);
+        UpdateCurrentRateMasterFromGitHubTask task = new UpdateCurrentRateMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な交換レート設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentRateMasterFromGitHubResult updateCurrentRateMasterFromGitHub(
             UpdateCurrentRateMasterFromGitHubRequest request
     ) {
@@ -2059,15 +1740,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public CreateAwaitByUserIdTask(
             CreateAwaitByUserIdRequest request,
-            AsyncAction<AsyncResult<CreateAwaitByUserIdResult>> userCallback,
-            Class<CreateAwaitByUserIdResult> clazz
+            AsyncAction<AsyncResult<CreateAwaitByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateAwaitByUserIdResult parse(JsonNode data) {
+            return CreateAwaitByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2078,20 +1762,16 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/exchange/{rateName}/await";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCount() != null) {
-                json.put("count", this.request.getCount());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2102,9 +1782,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2112,25 +1789,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機を作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createAwaitByUserIdAsync(
             CreateAwaitByUserIdRequest request,
             AsyncAction<AsyncResult<CreateAwaitByUserIdResult>> callback
     ) {
-        CreateAwaitByUserIdTask task = new CreateAwaitByUserIdTask(request, callback, CreateAwaitByUserIdResult.class);
+        CreateAwaitByUserIdTask task = new CreateAwaitByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機を作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateAwaitByUserIdResult createAwaitByUserId(
             CreateAwaitByUserIdRequest request
     ) {
@@ -2157,15 +1823,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DescribeAwaitsTask(
             DescribeAwaitsRequest request,
-            AsyncAction<AsyncResult<DescribeAwaitsResult>> userCallback,
-            Class<DescribeAwaitsResult> clazz
+            AsyncAction<AsyncResult<DescribeAwaitsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeAwaitsResult parse(JsonNode data) {
+            return DescribeAwaitsResult.fromJson(data);
         }
 
         @Override
@@ -2176,7 +1845,7 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/exchange/await";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2205,9 +1874,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2215,25 +1881,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeAwaitsAsync(
             DescribeAwaitsRequest request,
             AsyncAction<AsyncResult<DescribeAwaitsResult>> callback
     ) {
-        DescribeAwaitsTask task = new DescribeAwaitsTask(request, callback, DescribeAwaitsResult.class);
+        DescribeAwaitsTask task = new DescribeAwaitsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeAwaitsResult describeAwaits(
             DescribeAwaitsRequest request
     ) {
@@ -2260,15 +1915,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DescribeAwaitsByUserIdTask(
             DescribeAwaitsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeAwaitsByUserIdResult>> userCallback,
-            Class<DescribeAwaitsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeAwaitsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeAwaitsByUserIdResult parse(JsonNode data) {
+            return DescribeAwaitsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2279,8 +1937,8 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/exchange/await";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2306,9 +1964,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2316,25 +1971,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeAwaitsByUserIdAsync(
             DescribeAwaitsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeAwaitsByUserIdResult>> callback
     ) {
-        DescribeAwaitsByUserIdTask task = new DescribeAwaitsByUserIdTask(request, callback, DescribeAwaitsByUserIdResult.class);
+        DescribeAwaitsByUserIdTask task = new DescribeAwaitsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeAwaitsByUserIdResult describeAwaitsByUserId(
             DescribeAwaitsByUserIdRequest request
     ) {
@@ -2361,15 +2005,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public GetAwaitTask(
             GetAwaitRequest request,
-            AsyncAction<AsyncResult<GetAwaitResult>> userCallback,
-            Class<GetAwaitResult> clazz
+            AsyncAction<AsyncResult<GetAwaitResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetAwaitResult parse(JsonNode data) {
+            return GetAwaitResult.fromJson(data);
         }
 
         @Override
@@ -2380,9 +2027,9 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null|| this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2402,9 +2049,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2412,25 +2056,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getAwaitAsync(
             GetAwaitRequest request,
             AsyncAction<AsyncResult<GetAwaitResult>> callback
     ) {
-        GetAwaitTask task = new GetAwaitTask(request, callback, GetAwaitResult.class);
+        GetAwaitTask task = new GetAwaitTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetAwaitResult getAwait(
             GetAwaitRequest request
     ) {
@@ -2457,15 +2090,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public GetAwaitByUserIdTask(
             GetAwaitByUserIdRequest request,
-            AsyncAction<AsyncResult<GetAwaitByUserIdResult>> userCallback,
-            Class<GetAwaitByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetAwaitByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetAwaitByUserIdResult parse(JsonNode data) {
+            return GetAwaitByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2476,10 +2112,10 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null|| this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2496,9 +2132,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2506,25 +2139,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getAwaitByUserIdAsync(
             GetAwaitByUserIdRequest request,
             AsyncAction<AsyncResult<GetAwaitByUserIdResult>> callback
     ) {
-        GetAwaitByUserIdTask task = new GetAwaitByUserIdTask(request, callback, GetAwaitByUserIdResult.class);
+        GetAwaitByUserIdTask task = new GetAwaitByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetAwaitByUserIdResult getAwaitByUserId(
             GetAwaitByUserIdRequest request
     ) {
@@ -2551,15 +2173,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public AcquireTask(
             AcquireRequest request,
-            AsyncAction<AsyncResult<AcquireResult>> userCallback,
-            Class<AcquireResult> clazz
+            AsyncAction<AsyncResult<AcquireResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcquireResult parse(JsonNode data) {
+            return AcquireResult.fromJson(data);
         }
 
         @Override
@@ -2570,29 +2195,21 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null|| this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2606,9 +2223,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2616,25 +2230,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機の報酬を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acquireAsync(
             AcquireRequest request,
             AsyncAction<AsyncResult<AcquireResult>> callback
     ) {
-        AcquireTask task = new AcquireTask(request, callback, AcquireResult.class);
+        AcquireTask task = new AcquireTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機の報酬を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcquireResult acquire(
             AcquireRequest request
     ) {
@@ -2661,15 +2264,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public AcquireByUserIdTask(
             AcquireByUserIdRequest request,
-            AsyncAction<AsyncResult<AcquireByUserIdResult>> userCallback,
-            Class<AcquireByUserIdResult> clazz
+            AsyncAction<AsyncResult<AcquireByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcquireByUserIdResult parse(JsonNode data) {
+            return AcquireByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2680,30 +2286,22 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null|| this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2714,9 +2312,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2724,25 +2319,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機の報酬を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acquireByUserIdAsync(
             AcquireByUserIdRequest request,
             AsyncAction<AsyncResult<AcquireByUserIdResult>> callback
     ) {
-        AcquireByUserIdTask task = new AcquireByUserIdTask(request, callback, AcquireByUserIdResult.class);
+        AcquireByUserIdTask task = new AcquireByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機の報酬を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcquireByUserIdResult acquireByUserId(
             AcquireByUserIdRequest request
     ) {
@@ -2769,15 +2353,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public AcquireForceByUserIdTask(
             AcquireForceByUserIdRequest request,
-            AsyncAction<AsyncResult<AcquireForceByUserIdResult>> userCallback,
-            Class<AcquireForceByUserIdResult> clazz
+            AsyncAction<AsyncResult<AcquireForceByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcquireForceByUserIdResult parse(JsonNode data) {
+            return AcquireForceByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2788,30 +2375,22 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}/force";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null|| this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2822,9 +2401,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2832,25 +2408,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機の報酬を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acquireForceByUserIdAsync(
             AcquireForceByUserIdRequest request,
             AsyncAction<AsyncResult<AcquireForceByUserIdResult>> callback
     ) {
-        AcquireForceByUserIdTask task = new AcquireForceByUserIdTask(request, callback, AcquireForceByUserIdResult.class);
+        AcquireForceByUserIdTask task = new AcquireForceByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機の報酬を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcquireForceByUserIdResult acquireForceByUserId(
             AcquireForceByUserIdRequest request
     ) {
@@ -2877,15 +2442,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public SkipTask(
             SkipRequest request,
-            AsyncAction<AsyncResult<SkipResult>> userCallback,
-            Class<SkipResult> clazz
+            AsyncAction<AsyncResult<SkipResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SkipResult parse(JsonNode data) {
+            return SkipResult.fromJson(data);
         }
 
         @Override
@@ -2896,29 +2464,21 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}/skip";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null|| this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2932,9 +2492,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2942,25 +2499,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機を対価を払ってスキップ<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void skipAsync(
             SkipRequest request,
             AsyncAction<AsyncResult<SkipResult>> callback
     ) {
-        SkipTask task = new SkipTask(request, callback, SkipResult.class);
+        SkipTask task = new SkipTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機を対価を払ってスキップ<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SkipResult skip(
             SkipRequest request
     ) {
@@ -2987,15 +2533,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public SkipByUserIdTask(
             SkipByUserIdRequest request,
-            AsyncAction<AsyncResult<SkipByUserIdResult>> userCallback,
-            Class<SkipByUserIdResult> clazz
+            AsyncAction<AsyncResult<SkipByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SkipByUserIdResult parse(JsonNode data) {
+            return SkipByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3006,30 +2555,22 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}/skip";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null|| this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3040,9 +2581,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3050,25 +2588,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機を対価を払ってスキップ<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void skipByUserIdAsync(
             SkipByUserIdRequest request,
             AsyncAction<AsyncResult<SkipByUserIdResult>> callback
     ) {
-        SkipByUserIdTask task = new SkipByUserIdTask(request, callback, SkipByUserIdResult.class);
+        SkipByUserIdTask task = new SkipByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機を対価を払ってスキップ<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SkipByUserIdResult skipByUserId(
             SkipByUserIdRequest request
     ) {
@@ -3095,15 +2622,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DeleteAwaitTask(
             DeleteAwaitRequest request,
-            AsyncAction<AsyncResult<DeleteAwaitResult>> userCallback,
-            Class<DeleteAwaitResult> clazz
+            AsyncAction<AsyncResult<DeleteAwaitResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteAwaitResult parse(JsonNode data) {
+            return DeleteAwaitResult.fromJson(data);
         }
 
         @Override
@@ -3114,9 +2644,9 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null|| this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3136,9 +2666,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3146,25 +2673,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteAwaitAsync(
             DeleteAwaitRequest request,
             AsyncAction<AsyncResult<DeleteAwaitResult>> callback
     ) {
-        DeleteAwaitTask task = new DeleteAwaitTask(request, callback, DeleteAwaitResult.class);
+        DeleteAwaitTask task = new DeleteAwaitTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteAwaitResult deleteAwait(
             DeleteAwaitRequest request
     ) {
@@ -3191,15 +2707,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DeleteAwaitByUserIdTask(
             DeleteAwaitByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteAwaitByUserIdResult>> userCallback,
-            Class<DeleteAwaitByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteAwaitByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteAwaitByUserIdResult parse(JsonNode data) {
+            return DeleteAwaitByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3210,10 +2729,10 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null|| this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3230,9 +2749,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3240,25 +2756,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * 交換待機を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteAwaitByUserIdAsync(
             DeleteAwaitByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteAwaitByUserIdResult>> callback
     ) {
-        DeleteAwaitByUserIdTask task = new DeleteAwaitByUserIdTask(request, callback, DeleteAwaitByUserIdResult.class);
+        DeleteAwaitByUserIdTask task = new DeleteAwaitByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 交換待機を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteAwaitByUserIdResult deleteAwaitByUserId(
             DeleteAwaitByUserIdRequest request
     ) {
@@ -3285,15 +2790,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public CreateAwaitByStampSheetTask(
             CreateAwaitByStampSheetRequest request,
-            AsyncAction<AsyncResult<CreateAwaitByStampSheetResult>> userCallback,
-            Class<CreateAwaitByStampSheetResult> clazz
+            AsyncAction<AsyncResult<CreateAwaitByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateAwaitByStampSheetResult parse(JsonNode data) {
+            return CreateAwaitByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -3304,19 +2812,13 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/await/create";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3327,9 +2829,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3337,25 +2836,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * スタンプシートで交換待機 を作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createAwaitByStampSheetAsync(
             CreateAwaitByStampSheetRequest request,
             AsyncAction<AsyncResult<CreateAwaitByStampSheetResult>> callback
     ) {
-        CreateAwaitByStampSheetTask task = new CreateAwaitByStampSheetTask(request, callback, CreateAwaitByStampSheetResult.class);
+        CreateAwaitByStampSheetTask task = new CreateAwaitByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートで交換待機 を作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateAwaitByStampSheetResult createAwaitByStampSheet(
             CreateAwaitByStampSheetRequest request
     ) {
@@ -3382,15 +2870,18 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
 
         public DeleteAwaitByStampTaskTask(
             DeleteAwaitByStampTaskRequest request,
-            AsyncAction<AsyncResult<DeleteAwaitByStampTaskResult>> userCallback,
-            Class<DeleteAwaitByStampTaskResult> clazz
+            AsyncAction<AsyncResult<DeleteAwaitByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteAwaitByStampTaskResult parse(JsonNode data) {
+            return DeleteAwaitByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -3401,19 +2892,13 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/await/delete";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3424,9 +2909,6 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3434,25 +2916,14 @@ public class Gs2ExchangeRestClient extends AbstractGs2Client<Gs2ExchangeRestClie
         }
     }
 
-    /**
-     * スタンプタスクで 交換待機 を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteAwaitByStampTaskAsync(
             DeleteAwaitByStampTaskRequest request,
             AsyncAction<AsyncResult<DeleteAwaitByStampTaskResult>> callback
     ) {
-        DeleteAwaitByStampTaskTask task = new DeleteAwaitByStampTaskTask(request, callback, DeleteAwaitByStampTaskResult.class);
+        DeleteAwaitByStampTaskTask task = new DeleteAwaitByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプタスクで 交換待機 を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteAwaitByStampTaskResult deleteAwaitByStampTask(
             DeleteAwaitByStampTaskRequest request
     ) {

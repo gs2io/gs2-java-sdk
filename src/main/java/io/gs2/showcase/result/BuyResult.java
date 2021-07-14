@@ -16,79 +16,82 @@
 
 package io.gs2.showcase.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.showcase.model.*;
+import io.gs2.showcase.model.ConsumeAction;
+import io.gs2.showcase.model.AcquireAction;
+import io.gs2.showcase.model.SalesItem;
 
-/**
- * 陳列棚を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BuyResult implements IResult, Serializable {
-	/** 商品 */
-	private SalesItem item;
-	/** 購入処理の実行に使用するスタンプシート */
-	private String stampSheet;
-	/** スタンプシートの署名計算に使用した暗号鍵GRN */
-	private String stampSheetEncryptionKeyId;
+    private SalesItem item;
+    private String stampSheet;
+    private String stampSheetEncryptionKeyId;
 
-	/**
-	 * 商品を取得
-	 *
-	 * @return 陳列棚を取得
-	 */
 	public SalesItem getItem() {
 		return item;
 	}
 
-	/**
-	 * 商品を設定
-	 *
-	 * @param item 陳列棚を取得
-	 */
 	public void setItem(SalesItem item) {
 		this.item = item;
 	}
 
-	/**
-	 * 購入処理の実行に使用するスタンプシートを取得
-	 *
-	 * @return 陳列棚を取得
-	 */
+	public BuyResult withItem(SalesItem item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getStampSheet() {
 		return stampSheet;
 	}
 
-	/**
-	 * 購入処理の実行に使用するスタンプシートを設定
-	 *
-	 * @param stampSheet 陳列棚を取得
-	 */
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを取得
-	 *
-	 * @return 陳列棚を取得
-	 */
+	public BuyResult withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
 	public String getStampSheetEncryptionKeyId() {
 		return stampSheetEncryptionKeyId;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを設定
-	 *
-	 * @param stampSheetEncryptionKeyId 陳列棚を取得
-	 */
 	public void setStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
 		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
 	}
+
+	public BuyResult withStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
+		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
+		return this;
+	}
+
+    public static BuyResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new BuyResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SalesItem.fromJson(data.get("item")))
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("stampSheet", getStampSheet());
+                put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+            }}
+        );
+    }
 }

@@ -16,156 +16,96 @@
 
 package io.gs2.mission.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * カウンターのリセットタイミング
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CounterScopeModel implements IModel, Serializable {
-	/** リセットタイミング */
-	protected String resetType;
+	private String resetType;
+	private Integer resetDayOfMonth;
+	private String resetDayOfWeek;
+	private Integer resetHour;
 
-	/**
-	 * リセットタイミングを取得
-	 *
-	 * @return リセットタイミング
-	 */
 	public String getResetType() {
 		return resetType;
 	}
 
-	/**
-	 * リセットタイミングを設定
-	 *
-	 * @param resetType リセットタイミング
-	 */
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
 
-	/**
-	 * リセットタイミングを設定
-	 *
-	 * @param resetType リセットタイミング
-	 * @return this
-	 */
 	public CounterScopeModel withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-	/** リセットをする日にち */
-	protected Integer resetDayOfMonth;
 
-	/**
-	 * リセットをする日にちを取得
-	 *
-	 * @return リセットをする日にち
-	 */
 	public Integer getResetDayOfMonth() {
 		return resetDayOfMonth;
 	}
 
-	/**
-	 * リセットをする日にちを設定
-	 *
-	 * @param resetDayOfMonth リセットをする日にち
-	 */
 	public void setResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 	}
 
-	/**
-	 * リセットをする日にちを設定
-	 *
-	 * @param resetDayOfMonth リセットをする日にち
-	 * @return this
-	 */
 	public CounterScopeModel withResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 		return this;
 	}
-	/** リセットする曜日 */
-	protected String resetDayOfWeek;
 
-	/**
-	 * リセットする曜日を取得
-	 *
-	 * @return リセットする曜日
-	 */
 	public String getResetDayOfWeek() {
 		return resetDayOfWeek;
 	}
 
-	/**
-	 * リセットする曜日を設定
-	 *
-	 * @param resetDayOfWeek リセットする曜日
-	 */
 	public void setResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 	}
 
-	/**
-	 * リセットする曜日を設定
-	 *
-	 * @param resetDayOfWeek リセットする曜日
-	 * @return this
-	 */
 	public CounterScopeModel withResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 		return this;
 	}
-	/** リセット時刻 */
-	protected Integer resetHour;
 
-	/**
-	 * リセット時刻を取得
-	 *
-	 * @return リセット時刻
-	 */
 	public Integer getResetHour() {
 		return resetHour;
 	}
 
-	/**
-	 * リセット時刻を設定
-	 *
-	 * @param resetHour リセット時刻
-	 */
 	public void setResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 	}
 
-	/**
-	 * リセット時刻を設定
-	 *
-	 * @param resetHour リセット時刻
-	 * @return this
-	 */
 	public CounterScopeModel withResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("resetType", this.getResetType())
-            .put("resetDayOfMonth", this.getResetDayOfMonth())
-            .put("resetDayOfWeek", this.getResetDayOfWeek())
-            .put("resetHour", this.getResetHour());
-        return body_;
+    public static CounterScopeModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CounterScopeModel()
+            .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
+            .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
+            .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
+            .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("resetType", getResetType());
+                put("resetDayOfMonth", getResetDayOfMonth());
+                put("resetDayOfWeek", getResetDayOfWeek());
+                put("resetHour", getResetHour());
+            }}
+        );
     }
 
 	@Override

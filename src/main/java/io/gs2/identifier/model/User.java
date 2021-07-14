@@ -16,221 +16,114 @@
 
 package io.gs2.identifier.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ユーザ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class User implements IModel, Serializable, Comparable<User> {
-	/** ユーザ */
-	protected String userId;
+	private String userId;
+	private String name;
+	private String description;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ユーザを取得
-	 *
-	 * @return ユーザ
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザを設定
-	 *
-	 * @param userId ユーザ
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザを設定
-	 *
-	 * @param userId ユーザ
-	 * @return this
-	 */
 	public User withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public User withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ユーザー名 */
-	protected String name;
-
-	/**
-	 * ユーザー名を取得
-	 *
-	 * @return ユーザー名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ユーザー名を設定
-	 *
-	 * @param name ユーザー名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ユーザー名を設定
-	 *
-	 * @param name ユーザー名
-	 * @return this
-	 */
 	public User withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ユーザの説明 */
-	protected String description;
 
-	/**
-	 * ユーザの説明を取得
-	 *
-	 * @return ユーザの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * ユーザの説明を設定
-	 *
-	 * @param description ユーザの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * ユーザの説明を設定
-	 *
-	 * @param description ユーザの説明
-	 * @return this
-	 */
 	public User withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public User withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public User withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("userId", this.getUserId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static User fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new User()
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userId", getUserId());
+                put("name", getName());
+                put("description", getDescription());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(User o) {
 		return userId.compareTo(o.userId);
@@ -241,7 +134,6 @@ public class User implements IModel, Serializable, Comparable<User> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -261,11 +153,6 @@ public class User implements IModel, Serializable, Comparable<User> {
 		if (userId == null) {
 			return other.userId == null;
 		} else if (!userId.equals(other.userId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {

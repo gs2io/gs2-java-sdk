@@ -16,39 +16,48 @@
 
 package io.gs2.enhance.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.enhance.model.*;
+import io.gs2.enhance.model.CurrentRateMaster;
 
-/**
- * 現在有効な強化レート設定を取得します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetCurrentRateMasterResult implements IResult, Serializable {
-	/** 現在有効な強化レート設定 */
-	private CurrentRateMaster item;
+    private CurrentRateMaster item;
 
-	/**
-	 * 現在有効な強化レート設定を取得
-	 *
-	 * @return 現在有効な強化レート設定を取得します
-	 */
 	public CurrentRateMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 現在有効な強化レート設定を設定
-	 *
-	 * @param item 現在有効な強化レート設定を取得します
-	 */
 	public void setItem(CurrentRateMaster item) {
 		this.item = item;
 	}
+
+	public GetCurrentRateMasterResult withItem(CurrentRateMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetCurrentRateMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetCurrentRateMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentRateMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

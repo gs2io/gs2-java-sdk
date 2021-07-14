@@ -16,114 +16,62 @@
 
 package io.gs2.money.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.money.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタンプシートを使用してレシートを記録 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class RecordReceiptByStampTaskRequest extends Gs2BasicRequest<RecordReceiptByStampTaskRequest> {
-
-    /** スタンプタスク */
     private String stampTask;
-
-    /**
-     * スタンプタスクを取得
-     *
-     * @return スタンプシートを使用してレシートを記録
-     */
-    public String getStampTask() {
-        return stampTask;
-    }
-
-    /**
-     * スタンプタスクを設定
-     *
-     * @param stampTask スタンプシートを使用してレシートを記録
-     */
-    public void setStampTask(String stampTask) {
-        this.stampTask = stampTask;
-    }
-
-    /**
-     * スタンプタスクを設定
-     *
-     * @param stampTask スタンプシートを使用してレシートを記録
-     * @return this
-     */
-    public RecordReceiptByStampTaskRequest withStampTask(String stampTask) {
-        setStampTask(stampTask);
-        return this;
-    }
-
-    /** スタンプタスクの署名検証に使用する 暗号鍵 のGRN */
     private String keyId;
 
-    /**
-     * スタンプタスクの署名検証に使用する 暗号鍵 のGRNを取得
-     *
-     * @return スタンプシートを使用してレシートを記録
-     */
-    public String getKeyId() {
-        return keyId;
+	public String getStampTask() {
+		return stampTask;
+	}
+
+	public void setStampTask(String stampTask) {
+		this.stampTask = stampTask;
+	}
+
+	public RecordReceiptByStampTaskRequest withStampTask(String stampTask) {
+		this.stampTask = stampTask;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public RecordReceiptByStampTaskRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+    public static RecordReceiptByStampTaskRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new RecordReceiptByStampTaskRequest()
+            .withStampTask(data.get("stampTask") == null || data.get("stampTask").isNull() ? null : data.get("stampTask").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
-    /**
-     * スタンプタスクの署名検証に使用する 暗号鍵 のGRNを設定
-     *
-     * @param keyId スタンプシートを使用してレシートを記録
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stampTask", getStampTask());
+                put("keyId", getKeyId());
+            }}
+        );
     }
-
-    /**
-     * スタンプタスクの署名検証に使用する 暗号鍵 のGRNを設定
-     *
-     * @param keyId スタンプシートを使用してレシートを記録
-     * @return this
-     */
-    public RecordReceiptByStampTaskRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return スタンプシートを使用してレシートを記録
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider スタンプシートを使用してレシートを記録
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider スタンプシートを使用してレシートを記録
-     * @return this
-     */
-    public RecordReceiptByStampTaskRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

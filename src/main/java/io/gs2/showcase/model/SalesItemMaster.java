@@ -16,297 +16,182 @@
 
 package io.gs2.showcase.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 商品マスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SalesItemMaster implements IModel, Serializable, Comparable<SalesItemMaster> {
-	/** 商品マスター */
-	protected String salesItemId;
+	private String salesItemId;
+	private String name;
+	private String description;
+	private String metadata;
+	private List<ConsumeAction> consumeActions;
+	private List<AcquireAction> acquireActions;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 商品マスターを取得
-	 *
-	 * @return 商品マスター
-	 */
 	public String getSalesItemId() {
 		return salesItemId;
 	}
 
-	/**
-	 * 商品マスターを設定
-	 *
-	 * @param salesItemId 商品マスター
-	 */
 	public void setSalesItemId(String salesItemId) {
 		this.salesItemId = salesItemId;
 	}
 
-	/**
-	 * 商品マスターを設定
-	 *
-	 * @param salesItemId 商品マスター
-	 * @return this
-	 */
 	public SalesItemMaster withSalesItemId(String salesItemId) {
 		this.salesItemId = salesItemId;
 		return this;
 	}
-	/** 商品名 */
-	protected String name;
 
-	/**
-	 * 商品名を取得
-	 *
-	 * @return 商品名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 商品名を設定
-	 *
-	 * @param name 商品名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 商品名を設定
-	 *
-	 * @param name 商品名
-	 * @return this
-	 */
 	public SalesItemMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 商品マスターの説明 */
-	protected String description;
 
-	/**
-	 * 商品マスターの説明を取得
-	 *
-	 * @return 商品マスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 商品マスターの説明を設定
-	 *
-	 * @param description 商品マスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 商品マスターの説明を設定
-	 *
-	 * @param description 商品マスターの説明
-	 * @return this
-	 */
 	public SalesItemMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 商品のメタデータ */
-	protected String metadata;
 
-	/**
-	 * 商品のメタデータを取得
-	 *
-	 * @return 商品のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 商品のメタデータを設定
-	 *
-	 * @param metadata 商品のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 商品のメタデータを設定
-	 *
-	 * @param metadata 商品のメタデータ
-	 * @return this
-	 */
 	public SalesItemMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 消費アクションリスト */
-	protected List<ConsumeAction> consumeActions;
 
-	/**
-	 * 消費アクションリストを取得
-	 *
-	 * @return 消費アクションリスト
-	 */
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
 
-	/**
-	 * 消費アクションリストを設定
-	 *
-	 * @param consumeActions 消費アクションリスト
-	 */
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
 
-	/**
-	 * 消費アクションリストを設定
-	 *
-	 * @param consumeActions 消費アクションリスト
-	 * @return this
-	 */
 	public SalesItemMaster withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;
 	}
-	/** 入手アクションリスト */
-	protected List<AcquireAction> acquireActions;
 
-	/**
-	 * 入手アクションリストを取得
-	 *
-	 * @return 入手アクションリスト
-	 */
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
 
-	/**
-	 * 入手アクションリストを設定
-	 *
-	 * @param acquireActions 入手アクションリスト
-	 */
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
 
-	/**
-	 * 入手アクションリストを設定
-	 *
-	 * @param acquireActions 入手アクションリスト
-	 * @return this
-	 */
 	public SalesItemMaster withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public SalesItemMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public SalesItemMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> consumeActions = new ArrayList<>();
-        if(this.consumeActions != null) {
-            for(ConsumeAction item : this.consumeActions) {
-                consumeActions.add(item.toJson());
-            }
+    public static SalesItemMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-        List<JsonNode> acquireActions = new ArrayList<>();
-        if(this.acquireActions != null) {
-            for(AcquireAction item : this.acquireActions) {
-                acquireActions.add(item.toJson());
-            }
-        }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("salesItemId", this.getSalesItemId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("consumeActions", JsonNodeFactory.instance.arrayNode().addAll(consumeActions));
-        body_.set("acquireActions", JsonNodeFactory.instance.arrayNode().addAll(acquireActions));
-        return body_;
+        return new SalesItemMaster()
+            .withSalesItemId(data.get("salesItemId") == null || data.get("salesItemId").isNull() ? null : data.get("salesItemId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ConsumeAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("salesItemId", getSalesItemId());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    getConsumeActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(SalesItemMaster o) {
 		return salesItemId.compareTo(o.salesItemId);

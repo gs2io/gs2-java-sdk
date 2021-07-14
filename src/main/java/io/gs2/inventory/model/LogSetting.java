@@ -16,60 +16,48 @@
 
 package io.gs2.inventory.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ロギング通知設定
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LogSetting implements IModel, Serializable {
-	/** ログの記録に使用する GS2-Log のネームスペース のGRN */
-	protected String loggingNamespaceId;
+	private String loggingNamespaceId;
 
-	/**
-	 * ログの記録に使用する GS2-Log のネームスペース のGRNを取得
-	 *
-	 * @return ログの記録に使用する GS2-Log のネームスペース のGRN
-	 */
 	public String getLoggingNamespaceId() {
 		return loggingNamespaceId;
 	}
 
-	/**
-	 * ログの記録に使用する GS2-Log のネームスペース のGRNを設定
-	 *
-	 * @param loggingNamespaceId ログの記録に使用する GS2-Log のネームスペース のGRN
-	 */
 	public void setLoggingNamespaceId(String loggingNamespaceId) {
 		this.loggingNamespaceId = loggingNamespaceId;
 	}
 
-	/**
-	 * ログの記録に使用する GS2-Log のネームスペース のGRNを設定
-	 *
-	 * @param loggingNamespaceId ログの記録に使用する GS2-Log のネームスペース のGRN
-	 * @return this
-	 */
 	public LogSetting withLoggingNamespaceId(String loggingNamespaceId) {
 		this.loggingNamespaceId = loggingNamespaceId;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("loggingNamespaceId", this.getLoggingNamespaceId());
-        return body_;
+    public static LogSetting fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LogSetting()
+            .withLoggingNamespaceId(data.get("loggingNamespaceId") == null || data.get("loggingNamespaceId").isNull() ? null : data.get("loggingNamespaceId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("loggingNamespaceId", getLoggingNamespaceId());
+            }}
+        );
     }
 
 	@Override

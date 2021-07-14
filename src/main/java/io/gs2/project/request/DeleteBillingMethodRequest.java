@@ -16,82 +16,62 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 支払い方法を削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteBillingMethodRequest extends Gs2BasicRequest<DeleteBillingMethodRequest> {
-
-    /** GS2アカウントトークン */
     private String accountToken;
-
-    /**
-     * GS2アカウントトークンを取得
-     *
-     * @return 支払い方法を削除
-     */
-    public String getAccountToken() {
-        return accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken 支払い方法を削除
-     */
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken 支払い方法を削除
-     * @return this
-     */
-    public DeleteBillingMethodRequest withAccountToken(String accountToken) {
-        setAccountToken(accountToken);
-        return this;
-    }
-
-    /** 名前 */
     private String billingMethodName;
 
-    /**
-     * 名前を取得
-     *
-     * @return 支払い方法を削除
-     */
-    public String getBillingMethodName() {
-        return billingMethodName;
+	public String getAccountToken() {
+		return accountToken;
+	}
+
+	public void setAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+	}
+
+	public DeleteBillingMethodRequest withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+	public String getBillingMethodName() {
+		return billingMethodName;
+	}
+
+	public void setBillingMethodName(String billingMethodName) {
+		this.billingMethodName = billingMethodName;
+	}
+
+	public DeleteBillingMethodRequest withBillingMethodName(String billingMethodName) {
+		this.billingMethodName = billingMethodName;
+		return this;
+	}
+
+    public static DeleteBillingMethodRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteBillingMethodRequest()
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText())
+            .withBillingMethodName(data.get("billingMethodName") == null || data.get("billingMethodName").isNull() ? null : data.get("billingMethodName").asText());
     }
 
-    /**
-     * 名前を設定
-     *
-     * @param billingMethodName 支払い方法を削除
-     */
-    public void setBillingMethodName(String billingMethodName) {
-        this.billingMethodName = billingMethodName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountToken", getAccountToken());
+                put("billingMethodName", getBillingMethodName());
+            }}
+        );
     }
-
-    /**
-     * 名前を設定
-     *
-     * @param billingMethodName 支払い方法を削除
-     * @return this
-     */
-    public DeleteBillingMethodRequest withBillingMethodName(String billingMethodName) {
-        setBillingMethodName(billingMethodName);
-        return this;
-    }
-
 }

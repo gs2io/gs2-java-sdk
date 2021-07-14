@@ -16,39 +16,48 @@
 
 package io.gs2.limit.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.limit.model.*;
+import io.gs2.limit.model.Counter;
 
-/**
- * カウンターを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetCounterResult implements IResult, Serializable {
-	/** カウンター */
-	private Counter item;
+    private Counter item;
 
-	/**
-	 * カウンターを取得
-	 *
-	 * @return カウンターを取得
-	 */
 	public Counter getItem() {
 		return item;
 	}
 
-	/**
-	 * カウンターを設定
-	 *
-	 * @param item カウンターを取得
-	 */
 	public void setItem(Counter item) {
 		this.item = item;
 	}
+
+	public GetCounterResult withItem(Counter item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetCounterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetCounterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

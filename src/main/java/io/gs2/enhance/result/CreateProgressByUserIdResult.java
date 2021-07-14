@@ -16,39 +16,48 @@
 
 package io.gs2.enhance.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.enhance.model.*;
+import io.gs2.enhance.model.Progress;
 
-/**
- * ユーザIDを指定して強化実行を作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateProgressByUserIdResult implements IResult, Serializable {
-	/** 強化実行 */
-	private Progress item;
+    private Progress item;
 
-	/**
-	 * 強化実行を取得
-	 *
-	 * @return ユーザIDを指定して強化実行を作成
-	 */
 	public Progress getItem() {
 		return item;
 	}
 
-	/**
-	 * 強化実行を設定
-	 *
-	 * @param item ユーザIDを指定して強化実行を作成
-	 */
 	public void setItem(Progress item) {
 		this.item = item;
 	}
+
+	public CreateProgressByUserIdResult withItem(Progress item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateProgressByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateProgressByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Progress.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

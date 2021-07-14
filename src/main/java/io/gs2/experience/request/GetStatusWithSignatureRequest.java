@@ -16,210 +16,110 @@
 
 package io.gs2.experience.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.experience.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ステータスを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetStatusWithSignatureRequest extends Gs2BasicRequest<GetStatusWithSignatureRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ステータスを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ステータスを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ステータスを取得
-     * @return this
-     */
-    public GetStatusWithSignatureRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 経験値の種類の名前 */
+    private String accessToken;
     private String experienceName;
-
-    /**
-     * 経験値の種類の名前を取得
-     *
-     * @return ステータスを取得
-     */
-    public String getExperienceName() {
-        return experienceName;
-    }
-
-    /**
-     * 経験値の種類の名前を設定
-     *
-     * @param experienceName ステータスを取得
-     */
-    public void setExperienceName(String experienceName) {
-        this.experienceName = experienceName;
-    }
-
-    /**
-     * 経験値の種類の名前を設定
-     *
-     * @param experienceName ステータスを取得
-     * @return this
-     */
-    public GetStatusWithSignatureRequest withExperienceName(String experienceName) {
-        setExperienceName(experienceName);
-        return this;
-    }
-
-    /** プロパティID */
     private String propertyId;
-
-    /**
-     * プロパティIDを取得
-     *
-     * @return ステータスを取得
-     */
-    public String getPropertyId() {
-        return propertyId;
-    }
-
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ステータスを取得
-     */
-    public void setPropertyId(String propertyId) {
-        this.propertyId = propertyId;
-    }
-
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ステータスを取得
-     * @return this
-     */
-    public GetStatusWithSignatureRequest withPropertyId(String propertyId) {
-        setPropertyId(propertyId);
-        return this;
-    }
-
-    /** 署名の作成に使用する 暗号鍵 のGRN */
     private String keyId;
 
-    /**
-     * 署名の作成に使用する 暗号鍵 のGRNを取得
-     *
-     * @return ステータスを取得
-     */
-    public String getKeyId() {
-        return keyId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetStatusWithSignatureRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public GetStatusWithSignatureRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getExperienceName() {
+		return experienceName;
+	}
+
+	public void setExperienceName(String experienceName) {
+		this.experienceName = experienceName;
+	}
+
+	public GetStatusWithSignatureRequest withExperienceName(String experienceName) {
+		this.experienceName = experienceName;
+		return this;
+	}
+
+	public String getPropertyId() {
+		return propertyId;
+	}
+
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+	}
+
+	public GetStatusWithSignatureRequest withPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public GetStatusWithSignatureRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+    public static GetStatusWithSignatureRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetStatusWithSignatureRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
-    /**
-     * 署名の作成に使用する 暗号鍵 のGRNを設定
-     *
-     * @param keyId ステータスを取得
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("accessToken", getAccessToken());
+                put("experienceName", getExperienceName());
+                put("propertyId", getPropertyId());
+                put("keyId", getKeyId());
+            }}
+        );
     }
-
-    /**
-     * 署名の作成に使用する 暗号鍵 のGRNを設定
-     *
-     * @param keyId ステータスを取得
-     * @return this
-     */
-    public GetStatusWithSignatureRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ステータスを取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ステータスを取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ステータスを取得
-     * @return this
-     */
-    public GetStatusWithSignatureRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public GetStatusWithSignatureRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

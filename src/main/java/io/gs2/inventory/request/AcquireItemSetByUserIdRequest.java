@@ -16,306 +16,158 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * アイテムをインベントリに追加 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class AcquireItemSetByUserIdRequest extends Gs2BasicRequest<AcquireItemSetByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return アイテムをインベントリに追加
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アイテムをインベントリに追加
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アイテムをインベントリに追加
-     * @return this
-     */
-    public AcquireItemSetByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** インベントリの種類名 */
     private String inventoryName;
-
-    /**
-     * インベントリの種類名を取得
-     *
-     * @return アイテムをインベントリに追加
-     */
-    public String getInventoryName() {
-        return inventoryName;
-    }
-
-    /**
-     * インベントリの種類名を設定
-     *
-     * @param inventoryName アイテムをインベントリに追加
-     */
-    public void setInventoryName(String inventoryName) {
-        this.inventoryName = inventoryName;
-    }
-
-    /**
-     * インベントリの種類名を設定
-     *
-     * @param inventoryName アイテムをインベントリに追加
-     * @return this
-     */
-    public AcquireItemSetByUserIdRequest withInventoryName(String inventoryName) {
-        setInventoryName(inventoryName);
-        return this;
-    }
-
-    /** アイテムマスターの名前 */
     private String itemName;
-
-    /**
-     * アイテムマスターの名前を取得
-     *
-     * @return アイテムをインベントリに追加
-     */
-    public String getItemName() {
-        return itemName;
-    }
-
-    /**
-     * アイテムマスターの名前を設定
-     *
-     * @param itemName アイテムをインベントリに追加
-     */
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    /**
-     * アイテムマスターの名前を設定
-     *
-     * @param itemName アイテムをインベントリに追加
-     * @return this
-     */
-    public AcquireItemSetByUserIdRequest withItemName(String itemName) {
-        setItemName(itemName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return アイテムをインベントリに追加
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId アイテムをインベントリに追加
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId アイテムをインベントリに追加
-     * @return this
-     */
-    public AcquireItemSetByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 入手する量 */
     private Long acquireCount;
-
-    /**
-     * 入手する量を取得
-     *
-     * @return アイテムをインベントリに追加
-     */
-    public Long getAcquireCount() {
-        return acquireCount;
-    }
-
-    /**
-     * 入手する量を設定
-     *
-     * @param acquireCount アイテムをインベントリに追加
-     */
-    public void setAcquireCount(Long acquireCount) {
-        this.acquireCount = acquireCount;
-    }
-
-    /**
-     * 入手する量を設定
-     *
-     * @param acquireCount アイテムをインベントリに追加
-     * @return this
-     */
-    public AcquireItemSetByUserIdRequest withAcquireCount(Long acquireCount) {
-        setAcquireCount(acquireCount);
-        return this;
-    }
-
-    /** 有効期限 */
     private Long expiresAt;
-
-    /**
-     * 有効期限を取得
-     *
-     * @return アイテムをインベントリに追加
-     */
-    public Long getExpiresAt() {
-        return expiresAt;
-    }
-
-    /**
-     * 有効期限を設定
-     *
-     * @param expiresAt アイテムをインベントリに追加
-     */
-    public void setExpiresAt(Long expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
-    /**
-     * 有効期限を設定
-     *
-     * @param expiresAt アイテムをインベントリに追加
-     * @return this
-     */
-    public AcquireItemSetByUserIdRequest withExpiresAt(Long expiresAt) {
-        setExpiresAt(expiresAt);
-        return this;
-    }
-
-    /** 既存の ItemSet に空きがあったとしても、新しい ItemSet を作成するか */
     private Boolean createNewItemSet;
-
-    /**
-     * 既存の ItemSet に空きがあったとしても、新しい ItemSet を作成するかを取得
-     *
-     * @return アイテムをインベントリに追加
-     */
-    public Boolean getCreateNewItemSet() {
-        return createNewItemSet;
-    }
-
-    /**
-     * 既存の ItemSet に空きがあったとしても、新しい ItemSet を作成するかを設定
-     *
-     * @param createNewItemSet アイテムをインベントリに追加
-     */
-    public void setCreateNewItemSet(Boolean createNewItemSet) {
-        this.createNewItemSet = createNewItemSet;
-    }
-
-    /**
-     * 既存の ItemSet に空きがあったとしても、新しい ItemSet を作成するかを設定
-     *
-     * @param createNewItemSet アイテムをインベントリに追加
-     * @return this
-     */
-    public AcquireItemSetByUserIdRequest withCreateNewItemSet(Boolean createNewItemSet) {
-        setCreateNewItemSet(createNewItemSet);
-        return this;
-    }
-
-    /** 追加先のアイテムセットの名前 */
     private String itemSetName;
 
-    /**
-     * 追加先のアイテムセットの名前を取得
-     *
-     * @return アイテムをインベントリに追加
-     */
-    public String getItemSetName() {
-        return itemSetName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public AcquireItemSetByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+	}
+
+	public AcquireItemSetByUserIdRequest withInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+		return this;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public AcquireItemSetByUserIdRequest withItemName(String itemName) {
+		this.itemName = itemName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public AcquireItemSetByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Long getAcquireCount() {
+		return acquireCount;
+	}
+
+	public void setAcquireCount(Long acquireCount) {
+		this.acquireCount = acquireCount;
+	}
+
+	public AcquireItemSetByUserIdRequest withAcquireCount(Long acquireCount) {
+		this.acquireCount = acquireCount;
+		return this;
+	}
+
+	public Long getExpiresAt() {
+		return expiresAt;
+	}
+
+	public void setExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+	}
+
+	public AcquireItemSetByUserIdRequest withExpiresAt(Long expiresAt) {
+		this.expiresAt = expiresAt;
+		return this;
+	}
+
+	public Boolean getCreateNewItemSet() {
+		return createNewItemSet;
+	}
+
+	public void setCreateNewItemSet(Boolean createNewItemSet) {
+		this.createNewItemSet = createNewItemSet;
+	}
+
+	public AcquireItemSetByUserIdRequest withCreateNewItemSet(Boolean createNewItemSet) {
+		this.createNewItemSet = createNewItemSet;
+		return this;
+	}
+
+	public String getItemSetName() {
+		return itemSetName;
+	}
+
+	public void setItemSetName(String itemSetName) {
+		this.itemSetName = itemSetName;
+	}
+
+	public AcquireItemSetByUserIdRequest withItemSetName(String itemSetName) {
+		this.itemSetName = itemSetName;
+		return this;
+	}
+
+    public static AcquireItemSetByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AcquireItemSetByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withAcquireCount(data.get("acquireCount") == null || data.get("acquireCount").isNull() ? null : data.get("acquireCount").longValue())
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withCreateNewItemSet(data.get("createNewItemSet") == null || data.get("createNewItemSet").isNull() ? null : data.get("createNewItemSet").booleanValue())
+            .withItemSetName(data.get("itemSetName") == null || data.get("itemSetName").isNull() ? null : data.get("itemSetName").asText());
     }
 
-    /**
-     * 追加先のアイテムセットの名前を設定
-     *
-     * @param itemSetName アイテムをインベントリに追加
-     */
-    public void setItemSetName(String itemSetName) {
-        this.itemSetName = itemSetName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("inventoryName", getInventoryName());
+                put("itemName", getItemName());
+                put("userId", getUserId());
+                put("acquireCount", getAcquireCount());
+                put("expiresAt", getExpiresAt());
+                put("createNewItemSet", getCreateNewItemSet());
+                put("itemSetName", getItemSetName());
+            }}
+        );
     }
-
-    /**
-     * 追加先のアイテムセットの名前を設定
-     *
-     * @param itemSetName アイテムをインベントリに追加
-     * @return this
-     */
-    public AcquireItemSetByUserIdRequest withItemSetName(String itemSetName) {
-        setItemSetName(itemSetName);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return アイテムをインベントリに追加
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider アイテムをインベントリに追加
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider アイテムをインベントリに追加
-     * @return this
-     */
-    public AcquireItemSetByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

@@ -16,195 +16,122 @@
 
 package io.gs2.friend.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * フレンドリクエストの受信ボックス
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Inbox implements IModel, Serializable, Comparable<Inbox> {
-	/** フレンドリクエストの受信ボックス */
-	protected String inboxId;
+	private String inboxId;
+	private String userId;
+	private List<String> fromUserIds;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * フレンドリクエストの受信ボックスを取得
-	 *
-	 * @return フレンドリクエストの受信ボックス
-	 */
 	public String getInboxId() {
 		return inboxId;
 	}
 
-	/**
-	 * フレンドリクエストの受信ボックスを設定
-	 *
-	 * @param inboxId フレンドリクエストの受信ボックス
-	 */
 	public void setInboxId(String inboxId) {
 		this.inboxId = inboxId;
 	}
 
-	/**
-	 * フレンドリクエストの受信ボックスを設定
-	 *
-	 * @param inboxId フレンドリクエストの受信ボックス
-	 * @return this
-	 */
 	public Inbox withInboxId(String inboxId) {
 		this.inboxId = inboxId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Inbox withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** フレンドリクエストを送ってきたユーザーIDリスト */
-	protected List<String> fromUserIds;
 
-	/**
-	 * フレンドリクエストを送ってきたユーザーIDリストを取得
-	 *
-	 * @return フレンドリクエストを送ってきたユーザーIDリスト
-	 */
 	public List<String> getFromUserIds() {
 		return fromUserIds;
 	}
 
-	/**
-	 * フレンドリクエストを送ってきたユーザーIDリストを設定
-	 *
-	 * @param fromUserIds フレンドリクエストを送ってきたユーザーIDリスト
-	 */
 	public void setFromUserIds(List<String> fromUserIds) {
 		this.fromUserIds = fromUserIds;
 	}
 
-	/**
-	 * フレンドリクエストを送ってきたユーザーIDリストを設定
-	 *
-	 * @param fromUserIds フレンドリクエストを送ってきたユーザーIDリスト
-	 * @return this
-	 */
 	public Inbox withFromUserIds(List<String> fromUserIds) {
 		this.fromUserIds = fromUserIds;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Inbox withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Inbox withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> fromUserIds = new ArrayList<>();
-        if(this.fromUserIds != null) {
-            for(String item : this.fromUserIds) {
-                fromUserIds.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static Inbox fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("inboxId", this.getInboxId())
-            .put("userId", this.getUserId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("fromUserIds", JsonNodeFactory.instance.arrayNode().addAll(fromUserIds));
-        return body_;
+        return new Inbox()
+            .withInboxId(data.get("inboxId") == null || data.get("inboxId").isNull() ? null : data.get("inboxId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withFromUserIds(data.get("fromUserIds") == null || data.get("fromUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("fromUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("inboxId", getInboxId());
+                put("userId", getUserId());
+                put("fromUserIds", getFromUserIds() == null ? new ArrayList<String>() :
+                    getFromUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Inbox o) {
 		return inboxId.compareTo(o.inboxId);

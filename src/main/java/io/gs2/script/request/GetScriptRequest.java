@@ -16,82 +16,62 @@
 
 package io.gs2.script.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.script.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スクリプトを取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetScriptRequest extends Gs2BasicRequest<GetScriptRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return スクリプトを取得します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スクリプトを取得します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スクリプトを取得します
-     * @return this
-     */
-    public GetScriptRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** スクリプト名 */
     private String scriptName;
 
-    /**
-     * スクリプト名を取得
-     *
-     * @return スクリプトを取得します
-     */
-    public String getScriptName() {
-        return scriptName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetScriptRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getScriptName() {
+		return scriptName;
+	}
+
+	public void setScriptName(String scriptName) {
+		this.scriptName = scriptName;
+	}
+
+	public GetScriptRequest withScriptName(String scriptName) {
+		this.scriptName = scriptName;
+		return this;
+	}
+
+    public static GetScriptRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetScriptRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withScriptName(data.get("scriptName") == null || data.get("scriptName").isNull() ? null : data.get("scriptName").asText());
     }
 
-    /**
-     * スクリプト名を設定
-     *
-     * @param scriptName スクリプトを取得します
-     */
-    public void setScriptName(String scriptName) {
-        this.scriptName = scriptName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("scriptName", getScriptName());
+            }}
+        );
     }
-
-    /**
-     * スクリプト名を設定
-     *
-     * @param scriptName スクリプトを取得します
-     * @return this
-     */
-    public GetScriptRequest withScriptName(String scriptName) {
-        setScriptName(scriptName);
-        return this;
-    }
-
 }

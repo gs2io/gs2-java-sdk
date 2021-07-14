@@ -16,59 +16,65 @@
 
 package io.gs2.money.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.money.model.*;
+import io.gs2.money.model.WalletDetail;
+import io.gs2.money.model.Wallet;
 
-/**
- * ユーザーIDを指定してウォレットから残高を消費します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WithdrawByUserIdResult implements IResult, Serializable {
-	/** 消費後のウォレット */
-	private Wallet item;
-	/** 消費した通貨の価格 */
-	private Float price;
+    private Wallet item;
+    private Float price;
 
-	/**
-	 * 消費後のウォレットを取得
-	 *
-	 * @return ユーザーIDを指定してウォレットから残高を消費します
-	 */
 	public Wallet getItem() {
 		return item;
 	}
 
-	/**
-	 * 消費後のウォレットを設定
-	 *
-	 * @param item ユーザーIDを指定してウォレットから残高を消費します
-	 */
 	public void setItem(Wallet item) {
 		this.item = item;
 	}
 
-	/**
-	 * 消費した通貨の価格を取得
-	 *
-	 * @return ユーザーIDを指定してウォレットから残高を消費します
-	 */
+	public WithdrawByUserIdResult withItem(Wallet item) {
+		this.item = item;
+		return this;
+	}
+
 	public Float getPrice() {
 		return price;
 	}
 
-	/**
-	 * 消費した通貨の価格を設定
-	 *
-	 * @param price ユーザーIDを指定してウォレットから残高を消費します
-	 */
 	public void setPrice(Float price) {
 		this.price = price;
 	}
+
+	public WithdrawByUserIdResult withPrice(Float price) {
+		this.price = price;
+		return this;
+	}
+
+    public static WithdrawByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new WithdrawByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Wallet.fromJson(data.get("item")))
+            .withPrice(data.get("price") == null || data.get("price").isNull() ? null : data.get("price").floatValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("price", getPrice());
+            }}
+        );
+    }
 }

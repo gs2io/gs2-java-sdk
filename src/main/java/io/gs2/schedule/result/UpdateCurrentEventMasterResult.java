@@ -16,39 +16,48 @@
 
 package io.gs2.schedule.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.schedule.model.*;
+import io.gs2.schedule.model.CurrentEventMaster;
 
-/**
- * 現在有効なイベントスケジュールマスターを更新します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateCurrentEventMasterResult implements IResult, Serializable {
-	/** 更新した現在有効なイベントスケジュールマスター */
-	private CurrentEventMaster item;
+    private CurrentEventMaster item;
 
-	/**
-	 * 更新した現在有効なイベントスケジュールマスターを取得
-	 *
-	 * @return 現在有効なイベントスケジュールマスターを更新します
-	 */
 	public CurrentEventMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新した現在有効なイベントスケジュールマスターを設定
-	 *
-	 * @param item 現在有効なイベントスケジュールマスターを更新します
-	 */
 	public void setItem(CurrentEventMaster item) {
 		this.item = item;
 	}
+
+	public UpdateCurrentEventMasterResult withItem(CurrentEventMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateCurrentEventMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateCurrentEventMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentEventMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

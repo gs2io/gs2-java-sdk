@@ -16,39 +16,48 @@
 
 package io.gs2.gateway.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.gateway.model.*;
+import io.gs2.gateway.model.WebSocketSession;
 
-/**
- * WebsocketセッションにユーザIDを設定 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SetUserIdByUserIdResult implements IResult, Serializable {
-	/** 更新したWebsocketセッション */
-	private WebSocketSession item;
+    private WebSocketSession item;
 
-	/**
-	 * 更新したWebsocketセッションを取得
-	 *
-	 * @return WebsocketセッションにユーザIDを設定
-	 */
 	public WebSocketSession getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新したWebsocketセッションを設定
-	 *
-	 * @param item WebsocketセッションにユーザIDを設定
-	 */
 	public void setItem(WebSocketSession item) {
 		this.item = item;
 	}
+
+	public SetUserIdByUserIdResult withItem(WebSocketSession item) {
+		this.item = item;
+		return this;
+	}
+
+    public static SetUserIdByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SetUserIdByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : WebSocketSession.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

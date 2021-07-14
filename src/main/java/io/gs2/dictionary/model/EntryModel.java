@@ -16,125 +16,82 @@
 
 package io.gs2.dictionary.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * エントリーモデル
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EntryModel implements IModel, Serializable, Comparable<EntryModel> {
-	/** エントリーモデルマスター */
-	protected String entryModelId;
+	private String entryModelId;
+	private String name;
+	private String metadata;
 
-	/**
-	 * エントリーモデルマスターを取得
-	 *
-	 * @return エントリーモデルマスター
-	 */
 	public String getEntryModelId() {
 		return entryModelId;
 	}
 
-	/**
-	 * エントリーモデルマスターを設定
-	 *
-	 * @param entryModelId エントリーモデルマスター
-	 */
 	public void setEntryModelId(String entryModelId) {
 		this.entryModelId = entryModelId;
 	}
 
-	/**
-	 * エントリーモデルマスターを設定
-	 *
-	 * @param entryModelId エントリーモデルマスター
-	 * @return this
-	 */
 	public EntryModel withEntryModelId(String entryModelId) {
 		this.entryModelId = entryModelId;
 		return this;
 	}
-	/** エントリーの種類名 */
-	protected String name;
 
-	/**
-	 * エントリーの種類名を取得
-	 *
-	 * @return エントリーの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * エントリーの種類名を設定
-	 *
-	 * @param name エントリーの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * エントリーの種類名を設定
-	 *
-	 * @param name エントリーの種類名
-	 * @return this
-	 */
 	public EntryModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** エントリーの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * エントリーの種類のメタデータを取得
-	 *
-	 * @return エントリーの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * エントリーの種類のメタデータを設定
-	 *
-	 * @param metadata エントリーの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * エントリーの種類のメタデータを設定
-	 *
-	 * @param metadata エントリーの種類のメタデータ
-	 * @return this
-	 */
 	public EntryModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("entryModelId", this.getEntryModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata());
-        return body_;
+    public static EntryModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new EntryModel()
+            .withEntryModelId(data.get("entryModelId") == null || data.get("entryModelId").isNull() ? null : data.get("entryModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("entryModelId", getEntryModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(EntryModel o) {
 		return entryModelId.compareTo(o.entryModelId);

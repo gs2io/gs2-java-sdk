@@ -16,210 +16,110 @@
 
 package io.gs2.ranking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.ranking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザーIDを指定してスコアを登録 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザーIDを指定してスコアを登録
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザーIDを指定してスコアを登録
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザーIDを指定してスコアを登録
-     * @return this
-     */
-    public PutScoreByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** カテゴリ名 */
     private String categoryName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return ユーザーIDを指定してスコアを登録
-     */
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param categoryName ユーザーIDを指定してスコアを登録
-     */
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param categoryName ユーザーIDを指定してスコアを登録
-     * @return this
-     */
-    public PutScoreByUserIdRequest withCategoryName(String categoryName) {
-        setCategoryName(categoryName);
-        return this;
-    }
-
-    /** ユーザID */
     private String userId;
-
-    /**
-     * ユーザIDを取得
-     *
-     * @return ユーザーIDを指定してスコアを登録
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザIDを設定
-     *
-     * @param userId ユーザーIDを指定してスコアを登録
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザIDを設定
-     *
-     * @param userId ユーザーIDを指定してスコアを登録
-     * @return this
-     */
-    public PutScoreByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** スコア */
     private Long score;
-
-    /**
-     * スコアを取得
-     *
-     * @return ユーザーIDを指定してスコアを登録
-     */
-    public Long getScore() {
-        return score;
-    }
-
-    /**
-     * スコアを設定
-     *
-     * @param score ユーザーIDを指定してスコアを登録
-     */
-    public void setScore(Long score) {
-        this.score = score;
-    }
-
-    /**
-     * スコアを設定
-     *
-     * @param score ユーザーIDを指定してスコアを登録
-     * @return this
-     */
-    public PutScoreByUserIdRequest withScore(Long score) {
-        setScore(score);
-        return this;
-    }
-
-    /** メタデータ */
     private String metadata;
 
-    /**
-     * メタデータを取得
-     *
-     * @return ユーザーIDを指定してスコアを登録
-     */
-    public String getMetadata() {
-        return metadata;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public PutScoreByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public PutScoreByUserIdRequest withCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public PutScoreByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Long getScore() {
+		return score;
+	}
+
+	public void setScore(Long score) {
+		this.score = score;
+	}
+
+	public PutScoreByUserIdRequest withScore(Long score) {
+		this.score = score;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public PutScoreByUserIdRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+    public static PutScoreByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new PutScoreByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withScore(data.get("score") == null || data.get("score").isNull() ? null : data.get("score").longValue())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
     }
 
-    /**
-     * メタデータを設定
-     *
-     * @param metadata ユーザーIDを指定してスコアを登録
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("categoryName", getCategoryName());
+                put("userId", getUserId());
+                put("score", getScore());
+                put("metadata", getMetadata());
+            }}
+        );
     }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata ユーザーIDを指定してスコアを登録
-     * @return this
-     */
-    public PutScoreByUserIdRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザーIDを指定してスコアを登録
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザーIDを指定してスコアを登録
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザーIDを指定してスコアを登録
-     * @return this
-     */
-    public PutScoreByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

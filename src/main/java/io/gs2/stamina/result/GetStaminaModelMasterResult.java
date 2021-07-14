@@ -16,39 +16,48 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.StaminaModelMaster;
 
-/**
- * スタミナモデルマスターを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetStaminaModelMasterResult implements IResult, Serializable {
-	/** スタミナモデルマスター */
-	private StaminaModelMaster item;
+    private StaminaModelMaster item;
 
-	/**
-	 * スタミナモデルマスターを取得
-	 *
-	 * @return スタミナモデルマスターを取得
-	 */
 	public StaminaModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * スタミナモデルマスターを設定
-	 *
-	 * @param item スタミナモデルマスターを取得
-	 */
 	public void setItem(StaminaModelMaster item) {
 		this.item = item;
 	}
+
+	public GetStaminaModelMasterResult withItem(StaminaModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetStaminaModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetStaminaModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : StaminaModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,39 +16,48 @@
 
 package io.gs2.mission.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
+import io.gs2.mission.model.MissionGroupModelMaster;
 
-/**
- * ミッショングループマスターを更新 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateMissionGroupModelMasterResult implements IResult, Serializable {
-	/** 更新したミッショングループマスター */
-	private MissionGroupModelMaster item;
+    private MissionGroupModelMaster item;
 
-	/**
-	 * 更新したミッショングループマスターを取得
-	 *
-	 * @return ミッショングループマスターを更新
-	 */
 	public MissionGroupModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新したミッショングループマスターを設定
-	 *
-	 * @param item ミッショングループマスターを更新
-	 */
 	public void setItem(MissionGroupModelMaster item) {
 		this.item = item;
 	}
+
+	public UpdateMissionGroupModelMasterResult withItem(MissionGroupModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateMissionGroupModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateMissionGroupModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : MissionGroupModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

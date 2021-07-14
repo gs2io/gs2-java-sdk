@@ -16,39 +16,50 @@
 
 package io.gs2.showcase.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.showcase.model.*;
+import io.gs2.showcase.model.ConsumeAction;
+import io.gs2.showcase.model.AcquireAction;
+import io.gs2.showcase.model.SalesItemMaster;
 
-/**
- * 商品マスターを新規作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateSalesItemMasterResult implements IResult, Serializable {
-	/** 作成した商品マスター */
-	private SalesItemMaster item;
+    private SalesItemMaster item;
 
-	/**
-	 * 作成した商品マスターを取得
-	 *
-	 * @return 商品マスターを新規作成
-	 */
 	public SalesItemMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 作成した商品マスターを設定
-	 *
-	 * @param item 商品マスターを新規作成
-	 */
 	public void setItem(SalesItemMaster item) {
 		this.item = item;
 	}
+
+	public CreateSalesItemMasterResult withItem(SalesItemMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateSalesItemMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateSalesItemMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SalesItemMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

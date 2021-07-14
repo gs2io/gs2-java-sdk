@@ -16,124 +16,80 @@
 
 package io.gs2.inbox.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 差分時間設定
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TimeSpan implements IModel, Serializable {
-	/** 現在時刻からの日数 */
-	protected Integer days;
+	private Integer days;
+	private Integer hours;
+	private Integer minutes;
 
-	/**
-	 * 現在時刻からの日数を取得
-	 *
-	 * @return 現在時刻からの日数
-	 */
 	public Integer getDays() {
 		return days;
 	}
 
-	/**
-	 * 現在時刻からの日数を設定
-	 *
-	 * @param days 現在時刻からの日数
-	 */
 	public void setDays(Integer days) {
 		this.days = days;
 	}
 
-	/**
-	 * 現在時刻からの日数を設定
-	 *
-	 * @param days 現在時刻からの日数
-	 * @return this
-	 */
 	public TimeSpan withDays(Integer days) {
 		this.days = days;
 		return this;
 	}
-	/** 現在時刻からの時間 */
-	protected Integer hours;
 
-	/**
-	 * 現在時刻からの時間を取得
-	 *
-	 * @return 現在時刻からの時間
-	 */
 	public Integer getHours() {
 		return hours;
 	}
 
-	/**
-	 * 現在時刻からの時間を設定
-	 *
-	 * @param hours 現在時刻からの時間
-	 */
 	public void setHours(Integer hours) {
 		this.hours = hours;
 	}
 
-	/**
-	 * 現在時刻からの時間を設定
-	 *
-	 * @param hours 現在時刻からの時間
-	 * @return this
-	 */
 	public TimeSpan withHours(Integer hours) {
 		this.hours = hours;
 		return this;
 	}
-	/** 現在時刻からの分 */
-	protected Integer minutes;
 
-	/**
-	 * 現在時刻からの分を取得
-	 *
-	 * @return 現在時刻からの分
-	 */
 	public Integer getMinutes() {
 		return minutes;
 	}
 
-	/**
-	 * 現在時刻からの分を設定
-	 *
-	 * @param minutes 現在時刻からの分
-	 */
 	public void setMinutes(Integer minutes) {
 		this.minutes = minutes;
 	}
 
-	/**
-	 * 現在時刻からの分を設定
-	 *
-	 * @param minutes 現在時刻からの分
-	 * @return this
-	 */
 	public TimeSpan withMinutes(Integer minutes) {
 		this.minutes = minutes;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("days", this.getDays())
-            .put("hours", this.getHours())
-            .put("minutes", this.getMinutes());
-        return body_;
+    public static TimeSpan fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new TimeSpan()
+            .withDays(data.get("days") == null || data.get("days").isNull() ? null : data.get("days").intValue())
+            .withHours(data.get("hours") == null || data.get("hours").isNull() ? null : data.get("hours").intValue())
+            .withMinutes(data.get("minutes") == null || data.get("minutes").isNull() ? null : data.get("minutes").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("days", getDays());
+                put("hours", getHours());
+                put("minutes", getMinutes());
+            }}
+        );
     }
 
 	@Override

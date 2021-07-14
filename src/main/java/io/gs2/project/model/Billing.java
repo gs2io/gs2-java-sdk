@@ -16,445 +16,242 @@
 
 package io.gs2.project.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 利用状況
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Billing implements IModel, Serializable, Comparable<Billing> {
-	/** 利用状況 */
-	protected String billingId;
+	private String billingId;
+	private String projectName;
+	private Integer year;
+	private Integer month;
+	private String region;
+	private String service;
+	private String activityType;
+	private Long unit;
+	private String unitName;
+	private Long price;
+	private String currency;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 利用状況を取得
-	 *
-	 * @return 利用状況
-	 */
 	public String getBillingId() {
 		return billingId;
 	}
 
-	/**
-	 * 利用状況を設定
-	 *
-	 * @param billingId 利用状況
-	 */
 	public void setBillingId(String billingId) {
 		this.billingId = billingId;
 	}
 
-	/**
-	 * 利用状況を設定
-	 *
-	 * @param billingId 利用状況
-	 * @return this
-	 */
 	public Billing withBillingId(String billingId) {
 		this.billingId = billingId;
 		return this;
 	}
-	/** プロジェクト名 */
-	protected String projectName;
 
-	/**
-	 * プロジェクト名を取得
-	 *
-	 * @return プロジェクト名
-	 */
 	public String getProjectName() {
 		return projectName;
 	}
 
-	/**
-	 * プロジェクト名を設定
-	 *
-	 * @param projectName プロジェクト名
-	 */
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
 
-	/**
-	 * プロジェクト名を設定
-	 *
-	 * @param projectName プロジェクト名
-	 * @return this
-	 */
 	public Billing withProjectName(String projectName) {
 		this.projectName = projectName;
 		return this;
 	}
-	/** イベントの発生年 */
-	protected Integer year;
 
-	/**
-	 * イベントの発生年を取得
-	 *
-	 * @return イベントの発生年
-	 */
 	public Integer getYear() {
 		return year;
 	}
 
-	/**
-	 * イベントの発生年を設定
-	 *
-	 * @param year イベントの発生年
-	 */
 	public void setYear(Integer year) {
 		this.year = year;
 	}
 
-	/**
-	 * イベントの発生年を設定
-	 *
-	 * @param year イベントの発生年
-	 * @return this
-	 */
 	public Billing withYear(Integer year) {
 		this.year = year;
 		return this;
 	}
-	/** イベントの発生月 */
-	protected Integer month;
 
-	/**
-	 * イベントの発生月を取得
-	 *
-	 * @return イベントの発生月
-	 */
 	public Integer getMonth() {
 		return month;
 	}
 
-	/**
-	 * イベントの発生月を設定
-	 *
-	 * @param month イベントの発生月
-	 */
 	public void setMonth(Integer month) {
 		this.month = month;
 	}
 
-	/**
-	 * イベントの発生月を設定
-	 *
-	 * @param month イベントの発生月
-	 * @return this
-	 */
 	public Billing withMonth(Integer month) {
 		this.month = month;
 		return this;
 	}
-	/** リージョン */
-	protected String region;
 
-	/**
-	 * リージョンを取得
-	 *
-	 * @return リージョン
-	 */
 	public String getRegion() {
 		return region;
 	}
 
-	/**
-	 * リージョンを設定
-	 *
-	 * @param region リージョン
-	 */
 	public void setRegion(String region) {
 		this.region = region;
 	}
 
-	/**
-	 * リージョンを設定
-	 *
-	 * @param region リージョン
-	 * @return this
-	 */
 	public Billing withRegion(String region) {
 		this.region = region;
 		return this;
 	}
-	/** サービスの種類 */
-	protected String service;
 
-	/**
-	 * サービスの種類を取得
-	 *
-	 * @return サービスの種類
-	 */
 	public String getService() {
 		return service;
 	}
 
-	/**
-	 * サービスの種類を設定
-	 *
-	 * @param service サービスの種類
-	 */
 	public void setService(String service) {
 		this.service = service;
 	}
 
-	/**
-	 * サービスの種類を設定
-	 *
-	 * @param service サービスの種類
-	 * @return this
-	 */
 	public Billing withService(String service) {
 		this.service = service;
 		return this;
 	}
-	/** イベントの種類 */
-	protected String activityType;
 
-	/**
-	 * イベントの種類を取得
-	 *
-	 * @return イベントの種類
-	 */
 	public String getActivityType() {
 		return activityType;
 	}
 
-	/**
-	 * イベントの種類を設定
-	 *
-	 * @param activityType イベントの種類
-	 */
 	public void setActivityType(String activityType) {
 		this.activityType = activityType;
 	}
 
-	/**
-	 * イベントの種類を設定
-	 *
-	 * @param activityType イベントの種類
-	 * @return this
-	 */
 	public Billing withActivityType(String activityType) {
 		this.activityType = activityType;
 		return this;
 	}
-	/** 回数 */
-	protected Long unit;
 
-	/**
-	 * 回数を取得
-	 *
-	 * @return 回数
-	 */
 	public Long getUnit() {
 		return unit;
 	}
 
-	/**
-	 * 回数を設定
-	 *
-	 * @param unit 回数
-	 */
 	public void setUnit(Long unit) {
 		this.unit = unit;
 	}
 
-	/**
-	 * 回数を設定
-	 *
-	 * @param unit 回数
-	 * @return this
-	 */
 	public Billing withUnit(Long unit) {
 		this.unit = unit;
 		return this;
 	}
-	/** 単位 */
-	protected String unitName;
 
-	/**
-	 * 単位を取得
-	 *
-	 * @return 単位
-	 */
 	public String getUnitName() {
 		return unitName;
 	}
 
-	/**
-	 * 単位を設定
-	 *
-	 * @param unitName 単位
-	 */
 	public void setUnitName(String unitName) {
 		this.unitName = unitName;
 	}
 
-	/**
-	 * 単位を設定
-	 *
-	 * @param unitName 単位
-	 * @return this
-	 */
 	public Billing withUnitName(String unitName) {
 		this.unitName = unitName;
 		return this;
 	}
-	/** 料金 */
-	protected Long price;
 
-	/**
-	 * 料金を取得
-	 *
-	 * @return 料金
-	 */
 	public Long getPrice() {
 		return price;
 	}
 
-	/**
-	 * 料金を設定
-	 *
-	 * @param price 料金
-	 */
 	public void setPrice(Long price) {
 		this.price = price;
 	}
 
-	/**
-	 * 料金を設定
-	 *
-	 * @param price 料金
-	 * @return this
-	 */
 	public Billing withPrice(Long price) {
 		this.price = price;
 		return this;
 	}
-	/** 通貨 */
-	protected String currency;
 
-	/**
-	 * 通貨を取得
-	 *
-	 * @return 通貨
-	 */
 	public String getCurrency() {
 		return currency;
 	}
 
-	/**
-	 * 通貨を設定
-	 *
-	 * @param currency 通貨
-	 */
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
 
-	/**
-	 * 通貨を設定
-	 *
-	 * @param currency 通貨
-	 * @return this
-	 */
 	public Billing withCurrency(String currency) {
 		this.currency = currency;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Billing withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Billing withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("billingId", this.getBillingId())
-            .put("projectName", this.getProjectName())
-            .put("year", this.getYear())
-            .put("month", this.getMonth())
-            .put("region", this.getRegion())
-            .put("service", this.getService())
-            .put("activityType", this.getActivityType())
-            .put("unit", this.getUnit())
-            .put("unitName", this.getUnitName())
-            .put("price", this.getPrice())
-            .put("currency", this.getCurrency())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Billing fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Billing()
+            .withBillingId(data.get("billingId") == null || data.get("billingId").isNull() ? null : data.get("billingId").asText())
+            .withProjectName(data.get("projectName") == null || data.get("projectName").isNull() ? null : data.get("projectName").asText())
+            .withYear(data.get("year") == null || data.get("year").isNull() ? null : data.get("year").intValue())
+            .withMonth(data.get("month") == null || data.get("month").isNull() ? null : data.get("month").intValue())
+            .withRegion(data.get("region") == null || data.get("region").isNull() ? null : data.get("region").asText())
+            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
+            .withActivityType(data.get("activityType") == null || data.get("activityType").isNull() ? null : data.get("activityType").asText())
+            .withUnit(data.get("unit") == null || data.get("unit").isNull() ? null : data.get("unit").longValue())
+            .withUnitName(data.get("unitName") == null || data.get("unitName").isNull() ? null : data.get("unitName").asText())
+            .withPrice(data.get("price") == null || data.get("price").isNull() ? null : data.get("price").longValue())
+            .withCurrency(data.get("currency") == null || data.get("currency").isNull() ? null : data.get("currency").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("billingId", getBillingId());
+                put("projectName", getProjectName());
+                put("year", getYear());
+                put("month", getMonth());
+                put("region", getRegion());
+                put("service", getService());
+                put("activityType", getActivityType());
+                put("unit", getUnit());
+                put("unitName", getUnitName());
+                put("price", getPrice());
+                put("currency", getCurrency());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Billing o) {
 		return billingId.compareTo(o.billingId);

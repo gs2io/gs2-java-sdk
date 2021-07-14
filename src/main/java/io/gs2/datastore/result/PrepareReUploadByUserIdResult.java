@@ -16,59 +16,64 @@
 
 package io.gs2.datastore.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.datastore.model.*;
+import io.gs2.datastore.model.DataObject;
 
-/**
- * ユーザIDを指定してデータオブジェクトを再アップロード準備する のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrepareReUploadByUserIdResult implements IResult, Serializable {
-	/** データオブジェクト */
-	private DataObject item;
-	/** アップロード処理の実行に使用するURL */
-	private String uploadUrl;
+    private DataObject item;
+    private String uploadUrl;
 
-	/**
-	 * データオブジェクトを取得
-	 *
-	 * @return ユーザIDを指定してデータオブジェクトを再アップロード準備する
-	 */
 	public DataObject getItem() {
 		return item;
 	}
 
-	/**
-	 * データオブジェクトを設定
-	 *
-	 * @param item ユーザIDを指定してデータオブジェクトを再アップロード準備する
-	 */
 	public void setItem(DataObject item) {
 		this.item = item;
 	}
 
-	/**
-	 * アップロード処理の実行に使用するURLを取得
-	 *
-	 * @return ユーザIDを指定してデータオブジェクトを再アップロード準備する
-	 */
+	public PrepareReUploadByUserIdResult withItem(DataObject item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getUploadUrl() {
 		return uploadUrl;
 	}
 
-	/**
-	 * アップロード処理の実行に使用するURLを設定
-	 *
-	 * @param uploadUrl ユーザIDを指定してデータオブジェクトを再アップロード準備する
-	 */
 	public void setUploadUrl(String uploadUrl) {
 		this.uploadUrl = uploadUrl;
 	}
+
+	public PrepareReUploadByUserIdResult withUploadUrl(String uploadUrl) {
+		this.uploadUrl = uploadUrl;
+		return this;
+	}
+
+    public static PrepareReUploadByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new PrepareReUploadByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : DataObject.fromJson(data.get("item")))
+            .withUploadUrl(data.get("uploadUrl") == null || data.get("uploadUrl").isNull() ? null : data.get("uploadUrl").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("uploadUrl", getUploadUrl());
+            }}
+        );
+    }
 }

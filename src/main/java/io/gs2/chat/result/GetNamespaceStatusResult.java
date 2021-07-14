@@ -16,39 +16,47 @@
 
 package io.gs2.chat.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.chat.model.*;
 
-/**
- * ネームスペースを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetNamespaceStatusResult implements IResult, Serializable {
-	/** None */
-	private String status;
+    private String status;
 
-	/**
-	 * Noneを取得
-	 *
-	 * @return ネームスペースを取得
-	 */
 	public String getStatus() {
 		return status;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param status ネームスペースを取得
-	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public GetNamespaceStatusResult withStatus(String status) {
+		this.status = status;
+		return this;
+	}
+
+    public static GetNamespaceStatusResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetNamespaceStatusResult()
+            .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("status", getStatus());
+            }}
+        );
+    }
 }

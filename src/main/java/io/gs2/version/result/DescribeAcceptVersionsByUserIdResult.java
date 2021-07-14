@@ -16,59 +16,75 @@
 
 package io.gs2.version.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.version.model.*;
+import io.gs2.version.model.Version;
+import io.gs2.version.model.AcceptVersion;
 
-/**
- * 承認したバージョンの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeAcceptVersionsByUserIdResult implements IResult, Serializable {
-	/** 承認したバージョンのリスト */
-	private List<AcceptVersion> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<AcceptVersion> items;
+    private String nextPageToken;
 
-	/**
-	 * 承認したバージョンのリストを取得
-	 *
-	 * @return 承認したバージョンの一覧を取得
-	 */
 	public List<AcceptVersion> getItems() {
 		return items;
 	}
 
-	/**
-	 * 承認したバージョンのリストを設定
-	 *
-	 * @param items 承認したバージョンの一覧を取得
-	 */
 	public void setItems(List<AcceptVersion> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return 承認したバージョンの一覧を取得
-	 */
+	public DescribeAcceptVersionsByUserIdResult withItems(List<AcceptVersion> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken 承認したバージョンの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeAcceptVersionsByUserIdResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeAcceptVersionsByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeAcceptVersionsByUserIdResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<AcceptVersion>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcceptVersion.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<AcceptVersion>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

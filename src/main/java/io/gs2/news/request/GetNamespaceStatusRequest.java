@@ -16,50 +16,46 @@
 
 package io.gs2.news.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.news.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ネームスペースの状態を取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetNamespaceStatusRequest extends Gs2BasicRequest<GetNamespaceStatusRequest> {
-
-    /** ネームスペースの名前 */
     private String namespaceName;
 
-    /**
-     * ネームスペースの名前を取得
-     *
-     * @return ネームスペースの状態を取得します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetNamespaceStatusRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+    public static GetNamespaceStatusRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetNamespaceStatusRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText());
     }
 
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName ネームスペースの状態を取得します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+            }}
+        );
     }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName ネームスペースの状態を取得します
-     * @return this
-     */
-    public GetNamespaceStatusRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
 }

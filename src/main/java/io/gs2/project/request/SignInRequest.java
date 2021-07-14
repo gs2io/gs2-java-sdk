@@ -16,82 +16,62 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * サインインします のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SignInRequest extends Gs2BasicRequest<SignInRequest> {
-
-    /** メールアドレス */
     private String email;
-
-    /**
-     * メールアドレスを取得
-     *
-     * @return サインインします
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * メールアドレスを設定
-     *
-     * @param email サインインします
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * メールアドレスを設定
-     *
-     * @param email サインインします
-     * @return this
-     */
-    public SignInRequest withEmail(String email) {
-        setEmail(email);
-        return this;
-    }
-
-    /** パスワード */
     private String password;
 
-    /**
-     * パスワードを取得
-     *
-     * @return サインインします
-     */
-    public String getPassword() {
-        return password;
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public SignInRequest withEmail(String email) {
+		this.email = email;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public SignInRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+    public static SignInRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SignInRequest()
+            .withEmail(data.get("email") == null || data.get("email").isNull() ? null : data.get("email").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
     }
 
-    /**
-     * パスワードを設定
-     *
-     * @param password サインインします
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("email", getEmail());
+                put("password", getPassword());
+            }}
+        );
     }
-
-    /**
-     * パスワードを設定
-     *
-     * @param password サインインします
-     * @return this
-     */
-    public SignInRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
 }

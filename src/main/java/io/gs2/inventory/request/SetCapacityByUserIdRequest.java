@@ -16,178 +16,94 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * キャパシティサイズを設定 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SetCapacityByUserIdRequest extends Gs2BasicRequest<SetCapacityByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return キャパシティサイズを設定
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName キャパシティサイズを設定
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName キャパシティサイズを設定
-     * @return this
-     */
-    public SetCapacityByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** インベントリモデル名 */
     private String inventoryName;
-
-    /**
-     * インベントリモデル名を取得
-     *
-     * @return キャパシティサイズを設定
-     */
-    public String getInventoryName() {
-        return inventoryName;
-    }
-
-    /**
-     * インベントリモデル名を設定
-     *
-     * @param inventoryName キャパシティサイズを設定
-     */
-    public void setInventoryName(String inventoryName) {
-        this.inventoryName = inventoryName;
-    }
-
-    /**
-     * インベントリモデル名を設定
-     *
-     * @param inventoryName キャパシティサイズを設定
-     * @return this
-     */
-    public SetCapacityByUserIdRequest withInventoryName(String inventoryName) {
-        setInventoryName(inventoryName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return キャパシティサイズを設定
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId キャパシティサイズを設定
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId キャパシティサイズを設定
-     * @return this
-     */
-    public SetCapacityByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 現在のインベントリの最大キャパシティ */
     private Integer newCapacityValue;
 
-    /**
-     * 現在のインベントリの最大キャパシティを取得
-     *
-     * @return キャパシティサイズを設定
-     */
-    public Integer getNewCapacityValue() {
-        return newCapacityValue;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public SetCapacityByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+	}
+
+	public SetCapacityByUserIdRequest withInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public SetCapacityByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Integer getNewCapacityValue() {
+		return newCapacityValue;
+	}
+
+	public void setNewCapacityValue(Integer newCapacityValue) {
+		this.newCapacityValue = newCapacityValue;
+	}
+
+	public SetCapacityByUserIdRequest withNewCapacityValue(Integer newCapacityValue) {
+		this.newCapacityValue = newCapacityValue;
+		return this;
+	}
+
+    public static SetCapacityByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SetCapacityByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withNewCapacityValue(data.get("newCapacityValue") == null || data.get("newCapacityValue").isNull() ? null : data.get("newCapacityValue").intValue());
     }
 
-    /**
-     * 現在のインベントリの最大キャパシティを設定
-     *
-     * @param newCapacityValue キャパシティサイズを設定
-     */
-    public void setNewCapacityValue(Integer newCapacityValue) {
-        this.newCapacityValue = newCapacityValue;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("inventoryName", getInventoryName());
+                put("userId", getUserId());
+                put("newCapacityValue", getNewCapacityValue());
+            }}
+        );
     }
-
-    /**
-     * 現在のインベントリの最大キャパシティを設定
-     *
-     * @param newCapacityValue キャパシティサイズを設定
-     * @return this
-     */
-    public SetCapacityByUserIdRequest withNewCapacityValue(Integer newCapacityValue) {
-        setNewCapacityValue(newCapacityValue);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return キャパシティサイズを設定
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider キャパシティサイズを設定
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider キャパシティサイズを設定
-     * @return this
-     */
-    public SetCapacityByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

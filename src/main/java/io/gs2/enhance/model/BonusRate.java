@@ -16,92 +16,64 @@
 
 package io.gs2.enhance.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 消費アクション
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BonusRate implements IModel, Serializable {
-	/** 経験値ボーナスの倍率(1.0=ボーナスなし) */
-	protected Float rate;
+	private Float rate;
+	private Integer weight;
 
-	/**
-	 * 経験値ボーナスの倍率(1.0=ボーナスなし)を取得
-	 *
-	 * @return 経験値ボーナスの倍率(1.0=ボーナスなし)
-	 */
 	public Float getRate() {
 		return rate;
 	}
 
-	/**
-	 * 経験値ボーナスの倍率(1.0=ボーナスなし)を設定
-	 *
-	 * @param rate 経験値ボーナスの倍率(1.0=ボーナスなし)
-	 */
 	public void setRate(Float rate) {
 		this.rate = rate;
 	}
 
-	/**
-	 * 経験値ボーナスの倍率(1.0=ボーナスなし)を設定
-	 *
-	 * @param rate 経験値ボーナスの倍率(1.0=ボーナスなし)
-	 * @return this
-	 */
 	public BonusRate withRate(Float rate) {
 		this.rate = rate;
 		return this;
 	}
-	/** 抽選重み */
-	protected Integer weight;
 
-	/**
-	 * 抽選重みを取得
-	 *
-	 * @return 抽選重み
-	 */
 	public Integer getWeight() {
 		return weight;
 	}
 
-	/**
-	 * 抽選重みを設定
-	 *
-	 * @param weight 抽選重み
-	 */
 	public void setWeight(Integer weight) {
 		this.weight = weight;
 	}
 
-	/**
-	 * 抽選重みを設定
-	 *
-	 * @param weight 抽選重み
-	 * @return this
-	 */
 	public BonusRate withWeight(Integer weight) {
 		this.weight = weight;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("rate", this.getRate())
-            .put("weight", this.getWeight());
-        return body_;
+    public static BonusRate fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new BonusRate()
+            .withRate(data.get("rate") == null || data.get("rate").isNull() ? null : data.get("rate").floatValue())
+            .withWeight(data.get("weight") == null || data.get("weight").isNull() ? null : data.get("weight").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("rate", getRate());
+                put("weight", getWeight());
+            }}
+        );
     }
 
 	@Override

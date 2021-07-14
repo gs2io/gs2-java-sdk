@@ -16,338 +16,201 @@
 
 package io.gs2.mission.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.mission.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.mission.model.AcquireAction;
 
-/**
- * ミッションタスクマスターを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateMissionTaskModelMasterRequest extends Gs2BasicRequest<CreateMissionTaskModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッションタスクマスターを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ミッショングループ名 */
     private String missionGroupName;
-
-    /**
-     * ミッショングループ名を取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public String getMissionGroupName() {
-        return missionGroupName;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param missionGroupName ミッションタスクマスターを新規作成
-     */
-    public void setMissionGroupName(String missionGroupName) {
-        this.missionGroupName = missionGroupName;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param missionGroupName ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withMissionGroupName(String missionGroupName) {
-        setMissionGroupName(missionGroupName);
-        return this;
-    }
-
-    /** タスク名 */
     private String name;
-
-    /**
-     * タスク名を取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * タスク名を設定
-     *
-     * @param name ミッションタスクマスターを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * タスク名を設定
-     *
-     * @param name ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** メタデータ */
     private String metadata;
-
-    /**
-     * メタデータを取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata ミッションタスクマスターを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** ミッションタスクの説明 */
     private String description;
-
-    /**
-     * ミッションタスクの説明を取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ミッションタスクの説明を設定
-     *
-     * @param description ミッションタスクマスターを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ミッションタスクの説明を設定
-     *
-     * @param description ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** カウンター名 */
     private String counterName;
-
-    /**
-     * カウンター名を取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public String getCounterName() {
-        return counterName;
-    }
-
-    /**
-     * カウンター名を設定
-     *
-     * @param counterName ミッションタスクマスターを新規作成
-     */
-    public void setCounterName(String counterName) {
-        this.counterName = counterName;
-    }
-
-    /**
-     * カウンター名を設定
-     *
-     * @param counterName ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withCounterName(String counterName) {
-        setCounterName(counterName);
-        return this;
-    }
-
-    /** 目標値 */
     private Long targetValue;
-
-    /**
-     * 目標値を取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public Long getTargetValue() {
-        return targetValue;
-    }
-
-    /**
-     * 目標値を設定
-     *
-     * @param targetValue ミッションタスクマスターを新規作成
-     */
-    public void setTargetValue(Long targetValue) {
-        this.targetValue = targetValue;
-    }
-
-    /**
-     * 目標値を設定
-     *
-     * @param targetValue ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withTargetValue(Long targetValue) {
-        setTargetValue(targetValue);
-        return this;
-    }
-
-    /** ミッション達成時の報酬 */
     private List<AcquireAction> completeAcquireActions;
-
-    /**
-     * ミッション達成時の報酬を取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public List<AcquireAction> getCompleteAcquireActions() {
-        return completeAcquireActions;
-    }
-
-    /**
-     * ミッション達成時の報酬を設定
-     *
-     * @param completeAcquireActions ミッションタスクマスターを新規作成
-     */
-    public void setCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
-        this.completeAcquireActions = completeAcquireActions;
-    }
-
-    /**
-     * ミッション達成時の報酬を設定
-     *
-     * @param completeAcquireActions ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
-        setCompleteAcquireActions(completeAcquireActions);
-        return this;
-    }
-
-    /** 達成報酬の受け取り可能な期間を指定するイベントマスター のGRN */
     private String challengePeriodEventId;
-
-    /**
-     * 達成報酬の受け取り可能な期間を指定するイベントマスター のGRNを取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public String getChallengePeriodEventId() {
-        return challengePeriodEventId;
-    }
-
-    /**
-     * 達成報酬の受け取り可能な期間を指定するイベントマスター のGRNを設定
-     *
-     * @param challengePeriodEventId ミッションタスクマスターを新規作成
-     */
-    public void setChallengePeriodEventId(String challengePeriodEventId) {
-        this.challengePeriodEventId = challengePeriodEventId;
-    }
-
-    /**
-     * 達成報酬の受け取り可能な期間を指定するイベントマスター のGRNを設定
-     *
-     * @param challengePeriodEventId ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
-        setChallengePeriodEventId(challengePeriodEventId);
-        return this;
-    }
-
-    /** このタスクに挑戦するために達成しておく必要のあるタスクの名前 */
     private String premiseMissionTaskName;
 
-    /**
-     * このタスクに挑戦するために達成しておく必要のあるタスクの名前を取得
-     *
-     * @return ミッションタスクマスターを新規作成
-     */
-    public String getPremiseMissionTaskName() {
-        return premiseMissionTaskName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateMissionTaskModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getMissionGroupName() {
+		return missionGroupName;
+	}
+
+	public void setMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+	}
+
+	public CreateMissionTaskModelMasterRequest withMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateMissionTaskModelMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateMissionTaskModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateMissionTaskModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getCounterName() {
+		return counterName;
+	}
+
+	public void setCounterName(String counterName) {
+		this.counterName = counterName;
+	}
+
+	public CreateMissionTaskModelMasterRequest withCounterName(String counterName) {
+		this.counterName = counterName;
+		return this;
+	}
+
+	public Long getTargetValue() {
+		return targetValue;
+	}
+
+	public void setTargetValue(Long targetValue) {
+		this.targetValue = targetValue;
+	}
+
+	public CreateMissionTaskModelMasterRequest withTargetValue(Long targetValue) {
+		this.targetValue = targetValue;
+		return this;
+	}
+
+	public List<AcquireAction> getCompleteAcquireActions() {
+		return completeAcquireActions;
+	}
+
+	public void setCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
+		this.completeAcquireActions = completeAcquireActions;
+	}
+
+	public CreateMissionTaskModelMasterRequest withCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
+		this.completeAcquireActions = completeAcquireActions;
+		return this;
+	}
+
+	public String getChallengePeriodEventId() {
+		return challengePeriodEventId;
+	}
+
+	public void setChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+	}
+
+	public CreateMissionTaskModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+		return this;
+	}
+
+	public String getPremiseMissionTaskName() {
+		return premiseMissionTaskName;
+	}
+
+	public void setPremiseMissionTaskName(String premiseMissionTaskName) {
+		this.premiseMissionTaskName = premiseMissionTaskName;
+	}
+
+	public CreateMissionTaskModelMasterRequest withPremiseMissionTaskName(String premiseMissionTaskName) {
+		this.premiseMissionTaskName = premiseMissionTaskName;
+		return this;
+	}
+
+    public static CreateMissionTaskModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateMissionTaskModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
+            .withTargetValue(data.get("targetValue") == null || data.get("targetValue").isNull() ? null : data.get("targetValue").longValue())
+            .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
+            .withPremiseMissionTaskName(data.get("premiseMissionTaskName") == null || data.get("premiseMissionTaskName").isNull() ? null : data.get("premiseMissionTaskName").asText());
     }
 
-    /**
-     * このタスクに挑戦するために達成しておく必要のあるタスクの名前を設定
-     *
-     * @param premiseMissionTaskName ミッションタスクマスターを新規作成
-     */
-    public void setPremiseMissionTaskName(String premiseMissionTaskName) {
-        this.premiseMissionTaskName = premiseMissionTaskName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("missionGroupName", getMissionGroupName());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("counterName", getCounterName());
+                put("targetValue", getTargetValue());
+                put("completeAcquireActions", getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getCompleteAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("challengePeriodEventId", getChallengePeriodEventId());
+                put("premiseMissionTaskName", getPremiseMissionTaskName());
+            }}
+        );
     }
-
-    /**
-     * このタスクに挑戦するために達成しておく必要のあるタスクの名前を設定
-     *
-     * @param premiseMissionTaskName ミッションタスクマスターを新規作成
-     * @return this
-     */
-    public CreateMissionTaskModelMasterRequest withPremiseMissionTaskName(String premiseMissionTaskName) {
-        setPremiseMissionTaskName(premiseMissionTaskName);
-        return this;
-    }
-
 }

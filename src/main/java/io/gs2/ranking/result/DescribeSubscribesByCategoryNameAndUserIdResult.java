@@ -16,39 +16,58 @@
 
 package io.gs2.ranking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.ranking.model.*;
+import io.gs2.ranking.model.SubscribeUser;
 
-/**
- * ユーザIDを指定して購読しているユーザIDの一覧取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeSubscribesByCategoryNameAndUserIdResult implements IResult, Serializable {
-	/** 購読対象のリスト */
-	private List<SubscribeUser> items;
+    private List<SubscribeUser> items;
 
-	/**
-	 * 購読対象のリストを取得
-	 *
-	 * @return ユーザIDを指定して購読しているユーザIDの一覧取得
-	 */
 	public List<SubscribeUser> getItems() {
 		return items;
 	}
 
-	/**
-	 * 購読対象のリストを設定
-	 *
-	 * @param items ユーザIDを指定して購読しているユーザIDの一覧取得
-	 */
 	public void setItems(List<SubscribeUser> items) {
 		this.items = items;
 	}
+
+	public DescribeSubscribesByCategoryNameAndUserIdResult withItems(List<SubscribeUser> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static DescribeSubscribesByCategoryNameAndUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeSubscribesByCategoryNameAndUserIdResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<SubscribeUser>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return SubscribeUser.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<SubscribeUser>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

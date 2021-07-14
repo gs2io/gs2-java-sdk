@@ -16,39 +16,48 @@
 
 package io.gs2.lottery.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
+import io.gs2.lottery.model.LotteryModel;
 
-/**
- * 抽選の種類を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetLotteryModelResult implements IResult, Serializable {
-	/** 抽選の種類 */
-	private LotteryModel item;
+    private LotteryModel item;
 
-	/**
-	 * 抽選の種類を取得
-	 *
-	 * @return 抽選の種類を取得
-	 */
 	public LotteryModel getItem() {
 		return item;
 	}
 
-	/**
-	 * 抽選の種類を設定
-	 *
-	 * @param item 抽選の種類を取得
-	 */
 	public void setItem(LotteryModel item) {
 		this.item = item;
 	}
+
+	public GetLotteryModelResult withItem(LotteryModel item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetLotteryModelResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetLotteryModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : LotteryModel.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

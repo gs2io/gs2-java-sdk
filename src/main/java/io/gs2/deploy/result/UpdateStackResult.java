@@ -16,39 +16,48 @@
 
 package io.gs2.deploy.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.deploy.model.*;
+import io.gs2.deploy.model.Stack;
 
-/**
- * スタックを更新 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateStackResult implements IResult, Serializable {
-	/** 更新したスタック */
-	private Stack item;
+    private Stack item;
 
-	/**
-	 * 更新したスタックを取得
-	 *
-	 * @return スタックを更新
-	 */
 	public Stack getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新したスタックを設定
-	 *
-	 * @param item スタックを更新
-	 */
 	public void setItem(Stack item) {
 		this.item = item;
 	}
+
+	public UpdateStackResult withItem(Stack item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateStackResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateStackResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Stack.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

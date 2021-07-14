@@ -16,274 +16,142 @@
 
 package io.gs2.money.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.money.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * レシートの一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeReceiptsRequest extends Gs2BasicRequest<DescribeReceiptsRequest> {
-
-    /** ネームスペースの名前 */
     private String namespaceName;
-
-    /**
-     * ネームスペースの名前を取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName レシートの一覧を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName レシートの一覧を取得
-     * @return this
-     */
-    public DescribeReceiptsRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId レシートの一覧を取得
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId レシートの一覧を取得
-     * @return this
-     */
-    public DescribeReceiptsRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** None */
     private Integer slot;
-
-    /**
-     * Noneを取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public Integer getSlot() {
-        return slot;
-    }
-
-    /**
-     * Noneを設定
-     *
-     * @param slot レシートの一覧を取得
-     */
-    public void setSlot(Integer slot) {
-        this.slot = slot;
-    }
-
-    /**
-     * Noneを設定
-     *
-     * @param slot レシートの一覧を取得
-     * @return this
-     */
-    public DescribeReceiptsRequest withSlot(Integer slot) {
-        setSlot(slot);
-        return this;
-    }
-
-    /** None */
     private Long begin;
-
-    /**
-     * Noneを取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public Long getBegin() {
-        return begin;
-    }
-
-    /**
-     * Noneを設定
-     *
-     * @param begin レシートの一覧を取得
-     */
-    public void setBegin(Long begin) {
-        this.begin = begin;
-    }
-
-    /**
-     * Noneを設定
-     *
-     * @param begin レシートの一覧を取得
-     * @return this
-     */
-    public DescribeReceiptsRequest withBegin(Long begin) {
-        setBegin(begin);
-        return this;
-    }
-
-    /** None */
     private Long end;
-
-    /**
-     * Noneを取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public Long getEnd() {
-        return end;
-    }
-
-    /**
-     * Noneを設定
-     *
-     * @param end レシートの一覧を取得
-     */
-    public void setEnd(Long end) {
-        this.end = end;
-    }
-
-    /**
-     * Noneを設定
-     *
-     * @param end レシートの一覧を取得
-     * @return this
-     */
-    public DescribeReceiptsRequest withEnd(Long end) {
-        setEnd(end);
-        return this;
-    }
-
-    /** データの取得を開始する位置を指定するトークン */
     private String pageToken;
+    private Integer limit;
 
-    /**
-     * データの取得を開始する位置を指定するトークンを取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public String getPageToken() {
-        return pageToken;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeReceiptsRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public DescribeReceiptsRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Integer getSlot() {
+		return slot;
+	}
+
+	public void setSlot(Integer slot) {
+		this.slot = slot;
+	}
+
+	public DescribeReceiptsRequest withSlot(Integer slot) {
+		this.slot = slot;
+		return this;
+	}
+
+	public Long getBegin() {
+		return begin;
+	}
+
+	public void setBegin(Long begin) {
+		this.begin = begin;
+	}
+
+	public DescribeReceiptsRequest withBegin(Long begin) {
+		this.begin = begin;
+		return this;
+	}
+
+	public Long getEnd() {
+		return end;
+	}
+
+	public void setEnd(Long end) {
+		this.end = end;
+	}
+
+	public DescribeReceiptsRequest withEnd(Long end) {
+		this.end = end;
+		return this;
+	}
+
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public DescribeReceiptsRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeReceiptsRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static DescribeReceiptsRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeReceiptsRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
+            .withBegin(data.get("begin") == null || data.get("begin").isNull() ? null : data.get("begin").longValue())
+            .withEnd(data.get("end") == null || data.get("end").isNull() ? null : data.get("end").longValue())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken レシートの一覧を取得
-     */
-    public void setPageToken(String pageToken) {
-        this.pageToken = pageToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("slot", getSlot());
+                put("begin", getBegin());
+                put("end", getEnd());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
+            }}
+        );
     }
-
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken レシートの一覧を取得
-     * @return this
-     */
-    public DescribeReceiptsRequest withPageToken(String pageToken) {
-        setPageToken(pageToken);
-        return this;
-    }
-
-    /** データの取得件数 */
-    private Long limit;
-
-    /**
-     * データの取得件数を取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public Long getLimit() {
-        return limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit レシートの一覧を取得
-     */
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit レシートの一覧を取得
-     * @return this
-     */
-    public DescribeReceiptsRequest withLimit(Long limit) {
-        setLimit(limit);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider レシートの一覧を取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider レシートの一覧を取得
-     * @return this
-     */
-    public DescribeReceiptsRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

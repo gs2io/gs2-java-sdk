@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.friend;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.friend.request.*;
 import io.gs2.friend.result.*;
-import io.gs2.friend.model.*;
+import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> {
 
-/**
- * GS2 Friend API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2FriendRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,103 +152,25 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getFollowScript() != null) {
-                try {
-                    json.put("followScript", new JSONObject(mapper.writeValueAsString(this.request.getFollowScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getUnfollowScript() != null) {
-                try {
-                    json.put("unfollowScript", new JSONObject(mapper.writeValueAsString(this.request.getUnfollowScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getSendRequestScript() != null) {
-                try {
-                    json.put("sendRequestScript", new JSONObject(mapper.writeValueAsString(this.request.getSendRequestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCancelRequestScript() != null) {
-                try {
-                    json.put("cancelRequestScript", new JSONObject(mapper.writeValueAsString(this.request.getCancelRequestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getAcceptRequestScript() != null) {
-                try {
-                    json.put("acceptRequestScript", new JSONObject(mapper.writeValueAsString(this.request.getAcceptRequestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getRejectRequestScript() != null) {
-                try {
-                    json.put("rejectRequestScript", new JSONObject(mapper.writeValueAsString(this.request.getRejectRequestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDeleteFriendScript() != null) {
-                try {
-                    json.put("deleteFriendScript", new JSONObject(mapper.writeValueAsString(this.request.getDeleteFriendScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getUpdateProfileScript() != null) {
-                try {
-                    json.put("updateProfileScript", new JSONObject(mapper.writeValueAsString(this.request.getUpdateProfileScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getFollowNotification() != null) {
-                try {
-                    json.put("followNotification", new JSONObject(mapper.writeValueAsString(this.request.getFollowNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getReceiveRequestNotification() != null) {
-                try {
-                    json.put("receiveRequestNotification", new JSONObject(mapper.writeValueAsString(this.request.getReceiveRequestNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getAcceptRequestNotification() != null) {
-                try {
-                    json.put("acceptRequestNotification", new JSONObject(mapper.writeValueAsString(this.request.getAcceptRequestNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("followScript", request.getFollowScript() != null ? request.getFollowScript().toJson() : null);
+                    put("unfollowScript", request.getUnfollowScript() != null ? request.getUnfollowScript().toJson() : null);
+                    put("sendRequestScript", request.getSendRequestScript() != null ? request.getSendRequestScript().toJson() : null);
+                    put("cancelRequestScript", request.getCancelRequestScript() != null ? request.getCancelRequestScript().toJson() : null);
+                    put("acceptRequestScript", request.getAcceptRequestScript() != null ? request.getAcceptRequestScript().toJson() : null);
+                    put("rejectRequestScript", request.getRejectRequestScript() != null ? request.getRejectRequestScript().toJson() : null);
+                    put("deleteFriendScript", request.getDeleteFriendScript() != null ? request.getDeleteFriendScript().toJson() : null);
+                    put("updateProfileScript", request.getUpdateProfileScript() != null ? request.getUpdateProfileScript().toJson() : null);
+                    put("followNotification", request.getFollowNotification() != null ? request.getFollowNotification().toJson() : null);
+                    put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
+                    put("acceptRequestNotification", request.getAcceptRequestNotification() != null ? request.getAcceptRequestNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -283,25 +188,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -328,15 +222,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -347,7 +244,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -371,25 +268,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -416,15 +302,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -435,7 +324,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -459,25 +348,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -504,15 +382,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -523,102 +404,26 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getFollowScript() != null) {
-                try {
-                    json.put("followScript", new JSONObject(mapper.writeValueAsString(this.request.getFollowScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getUnfollowScript() != null) {
-                try {
-                    json.put("unfollowScript", new JSONObject(mapper.writeValueAsString(this.request.getUnfollowScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getSendRequestScript() != null) {
-                try {
-                    json.put("sendRequestScript", new JSONObject(mapper.writeValueAsString(this.request.getSendRequestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCancelRequestScript() != null) {
-                try {
-                    json.put("cancelRequestScript", new JSONObject(mapper.writeValueAsString(this.request.getCancelRequestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getAcceptRequestScript() != null) {
-                try {
-                    json.put("acceptRequestScript", new JSONObject(mapper.writeValueAsString(this.request.getAcceptRequestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getRejectRequestScript() != null) {
-                try {
-                    json.put("rejectRequestScript", new JSONObject(mapper.writeValueAsString(this.request.getRejectRequestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDeleteFriendScript() != null) {
-                try {
-                    json.put("deleteFriendScript", new JSONObject(mapper.writeValueAsString(this.request.getDeleteFriendScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getUpdateProfileScript() != null) {
-                try {
-                    json.put("updateProfileScript", new JSONObject(mapper.writeValueAsString(this.request.getUpdateProfileScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getFollowNotification() != null) {
-                try {
-                    json.put("followNotification", new JSONObject(mapper.writeValueAsString(this.request.getFollowNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getReceiveRequestNotification() != null) {
-                try {
-                    json.put("receiveRequestNotification", new JSONObject(mapper.writeValueAsString(this.request.getReceiveRequestNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getAcceptRequestNotification() != null) {
-                try {
-                    json.put("acceptRequestNotification", new JSONObject(mapper.writeValueAsString(this.request.getAcceptRequestNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("followScript", request.getFollowScript() != null ? request.getFollowScript().toJson() : null);
+                    put("unfollowScript", request.getUnfollowScript() != null ? request.getUnfollowScript().toJson() : null);
+                    put("sendRequestScript", request.getSendRequestScript() != null ? request.getSendRequestScript().toJson() : null);
+                    put("cancelRequestScript", request.getCancelRequestScript() != null ? request.getCancelRequestScript().toJson() : null);
+                    put("acceptRequestScript", request.getAcceptRequestScript() != null ? request.getAcceptRequestScript().toJson() : null);
+                    put("rejectRequestScript", request.getRejectRequestScript() != null ? request.getRejectRequestScript().toJson() : null);
+                    put("deleteFriendScript", request.getDeleteFriendScript() != null ? request.getDeleteFriendScript().toJson() : null);
+                    put("updateProfileScript", request.getUpdateProfileScript() != null ? request.getUpdateProfileScript().toJson() : null);
+                    put("followNotification", request.getFollowNotification() != null ? request.getFollowNotification().toJson() : null);
+                    put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
+                    put("acceptRequestNotification", request.getAcceptRequestNotification() != null ? request.getAcceptRequestNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -636,25 +441,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -681,15 +475,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -700,7 +497,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -724,25 +521,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -769,15 +555,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeProfilesTask(
             DescribeProfilesRequest request,
-            AsyncAction<AsyncResult<DescribeProfilesResult>> userCallback,
-            Class<DescribeProfilesResult> clazz
+            AsyncAction<AsyncResult<DescribeProfilesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeProfilesResult parse(JsonNode data) {
+            return DescribeProfilesResult.fromJson(data);
         }
 
         @Override
@@ -788,7 +577,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/profile";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -818,25 +607,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してプロフィールの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeProfilesAsync(
             DescribeProfilesRequest request,
             AsyncAction<AsyncResult<DescribeProfilesResult>> callback
     ) {
-        DescribeProfilesTask task = new DescribeProfilesTask(request, callback, DescribeProfilesResult.class);
+        DescribeProfilesTask task = new DescribeProfilesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してプロフィールの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeProfilesResult describeProfiles(
             DescribeProfilesRequest request
     ) {
@@ -863,15 +641,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetProfileTask(
             GetProfileRequest request,
-            AsyncAction<AsyncResult<GetProfileResult>> userCallback,
-            Class<GetProfileResult> clazz
+            AsyncAction<AsyncResult<GetProfileResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetProfileResult parse(JsonNode data) {
+            return GetProfileResult.fromJson(data);
         }
 
         @Override
@@ -882,7 +663,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/profile";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -902,9 +683,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -912,25 +690,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * プロフィールを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getProfileAsync(
             GetProfileRequest request,
             AsyncAction<AsyncResult<GetProfileResult>> callback
     ) {
-        GetProfileTask task = new GetProfileTask(request, callback, GetProfileResult.class);
+        GetProfileTask task = new GetProfileTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロフィールを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetProfileResult getProfile(
             GetProfileRequest request
     ) {
@@ -957,15 +724,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetProfileByUserIdTask(
             GetProfileByUserIdRequest request,
-            AsyncAction<AsyncResult<GetProfileByUserIdResult>> userCallback,
-            Class<GetProfileByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetProfileByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetProfileByUserIdResult parse(JsonNode data) {
+            return GetProfileByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -976,8 +746,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/profile";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -994,9 +764,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1004,25 +771,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してプロフィールを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getProfileByUserIdAsync(
             GetProfileByUserIdRequest request,
             AsyncAction<AsyncResult<GetProfileByUserIdResult>> callback
     ) {
-        GetProfileByUserIdTask task = new GetProfileByUserIdTask(request, callback, GetProfileByUserIdResult.class);
+        GetProfileByUserIdTask task = new GetProfileByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してプロフィールを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetProfileByUserIdResult getProfileByUserId(
             GetProfileByUserIdRequest request
     ) {
@@ -1049,15 +805,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public UpdateProfileTask(
             UpdateProfileRequest request,
-            AsyncAction<AsyncResult<UpdateProfileResult>> userCallback,
-            Class<UpdateProfileResult> clazz
+            AsyncAction<AsyncResult<UpdateProfileResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateProfileResult parse(JsonNode data) {
+            return UpdateProfileResult.fromJson(data);
         }
 
         @Override
@@ -1068,24 +827,16 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/profile";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getPublicProfile() != null) {
-                json.put("publicProfile", this.request.getPublicProfile());
-            }
-            if (this.request.getFollowerProfile() != null) {
-                json.put("followerProfile", this.request.getFollowerProfile());
-            }
-            if (this.request.getFriendProfile() != null) {
-                json.put("friendProfile", this.request.getFriendProfile());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("publicProfile", request.getPublicProfile());
+                    put("followerProfile", request.getFollowerProfile());
+                    put("friendProfile", request.getFriendProfile());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1099,9 +850,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1109,25 +857,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * プロフィールを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateProfileAsync(
             UpdateProfileRequest request,
             AsyncAction<AsyncResult<UpdateProfileResult>> callback
     ) {
-        UpdateProfileTask task = new UpdateProfileTask(request, callback, UpdateProfileResult.class);
+        UpdateProfileTask task = new UpdateProfileTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロフィールを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateProfileResult updateProfile(
             UpdateProfileRequest request
     ) {
@@ -1154,15 +891,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public UpdateProfileByUserIdTask(
             UpdateProfileByUserIdRequest request,
-            AsyncAction<AsyncResult<UpdateProfileByUserIdResult>> userCallback,
-            Class<UpdateProfileByUserIdResult> clazz
+            AsyncAction<AsyncResult<UpdateProfileByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateProfileByUserIdResult parse(JsonNode data) {
+            return UpdateProfileByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1173,25 +913,17 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/profile";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getPublicProfile() != null) {
-                json.put("publicProfile", this.request.getPublicProfile());
-            }
-            if (this.request.getFollowerProfile() != null) {
-                json.put("followerProfile", this.request.getFollowerProfile());
-            }
-            if (this.request.getFriendProfile() != null) {
-                json.put("friendProfile", this.request.getFriendProfile());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("publicProfile", request.getPublicProfile());
+                    put("followerProfile", request.getFollowerProfile());
+                    put("friendProfile", request.getFriendProfile());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1202,9 +934,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1212,25 +941,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してプロフィールを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateProfileByUserIdAsync(
             UpdateProfileByUserIdRequest request,
             AsyncAction<AsyncResult<UpdateProfileByUserIdResult>> callback
     ) {
-        UpdateProfileByUserIdTask task = new UpdateProfileByUserIdTask(request, callback, UpdateProfileByUserIdResult.class);
+        UpdateProfileByUserIdTask task = new UpdateProfileByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してプロフィールを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateProfileByUserIdResult updateProfileByUserId(
             UpdateProfileByUserIdRequest request
     ) {
@@ -1257,15 +975,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DeleteProfileByUserIdTask(
             DeleteProfileByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteProfileByUserIdResult>> userCallback,
-            Class<DeleteProfileByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteProfileByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteProfileByUserIdResult parse(JsonNode data) {
+            return DeleteProfileByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1276,8 +997,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/profile";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1294,9 +1015,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1304,25 +1022,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * プロフィールを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteProfileByUserIdAsync(
             DeleteProfileByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteProfileByUserIdResult>> callback
     ) {
-        DeleteProfileByUserIdTask task = new DeleteProfileByUserIdTask(request, callback, DeleteProfileByUserIdResult.class);
+        DeleteProfileByUserIdTask task = new DeleteProfileByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロフィールを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteProfileByUserIdResult deleteProfileByUserId(
             DeleteProfileByUserIdRequest request
     ) {
@@ -1349,15 +1056,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetPublicProfileTask(
             GetPublicProfileRequest request,
-            AsyncAction<AsyncResult<GetPublicProfileResult>> userCallback,
-            Class<GetPublicProfileResult> clazz
+            AsyncAction<AsyncResult<GetPublicProfileResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetPublicProfileResult parse(JsonNode data) {
+            return GetPublicProfileResult.fromJson(data);
         }
 
         @Override
@@ -1368,8 +1078,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/profile/public";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1386,9 +1096,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1396,25 +1103,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * 公開プロフィールを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getPublicProfileAsync(
             GetPublicProfileRequest request,
             AsyncAction<AsyncResult<GetPublicProfileResult>> callback
     ) {
-        GetPublicProfileTask task = new GetPublicProfileTask(request, callback, GetPublicProfileResult.class);
+        GetPublicProfileTask task = new GetPublicProfileTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 公開プロフィールを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetPublicProfileResult getPublicProfile(
             GetPublicProfileRequest request
     ) {
@@ -1441,15 +1137,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeFollowsTask(
             DescribeFollowsRequest request,
-            AsyncAction<AsyncResult<DescribeFollowsResult>> userCallback,
-            Class<DescribeFollowsResult> clazz
+            AsyncAction<AsyncResult<DescribeFollowsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeFollowsResult parse(JsonNode data) {
+            return DescribeFollowsResult.fromJson(data);
         }
 
         @Override
@@ -1460,7 +1159,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/follow";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1489,9 +1188,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1499,25 +1195,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フォローの一覧取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeFollowsAsync(
             DescribeFollowsRequest request,
             AsyncAction<AsyncResult<DescribeFollowsResult>> callback
     ) {
-        DescribeFollowsTask task = new DescribeFollowsTask(request, callback, DescribeFollowsResult.class);
+        DescribeFollowsTask task = new DescribeFollowsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォローの一覧取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeFollowsResult describeFollows(
             DescribeFollowsRequest request
     ) {
@@ -1544,15 +1229,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeFollowsByUserIdTask(
             DescribeFollowsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeFollowsByUserIdResult>> userCallback,
-            Class<DescribeFollowsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeFollowsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeFollowsByUserIdResult parse(JsonNode data) {
+            return DescribeFollowsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1563,8 +1251,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/follow";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1590,9 +1278,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1600,25 +1285,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフォローの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeFollowsByUserIdAsync(
             DescribeFollowsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeFollowsByUserIdResult>> callback
     ) {
-        DescribeFollowsByUserIdTask task = new DescribeFollowsByUserIdTask(request, callback, DescribeFollowsByUserIdResult.class);
+        DescribeFollowsByUserIdTask task = new DescribeFollowsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフォローの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeFollowsByUserIdResult describeFollowsByUserId(
             DescribeFollowsByUserIdRequest request
     ) {
@@ -1645,15 +1319,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetFollowTask(
             GetFollowRequest request,
-            AsyncAction<AsyncResult<GetFollowResult>> userCallback,
-            Class<GetFollowResult> clazz
+            AsyncAction<AsyncResult<GetFollowResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFollowResult parse(JsonNode data) {
+            return GetFollowResult.fromJson(data);
         }
 
         @Override
@@ -1664,8 +1341,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/follow/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1688,9 +1365,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1698,25 +1372,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フォローを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFollowAsync(
             GetFollowRequest request,
             AsyncAction<AsyncResult<GetFollowResult>> callback
     ) {
-        GetFollowTask task = new GetFollowTask(request, callback, GetFollowResult.class);
+        GetFollowTask task = new GetFollowTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォローを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFollowResult getFollow(
             GetFollowRequest request
     ) {
@@ -1743,15 +1406,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetFollowByUserIdTask(
             GetFollowByUserIdRequest request,
-            AsyncAction<AsyncResult<GetFollowByUserIdResult>> userCallback,
-            Class<GetFollowByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetFollowByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFollowByUserIdResult parse(JsonNode data) {
+            return GetFollowByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1762,9 +1428,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/follow/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1784,9 +1450,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1794,25 +1457,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフォローを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFollowByUserIdAsync(
             GetFollowByUserIdRequest request,
             AsyncAction<AsyncResult<GetFollowByUserIdResult>> callback
     ) {
-        GetFollowByUserIdTask task = new GetFollowByUserIdTask(request, callback, GetFollowByUserIdResult.class);
+        GetFollowByUserIdTask task = new GetFollowByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフォローを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFollowByUserIdResult getFollowByUserId(
             GetFollowByUserIdRequest request
     ) {
@@ -1839,15 +1491,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public FollowTask(
             FollowRequest request,
-            AsyncAction<AsyncResult<FollowResult>> userCallback,
-            Class<FollowResult> clazz
+            AsyncAction<AsyncResult<FollowResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public FollowResult parse(JsonNode data) {
+            return FollowResult.fromJson(data);
         }
 
         @Override
@@ -1858,16 +1513,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/follow/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1881,9 +1534,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1891,25 +1541,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フォロー<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void followAsync(
             FollowRequest request,
             AsyncAction<AsyncResult<FollowResult>> callback
     ) {
-        FollowTask task = new FollowTask(request, callback, FollowResult.class);
+        FollowTask task = new FollowTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォロー<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public FollowResult follow(
             FollowRequest request
     ) {
@@ -1936,15 +1575,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public FollowByUserIdTask(
             FollowByUserIdRequest request,
-            AsyncAction<AsyncResult<FollowByUserIdResult>> userCallback,
-            Class<FollowByUserIdResult> clazz
+            AsyncAction<AsyncResult<FollowByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public FollowByUserIdResult parse(JsonNode data) {
+            return FollowByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1955,17 +1597,15 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/follow/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1976,9 +1616,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1986,25 +1623,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフォロー<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void followByUserIdAsync(
             FollowByUserIdRequest request,
             AsyncAction<AsyncResult<FollowByUserIdResult>> callback
     ) {
-        FollowByUserIdTask task = new FollowByUserIdTask(request, callback, FollowByUserIdResult.class);
+        FollowByUserIdTask task = new FollowByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフォロー<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public FollowByUserIdResult followByUserId(
             FollowByUserIdRequest request
     ) {
@@ -2031,15 +1657,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public UnfollowTask(
             UnfollowRequest request,
-            AsyncAction<AsyncResult<UnfollowResult>> userCallback,
-            Class<UnfollowResult> clazz
+            AsyncAction<AsyncResult<UnfollowResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UnfollowResult parse(JsonNode data) {
+            return UnfollowResult.fromJson(data);
         }
 
         @Override
@@ -2050,8 +1679,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/follow/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2071,9 +1700,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2081,25 +1707,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * アンフォロー<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void unfollowAsync(
             UnfollowRequest request,
             AsyncAction<AsyncResult<UnfollowResult>> callback
     ) {
-        UnfollowTask task = new UnfollowTask(request, callback, UnfollowResult.class);
+        UnfollowTask task = new UnfollowTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アンフォロー<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UnfollowResult unfollow(
             UnfollowRequest request
     ) {
@@ -2126,15 +1741,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public UnfollowByUserIdTask(
             UnfollowByUserIdRequest request,
-            AsyncAction<AsyncResult<UnfollowByUserIdResult>> userCallback,
-            Class<UnfollowByUserIdResult> clazz
+            AsyncAction<AsyncResult<UnfollowByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UnfollowByUserIdResult parse(JsonNode data) {
+            return UnfollowByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2145,9 +1763,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/follow/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2164,9 +1782,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2174,25 +1789,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してアンフォロー<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void unfollowByUserIdAsync(
             UnfollowByUserIdRequest request,
             AsyncAction<AsyncResult<UnfollowByUserIdResult>> callback
     ) {
-        UnfollowByUserIdTask task = new UnfollowByUserIdTask(request, callback, UnfollowByUserIdResult.class);
+        UnfollowByUserIdTask task = new UnfollowByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してアンフォロー<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UnfollowByUserIdResult unfollowByUserId(
             UnfollowByUserIdRequest request
     ) {
@@ -2219,15 +1823,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeFriendsTask(
             DescribeFriendsRequest request,
-            AsyncAction<AsyncResult<DescribeFriendsResult>> userCallback,
-            Class<DescribeFriendsResult> clazz
+            AsyncAction<AsyncResult<DescribeFriendsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeFriendsResult parse(JsonNode data) {
+            return DescribeFriendsResult.fromJson(data);
         }
 
         @Override
@@ -2238,7 +1845,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/friend";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2267,9 +1874,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2277,25 +1881,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フレンドを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeFriendsAsync(
             DescribeFriendsRequest request,
             AsyncAction<AsyncResult<DescribeFriendsResult>> callback
     ) {
-        DescribeFriendsTask task = new DescribeFriendsTask(request, callback, DescribeFriendsResult.class);
+        DescribeFriendsTask task = new DescribeFriendsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フレンドを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeFriendsResult describeFriends(
             DescribeFriendsRequest request
     ) {
@@ -2322,15 +1915,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeFriendsByUserIdTask(
             DescribeFriendsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeFriendsByUserIdResult>> userCallback,
-            Class<DescribeFriendsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeFriendsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeFriendsByUserIdResult parse(JsonNode data) {
+            return DescribeFriendsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2341,8 +1937,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/friend";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2368,9 +1964,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2378,25 +1971,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフレンドを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeFriendsByUserIdAsync(
             DescribeFriendsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeFriendsByUserIdResult>> callback
     ) {
-        DescribeFriendsByUserIdTask task = new DescribeFriendsByUserIdTask(request, callback, DescribeFriendsByUserIdResult.class);
+        DescribeFriendsByUserIdTask task = new DescribeFriendsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフレンドを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeFriendsByUserIdResult describeFriendsByUserId(
             DescribeFriendsByUserIdRequest request
     ) {
@@ -2423,15 +2005,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetFriendTask(
             GetFriendRequest request,
-            AsyncAction<AsyncResult<GetFriendResult>> userCallback,
-            Class<GetFriendResult> clazz
+            AsyncAction<AsyncResult<GetFriendResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFriendResult parse(JsonNode data) {
+            return GetFriendResult.fromJson(data);
         }
 
         @Override
@@ -2442,8 +2027,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/friend/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2466,9 +2051,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2476,25 +2058,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フレンドを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFriendAsync(
             GetFriendRequest request,
             AsyncAction<AsyncResult<GetFriendResult>> callback
     ) {
-        GetFriendTask task = new GetFriendTask(request, callback, GetFriendResult.class);
+        GetFriendTask task = new GetFriendTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フレンドを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFriendResult getFriend(
             GetFriendRequest request
     ) {
@@ -2521,15 +2092,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetFriendByUserIdTask(
             GetFriendByUserIdRequest request,
-            AsyncAction<AsyncResult<GetFriendByUserIdResult>> userCallback,
-            Class<GetFriendByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetFriendByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFriendByUserIdResult parse(JsonNode data) {
+            return GetFriendByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2540,9 +2114,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/friend/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2562,9 +2136,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2572,25 +2143,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフレンドを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFriendByUserIdAsync(
             GetFriendByUserIdRequest request,
             AsyncAction<AsyncResult<GetFriendByUserIdResult>> callback
     ) {
-        GetFriendByUserIdTask task = new GetFriendByUserIdTask(request, callback, GetFriendByUserIdResult.class);
+        GetFriendByUserIdTask task = new GetFriendByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフレンドを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFriendByUserIdResult getFriendByUserId(
             GetFriendByUserIdRequest request
     ) {
@@ -2617,15 +2177,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DeleteFriendTask(
             DeleteFriendRequest request,
-            AsyncAction<AsyncResult<DeleteFriendResult>> userCallback,
-            Class<DeleteFriendResult> clazz
+            AsyncAction<AsyncResult<DeleteFriendResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteFriendResult parse(JsonNode data) {
+            return DeleteFriendResult.fromJson(data);
         }
 
         @Override
@@ -2636,8 +2199,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/friend/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2657,9 +2220,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2667,25 +2227,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フレンドを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteFriendAsync(
             DeleteFriendRequest request,
             AsyncAction<AsyncResult<DeleteFriendResult>> callback
     ) {
-        DeleteFriendTask task = new DeleteFriendTask(request, callback, DeleteFriendResult.class);
+        DeleteFriendTask task = new DeleteFriendTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フレンドを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteFriendResult deleteFriend(
             DeleteFriendRequest request
     ) {
@@ -2712,15 +2261,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DeleteFriendByUserIdTask(
             DeleteFriendByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteFriendByUserIdResult>> userCallback,
-            Class<DeleteFriendByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteFriendByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteFriendByUserIdResult parse(JsonNode data) {
+            return DeleteFriendByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2731,9 +2283,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/friend/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2750,9 +2302,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2760,25 +2309,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフレンドを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteFriendByUserIdAsync(
             DeleteFriendByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteFriendByUserIdResult>> callback
     ) {
-        DeleteFriendByUserIdTask task = new DeleteFriendByUserIdTask(request, callback, DeleteFriendByUserIdResult.class);
+        DeleteFriendByUserIdTask task = new DeleteFriendByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフレンドを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteFriendByUserIdResult deleteFriendByUserId(
             DeleteFriendByUserIdRequest request
     ) {
@@ -2805,15 +2343,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeSendRequestsTask(
             DescribeSendRequestsRequest request,
-            AsyncAction<AsyncResult<DescribeSendRequestsResult>> userCallback,
-            Class<DescribeSendRequestsResult> clazz
+            AsyncAction<AsyncResult<DescribeSendRequestsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeSendRequestsResult parse(JsonNode data) {
+            return DescribeSendRequestsResult.fromJson(data);
         }
 
         @Override
@@ -2824,7 +2365,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/sendBox";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2844,9 +2385,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2854,25 +2392,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * 送信したフレンドリクエストの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeSendRequestsAsync(
             DescribeSendRequestsRequest request,
             AsyncAction<AsyncResult<DescribeSendRequestsResult>> callback
     ) {
-        DescribeSendRequestsTask task = new DescribeSendRequestsTask(request, callback, DescribeSendRequestsResult.class);
+        DescribeSendRequestsTask task = new DescribeSendRequestsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 送信したフレンドリクエストの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeSendRequestsResult describeSendRequests(
             DescribeSendRequestsRequest request
     ) {
@@ -2899,15 +2426,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeSendRequestsByUserIdTask(
             DescribeSendRequestsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeSendRequestsByUserIdResult>> userCallback,
-            Class<DescribeSendRequestsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeSendRequestsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeSendRequestsByUserIdResult parse(JsonNode data) {
+            return DescribeSendRequestsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2918,8 +2448,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/sendBox";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2936,9 +2466,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2946,25 +2473,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定して送信したフレンドリクエストの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeSendRequestsByUserIdAsync(
             DescribeSendRequestsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeSendRequestsByUserIdResult>> callback
     ) {
-        DescribeSendRequestsByUserIdTask task = new DescribeSendRequestsByUserIdTask(request, callback, DescribeSendRequestsByUserIdResult.class);
+        DescribeSendRequestsByUserIdTask task = new DescribeSendRequestsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して送信したフレンドリクエストの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeSendRequestsByUserIdResult describeSendRequestsByUserId(
             DescribeSendRequestsByUserIdRequest request
     ) {
@@ -2991,15 +2507,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetSendRequestTask(
             GetSendRequestRequest request,
-            AsyncAction<AsyncResult<GetSendRequestResult>> userCallback,
-            Class<GetSendRequestResult> clazz
+            AsyncAction<AsyncResult<GetSendRequestResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetSendRequestResult parse(JsonNode data) {
+            return GetSendRequestResult.fromJson(data);
         }
 
         @Override
@@ -3010,8 +2529,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/sendBox/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3031,9 +2550,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3041,25 +2557,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * 送信したフレンドリクエストを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getSendRequestAsync(
             GetSendRequestRequest request,
             AsyncAction<AsyncResult<GetSendRequestResult>> callback
     ) {
-        GetSendRequestTask task = new GetSendRequestTask(request, callback, GetSendRequestResult.class);
+        GetSendRequestTask task = new GetSendRequestTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 送信したフレンドリクエストを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetSendRequestResult getSendRequest(
             GetSendRequestRequest request
     ) {
@@ -3086,15 +2591,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetSendRequestByUserIdTask(
             GetSendRequestByUserIdRequest request,
-            AsyncAction<AsyncResult<GetSendRequestByUserIdResult>> userCallback,
-            Class<GetSendRequestByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetSendRequestByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetSendRequestByUserIdResult parse(JsonNode data) {
+            return GetSendRequestByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3105,9 +2613,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/sendBox/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3124,9 +2632,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3134,25 +2639,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定して送信したフレンドリクエストを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getSendRequestByUserIdAsync(
             GetSendRequestByUserIdRequest request,
             AsyncAction<AsyncResult<GetSendRequestByUserIdResult>> callback
     ) {
-        GetSendRequestByUserIdTask task = new GetSendRequestByUserIdTask(request, callback, GetSendRequestByUserIdResult.class);
+        GetSendRequestByUserIdTask task = new GetSendRequestByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して送信したフレンドリクエストを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetSendRequestByUserIdResult getSendRequestByUserId(
             GetSendRequestByUserIdRequest request
     ) {
@@ -3179,15 +2673,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public SendRequestTask(
             SendRequestRequest request,
-            AsyncAction<AsyncResult<SendRequestResult>> userCallback,
-            Class<SendRequestResult> clazz
+            AsyncAction<AsyncResult<SendRequestResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SendRequestResult parse(JsonNode data) {
+            return SendRequestResult.fromJson(data);
         }
 
         @Override
@@ -3198,16 +2695,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/sendBox/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3221,9 +2716,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3231,25 +2723,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フレンドリクエストを送信<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void sendRequestAsync(
             SendRequestRequest request,
             AsyncAction<AsyncResult<SendRequestResult>> callback
     ) {
-        SendRequestTask task = new SendRequestTask(request, callback, SendRequestResult.class);
+        SendRequestTask task = new SendRequestTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フレンドリクエストを送信<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SendRequestResult sendRequest(
             SendRequestRequest request
     ) {
@@ -3276,15 +2757,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public SendRequestByUserIdTask(
             SendRequestByUserIdRequest request,
-            AsyncAction<AsyncResult<SendRequestByUserIdResult>> userCallback,
-            Class<SendRequestByUserIdResult> clazz
+            AsyncAction<AsyncResult<SendRequestByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SendRequestByUserIdResult parse(JsonNode data) {
+            return SendRequestByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3295,17 +2779,15 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/sendBox/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3316,9 +2798,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3326,25 +2805,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフレンドリクエストを送信<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void sendRequestByUserIdAsync(
             SendRequestByUserIdRequest request,
             AsyncAction<AsyncResult<SendRequestByUserIdResult>> callback
     ) {
-        SendRequestByUserIdTask task = new SendRequestByUserIdTask(request, callback, SendRequestByUserIdResult.class);
+        SendRequestByUserIdTask task = new SendRequestByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフレンドリクエストを送信<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SendRequestByUserIdResult sendRequestByUserId(
             SendRequestByUserIdRequest request
     ) {
@@ -3371,15 +2839,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DeleteRequestTask(
             DeleteRequestRequest request,
-            AsyncAction<AsyncResult<DeleteRequestResult>> userCallback,
-            Class<DeleteRequestResult> clazz
+            AsyncAction<AsyncResult<DeleteRequestResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteRequestResult parse(JsonNode data) {
+            return DeleteRequestResult.fromJson(data);
         }
 
         @Override
@@ -3390,8 +2861,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/sendBox/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3411,9 +2882,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3421,25 +2889,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フレンドリクエストを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteRequestAsync(
             DeleteRequestRequest request,
             AsyncAction<AsyncResult<DeleteRequestResult>> callback
     ) {
-        DeleteRequestTask task = new DeleteRequestTask(request, callback, DeleteRequestResult.class);
+        DeleteRequestTask task = new DeleteRequestTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フレンドリクエストを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteRequestResult deleteRequest(
             DeleteRequestRequest request
     ) {
@@ -3466,15 +2923,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DeleteRequestByUserIdTask(
             DeleteRequestByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteRequestByUserIdResult>> userCallback,
-            Class<DeleteRequestByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteRequestByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteRequestByUserIdResult parse(JsonNode data) {
+            return DeleteRequestByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3485,9 +2945,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/sendBox/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3504,9 +2964,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3514,25 +2971,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフレンドリクエストを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteRequestByUserIdAsync(
             DeleteRequestByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteRequestByUserIdResult>> callback
     ) {
-        DeleteRequestByUserIdTask task = new DeleteRequestByUserIdTask(request, callback, DeleteRequestByUserIdResult.class);
+        DeleteRequestByUserIdTask task = new DeleteRequestByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフレンドリクエストを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteRequestByUserIdResult deleteRequestByUserId(
             DeleteRequestByUserIdRequest request
     ) {
@@ -3559,15 +3005,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeReceiveRequestsTask(
             DescribeReceiveRequestsRequest request,
-            AsyncAction<AsyncResult<DescribeReceiveRequestsResult>> userCallback,
-            Class<DescribeReceiveRequestsResult> clazz
+            AsyncAction<AsyncResult<DescribeReceiveRequestsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeReceiveRequestsResult parse(JsonNode data) {
+            return DescribeReceiveRequestsResult.fromJson(data);
         }
 
         @Override
@@ -3578,7 +3027,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inbox";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3598,9 +3047,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3608,25 +3054,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * 受信したフレンドリクエストの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeReceiveRequestsAsync(
             DescribeReceiveRequestsRequest request,
             AsyncAction<AsyncResult<DescribeReceiveRequestsResult>> callback
     ) {
-        DescribeReceiveRequestsTask task = new DescribeReceiveRequestsTask(request, callback, DescribeReceiveRequestsResult.class);
+        DescribeReceiveRequestsTask task = new DescribeReceiveRequestsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 受信したフレンドリクエストの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeReceiveRequestsResult describeReceiveRequests(
             DescribeReceiveRequestsRequest request
     ) {
@@ -3653,15 +3088,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeReceiveRequestsByUserIdTask(
             DescribeReceiveRequestsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeReceiveRequestsByUserIdResult>> userCallback,
-            Class<DescribeReceiveRequestsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeReceiveRequestsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeReceiveRequestsByUserIdResult parse(JsonNode data) {
+            return DescribeReceiveRequestsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3672,8 +3110,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inbox";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3690,9 +3128,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3700,25 +3135,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定して受信したフレンドリクエストの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeReceiveRequestsByUserIdAsync(
             DescribeReceiveRequestsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeReceiveRequestsByUserIdResult>> callback
     ) {
-        DescribeReceiveRequestsByUserIdTask task = new DescribeReceiveRequestsByUserIdTask(request, callback, DescribeReceiveRequestsByUserIdResult.class);
+        DescribeReceiveRequestsByUserIdTask task = new DescribeReceiveRequestsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して受信したフレンドリクエストの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeReceiveRequestsByUserIdResult describeReceiveRequestsByUserId(
             DescribeReceiveRequestsByUserIdRequest request
     ) {
@@ -3745,15 +3169,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetReceiveRequestTask(
             GetReceiveRequestRequest request,
-            AsyncAction<AsyncResult<GetReceiveRequestResult>> userCallback,
-            Class<GetReceiveRequestResult> clazz
+            AsyncAction<AsyncResult<GetReceiveRequestResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetReceiveRequestResult parse(JsonNode data) {
+            return GetReceiveRequestResult.fromJson(data);
         }
 
         @Override
@@ -3764,8 +3191,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inbox/{fromUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{fromUserId}", this.request.getFromUserId() == null|| this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{fromUserId}", this.request.getFromUserId() == null || this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3785,9 +3212,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3795,25 +3219,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * 受信したフレンドリクエストを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getReceiveRequestAsync(
             GetReceiveRequestRequest request,
             AsyncAction<AsyncResult<GetReceiveRequestResult>> callback
     ) {
-        GetReceiveRequestTask task = new GetReceiveRequestTask(request, callback, GetReceiveRequestResult.class);
+        GetReceiveRequestTask task = new GetReceiveRequestTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 受信したフレンドリクエストを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetReceiveRequestResult getReceiveRequest(
             GetReceiveRequestRequest request
     ) {
@@ -3840,15 +3253,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public GetReceiveRequestByUserIdTask(
             GetReceiveRequestByUserIdRequest request,
-            AsyncAction<AsyncResult<GetReceiveRequestByUserIdResult>> userCallback,
-            Class<GetReceiveRequestByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetReceiveRequestByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetReceiveRequestByUserIdResult parse(JsonNode data) {
+            return GetReceiveRequestByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3859,9 +3275,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inbox/{fromUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{fromUserId}", this.request.getFromUserId() == null|| this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{fromUserId}", this.request.getFromUserId() == null || this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3878,9 +3294,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3888,25 +3301,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定して受信したフレンドリクエストを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getReceiveRequestByUserIdAsync(
             GetReceiveRequestByUserIdRequest request,
             AsyncAction<AsyncResult<GetReceiveRequestByUserIdResult>> callback
     ) {
-        GetReceiveRequestByUserIdTask task = new GetReceiveRequestByUserIdTask(request, callback, GetReceiveRequestByUserIdResult.class);
+        GetReceiveRequestByUserIdTask task = new GetReceiveRequestByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して受信したフレンドリクエストを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetReceiveRequestByUserIdResult getReceiveRequestByUserId(
             GetReceiveRequestByUserIdRequest request
     ) {
@@ -3933,15 +3335,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public AcceptRequestTask(
             AcceptRequestRequest request,
-            AsyncAction<AsyncResult<AcceptRequestResult>> userCallback,
-            Class<AcceptRequestResult> clazz
+            AsyncAction<AsyncResult<AcceptRequestResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcceptRequestResult parse(JsonNode data) {
+            return AcceptRequestResult.fromJson(data);
         }
 
         @Override
@@ -3952,16 +3357,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inbox/{fromUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{fromUserId}", this.request.getFromUserId() == null|| this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{fromUserId}", this.request.getFromUserId() == null || this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3975,9 +3378,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3985,25 +3385,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フレンドリクエストを承諾<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acceptRequestAsync(
             AcceptRequestRequest request,
             AsyncAction<AsyncResult<AcceptRequestResult>> callback
     ) {
-        AcceptRequestTask task = new AcceptRequestTask(request, callback, AcceptRequestResult.class);
+        AcceptRequestTask task = new AcceptRequestTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フレンドリクエストを承諾<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcceptRequestResult acceptRequest(
             AcceptRequestRequest request
     ) {
@@ -4030,15 +3419,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public AcceptRequestByUserIdTask(
             AcceptRequestByUserIdRequest request,
-            AsyncAction<AsyncResult<AcceptRequestByUserIdResult>> userCallback,
-            Class<AcceptRequestByUserIdResult> clazz
+            AsyncAction<AsyncResult<AcceptRequestByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcceptRequestByUserIdResult parse(JsonNode data) {
+            return AcceptRequestByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4049,17 +3441,15 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inbox/{fromUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{fromUserId}", this.request.getFromUserId() == null|| this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{fromUserId}", this.request.getFromUserId() == null || this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -4070,9 +3460,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4080,25 +3467,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフレンドリクエストを承諾<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acceptRequestByUserIdAsync(
             AcceptRequestByUserIdRequest request,
             AsyncAction<AsyncResult<AcceptRequestByUserIdResult>> callback
     ) {
-        AcceptRequestByUserIdTask task = new AcceptRequestByUserIdTask(request, callback, AcceptRequestByUserIdResult.class);
+        AcceptRequestByUserIdTask task = new AcceptRequestByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフレンドリクエストを承諾<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcceptRequestByUserIdResult acceptRequestByUserId(
             AcceptRequestByUserIdRequest request
     ) {
@@ -4125,15 +3501,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public RejectRequestTask(
             RejectRequestRequest request,
-            AsyncAction<AsyncResult<RejectRequestResult>> userCallback,
-            Class<RejectRequestResult> clazz
+            AsyncAction<AsyncResult<RejectRequestResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RejectRequestResult parse(JsonNode data) {
+            return RejectRequestResult.fromJson(data);
         }
 
         @Override
@@ -4144,8 +3523,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/inbox/{fromUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{fromUserId}", this.request.getFromUserId() == null|| this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{fromUserId}", this.request.getFromUserId() == null || this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4165,9 +3544,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4175,25 +3551,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * フレンドリクエストを拒否<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void rejectRequestAsync(
             RejectRequestRequest request,
             AsyncAction<AsyncResult<RejectRequestResult>> callback
     ) {
-        RejectRequestTask task = new RejectRequestTask(request, callback, RejectRequestResult.class);
+        RejectRequestTask task = new RejectRequestTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フレンドリクエストを拒否<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RejectRequestResult rejectRequest(
             RejectRequestRequest request
     ) {
@@ -4220,15 +3585,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public RejectRequestByUserIdTask(
             RejectRequestByUserIdRequest request,
-            AsyncAction<AsyncResult<RejectRequestByUserIdResult>> userCallback,
-            Class<RejectRequestByUserIdResult> clazz
+            AsyncAction<AsyncResult<RejectRequestByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RejectRequestByUserIdResult parse(JsonNode data) {
+            return RejectRequestByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4239,9 +3607,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/inbox/{fromUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{fromUserId}", this.request.getFromUserId() == null|| this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{fromUserId}", this.request.getFromUserId() == null || this.request.getFromUserId().length() == 0 ? "null" : String.valueOf(this.request.getFromUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4258,9 +3626,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4268,25 +3633,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してフレンドリクエストを拒否<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void rejectRequestByUserIdAsync(
             RejectRequestByUserIdRequest request,
             AsyncAction<AsyncResult<RejectRequestByUserIdResult>> callback
     ) {
-        RejectRequestByUserIdTask task = new RejectRequestByUserIdTask(request, callback, RejectRequestByUserIdResult.class);
+        RejectRequestByUserIdTask task = new RejectRequestByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してフレンドリクエストを拒否<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RejectRequestByUserIdResult rejectRequestByUserId(
             RejectRequestByUserIdRequest request
     ) {
@@ -4313,15 +3667,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeBlackListTask(
             DescribeBlackListRequest request,
-            AsyncAction<AsyncResult<DescribeBlackListResult>> userCallback,
-            Class<DescribeBlackListResult> clazz
+            AsyncAction<AsyncResult<DescribeBlackListResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeBlackListResult parse(JsonNode data) {
+            return DescribeBlackListResult.fromJson(data);
         }
 
         @Override
@@ -4332,7 +3689,7 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/blackList";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4352,9 +3709,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4362,25 +3716,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ブラックリストを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeBlackListAsync(
             DescribeBlackListRequest request,
             AsyncAction<AsyncResult<DescribeBlackListResult>> callback
     ) {
-        DescribeBlackListTask task = new DescribeBlackListTask(request, callback, DescribeBlackListResult.class);
+        DescribeBlackListTask task = new DescribeBlackListTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ブラックリストを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeBlackListResult describeBlackList(
             DescribeBlackListRequest request
     ) {
@@ -4407,15 +3750,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public DescribeBlackListByUserIdTask(
             DescribeBlackListByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeBlackListByUserIdResult>> userCallback,
-            Class<DescribeBlackListByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeBlackListByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeBlackListByUserIdResult parse(JsonNode data) {
+            return DescribeBlackListByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4426,8 +3772,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/blackList";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4444,9 +3790,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4454,25 +3797,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してブラックリストを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeBlackListByUserIdAsync(
             DescribeBlackListByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeBlackListByUserIdResult>> callback
     ) {
-        DescribeBlackListByUserIdTask task = new DescribeBlackListByUserIdTask(request, callback, DescribeBlackListByUserIdResult.class);
+        DescribeBlackListByUserIdTask task = new DescribeBlackListByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してブラックリストを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeBlackListByUserIdResult describeBlackListByUserId(
             DescribeBlackListByUserIdRequest request
     ) {
@@ -4499,15 +3831,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public RegisterBlackListTask(
             RegisterBlackListRequest request,
-            AsyncAction<AsyncResult<RegisterBlackListResult>> userCallback,
-            Class<RegisterBlackListResult> clazz
+            AsyncAction<AsyncResult<RegisterBlackListResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RegisterBlackListResult parse(JsonNode data) {
+            return RegisterBlackListResult.fromJson(data);
         }
 
         @Override
@@ -4518,16 +3853,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/blackList/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4541,9 +3874,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4551,25 +3881,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ブラックリストに登録<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void registerBlackListAsync(
             RegisterBlackListRequest request,
             AsyncAction<AsyncResult<RegisterBlackListResult>> callback
     ) {
-        RegisterBlackListTask task = new RegisterBlackListTask(request, callback, RegisterBlackListResult.class);
+        RegisterBlackListTask task = new RegisterBlackListTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ブラックリストに登録<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RegisterBlackListResult registerBlackList(
             RegisterBlackListRequest request
     ) {
@@ -4596,15 +3915,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public RegisterBlackListByUserIdTask(
             RegisterBlackListByUserIdRequest request,
-            AsyncAction<AsyncResult<RegisterBlackListByUserIdResult>> userCallback,
-            Class<RegisterBlackListByUserIdResult> clazz
+            AsyncAction<AsyncResult<RegisterBlackListByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RegisterBlackListByUserIdResult parse(JsonNode data) {
+            return RegisterBlackListByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4615,17 +3937,15 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/blackList/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4636,9 +3956,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4646,25 +3963,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してブラックリストに登録<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void registerBlackListByUserIdAsync(
             RegisterBlackListByUserIdRequest request,
             AsyncAction<AsyncResult<RegisterBlackListByUserIdResult>> callback
     ) {
-        RegisterBlackListByUserIdTask task = new RegisterBlackListByUserIdTask(request, callback, RegisterBlackListByUserIdResult.class);
+        RegisterBlackListByUserIdTask task = new RegisterBlackListByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してブラックリストに登録<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RegisterBlackListByUserIdResult registerBlackListByUserId(
             RegisterBlackListByUserIdRequest request
     ) {
@@ -4691,15 +3997,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public UnregisterBlackListTask(
             UnregisterBlackListRequest request,
-            AsyncAction<AsyncResult<UnregisterBlackListResult>> userCallback,
-            Class<UnregisterBlackListResult> clazz
+            AsyncAction<AsyncResult<UnregisterBlackListResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UnregisterBlackListResult parse(JsonNode data) {
+            return UnregisterBlackListResult.fromJson(data);
         }
 
         @Override
@@ -4710,8 +4019,8 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/blackList/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4731,9 +4040,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4741,25 +4047,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ブラックリストからユーザを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void unregisterBlackListAsync(
             UnregisterBlackListRequest request,
             AsyncAction<AsyncResult<UnregisterBlackListResult>> callback
     ) {
-        UnregisterBlackListTask task = new UnregisterBlackListTask(request, callback, UnregisterBlackListResult.class);
+        UnregisterBlackListTask task = new UnregisterBlackListTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ブラックリストからユーザを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UnregisterBlackListResult unregisterBlackList(
             UnregisterBlackListRequest request
     ) {
@@ -4786,15 +4081,18 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
 
         public UnregisterBlackListByUserIdTask(
             UnregisterBlackListByUserIdRequest request,
-            AsyncAction<AsyncResult<UnregisterBlackListByUserIdResult>> userCallback,
-            Class<UnregisterBlackListByUserIdResult> clazz
+            AsyncAction<AsyncResult<UnregisterBlackListByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UnregisterBlackListByUserIdResult parse(JsonNode data) {
+            return UnregisterBlackListByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4805,9 +4103,9 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/blackList/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4824,9 +4122,6 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4834,25 +4129,14 @@ public class Gs2FriendRestClient extends AbstractGs2Client<Gs2FriendRestClient> 
         }
     }
 
-    /**
-     * ユーザーIDを指定してブラックリストからユーザを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void unregisterBlackListByUserIdAsync(
             UnregisterBlackListByUserIdRequest request,
             AsyncAction<AsyncResult<UnregisterBlackListByUserIdResult>> callback
     ) {
-        UnregisterBlackListByUserIdTask task = new UnregisterBlackListByUserIdTask(request, callback, UnregisterBlackListByUserIdResult.class);
+        UnregisterBlackListByUserIdTask task = new UnregisterBlackListByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してブラックリストからユーザを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UnregisterBlackListByUserIdResult unregisterBlackListByUserId(
             UnregisterBlackListByUserIdRequest request
     ) {

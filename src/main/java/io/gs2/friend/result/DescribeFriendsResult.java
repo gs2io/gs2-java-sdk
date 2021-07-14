@@ -16,59 +16,74 @@
 
 package io.gs2.friend.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.friend.model.*;
+import io.gs2.friend.model.FriendUser;
 
-/**
- * フレンドを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeFriendsResult implements IResult, Serializable {
-	/** フレンドのユーザーのリスト */
-	private List<FriendUser> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<FriendUser> items;
+    private String nextPageToken;
 
-	/**
-	 * フレンドのユーザーのリストを取得
-	 *
-	 * @return フレンドを取得
-	 */
 	public List<FriendUser> getItems() {
 		return items;
 	}
 
-	/**
-	 * フレンドのユーザーのリストを設定
-	 *
-	 * @param items フレンドを取得
-	 */
 	public void setItems(List<FriendUser> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return フレンドを取得
-	 */
+	public DescribeFriendsResult withItems(List<FriendUser> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken フレンドを取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeFriendsResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeFriendsResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeFriendsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<FriendUser>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return FriendUser.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<FriendUser>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

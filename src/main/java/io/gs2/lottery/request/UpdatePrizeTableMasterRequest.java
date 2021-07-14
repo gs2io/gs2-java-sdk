@@ -16,178 +16,122 @@
 
 package io.gs2.lottery.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.lottery.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.lottery.model.AcquireAction;
+import io.gs2.lottery.model.Prize;
 
-/**
- * 排出確率テーブルマスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdatePrizeTableMasterRequest extends Gs2BasicRequest<UpdatePrizeTableMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 排出確率テーブルマスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 排出確率テーブルマスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 排出確率テーブルマスターを更新
-     * @return this
-     */
-    public UpdatePrizeTableMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 排出確率テーブル名 */
     private String prizeTableName;
-
-    /**
-     * 排出確率テーブル名を取得
-     *
-     * @return 排出確率テーブルマスターを更新
-     */
-    public String getPrizeTableName() {
-        return prizeTableName;
-    }
-
-    /**
-     * 排出確率テーブル名を設定
-     *
-     * @param prizeTableName 排出確率テーブルマスターを更新
-     */
-    public void setPrizeTableName(String prizeTableName) {
-        this.prizeTableName = prizeTableName;
-    }
-
-    /**
-     * 排出確率テーブル名を設定
-     *
-     * @param prizeTableName 排出確率テーブルマスターを更新
-     * @return this
-     */
-    public UpdatePrizeTableMasterRequest withPrizeTableName(String prizeTableName) {
-        setPrizeTableName(prizeTableName);
-        return this;
-    }
-
-    /** 排出確率テーブルマスターの説明 */
     private String description;
-
-    /**
-     * 排出確率テーブルマスターの説明を取得
-     *
-     * @return 排出確率テーブルマスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 排出確率テーブルマスターの説明を設定
-     *
-     * @param description 排出確率テーブルマスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 排出確率テーブルマスターの説明を設定
-     *
-     * @param description 排出確率テーブルマスターを更新
-     * @return this
-     */
-    public UpdatePrizeTableMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 排出確率テーブルのメタデータ */
     private String metadata;
-
-    /**
-     * 排出確率テーブルのメタデータを取得
-     *
-     * @return 排出確率テーブルマスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 排出確率テーブルのメタデータを設定
-     *
-     * @param metadata 排出確率テーブルマスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 排出確率テーブルのメタデータを設定
-     *
-     * @param metadata 排出確率テーブルマスターを更新
-     * @return this
-     */
-    public UpdatePrizeTableMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 景品リスト */
     private List<Prize> prizes;
 
-    /**
-     * 景品リストを取得
-     *
-     * @return 排出確率テーブルマスターを更新
-     */
-    public List<Prize> getPrizes() {
-        return prizes;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdatePrizeTableMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getPrizeTableName() {
+		return prizeTableName;
+	}
+
+	public void setPrizeTableName(String prizeTableName) {
+		this.prizeTableName = prizeTableName;
+	}
+
+	public UpdatePrizeTableMasterRequest withPrizeTableName(String prizeTableName) {
+		this.prizeTableName = prizeTableName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdatePrizeTableMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdatePrizeTableMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public List<Prize> getPrizes() {
+		return prizes;
+	}
+
+	public void setPrizes(List<Prize> prizes) {
+		this.prizes = prizes;
+	}
+
+	public UpdatePrizeTableMasterRequest withPrizes(List<Prize> prizes) {
+		this.prizes = prizes;
+		return this;
+	}
+
+    public static UpdatePrizeTableMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdatePrizeTableMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withPrizeTableName(data.get("prizeTableName") == null || data.get("prizeTableName").isNull() ? null : data.get("prizeTableName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withPrizes(data.get("prizes") == null || data.get("prizes").isNull() ? new ArrayList<Prize>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("prizes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Prize.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 景品リストを設定
-     *
-     * @param prizes 排出確率テーブルマスターを更新
-     */
-    public void setPrizes(List<Prize> prizes) {
-        this.prizes = prizes;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("prizeTableName", getPrizeTableName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("prizes", getPrizes() == null ? new ArrayList<Prize>() :
+                    getPrizes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 景品リストを設定
-     *
-     * @param prizes 排出確率テーブルマスターを更新
-     * @return this
-     */
-    public UpdatePrizeTableMasterRequest withPrizes(List<Prize> prizes) {
-        setPrizes(prizes);
-        return this;
-    }
-
 }

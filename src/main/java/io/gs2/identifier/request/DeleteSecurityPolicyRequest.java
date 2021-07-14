@@ -16,50 +16,46 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * セキュリティポリシーを削除します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteSecurityPolicyRequest extends Gs2BasicRequest<DeleteSecurityPolicyRequest> {
-
-    /** セキュリティポリシー名 */
     private String securityPolicyName;
 
-    /**
-     * セキュリティポリシー名を取得
-     *
-     * @return セキュリティポリシーを削除します
-     */
-    public String getSecurityPolicyName() {
-        return securityPolicyName;
+	public String getSecurityPolicyName() {
+		return securityPolicyName;
+	}
+
+	public void setSecurityPolicyName(String securityPolicyName) {
+		this.securityPolicyName = securityPolicyName;
+	}
+
+	public DeleteSecurityPolicyRequest withSecurityPolicyName(String securityPolicyName) {
+		this.securityPolicyName = securityPolicyName;
+		return this;
+	}
+
+    public static DeleteSecurityPolicyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteSecurityPolicyRequest()
+            .withSecurityPolicyName(data.get("securityPolicyName") == null || data.get("securityPolicyName").isNull() ? null : data.get("securityPolicyName").asText());
     }
 
-    /**
-     * セキュリティポリシー名を設定
-     *
-     * @param securityPolicyName セキュリティポリシーを削除します
-     */
-    public void setSecurityPolicyName(String securityPolicyName) {
-        this.securityPolicyName = securityPolicyName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("securityPolicyName", getSecurityPolicyName());
+            }}
+        );
     }
-
-    /**
-     * セキュリティポリシー名を設定
-     *
-     * @param securityPolicyName セキュリティポリシーを削除します
-     * @return this
-     */
-    public DeleteSecurityPolicyRequest withSecurityPolicyName(String securityPolicyName) {
-        setSecurityPolicyName(securityPolicyName);
-        return this;
-    }
-
 }

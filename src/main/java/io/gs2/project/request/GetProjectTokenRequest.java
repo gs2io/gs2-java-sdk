@@ -16,82 +16,62 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * プロジェクトトークンを発行します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetProjectTokenRequest extends Gs2BasicRequest<GetProjectTokenRequest> {
-
-    /** プロジェクト名 */
     private String projectName;
-
-    /**
-     * プロジェクト名を取得
-     *
-     * @return プロジェクトトークンを発行します
-     */
-    public String getProjectName() {
-        return projectName;
-    }
-
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトトークンを発行します
-     */
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトトークンを発行します
-     * @return this
-     */
-    public GetProjectTokenRequest withProjectName(String projectName) {
-        setProjectName(projectName);
-        return this;
-    }
-
-    /** GS2アカウントトークン */
     private String accountToken;
 
-    /**
-     * GS2アカウントトークンを取得
-     *
-     * @return プロジェクトトークンを発行します
-     */
-    public String getAccountToken() {
-        return accountToken;
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public GetProjectTokenRequest withProjectName(String projectName) {
+		this.projectName = projectName;
+		return this;
+	}
+
+	public String getAccountToken() {
+		return accountToken;
+	}
+
+	public void setAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+	}
+
+	public GetProjectTokenRequest withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+    public static GetProjectTokenRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetProjectTokenRequest()
+            .withProjectName(data.get("projectName") == null || data.get("projectName").isNull() ? null : data.get("projectName").asText())
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText());
     }
 
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトトークンを発行します
-     */
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("projectName", getProjectName());
+                put("accountToken", getAccountToken());
+            }}
+        );
     }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトトークンを発行します
-     * @return this
-     */
-    public GetProjectTokenRequest withAccountToken(String accountToken) {
-        setAccountToken(accountToken);
-        return this;
-    }
-
 }

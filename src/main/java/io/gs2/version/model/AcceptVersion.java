@@ -16,222 +16,130 @@
 
 package io.gs2.version.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 承認したバージョン
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AcceptVersion implements IModel, Serializable, Comparable<AcceptVersion> {
-	/** 承認したバージョン */
-	protected String acceptVersionId;
+	private String acceptVersionId;
+	private String versionName;
+	private String userId;
+	private Version version;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 承認したバージョンを取得
-	 *
-	 * @return 承認したバージョン
-	 */
 	public String getAcceptVersionId() {
 		return acceptVersionId;
 	}
 
-	/**
-	 * 承認したバージョンを設定
-	 *
-	 * @param acceptVersionId 承認したバージョン
-	 */
 	public void setAcceptVersionId(String acceptVersionId) {
 		this.acceptVersionId = acceptVersionId;
 	}
 
-	/**
-	 * 承認したバージョンを設定
-	 *
-	 * @param acceptVersionId 承認したバージョン
-	 * @return this
-	 */
 	public AcceptVersion withAcceptVersionId(String acceptVersionId) {
 		this.acceptVersionId = acceptVersionId;
 		return this;
 	}
-	/** 承認したバージョン名 */
-	protected String versionName;
 
-	/**
-	 * 承認したバージョン名を取得
-	 *
-	 * @return 承認したバージョン名
-	 */
 	public String getVersionName() {
 		return versionName;
 	}
 
-	/**
-	 * 承認したバージョン名を設定
-	 *
-	 * @param versionName 承認したバージョン名
-	 */
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
 
-	/**
-	 * 承認したバージョン名を設定
-	 *
-	 * @param versionName 承認したバージョン名
-	 * @return this
-	 */
 	public AcceptVersion withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public AcceptVersion withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 承認したバージョン */
-	protected Version version;
 
-	/**
-	 * 承認したバージョンを取得
-	 *
-	 * @return 承認したバージョン
-	 */
 	public Version getVersion() {
 		return version;
 	}
 
-	/**
-	 * 承認したバージョンを設定
-	 *
-	 * @param version 承認したバージョン
-	 */
 	public void setVersion(Version version) {
 		this.version = version;
 	}
 
-	/**
-	 * 承認したバージョンを設定
-	 *
-	 * @param version 承認したバージョン
-	 * @return this
-	 */
 	public AcceptVersion withVersion(Version version) {
 		this.version = version;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public AcceptVersion withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public AcceptVersion withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode version = this.getVersion().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("acceptVersionId", this.getAcceptVersionId())
-            .put("versionName", this.getVersionName())
-            .put("userId", this.getUserId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("version", version);
-        return body_;
+    public static AcceptVersion fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AcceptVersion()
+            .withAcceptVersionId(data.get("acceptVersionId") == null || data.get("acceptVersionId").isNull() ? null : data.get("acceptVersionId").asText())
+            .withVersionName(data.get("versionName") == null || data.get("versionName").isNull() ? null : data.get("versionName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withVersion(data.get("version") == null || data.get("version").isNull() ? null : Version.fromJson(data.get("version")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("acceptVersionId", getAcceptVersionId());
+                put("versionName", getVersionName());
+                put("userId", getUserId());
+                put("version", getVersion() != null ? getVersion().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(AcceptVersion o) {
 		return acceptVersionId.compareTo(o.acceptVersionId);

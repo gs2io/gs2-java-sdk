@@ -16,156 +16,96 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 投票用紙
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Ballot implements IModel, Serializable {
-	/** ユーザーID */
-	protected String userId;
+	private String userId;
+	private String ratingName;
+	private String gatheringName;
+	private Integer numberOfPlayer;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Ballot withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** レーティング計算に使用するレーティング名 */
-	protected String ratingName;
 
-	/**
-	 * レーティング計算に使用するレーティング名を取得
-	 *
-	 * @return レーティング計算に使用するレーティング名
-	 */
 	public String getRatingName() {
 		return ratingName;
 	}
 
-	/**
-	 * レーティング計算に使用するレーティング名を設定
-	 *
-	 * @param ratingName レーティング計算に使用するレーティング名
-	 */
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
 
-	/**
-	 * レーティング計算に使用するレーティング名を設定
-	 *
-	 * @param ratingName レーティング計算に使用するレーティング名
-	 * @return this
-	 */
 	public Ballot withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;
 	}
-	/** 投票対象のギャザリング名 */
-	protected String gatheringName;
 
-	/**
-	 * 投票対象のギャザリング名を取得
-	 *
-	 * @return 投票対象のギャザリング名
-	 */
 	public String getGatheringName() {
 		return gatheringName;
 	}
 
-	/**
-	 * 投票対象のギャザリング名を設定
-	 *
-	 * @param gatheringName 投票対象のギャザリング名
-	 */
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
 
-	/**
-	 * 投票対象のギャザリング名を設定
-	 *
-	 * @param gatheringName 投票対象のギャザリング名
-	 * @return this
-	 */
 	public Ballot withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;
 	}
-	/** 参加人数 */
-	protected Integer numberOfPlayer;
 
-	/**
-	 * 参加人数を取得
-	 *
-	 * @return 参加人数
-	 */
 	public Integer getNumberOfPlayer() {
 		return numberOfPlayer;
 	}
 
-	/**
-	 * 参加人数を設定
-	 *
-	 * @param numberOfPlayer 参加人数
-	 */
 	public void setNumberOfPlayer(Integer numberOfPlayer) {
 		this.numberOfPlayer = numberOfPlayer;
 	}
 
-	/**
-	 * 参加人数を設定
-	 *
-	 * @param numberOfPlayer 参加人数
-	 * @return this
-	 */
 	public Ballot withNumberOfPlayer(Integer numberOfPlayer) {
 		this.numberOfPlayer = numberOfPlayer;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("userId", this.getUserId())
-            .put("ratingName", this.getRatingName())
-            .put("gatheringName", this.getGatheringName())
-            .put("numberOfPlayer", this.getNumberOfPlayer());
-        return body_;
+    public static Ballot fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Ballot()
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText())
+            .withGatheringName(data.get("gatheringName") == null || data.get("gatheringName").isNull() ? null : data.get("gatheringName").asText())
+            .withNumberOfPlayer(data.get("numberOfPlayer") == null || data.get("numberOfPlayer").isNull() ? null : data.get("numberOfPlayer").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userId", getUserId());
+                put("ratingName", getRatingName());
+                put("gatheringName", getGatheringName());
+                put("numberOfPlayer", getNumberOfPlayer());
+            }}
+        );
     }
 
 	@Override

@@ -16,210 +16,128 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.inventory.model.ScriptSetting;
+import io.gs2.inventory.model.LogSetting;
 
-/**
- * ネームスペースを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String name;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** アイテム入手したときに実行するスクリプト */
     private ScriptSetting acquireScript;
-
-    /**
-     * アイテム入手したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public ScriptSetting getAcquireScript() {
-        return acquireScript;
-    }
-
-    /**
-     * アイテム入手したときに実行するスクリプトを設定
-     *
-     * @param acquireScript ネームスペースを新規作成
-     */
-    public void setAcquireScript(ScriptSetting acquireScript) {
-        this.acquireScript = acquireScript;
-    }
-
-    /**
-     * アイテム入手したときに実行するスクリプトを設定
-     *
-     * @param acquireScript ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withAcquireScript(ScriptSetting acquireScript) {
-        setAcquireScript(acquireScript);
-        return this;
-    }
-
-    /** 入手上限に当たって入手できなかったときに実行するスクリプト */
     private ScriptSetting overflowScript;
-
-    /**
-     * 入手上限に当たって入手できなかったときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public ScriptSetting getOverflowScript() {
-        return overflowScript;
-    }
-
-    /**
-     * 入手上限に当たって入手できなかったときに実行するスクリプトを設定
-     *
-     * @param overflowScript ネームスペースを新規作成
-     */
-    public void setOverflowScript(ScriptSetting overflowScript) {
-        this.overflowScript = overflowScript;
-    }
-
-    /**
-     * 入手上限に当たって入手できなかったときに実行するスクリプトを設定
-     *
-     * @param overflowScript ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withOverflowScript(ScriptSetting overflowScript) {
-        setOverflowScript(overflowScript);
-        return this;
-    }
-
-    /** アイテム消費するときに実行するスクリプト */
     private ScriptSetting consumeScript;
-
-    /**
-     * アイテム消費するときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public ScriptSetting getConsumeScript() {
-        return consumeScript;
-    }
-
-    /**
-     * アイテム消費するときに実行するスクリプトを設定
-     *
-     * @param consumeScript ネームスペースを新規作成
-     */
-    public void setConsumeScript(ScriptSetting consumeScript) {
-        this.consumeScript = consumeScript;
-    }
-
-    /**
-     * アイテム消費するときに実行するスクリプトを設定
-     *
-     * @param consumeScript ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withConsumeScript(ScriptSetting consumeScript) {
-        setConsumeScript(consumeScript);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateNamespaceRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public ScriptSetting getAcquireScript() {
+		return acquireScript;
+	}
+
+	public void setAcquireScript(ScriptSetting acquireScript) {
+		this.acquireScript = acquireScript;
+	}
+
+	public CreateNamespaceRequest withAcquireScript(ScriptSetting acquireScript) {
+		this.acquireScript = acquireScript;
+		return this;
+	}
+
+	public ScriptSetting getOverflowScript() {
+		return overflowScript;
+	}
+
+	public void setOverflowScript(ScriptSetting overflowScript) {
+		this.overflowScript = overflowScript;
+	}
+
+	public CreateNamespaceRequest withOverflowScript(ScriptSetting overflowScript) {
+		this.overflowScript = overflowScript;
+		return this;
+	}
+
+	public ScriptSetting getConsumeScript() {
+		return consumeScript;
+	}
+
+	public void setConsumeScript(ScriptSetting consumeScript) {
+		this.consumeScript = consumeScript;
+	}
+
+	public CreateNamespaceRequest withConsumeScript(ScriptSetting consumeScript) {
+		this.consumeScript = consumeScript;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static CreateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateNamespaceRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withAcquireScript(data.get("acquireScript") == null || data.get("acquireScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquireScript")))
+            .withOverflowScript(data.get("overflowScript") == null || data.get("overflowScript").isNull() ? null : ScriptSetting.fromJson(data.get("overflowScript")))
+            .withConsumeScript(data.get("consumeScript") == null || data.get("consumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("consumeScript")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("acquireScript", getAcquireScript() != null ? getAcquireScript().toJson() : null);
+                put("overflowScript", getOverflowScript() != null ? getOverflowScript().toJson() : null);
+                put("consumeScript", getConsumeScript() != null ? getConsumeScript().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

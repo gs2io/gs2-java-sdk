@@ -16,82 +16,62 @@
 
 package io.gs2.datastore.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.datastore.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * データオブジェクトの管理情報を修復する のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class RestoreDataObjectRequest extends Gs2BasicRequest<RestoreDataObjectRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return データオブジェクトの管理情報を修復する
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName データオブジェクトの管理情報を修復する
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName データオブジェクトの管理情報を修復する
-     * @return this
-     */
-    public RestoreDataObjectRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** データオブジェクト */
     private String dataObjectId;
 
-    /**
-     * データオブジェクトを取得
-     *
-     * @return データオブジェクトの管理情報を修復する
-     */
-    public String getDataObjectId() {
-        return dataObjectId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public RestoreDataObjectRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDataObjectId() {
+		return dataObjectId;
+	}
+
+	public void setDataObjectId(String dataObjectId) {
+		this.dataObjectId = dataObjectId;
+	}
+
+	public RestoreDataObjectRequest withDataObjectId(String dataObjectId) {
+		this.dataObjectId = dataObjectId;
+		return this;
+	}
+
+    public static RestoreDataObjectRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new RestoreDataObjectRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDataObjectId(data.get("dataObjectId") == null || data.get("dataObjectId").isNull() ? null : data.get("dataObjectId").asText());
     }
 
-    /**
-     * データオブジェクトを設定
-     *
-     * @param dataObjectId データオブジェクトの管理情報を修復する
-     */
-    public void setDataObjectId(String dataObjectId) {
-        this.dataObjectId = dataObjectId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("dataObjectId", getDataObjectId());
+            }}
+        );
     }
-
-    /**
-     * データオブジェクトを設定
-     *
-     * @param dataObjectId データオブジェクトの管理情報を修復する
-     * @return this
-     */
-    public RestoreDataObjectRequest withDataObjectId(String dataObjectId) {
-        setDataObjectId(dataObjectId);
-        return this;
-    }
-
 }

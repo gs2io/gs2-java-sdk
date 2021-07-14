@@ -16,59 +16,74 @@
 
 package io.gs2.deploy.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.deploy.model.*;
+import io.gs2.deploy.model.Stack;
 
-/**
- * スタックの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeStacksResult implements IResult, Serializable {
-	/** スタックのリスト */
-	private List<Stack> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<Stack> items;
+    private String nextPageToken;
 
-	/**
-	 * スタックのリストを取得
-	 *
-	 * @return スタックの一覧を取得
-	 */
 	public List<Stack> getItems() {
 		return items;
 	}
 
-	/**
-	 * スタックのリストを設定
-	 *
-	 * @param items スタックの一覧を取得
-	 */
 	public void setItems(List<Stack> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return スタックの一覧を取得
-	 */
+	public DescribeStacksResult withItems(List<Stack> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken スタックの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeStacksResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeStacksResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeStacksResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Stack>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Stack.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<Stack>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

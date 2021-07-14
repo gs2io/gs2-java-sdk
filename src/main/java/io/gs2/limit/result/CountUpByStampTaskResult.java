@@ -16,59 +16,64 @@
 
 package io.gs2.limit.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.limit.model.*;
+import io.gs2.limit.model.Counter;
 
-/**
- * スタンプシートでカウントアップ のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CountUpByStampTaskResult implements IResult, Serializable {
-	/** カウントを増やしたカウンター */
-	private Counter item;
-	/** スタンプタスクの実行結果を記録したコンテキスト */
-	private String newContextStack;
+    private Counter item;
+    private String newContextStack;
 
-	/**
-	 * カウントを増やしたカウンターを取得
-	 *
-	 * @return スタンプシートでカウントアップ
-	 */
 	public Counter getItem() {
 		return item;
 	}
 
-	/**
-	 * カウントを増やしたカウンターを設定
-	 *
-	 * @param item スタンプシートでカウントアップ
-	 */
 	public void setItem(Counter item) {
 		this.item = item;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを取得
-	 *
-	 * @return スタンプシートでカウントアップ
-	 */
+	public CountUpByStampTaskResult withItem(Counter item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getNewContextStack() {
 		return newContextStack;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを設定
-	 *
-	 * @param newContextStack スタンプシートでカウントアップ
-	 */
 	public void setNewContextStack(String newContextStack) {
 		this.newContextStack = newContextStack;
 	}
+
+	public CountUpByStampTaskResult withNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
+		return this;
+	}
+
+    public static CountUpByStampTaskResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CountUpByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")))
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("newContextStack", getNewContextStack());
+            }}
+        );
+    }
 }

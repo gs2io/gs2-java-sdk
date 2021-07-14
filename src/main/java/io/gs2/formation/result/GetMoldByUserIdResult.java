@@ -16,59 +16,67 @@
 
 package io.gs2.formation.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
+import io.gs2.formation.model.Mold;
+import io.gs2.formation.model.SlotModel;
+import io.gs2.formation.model.FormModel;
+import io.gs2.formation.model.MoldModel;
 
-/**
- * ユーザIDを指定して保存したフォームを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetMoldByUserIdResult implements IResult, Serializable {
-	/** 保存したフォーム */
-	private Mold item;
-	/** フォームの保存領域 */
-	private MoldModel moldModel;
+    private Mold item;
+    private MoldModel moldModel;
 
-	/**
-	 * 保存したフォームを取得
-	 *
-	 * @return ユーザIDを指定して保存したフォームを取得
-	 */
 	public Mold getItem() {
 		return item;
 	}
 
-	/**
-	 * 保存したフォームを設定
-	 *
-	 * @param item ユーザIDを指定して保存したフォームを取得
-	 */
 	public void setItem(Mold item) {
 		this.item = item;
 	}
 
-	/**
-	 * フォームの保存領域を取得
-	 *
-	 * @return ユーザIDを指定して保存したフォームを取得
-	 */
+	public GetMoldByUserIdResult withItem(Mold item) {
+		this.item = item;
+		return this;
+	}
+
 	public MoldModel getMoldModel() {
 		return moldModel;
 	}
 
-	/**
-	 * フォームの保存領域を設定
-	 *
-	 * @param moldModel ユーザIDを指定して保存したフォームを取得
-	 */
 	public void setMoldModel(MoldModel moldModel) {
 		this.moldModel = moldModel;
 	}
+
+	public GetMoldByUserIdResult withMoldModel(MoldModel moldModel) {
+		this.moldModel = moldModel;
+		return this;
+	}
+
+    public static GetMoldByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetMoldByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Mold.fromJson(data.get("item")))
+            .withMoldModel(data.get("moldModel") == null || data.get("moldModel").isNull() ? null : MoldModel.fromJson(data.get("moldModel")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("moldModel", getMoldModel() != null ? getMoldModel().toJson() : null);
+            }}
+        );
+    }
 }

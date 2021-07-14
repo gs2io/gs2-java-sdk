@@ -16,146 +16,90 @@
 
 package io.gs2.version.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.version.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.version.model.Version;
+import io.gs2.version.model.TargetVersion;
 
-/**
- * バージョンチェック のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CheckVersionByUserIdRequest extends Gs2BasicRequest<CheckVersionByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return バージョンチェック
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName バージョンチェック
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName バージョンチェック
-     * @return this
-     */
-    public CheckVersionByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return バージョンチェック
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId バージョンチェック
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId バージョンチェック
-     * @return this
-     */
-    public CheckVersionByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 加算するリソース */
     private List<TargetVersion> targetVersions;
 
-    /**
-     * 加算するリソースを取得
-     *
-     * @return バージョンチェック
-     */
-    public List<TargetVersion> getTargetVersions() {
-        return targetVersions;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CheckVersionByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public CheckVersionByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public List<TargetVersion> getTargetVersions() {
+		return targetVersions;
+	}
+
+	public void setTargetVersions(List<TargetVersion> targetVersions) {
+		this.targetVersions = targetVersions;
+	}
+
+	public CheckVersionByUserIdRequest withTargetVersions(List<TargetVersion> targetVersions) {
+		this.targetVersions = targetVersions;
+		return this;
+	}
+
+    public static CheckVersionByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CheckVersionByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTargetVersions(data.get("targetVersions") == null || data.get("targetVersions").isNull() ? new ArrayList<TargetVersion>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("targetVersions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return TargetVersion.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 加算するリソースを設定
-     *
-     * @param targetVersions バージョンチェック
-     */
-    public void setTargetVersions(List<TargetVersion> targetVersions) {
-        this.targetVersions = targetVersions;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("targetVersions", getTargetVersions() == null ? new ArrayList<TargetVersion>() :
+                    getTargetVersions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 加算するリソースを設定
-     *
-     * @param targetVersions バージョンチェック
-     * @return this
-     */
-    public CheckVersionByUserIdRequest withTargetVersions(List<TargetVersion> targetVersions) {
-        setTargetVersions(targetVersions);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return バージョンチェック
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider バージョンチェック
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider バージョンチェック
-     * @return this
-     */
-    public CheckVersionByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

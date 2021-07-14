@@ -16,92 +16,64 @@
 
 package io.gs2.friend.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * フレンドリクエスト
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FriendRequest implements IModel, Serializable {
-	/** ユーザーID */
-	protected String userId;
+	private String userId;
+	private String targetUserId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public FriendRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String targetUserId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getTargetUserId() {
 		return targetUserId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param targetUserId ユーザーID
-	 */
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param targetUserId ユーザーID
-	 * @return this
-	 */
 	public FriendRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("userId", this.getUserId())
-            .put("targetUserId", this.getTargetUserId());
-        return body_;
+    public static FriendRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new FriendRequest()
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userId", getUserId());
+                put("targetUserId", getTargetUserId());
+            }}
+        );
     }
 
 	@Override

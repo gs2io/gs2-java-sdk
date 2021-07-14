@@ -16,577 +16,290 @@
 
 package io.gs2.money.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ネームスペース
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Namespace implements IModel, Serializable, Comparable<Namespace> {
-	/** ネームスペース */
-	protected String namespaceId;
+	private String namespaceId;
+	private String name;
+	private String description;
+	private String priority;
+	private Boolean shareFree;
+	private String currency;
+	private String appleKey;
+	private String googleKey;
+	private Boolean enableFakeReceipt;
+	private ScriptSetting createWalletScript;
+	private ScriptSetting depositScript;
+	private ScriptSetting withdrawScript;
+	private Double balance;
+	private LogSetting logSetting;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ネームスペースを取得
-	 *
-	 * @return ネームスペース
-	 */
 	public String getNamespaceId() {
 		return namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 */
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 * @return this
-	 */
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Namespace withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ネームスペースの名前 */
-	protected String name;
-
-	/**
-	 * ネームスペースの名前を取得
-	 *
-	 * @return ネームスペースの名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ネームスペースの名前を設定
-	 *
-	 * @param name ネームスペースの名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ネームスペースの名前を設定
-	 *
-	 * @param name ネームスペースの名前
-	 * @return this
-	 */
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ネームスペースの説明 */
-	protected String description;
 
-	/**
-	 * ネームスペースの説明を取得
-	 *
-	 * @return ネームスペースの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 * @return this
-	 */
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 消費優先度 */
-	protected String priority;
 
-	/**
-	 * 消費優先度を取得
-	 *
-	 * @return 消費優先度
-	 */
 	public String getPriority() {
 		return priority;
 	}
 
-	/**
-	 * 消費優先度を設定
-	 *
-	 * @param priority 消費優先度
-	 */
 	public void setPriority(String priority) {
 		this.priority = priority;
 	}
 
-	/**
-	 * 消費優先度を設定
-	 *
-	 * @param priority 消費優先度
-	 * @return this
-	 */
 	public Namespace withPriority(String priority) {
 		this.priority = priority;
 		return this;
 	}
-	/** 無償課金通貨を異なるスロットで共有するか */
-	protected Boolean shareFree;
 
-	/**
-	 * 無償課金通貨を異なるスロットで共有するかを取得
-	 *
-	 * @return 無償課金通貨を異なるスロットで共有するか
-	 */
 	public Boolean getShareFree() {
 		return shareFree;
 	}
 
-	/**
-	 * 無償課金通貨を異なるスロットで共有するかを設定
-	 *
-	 * @param shareFree 無償課金通貨を異なるスロットで共有するか
-	 */
 	public void setShareFree(Boolean shareFree) {
 		this.shareFree = shareFree;
 	}
 
-	/**
-	 * 無償課金通貨を異なるスロットで共有するかを設定
-	 *
-	 * @param shareFree 無償課金通貨を異なるスロットで共有するか
-	 * @return this
-	 */
 	public Namespace withShareFree(Boolean shareFree) {
 		this.shareFree = shareFree;
 		return this;
 	}
-	/** 通貨の種類 */
-	protected String currency;
 
-	/**
-	 * 通貨の種類を取得
-	 *
-	 * @return 通貨の種類
-	 */
 	public String getCurrency() {
 		return currency;
 	}
 
-	/**
-	 * 通貨の種類を設定
-	 *
-	 * @param currency 通貨の種類
-	 */
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
 
-	/**
-	 * 通貨の種類を設定
-	 *
-	 * @param currency 通貨の種類
-	 * @return this
-	 */
 	public Namespace withCurrency(String currency) {
 		this.currency = currency;
 		return this;
 	}
-	/** Apple AppStore のバンドルID */
-	protected String appleKey;
 
-	/**
-	 * Apple AppStore のバンドルIDを取得
-	 *
-	 * @return Apple AppStore のバンドルID
-	 */
 	public String getAppleKey() {
 		return appleKey;
 	}
 
-	/**
-	 * Apple AppStore のバンドルIDを設定
-	 *
-	 * @param appleKey Apple AppStore のバンドルID
-	 */
 	public void setAppleKey(String appleKey) {
 		this.appleKey = appleKey;
 	}
 
-	/**
-	 * Apple AppStore のバンドルIDを設定
-	 *
-	 * @param appleKey Apple AppStore のバンドルID
-	 * @return this
-	 */
 	public Namespace withAppleKey(String appleKey) {
 		this.appleKey = appleKey;
 		return this;
 	}
-	/** Google PlayStore の秘密鍵 */
-	protected String googleKey;
 
-	/**
-	 * Google PlayStore の秘密鍵を取得
-	 *
-	 * @return Google PlayStore の秘密鍵
-	 */
 	public String getGoogleKey() {
 		return googleKey;
 	}
 
-	/**
-	 * Google PlayStore の秘密鍵を設定
-	 *
-	 * @param googleKey Google PlayStore の秘密鍵
-	 */
 	public void setGoogleKey(String googleKey) {
 		this.googleKey = googleKey;
 	}
 
-	/**
-	 * Google PlayStore の秘密鍵を設定
-	 *
-	 * @param googleKey Google PlayStore の秘密鍵
-	 * @return this
-	 */
 	public Namespace withGoogleKey(String googleKey) {
 		this.googleKey = googleKey;
 		return this;
 	}
-	/** UnityEditorが出力する偽のレシートで決済できるようにするか */
-	protected Boolean enableFakeReceipt;
 
-	/**
-	 * UnityEditorが出力する偽のレシートで決済できるようにするかを取得
-	 *
-	 * @return UnityEditorが出力する偽のレシートで決済できるようにするか
-	 */
 	public Boolean getEnableFakeReceipt() {
 		return enableFakeReceipt;
 	}
 
-	/**
-	 * UnityEditorが出力する偽のレシートで決済できるようにするかを設定
-	 *
-	 * @param enableFakeReceipt UnityEditorが出力する偽のレシートで決済できるようにするか
-	 */
 	public void setEnableFakeReceipt(Boolean enableFakeReceipt) {
 		this.enableFakeReceipt = enableFakeReceipt;
 	}
 
-	/**
-	 * UnityEditorが出力する偽のレシートで決済できるようにするかを設定
-	 *
-	 * @param enableFakeReceipt UnityEditorが出力する偽のレシートで決済できるようにするか
-	 * @return this
-	 */
 	public Namespace withEnableFakeReceipt(Boolean enableFakeReceipt) {
 		this.enableFakeReceipt = enableFakeReceipt;
 		return this;
 	}
-	/** ウォレット新規作成したときに実行するスクリプト */
-	protected ScriptSetting createWalletScript;
 
-	/**
-	 * ウォレット新規作成したときに実行するスクリプトを取得
-	 *
-	 * @return ウォレット新規作成したときに実行するスクリプト
-	 */
 	public ScriptSetting getCreateWalletScript() {
 		return createWalletScript;
 	}
 
-	/**
-	 * ウォレット新規作成したときに実行するスクリプトを設定
-	 *
-	 * @param createWalletScript ウォレット新規作成したときに実行するスクリプト
-	 */
 	public void setCreateWalletScript(ScriptSetting createWalletScript) {
 		this.createWalletScript = createWalletScript;
 	}
 
-	/**
-	 * ウォレット新規作成したときに実行するスクリプトを設定
-	 *
-	 * @param createWalletScript ウォレット新規作成したときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withCreateWalletScript(ScriptSetting createWalletScript) {
 		this.createWalletScript = createWalletScript;
 		return this;
 	}
-	/** ウォレット残高加算したときに実行するスクリプト */
-	protected ScriptSetting depositScript;
 
-	/**
-	 * ウォレット残高加算したときに実行するスクリプトを取得
-	 *
-	 * @return ウォレット残高加算したときに実行するスクリプト
-	 */
 	public ScriptSetting getDepositScript() {
 		return depositScript;
 	}
 
-	/**
-	 * ウォレット残高加算したときに実行するスクリプトを設定
-	 *
-	 * @param depositScript ウォレット残高加算したときに実行するスクリプト
-	 */
 	public void setDepositScript(ScriptSetting depositScript) {
 		this.depositScript = depositScript;
 	}
 
-	/**
-	 * ウォレット残高加算したときに実行するスクリプトを設定
-	 *
-	 * @param depositScript ウォレット残高加算したときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withDepositScript(ScriptSetting depositScript) {
 		this.depositScript = depositScript;
 		return this;
 	}
-	/** ウォレット残高消費したときに実行するスクリプト */
-	protected ScriptSetting withdrawScript;
 
-	/**
-	 * ウォレット残高消費したときに実行するスクリプトを取得
-	 *
-	 * @return ウォレット残高消費したときに実行するスクリプト
-	 */
 	public ScriptSetting getWithdrawScript() {
 		return withdrawScript;
 	}
 
-	/**
-	 * ウォレット残高消費したときに実行するスクリプトを設定
-	 *
-	 * @param withdrawScript ウォレット残高消費したときに実行するスクリプト
-	 */
 	public void setWithdrawScript(ScriptSetting withdrawScript) {
 		this.withdrawScript = withdrawScript;
 	}
 
-	/**
-	 * ウォレット残高消費したときに実行するスクリプトを設定
-	 *
-	 * @param withdrawScript ウォレット残高消費したときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withWithdrawScript(ScriptSetting withdrawScript) {
 		this.withdrawScript = withdrawScript;
 		return this;
 	}
-	/** 未使用残高 */
-	protected Double balance;
 
-	/**
-	 * 未使用残高を取得
-	 *
-	 * @return 未使用残高
-	 */
 	public Double getBalance() {
 		return balance;
 	}
 
-	/**
-	 * 未使用残高を設定
-	 *
-	 * @param balance 未使用残高
-	 */
 	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 
-	/**
-	 * 未使用残高を設定
-	 *
-	 * @param balance 未使用残高
-	 * @return this
-	 */
 	public Namespace withBalance(Double balance) {
 		this.balance = balance;
 		return this;
 	}
-	/** ログの出力設定 */
-	protected LogSetting logSetting;
 
-	/**
-	 * ログの出力設定を取得
-	 *
-	 * @return ログの出力設定
-	 */
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 */
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 * @return this
-	 */
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode createWalletScript = this.getCreateWalletScript().toJson();
-        JsonNode depositScript = this.getDepositScript().toJson();
-        JsonNode withdrawScript = this.getWithdrawScript().toJson();
-        JsonNode logSetting = this.getLogSetting().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceId", this.getNamespaceId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("priority", this.getPriority())
-            .put("shareFree", this.getShareFree())
-            .put("currency", this.getCurrency())
-            .put("appleKey", this.getAppleKey())
-            .put("googleKey", this.getGoogleKey())
-            .put("enableFakeReceipt", this.getEnableFakeReceipt())
-            .put("balance", this.getBalance())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("createWalletScript", createWalletScript);
-        body_.set("depositScript", depositScript);
-        body_.set("withdrawScript", withdrawScript);
-        body_.set("logSetting", logSetting);
-        return body_;
+    public static Namespace fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Namespace()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withPriority(data.get("priority") == null || data.get("priority").isNull() ? null : data.get("priority").asText())
+            .withShareFree(data.get("shareFree") == null || data.get("shareFree").isNull() ? null : data.get("shareFree").booleanValue())
+            .withCurrency(data.get("currency") == null || data.get("currency").isNull() ? null : data.get("currency").asText())
+            .withAppleKey(data.get("appleKey") == null || data.get("appleKey").isNull() ? null : data.get("appleKey").asText())
+            .withGoogleKey(data.get("googleKey") == null || data.get("googleKey").isNull() ? null : data.get("googleKey").asText())
+            .withEnableFakeReceipt(data.get("enableFakeReceipt") == null || data.get("enableFakeReceipt").isNull() ? null : data.get("enableFakeReceipt").booleanValue())
+            .withCreateWalletScript(data.get("createWalletScript") == null || data.get("createWalletScript").isNull() ? null : ScriptSetting.fromJson(data.get("createWalletScript")))
+            .withDepositScript(data.get("depositScript") == null || data.get("depositScript").isNull() ? null : ScriptSetting.fromJson(data.get("depositScript")))
+            .withWithdrawScript(data.get("withdrawScript") == null || data.get("withdrawScript").isNull() ? null : ScriptSetting.fromJson(data.get("withdrawScript")))
+            .withBalance(data.get("balance") == null || data.get("balance").isNull() ? null : data.get("balance").doubleValue())
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("name", getName());
+                put("description", getDescription());
+                put("priority", getPriority());
+                put("shareFree", getShareFree());
+                put("currency", getCurrency());
+                put("appleKey", getAppleKey());
+                put("googleKey", getGoogleKey());
+                put("enableFakeReceipt", getEnableFakeReceipt());
+                put("createWalletScript", getCreateWalletScript() != null ? getCreateWalletScript().toJson() : null);
+                put("depositScript", getDepositScript() != null ? getDepositScript().toJson() : null);
+                put("withdrawScript", getWithdrawScript() != null ? getWithdrawScript().toJson() : null);
+                put("balance", getBalance());
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Namespace o) {
 		return namespaceId.compareTo(o.namespaceId);
@@ -597,7 +310,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.priority == null) ? 0 : this.priority.hashCode());
@@ -628,11 +340,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (namespaceId == null) {
 			return other.namespaceId == null;
 		} else if (!namespaceId.equals(other.namespaceId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {

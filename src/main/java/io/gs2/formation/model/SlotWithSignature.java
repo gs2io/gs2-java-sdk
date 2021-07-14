@@ -16,188 +16,112 @@
 
 package io.gs2.formation.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 署名付きスロット
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SlotWithSignature implements IModel, Serializable {
-	/** スロットモデル名 */
-	protected String name;
+	private String name;
+	private String propertyType;
+	private String body;
+	private String signature;
+	private String metadata;
 
-	/**
-	 * スロットモデル名を取得
-	 *
-	 * @return スロットモデル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * スロットモデル名を設定
-	 *
-	 * @param name スロットモデル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * スロットモデル名を設定
-	 *
-	 * @param name スロットモデル名
-	 * @return this
-	 */
 	public SlotWithSignature withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** プロパティの種類 */
-	protected String propertyType;
 
-	/**
-	 * プロパティの種類を取得
-	 *
-	 * @return プロパティの種類
-	 */
 	public String getPropertyType() {
 		return propertyType;
 	}
 
-	/**
-	 * プロパティの種類を設定
-	 *
-	 * @param propertyType プロパティの種類
-	 */
 	public void setPropertyType(String propertyType) {
 		this.propertyType = propertyType;
 	}
 
-	/**
-	 * プロパティの種類を設定
-	 *
-	 * @param propertyType プロパティの種類
-	 * @return this
-	 */
 	public SlotWithSignature withPropertyType(String propertyType) {
 		this.propertyType = propertyType;
 		return this;
 	}
-	/** ペイロード */
-	protected String body;
 
-	/**
-	 * ペイロードを取得
-	 *
-	 * @return ペイロード
-	 */
 	public String getBody() {
 		return body;
 	}
 
-	/**
-	 * ペイロードを設定
-	 *
-	 * @param body ペイロード
-	 */
 	public void setBody(String body) {
 		this.body = body;
 	}
 
-	/**
-	 * ペイロードを設定
-	 *
-	 * @param body ペイロード
-	 * @return this
-	 */
 	public SlotWithSignature withBody(String body) {
 		this.body = body;
 		return this;
 	}
-	/** プロパティIDのリソースを所有していることを証明する署名 */
-	protected String signature;
 
-	/**
-	 * プロパティIDのリソースを所有していることを証明する署名を取得
-	 *
-	 * @return プロパティIDのリソースを所有していることを証明する署名
-	 */
 	public String getSignature() {
 		return signature;
 	}
 
-	/**
-	 * プロパティIDのリソースを所有していることを証明する署名を設定
-	 *
-	 * @param signature プロパティIDのリソースを所有していることを証明する署名
-	 */
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
 
-	/**
-	 * プロパティIDのリソースを所有していることを証明する署名を設定
-	 *
-	 * @param signature プロパティIDのリソースを所有していることを証明する署名
-	 * @return this
-	 */
 	public SlotWithSignature withSignature(String signature) {
 		this.signature = signature;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public SlotWithSignature withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("name", this.getName())
-            .put("propertyType", this.getPropertyType())
-            .put("body", this.getBody())
-            .put("signature", this.getSignature())
-            .put("metadata", this.getMetadata());
-        return body_;
+    public static SlotWithSignature fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SlotWithSignature()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withPropertyType(data.get("propertyType") == null || data.get("propertyType").isNull() ? null : data.get("propertyType").asText())
+            .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
+            .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("propertyType", getPropertyType());
+                put("body", getBody());
+                put("signature", getSignature());
+                put("metadata", getMetadata());
+            }}
+        );
     }
 
 	@Override

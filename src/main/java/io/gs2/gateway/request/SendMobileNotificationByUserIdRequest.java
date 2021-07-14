@@ -16,210 +16,110 @@
 
 package io.gs2.gateway.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.gateway.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * モバイルプッシュ通知を送信 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SendMobileNotificationByUserIdRequest extends Gs2BasicRequest<SendMobileNotificationByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return モバイルプッシュ通知を送信
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName モバイルプッシュ通知を送信
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName モバイルプッシュ通知を送信
-     * @return this
-     */
-    public SendMobileNotificationByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return モバイルプッシュ通知を送信
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId モバイルプッシュ通知を送信
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId モバイルプッシュ通知を送信
-     * @return this
-     */
-    public SendMobileNotificationByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** タイトル */
     private String subject;
-
-    /**
-     * タイトルを取得
-     *
-     * @return モバイルプッシュ通知を送信
-     */
-    public String getSubject() {
-        return subject;
-    }
-
-    /**
-     * タイトルを設定
-     *
-     * @param subject モバイルプッシュ通知を送信
-     */
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    /**
-     * タイトルを設定
-     *
-     * @param subject モバイルプッシュ通知を送信
-     * @return this
-     */
-    public SendMobileNotificationByUserIdRequest withSubject(String subject) {
-        setSubject(subject);
-        return this;
-    }
-
-    /** ペイロード */
     private String payload;
-
-    /**
-     * ペイロードを取得
-     *
-     * @return モバイルプッシュ通知を送信
-     */
-    public String getPayload() {
-        return payload;
-    }
-
-    /**
-     * ペイロードを設定
-     *
-     * @param payload モバイルプッシュ通知を送信
-     */
-    public void setPayload(String payload) {
-        this.payload = payload;
-    }
-
-    /**
-     * ペイロードを設定
-     *
-     * @param payload モバイルプッシュ通知を送信
-     * @return this
-     */
-    public SendMobileNotificationByUserIdRequest withPayload(String payload) {
-        setPayload(payload);
-        return this;
-    }
-
-    /** 再生する音声ファイル名 */
     private String sound;
 
-    /**
-     * 再生する音声ファイル名を取得
-     *
-     * @return モバイルプッシュ通知を送信
-     */
-    public String getSound() {
-        return sound;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public SendMobileNotificationByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public SendMobileNotificationByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public SendMobileNotificationByUserIdRequest withSubject(String subject) {
+		this.subject = subject;
+		return this;
+	}
+
+	public String getPayload() {
+		return payload;
+	}
+
+	public void setPayload(String payload) {
+		this.payload = payload;
+	}
+
+	public SendMobileNotificationByUserIdRequest withPayload(String payload) {
+		this.payload = payload;
+		return this;
+	}
+
+	public String getSound() {
+		return sound;
+	}
+
+	public void setSound(String sound) {
+		this.sound = sound;
+	}
+
+	public SendMobileNotificationByUserIdRequest withSound(String sound) {
+		this.sound = sound;
+		return this;
+	}
+
+    public static SendMobileNotificationByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SendMobileNotificationByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withSubject(data.get("subject") == null || data.get("subject").isNull() ? null : data.get("subject").asText())
+            .withPayload(data.get("payload") == null || data.get("payload").isNull() ? null : data.get("payload").asText())
+            .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText());
     }
 
-    /**
-     * 再生する音声ファイル名を設定
-     *
-     * @param sound モバイルプッシュ通知を送信
-     */
-    public void setSound(String sound) {
-        this.sound = sound;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("subject", getSubject());
+                put("payload", getPayload());
+                put("sound", getSound());
+            }}
+        );
     }
-
-    /**
-     * 再生する音声ファイル名を設定
-     *
-     * @param sound モバイルプッシュ通知を送信
-     * @return this
-     */
-    public SendMobileNotificationByUserIdRequest withSound(String sound) {
-        setSound(sound);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return モバイルプッシュ通知を送信
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider モバイルプッシュ通知を送信
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider モバイルプッシュ通知を送信
-     * @return this
-     */
-    public SendMobileNotificationByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

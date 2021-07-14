@@ -16,39 +16,48 @@
 
 package io.gs2.distributor.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.distributor.model.*;
+import io.gs2.distributor.model.DistributorModel;
 
-/**
- * 配信設定を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetDistributorModelResult implements IResult, Serializable {
-	/** 配信設定 */
-	private DistributorModel item;
+    private DistributorModel item;
 
-	/**
-	 * 配信設定を取得
-	 *
-	 * @return 配信設定を取得
-	 */
 	public DistributorModel getItem() {
 		return item;
 	}
 
-	/**
-	 * 配信設定を設定
-	 *
-	 * @param item 配信設定を取得
-	 */
 	public void setItem(DistributorModel item) {
 		this.item = item;
 	}
+
+	public GetDistributorModelResult withItem(DistributorModel item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetDistributorModelResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetDistributorModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : DistributorModel.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

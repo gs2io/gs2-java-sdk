@@ -16,114 +16,78 @@
 
 package io.gs2.deploy.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.deploy.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタックを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateStackRequest extends Gs2BasicRequest<CreateStackRequest> {
-
-    /** スタック名 */
     private String name;
-
-    /**
-     * スタック名を取得
-     *
-     * @return スタックを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param name スタックを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param name スタックを新規作成
-     * @return this
-     */
-    public CreateStackRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** スタックの説明 */
     private String description;
-
-    /**
-     * スタックの説明を取得
-     *
-     * @return スタックを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * スタックの説明を設定
-     *
-     * @param description スタックを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * スタックの説明を設定
-     *
-     * @param description スタックを新規作成
-     * @return this
-     */
-    public CreateStackRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** テンプレートデータ */
     private String template;
 
-    /**
-     * テンプレートデータを取得
-     *
-     * @return スタックを新規作成
-     */
-    public String getTemplate() {
-        return template;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateStackRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateStackRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
+	public CreateStackRequest withTemplate(String template) {
+		this.template = template;
+		return this;
+	}
+
+    public static CreateStackRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateStackRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText());
     }
 
-    /**
-     * テンプレートデータを設定
-     *
-     * @param template スタックを新規作成
-     */
-    public void setTemplate(String template) {
-        this.template = template;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("template", getTemplate());
+            }}
+        );
     }
-
-    /**
-     * テンプレートデータを設定
-     *
-     * @param template スタックを新規作成
-     * @return this
-     */
-    public CreateStackRequest withTemplate(String template) {
-        setTemplate(template);
-        return this;
-    }
-
 }

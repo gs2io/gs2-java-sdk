@@ -16,291 +16,172 @@
 
 package io.gs2.money.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ウォレット
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Wallet implements IModel, Serializable, Comparable<Wallet> {
-	/** ウォレット */
-	protected String walletId;
+	private String walletId;
+	private String userId;
+	private Integer slot;
+	private Integer paid;
+	private Integer free;
+	private List<WalletDetail> detail;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ウォレットを取得
-	 *
-	 * @return ウォレット
-	 */
 	public String getWalletId() {
 		return walletId;
 	}
 
-	/**
-	 * ウォレットを設定
-	 *
-	 * @param walletId ウォレット
-	 */
 	public void setWalletId(String walletId) {
 		this.walletId = walletId;
 	}
 
-	/**
-	 * ウォレットを設定
-	 *
-	 * @param walletId ウォレット
-	 * @return this
-	 */
 	public Wallet withWalletId(String walletId) {
 		this.walletId = walletId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Wallet withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** スロット番号 */
-	protected Integer slot;
 
-	/**
-	 * スロット番号を取得
-	 *
-	 * @return スロット番号
-	 */
 	public Integer getSlot() {
 		return slot;
 	}
 
-	/**
-	 * スロット番号を設定
-	 *
-	 * @param slot スロット番号
-	 */
 	public void setSlot(Integer slot) {
 		this.slot = slot;
 	}
 
-	/**
-	 * スロット番号を設定
-	 *
-	 * @param slot スロット番号
-	 * @return this
-	 */
 	public Wallet withSlot(Integer slot) {
 		this.slot = slot;
 		return this;
 	}
-	/** 有償課金通貨所持量 */
-	protected Integer paid;
 
-	/**
-	 * 有償課金通貨所持量を取得
-	 *
-	 * @return 有償課金通貨所持量
-	 */
 	public Integer getPaid() {
 		return paid;
 	}
 
-	/**
-	 * 有償課金通貨所持量を設定
-	 *
-	 * @param paid 有償課金通貨所持量
-	 */
 	public void setPaid(Integer paid) {
 		this.paid = paid;
 	}
 
-	/**
-	 * 有償課金通貨所持量を設定
-	 *
-	 * @param paid 有償課金通貨所持量
-	 * @return this
-	 */
 	public Wallet withPaid(Integer paid) {
 		this.paid = paid;
 		return this;
 	}
-	/** 無償課金通貨所持量 */
-	protected Integer free;
 
-	/**
-	 * 無償課金通貨所持量を取得
-	 *
-	 * @return 無償課金通貨所持量
-	 */
 	public Integer getFree() {
 		return free;
 	}
 
-	/**
-	 * 無償課金通貨所持量を設定
-	 *
-	 * @param free 無償課金通貨所持量
-	 */
 	public void setFree(Integer free) {
 		this.free = free;
 	}
 
-	/**
-	 * 無償課金通貨所持量を設定
-	 *
-	 * @param free 無償課金通貨所持量
-	 * @return this
-	 */
 	public Wallet withFree(Integer free) {
 		this.free = free;
 		return this;
 	}
-	/** 詳細 */
-	protected List<WalletDetail> detail;
 
-	/**
-	 * 詳細を取得
-	 *
-	 * @return 詳細
-	 */
 	public List<WalletDetail> getDetail() {
 		return detail;
 	}
 
-	/**
-	 * 詳細を設定
-	 *
-	 * @param detail 詳細
-	 */
 	public void setDetail(List<WalletDetail> detail) {
 		this.detail = detail;
 	}
 
-	/**
-	 * 詳細を設定
-	 *
-	 * @param detail 詳細
-	 * @return this
-	 */
 	public Wallet withDetail(List<WalletDetail> detail) {
 		this.detail = detail;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Wallet withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Wallet withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> detail = new ArrayList<>();
-        if(this.detail != null) {
-            for(WalletDetail item : this.detail) {
-                detail.add(item.toJson());
-            }
+    public static Wallet fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("walletId", this.getWalletId())
-            .put("userId", this.getUserId())
-            .put("slot", this.getSlot())
-            .put("paid", this.getPaid())
-            .put("free", this.getFree())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("detail", JsonNodeFactory.instance.arrayNode().addAll(detail));
-        return body_;
+        return new Wallet()
+            .withWalletId(data.get("walletId") == null || data.get("walletId").isNull() ? null : data.get("walletId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
+            .withPaid(data.get("paid") == null || data.get("paid").isNull() ? null : data.get("paid").intValue())
+            .withFree(data.get("free") == null || data.get("free").isNull() ? null : data.get("free").intValue())
+            .withDetail(data.get("detail") == null || data.get("detail").isNull() ? new ArrayList<WalletDetail>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("detail").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return WalletDetail.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("walletId", getWalletId());
+                put("userId", getUserId());
+                put("slot", getSlot());
+                put("paid", getPaid());
+                put("free", getFree());
+                put("detail", getDetail() == null ? new ArrayList<WalletDetail>() :
+                    getDetail().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Wallet o) {
 		return walletId.compareTo(o.walletId);

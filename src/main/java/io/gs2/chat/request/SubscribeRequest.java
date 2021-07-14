@@ -16,178 +16,105 @@
 
 package io.gs2.chat.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.chat.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.chat.model.NotificationType;
 
-/**
- * ルームを購読 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SubscribeRequest extends Gs2BasicRequest<SubscribeRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ルームを購読
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームを購読
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームを購読
-     * @return this
-     */
-    public SubscribeRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ルーム名 */
     private String roomName;
-
-    /**
-     * ルーム名を取得
-     *
-     * @return ルームを購読
-     */
-    public String getRoomName() {
-        return roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ルームを購読
-     */
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ルームを購読
-     * @return this
-     */
-    public SubscribeRequest withRoomName(String roomName) {
-        setRoomName(roomName);
-        return this;
-    }
-
-    /** 新着メッセージ通知を受け取るカテゴリリスト */
+    private String accessToken;
     private List<NotificationType> notificationTypes;
 
-    /**
-     * 新着メッセージ通知を受け取るカテゴリリストを取得
-     *
-     * @return ルームを購読
-     */
-    public List<NotificationType> getNotificationTypes() {
-        return notificationTypes;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public SubscribeRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public SubscribeRequest withRoomName(String roomName) {
+		this.roomName = roomName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public SubscribeRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public List<NotificationType> getNotificationTypes() {
+		return notificationTypes;
+	}
+
+	public void setNotificationTypes(List<NotificationType> notificationTypes) {
+		this.notificationTypes = notificationTypes;
+	}
+
+	public SubscribeRequest withNotificationTypes(List<NotificationType> notificationTypes) {
+		this.notificationTypes = notificationTypes;
+		return this;
+	}
+
+    public static SubscribeRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SubscribeRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withNotificationTypes(data.get("notificationTypes") == null || data.get("notificationTypes").isNull() ? new ArrayList<NotificationType>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("notificationTypes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return NotificationType.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 新着メッセージ通知を受け取るカテゴリリストを設定
-     *
-     * @param notificationTypes ルームを購読
-     */
-    public void setNotificationTypes(List<NotificationType> notificationTypes) {
-        this.notificationTypes = notificationTypes;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("roomName", getRoomName());
+                put("accessToken", getAccessToken());
+                put("notificationTypes", getNotificationTypes() == null ? new ArrayList<NotificationType>() :
+                    getNotificationTypes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 新着メッセージ通知を受け取るカテゴリリストを設定
-     *
-     * @param notificationTypes ルームを購読
-     * @return this
-     */
-    public SubscribeRequest withNotificationTypes(List<NotificationType> notificationTypes) {
-        setNotificationTypes(notificationTypes);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ルームを購読
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ルームを購読
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ルームを購読
-     * @return this
-     */
-    public SubscribeRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public SubscribeRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

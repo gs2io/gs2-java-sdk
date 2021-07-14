@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.formation;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.formation.request.*;
 import io.gs2.formation.result.*;
-import io.gs2.formation.model.*;
+import io.gs2.formation.model.*;public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestClient> {
 
-/**
- * GS2 Formation API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2FormationRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,40 +152,16 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getUpdateMoldScript() != null) {
-                try {
-                    json.put("updateMoldScript", new JSONObject(mapper.writeValueAsString(this.request.getUpdateMoldScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getUpdateFormScript() != null) {
-                try {
-                    json.put("updateFormScript", new JSONObject(mapper.writeValueAsString(this.request.getUpdateFormScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("updateMoldScript", request.getUpdateMoldScript() != null ? request.getUpdateMoldScript().toJson() : null);
+                    put("updateFormScript", request.getUpdateFormScript() != null ? request.getUpdateFormScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -220,25 +179,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -265,15 +213,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -284,7 +235,7 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -308,25 +259,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -353,15 +293,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -372,7 +315,7 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -396,25 +339,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -441,15 +373,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -460,39 +395,17 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getUpdateMoldScript() != null) {
-                try {
-                    json.put("updateMoldScript", new JSONObject(mapper.writeValueAsString(this.request.getUpdateMoldScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getUpdateFormScript() != null) {
-                try {
-                    json.put("updateFormScript", new JSONObject(mapper.writeValueAsString(this.request.getUpdateFormScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("updateMoldScript", request.getUpdateMoldScript() != null ? request.getUpdateMoldScript().toJson() : null);
+                    put("updateFormScript", request.getUpdateFormScript() != null ? request.getUpdateFormScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -510,25 +423,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -555,15 +457,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -574,7 +479,7 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -598,25 +503,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -643,15 +537,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DescribeFormModelMastersTask(
             DescribeFormModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeFormModelMastersResult>> userCallback,
-            Class<DescribeFormModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeFormModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeFormModelMastersResult parse(JsonNode data) {
+            return DescribeFormModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -662,7 +559,7 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/form";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -692,25 +589,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeFormModelMastersAsync(
             DescribeFormModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeFormModelMastersResult>> callback
     ) {
-        DescribeFormModelMastersTask task = new DescribeFormModelMastersTask(request, callback, DescribeFormModelMastersResult.class);
+        DescribeFormModelMastersTask task = new DescribeFormModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeFormModelMastersResult describeFormModelMasters(
             DescribeFormModelMastersRequest request
     ) {
@@ -737,15 +623,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public CreateFormModelMasterTask(
             CreateFormModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateFormModelMasterResult>> userCallback,
-            Class<CreateFormModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateFormModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateFormModelMasterResult parse(JsonNode data) {
+            return CreateFormModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -756,36 +645,22 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/form";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getSlots() != null) {
-                JSONArray array = new JSONArray();
-                for(SlotModel item : this.request.getSlots())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("slots", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("slots", request.getSlots() == null ? new ArrayList<SlotModel>() :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -803,25 +678,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createFormModelMasterAsync(
             CreateFormModelMasterRequest request,
             AsyncAction<AsyncResult<CreateFormModelMasterResult>> callback
     ) {
-        CreateFormModelMasterTask task = new CreateFormModelMasterTask(request, callback, CreateFormModelMasterResult.class);
+        CreateFormModelMasterTask task = new CreateFormModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateFormModelMasterResult createFormModelMaster(
             CreateFormModelMasterRequest request
     ) {
@@ -848,15 +712,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetFormModelMasterTask(
             GetFormModelMasterRequest request,
-            AsyncAction<AsyncResult<GetFormModelMasterResult>> userCallback,
-            Class<GetFormModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetFormModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFormModelMasterResult parse(JsonNode data) {
+            return GetFormModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -867,8 +734,8 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/form/{formModelName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null|| this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -892,25 +759,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFormModelMasterAsync(
             GetFormModelMasterRequest request,
             AsyncAction<AsyncResult<GetFormModelMasterResult>> callback
     ) {
-        GetFormModelMasterTask task = new GetFormModelMasterTask(request, callback, GetFormModelMasterResult.class);
+        GetFormModelMasterTask task = new GetFormModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFormModelMasterResult getFormModelMaster(
             GetFormModelMasterRequest request
     ) {
@@ -937,15 +793,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public UpdateFormModelMasterTask(
             UpdateFormModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateFormModelMasterResult>> userCallback,
-            Class<UpdateFormModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateFormModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateFormModelMasterResult parse(JsonNode data) {
+            return UpdateFormModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -956,34 +815,22 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/form/{formModelName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null|| this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getSlots() != null) {
-                JSONArray array = new JSONArray();
-                for(SlotModel item : this.request.getSlots())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("slots", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("slots", request.getSlots() == null ? new ArrayList<SlotModel>() :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1001,25 +848,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateFormModelMasterAsync(
             UpdateFormModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateFormModelMasterResult>> callback
     ) {
-        UpdateFormModelMasterTask task = new UpdateFormModelMasterTask(request, callback, UpdateFormModelMasterResult.class);
+        UpdateFormModelMasterTask task = new UpdateFormModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateFormModelMasterResult updateFormModelMaster(
             UpdateFormModelMasterRequest request
     ) {
@@ -1046,15 +882,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DeleteFormModelMasterTask(
             DeleteFormModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteFormModelMasterResult>> userCallback,
-            Class<DeleteFormModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteFormModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteFormModelMasterResult parse(JsonNode data) {
+            return DeleteFormModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1065,8 +904,8 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/form/{formModelName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null|| this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1090,25 +929,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteFormModelMasterAsync(
             DeleteFormModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteFormModelMasterResult>> callback
     ) {
-        DeleteFormModelMasterTask task = new DeleteFormModelMasterTask(request, callback, DeleteFormModelMasterResult.class);
+        DeleteFormModelMasterTask task = new DeleteFormModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteFormModelMasterResult deleteFormModelMaster(
             DeleteFormModelMasterRequest request
     ) {
@@ -1135,15 +963,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DescribeMoldModelsTask(
             DescribeMoldModelsRequest request,
-            AsyncAction<AsyncResult<DescribeMoldModelsResult>> userCallback,
-            Class<DescribeMoldModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeMoldModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeMoldModelsResult parse(JsonNode data) {
+            return DescribeMoldModelsResult.fromJson(data);
         }
 
         @Override
@@ -1154,7 +985,7 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model/mold";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1178,25 +1009,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームの保存領域の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeMoldModelsAsync(
             DescribeMoldModelsRequest request,
             AsyncAction<AsyncResult<DescribeMoldModelsResult>> callback
     ) {
-        DescribeMoldModelsTask task = new DescribeMoldModelsTask(request, callback, DescribeMoldModelsResult.class);
+        DescribeMoldModelsTask task = new DescribeMoldModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームの保存領域の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeMoldModelsResult describeMoldModels(
             DescribeMoldModelsRequest request
     ) {
@@ -1223,15 +1043,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetMoldModelTask(
             GetMoldModelRequest request,
-            AsyncAction<AsyncResult<GetMoldModelResult>> userCallback,
-            Class<GetMoldModelResult> clazz
+            AsyncAction<AsyncResult<GetMoldModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetMoldModelResult parse(JsonNode data) {
+            return GetMoldModelResult.fromJson(data);
         }
 
         @Override
@@ -1242,8 +1065,8 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1267,25 +1090,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームの保存領域を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getMoldModelAsync(
             GetMoldModelRequest request,
             AsyncAction<AsyncResult<GetMoldModelResult>> callback
     ) {
-        GetMoldModelTask task = new GetMoldModelTask(request, callback, GetMoldModelResult.class);
+        GetMoldModelTask task = new GetMoldModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームの保存領域を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetMoldModelResult getMoldModel(
             GetMoldModelRequest request
     ) {
@@ -1312,15 +1124,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DescribeMoldModelMastersTask(
             DescribeMoldModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeMoldModelMastersResult>> userCallback,
-            Class<DescribeMoldModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeMoldModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeMoldModelMastersResult parse(JsonNode data) {
+            return DescribeMoldModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -1331,7 +1146,7 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/mold";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1361,25 +1176,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームの保存領域マスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeMoldModelMastersAsync(
             DescribeMoldModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeMoldModelMastersResult>> callback
     ) {
-        DescribeMoldModelMastersTask task = new DescribeMoldModelMastersTask(request, callback, DescribeMoldModelMastersResult.class);
+        DescribeMoldModelMastersTask task = new DescribeMoldModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームの保存領域マスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeMoldModelMastersResult describeMoldModelMasters(
             DescribeMoldModelMastersRequest request
     ) {
@@ -1406,15 +1210,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public CreateMoldModelMasterTask(
             CreateMoldModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateMoldModelMasterResult>> userCallback,
-            Class<CreateMoldModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateMoldModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateMoldModelMasterResult parse(JsonNode data) {
+            return CreateMoldModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1425,33 +1232,19 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/mold";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getFormModelName() != null) {
-                json.put("formModelName", this.request.getFormModelName());
-            }
-            if (this.request.getInitialMaxCapacity() != null) {
-                json.put("initialMaxCapacity", this.request.getInitialMaxCapacity());
-            }
-            if (this.request.getMaxCapacity() != null) {
-                json.put("maxCapacity", this.request.getMaxCapacity());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("formModelName", request.getFormModelName());
+                    put("initialMaxCapacity", request.getInitialMaxCapacity());
+                    put("maxCapacity", request.getMaxCapacity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1469,25 +1262,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームの保存領域マスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createMoldModelMasterAsync(
             CreateMoldModelMasterRequest request,
             AsyncAction<AsyncResult<CreateMoldModelMasterResult>> callback
     ) {
-        CreateMoldModelMasterTask task = new CreateMoldModelMasterTask(request, callback, CreateMoldModelMasterResult.class);
+        CreateMoldModelMasterTask task = new CreateMoldModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームの保存領域マスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateMoldModelMasterResult createMoldModelMaster(
             CreateMoldModelMasterRequest request
     ) {
@@ -1514,15 +1296,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetMoldModelMasterTask(
             GetMoldModelMasterRequest request,
-            AsyncAction<AsyncResult<GetMoldModelMasterResult>> userCallback,
-            Class<GetMoldModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetMoldModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetMoldModelMasterResult parse(JsonNode data) {
+            return GetMoldModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1533,8 +1318,8 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1558,25 +1343,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームの保存領域マスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getMoldModelMasterAsync(
             GetMoldModelMasterRequest request,
             AsyncAction<AsyncResult<GetMoldModelMasterResult>> callback
     ) {
-        GetMoldModelMasterTask task = new GetMoldModelMasterTask(request, callback, GetMoldModelMasterResult.class);
+        GetMoldModelMasterTask task = new GetMoldModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームの保存領域マスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetMoldModelMasterResult getMoldModelMaster(
             GetMoldModelMasterRequest request
     ) {
@@ -1603,15 +1377,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public UpdateMoldModelMasterTask(
             UpdateMoldModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateMoldModelMasterResult>> userCallback,
-            Class<UpdateMoldModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateMoldModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateMoldModelMasterResult parse(JsonNode data) {
+            return UpdateMoldModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1622,31 +1399,19 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getFormModelName() != null) {
-                json.put("formModelName", this.request.getFormModelName());
-            }
-            if (this.request.getInitialMaxCapacity() != null) {
-                json.put("initialMaxCapacity", this.request.getInitialMaxCapacity());
-            }
-            if (this.request.getMaxCapacity() != null) {
-                json.put("maxCapacity", this.request.getMaxCapacity());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("formModelName", request.getFormModelName());
+                    put("initialMaxCapacity", request.getInitialMaxCapacity());
+                    put("maxCapacity", request.getMaxCapacity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1664,25 +1429,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームの保存領域マスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateMoldModelMasterAsync(
             UpdateMoldModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateMoldModelMasterResult>> callback
     ) {
-        UpdateMoldModelMasterTask task = new UpdateMoldModelMasterTask(request, callback, UpdateMoldModelMasterResult.class);
+        UpdateMoldModelMasterTask task = new UpdateMoldModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームの保存領域マスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateMoldModelMasterResult updateMoldModelMaster(
             UpdateMoldModelMasterRequest request
     ) {
@@ -1709,15 +1463,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DeleteMoldModelMasterTask(
             DeleteMoldModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteMoldModelMasterResult>> userCallback,
-            Class<DeleteMoldModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteMoldModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteMoldModelMasterResult parse(JsonNode data) {
+            return DeleteMoldModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1728,8 +1485,8 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1753,25 +1510,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームの保存領域マスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteMoldModelMasterAsync(
             DeleteMoldModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteMoldModelMasterResult>> callback
     ) {
-        DeleteMoldModelMasterTask task = new DeleteMoldModelMasterTask(request, callback, DeleteMoldModelMasterResult.class);
+        DeleteMoldModelMasterTask task = new DeleteMoldModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームの保存領域マスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteMoldModelMasterResult deleteMoldModelMaster(
             DeleteMoldModelMasterRequest request
     ) {
@@ -1798,15 +1544,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -1817,7 +1566,7 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1841,25 +1590,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 現在有効なフォーム設定のマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なフォーム設定のマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -1886,15 +1624,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetCurrentFormMasterTask(
             GetCurrentFormMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentFormMasterResult>> userCallback,
-            Class<GetCurrentFormMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentFormMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentFormMasterResult parse(JsonNode data) {
+            return GetCurrentFormMasterResult.fromJson(data);
         }
 
         @Override
@@ -1905,7 +1646,7 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1929,25 +1670,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 現在有効なフォーム設定を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentFormMasterAsync(
             GetCurrentFormMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentFormMasterResult>> callback
     ) {
-        GetCurrentFormMasterTask task = new GetCurrentFormMasterTask(request, callback, GetCurrentFormMasterResult.class);
+        GetCurrentFormMasterTask task = new GetCurrentFormMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なフォーム設定を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentFormMasterResult getCurrentFormMaster(
             GetCurrentFormMasterRequest request
     ) {
@@ -1974,15 +1704,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public UpdateCurrentFormMasterTask(
             UpdateCurrentFormMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentFormMasterResult>> userCallback,
-            Class<UpdateCurrentFormMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentFormMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentFormMasterResult parse(JsonNode data) {
+            return UpdateCurrentFormMasterResult.fromJson(data);
         }
 
         @Override
@@ -1993,18 +1726,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2022,25 +1751,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 現在有効なフォーム設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentFormMasterAsync(
             UpdateCurrentFormMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentFormMasterResult>> callback
     ) {
-        UpdateCurrentFormMasterTask task = new UpdateCurrentFormMasterTask(request, callback, UpdateCurrentFormMasterResult.class);
+        UpdateCurrentFormMasterTask task = new UpdateCurrentFormMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なフォーム設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentFormMasterResult updateCurrentFormMaster(
             UpdateCurrentFormMasterRequest request
     ) {
@@ -2067,15 +1785,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public UpdateCurrentFormMasterFromGitHubTask(
             UpdateCurrentFormMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentFormMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentFormMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentFormMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentFormMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentFormMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2086,22 +1807,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2119,25 +1832,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 現在有効なフォーム設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentFormMasterFromGitHubAsync(
             UpdateCurrentFormMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentFormMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentFormMasterFromGitHubTask task = new UpdateCurrentFormMasterFromGitHubTask(request, callback, UpdateCurrentFormMasterFromGitHubResult.class);
+        UpdateCurrentFormMasterFromGitHubTask task = new UpdateCurrentFormMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なフォーム設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentFormMasterFromGitHubResult updateCurrentFormMasterFromGitHub(
             UpdateCurrentFormMasterFromGitHubRequest request
     ) {
@@ -2164,15 +1866,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DescribeMoldsTask(
             DescribeMoldsRequest request,
-            AsyncAction<AsyncResult<DescribeMoldsResult>> userCallback,
-            Class<DescribeMoldsResult> clazz
+            AsyncAction<AsyncResult<DescribeMoldsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeMoldsResult parse(JsonNode data) {
+            return DescribeMoldsResult.fromJson(data);
         }
 
         @Override
@@ -2183,7 +1888,7 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mold";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2209,9 +1914,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2219,25 +1921,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 保存したフォームの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeMoldsAsync(
             DescribeMoldsRequest request,
             AsyncAction<AsyncResult<DescribeMoldsResult>> callback
     ) {
-        DescribeMoldsTask task = new DescribeMoldsTask(request, callback, DescribeMoldsResult.class);
+        DescribeMoldsTask task = new DescribeMoldsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 保存したフォームの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeMoldsResult describeMolds(
             DescribeMoldsRequest request
     ) {
@@ -2264,15 +1955,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DescribeMoldsByUserIdTask(
             DescribeMoldsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeMoldsByUserIdResult>> userCallback,
-            Class<DescribeMoldsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeMoldsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeMoldsByUserIdResult parse(JsonNode data) {
+            return DescribeMoldsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2283,8 +1977,8 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2307,9 +2001,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2317,25 +2008,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeMoldsByUserIdAsync(
             DescribeMoldsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeMoldsByUserIdResult>> callback
     ) {
-        DescribeMoldsByUserIdTask task = new DescribeMoldsByUserIdTask(request, callback, DescribeMoldsByUserIdResult.class);
+        DescribeMoldsByUserIdTask task = new DescribeMoldsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeMoldsByUserIdResult describeMoldsByUserId(
             DescribeMoldsByUserIdRequest request
     ) {
@@ -2362,15 +2042,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetMoldTask(
             GetMoldRequest request,
-            AsyncAction<AsyncResult<GetMoldResult>> userCallback,
-            Class<GetMoldResult> clazz
+            AsyncAction<AsyncResult<GetMoldResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetMoldResult parse(JsonNode data) {
+            return GetMoldResult.fromJson(data);
         }
 
         @Override
@@ -2381,8 +2064,8 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2402,9 +2085,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2412,25 +2092,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 保存したフォームを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getMoldAsync(
             GetMoldRequest request,
             AsyncAction<AsyncResult<GetMoldResult>> callback
     ) {
-        GetMoldTask task = new GetMoldTask(request, callback, GetMoldResult.class);
+        GetMoldTask task = new GetMoldTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 保存したフォームを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetMoldResult getMold(
             GetMoldRequest request
     ) {
@@ -2457,15 +2126,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetMoldByUserIdTask(
             GetMoldByUserIdRequest request,
-            AsyncAction<AsyncResult<GetMoldByUserIdResult>> userCallback,
-            Class<GetMoldByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetMoldByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetMoldByUserIdResult parse(JsonNode data) {
+            return GetMoldByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2476,9 +2148,9 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2495,9 +2167,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2505,25 +2174,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getMoldByUserIdAsync(
             GetMoldByUserIdRequest request,
             AsyncAction<AsyncResult<GetMoldByUserIdResult>> callback
     ) {
-        GetMoldByUserIdTask task = new GetMoldByUserIdTask(request, callback, GetMoldByUserIdResult.class);
+        GetMoldByUserIdTask task = new GetMoldByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetMoldByUserIdResult getMoldByUserId(
             GetMoldByUserIdRequest request
     ) {
@@ -2550,15 +2208,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public SetMoldCapacityByUserIdTask(
             SetMoldCapacityByUserIdRequest request,
-            AsyncAction<AsyncResult<SetMoldCapacityByUserIdResult>> userCallback,
-            Class<SetMoldCapacityByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetMoldCapacityByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetMoldCapacityByUserIdResult parse(JsonNode data) {
+            return SetMoldCapacityByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2569,20 +2230,16 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCapacity() != null) {
-                json.put("capacity", this.request.getCapacity());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("capacity", request.getCapacity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2593,9 +2250,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2603,25 +2257,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームのキャパシティを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setMoldCapacityByUserIdAsync(
             SetMoldCapacityByUserIdRequest request,
             AsyncAction<AsyncResult<SetMoldCapacityByUserIdResult>> callback
     ) {
-        SetMoldCapacityByUserIdTask task = new SetMoldCapacityByUserIdTask(request, callback, SetMoldCapacityByUserIdResult.class);
+        SetMoldCapacityByUserIdTask task = new SetMoldCapacityByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームのキャパシティを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetMoldCapacityByUserIdResult setMoldCapacityByUserId(
             SetMoldCapacityByUserIdRequest request
     ) {
@@ -2648,15 +2291,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public AddMoldCapacityByUserIdTask(
             AddMoldCapacityByUserIdRequest request,
-            AsyncAction<AsyncResult<AddMoldCapacityByUserIdResult>> userCallback,
-            Class<AddMoldCapacityByUserIdResult> clazz
+            AsyncAction<AsyncResult<AddMoldCapacityByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddMoldCapacityByUserIdResult parse(JsonNode data) {
+            return AddMoldCapacityByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2667,20 +2313,16 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCapacity() != null) {
-                json.put("capacity", this.request.getCapacity());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("capacity", request.getCapacity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2691,9 +2333,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2701,25 +2340,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームのキャパシティを追加<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addMoldCapacityByUserIdAsync(
             AddMoldCapacityByUserIdRequest request,
             AsyncAction<AsyncResult<AddMoldCapacityByUserIdResult>> callback
     ) {
-        AddMoldCapacityByUserIdTask task = new AddMoldCapacityByUserIdTask(request, callback, AddMoldCapacityByUserIdResult.class);
+        AddMoldCapacityByUserIdTask task = new AddMoldCapacityByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームのキャパシティを追加<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddMoldCapacityByUserIdResult addMoldCapacityByUserId(
             AddMoldCapacityByUserIdRequest request
     ) {
@@ -2746,15 +2374,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DeleteMoldTask(
             DeleteMoldRequest request,
-            AsyncAction<AsyncResult<DeleteMoldResult>> userCallback,
-            Class<DeleteMoldResult> clazz
+            AsyncAction<AsyncResult<DeleteMoldResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteMoldResult parse(JsonNode data) {
+            return DeleteMoldResult.fromJson(data);
         }
 
         @Override
@@ -2765,8 +2396,8 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2786,9 +2417,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2796,25 +2424,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 保存したフォームを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteMoldAsync(
             DeleteMoldRequest request,
             AsyncAction<AsyncResult<DeleteMoldResult>> callback
     ) {
-        DeleteMoldTask task = new DeleteMoldTask(request, callback, DeleteMoldResult.class);
+        DeleteMoldTask task = new DeleteMoldTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 保存したフォームを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteMoldResult deleteMold(
             DeleteMoldRequest request
     ) {
@@ -2841,15 +2458,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DeleteMoldByUserIdTask(
             DeleteMoldByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteMoldByUserIdResult>> userCallback,
-            Class<DeleteMoldByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteMoldByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteMoldByUserIdResult parse(JsonNode data) {
+            return DeleteMoldByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2860,9 +2480,9 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2879,9 +2499,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2889,25 +2506,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteMoldByUserIdAsync(
             DeleteMoldByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteMoldByUserIdResult>> callback
     ) {
-        DeleteMoldByUserIdTask task = new DeleteMoldByUserIdTask(request, callback, DeleteMoldByUserIdResult.class);
+        DeleteMoldByUserIdTask task = new DeleteMoldByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して保存したフォームを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteMoldByUserIdResult deleteMoldByUserId(
             DeleteMoldByUserIdRequest request
     ) {
@@ -2934,15 +2540,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public AddCapacityByStampSheetTask(
             AddCapacityByStampSheetRequest request,
-            AsyncAction<AsyncResult<AddCapacityByStampSheetResult>> userCallback,
-            Class<AddCapacityByStampSheetResult> clazz
+            AsyncAction<AsyncResult<AddCapacityByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddCapacityByStampSheetResult parse(JsonNode data) {
+            return AddCapacityByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -2953,19 +2562,13 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/mold/capacity/add";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2976,9 +2579,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2986,25 +2586,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * スタンプシートでキャパシティサイズを加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addCapacityByStampSheetAsync(
             AddCapacityByStampSheetRequest request,
             AsyncAction<AsyncResult<AddCapacityByStampSheetResult>> callback
     ) {
-        AddCapacityByStampSheetTask task = new AddCapacityByStampSheetTask(request, callback, AddCapacityByStampSheetResult.class);
+        AddCapacityByStampSheetTask task = new AddCapacityByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでキャパシティサイズを加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddCapacityByStampSheetResult addCapacityByStampSheet(
             AddCapacityByStampSheetRequest request
     ) {
@@ -3031,15 +2620,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public SetCapacityByStampSheetTask(
             SetCapacityByStampSheetRequest request,
-            AsyncAction<AsyncResult<SetCapacityByStampSheetResult>> userCallback,
-            Class<SetCapacityByStampSheetResult> clazz
+            AsyncAction<AsyncResult<SetCapacityByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetCapacityByStampSheetResult parse(JsonNode data) {
+            return SetCapacityByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -3050,19 +2642,13 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/mold/capacity/set";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3073,9 +2659,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3083,25 +2666,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * スタンプシートでキャパシティサイズを設定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setCapacityByStampSheetAsync(
             SetCapacityByStampSheetRequest request,
             AsyncAction<AsyncResult<SetCapacityByStampSheetResult>> callback
     ) {
-        SetCapacityByStampSheetTask task = new SetCapacityByStampSheetTask(request, callback, SetCapacityByStampSheetResult.class);
+        SetCapacityByStampSheetTask task = new SetCapacityByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでキャパシティサイズを設定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetCapacityByStampSheetResult setCapacityByStampSheet(
             SetCapacityByStampSheetRequest request
     ) {
@@ -3128,15 +2700,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DescribeFormsTask(
             DescribeFormsRequest request,
-            AsyncAction<AsyncResult<DescribeFormsResult>> userCallback,
-            Class<DescribeFormsResult> clazz
+            AsyncAction<AsyncResult<DescribeFormsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeFormsResult parse(JsonNode data) {
+            return DescribeFormsResult.fromJson(data);
         }
 
         @Override
@@ -3147,8 +2722,8 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mold/{moldName}/form";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3174,9 +2749,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3184,25 +2756,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeFormsAsync(
             DescribeFormsRequest request,
             AsyncAction<AsyncResult<DescribeFormsResult>> callback
     ) {
-        DescribeFormsTask task = new DescribeFormsTask(request, callback, DescribeFormsResult.class);
+        DescribeFormsTask task = new DescribeFormsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeFormsResult describeForms(
             DescribeFormsRequest request
     ) {
@@ -3229,15 +2790,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DescribeFormsByUserIdTask(
             DescribeFormsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeFormsByUserIdResult>> userCallback,
-            Class<DescribeFormsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeFormsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeFormsByUserIdResult parse(JsonNode data) {
+            return DescribeFormsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3248,9 +2812,9 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}/form";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3273,9 +2837,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3283,25 +2844,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してフォームの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeFormsByUserIdAsync(
             DescribeFormsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeFormsByUserIdResult>> callback
     ) {
-        DescribeFormsByUserIdTask task = new DescribeFormsByUserIdTask(request, callback, DescribeFormsByUserIdResult.class);
+        DescribeFormsByUserIdTask task = new DescribeFormsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してフォームの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeFormsByUserIdResult describeFormsByUserId(
             DescribeFormsByUserIdRequest request
     ) {
@@ -3328,15 +2878,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetFormTask(
             GetFormRequest request,
-            AsyncAction<AsyncResult<GetFormResult>> userCallback,
-            Class<GetFormResult> clazz
+            AsyncAction<AsyncResult<GetFormResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFormResult parse(JsonNode data) {
+            return GetFormResult.fromJson(data);
         }
 
         @Override
@@ -3347,9 +2900,9 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mold/{moldName}/form/{index}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{index}", this.request.getIndex() == null ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3369,9 +2922,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3379,25 +2929,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFormAsync(
             GetFormRequest request,
             AsyncAction<AsyncResult<GetFormResult>> callback
     ) {
-        GetFormTask task = new GetFormTask(request, callback, GetFormResult.class);
+        GetFormTask task = new GetFormTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFormResult getForm(
             GetFormRequest request
     ) {
@@ -3424,15 +2963,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetFormByUserIdTask(
             GetFormByUserIdRequest request,
-            AsyncAction<AsyncResult<GetFormByUserIdResult>> userCallback,
-            Class<GetFormByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetFormByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFormByUserIdResult parse(JsonNode data) {
+            return GetFormByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3443,10 +2985,10 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{index}", this.request.getIndex() == null ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3463,9 +3005,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3473,25 +3012,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してフォームを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFormByUserIdAsync(
             GetFormByUserIdRequest request,
             AsyncAction<AsyncResult<GetFormByUserIdResult>> callback
     ) {
-        GetFormByUserIdTask task = new GetFormByUserIdTask(request, callback, GetFormByUserIdResult.class);
+        GetFormByUserIdTask task = new GetFormByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してフォームを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFormByUserIdResult getFormByUserId(
             GetFormByUserIdRequest request
     ) {
@@ -3518,15 +3046,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetFormWithSignatureTask(
             GetFormWithSignatureRequest request,
-            AsyncAction<AsyncResult<GetFormWithSignatureResult>> userCallback,
-            Class<GetFormWithSignatureResult> clazz
+            AsyncAction<AsyncResult<GetFormWithSignatureResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFormWithSignatureResult parse(JsonNode data) {
+            return GetFormWithSignatureResult.fromJson(data);
         }
 
         @Override
@@ -3537,9 +3068,9 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mold/{moldName}/form/{index}/signature";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{index}", this.request.getIndex() == null ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3562,9 +3093,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3572,25 +3100,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 署名付きフォームを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFormWithSignatureAsync(
             GetFormWithSignatureRequest request,
             AsyncAction<AsyncResult<GetFormWithSignatureResult>> callback
     ) {
-        GetFormWithSignatureTask task = new GetFormWithSignatureTask(request, callback, GetFormWithSignatureResult.class);
+        GetFormWithSignatureTask task = new GetFormWithSignatureTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 署名付きフォームを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFormWithSignatureResult getFormWithSignature(
             GetFormWithSignatureRequest request
     ) {
@@ -3617,15 +3134,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public GetFormWithSignatureByUserIdTask(
             GetFormWithSignatureByUserIdRequest request,
-            AsyncAction<AsyncResult<GetFormWithSignatureByUserIdResult>> userCallback,
-            Class<GetFormWithSignatureByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetFormWithSignatureByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFormWithSignatureByUserIdResult parse(JsonNode data) {
+            return GetFormWithSignatureByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3636,10 +3156,10 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}/signature";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{index}", this.request.getIndex() == null ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3659,9 +3179,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3669,25 +3186,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定して署名付きフォームを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFormWithSignatureByUserIdAsync(
             GetFormWithSignatureByUserIdRequest request,
             AsyncAction<AsyncResult<GetFormWithSignatureByUserIdResult>> callback
     ) {
-        GetFormWithSignatureByUserIdTask task = new GetFormWithSignatureByUserIdTask(request, callback, GetFormWithSignatureByUserIdResult.class);
+        GetFormWithSignatureByUserIdTask task = new GetFormWithSignatureByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して署名付きフォームを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFormWithSignatureByUserIdResult getFormWithSignatureByUserId(
             GetFormWithSignatureByUserIdRequest request
     ) {
@@ -3714,15 +3220,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public SetFormByUserIdTask(
             SetFormByUserIdRequest request,
-            AsyncAction<AsyncResult<SetFormByUserIdResult>> userCallback,
-            Class<SetFormByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetFormByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetFormByUserIdResult parse(JsonNode data) {
+            return SetFormByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3733,30 +3242,22 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{index}", this.request.getIndex() == null ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSlots() != null) {
-                JSONArray array = new JSONArray();
-                for(Slot item : this.request.getSlots())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("slots", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("slots", request.getSlots() == null ? new ArrayList<Slot>() :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3767,9 +3268,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3777,25 +3275,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してフォームを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setFormByUserIdAsync(
             SetFormByUserIdRequest request,
             AsyncAction<AsyncResult<SetFormByUserIdResult>> callback
     ) {
-        SetFormByUserIdTask task = new SetFormByUserIdTask(request, callback, SetFormByUserIdResult.class);
+        SetFormByUserIdTask task = new SetFormByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してフォームを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetFormByUserIdResult setFormByUserId(
             SetFormByUserIdRequest request
     ) {
@@ -3822,15 +3309,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public SetFormWithSignatureTask(
             SetFormWithSignatureRequest request,
-            AsyncAction<AsyncResult<SetFormWithSignatureResult>> userCallback,
-            Class<SetFormWithSignatureResult> clazz
+            AsyncAction<AsyncResult<SetFormWithSignatureResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetFormWithSignatureResult parse(JsonNode data) {
+            return SetFormWithSignatureResult.fromJson(data);
         }
 
         @Override
@@ -3841,32 +3331,22 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mold/{moldName}/form/{index}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{index}", this.request.getIndex() == null ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSlots() != null) {
-                JSONArray array = new JSONArray();
-                for(SlotWithSignature item : this.request.getSlots())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("slots", array);
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("slots", request.getSlots() == null ? new ArrayList<SlotWithSignature>() :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3880,9 +3360,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3890,25 +3367,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 署名付きスロットを使ってフォームを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setFormWithSignatureAsync(
             SetFormWithSignatureRequest request,
             AsyncAction<AsyncResult<SetFormWithSignatureResult>> callback
     ) {
-        SetFormWithSignatureTask task = new SetFormWithSignatureTask(request, callback, SetFormWithSignatureResult.class);
+        SetFormWithSignatureTask task = new SetFormWithSignatureTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 署名付きスロットを使ってフォームを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetFormWithSignatureResult setFormWithSignature(
             SetFormWithSignatureRequest request
     ) {
@@ -3935,15 +3401,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public AcquireActionsToFormPropertiesTask(
             AcquireActionsToFormPropertiesRequest request,
-            AsyncAction<AsyncResult<AcquireActionsToFormPropertiesResult>> userCallback,
-            Class<AcquireActionsToFormPropertiesResult> clazz
+            AsyncAction<AsyncResult<AcquireActionsToFormPropertiesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcquireActionsToFormPropertiesResult parse(JsonNode data) {
+            return AcquireActionsToFormPropertiesResult.fromJson(data);
         }
 
         @Override
@@ -3954,43 +3423,25 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}/stamp/delegate";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{index}", this.request.getIndex() == null ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAcquireAction() != null) {
-                try {
-                    json.put("acquireAction", new JSONObject(mapper.writeValueAsString(this.request.getAcquireAction())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(AcquireActionConfig item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("acquireAction", request.getAcquireAction() != null ? request.getAcquireAction().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
+                    put("config", request.getConfig() == null ? new ArrayList<AcquireActionConfig>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4001,9 +3452,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4011,25 +3459,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * 署名付きスロットを使ってフォームを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acquireActionsToFormPropertiesAsync(
             AcquireActionsToFormPropertiesRequest request,
             AsyncAction<AsyncResult<AcquireActionsToFormPropertiesResult>> callback
     ) {
-        AcquireActionsToFormPropertiesTask task = new AcquireActionsToFormPropertiesTask(request, callback, AcquireActionsToFormPropertiesResult.class);
+        AcquireActionsToFormPropertiesTask task = new AcquireActionsToFormPropertiesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 署名付きスロットを使ってフォームを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcquireActionsToFormPropertiesResult acquireActionsToFormProperties(
             AcquireActionsToFormPropertiesRequest request
     ) {
@@ -4056,15 +3493,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DeleteFormTask(
             DeleteFormRequest request,
-            AsyncAction<AsyncResult<DeleteFormResult>> userCallback,
-            Class<DeleteFormResult> clazz
+            AsyncAction<AsyncResult<DeleteFormResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteFormResult parse(JsonNode data) {
+            return DeleteFormResult.fromJson(data);
         }
 
         @Override
@@ -4075,9 +3515,9 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/mold/{moldName}/form/{index}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{index}", this.request.getIndex() == null ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4097,9 +3537,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4107,25 +3544,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * フォームを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteFormAsync(
             DeleteFormRequest request,
             AsyncAction<AsyncResult<DeleteFormResult>> callback
     ) {
-        DeleteFormTask task = new DeleteFormTask(request, callback, DeleteFormResult.class);
+        DeleteFormTask task = new DeleteFormTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * フォームを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteFormResult deleteForm(
             DeleteFormRequest request
     ) {
@@ -4152,15 +3578,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public DeleteFormByUserIdTask(
             DeleteFormByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteFormByUserIdResult>> userCallback,
-            Class<DeleteFormByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteFormByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteFormByUserIdResult parse(JsonNode data) {
+            return DeleteFormByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4171,10 +3600,10 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null|| this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
-            url = url.replace("{index}", this.request.getIndex() == null ? "null" : String.valueOf(this.request.getIndex()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4191,9 +3620,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4201,25 +3627,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * ユーザIDを指定してフォームを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteFormByUserIdAsync(
             DeleteFormByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteFormByUserIdResult>> callback
     ) {
-        DeleteFormByUserIdTask task = new DeleteFormByUserIdTask(request, callback, DeleteFormByUserIdResult.class);
+        DeleteFormByUserIdTask task = new DeleteFormByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してフォームを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteFormByUserIdResult deleteFormByUserId(
             DeleteFormByUserIdRequest request
     ) {
@@ -4246,15 +3661,18 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
 
         public AcquireActionToFormPropertiesByStampSheetTask(
             AcquireActionToFormPropertiesByStampSheetRequest request,
-            AsyncAction<AsyncResult<AcquireActionToFormPropertiesByStampSheetResult>> userCallback,
-            Class<AcquireActionToFormPropertiesByStampSheetResult> clazz
+            AsyncAction<AsyncResult<AcquireActionToFormPropertiesByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AcquireActionToFormPropertiesByStampSheetResult parse(JsonNode data) {
+            return AcquireActionToFormPropertiesByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -4265,19 +3683,13 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/form/acquire";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4288,9 +3700,6 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4298,25 +3707,14 @@ public class Gs2FormationRestClient extends AbstractGs2Client<Gs2FormationRestCl
         }
     }
 
-    /**
-     * スタンプシートでアイテムをインベントリに追加<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void acquireActionToFormPropertiesByStampSheetAsync(
             AcquireActionToFormPropertiesByStampSheetRequest request,
             AsyncAction<AsyncResult<AcquireActionToFormPropertiesByStampSheetResult>> callback
     ) {
-        AcquireActionToFormPropertiesByStampSheetTask task = new AcquireActionToFormPropertiesByStampSheetTask(request, callback, AcquireActionToFormPropertiesByStampSheetResult.class);
+        AcquireActionToFormPropertiesByStampSheetTask task = new AcquireActionToFormPropertiesByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでアイテムをインベントリに追加<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AcquireActionToFormPropertiesByStampSheetResult acquireActionToFormPropertiesByStampSheet(
             AcquireActionToFormPropertiesByStampSheetRequest request
     ) {

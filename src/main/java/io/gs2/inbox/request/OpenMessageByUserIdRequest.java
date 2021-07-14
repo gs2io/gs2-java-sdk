@@ -16,146 +16,78 @@
 
 package io.gs2.inbox.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inbox.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザーIDを指定してメッセージを開封 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMessageByUserIdRequest extends Gs2BasicRequest<OpenMessageByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザーIDを指定してメッセージを開封
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザーIDを指定してメッセージを開封
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザーIDを指定してメッセージを開封
-     * @return this
-     */
-    public OpenMessageByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザーIDを指定してメッセージを開封
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザーIDを指定してメッセージを開封
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザーIDを指定してメッセージを開封
-     * @return this
-     */
-    public OpenMessageByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** メッセージID */
     private String messageName;
 
-    /**
-     * メッセージIDを取得
-     *
-     * @return ユーザーIDを指定してメッセージを開封
-     */
-    public String getMessageName() {
-        return messageName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public OpenMessageByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public OpenMessageByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getMessageName() {
+		return messageName;
+	}
+
+	public void setMessageName(String messageName) {
+		this.messageName = messageName;
+	}
+
+	public OpenMessageByUserIdRequest withMessageName(String messageName) {
+		this.messageName = messageName;
+		return this;
+	}
+
+    public static OpenMessageByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new OpenMessageByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withMessageName(data.get("messageName") == null || data.get("messageName").isNull() ? null : data.get("messageName").asText());
     }
 
-    /**
-     * メッセージIDを設定
-     *
-     * @param messageName ユーザーIDを指定してメッセージを開封
-     */
-    public void setMessageName(String messageName) {
-        this.messageName = messageName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("messageName", getMessageName());
+            }}
+        );
     }
-
-    /**
-     * メッセージIDを設定
-     *
-     * @param messageName ユーザーIDを指定してメッセージを開封
-     * @return this
-     */
-    public OpenMessageByUserIdRequest withMessageName(String messageName) {
-        setMessageName(messageName);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザーIDを指定してメッセージを開封
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザーIDを指定してメッセージを開封
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザーIDを指定してメッセージを開封
-     * @return this
-     */
-    public OpenMessageByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

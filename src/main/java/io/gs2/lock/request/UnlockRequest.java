@@ -16,178 +16,94 @@
 
 package io.gs2.lock.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.lock.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ミューテックスを解放 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UnlockRequest extends Gs2BasicRequest<UnlockRequest> {
-
-    /** カテゴリー名 */
     private String namespaceName;
-
-    /**
-     * カテゴリー名を取得
-     *
-     * @return ミューテックスを解放
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * カテゴリー名を設定
-     *
-     * @param namespaceName ミューテックスを解放
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * カテゴリー名を設定
-     *
-     * @param namespaceName ミューテックスを解放
-     * @return this
-     */
-    public UnlockRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** プロパティID */
     private String propertyId;
-
-    /**
-     * プロパティIDを取得
-     *
-     * @return ミューテックスを解放
-     */
-    public String getPropertyId() {
-        return propertyId;
-    }
-
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ミューテックスを解放
-     */
-    public void setPropertyId(String propertyId) {
-        this.propertyId = propertyId;
-    }
-
-    /**
-     * プロパティIDを設定
-     *
-     * @param propertyId ミューテックスを解放
-     * @return this
-     */
-    public UnlockRequest withPropertyId(String propertyId) {
-        setPropertyId(propertyId);
-        return this;
-    }
-
-    /** ロックを取得したトランザクションID */
+    private String accessToken;
     private String transactionId;
 
-    /**
-     * ロックを取得したトランザクションIDを取得
-     *
-     * @return ミューテックスを解放
-     */
-    public String getTransactionId() {
-        return transactionId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UnlockRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getPropertyId() {
+		return propertyId;
+	}
+
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+	}
+
+	public UnlockRequest withPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public UnlockRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public UnlockRequest withTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+		return this;
+	}
+
+    public static UnlockRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UnlockRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText());
     }
 
-    /**
-     * ロックを取得したトランザクションIDを設定
-     *
-     * @param transactionId ミューテックスを解放
-     */
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("propertyId", getPropertyId());
+                put("accessToken", getAccessToken());
+                put("transactionId", getTransactionId());
+            }}
+        );
     }
-
-    /**
-     * ロックを取得したトランザクションIDを設定
-     *
-     * @param transactionId ミューテックスを解放
-     * @return this
-     */
-    public UnlockRequest withTransactionId(String transactionId) {
-        setTransactionId(transactionId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ミューテックスを解放
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ミューテックスを解放
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ミューテックスを解放
-     * @return this
-     */
-    public UnlockRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public UnlockRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

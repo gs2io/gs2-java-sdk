@@ -16,274 +16,142 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 参照元に関する検証 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyReferenceOfRequest extends Gs2BasicRequest<VerifyReferenceOfRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 参照元に関する検証
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 参照元に関する検証
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 参照元に関する検証
-     * @return this
-     */
-    public VerifyReferenceOfRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** インベントリの名前 */
     private String inventoryName;
-
-    /**
-     * インベントリの名前を取得
-     *
-     * @return 参照元に関する検証
-     */
-    public String getInventoryName() {
-        return inventoryName;
-    }
-
-    /**
-     * インベントリの名前を設定
-     *
-     * @param inventoryName 参照元に関する検証
-     */
-    public void setInventoryName(String inventoryName) {
-        this.inventoryName = inventoryName;
-    }
-
-    /**
-     * インベントリの名前を設定
-     *
-     * @param inventoryName 参照元に関する検証
-     * @return this
-     */
-    public VerifyReferenceOfRequest withInventoryName(String inventoryName) {
-        setInventoryName(inventoryName);
-        return this;
-    }
-
-    /** アイテムマスターの名前 */
+    private String accessToken;
     private String itemName;
-
-    /**
-     * アイテムマスターの名前を取得
-     *
-     * @return 参照元に関する検証
-     */
-    public String getItemName() {
-        return itemName;
-    }
-
-    /**
-     * アイテムマスターの名前を設定
-     *
-     * @param itemName 参照元に関する検証
-     */
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    /**
-     * アイテムマスターの名前を設定
-     *
-     * @param itemName 参照元に関する検証
-     * @return this
-     */
-    public VerifyReferenceOfRequest withItemName(String itemName) {
-        setItemName(itemName);
-        return this;
-    }
-
-    /** アイテムセットを識別する名前 */
     private String itemSetName;
-
-    /**
-     * アイテムセットを識別する名前を取得
-     *
-     * @return 参照元に関する検証
-     */
-    public String getItemSetName() {
-        return itemSetName;
-    }
-
-    /**
-     * アイテムセットを識別する名前を設定
-     *
-     * @param itemSetName 参照元に関する検証
-     */
-    public void setItemSetName(String itemSetName) {
-        this.itemSetName = itemSetName;
-    }
-
-    /**
-     * アイテムセットを識別する名前を設定
-     *
-     * @param itemSetName 参照元に関する検証
-     * @return this
-     */
-    public VerifyReferenceOfRequest withItemSetName(String itemSetName) {
-        setItemSetName(itemSetName);
-        return this;
-    }
-
-    /** この所持品の参照元 */
     private String referenceOf;
-
-    /**
-     * この所持品の参照元を取得
-     *
-     * @return 参照元に関する検証
-     */
-    public String getReferenceOf() {
-        return referenceOf;
-    }
-
-    /**
-     * この所持品の参照元を設定
-     *
-     * @param referenceOf 参照元に関する検証
-     */
-    public void setReferenceOf(String referenceOf) {
-        this.referenceOf = referenceOf;
-    }
-
-    /**
-     * この所持品の参照元を設定
-     *
-     * @param referenceOf 参照元に関する検証
-     * @return this
-     */
-    public VerifyReferenceOfRequest withReferenceOf(String referenceOf) {
-        setReferenceOf(referenceOf);
-        return this;
-    }
-
-    /** 検証の種類 */
     private String verifyType;
 
-    /**
-     * 検証の種類を取得
-     *
-     * @return 参照元に関する検証
-     */
-    public String getVerifyType() {
-        return verifyType;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public VerifyReferenceOfRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+	}
+
+	public VerifyReferenceOfRequest withInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public VerifyReferenceOfRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public VerifyReferenceOfRequest withItemName(String itemName) {
+		this.itemName = itemName;
+		return this;
+	}
+
+	public String getItemSetName() {
+		return itemSetName;
+	}
+
+	public void setItemSetName(String itemSetName) {
+		this.itemSetName = itemSetName;
+	}
+
+	public VerifyReferenceOfRequest withItemSetName(String itemSetName) {
+		this.itemSetName = itemSetName;
+		return this;
+	}
+
+	public String getReferenceOf() {
+		return referenceOf;
+	}
+
+	public void setReferenceOf(String referenceOf) {
+		this.referenceOf = referenceOf;
+	}
+
+	public VerifyReferenceOfRequest withReferenceOf(String referenceOf) {
+		this.referenceOf = referenceOf;
+		return this;
+	}
+
+	public String getVerifyType() {
+		return verifyType;
+	}
+
+	public void setVerifyType(String verifyType) {
+		this.verifyType = verifyType;
+	}
+
+	public VerifyReferenceOfRequest withVerifyType(String verifyType) {
+		this.verifyType = verifyType;
+		return this;
+	}
+
+    public static VerifyReferenceOfRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new VerifyReferenceOfRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
+            .withItemSetName(data.get("itemSetName") == null || data.get("itemSetName").isNull() ? null : data.get("itemSetName").asText())
+            .withReferenceOf(data.get("referenceOf") == null || data.get("referenceOf").isNull() ? null : data.get("referenceOf").asText())
+            .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText());
     }
 
-    /**
-     * 検証の種類を設定
-     *
-     * @param verifyType 参照元に関する検証
-     */
-    public void setVerifyType(String verifyType) {
-        this.verifyType = verifyType;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("inventoryName", getInventoryName());
+                put("accessToken", getAccessToken());
+                put("itemName", getItemName());
+                put("itemSetName", getItemSetName());
+                put("referenceOf", getReferenceOf());
+                put("verifyType", getVerifyType());
+            }}
+        );
     }
-
-    /**
-     * 検証の種類を設定
-     *
-     * @param verifyType 参照元に関する検証
-     * @return this
-     */
-    public VerifyReferenceOfRequest withVerifyType(String verifyType) {
-        setVerifyType(verifyType);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 参照元に関する検証
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 参照元に関する検証
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 参照元に関する検証
-     * @return this
-     */
-    public VerifyReferenceOfRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public VerifyReferenceOfRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

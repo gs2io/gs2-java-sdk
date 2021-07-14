@@ -16,178 +16,110 @@
 
 package io.gs2.matchmaking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.matchmaking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * レーティングモデルマスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateRatingModelMasterRequest extends Gs2BasicRequest<UpdateRatingModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return レーティングモデルマスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName レーティングモデルマスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName レーティングモデルマスターを更新
-     * @return this
-     */
-    public UpdateRatingModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** レーティングの種類名 */
     private String ratingName;
-
-    /**
-     * レーティングの種類名を取得
-     *
-     * @return レーティングモデルマスターを更新
-     */
-    public String getRatingName() {
-        return ratingName;
-    }
-
-    /**
-     * レーティングの種類名を設定
-     *
-     * @param ratingName レーティングモデルマスターを更新
-     */
-    public void setRatingName(String ratingName) {
-        this.ratingName = ratingName;
-    }
-
-    /**
-     * レーティングの種類名を設定
-     *
-     * @param ratingName レーティングモデルマスターを更新
-     * @return this
-     */
-    public UpdateRatingModelMasterRequest withRatingName(String ratingName) {
-        setRatingName(ratingName);
-        return this;
-    }
-
-    /** レーティングモデルマスターの説明 */
     private String description;
-
-    /**
-     * レーティングモデルマスターの説明を取得
-     *
-     * @return レーティングモデルマスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * レーティングモデルマスターの説明を設定
-     *
-     * @param description レーティングモデルマスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * レーティングモデルマスターの説明を設定
-     *
-     * @param description レーティングモデルマスターを更新
-     * @return this
-     */
-    public UpdateRatingModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** レーティングの種類のメタデータ */
     private String metadata;
-
-    /**
-     * レーティングの種類のメタデータを取得
-     *
-     * @return レーティングモデルマスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * レーティングの種類のメタデータを設定
-     *
-     * @param metadata レーティングモデルマスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * レーティングの種類のメタデータを設定
-     *
-     * @param metadata レーティングモデルマスターを更新
-     * @return this
-     */
-    public UpdateRatingModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** レート値の変動の大きさ */
     private Integer volatility;
 
-    /**
-     * レート値の変動の大きさを取得
-     *
-     * @return レーティングモデルマスターを更新
-     */
-    public Integer getVolatility() {
-        return volatility;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateRatingModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRatingName() {
+		return ratingName;
+	}
+
+	public void setRatingName(String ratingName) {
+		this.ratingName = ratingName;
+	}
+
+	public UpdateRatingModelMasterRequest withRatingName(String ratingName) {
+		this.ratingName = ratingName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateRatingModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateRatingModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public Integer getVolatility() {
+		return volatility;
+	}
+
+	public void setVolatility(Integer volatility) {
+		this.volatility = volatility;
+	}
+
+	public UpdateRatingModelMasterRequest withVolatility(Integer volatility) {
+		this.volatility = volatility;
+		return this;
+	}
+
+    public static UpdateRatingModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateRatingModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withVolatility(data.get("volatility") == null || data.get("volatility").isNull() ? null : data.get("volatility").intValue());
     }
 
-    /**
-     * レート値の変動の大きさを設定
-     *
-     * @param volatility レーティングモデルマスターを更新
-     */
-    public void setVolatility(Integer volatility) {
-        this.volatility = volatility;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("ratingName", getRatingName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("volatility", getVolatility());
+            }}
+        );
     }
-
-    /**
-     * レート値の変動の大きさを設定
-     *
-     * @param volatility レーティングモデルマスターを更新
-     * @return this
-     */
-    public UpdateRatingModelMasterRequest withVolatility(Integer volatility) {
-        setVolatility(volatility);
-        return this;
-    }
-
 }

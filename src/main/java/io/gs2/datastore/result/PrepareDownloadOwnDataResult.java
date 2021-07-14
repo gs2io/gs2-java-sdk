@@ -16,79 +16,80 @@
 
 package io.gs2.datastore.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.datastore.model.*;
+import io.gs2.datastore.model.DataObject;
 
-/**
- * データオブジェクトをダウンロード準備する のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrepareDownloadOwnDataResult implements IResult, Serializable {
-	/** データオブジェクト */
-	private DataObject item;
-	/** ファイルをダウンロードするためのURL */
-	private String fileUrl;
-	/** ファイルの容量 */
-	private Long contentLength;
+    private DataObject item;
+    private String fileUrl;
+    private Long contentLength;
 
-	/**
-	 * データオブジェクトを取得
-	 *
-	 * @return データオブジェクトをダウンロード準備する
-	 */
 	public DataObject getItem() {
 		return item;
 	}
 
-	/**
-	 * データオブジェクトを設定
-	 *
-	 * @param item データオブジェクトをダウンロード準備する
-	 */
 	public void setItem(DataObject item) {
 		this.item = item;
 	}
 
-	/**
-	 * ファイルをダウンロードするためのURLを取得
-	 *
-	 * @return データオブジェクトをダウンロード準備する
-	 */
+	public PrepareDownloadOwnDataResult withItem(DataObject item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getFileUrl() {
 		return fileUrl;
 	}
 
-	/**
-	 * ファイルをダウンロードするためのURLを設定
-	 *
-	 * @param fileUrl データオブジェクトをダウンロード準備する
-	 */
 	public void setFileUrl(String fileUrl) {
 		this.fileUrl = fileUrl;
 	}
 
-	/**
-	 * ファイルの容量を取得
-	 *
-	 * @return データオブジェクトをダウンロード準備する
-	 */
+	public PrepareDownloadOwnDataResult withFileUrl(String fileUrl) {
+		this.fileUrl = fileUrl;
+		return this;
+	}
+
 	public Long getContentLength() {
 		return contentLength;
 	}
 
-	/**
-	 * ファイルの容量を設定
-	 *
-	 * @param contentLength データオブジェクトをダウンロード準備する
-	 */
 	public void setContentLength(Long contentLength) {
 		this.contentLength = contentLength;
 	}
+
+	public PrepareDownloadOwnDataResult withContentLength(Long contentLength) {
+		this.contentLength = contentLength;
+		return this;
+	}
+
+    public static PrepareDownloadOwnDataResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new PrepareDownloadOwnDataResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : DataObject.fromJson(data.get("item")))
+            .withFileUrl(data.get("fileUrl") == null || data.get("fileUrl").isNull() ? null : data.get("fileUrl").asText())
+            .withContentLength(data.get("contentLength") == null || data.get("contentLength").isNull() ? null : data.get("contentLength").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("fileUrl", getFileUrl());
+                put("contentLength", getContentLength());
+            }}
+        );
+    }
 }

@@ -16,253 +16,146 @@
 
 package io.gs2.friend.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * プロフィール
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Profile implements IModel, Serializable, Comparable<Profile> {
-	/** プロフィール */
-	protected String profileId;
+	private String profileId;
+	private String userId;
+	private String publicProfile;
+	private String followerProfile;
+	private String friendProfile;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * プロフィールを取得
-	 *
-	 * @return プロフィール
-	 */
 	public String getProfileId() {
 		return profileId;
 	}
 
-	/**
-	 * プロフィールを設定
-	 *
-	 * @param profileId プロフィール
-	 */
 	public void setProfileId(String profileId) {
 		this.profileId = profileId;
 	}
 
-	/**
-	 * プロフィールを設定
-	 *
-	 * @param profileId プロフィール
-	 * @return this
-	 */
 	public Profile withProfileId(String profileId) {
 		this.profileId = profileId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Profile withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 公開されるプロフィール */
-	protected String publicProfile;
 
-	/**
-	 * 公開されるプロフィールを取得
-	 *
-	 * @return 公開されるプロフィール
-	 */
 	public String getPublicProfile() {
 		return publicProfile;
 	}
 
-	/**
-	 * 公開されるプロフィールを設定
-	 *
-	 * @param publicProfile 公開されるプロフィール
-	 */
 	public void setPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 	}
 
-	/**
-	 * 公開されるプロフィールを設定
-	 *
-	 * @param publicProfile 公開されるプロフィール
-	 * @return this
-	 */
 	public Profile withPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 		return this;
 	}
-	/** フォロワー向けに公開されるプロフィール */
-	protected String followerProfile;
 
-	/**
-	 * フォロワー向けに公開されるプロフィールを取得
-	 *
-	 * @return フォロワー向けに公開されるプロフィール
-	 */
 	public String getFollowerProfile() {
 		return followerProfile;
 	}
 
-	/**
-	 * フォロワー向けに公開されるプロフィールを設定
-	 *
-	 * @param followerProfile フォロワー向けに公開されるプロフィール
-	 */
 	public void setFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 	}
 
-	/**
-	 * フォロワー向けに公開されるプロフィールを設定
-	 *
-	 * @param followerProfile フォロワー向けに公開されるプロフィール
-	 * @return this
-	 */
 	public Profile withFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 		return this;
 	}
-	/** フレンド向けに公開されるプロフィール */
-	protected String friendProfile;
 
-	/**
-	 * フレンド向けに公開されるプロフィールを取得
-	 *
-	 * @return フレンド向けに公開されるプロフィール
-	 */
 	public String getFriendProfile() {
 		return friendProfile;
 	}
 
-	/**
-	 * フレンド向けに公開されるプロフィールを設定
-	 *
-	 * @param friendProfile フレンド向けに公開されるプロフィール
-	 */
 	public void setFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 	}
 
-	/**
-	 * フレンド向けに公開されるプロフィールを設定
-	 *
-	 * @param friendProfile フレンド向けに公開されるプロフィール
-	 * @return this
-	 */
 	public Profile withFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Profile withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Profile withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("profileId", this.getProfileId())
-            .put("userId", this.getUserId())
-            .put("publicProfile", this.getPublicProfile())
-            .put("followerProfile", this.getFollowerProfile())
-            .put("friendProfile", this.getFriendProfile())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Profile fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Profile()
+            .withProfileId(data.get("profileId") == null || data.get("profileId").isNull() ? null : data.get("profileId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPublicProfile(data.get("publicProfile") == null || data.get("publicProfile").isNull() ? null : data.get("publicProfile").asText())
+            .withFollowerProfile(data.get("followerProfile") == null || data.get("followerProfile").isNull() ? null : data.get("followerProfile").asText())
+            .withFriendProfile(data.get("friendProfile") == null || data.get("friendProfile").isNull() ? null : data.get("friendProfile").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("profileId", getProfileId());
+                put("userId", getUserId());
+                put("publicProfile", getPublicProfile());
+                put("followerProfile", getFollowerProfile());
+                put("friendProfile", getFriendProfile());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Profile o) {
 		return profileId.compareTo(o.profileId);

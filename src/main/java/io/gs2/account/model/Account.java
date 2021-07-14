@@ -16,189 +16,114 @@
 
 package io.gs2.account.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ゲームプレイヤーアカウント
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Account implements IModel, Serializable, Comparable<Account> {
-	/** ゲームプレイヤーアカウント */
-	protected String accountId;
+	private String accountId;
+	private String userId;
+	private String password;
+	private Integer timeOffset;
+	private Long createdAt;
 
-	/**
-	 * ゲームプレイヤーアカウントを取得
-	 *
-	 * @return ゲームプレイヤーアカウント
-	 */
 	public String getAccountId() {
 		return accountId;
 	}
 
-	/**
-	 * ゲームプレイヤーアカウントを設定
-	 *
-	 * @param accountId ゲームプレイヤーアカウント
-	 */
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 
-	/**
-	 * ゲームプレイヤーアカウントを設定
-	 *
-	 * @param accountId ゲームプレイヤーアカウント
-	 * @return this
-	 */
 	public Account withAccountId(String accountId) {
 		this.accountId = accountId;
 		return this;
 	}
-	/** アカウントID */
-	protected String userId;
 
-	/**
-	 * アカウントIDを取得
-	 *
-	 * @return アカウントID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * アカウントIDを設定
-	 *
-	 * @param userId アカウントID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * アカウントIDを設定
-	 *
-	 * @param userId アカウントID
-	 * @return this
-	 */
 	public Account withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** パスワード */
-	protected String password;
 
-	/**
-	 * パスワードを取得
-	 *
-	 * @return パスワード
-	 */
 	public String getPassword() {
 		return password;
 	}
 
-	/**
-	 * パスワードを設定
-	 *
-	 * @param password パスワード
-	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	/**
-	 * パスワードを設定
-	 *
-	 * @param password パスワード
-	 * @return this
-	 */
 	public Account withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-	/** 現在時刻に対する補正値（現在時刻を起点とした秒数） */
-	protected Integer timeOffset;
 
-	/**
-	 * 現在時刻に対する補正値（現在時刻を起点とした秒数）を取得
-	 *
-	 * @return 現在時刻に対する補正値（現在時刻を起点とした秒数）
-	 */
 	public Integer getTimeOffset() {
 		return timeOffset;
 	}
 
-	/**
-	 * 現在時刻に対する補正値（現在時刻を起点とした秒数）を設定
-	 *
-	 * @param timeOffset 現在時刻に対する補正値（現在時刻を起点とした秒数）
-	 */
 	public void setTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 	}
 
-	/**
-	 * 現在時刻に対する補正値（現在時刻を起点とした秒数）を設定
-	 *
-	 * @param timeOffset 現在時刻に対する補正値（現在時刻を起点とした秒数）
-	 * @return this
-	 */
 	public Account withTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Account withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("accountId", this.getAccountId())
-            .put("userId", this.getUserId())
-            .put("password", this.getPassword())
-            .put("timeOffset", this.getTimeOffset())
-            .put("createdAt", this.getCreatedAt());
-        return body_;
+    public static Account fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Account()
+            .withAccountId(data.get("accountId") == null || data.get("accountId").isNull() ? null : data.get("accountId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withTimeOffset(data.get("timeOffset") == null || data.get("timeOffset").isNull() ? null : data.get("timeOffset").intValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountId", getAccountId());
+                put("userId", getUserId());
+                put("password", getPassword());
+                put("timeOffset", getTimeOffset());
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Account o) {
 		return accountId.compareTo(o.accountId);

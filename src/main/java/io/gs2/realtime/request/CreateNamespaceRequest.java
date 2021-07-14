@@ -16,210 +16,128 @@
 
 package io.gs2.realtime.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.realtime.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.realtime.model.NotificationSetting;
+import io.gs2.realtime.model.LogSetting;
 
-/**
- * ネームスペースを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String name;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** サーバの種類 */
     private String serverType;
-
-    /**
-     * サーバの種類を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getServerType() {
-        return serverType;
-    }
-
-    /**
-     * サーバの種類を設定
-     *
-     * @param serverType ネームスペースを新規作成
-     */
-    public void setServerType(String serverType) {
-        this.serverType = serverType;
-    }
-
-    /**
-     * サーバの種類を設定
-     *
-     * @param serverType ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withServerType(String serverType) {
-        setServerType(serverType);
-        return this;
-    }
-
-    /** サーバのスペック */
     private String serverSpec;
-
-    /**
-     * サーバのスペックを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getServerSpec() {
-        return serverSpec;
-    }
-
-    /**
-     * サーバのスペックを設定
-     *
-     * @param serverSpec ネームスペースを新規作成
-     */
-    public void setServerSpec(String serverSpec) {
-        this.serverSpec = serverSpec;
-    }
-
-    /**
-     * サーバのスペックを設定
-     *
-     * @param serverSpec ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withServerSpec(String serverSpec) {
-        setServerSpec(serverSpec);
-        return this;
-    }
-
-    /** ルームの作成が終わったときのプッシュ通知 */
     private NotificationSetting createNotification;
-
-    /**
-     * ルームの作成が終わったときのプッシュ通知を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public NotificationSetting getCreateNotification() {
-        return createNotification;
-    }
-
-    /**
-     * ルームの作成が終わったときのプッシュ通知を設定
-     *
-     * @param createNotification ネームスペースを新規作成
-     */
-    public void setCreateNotification(NotificationSetting createNotification) {
-        this.createNotification = createNotification;
-    }
-
-    /**
-     * ルームの作成が終わったときのプッシュ通知を設定
-     *
-     * @param createNotification ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCreateNotification(NotificationSetting createNotification) {
-        setCreateNotification(createNotification);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateNamespaceRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getServerType() {
+		return serverType;
+	}
+
+	public void setServerType(String serverType) {
+		this.serverType = serverType;
+	}
+
+	public CreateNamespaceRequest withServerType(String serverType) {
+		this.serverType = serverType;
+		return this;
+	}
+
+	public String getServerSpec() {
+		return serverSpec;
+	}
+
+	public void setServerSpec(String serverSpec) {
+		this.serverSpec = serverSpec;
+	}
+
+	public CreateNamespaceRequest withServerSpec(String serverSpec) {
+		this.serverSpec = serverSpec;
+		return this;
+	}
+
+	public NotificationSetting getCreateNotification() {
+		return createNotification;
+	}
+
+	public void setCreateNotification(NotificationSetting createNotification) {
+		this.createNotification = createNotification;
+	}
+
+	public CreateNamespaceRequest withCreateNotification(NotificationSetting createNotification) {
+		this.createNotification = createNotification;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static CreateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateNamespaceRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withServerType(data.get("serverType") == null || data.get("serverType").isNull() ? null : data.get("serverType").asText())
+            .withServerSpec(data.get("serverSpec") == null || data.get("serverSpec").isNull() ? null : data.get("serverSpec").asText())
+            .withCreateNotification(data.get("createNotification") == null || data.get("createNotification").isNull() ? null : NotificationSetting.fromJson(data.get("createNotification")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("serverType", getServerType());
+                put("serverSpec", getServerSpec());
+                put("createNotification", getCreateNotification() != null ? getCreateNotification().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

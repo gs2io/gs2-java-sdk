@@ -16,82 +16,62 @@
 
 package io.gs2.stamina.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.stamina.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタミナの最大値テーブルマスターを削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteMaxStaminaTableMasterRequest extends Gs2BasicRequest<DeleteMaxStaminaTableMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return スタミナの最大値テーブルマスターを削除
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタミナの最大値テーブルマスターを削除
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタミナの最大値テーブルマスターを削除
-     * @return this
-     */
-    public DeleteMaxStaminaTableMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 最大スタミナ値テーブル名 */
     private String maxStaminaTableName;
 
-    /**
-     * 最大スタミナ値テーブル名を取得
-     *
-     * @return スタミナの最大値テーブルマスターを削除
-     */
-    public String getMaxStaminaTableName() {
-        return maxStaminaTableName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DeleteMaxStaminaTableMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getMaxStaminaTableName() {
+		return maxStaminaTableName;
+	}
+
+	public void setMaxStaminaTableName(String maxStaminaTableName) {
+		this.maxStaminaTableName = maxStaminaTableName;
+	}
+
+	public DeleteMaxStaminaTableMasterRequest withMaxStaminaTableName(String maxStaminaTableName) {
+		this.maxStaminaTableName = maxStaminaTableName;
+		return this;
+	}
+
+    public static DeleteMaxStaminaTableMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteMaxStaminaTableMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withMaxStaminaTableName(data.get("maxStaminaTableName") == null || data.get("maxStaminaTableName").isNull() ? null : data.get("maxStaminaTableName").asText());
     }
 
-    /**
-     * 最大スタミナ値テーブル名を設定
-     *
-     * @param maxStaminaTableName スタミナの最大値テーブルマスターを削除
-     */
-    public void setMaxStaminaTableName(String maxStaminaTableName) {
-        this.maxStaminaTableName = maxStaminaTableName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("maxStaminaTableName", getMaxStaminaTableName());
+            }}
+        );
     }
-
-    /**
-     * 最大スタミナ値テーブル名を設定
-     *
-     * @param maxStaminaTableName スタミナの最大値テーブルマスターを削除
-     * @return this
-     */
-    public DeleteMaxStaminaTableMasterRequest withMaxStaminaTableName(String maxStaminaTableName) {
-        setMaxStaminaTableName(maxStaminaTableName);
-        return this;
-    }
-
 }

@@ -16,59 +16,74 @@
 
 package io.gs2.showcase.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.showcase.model.*;
+import io.gs2.showcase.model.SalesItemGroupMaster;
 
-/**
- * 商品グループマスターの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeSalesItemGroupMastersResult implements IResult, Serializable {
-	/** 商品グループマスターのリスト */
-	private List<SalesItemGroupMaster> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<SalesItemGroupMaster> items;
+    private String nextPageToken;
 
-	/**
-	 * 商品グループマスターのリストを取得
-	 *
-	 * @return 商品グループマスターの一覧を取得
-	 */
 	public List<SalesItemGroupMaster> getItems() {
 		return items;
 	}
 
-	/**
-	 * 商品グループマスターのリストを設定
-	 *
-	 * @param items 商品グループマスターの一覧を取得
-	 */
 	public void setItems(List<SalesItemGroupMaster> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return 商品グループマスターの一覧を取得
-	 */
+	public DescribeSalesItemGroupMastersResult withItems(List<SalesItemGroupMaster> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken 商品グループマスターの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeSalesItemGroupMastersResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeSalesItemGroupMastersResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeSalesItemGroupMastersResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<SalesItemGroupMaster>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return SalesItemGroupMaster.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<SalesItemGroupMaster>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

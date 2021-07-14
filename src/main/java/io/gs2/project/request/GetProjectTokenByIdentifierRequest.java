@@ -16,146 +16,94 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * プロジェクトトークンを発行します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetProjectTokenByIdentifierRequest extends Gs2BasicRequest<GetProjectTokenByIdentifierRequest> {
-
-    /** GS2アカウントの名前 */
     private String accountName;
-
-    /**
-     * GS2アカウントの名前を取得
-     *
-     * @return プロジェクトトークンを発行します
-     */
-    public String getAccountName() {
-        return accountName;
-    }
-
-    /**
-     * GS2アカウントの名前を設定
-     *
-     * @param accountName プロジェクトトークンを発行します
-     */
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    /**
-     * GS2アカウントの名前を設定
-     *
-     * @param accountName プロジェクトトークンを発行します
-     * @return this
-     */
-    public GetProjectTokenByIdentifierRequest withAccountName(String accountName) {
-        setAccountName(accountName);
-        return this;
-    }
-
-    /** プロジェクト名 */
     private String projectName;
-
-    /**
-     * プロジェクト名を取得
-     *
-     * @return プロジェクトトークンを発行します
-     */
-    public String getProjectName() {
-        return projectName;
-    }
-
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトトークンを発行します
-     */
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトトークンを発行します
-     * @return this
-     */
-    public GetProjectTokenByIdentifierRequest withProjectName(String projectName) {
-        setProjectName(projectName);
-        return this;
-    }
-
-    /** ユーザ名 */
     private String userName;
-
-    /**
-     * ユーザ名を取得
-     *
-     * @return プロジェクトトークンを発行します
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * ユーザ名を設定
-     *
-     * @param userName プロジェクトトークンを発行します
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * ユーザ名を設定
-     *
-     * @param userName プロジェクトトークンを発行します
-     * @return this
-     */
-    public GetProjectTokenByIdentifierRequest withUserName(String userName) {
-        setUserName(userName);
-        return this;
-    }
-
-    /** パスワード */
     private String password;
 
-    /**
-     * パスワードを取得
-     *
-     * @return プロジェクトトークンを発行します
-     */
-    public String getPassword() {
-        return password;
+	public String getAccountName() {
+		return accountName;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	public GetProjectTokenByIdentifierRequest withAccountName(String accountName) {
+		this.accountName = accountName;
+		return this;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public GetProjectTokenByIdentifierRequest withProjectName(String projectName) {
+		this.projectName = projectName;
+		return this;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public GetProjectTokenByIdentifierRequest withUserName(String userName) {
+		this.userName = userName;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public GetProjectTokenByIdentifierRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+    public static GetProjectTokenByIdentifierRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetProjectTokenByIdentifierRequest()
+            .withAccountName(data.get("accountName") == null || data.get("accountName").isNull() ? null : data.get("accountName").asText())
+            .withProjectName(data.get("projectName") == null || data.get("projectName").isNull() ? null : data.get("projectName").asText())
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
     }
 
-    /**
-     * パスワードを設定
-     *
-     * @param password プロジェクトトークンを発行します
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountName", getAccountName());
+                put("projectName", getProjectName());
+                put("userName", getUserName());
+                put("password", getPassword());
+            }}
+        );
     }
-
-    /**
-     * パスワードを設定
-     *
-     * @param password プロジェクトトークンを発行します
-     * @return this
-     */
-    public GetProjectTokenByIdentifierRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
 }

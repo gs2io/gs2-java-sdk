@@ -16,178 +16,94 @@
 
 package io.gs2.formation.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.formation.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定してフォームを削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteFormByUserIdRequest extends Gs2BasicRequest<DeleteFormByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定してフォームを削除
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してフォームを削除
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してフォームを削除
-     * @return this
-     */
-    public DeleteFormByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してフォームを削除
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してフォームを削除
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してフォームを削除
-     * @return this
-     */
-    public DeleteFormByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** フォームの保存領域の名前 */
     private String moldName;
-
-    /**
-     * フォームの保存領域の名前を取得
-     *
-     * @return ユーザIDを指定してフォームを削除
-     */
-    public String getMoldName() {
-        return moldName;
-    }
-
-    /**
-     * フォームの保存領域の名前を設定
-     *
-     * @param moldName ユーザIDを指定してフォームを削除
-     */
-    public void setMoldName(String moldName) {
-        this.moldName = moldName;
-    }
-
-    /**
-     * フォームの保存領域の名前を設定
-     *
-     * @param moldName ユーザIDを指定してフォームを削除
-     * @return this
-     */
-    public DeleteFormByUserIdRequest withMoldName(String moldName) {
-        setMoldName(moldName);
-        return this;
-    }
-
-    /** 保存領域のインデックス */
     private Integer index;
 
-    /**
-     * 保存領域のインデックスを取得
-     *
-     * @return ユーザIDを指定してフォームを削除
-     */
-    public Integer getIndex() {
-        return index;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DeleteFormByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public DeleteFormByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getMoldName() {
+		return moldName;
+	}
+
+	public void setMoldName(String moldName) {
+		this.moldName = moldName;
+	}
+
+	public DeleteFormByUserIdRequest withMoldName(String moldName) {
+		this.moldName = moldName;
+		return this;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+
+	public DeleteFormByUserIdRequest withIndex(Integer index) {
+		this.index = index;
+		return this;
+	}
+
+    public static DeleteFormByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteFormByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue());
     }
 
-    /**
-     * 保存領域のインデックスを設定
-     *
-     * @param index ユーザIDを指定してフォームを削除
-     */
-    public void setIndex(Integer index) {
-        this.index = index;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("moldName", getMoldName());
+                put("index", getIndex());
+            }}
+        );
     }
-
-    /**
-     * 保存領域のインデックスを設定
-     *
-     * @param index ユーザIDを指定してフォームを削除
-     * @return this
-     */
-    public DeleteFormByUserIdRequest withIndex(Integer index) {
-        setIndex(index);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してフォームを削除
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してフォームを削除
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してフォームを削除
-     * @return this
-     */
-    public DeleteFormByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

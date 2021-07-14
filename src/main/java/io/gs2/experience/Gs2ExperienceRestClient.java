@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.experience;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.experience.request.*;
 import io.gs2.experience.result.*;
-import io.gs2.experience.model.*;
+import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRestClient> {
 
-/**
- * GS2 Experience API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2ExperienceRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,57 +152,19 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getExperienceCapScriptId() != null) {
-                json.put("experienceCapScriptId", this.request.getExperienceCapScriptId());
-            }
-            if (this.request.getChangeExperienceScript() != null) {
-                try {
-                    json.put("changeExperienceScript", new JSONObject(mapper.writeValueAsString(this.request.getChangeExperienceScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getChangeRankScript() != null) {
-                try {
-                    json.put("changeRankScript", new JSONObject(mapper.writeValueAsString(this.request.getChangeRankScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getChangeRankCapScript() != null) {
-                try {
-                    json.put("changeRankCapScript", new JSONObject(mapper.writeValueAsString(this.request.getChangeRankCapScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getOverflowExperienceScript() != null) {
-                try {
-                    json.put("overflowExperienceScript", new JSONObject(mapper.writeValueAsString(this.request.getOverflowExperienceScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("experienceCapScriptId", request.getExperienceCapScriptId());
+                    put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
+                    put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);
+                    put("changeRankCapScript", request.getChangeRankCapScript() != null ? request.getChangeRankCapScript().toJson() : null);
+                    put("overflowExperienceScript", request.getOverflowExperienceScript() != null ? request.getOverflowExperienceScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -237,25 +182,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -282,15 +216,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -301,7 +238,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -325,25 +262,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -370,15 +296,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -389,7 +318,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -413,25 +342,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -458,15 +376,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -477,56 +398,20 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getExperienceCapScriptId() != null) {
-                json.put("experienceCapScriptId", this.request.getExperienceCapScriptId());
-            }
-            if (this.request.getChangeExperienceScript() != null) {
-                try {
-                    json.put("changeExperienceScript", new JSONObject(mapper.writeValueAsString(this.request.getChangeExperienceScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getChangeRankScript() != null) {
-                try {
-                    json.put("changeRankScript", new JSONObject(mapper.writeValueAsString(this.request.getChangeRankScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getChangeRankCapScript() != null) {
-                try {
-                    json.put("changeRankCapScript", new JSONObject(mapper.writeValueAsString(this.request.getChangeRankCapScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getOverflowExperienceScript() != null) {
-                try {
-                    json.put("overflowExperienceScript", new JSONObject(mapper.writeValueAsString(this.request.getOverflowExperienceScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("experienceCapScriptId", request.getExperienceCapScriptId());
+                    put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
+                    put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);
+                    put("changeRankCapScript", request.getChangeRankCapScript() != null ? request.getChangeRankCapScript().toJson() : null);
+                    put("overflowExperienceScript", request.getOverflowExperienceScript() != null ? request.getOverflowExperienceScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -544,25 +429,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -589,15 +463,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -608,7 +485,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -632,25 +509,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -677,15 +543,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DescribeExperienceModelMastersTask(
             DescribeExperienceModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeExperienceModelMastersResult>> userCallback,
-            Class<DescribeExperienceModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeExperienceModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeExperienceModelMastersResult parse(JsonNode data) {
+            return DescribeExperienceModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -696,7 +565,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -726,25 +595,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 経験値の種類マスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeExperienceModelMastersAsync(
             DescribeExperienceModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeExperienceModelMastersResult>> callback
     ) {
-        DescribeExperienceModelMastersTask task = new DescribeExperienceModelMastersTask(request, callback, DescribeExperienceModelMastersResult.class);
+        DescribeExperienceModelMastersTask task = new DescribeExperienceModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 経験値の種類マスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeExperienceModelMastersResult describeExperienceModelMasters(
             DescribeExperienceModelMastersRequest request
     ) {
@@ -771,15 +629,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public CreateExperienceModelMasterTask(
             CreateExperienceModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateExperienceModelMasterResult>> userCallback,
-            Class<CreateExperienceModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateExperienceModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateExperienceModelMasterResult parse(JsonNode data) {
+            return CreateExperienceModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -790,36 +651,20 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getDefaultExperience() != null) {
-                json.put("defaultExperience", this.request.getDefaultExperience());
-            }
-            if (this.request.getDefaultRankCap() != null) {
-                json.put("defaultRankCap", this.request.getDefaultRankCap());
-            }
-            if (this.request.getMaxRankCap() != null) {
-                json.put("maxRankCap", this.request.getMaxRankCap());
-            }
-            if (this.request.getRankThresholdId() != null) {
-                json.put("rankThresholdId", this.request.getRankThresholdId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("defaultExperience", request.getDefaultExperience());
+                    put("defaultRankCap", request.getDefaultRankCap());
+                    put("maxRankCap", request.getMaxRankCap());
+                    put("rankThresholdName", request.getRankThresholdName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -837,25 +682,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 経験値の種類マスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createExperienceModelMasterAsync(
             CreateExperienceModelMasterRequest request,
             AsyncAction<AsyncResult<CreateExperienceModelMasterResult>> callback
     ) {
-        CreateExperienceModelMasterTask task = new CreateExperienceModelMasterTask(request, callback, CreateExperienceModelMasterResult.class);
+        CreateExperienceModelMasterTask task = new CreateExperienceModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 経験値の種類マスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateExperienceModelMasterResult createExperienceModelMaster(
             CreateExperienceModelMasterRequest request
     ) {
@@ -882,15 +716,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public GetExperienceModelMasterTask(
             GetExperienceModelMasterRequest request,
-            AsyncAction<AsyncResult<GetExperienceModelMasterResult>> userCallback,
-            Class<GetExperienceModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetExperienceModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetExperienceModelMasterResult parse(JsonNode data) {
+            return GetExperienceModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -901,8 +738,8 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{experienceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -926,25 +763,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 経験値の種類マスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getExperienceModelMasterAsync(
             GetExperienceModelMasterRequest request,
             AsyncAction<AsyncResult<GetExperienceModelMasterResult>> callback
     ) {
-        GetExperienceModelMasterTask task = new GetExperienceModelMasterTask(request, callback, GetExperienceModelMasterResult.class);
+        GetExperienceModelMasterTask task = new GetExperienceModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 経験値の種類マスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetExperienceModelMasterResult getExperienceModelMaster(
             GetExperienceModelMasterRequest request
     ) {
@@ -971,15 +797,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public UpdateExperienceModelMasterTask(
             UpdateExperienceModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateExperienceModelMasterResult>> userCallback,
-            Class<UpdateExperienceModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateExperienceModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateExperienceModelMasterResult parse(JsonNode data) {
+            return UpdateExperienceModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -990,34 +819,20 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{experienceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getDefaultExperience() != null) {
-                json.put("defaultExperience", this.request.getDefaultExperience());
-            }
-            if (this.request.getDefaultRankCap() != null) {
-                json.put("defaultRankCap", this.request.getDefaultRankCap());
-            }
-            if (this.request.getMaxRankCap() != null) {
-                json.put("maxRankCap", this.request.getMaxRankCap());
-            }
-            if (this.request.getRankThresholdId() != null) {
-                json.put("rankThresholdId", this.request.getRankThresholdId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("defaultExperience", request.getDefaultExperience());
+                    put("defaultRankCap", request.getDefaultRankCap());
+                    put("maxRankCap", request.getMaxRankCap());
+                    put("rankThresholdName", request.getRankThresholdName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1035,25 +850,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 経験値の種類マスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateExperienceModelMasterAsync(
             UpdateExperienceModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateExperienceModelMasterResult>> callback
     ) {
-        UpdateExperienceModelMasterTask task = new UpdateExperienceModelMasterTask(request, callback, UpdateExperienceModelMasterResult.class);
+        UpdateExperienceModelMasterTask task = new UpdateExperienceModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 経験値の種類マスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateExperienceModelMasterResult updateExperienceModelMaster(
             UpdateExperienceModelMasterRequest request
     ) {
@@ -1080,15 +884,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DeleteExperienceModelMasterTask(
             DeleteExperienceModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteExperienceModelMasterResult>> userCallback,
-            Class<DeleteExperienceModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteExperienceModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteExperienceModelMasterResult parse(JsonNode data) {
+            return DeleteExperienceModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1099,8 +906,8 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{experienceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1124,25 +931,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 経験値の種類マスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteExperienceModelMasterAsync(
             DeleteExperienceModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteExperienceModelMasterResult>> callback
     ) {
-        DeleteExperienceModelMasterTask task = new DeleteExperienceModelMasterTask(request, callback, DeleteExperienceModelMasterResult.class);
+        DeleteExperienceModelMasterTask task = new DeleteExperienceModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 経験値の種類マスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteExperienceModelMasterResult deleteExperienceModelMaster(
             DeleteExperienceModelMasterRequest request
     ) {
@@ -1169,15 +965,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DescribeExperienceModelsTask(
             DescribeExperienceModelsRequest request,
-            AsyncAction<AsyncResult<DescribeExperienceModelsResult>> userCallback,
-            Class<DescribeExperienceModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeExperienceModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeExperienceModelsResult parse(JsonNode data) {
+            return DescribeExperienceModelsResult.fromJson(data);
         }
 
         @Override
@@ -1188,7 +987,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1212,25 +1011,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 経験値・ランクアップ閾値モデルの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeExperienceModelsAsync(
             DescribeExperienceModelsRequest request,
             AsyncAction<AsyncResult<DescribeExperienceModelsResult>> callback
     ) {
-        DescribeExperienceModelsTask task = new DescribeExperienceModelsTask(request, callback, DescribeExperienceModelsResult.class);
+        DescribeExperienceModelsTask task = new DescribeExperienceModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 経験値・ランクアップ閾値モデルの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeExperienceModelsResult describeExperienceModels(
             DescribeExperienceModelsRequest request
     ) {
@@ -1257,15 +1045,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public GetExperienceModelTask(
             GetExperienceModelRequest request,
-            AsyncAction<AsyncResult<GetExperienceModelResult>> userCallback,
-            Class<GetExperienceModelResult> clazz
+            AsyncAction<AsyncResult<GetExperienceModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetExperienceModelResult parse(JsonNode data) {
+            return GetExperienceModelResult.fromJson(data);
         }
 
         @Override
@@ -1276,8 +1067,8 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model/{experienceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1301,25 +1092,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 経験値・ランクアップ閾値モデルを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getExperienceModelAsync(
             GetExperienceModelRequest request,
             AsyncAction<AsyncResult<GetExperienceModelResult>> callback
     ) {
-        GetExperienceModelTask task = new GetExperienceModelTask(request, callback, GetExperienceModelResult.class);
+        GetExperienceModelTask task = new GetExperienceModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 経験値・ランクアップ閾値モデルを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetExperienceModelResult getExperienceModel(
             GetExperienceModelRequest request
     ) {
@@ -1346,15 +1126,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DescribeThresholdMastersTask(
             DescribeThresholdMastersRequest request,
-            AsyncAction<AsyncResult<DescribeThresholdMastersResult>> userCallback,
-            Class<DescribeThresholdMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeThresholdMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeThresholdMastersResult parse(JsonNode data) {
+            return DescribeThresholdMastersResult.fromJson(data);
         }
 
         @Override
@@ -1365,7 +1148,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/threshold";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1395,25 +1178,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ランクアップ閾値マスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeThresholdMastersAsync(
             DescribeThresholdMastersRequest request,
             AsyncAction<AsyncResult<DescribeThresholdMastersResult>> callback
     ) {
-        DescribeThresholdMastersTask task = new DescribeThresholdMastersTask(request, callback, DescribeThresholdMastersResult.class);
+        DescribeThresholdMastersTask task = new DescribeThresholdMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランクアップ閾値マスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeThresholdMastersResult describeThresholdMasters(
             DescribeThresholdMastersRequest request
     ) {
@@ -1440,15 +1212,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public CreateThresholdMasterTask(
             CreateThresholdMasterRequest request,
-            AsyncAction<AsyncResult<CreateThresholdMasterResult>> userCallback,
-            Class<CreateThresholdMasterResult> clazz
+            AsyncAction<AsyncResult<CreateThresholdMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateThresholdMasterResult parse(JsonNode data) {
+            return CreateThresholdMasterResult.fromJson(data);
         }
 
         @Override
@@ -1459,32 +1234,21 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/threshold";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getValues() != null) {
-                JSONArray array = new JSONArray();
-                for(Long item : this.request.getValues())
-                {
-                    array.put(item);
-                }
-                json.put("values", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("values", request.getValues() == null ? new ArrayList<Long>() :
+                        request.getValues().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1502,25 +1266,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ランクアップ閾値マスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createThresholdMasterAsync(
             CreateThresholdMasterRequest request,
             AsyncAction<AsyncResult<CreateThresholdMasterResult>> callback
     ) {
-        CreateThresholdMasterTask task = new CreateThresholdMasterTask(request, callback, CreateThresholdMasterResult.class);
+        CreateThresholdMasterTask task = new CreateThresholdMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランクアップ閾値マスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateThresholdMasterResult createThresholdMaster(
             CreateThresholdMasterRequest request
     ) {
@@ -1547,15 +1300,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public GetThresholdMasterTask(
             GetThresholdMasterRequest request,
-            AsyncAction<AsyncResult<GetThresholdMasterResult>> userCallback,
-            Class<GetThresholdMasterResult> clazz
+            AsyncAction<AsyncResult<GetThresholdMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetThresholdMasterResult parse(JsonNode data) {
+            return GetThresholdMasterResult.fromJson(data);
         }
 
         @Override
@@ -1566,8 +1322,8 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/threshold/{thresholdName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{thresholdName}", this.request.getThresholdName() == null|| this.request.getThresholdName().length() == 0 ? "null" : String.valueOf(this.request.getThresholdName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{thresholdName}", this.request.getThresholdName() == null || this.request.getThresholdName().length() == 0 ? "null" : String.valueOf(this.request.getThresholdName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1591,25 +1347,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ランクアップ閾値マスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getThresholdMasterAsync(
             GetThresholdMasterRequest request,
             AsyncAction<AsyncResult<GetThresholdMasterResult>> callback
     ) {
-        GetThresholdMasterTask task = new GetThresholdMasterTask(request, callback, GetThresholdMasterResult.class);
+        GetThresholdMasterTask task = new GetThresholdMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランクアップ閾値マスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetThresholdMasterResult getThresholdMaster(
             GetThresholdMasterRequest request
     ) {
@@ -1636,15 +1381,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public UpdateThresholdMasterTask(
             UpdateThresholdMasterRequest request,
-            AsyncAction<AsyncResult<UpdateThresholdMasterResult>> userCallback,
-            Class<UpdateThresholdMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateThresholdMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateThresholdMasterResult parse(JsonNode data) {
+            return UpdateThresholdMasterResult.fromJson(data);
         }
 
         @Override
@@ -1655,30 +1403,21 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/threshold/{thresholdName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{thresholdName}", this.request.getThresholdName() == null|| this.request.getThresholdName().length() == 0 ? "null" : String.valueOf(this.request.getThresholdName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{thresholdName}", this.request.getThresholdName() == null || this.request.getThresholdName().length() == 0 ? "null" : String.valueOf(this.request.getThresholdName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getValues() != null) {
-                JSONArray array = new JSONArray();
-                for(Long item : this.request.getValues())
-                {
-                    array.put(item);
-                }
-                json.put("values", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("values", request.getValues() == null ? new ArrayList<Long>() :
+                        request.getValues().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1696,25 +1435,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ランクアップ閾値マスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateThresholdMasterAsync(
             UpdateThresholdMasterRequest request,
             AsyncAction<AsyncResult<UpdateThresholdMasterResult>> callback
     ) {
-        UpdateThresholdMasterTask task = new UpdateThresholdMasterTask(request, callback, UpdateThresholdMasterResult.class);
+        UpdateThresholdMasterTask task = new UpdateThresholdMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランクアップ閾値マスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateThresholdMasterResult updateThresholdMaster(
             UpdateThresholdMasterRequest request
     ) {
@@ -1741,15 +1469,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DeleteThresholdMasterTask(
             DeleteThresholdMasterRequest request,
-            AsyncAction<AsyncResult<DeleteThresholdMasterResult>> userCallback,
-            Class<DeleteThresholdMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteThresholdMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteThresholdMasterResult parse(JsonNode data) {
+            return DeleteThresholdMasterResult.fromJson(data);
         }
 
         @Override
@@ -1760,8 +1491,8 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/threshold/{thresholdName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{thresholdName}", this.request.getThresholdName() == null|| this.request.getThresholdName().length() == 0 ? "null" : String.valueOf(this.request.getThresholdName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{thresholdName}", this.request.getThresholdName() == null || this.request.getThresholdName().length() == 0 ? "null" : String.valueOf(this.request.getThresholdName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1785,25 +1516,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ランクアップ閾値マスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteThresholdMasterAsync(
             DeleteThresholdMasterRequest request,
             AsyncAction<AsyncResult<DeleteThresholdMasterResult>> callback
     ) {
-        DeleteThresholdMasterTask task = new DeleteThresholdMasterTask(request, callback, DeleteThresholdMasterResult.class);
+        DeleteThresholdMasterTask task = new DeleteThresholdMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランクアップ閾値マスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteThresholdMasterResult deleteThresholdMaster(
             DeleteThresholdMasterRequest request
     ) {
@@ -1830,15 +1550,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -1849,7 +1572,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1873,25 +1596,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 現在有効な経験値設定のマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な経験値設定のマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -1918,15 +1630,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public GetCurrentExperienceMasterTask(
             GetCurrentExperienceMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentExperienceMasterResult>> userCallback,
-            Class<GetCurrentExperienceMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentExperienceMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentExperienceMasterResult parse(JsonNode data) {
+            return GetCurrentExperienceMasterResult.fromJson(data);
         }
 
         @Override
@@ -1937,7 +1652,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1961,25 +1676,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 現在有効な経験値設定を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentExperienceMasterAsync(
             GetCurrentExperienceMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentExperienceMasterResult>> callback
     ) {
-        GetCurrentExperienceMasterTask task = new GetCurrentExperienceMasterTask(request, callback, GetCurrentExperienceMasterResult.class);
+        GetCurrentExperienceMasterTask task = new GetCurrentExperienceMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な経験値設定を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentExperienceMasterResult getCurrentExperienceMaster(
             GetCurrentExperienceMasterRequest request
     ) {
@@ -2006,15 +1710,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public UpdateCurrentExperienceMasterTask(
             UpdateCurrentExperienceMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentExperienceMasterResult>> userCallback,
-            Class<UpdateCurrentExperienceMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentExperienceMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentExperienceMasterResult parse(JsonNode data) {
+            return UpdateCurrentExperienceMasterResult.fromJson(data);
         }
 
         @Override
@@ -2025,18 +1732,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2054,25 +1757,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 現在有効な経験値設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentExperienceMasterAsync(
             UpdateCurrentExperienceMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentExperienceMasterResult>> callback
     ) {
-        UpdateCurrentExperienceMasterTask task = new UpdateCurrentExperienceMasterTask(request, callback, UpdateCurrentExperienceMasterResult.class);
+        UpdateCurrentExperienceMasterTask task = new UpdateCurrentExperienceMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な経験値設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentExperienceMasterResult updateCurrentExperienceMaster(
             UpdateCurrentExperienceMasterRequest request
     ) {
@@ -2099,15 +1791,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public UpdateCurrentExperienceMasterFromGitHubTask(
             UpdateCurrentExperienceMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentExperienceMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentExperienceMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentExperienceMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentExperienceMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentExperienceMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2118,22 +1813,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2151,25 +1838,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 現在有効な経験値設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentExperienceMasterFromGitHubAsync(
             UpdateCurrentExperienceMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentExperienceMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentExperienceMasterFromGitHubTask task = new UpdateCurrentExperienceMasterFromGitHubTask(request, callback, UpdateCurrentExperienceMasterFromGitHubResult.class);
+        UpdateCurrentExperienceMasterFromGitHubTask task = new UpdateCurrentExperienceMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な経験値設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentExperienceMasterFromGitHubResult updateCurrentExperienceMasterFromGitHub(
             UpdateCurrentExperienceMasterFromGitHubRequest request
     ) {
@@ -2196,15 +1872,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DescribeStatusesTask(
             DescribeStatusesRequest request,
-            AsyncAction<AsyncResult<DescribeStatusesResult>> userCallback,
-            Class<DescribeStatusesResult> clazz
+            AsyncAction<AsyncResult<DescribeStatusesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeStatusesResult parse(JsonNode data) {
+            return DescribeStatusesResult.fromJson(data);
         }
 
         @Override
@@ -2215,7 +1894,7 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2244,9 +1923,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2254,25 +1930,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ステータスの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeStatusesAsync(
             DescribeStatusesRequest request,
             AsyncAction<AsyncResult<DescribeStatusesResult>> callback
     ) {
-        DescribeStatusesTask task = new DescribeStatusesTask(request, callback, DescribeStatusesResult.class);
+        DescribeStatusesTask task = new DescribeStatusesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ステータスの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeStatusesResult describeStatuses(
             DescribeStatusesRequest request
     ) {
@@ -2299,15 +1964,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DescribeStatusesByUserIdTask(
             DescribeStatusesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeStatusesByUserIdResult>> userCallback,
-            Class<DescribeStatusesByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeStatusesByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeStatusesByUserIdResult parse(JsonNode data) {
+            return DescribeStatusesByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2318,8 +1986,8 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2345,9 +2013,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2355,25 +2020,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ステータスの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeStatusesByUserIdAsync(
             DescribeStatusesByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeStatusesByUserIdResult>> callback
     ) {
-        DescribeStatusesByUserIdTask task = new DescribeStatusesByUserIdTask(request, callback, DescribeStatusesByUserIdResult.class);
+        DescribeStatusesByUserIdTask task = new DescribeStatusesByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ステータスの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeStatusesByUserIdResult describeStatusesByUserId(
             DescribeStatusesByUserIdRequest request
     ) {
@@ -2400,15 +2054,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public GetStatusTask(
             GetStatusRequest request,
-            AsyncAction<AsyncResult<GetStatusResult>> userCallback,
-            Class<GetStatusResult> clazz
+            AsyncAction<AsyncResult<GetStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetStatusResult parse(JsonNode data) {
+            return GetStatusResult.fromJson(data);
         }
 
         @Override
@@ -2419,9 +2076,9 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/status/model/{experienceName}/property/{propertyId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2441,9 +2098,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2451,25 +2105,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ステータスを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getStatusAsync(
             GetStatusRequest request,
             AsyncAction<AsyncResult<GetStatusResult>> callback
     ) {
-        GetStatusTask task = new GetStatusTask(request, callback, GetStatusResult.class);
+        GetStatusTask task = new GetStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ステータスを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetStatusResult getStatus(
             GetStatusRequest request
     ) {
@@ -2496,15 +2139,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public GetStatusByUserIdTask(
             GetStatusByUserIdRequest request,
-            AsyncAction<AsyncResult<GetStatusByUserIdResult>> userCallback,
-            Class<GetStatusByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetStatusByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetStatusByUserIdResult parse(JsonNode data) {
+            return GetStatusByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2515,10 +2161,10 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2535,9 +2181,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2545,25 +2188,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ステータスを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getStatusByUserIdAsync(
             GetStatusByUserIdRequest request,
             AsyncAction<AsyncResult<GetStatusByUserIdResult>> callback
     ) {
-        GetStatusByUserIdTask task = new GetStatusByUserIdTask(request, callback, GetStatusByUserIdResult.class);
+        GetStatusByUserIdTask task = new GetStatusByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ステータスを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetStatusByUserIdResult getStatusByUserId(
             GetStatusByUserIdRequest request
     ) {
@@ -2590,15 +2222,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public GetStatusWithSignatureTask(
             GetStatusWithSignatureRequest request,
-            AsyncAction<AsyncResult<GetStatusWithSignatureResult>> userCallback,
-            Class<GetStatusWithSignatureResult> clazz
+            AsyncAction<AsyncResult<GetStatusWithSignatureResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetStatusWithSignatureResult parse(JsonNode data) {
+            return GetStatusWithSignatureResult.fromJson(data);
         }
 
         @Override
@@ -2609,9 +2244,9 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/status/model/{experienceName}/property/{propertyId}/signature";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2634,9 +2269,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2644,25 +2276,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ステータスを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getStatusWithSignatureAsync(
             GetStatusWithSignatureRequest request,
             AsyncAction<AsyncResult<GetStatusWithSignatureResult>> callback
     ) {
-        GetStatusWithSignatureTask task = new GetStatusWithSignatureTask(request, callback, GetStatusWithSignatureResult.class);
+        GetStatusWithSignatureTask task = new GetStatusWithSignatureTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ステータスを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetStatusWithSignatureResult getStatusWithSignature(
             GetStatusWithSignatureRequest request
     ) {
@@ -2689,15 +2310,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public AddExperienceByUserIdTask(
             AddExperienceByUserIdRequest request,
-            AsyncAction<AsyncResult<AddExperienceByUserIdResult>> userCallback,
-            Class<AddExperienceByUserIdResult> clazz
+            AsyncAction<AsyncResult<AddExperienceByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddExperienceByUserIdResult parse(JsonNode data) {
+            return AddExperienceByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2708,21 +2332,17 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getExperienceValue() != null) {
-                json.put("experienceValue", this.request.getExperienceValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("experienceValue", request.getExperienceValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2733,9 +2353,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2743,25 +2360,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 経験値を加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addExperienceByUserIdAsync(
             AddExperienceByUserIdRequest request,
             AsyncAction<AsyncResult<AddExperienceByUserIdResult>> callback
     ) {
-        AddExperienceByUserIdTask task = new AddExperienceByUserIdTask(request, callback, AddExperienceByUserIdResult.class);
+        AddExperienceByUserIdTask task = new AddExperienceByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 経験値を加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddExperienceByUserIdResult addExperienceByUserId(
             AddExperienceByUserIdRequest request
     ) {
@@ -2788,15 +2394,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public SetExperienceByUserIdTask(
             SetExperienceByUserIdRequest request,
-            AsyncAction<AsyncResult<SetExperienceByUserIdResult>> userCallback,
-            Class<SetExperienceByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetExperienceByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetExperienceByUserIdResult parse(JsonNode data) {
+            return SetExperienceByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2807,21 +2416,17 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getExperienceValue() != null) {
-                json.put("experienceValue", this.request.getExperienceValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("experienceValue", request.getExperienceValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2832,9 +2437,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2842,25 +2444,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 累計獲得経験値を設定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setExperienceByUserIdAsync(
             SetExperienceByUserIdRequest request,
             AsyncAction<AsyncResult<SetExperienceByUserIdResult>> callback
     ) {
-        SetExperienceByUserIdTask task = new SetExperienceByUserIdTask(request, callback, SetExperienceByUserIdResult.class);
+        SetExperienceByUserIdTask task = new SetExperienceByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 累計獲得経験値を設定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetExperienceByUserIdResult setExperienceByUserId(
             SetExperienceByUserIdRequest request
     ) {
@@ -2887,15 +2478,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public AddRankCapByUserIdTask(
             AddRankCapByUserIdRequest request,
-            AsyncAction<AsyncResult<AddRankCapByUserIdResult>> userCallback,
-            Class<AddRankCapByUserIdResult> clazz
+            AsyncAction<AsyncResult<AddRankCapByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddRankCapByUserIdResult parse(JsonNode data) {
+            return AddRankCapByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2906,21 +2500,17 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}/cap";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getRankCapValue() != null) {
-                json.put("rankCapValue", this.request.getRankCapValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("rankCapValue", request.getRankCapValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2931,9 +2521,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2941,25 +2528,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ランクキャップを加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addRankCapByUserIdAsync(
             AddRankCapByUserIdRequest request,
             AsyncAction<AsyncResult<AddRankCapByUserIdResult>> callback
     ) {
-        AddRankCapByUserIdTask task = new AddRankCapByUserIdTask(request, callback, AddRankCapByUserIdResult.class);
+        AddRankCapByUserIdTask task = new AddRankCapByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランクキャップを加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddRankCapByUserIdResult addRankCapByUserId(
             AddRankCapByUserIdRequest request
     ) {
@@ -2986,15 +2562,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public SetRankCapByUserIdTask(
             SetRankCapByUserIdRequest request,
-            AsyncAction<AsyncResult<SetRankCapByUserIdResult>> userCallback,
-            Class<SetRankCapByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetRankCapByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetRankCapByUserIdResult parse(JsonNode data) {
+            return SetRankCapByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3005,21 +2584,17 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}/cap";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getRankCapValue() != null) {
-                json.put("rankCapValue", this.request.getRankCapValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("rankCapValue", request.getRankCapValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3030,9 +2605,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3040,25 +2612,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ランクキャップを設定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setRankCapByUserIdAsync(
             SetRankCapByUserIdRequest request,
             AsyncAction<AsyncResult<SetRankCapByUserIdResult>> callback
     ) {
-        SetRankCapByUserIdTask task = new SetRankCapByUserIdTask(request, callback, SetRankCapByUserIdResult.class);
+        SetRankCapByUserIdTask task = new SetRankCapByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランクキャップを設定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetRankCapByUserIdResult setRankCapByUserId(
             SetRankCapByUserIdRequest request
     ) {
@@ -3085,15 +2646,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public DeleteStatusByUserIdTask(
             DeleteStatusByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteStatusByUserIdResult>> userCallback,
-            Class<DeleteStatusByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteStatusByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteStatusByUserIdResult parse(JsonNode data) {
+            return DeleteStatusByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3104,10 +2668,10 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{experienceName}", this.request.getExperienceName() == null|| this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
-            url = url.replace("{propertyId}", this.request.getPropertyId() == null|| this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3124,9 +2688,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3134,25 +2695,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ステータスを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteStatusByUserIdAsync(
             DeleteStatusByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteStatusByUserIdResult>> callback
     ) {
-        DeleteStatusByUserIdTask task = new DeleteStatusByUserIdTask(request, callback, DeleteStatusByUserIdResult.class);
+        DeleteStatusByUserIdTask task = new DeleteStatusByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ステータスを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteStatusByUserIdResult deleteStatusByUserId(
             DeleteStatusByUserIdRequest request
     ) {
@@ -3179,15 +2729,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public AddExperienceByStampSheetTask(
             AddExperienceByStampSheetRequest request,
-            AsyncAction<AsyncResult<AddExperienceByStampSheetResult>> userCallback,
-            Class<AddExperienceByStampSheetResult> clazz
+            AsyncAction<AsyncResult<AddExperienceByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddExperienceByStampSheetResult parse(JsonNode data) {
+            return AddExperienceByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -3198,19 +2751,13 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/experience/add";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3221,9 +2768,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3231,25 +2775,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * 経験値を加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addExperienceByStampSheetAsync(
             AddExperienceByStampSheetRequest request,
             AsyncAction<AsyncResult<AddExperienceByStampSheetResult>> callback
     ) {
-        AddExperienceByStampSheetTask task = new AddExperienceByStampSheetTask(request, callback, AddExperienceByStampSheetResult.class);
+        AddExperienceByStampSheetTask task = new AddExperienceByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 経験値を加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddExperienceByStampSheetResult addExperienceByStampSheet(
             AddExperienceByStampSheetRequest request
     ) {
@@ -3276,15 +2809,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public AddRankCapByStampSheetTask(
             AddRankCapByStampSheetRequest request,
-            AsyncAction<AsyncResult<AddRankCapByStampSheetResult>> userCallback,
-            Class<AddRankCapByStampSheetResult> clazz
+            AsyncAction<AsyncResult<AddRankCapByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddRankCapByStampSheetResult parse(JsonNode data) {
+            return AddRankCapByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -3295,19 +2831,13 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/rankCap/add";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3318,9 +2848,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3328,25 +2855,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ランクキャップを加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addRankCapByStampSheetAsync(
             AddRankCapByStampSheetRequest request,
             AsyncAction<AsyncResult<AddRankCapByStampSheetResult>> callback
     ) {
-        AddRankCapByStampSheetTask task = new AddRankCapByStampSheetTask(request, callback, AddRankCapByStampSheetResult.class);
+        AddRankCapByStampSheetTask task = new AddRankCapByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランクキャップを加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddRankCapByStampSheetResult addRankCapByStampSheet(
             AddRankCapByStampSheetRequest request
     ) {
@@ -3373,15 +2889,18 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
 
         public SetRankCapByStampSheetTask(
             SetRankCapByStampSheetRequest request,
-            AsyncAction<AsyncResult<SetRankCapByStampSheetResult>> userCallback,
-            Class<SetRankCapByStampSheetResult> clazz
+            AsyncAction<AsyncResult<SetRankCapByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetRankCapByStampSheetResult parse(JsonNode data) {
+            return SetRankCapByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -3392,19 +2911,13 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/rankCap/set";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3415,9 +2928,6 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3425,25 +2935,14 @@ public class Gs2ExperienceRestClient extends AbstractGs2Client<Gs2ExperienceRest
         }
     }
 
-    /**
-     * ランクキャップを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setRankCapByStampSheetAsync(
             SetRankCapByStampSheetRequest request,
             AsyncAction<AsyncResult<SetRankCapByStampSheetResult>> callback
     ) {
-        SetRankCapByStampSheetTask task = new SetRankCapByStampSheetTask(request, callback, SetRankCapByStampSheetResult.class);
+        SetRankCapByStampSheetTask task = new SetRankCapByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランクキャップを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetRankCapByStampSheetResult setRankCapByStampSheet(
             SetRankCapByStampSheetRequest request
     ) {

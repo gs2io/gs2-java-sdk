@@ -16,157 +16,98 @@
 
 package io.gs2.deploy.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * アウトプット
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Output implements IModel, Serializable, Comparable<Output> {
-	/** アウトプット */
-	protected String outputId;
+	private String outputId;
+	private String name;
+	private String value;
+	private Long createdAt;
 
-	/**
-	 * アウトプットを取得
-	 *
-	 * @return アウトプット
-	 */
 	public String getOutputId() {
 		return outputId;
 	}
 
-	/**
-	 * アウトプットを設定
-	 *
-	 * @param outputId アウトプット
-	 */
 	public void setOutputId(String outputId) {
 		this.outputId = outputId;
 	}
 
-	/**
-	 * アウトプットを設定
-	 *
-	 * @param outputId アウトプット
-	 * @return this
-	 */
 	public Output withOutputId(String outputId) {
 		this.outputId = outputId;
 		return this;
 	}
-	/** アウトプット名 */
-	protected String name;
 
-	/**
-	 * アウトプット名を取得
-	 *
-	 * @return アウトプット名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * アウトプット名を設定
-	 *
-	 * @param name アウトプット名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * アウトプット名を設定
-	 *
-	 * @param name アウトプット名
-	 * @return this
-	 */
 	public Output withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 値 */
-	protected String value;
 
-	/**
-	 * 値を取得
-	 *
-	 * @return 値
-	 */
 	public String getValue() {
 		return value;
 	}
 
-	/**
-	 * 値を設定
-	 *
-	 * @param value 値
-	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
 
-	/**
-	 * 値を設定
-	 *
-	 * @param value 値
-	 * @return this
-	 */
 	public Output withValue(String value) {
 		this.value = value;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Output withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("outputId", this.getOutputId())
-            .put("name", this.getName())
-            .put("value", this.getValue())
-            .put("createdAt", this.getCreatedAt());
-        return body_;
+    public static Output fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Output()
+            .withOutputId(data.get("outputId") == null || data.get("outputId").isNull() ? null : data.get("outputId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("outputId", getOutputId());
+                put("name", getName());
+                put("value", getValue());
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Output o) {
 		return outputId.compareTo(o.outputId);

@@ -16,210 +16,134 @@
 
 package io.gs2.stamina.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.stamina.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタミナの最大値テーブルマスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateMaxStaminaTableMasterRequest extends Gs2BasicRequest<UpdateMaxStaminaTableMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return スタミナの最大値テーブルマスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタミナの最大値テーブルマスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタミナの最大値テーブルマスターを更新
-     * @return this
-     */
-    public UpdateMaxStaminaTableMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 最大スタミナ値テーブル名 */
     private String maxStaminaTableName;
-
-    /**
-     * 最大スタミナ値テーブル名を取得
-     *
-     * @return スタミナの最大値テーブルマスターを更新
-     */
-    public String getMaxStaminaTableName() {
-        return maxStaminaTableName;
-    }
-
-    /**
-     * 最大スタミナ値テーブル名を設定
-     *
-     * @param maxStaminaTableName スタミナの最大値テーブルマスターを更新
-     */
-    public void setMaxStaminaTableName(String maxStaminaTableName) {
-        this.maxStaminaTableName = maxStaminaTableName;
-    }
-
-    /**
-     * 最大スタミナ値テーブル名を設定
-     *
-     * @param maxStaminaTableName スタミナの最大値テーブルマスターを更新
-     * @return this
-     */
-    public UpdateMaxStaminaTableMasterRequest withMaxStaminaTableName(String maxStaminaTableName) {
-        setMaxStaminaTableName(maxStaminaTableName);
-        return this;
-    }
-
-    /** スタミナの最大値テーブルマスターの説明 */
     private String description;
-
-    /**
-     * スタミナの最大値テーブルマスターの説明を取得
-     *
-     * @return スタミナの最大値テーブルマスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * スタミナの最大値テーブルマスターの説明を設定
-     *
-     * @param description スタミナの最大値テーブルマスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * スタミナの最大値テーブルマスターの説明を設定
-     *
-     * @param description スタミナの最大値テーブルマスターを更新
-     * @return this
-     */
-    public UpdateMaxStaminaTableMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 最大スタミナ値テーブルのメタデータ */
     private String metadata;
-
-    /**
-     * 最大スタミナ値テーブルのメタデータを取得
-     *
-     * @return スタミナの最大値テーブルマスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 最大スタミナ値テーブルのメタデータを設定
-     *
-     * @param metadata スタミナの最大値テーブルマスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 最大スタミナ値テーブルのメタデータを設定
-     *
-     * @param metadata スタミナの最大値テーブルマスターを更新
-     * @return this
-     */
-    public UpdateMaxStaminaTableMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 経験値の種類マスター のGRN */
     private String experienceModelId;
-
-    /**
-     * 経験値の種類マスター のGRNを取得
-     *
-     * @return スタミナの最大値テーブルマスターを更新
-     */
-    public String getExperienceModelId() {
-        return experienceModelId;
-    }
-
-    /**
-     * 経験値の種類マスター のGRNを設定
-     *
-     * @param experienceModelId スタミナの最大値テーブルマスターを更新
-     */
-    public void setExperienceModelId(String experienceModelId) {
-        this.experienceModelId = experienceModelId;
-    }
-
-    /**
-     * 経験値の種類マスター のGRNを設定
-     *
-     * @param experienceModelId スタミナの最大値テーブルマスターを更新
-     * @return this
-     */
-    public UpdateMaxStaminaTableMasterRequest withExperienceModelId(String experienceModelId) {
-        setExperienceModelId(experienceModelId);
-        return this;
-    }
-
-    /** ランク毎のスタミナの最大値テーブル */
     private List<Integer> values;
 
-    /**
-     * ランク毎のスタミナの最大値テーブルを取得
-     *
-     * @return スタミナの最大値テーブルマスターを更新
-     */
-    public List<Integer> getValues() {
-        return values;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateMaxStaminaTableMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getMaxStaminaTableName() {
+		return maxStaminaTableName;
+	}
+
+	public void setMaxStaminaTableName(String maxStaminaTableName) {
+		this.maxStaminaTableName = maxStaminaTableName;
+	}
+
+	public UpdateMaxStaminaTableMasterRequest withMaxStaminaTableName(String maxStaminaTableName) {
+		this.maxStaminaTableName = maxStaminaTableName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateMaxStaminaTableMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateMaxStaminaTableMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getExperienceModelId() {
+		return experienceModelId;
+	}
+
+	public void setExperienceModelId(String experienceModelId) {
+		this.experienceModelId = experienceModelId;
+	}
+
+	public UpdateMaxStaminaTableMasterRequest withExperienceModelId(String experienceModelId) {
+		this.experienceModelId = experienceModelId;
+		return this;
+	}
+
+	public List<Integer> getValues() {
+		return values;
+	}
+
+	public void setValues(List<Integer> values) {
+		this.values = values;
+	}
+
+	public UpdateMaxStaminaTableMasterRequest withValues(List<Integer> values) {
+		this.values = values;
+		return this;
+	}
+
+    public static UpdateMaxStaminaTableMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateMaxStaminaTableMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withMaxStaminaTableName(data.get("maxStaminaTableName") == null || data.get("maxStaminaTableName").isNull() ? null : data.get("maxStaminaTableName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Integer>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.intValue();
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * ランク毎のスタミナの最大値テーブルを設定
-     *
-     * @param values スタミナの最大値テーブルマスターを更新
-     */
-    public void setValues(List<Integer> values) {
-        this.values = values;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("maxStaminaTableName", getMaxStaminaTableName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("experienceModelId", getExperienceModelId());
+                put("values", getValues() == null ? new ArrayList<Integer>() :
+                    getValues().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * ランク毎のスタミナの最大値テーブルを設定
-     *
-     * @param values スタミナの最大値テーブルマスターを更新
-     * @return this
-     */
-    public UpdateMaxStaminaTableMasterRequest withValues(List<Integer> values) {
-        setValues(values);
-        return this;
-    }
-
 }

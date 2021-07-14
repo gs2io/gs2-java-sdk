@@ -16,146 +16,78 @@
 
 package io.gs2.chat.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.chat.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定して購読の購読を解除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UnsubscribeByUserIdRequest extends Gs2BasicRequest<UnsubscribeByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定して購読の購読を解除
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定して購読の購読を解除
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定して購読の購読を解除
-     * @return this
-     */
-    public UnsubscribeByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ルーム名 */
     private String roomName;
-
-    /**
-     * ルーム名を取得
-     *
-     * @return ユーザIDを指定して購読の購読を解除
-     */
-    public String getRoomName() {
-        return roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ユーザIDを指定して購読の購読を解除
-     */
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ユーザIDを指定して購読の購読を解除
-     * @return this
-     */
-    public UnsubscribeByUserIdRequest withRoomName(String roomName) {
-        setRoomName(roomName);
-        return this;
-    }
-
-    /** 購読するユーザID */
     private String userId;
 
-    /**
-     * 購読するユーザIDを取得
-     *
-     * @return ユーザIDを指定して購読の購読を解除
-     */
-    public String getUserId() {
-        return userId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UnsubscribeByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public UnsubscribeByUserIdRequest withRoomName(String roomName) {
+		this.roomName = roomName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public UnsubscribeByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+    public static UnsubscribeByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UnsubscribeByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
     }
 
-    /**
-     * 購読するユーザIDを設定
-     *
-     * @param userId ユーザIDを指定して購読の購読を解除
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("roomName", getRoomName());
+                put("userId", getUserId());
+            }}
+        );
     }
-
-    /**
-     * 購読するユーザIDを設定
-     *
-     * @param userId ユーザIDを指定して購読の購読を解除
-     * @return this
-     */
-    public UnsubscribeByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定して購読の購読を解除
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定して購読の購読を解除
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定して購読の購読を解除
-     * @return this
-     */
-    public UnsubscribeByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

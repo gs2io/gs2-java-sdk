@@ -16,221 +16,130 @@
 
 package io.gs2.exchange.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 交換待機
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Await implements IModel, Serializable, Comparable<Await> {
-	/** 交換待機 */
-	protected String awaitId;
+	private String awaitId;
+	private String userId;
+	private String rateName;
+	private String name;
+	private Integer count;
+	private Long exchangedAt;
 
-	/**
-	 * 交換待機を取得
-	 *
-	 * @return 交換待機
-	 */
 	public String getAwaitId() {
 		return awaitId;
 	}
 
-	/**
-	 * 交換待機を設定
-	 *
-	 * @param awaitId 交換待機
-	 */
 	public void setAwaitId(String awaitId) {
 		this.awaitId = awaitId;
 	}
 
-	/**
-	 * 交換待機を設定
-	 *
-	 * @param awaitId 交換待機
-	 * @return this
-	 */
 	public Await withAwaitId(String awaitId) {
 		this.awaitId = awaitId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Await withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 交換レート名 */
-	protected String rateName;
 
-	/**
-	 * 交換レート名を取得
-	 *
-	 * @return 交換レート名
-	 */
 	public String getRateName() {
 		return rateName;
 	}
 
-	/**
-	 * 交換レート名を設定
-	 *
-	 * @param rateName 交換レート名
-	 */
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
 
-	/**
-	 * 交換レート名を設定
-	 *
-	 * @param rateName 交換レート名
-	 * @return this
-	 */
 	public Await withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-	/** 交換待機の名前 */
-	protected String name;
 
-	/**
-	 * 交換待機の名前を取得
-	 *
-	 * @return 交換待機の名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 交換待機の名前を設定
-	 *
-	 * @param name 交換待機の名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 交換待機の名前を設定
-	 *
-	 * @param name 交換待機の名前
-	 * @return this
-	 */
 	public Await withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 交換数 */
-	protected Integer count;
 
-	/**
-	 * 交換数を取得
-	 *
-	 * @return 交換数
-	 */
 	public Integer getCount() {
 		return count;
 	}
 
-	/**
-	 * 交換数を設定
-	 *
-	 * @param count 交換数
-	 */
 	public void setCount(Integer count) {
 		this.count = count;
 	}
 
-	/**
-	 * 交換数を設定
-	 *
-	 * @param count 交換数
-	 * @return this
-	 */
 	public Await withCount(Integer count) {
 		this.count = count;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long exchangedAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getExchangedAt() {
 		return exchangedAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param exchangedAt 作成日時
-	 */
 	public void setExchangedAt(Long exchangedAt) {
 		this.exchangedAt = exchangedAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param exchangedAt 作成日時
-	 * @return this
-	 */
 	public Await withExchangedAt(Long exchangedAt) {
 		this.exchangedAt = exchangedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("awaitId", this.getAwaitId())
-            .put("userId", this.getUserId())
-            .put("rateName", this.getRateName())
-            .put("name", this.getName())
-            .put("count", this.getCount())
-            .put("exchangedAt", this.getExchangedAt());
-        return body_;
+    public static Await fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Await()
+            .withAwaitId(data.get("awaitId") == null || data.get("awaitId").isNull() ? null : data.get("awaitId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
+            .withExchangedAt(data.get("exchangedAt") == null || data.get("exchangedAt").isNull() ? null : data.get("exchangedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("awaitId", getAwaitId());
+                put("userId", getUserId());
+                put("rateName", getRateName());
+                put("name", getName());
+                put("count", getCount());
+                put("exchangedAt", getExchangedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Await o) {
 		return awaitId.compareTo(o.awaitId);

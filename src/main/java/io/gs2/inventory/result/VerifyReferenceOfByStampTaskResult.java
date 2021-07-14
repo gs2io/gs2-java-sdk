@@ -16,119 +16,122 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.ItemSet;
+import io.gs2.inventory.model.ItemModel;
+import io.gs2.inventory.model.Inventory;
 
-/**
- * スタンプシートでインベントリのアイテムを検証 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyReferenceOfByStampTaskResult implements IResult, Serializable {
-	/** この所持品の参照元のリスト */
-	private List<String> item;
-	/** 有効期限ごとのアイテム所持数量 */
-	private ItemSet itemSet;
-	/** アイテムモデル */
-	private ItemModel itemModel;
-	/** インベントリ */
-	private Inventory inventory;
-	/** スタンプタスクの実行結果を記録したコンテキスト */
-	private String newContextStack;
+    private List<String> item;
+    private ItemSet itemSet;
+    private ItemModel itemModel;
+    private Inventory inventory;
+    private String newContextStack;
 
-	/**
-	 * この所持品の参照元のリストを取得
-	 *
-	 * @return スタンプシートでインベントリのアイテムを検証
-	 */
 	public List<String> getItem() {
 		return item;
 	}
 
-	/**
-	 * この所持品の参照元のリストを設定
-	 *
-	 * @param item スタンプシートでインベントリのアイテムを検証
-	 */
 	public void setItem(List<String> item) {
 		this.item = item;
 	}
 
-	/**
-	 * 有効期限ごとのアイテム所持数量を取得
-	 *
-	 * @return スタンプシートでインベントリのアイテムを検証
-	 */
+	public VerifyReferenceOfByStampTaskResult withItem(List<String> item) {
+		this.item = item;
+		return this;
+	}
+
 	public ItemSet getItemSet() {
 		return itemSet;
 	}
 
-	/**
-	 * 有効期限ごとのアイテム所持数量を設定
-	 *
-	 * @param itemSet スタンプシートでインベントリのアイテムを検証
-	 */
 	public void setItemSet(ItemSet itemSet) {
 		this.itemSet = itemSet;
 	}
 
-	/**
-	 * アイテムモデルを取得
-	 *
-	 * @return スタンプシートでインベントリのアイテムを検証
-	 */
+	public VerifyReferenceOfByStampTaskResult withItemSet(ItemSet itemSet) {
+		this.itemSet = itemSet;
+		return this;
+	}
+
 	public ItemModel getItemModel() {
 		return itemModel;
 	}
 
-	/**
-	 * アイテムモデルを設定
-	 *
-	 * @param itemModel スタンプシートでインベントリのアイテムを検証
-	 */
 	public void setItemModel(ItemModel itemModel) {
 		this.itemModel = itemModel;
 	}
 
-	/**
-	 * インベントリを取得
-	 *
-	 * @return スタンプシートでインベントリのアイテムを検証
-	 */
+	public VerifyReferenceOfByStampTaskResult withItemModel(ItemModel itemModel) {
+		this.itemModel = itemModel;
+		return this;
+	}
+
 	public Inventory getInventory() {
 		return inventory;
 	}
 
-	/**
-	 * インベントリを設定
-	 *
-	 * @param inventory スタンプシートでインベントリのアイテムを検証
-	 */
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを取得
-	 *
-	 * @return スタンプシートでインベントリのアイテムを検証
-	 */
+	public VerifyReferenceOfByStampTaskResult withInventory(Inventory inventory) {
+		this.inventory = inventory;
+		return this;
+	}
+
 	public String getNewContextStack() {
 		return newContextStack;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを設定
-	 *
-	 * @param newContextStack スタンプシートでインベントリのアイテムを検証
-	 */
 	public void setNewContextStack(String newContextStack) {
 		this.newContextStack = newContextStack;
 	}
+
+	public VerifyReferenceOfByStampTaskResult withNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
+		return this;
+	}
+
+    public static VerifyReferenceOfByStampTaskResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new VerifyReferenceOfByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("item").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withItemSet(data.get("itemSet") == null || data.get("itemSet").isNull() ? null : ItemSet.fromJson(data.get("itemSet")))
+            .withItemModel(data.get("itemModel") == null || data.get("itemModel").isNull() ? null : ItemModel.fromJson(data.get("itemModel")))
+            .withInventory(data.get("inventory") == null || data.get("inventory").isNull() ? null : Inventory.fromJson(data.get("inventory")))
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() == null ? new ArrayList<String>() :
+                    getItem().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("itemSet", getItemSet() != null ? getItemSet().toJson() : null);
+                put("itemModel", getItemModel() != null ? getItemModel().toJson() : null);
+                put("inventory", getInventory() != null ? getInventory().toJson() : null);
+                put("newContextStack", getNewContextStack());
+            }}
+        );
+    }
 }

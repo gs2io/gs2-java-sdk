@@ -16,221 +16,114 @@
 
 package io.gs2.key.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 暗号鍵
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Key implements IModel, Serializable, Comparable<Key> {
-	/** 暗号鍵 */
-	protected String keyId;
+	private String keyId;
+	private String name;
+	private String description;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 暗号鍵を取得
-	 *
-	 * @return 暗号鍵
-	 */
 	public String getKeyId() {
 		return keyId;
 	}
 
-	/**
-	 * 暗号鍵を設定
-	 *
-	 * @param keyId 暗号鍵
-	 */
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
 
-	/**
-	 * 暗号鍵を設定
-	 *
-	 * @param keyId 暗号鍵
-	 * @return this
-	 */
 	public Key withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
-	/** 暗号鍵名 */
-	protected String name;
 
-	/**
-	 * 暗号鍵名を取得
-	 *
-	 * @return 暗号鍵名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 暗号鍵名を設定
-	 *
-	 * @param name 暗号鍵名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 暗号鍵名を設定
-	 *
-	 * @param name 暗号鍵名
-	 * @return this
-	 */
 	public Key withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 説明文 */
-	protected String description;
 
-	/**
-	 * 説明文を取得
-	 *
-	 * @return 説明文
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 説明文を設定
-	 *
-	 * @param description 説明文
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 説明文を設定
-	 *
-	 * @param description 説明文
-	 * @return this
-	 */
 	public Key withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 暗号鍵 */
-	protected String secret;
 
-	/**
-	 * 暗号鍵を取得
-	 *
-	 * @return 暗号鍵
-	 */
-	public String getSecret() {
-		return secret;
-	}
-
-	/**
-	 * 暗号鍵を設定
-	 *
-	 * @param secret 暗号鍵
-	 */
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
-
-	/**
-	 * 暗号鍵を設定
-	 *
-	 * @param secret 暗号鍵
-	 * @return this
-	 */
-	public Key withSecret(String secret) {
-		this.secret = secret;
-		return this;
-	}
-	/** 作成日時 */
-	protected Long createdAt;
-
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Key withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Key withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("keyId", this.getKeyId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("secret", this.getSecret())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Key fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Key()
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("keyId", getKeyId());
+                put("name", getName());
+                put("description", getDescription());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Key o) {
 		return keyId.compareTo(o.keyId);
@@ -243,7 +136,6 @@ public class Key implements IModel, Serializable, Comparable<Key> {
         result = prime * result + ((this.keyId == null) ? 0 : this.keyId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
-        result = prime * result + ((this.secret == null) ? 0 : this.secret.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
@@ -271,11 +163,6 @@ public class Key implements IModel, Serializable, Comparable<Key> {
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
-			return false;
-		}
-		if (secret == null) {
-			return other.secret == null;
-		} else if (!secret.equals(other.secret)) {
 			return false;
 		}
 		if (createdAt == null) {

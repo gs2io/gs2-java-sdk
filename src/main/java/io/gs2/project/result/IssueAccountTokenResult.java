@@ -16,39 +16,47 @@
 
 package io.gs2.project.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.project.model.*;
 
-/**
- * 指定したアカウント名のアカウントトークンを発行 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IssueAccountTokenResult implements IResult, Serializable {
-	/** GS2-Console にアクセスするのに使用するトークン */
-	private String accountToken;
+    private String accountToken;
 
-	/**
-	 * GS2-Console にアクセスするのに使用するトークンを取得
-	 *
-	 * @return 指定したアカウント名のアカウントトークンを発行
-	 */
 	public String getAccountToken() {
 		return accountToken;
 	}
 
-	/**
-	 * GS2-Console にアクセスするのに使用するトークンを設定
-	 *
-	 * @param accountToken 指定したアカウント名のアカウントトークンを発行
-	 */
 	public void setAccountToken(String accountToken) {
 		this.accountToken = accountToken;
 	}
+
+	public IssueAccountTokenResult withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+    public static IssueAccountTokenResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new IssueAccountTokenResult()
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountToken", getAccountToken());
+            }}
+        );
+    }
 }

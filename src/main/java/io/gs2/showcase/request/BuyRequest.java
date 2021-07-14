@@ -16,210 +16,121 @@
 
 package io.gs2.showcase.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.showcase.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.showcase.model.Config;
 
-/**
- * 陳列棚を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class BuyRequest extends Gs2BasicRequest<BuyRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 陳列棚を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 陳列棚を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 陳列棚を取得
-     * @return this
-     */
-    public BuyRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 商品名 */
     private String showcaseName;
-
-    /**
-     * 商品名を取得
-     *
-     * @return 陳列棚を取得
-     */
-    public String getShowcaseName() {
-        return showcaseName;
-    }
-
-    /**
-     * 商品名を設定
-     *
-     * @param showcaseName 陳列棚を取得
-     */
-    public void setShowcaseName(String showcaseName) {
-        this.showcaseName = showcaseName;
-    }
-
-    /**
-     * 商品名を設定
-     *
-     * @param showcaseName 陳列棚を取得
-     * @return this
-     */
-    public BuyRequest withShowcaseName(String showcaseName) {
-        setShowcaseName(showcaseName);
-        return this;
-    }
-
-    /** 陳列商品ID */
     private String displayItemId;
-
-    /**
-     * 陳列商品IDを取得
-     *
-     * @return 陳列棚を取得
-     */
-    public String getDisplayItemId() {
-        return displayItemId;
-    }
-
-    /**
-     * 陳列商品IDを設定
-     *
-     * @param displayItemId 陳列棚を取得
-     */
-    public void setDisplayItemId(String displayItemId) {
-        this.displayItemId = displayItemId;
-    }
-
-    /**
-     * 陳列商品IDを設定
-     *
-     * @param displayItemId 陳列棚を取得
-     * @return this
-     */
-    public BuyRequest withDisplayItemId(String displayItemId) {
-        setDisplayItemId(displayItemId);
-        return this;
-    }
-
-    /** 設定値 */
+    private String accessToken;
     private List<Config> config;
 
-    /**
-     * 設定値を取得
-     *
-     * @return 陳列棚を取得
-     */
-    public List<Config> getConfig() {
-        return config;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public BuyRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getShowcaseName() {
+		return showcaseName;
+	}
+
+	public void setShowcaseName(String showcaseName) {
+		this.showcaseName = showcaseName;
+	}
+
+	public BuyRequest withShowcaseName(String showcaseName) {
+		this.showcaseName = showcaseName;
+		return this;
+	}
+
+	public String getDisplayItemId() {
+		return displayItemId;
+	}
+
+	public void setDisplayItemId(String displayItemId) {
+		this.displayItemId = displayItemId;
+	}
+
+	public BuyRequest withDisplayItemId(String displayItemId) {
+		this.displayItemId = displayItemId;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public BuyRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public List<Config> getConfig() {
+		return config;
+	}
+
+	public void setConfig(List<Config> config) {
+		this.config = config;
+	}
+
+	public BuyRequest withConfig(List<Config> config) {
+		this.config = config;
+		return this;
+	}
+
+    public static BuyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new BuyRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withShowcaseName(data.get("showcaseName") == null || data.get("showcaseName").isNull() ? null : data.get("showcaseName").asText())
+            .withDisplayItemId(data.get("displayItemId") == null || data.get("displayItemId").isNull() ? null : data.get("displayItemId").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Config.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 設定値を設定
-     *
-     * @param config 陳列棚を取得
-     */
-    public void setConfig(List<Config> config) {
-        this.config = config;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("showcaseName", getShowcaseName());
+                put("displayItemId", getDisplayItemId());
+                put("accessToken", getAccessToken());
+                put("config", getConfig() == null ? new ArrayList<Config>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 設定値を設定
-     *
-     * @param config 陳列棚を取得
-     * @return this
-     */
-    public BuyRequest withConfig(List<Config> config) {
-        setConfig(config);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 陳列棚を取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 陳列棚を取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 陳列棚を取得
-     * @return this
-     */
-    public BuyRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public BuyRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

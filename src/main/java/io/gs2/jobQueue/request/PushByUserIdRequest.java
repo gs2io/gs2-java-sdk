@@ -16,146 +16,89 @@
 
 package io.gs2.jobQueue.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.jobQueue.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.jobQueue.model.JobEntry;
 
-/**
- * ユーザIDを指定してジョブを登録 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class PushByUserIdRequest extends Gs2BasicRequest<PushByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定してジョブを登録
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してジョブを登録
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してジョブを登録
-     * @return this
-     */
-    public PushByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してジョブを登録
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してジョブを登録
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してジョブを登録
-     * @return this
-     */
-    public PushByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 追加するジョブの一覧 */
     private List<JobEntry> jobs;
 
-    /**
-     * 追加するジョブの一覧を取得
-     *
-     * @return ユーザIDを指定してジョブを登録
-     */
-    public List<JobEntry> getJobs() {
-        return jobs;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public PushByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public PushByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public List<JobEntry> getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(List<JobEntry> jobs) {
+		this.jobs = jobs;
+	}
+
+	public PushByUserIdRequest withJobs(List<JobEntry> jobs) {
+		this.jobs = jobs;
+		return this;
+	}
+
+    public static PushByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new PushByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withJobs(data.get("jobs") == null || data.get("jobs").isNull() ? new ArrayList<JobEntry>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("jobs").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return JobEntry.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 追加するジョブの一覧を設定
-     *
-     * @param jobs ユーザIDを指定してジョブを登録
-     */
-    public void setJobs(List<JobEntry> jobs) {
-        this.jobs = jobs;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("jobs", getJobs() == null ? new ArrayList<JobEntry>() :
+                    getJobs().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 追加するジョブの一覧を設定
-     *
-     * @param jobs ユーザIDを指定してジョブを登録
-     * @return this
-     */
-    public PushByUserIdRequest withJobs(List<JobEntry> jobs) {
-        setJobs(jobs);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してジョブを登録
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してジョブを登録
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してジョブを登録
-     * @return this
-     */
-    public PushByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

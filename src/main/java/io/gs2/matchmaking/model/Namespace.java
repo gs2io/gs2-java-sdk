@@ -16,577 +16,290 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ネームスペース
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Namespace implements IModel, Serializable, Comparable<Namespace> {
-	/** ネームスペース */
-	protected String namespaceId;
+	private String namespaceId;
+	private String name;
+	private String description;
+	private Boolean enableRating;
+	private String createGatheringTriggerType;
+	private String createGatheringTriggerRealtimeNamespaceId;
+	private String createGatheringTriggerScriptId;
+	private String completeMatchmakingTriggerType;
+	private String completeMatchmakingTriggerRealtimeNamespaceId;
+	private String completeMatchmakingTriggerScriptId;
+	private NotificationSetting joinNotification;
+	private NotificationSetting leaveNotification;
+	private NotificationSetting completeNotification;
+	private LogSetting logSetting;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ネームスペースを取得
-	 *
-	 * @return ネームスペース
-	 */
 	public String getNamespaceId() {
 		return namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 */
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 * @return this
-	 */
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Namespace withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ネームスペース名 */
-	protected String name;
-
-	/**
-	 * ネームスペース名を取得
-	 *
-	 * @return ネームスペース名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 * @return this
-	 */
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ネームスペースの説明 */
-	protected String description;
 
-	/**
-	 * ネームスペースの説明を取得
-	 *
-	 * @return ネームスペースの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * ネームスペースの説明を設定
-	 *
-	 * @param description ネームスペースの説明
-	 * @return this
-	 */
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** レーティング計算機能を使用するか */
-	protected Boolean enableRating;
 
-	/**
-	 * レーティング計算機能を使用するかを取得
-	 *
-	 * @return レーティング計算機能を使用するか
-	 */
 	public Boolean getEnableRating() {
 		return enableRating;
 	}
 
-	/**
-	 * レーティング計算機能を使用するかを設定
-	 *
-	 * @param enableRating レーティング計算機能を使用するか
-	 */
 	public void setEnableRating(Boolean enableRating) {
 		this.enableRating = enableRating;
 	}
 
-	/**
-	 * レーティング計算機能を使用するかを設定
-	 *
-	 * @param enableRating レーティング計算機能を使用するか
-	 * @return this
-	 */
 	public Namespace withEnableRating(Boolean enableRating) {
 		this.enableRating = enableRating;
 		return this;
 	}
-	/** ギャザリング新規作成時のアクション */
-	protected String createGatheringTriggerType;
 
-	/**
-	 * ギャザリング新規作成時のアクションを取得
-	 *
-	 * @return ギャザリング新規作成時のアクション
-	 */
 	public String getCreateGatheringTriggerType() {
 		return createGatheringTriggerType;
 	}
 
-	/**
-	 * ギャザリング新規作成時のアクションを設定
-	 *
-	 * @param createGatheringTriggerType ギャザリング新規作成時のアクション
-	 */
 	public void setCreateGatheringTriggerType(String createGatheringTriggerType) {
 		this.createGatheringTriggerType = createGatheringTriggerType;
 	}
 
-	/**
-	 * ギャザリング新規作成時のアクションを設定
-	 *
-	 * @param createGatheringTriggerType ギャザリング新規作成時のアクション
-	 * @return this
-	 */
 	public Namespace withCreateGatheringTriggerType(String createGatheringTriggerType) {
 		this.createGatheringTriggerType = createGatheringTriggerType;
 		return this;
 	}
-	/** ギャザリング新規作成時 にルームを作成するネームスペース のGRN */
-	protected String createGatheringTriggerRealtimeNamespaceId;
 
-	/**
-	 * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを取得
-	 *
-	 * @return ギャザリング新規作成時 にルームを作成するネームスペース のGRN
-	 */
 	public String getCreateGatheringTriggerRealtimeNamespaceId() {
 		return createGatheringTriggerRealtimeNamespaceId;
 	}
 
-	/**
-	 * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを設定
-	 *
-	 * @param createGatheringTriggerRealtimeNamespaceId ギャザリング新規作成時 にルームを作成するネームスペース のGRN
-	 */
 	public void setCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
 		this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
 	}
 
-	/**
-	 * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを設定
-	 *
-	 * @param createGatheringTriggerRealtimeNamespaceId ギャザリング新規作成時 にルームを作成するネームスペース のGRN
-	 * @return this
-	 */
 	public Namespace withCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
 		this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
 		return this;
 	}
-	/** ギャザリング新規作成時 に実行されるスクリプト のGRN */
-	protected String createGatheringTriggerScriptId;
 
-	/**
-	 * ギャザリング新規作成時 に実行されるスクリプト のGRNを取得
-	 *
-	 * @return ギャザリング新規作成時 に実行されるスクリプト のGRN
-	 */
 	public String getCreateGatheringTriggerScriptId() {
 		return createGatheringTriggerScriptId;
 	}
 
-	/**
-	 * ギャザリング新規作成時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param createGatheringTriggerScriptId ギャザリング新規作成時 に実行されるスクリプト のGRN
-	 */
 	public void setCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
 		this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
 	}
 
-	/**
-	 * ギャザリング新規作成時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param createGatheringTriggerScriptId ギャザリング新規作成時 に実行されるスクリプト のGRN
-	 * @return this
-	 */
 	public Namespace withCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
 		this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
 		return this;
 	}
-	/** マッチメイキング完了時のアクション */
-	protected String completeMatchmakingTriggerType;
 
-	/**
-	 * マッチメイキング完了時のアクションを取得
-	 *
-	 * @return マッチメイキング完了時のアクション
-	 */
 	public String getCompleteMatchmakingTriggerType() {
 		return completeMatchmakingTriggerType;
 	}
 
-	/**
-	 * マッチメイキング完了時のアクションを設定
-	 *
-	 * @param completeMatchmakingTriggerType マッチメイキング完了時のアクション
-	 */
 	public void setCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
 		this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
 	}
 
-	/**
-	 * マッチメイキング完了時のアクションを設定
-	 *
-	 * @param completeMatchmakingTriggerType マッチメイキング完了時のアクション
-	 * @return this
-	 */
 	public Namespace withCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
 		this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
 		return this;
 	}
-	/** マッチメイキング完了時 にルームを作成するネームスペース のGRN */
-	protected String completeMatchmakingTriggerRealtimeNamespaceId;
 
-	/**
-	 * マッチメイキング完了時 にルームを作成するネームスペース のGRNを取得
-	 *
-	 * @return マッチメイキング完了時 にルームを作成するネームスペース のGRN
-	 */
 	public String getCompleteMatchmakingTriggerRealtimeNamespaceId() {
 		return completeMatchmakingTriggerRealtimeNamespaceId;
 	}
 
-	/**
-	 * マッチメイキング完了時 にルームを作成するネームスペース のGRNを設定
-	 *
-	 * @param completeMatchmakingTriggerRealtimeNamespaceId マッチメイキング完了時 にルームを作成するネームスペース のGRN
-	 */
 	public void setCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
 		this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
 	}
 
-	/**
-	 * マッチメイキング完了時 にルームを作成するネームスペース のGRNを設定
-	 *
-	 * @param completeMatchmakingTriggerRealtimeNamespaceId マッチメイキング完了時 にルームを作成するネームスペース のGRN
-	 * @return this
-	 */
 	public Namespace withCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
 		this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
 		return this;
 	}
-	/** マッチメイキング完了時 に実行されるスクリプト のGRN */
-	protected String completeMatchmakingTriggerScriptId;
 
-	/**
-	 * マッチメイキング完了時 に実行されるスクリプト のGRNを取得
-	 *
-	 * @return マッチメイキング完了時 に実行されるスクリプト のGRN
-	 */
 	public String getCompleteMatchmakingTriggerScriptId() {
 		return completeMatchmakingTriggerScriptId;
 	}
 
-	/**
-	 * マッチメイキング完了時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param completeMatchmakingTriggerScriptId マッチメイキング完了時 に実行されるスクリプト のGRN
-	 */
 	public void setCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
 		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
 	}
 
-	/**
-	 * マッチメイキング完了時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param completeMatchmakingTriggerScriptId マッチメイキング完了時 に実行されるスクリプト のGRN
-	 * @return this
-	 */
 	public Namespace withCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
 		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
 		return this;
 	}
-	/** ギャザリングに新規プレイヤーが参加したときのプッシュ通知 */
-	protected NotificationSetting joinNotification;
 
-	/**
-	 * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を取得
-	 *
-	 * @return ギャザリングに新規プレイヤーが参加したときのプッシュ通知
-	 */
 	public NotificationSetting getJoinNotification() {
 		return joinNotification;
 	}
 
-	/**
-	 * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を設定
-	 *
-	 * @param joinNotification ギャザリングに新規プレイヤーが参加したときのプッシュ通知
-	 */
 	public void setJoinNotification(NotificationSetting joinNotification) {
 		this.joinNotification = joinNotification;
 	}
 
-	/**
-	 * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を設定
-	 *
-	 * @param joinNotification ギャザリングに新規プレイヤーが参加したときのプッシュ通知
-	 * @return this
-	 */
 	public Namespace withJoinNotification(NotificationSetting joinNotification) {
 		this.joinNotification = joinNotification;
 		return this;
 	}
-	/** ギャザリングからプレイヤーが離脱したときのプッシュ通知 */
-	protected NotificationSetting leaveNotification;
 
-	/**
-	 * ギャザリングからプレイヤーが離脱したときのプッシュ通知を取得
-	 *
-	 * @return ギャザリングからプレイヤーが離脱したときのプッシュ通知
-	 */
 	public NotificationSetting getLeaveNotification() {
 		return leaveNotification;
 	}
 
-	/**
-	 * ギャザリングからプレイヤーが離脱したときのプッシュ通知を設定
-	 *
-	 * @param leaveNotification ギャザリングからプレイヤーが離脱したときのプッシュ通知
-	 */
 	public void setLeaveNotification(NotificationSetting leaveNotification) {
 		this.leaveNotification = leaveNotification;
 	}
 
-	/**
-	 * ギャザリングからプレイヤーが離脱したときのプッシュ通知を設定
-	 *
-	 * @param leaveNotification ギャザリングからプレイヤーが離脱したときのプッシュ通知
-	 * @return this
-	 */
 	public Namespace withLeaveNotification(NotificationSetting leaveNotification) {
 		this.leaveNotification = leaveNotification;
 		return this;
 	}
-	/** マッチメイキングが完了したときのプッシュ通知 */
-	protected NotificationSetting completeNotification;
 
-	/**
-	 * マッチメイキングが完了したときのプッシュ通知を取得
-	 *
-	 * @return マッチメイキングが完了したときのプッシュ通知
-	 */
 	public NotificationSetting getCompleteNotification() {
 		return completeNotification;
 	}
 
-	/**
-	 * マッチメイキングが完了したときのプッシュ通知を設定
-	 *
-	 * @param completeNotification マッチメイキングが完了したときのプッシュ通知
-	 */
 	public void setCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 	}
 
-	/**
-	 * マッチメイキングが完了したときのプッシュ通知を設定
-	 *
-	 * @param completeNotification マッチメイキングが完了したときのプッシュ通知
-	 * @return this
-	 */
 	public Namespace withCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 		return this;
 	}
-	/** ログの出力設定 */
-	protected LogSetting logSetting;
 
-	/**
-	 * ログの出力設定を取得
-	 *
-	 * @return ログの出力設定
-	 */
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 */
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 * @return this
-	 */
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode joinNotification = this.getJoinNotification().toJson();
-        JsonNode leaveNotification = this.getLeaveNotification().toJson();
-        JsonNode completeNotification = this.getCompleteNotification().toJson();
-        JsonNode logSetting = this.getLogSetting().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceId", this.getNamespaceId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("enableRating", this.getEnableRating())
-            .put("createGatheringTriggerType", this.getCreateGatheringTriggerType())
-            .put("createGatheringTriggerRealtimeNamespaceId", this.getCreateGatheringTriggerRealtimeNamespaceId())
-            .put("createGatheringTriggerScriptId", this.getCreateGatheringTriggerScriptId())
-            .put("completeMatchmakingTriggerType", this.getCompleteMatchmakingTriggerType())
-            .put("completeMatchmakingTriggerRealtimeNamespaceId", this.getCompleteMatchmakingTriggerRealtimeNamespaceId())
-            .put("completeMatchmakingTriggerScriptId", this.getCompleteMatchmakingTriggerScriptId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("joinNotification", joinNotification);
-        body_.set("leaveNotification", leaveNotification);
-        body_.set("completeNotification", completeNotification);
-        body_.set("logSetting", logSetting);
-        return body_;
+    public static Namespace fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Namespace()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withEnableRating(data.get("enableRating") == null || data.get("enableRating").isNull() ? null : data.get("enableRating").booleanValue())
+            .withCreateGatheringTriggerType(data.get("createGatheringTriggerType") == null || data.get("createGatheringTriggerType").isNull() ? null : data.get("createGatheringTriggerType").asText())
+            .withCreateGatheringTriggerRealtimeNamespaceId(data.get("createGatheringTriggerRealtimeNamespaceId") == null || data.get("createGatheringTriggerRealtimeNamespaceId").isNull() ? null : data.get("createGatheringTriggerRealtimeNamespaceId").asText())
+            .withCreateGatheringTriggerScriptId(data.get("createGatheringTriggerScriptId") == null || data.get("createGatheringTriggerScriptId").isNull() ? null : data.get("createGatheringTriggerScriptId").asText())
+            .withCompleteMatchmakingTriggerType(data.get("completeMatchmakingTriggerType") == null || data.get("completeMatchmakingTriggerType").isNull() ? null : data.get("completeMatchmakingTriggerType").asText())
+            .withCompleteMatchmakingTriggerRealtimeNamespaceId(data.get("completeMatchmakingTriggerRealtimeNamespaceId") == null || data.get("completeMatchmakingTriggerRealtimeNamespaceId").isNull() ? null : data.get("completeMatchmakingTriggerRealtimeNamespaceId").asText())
+            .withCompleteMatchmakingTriggerScriptId(data.get("completeMatchmakingTriggerScriptId") == null || data.get("completeMatchmakingTriggerScriptId").isNull() ? null : data.get("completeMatchmakingTriggerScriptId").asText())
+            .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
+            .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
+            .withCompleteNotification(data.get("completeNotification") == null || data.get("completeNotification").isNull() ? null : NotificationSetting.fromJson(data.get("completeNotification")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("name", getName());
+                put("description", getDescription());
+                put("enableRating", getEnableRating());
+                put("createGatheringTriggerType", getCreateGatheringTriggerType());
+                put("createGatheringTriggerRealtimeNamespaceId", getCreateGatheringTriggerRealtimeNamespaceId());
+                put("createGatheringTriggerScriptId", getCreateGatheringTriggerScriptId());
+                put("completeMatchmakingTriggerType", getCompleteMatchmakingTriggerType());
+                put("completeMatchmakingTriggerRealtimeNamespaceId", getCompleteMatchmakingTriggerRealtimeNamespaceId());
+                put("completeMatchmakingTriggerScriptId", getCompleteMatchmakingTriggerScriptId());
+                put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
+                put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
+                put("completeNotification", getCompleteNotification() != null ? getCompleteNotification().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Namespace o) {
 		return namespaceId.compareTo(o.namespaceId);
@@ -597,7 +310,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.enableRating == null) ? 0 : this.enableRating.hashCode());
@@ -628,11 +340,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (namespaceId == null) {
 			return other.namespaceId == null;
 		} else if (!namespaceId.equals(other.namespaceId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {

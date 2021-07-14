@@ -16,114 +16,62 @@
 
 package io.gs2.lottery.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.lottery.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタンプシートを使用して抽選処理を実行 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DrawByStampSheetRequest extends Gs2BasicRequest<DrawByStampSheetRequest> {
-
-    /** スタンプシート */
     private String stampSheet;
-
-    /**
-     * スタンプシートを取得
-     *
-     * @return スタンプシートを使用して抽選処理を実行
-     */
-    public String getStampSheet() {
-        return stampSheet;
-    }
-
-    /**
-     * スタンプシートを設定
-     *
-     * @param stampSheet スタンプシートを使用して抽選処理を実行
-     */
-    public void setStampSheet(String stampSheet) {
-        this.stampSheet = stampSheet;
-    }
-
-    /**
-     * スタンプシートを設定
-     *
-     * @param stampSheet スタンプシートを使用して抽選処理を実行
-     * @return this
-     */
-    public DrawByStampSheetRequest withStampSheet(String stampSheet) {
-        setStampSheet(stampSheet);
-        return this;
-    }
-
-    /** スタンプシートの署名検証に使用する 暗号鍵 のGRN */
     private String keyId;
 
-    /**
-     * スタンプシートの署名検証に使用する 暗号鍵 のGRNを取得
-     *
-     * @return スタンプシートを使用して抽選処理を実行
-     */
-    public String getKeyId() {
-        return keyId;
+	public String getStampSheet() {
+		return stampSheet;
+	}
+
+	public void setStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+	}
+
+	public DrawByStampSheetRequest withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public DrawByStampSheetRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+    public static DrawByStampSheetRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DrawByStampSheetRequest()
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
-    /**
-     * スタンプシートの署名検証に使用する 暗号鍵 のGRNを設定
-     *
-     * @param keyId スタンプシートを使用して抽選処理を実行
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stampSheet", getStampSheet());
+                put("keyId", getKeyId());
+            }}
+        );
     }
-
-    /**
-     * スタンプシートの署名検証に使用する 暗号鍵 のGRNを設定
-     *
-     * @param keyId スタンプシートを使用して抽選処理を実行
-     * @return this
-     */
-    public DrawByStampSheetRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return スタンプシートを使用して抽選処理を実行
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider スタンプシートを使用して抽選処理を実行
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider スタンプシートを使用して抽選処理を実行
-     * @return this
-     */
-    public DrawByStampSheetRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

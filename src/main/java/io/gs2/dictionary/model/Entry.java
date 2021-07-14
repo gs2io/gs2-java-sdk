@@ -16,157 +16,98 @@
 
 package io.gs2.dictionary.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * エントリー
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Entry implements IModel, Serializable, Comparable<Entry> {
-	/** エントリー のGRN */
-	protected String entryId;
+	private String entryId;
+	private String userId;
+	private String name;
+	private Long acquiredAt;
 
-	/**
-	 * エントリー のGRNを取得
-	 *
-	 * @return エントリー のGRN
-	 */
 	public String getEntryId() {
 		return entryId;
 	}
 
-	/**
-	 * エントリー のGRNを設定
-	 *
-	 * @param entryId エントリー のGRN
-	 */
 	public void setEntryId(String entryId) {
 		this.entryId = entryId;
 	}
 
-	/**
-	 * エントリー のGRNを設定
-	 *
-	 * @param entryId エントリー のGRN
-	 * @return this
-	 */
 	public Entry withEntryId(String entryId) {
 		this.entryId = entryId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Entry withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** エントリーの種類名 */
-	protected String name;
 
-	/**
-	 * エントリーの種類名を取得
-	 *
-	 * @return エントリーの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * エントリーの種類名を設定
-	 *
-	 * @param name エントリーの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * エントリーの種類名を設定
-	 *
-	 * @param name エントリーの種類名
-	 * @return this
-	 */
 	public Entry withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** None */
-	protected Long acquiredAt;
 
-	/**
-	 * Noneを取得
-	 *
-	 * @return None
-	 */
 	public Long getAcquiredAt() {
 		return acquiredAt;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param acquiredAt None
-	 */
 	public void setAcquiredAt(Long acquiredAt) {
 		this.acquiredAt = acquiredAt;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param acquiredAt None
-	 * @return this
-	 */
 	public Entry withAcquiredAt(Long acquiredAt) {
 		this.acquiredAt = acquiredAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("entryId", this.getEntryId())
-            .put("userId", this.getUserId())
-            .put("name", this.getName())
-            .put("acquiredAt", this.getAcquiredAt());
-        return body_;
+    public static Entry fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Entry()
+            .withEntryId(data.get("entryId") == null || data.get("entryId").isNull() ? null : data.get("entryId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withAcquiredAt(data.get("acquiredAt") == null || data.get("acquiredAt").isNull() ? null : data.get("acquiredAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("entryId", getEntryId());
+                put("userId", getUserId());
+                put("name", getName());
+                put("acquiredAt", getAcquiredAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Entry o) {
 		return entryId.compareTo(o.entryId);

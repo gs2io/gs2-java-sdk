@@ -16,317 +16,178 @@
 
 package io.gs2.experience.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ステータス
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Status implements IModel, Serializable, Comparable<Status> {
-	/** ステータス */
-	protected String statusId;
+	private String statusId;
+	private String experienceName;
+	private String userId;
+	private String propertyId;
+	private Long experienceValue;
+	private Long rankValue;
+	private Long rankCapValue;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ステータスを取得
-	 *
-	 * @return ステータス
-	 */
 	public String getStatusId() {
 		return statusId;
 	}
 
-	/**
-	 * ステータスを設定
-	 *
-	 * @param statusId ステータス
-	 */
 	public void setStatusId(String statusId) {
 		this.statusId = statusId;
 	}
 
-	/**
-	 * ステータスを設定
-	 *
-	 * @param statusId ステータス
-	 * @return this
-	 */
 	public Status withStatusId(String statusId) {
 		this.statusId = statusId;
 		return this;
 	}
-	/** 経験値の種類の名前 */
-	protected String experienceName;
 
-	/**
-	 * 経験値の種類の名前を取得
-	 *
-	 * @return 経験値の種類の名前
-	 */
 	public String getExperienceName() {
 		return experienceName;
 	}
 
-	/**
-	 * 経験値の種類の名前を設定
-	 *
-	 * @param experienceName 経験値の種類の名前
-	 */
 	public void setExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 	}
 
-	/**
-	 * 経験値の種類の名前を設定
-	 *
-	 * @param experienceName 経験値の種類の名前
-	 * @return this
-	 */
 	public Status withExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Status withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** プロパティID */
-	protected String propertyId;
 
-	/**
-	 * プロパティIDを取得
-	 *
-	 * @return プロパティID
-	 */
 	public String getPropertyId() {
 		return propertyId;
 	}
 
-	/**
-	 * プロパティIDを設定
-	 *
-	 * @param propertyId プロパティID
-	 */
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
 
-	/**
-	 * プロパティIDを設定
-	 *
-	 * @param propertyId プロパティID
-	 * @return this
-	 */
 	public Status withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;
 	}
-	/** 累計獲得経験値 */
-	protected Long experienceValue;
 
-	/**
-	 * 累計獲得経験値を取得
-	 *
-	 * @return 累計獲得経験値
-	 */
 	public Long getExperienceValue() {
 		return experienceValue;
 	}
 
-	/**
-	 * 累計獲得経験値を設定
-	 *
-	 * @param experienceValue 累計獲得経験値
-	 */
 	public void setExperienceValue(Long experienceValue) {
 		this.experienceValue = experienceValue;
 	}
 
-	/**
-	 * 累計獲得経験値を設定
-	 *
-	 * @param experienceValue 累計獲得経験値
-	 * @return this
-	 */
 	public Status withExperienceValue(Long experienceValue) {
 		this.experienceValue = experienceValue;
 		return this;
 	}
-	/** 現在のランク */
-	protected Long rankValue;
 
-	/**
-	 * 現在のランクを取得
-	 *
-	 * @return 現在のランク
-	 */
 	public Long getRankValue() {
 		return rankValue;
 	}
 
-	/**
-	 * 現在のランクを設定
-	 *
-	 * @param rankValue 現在のランク
-	 */
 	public void setRankValue(Long rankValue) {
 		this.rankValue = rankValue;
 	}
 
-	/**
-	 * 現在のランクを設定
-	 *
-	 * @param rankValue 現在のランク
-	 * @return this
-	 */
 	public Status withRankValue(Long rankValue) {
 		this.rankValue = rankValue;
 		return this;
 	}
-	/** 現在のランクキャップ */
-	protected Long rankCapValue;
 
-	/**
-	 * 現在のランクキャップを取得
-	 *
-	 * @return 現在のランクキャップ
-	 */
 	public Long getRankCapValue() {
 		return rankCapValue;
 	}
 
-	/**
-	 * 現在のランクキャップを設定
-	 *
-	 * @param rankCapValue 現在のランクキャップ
-	 */
 	public void setRankCapValue(Long rankCapValue) {
 		this.rankCapValue = rankCapValue;
 	}
 
-	/**
-	 * 現在のランクキャップを設定
-	 *
-	 * @param rankCapValue 現在のランクキャップ
-	 * @return this
-	 */
 	public Status withRankCapValue(Long rankCapValue) {
 		this.rankCapValue = rankCapValue;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Status withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Status withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("statusId", this.getStatusId())
-            .put("experienceName", this.getExperienceName())
-            .put("userId", this.getUserId())
-            .put("propertyId", this.getPropertyId())
-            .put("experienceValue", this.getExperienceValue())
-            .put("rankValue", this.getRankValue())
-            .put("rankCapValue", this.getRankCapValue())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Status fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Status()
+            .withStatusId(data.get("statusId") == null || data.get("statusId").isNull() ? null : data.get("statusId").asText())
+            .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
+            .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").longValue())
+            .withRankValue(data.get("rankValue") == null || data.get("rankValue").isNull() ? null : data.get("rankValue").longValue())
+            .withRankCapValue(data.get("rankCapValue") == null || data.get("rankCapValue").isNull() ? null : data.get("rankCapValue").longValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("statusId", getStatusId());
+                put("experienceName", getExperienceName());
+                put("userId", getUserId());
+                put("propertyId", getPropertyId());
+                put("experienceValue", getExperienceValue());
+                put("rankValue", getRankValue());
+                put("rankCapValue", getRankCapValue());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Status o) {
 		return statusId.compareTo(o.statusId);

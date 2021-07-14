@@ -16,163 +16,108 @@
 
 package io.gs2.formation.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * フォームモデル
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FormModel implements IModel, Serializable, Comparable<FormModel> {
-	/** フォームマスター */
-	protected String formModelId;
+	private String formModelId;
+	private String name;
+	private String metadata;
+	private List<SlotModel> slots;
 
-	/**
-	 * フォームマスターを取得
-	 *
-	 * @return フォームマスター
-	 */
 	public String getFormModelId() {
 		return formModelId;
 	}
 
-	/**
-	 * フォームマスターを設定
-	 *
-	 * @param formModelId フォームマスター
-	 */
 	public void setFormModelId(String formModelId) {
 		this.formModelId = formModelId;
 	}
 
-	/**
-	 * フォームマスターを設定
-	 *
-	 * @param formModelId フォームマスター
-	 * @return this
-	 */
 	public FormModel withFormModelId(String formModelId) {
 		this.formModelId = formModelId;
 		return this;
 	}
-	/** フォームの種類名 */
-	protected String name;
 
-	/**
-	 * フォームの種類名を取得
-	 *
-	 * @return フォームの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * フォームの種類名を設定
-	 *
-	 * @param name フォームの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * フォームの種類名を設定
-	 *
-	 * @param name フォームの種類名
-	 * @return this
-	 */
 	public FormModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** フォームの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * フォームの種類のメタデータを取得
-	 *
-	 * @return フォームの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * フォームの種類のメタデータを設定
-	 *
-	 * @param metadata フォームの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * フォームの種類のメタデータを設定
-	 *
-	 * @param metadata フォームの種類のメタデータ
-	 * @return this
-	 */
 	public FormModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** スリットリスト */
-	protected List<SlotModel> slots;
 
-	/**
-	 * スリットリストを取得
-	 *
-	 * @return スリットリスト
-	 */
 	public List<SlotModel> getSlots() {
 		return slots;
 	}
 
-	/**
-	 * スリットリストを設定
-	 *
-	 * @param slots スリットリスト
-	 */
 	public void setSlots(List<SlotModel> slots) {
 		this.slots = slots;
 	}
 
-	/**
-	 * スリットリストを設定
-	 *
-	 * @param slots スリットリスト
-	 * @return this
-	 */
 	public FormModel withSlots(List<SlotModel> slots) {
 		this.slots = slots;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> slots = new ArrayList<>();
-        if(this.slots != null) {
-            for(SlotModel item : this.slots) {
-                slots.add(item.toJson());
-            }
+    public static FormModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("formModelId", this.getFormModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata());
-        body_.set("slots", JsonNodeFactory.instance.arrayNode().addAll(slots));
-        return body_;
+        return new FormModel()
+            .withFormModelId(data.get("formModelId") == null || data.get("formModelId").isNull() ? null : data.get("formModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<SlotModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return SlotModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("formModelId", getFormModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("slots", getSlots() == null ? new ArrayList<SlotModel>() :
+                    getSlots().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(FormModel o) {
 		return formModelId.compareTo(o.formModelId);

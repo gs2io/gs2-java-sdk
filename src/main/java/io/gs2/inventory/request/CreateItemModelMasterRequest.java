@@ -16,274 +16,158 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * アイテムモデルマスターを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateItemModelMasterRequest extends Gs2BasicRequest<CreateItemModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return アイテムモデルマスターを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アイテムモデルマスターを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName アイテムモデルマスターを新規作成
-     * @return this
-     */
-    public CreateItemModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** アイテムの種類名 */
     private String inventoryName;
-
-    /**
-     * アイテムの種類名を取得
-     *
-     * @return アイテムモデルマスターを新規作成
-     */
-    public String getInventoryName() {
-        return inventoryName;
-    }
-
-    /**
-     * アイテムの種類名を設定
-     *
-     * @param inventoryName アイテムモデルマスターを新規作成
-     */
-    public void setInventoryName(String inventoryName) {
-        this.inventoryName = inventoryName;
-    }
-
-    /**
-     * アイテムの種類名を設定
-     *
-     * @param inventoryName アイテムモデルマスターを新規作成
-     * @return this
-     */
-    public CreateItemModelMasterRequest withInventoryName(String inventoryName) {
-        setInventoryName(inventoryName);
-        return this;
-    }
-
-    /** アイテムモデルの種類名 */
     private String name;
-
-    /**
-     * アイテムモデルの種類名を取得
-     *
-     * @return アイテムモデルマスターを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * アイテムモデルの種類名を設定
-     *
-     * @param name アイテムモデルマスターを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * アイテムモデルの種類名を設定
-     *
-     * @param name アイテムモデルマスターを新規作成
-     * @return this
-     */
-    public CreateItemModelMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** アイテムモデルマスターの説明 */
     private String description;
-
-    /**
-     * アイテムモデルマスターの説明を取得
-     *
-     * @return アイテムモデルマスターを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * アイテムモデルマスターの説明を設定
-     *
-     * @param description アイテムモデルマスターを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * アイテムモデルマスターの説明を設定
-     *
-     * @param description アイテムモデルマスターを新規作成
-     * @return this
-     */
-    public CreateItemModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** アイテムモデルの種類のメタデータ */
     private String metadata;
-
-    /**
-     * アイテムモデルの種類のメタデータを取得
-     *
-     * @return アイテムモデルマスターを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * アイテムモデルの種類のメタデータを設定
-     *
-     * @param metadata アイテムモデルマスターを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * アイテムモデルの種類のメタデータを設定
-     *
-     * @param metadata アイテムモデルマスターを新規作成
-     * @return this
-     */
-    public CreateItemModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** スタック可能な最大数量 */
     private Long stackingLimit;
-
-    /**
-     * スタック可能な最大数量を取得
-     *
-     * @return アイテムモデルマスターを新規作成
-     */
-    public Long getStackingLimit() {
-        return stackingLimit;
-    }
-
-    /**
-     * スタック可能な最大数量を設定
-     *
-     * @param stackingLimit アイテムモデルマスターを新規作成
-     */
-    public void setStackingLimit(Long stackingLimit) {
-        this.stackingLimit = stackingLimit;
-    }
-
-    /**
-     * スタック可能な最大数量を設定
-     *
-     * @param stackingLimit アイテムモデルマスターを新規作成
-     * @return this
-     */
-    public CreateItemModelMasterRequest withStackingLimit(Long stackingLimit) {
-        setStackingLimit(stackingLimit);
-        return this;
-    }
-
-    /** スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか */
     private Boolean allowMultipleStacks;
-
-    /**
-     * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを取得
-     *
-     * @return アイテムモデルマスターを新規作成
-     */
-    public Boolean getAllowMultipleStacks() {
-        return allowMultipleStacks;
-    }
-
-    /**
-     * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
-     *
-     * @param allowMultipleStacks アイテムモデルマスターを新規作成
-     */
-    public void setAllowMultipleStacks(Boolean allowMultipleStacks) {
-        this.allowMultipleStacks = allowMultipleStacks;
-    }
-
-    /**
-     * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
-     *
-     * @param allowMultipleStacks アイテムモデルマスターを新規作成
-     * @return this
-     */
-    public CreateItemModelMasterRequest withAllowMultipleStacks(Boolean allowMultipleStacks) {
-        setAllowMultipleStacks(allowMultipleStacks);
-        return this;
-    }
-
-    /** 表示順番 */
     private Integer sortValue;
 
-    /**
-     * 表示順番を取得
-     *
-     * @return アイテムモデルマスターを新規作成
-     */
-    public Integer getSortValue() {
-        return sortValue;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateItemModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+	}
+
+	public CreateItemModelMasterRequest withInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateItemModelMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateItemModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateItemModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public Long getStackingLimit() {
+		return stackingLimit;
+	}
+
+	public void setStackingLimit(Long stackingLimit) {
+		this.stackingLimit = stackingLimit;
+	}
+
+	public CreateItemModelMasterRequest withStackingLimit(Long stackingLimit) {
+		this.stackingLimit = stackingLimit;
+		return this;
+	}
+
+	public Boolean getAllowMultipleStacks() {
+		return allowMultipleStacks;
+	}
+
+	public void setAllowMultipleStacks(Boolean allowMultipleStacks) {
+		this.allowMultipleStacks = allowMultipleStacks;
+	}
+
+	public CreateItemModelMasterRequest withAllowMultipleStacks(Boolean allowMultipleStacks) {
+		this.allowMultipleStacks = allowMultipleStacks;
+		return this;
+	}
+
+	public Integer getSortValue() {
+		return sortValue;
+	}
+
+	public void setSortValue(Integer sortValue) {
+		this.sortValue = sortValue;
+	}
+
+	public CreateItemModelMasterRequest withSortValue(Integer sortValue) {
+		this.sortValue = sortValue;
+		return this;
+	}
+
+    public static CreateItemModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateItemModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withStackingLimit(data.get("stackingLimit") == null || data.get("stackingLimit").isNull() ? null : data.get("stackingLimit").longValue())
+            .withAllowMultipleStacks(data.get("allowMultipleStacks") == null || data.get("allowMultipleStacks").isNull() ? null : data.get("allowMultipleStacks").booleanValue())
+            .withSortValue(data.get("sortValue") == null || data.get("sortValue").isNull() ? null : data.get("sortValue").intValue());
     }
 
-    /**
-     * 表示順番を設定
-     *
-     * @param sortValue アイテムモデルマスターを新規作成
-     */
-    public void setSortValue(Integer sortValue) {
-        this.sortValue = sortValue;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("inventoryName", getInventoryName());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("stackingLimit", getStackingLimit());
+                put("allowMultipleStacks", getAllowMultipleStacks());
+                put("sortValue", getSortValue());
+            }}
+        );
     }
-
-    /**
-     * 表示順番を設定
-     *
-     * @param sortValue アイテムモデルマスターを新規作成
-     * @return this
-     */
-    public CreateItemModelMasterRequest withSortValue(Integer sortValue) {
-        setSortValue(sortValue);
-        return this;
-    }
-
 }

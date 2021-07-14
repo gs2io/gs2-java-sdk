@@ -16,39 +16,50 @@
 
 package io.gs2.exchange.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.exchange.model.*;
+import io.gs2.exchange.model.ConsumeAction;
+import io.gs2.exchange.model.AcquireAction;
+import io.gs2.exchange.model.RateModel;
 
-/**
- * 交換レートモデルを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetRateModelResult implements IResult, Serializable {
-	/** 交換レートモデル */
-	private RateModel item;
+    private RateModel item;
 
-	/**
-	 * 交換レートモデルを取得
-	 *
-	 * @return 交換レートモデルを取得
-	 */
 	public RateModel getItem() {
 		return item;
 	}
 
-	/**
-	 * 交換レートモデルを設定
-	 *
-	 * @param item 交換レートモデルを取得
-	 */
 	public void setItem(RateModel item) {
 		this.item = item;
 	}
+
+	public GetRateModelResult withItem(RateModel item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetRateModelResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetRateModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RateModel.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

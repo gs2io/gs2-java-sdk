@@ -16,221 +16,130 @@
 
 package io.gs2.formation.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 保存したフォーム
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Mold implements IModel, Serializable, Comparable<Mold> {
-	/** 保存したフォーム */
-	protected String moldId;
+	private String moldId;
+	private String name;
+	private String userId;
+	private Integer capacity;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 保存したフォームを取得
-	 *
-	 * @return 保存したフォーム
-	 */
 	public String getMoldId() {
 		return moldId;
 	}
 
-	/**
-	 * 保存したフォームを設定
-	 *
-	 * @param moldId 保存したフォーム
-	 */
 	public void setMoldId(String moldId) {
 		this.moldId = moldId;
 	}
 
-	/**
-	 * 保存したフォームを設定
-	 *
-	 * @param moldId 保存したフォーム
-	 * @return this
-	 */
 	public Mold withMoldId(String moldId) {
 		this.moldId = moldId;
 		return this;
 	}
-	/** フォームの保存領域の名前 */
-	protected String name;
 
-	/**
-	 * フォームの保存領域の名前を取得
-	 *
-	 * @return フォームの保存領域の名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * フォームの保存領域の名前を設定
-	 *
-	 * @param name フォームの保存領域の名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * フォームの保存領域の名前を設定
-	 *
-	 * @param name フォームの保存領域の名前
-	 * @return this
-	 */
 	public Mold withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Mold withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 現在のキャパシティ */
-	protected Integer capacity;
 
-	/**
-	 * 現在のキャパシティを取得
-	 *
-	 * @return 現在のキャパシティ
-	 */
 	public Integer getCapacity() {
 		return capacity;
 	}
 
-	/**
-	 * 現在のキャパシティを設定
-	 *
-	 * @param capacity 現在のキャパシティ
-	 */
 	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
 
-	/**
-	 * 現在のキャパシティを設定
-	 *
-	 * @param capacity 現在のキャパシティ
-	 * @return this
-	 */
 	public Mold withCapacity(Integer capacity) {
 		this.capacity = capacity;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Mold withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Mold withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("moldId", this.getMoldId())
-            .put("name", this.getName())
-            .put("userId", this.getUserId())
-            .put("capacity", this.getCapacity())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Mold fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Mold()
+            .withMoldId(data.get("moldId") == null || data.get("moldId").isNull() ? null : data.get("moldId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withCapacity(data.get("capacity") == null || data.get("capacity").isNull() ? null : data.get("capacity").intValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("moldId", getMoldId());
+                put("name", getName());
+                put("userId", getUserId());
+                put("capacity", getCapacity());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Mold o) {
 		return moldId.compareTo(o.moldId);

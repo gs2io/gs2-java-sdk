@@ -16,253 +16,146 @@
 
 package io.gs2.inventory.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * インベントリ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Inventory implements IModel, Serializable, Comparable<Inventory> {
-	/** インベントリ */
-	protected String inventoryId;
+	private String inventoryId;
+	private String inventoryName;
+	private String userId;
+	private Integer currentInventoryCapacityUsage;
+	private Integer currentInventoryMaxCapacity;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * インベントリを取得
-	 *
-	 * @return インベントリ
-	 */
 	public String getInventoryId() {
 		return inventoryId;
 	}
 
-	/**
-	 * インベントリを設定
-	 *
-	 * @param inventoryId インベントリ
-	 */
 	public void setInventoryId(String inventoryId) {
 		this.inventoryId = inventoryId;
 	}
 
-	/**
-	 * インベントリを設定
-	 *
-	 * @param inventoryId インベントリ
-	 * @return this
-	 */
 	public Inventory withInventoryId(String inventoryId) {
 		this.inventoryId = inventoryId;
 		return this;
 	}
-	/** インベントリモデル名 */
-	protected String inventoryName;
 
-	/**
-	 * インベントリモデル名を取得
-	 *
-	 * @return インベントリモデル名
-	 */
 	public String getInventoryName() {
 		return inventoryName;
 	}
 
-	/**
-	 * インベントリモデル名を設定
-	 *
-	 * @param inventoryName インベントリモデル名
-	 */
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
 
-	/**
-	 * インベントリモデル名を設定
-	 *
-	 * @param inventoryName インベントリモデル名
-	 * @return this
-	 */
 	public Inventory withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Inventory withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 現在のインベントリのキャパシティ使用量 */
-	protected Integer currentInventoryCapacityUsage;
 
-	/**
-	 * 現在のインベントリのキャパシティ使用量を取得
-	 *
-	 * @return 現在のインベントリのキャパシティ使用量
-	 */
 	public Integer getCurrentInventoryCapacityUsage() {
 		return currentInventoryCapacityUsage;
 	}
 
-	/**
-	 * 現在のインベントリのキャパシティ使用量を設定
-	 *
-	 * @param currentInventoryCapacityUsage 現在のインベントリのキャパシティ使用量
-	 */
 	public void setCurrentInventoryCapacityUsage(Integer currentInventoryCapacityUsage) {
 		this.currentInventoryCapacityUsage = currentInventoryCapacityUsage;
 	}
 
-	/**
-	 * 現在のインベントリのキャパシティ使用量を設定
-	 *
-	 * @param currentInventoryCapacityUsage 現在のインベントリのキャパシティ使用量
-	 * @return this
-	 */
 	public Inventory withCurrentInventoryCapacityUsage(Integer currentInventoryCapacityUsage) {
 		this.currentInventoryCapacityUsage = currentInventoryCapacityUsage;
 		return this;
 	}
-	/** 現在のインベントリの最大キャパシティ */
-	protected Integer currentInventoryMaxCapacity;
 
-	/**
-	 * 現在のインベントリの最大キャパシティを取得
-	 *
-	 * @return 現在のインベントリの最大キャパシティ
-	 */
 	public Integer getCurrentInventoryMaxCapacity() {
 		return currentInventoryMaxCapacity;
 	}
 
-	/**
-	 * 現在のインベントリの最大キャパシティを設定
-	 *
-	 * @param currentInventoryMaxCapacity 現在のインベントリの最大キャパシティ
-	 */
 	public void setCurrentInventoryMaxCapacity(Integer currentInventoryMaxCapacity) {
 		this.currentInventoryMaxCapacity = currentInventoryMaxCapacity;
 	}
 
-	/**
-	 * 現在のインベントリの最大キャパシティを設定
-	 *
-	 * @param currentInventoryMaxCapacity 現在のインベントリの最大キャパシティ
-	 * @return this
-	 */
 	public Inventory withCurrentInventoryMaxCapacity(Integer currentInventoryMaxCapacity) {
 		this.currentInventoryMaxCapacity = currentInventoryMaxCapacity;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Inventory withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Inventory withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("inventoryId", this.getInventoryId())
-            .put("inventoryName", this.getInventoryName())
-            .put("userId", this.getUserId())
-            .put("currentInventoryCapacityUsage", this.getCurrentInventoryCapacityUsage())
-            .put("currentInventoryMaxCapacity", this.getCurrentInventoryMaxCapacity())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Inventory fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Inventory()
+            .withInventoryId(data.get("inventoryId") == null || data.get("inventoryId").isNull() ? null : data.get("inventoryId").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withCurrentInventoryCapacityUsage(data.get("currentInventoryCapacityUsage") == null || data.get("currentInventoryCapacityUsage").isNull() ? null : data.get("currentInventoryCapacityUsage").intValue())
+            .withCurrentInventoryMaxCapacity(data.get("currentInventoryMaxCapacity") == null || data.get("currentInventoryMaxCapacity").isNull() ? null : data.get("currentInventoryMaxCapacity").intValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("inventoryId", getInventoryId());
+                put("inventoryName", getInventoryName());
+                put("userId", getUserId());
+                put("currentInventoryCapacityUsage", getCurrentInventoryCapacityUsage());
+                put("currentInventoryMaxCapacity", getCurrentInventoryMaxCapacity());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Inventory o) {
 		return inventoryId.compareTo(o.inventoryId);

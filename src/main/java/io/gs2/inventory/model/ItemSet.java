@@ -16,387 +16,218 @@
 
 package io.gs2.inventory.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 有効期限ごとのアイテム所持数量
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ItemSet implements IModel, Serializable, Comparable<ItemSet> {
-	/** 有効期限ごとのアイテム所持数量 */
-	protected String itemSetId;
+	private String itemSetId;
+	private String name;
+	private String inventoryName;
+	private String userId;
+	private String itemName;
+	private Long count;
+	private List<String> referenceOf;
+	private Integer sortValue;
+	private Long expiresAt;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 有効期限ごとのアイテム所持数量を取得
-	 *
-	 * @return 有効期限ごとのアイテム所持数量
-	 */
 	public String getItemSetId() {
 		return itemSetId;
 	}
 
-	/**
-	 * 有効期限ごとのアイテム所持数量を設定
-	 *
-	 * @param itemSetId 有効期限ごとのアイテム所持数量
-	 */
 	public void setItemSetId(String itemSetId) {
 		this.itemSetId = itemSetId;
 	}
 
-	/**
-	 * 有効期限ごとのアイテム所持数量を設定
-	 *
-	 * @param itemSetId 有効期限ごとのアイテム所持数量
-	 * @return this
-	 */
 	public ItemSet withItemSetId(String itemSetId) {
 		this.itemSetId = itemSetId;
 		return this;
 	}
-	/** アイテムセットを識別する名前 */
-	protected String name;
 
-	/**
-	 * アイテムセットを識別する名前を取得
-	 *
-	 * @return アイテムセットを識別する名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * アイテムセットを識別する名前を設定
-	 *
-	 * @param name アイテムセットを識別する名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * アイテムセットを識別する名前を設定
-	 *
-	 * @param name アイテムセットを識別する名前
-	 * @return this
-	 */
 	public ItemSet withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** インベントリの名前 */
-	protected String inventoryName;
 
-	/**
-	 * インベントリの名前を取得
-	 *
-	 * @return インベントリの名前
-	 */
 	public String getInventoryName() {
 		return inventoryName;
 	}
 
-	/**
-	 * インベントリの名前を設定
-	 *
-	 * @param inventoryName インベントリの名前
-	 */
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
 
-	/**
-	 * インベントリの名前を設定
-	 *
-	 * @param inventoryName インベントリの名前
-	 * @return this
-	 */
 	public ItemSet withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public ItemSet withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** アイテムマスターの名前 */
-	protected String itemName;
 
-	/**
-	 * アイテムマスターの名前を取得
-	 *
-	 * @return アイテムマスターの名前
-	 */
 	public String getItemName() {
 		return itemName;
 	}
 
-	/**
-	 * アイテムマスターの名前を設定
-	 *
-	 * @param itemName アイテムマスターの名前
-	 */
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
 
-	/**
-	 * アイテムマスターの名前を設定
-	 *
-	 * @param itemName アイテムマスターの名前
-	 * @return this
-	 */
 	public ItemSet withItemName(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
-	/** 所持数量 */
-	protected Long count;
 
-	/**
-	 * 所持数量を取得
-	 *
-	 * @return 所持数量
-	 */
 	public Long getCount() {
 		return count;
 	}
 
-	/**
-	 * 所持数量を設定
-	 *
-	 * @param count 所持数量
-	 */
 	public void setCount(Long count) {
 		this.count = count;
 	}
 
-	/**
-	 * 所持数量を設定
-	 *
-	 * @param count 所持数量
-	 * @return this
-	 */
 	public ItemSet withCount(Long count) {
 		this.count = count;
 		return this;
 	}
-	/** この所持品の参照元リスト */
-	protected List<String> referenceOf;
 
-	/**
-	 * この所持品の参照元リストを取得
-	 *
-	 * @return この所持品の参照元リスト
-	 */
 	public List<String> getReferenceOf() {
 		return referenceOf;
 	}
 
-	/**
-	 * この所持品の参照元リストを設定
-	 *
-	 * @param referenceOf この所持品の参照元リスト
-	 */
 	public void setReferenceOf(List<String> referenceOf) {
 		this.referenceOf = referenceOf;
 	}
 
-	/**
-	 * この所持品の参照元リストを設定
-	 *
-	 * @param referenceOf この所持品の参照元リスト
-	 * @return this
-	 */
 	public ItemSet withReferenceOf(List<String> referenceOf) {
 		this.referenceOf = referenceOf;
 		return this;
 	}
-	/** 表示順番 */
-	protected Integer sortValue;
 
-	/**
-	 * 表示順番を取得
-	 *
-	 * @return 表示順番
-	 */
 	public Integer getSortValue() {
 		return sortValue;
 	}
 
-	/**
-	 * 表示順番を設定
-	 *
-	 * @param sortValue 表示順番
-	 */
 	public void setSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 	}
 
-	/**
-	 * 表示順番を設定
-	 *
-	 * @param sortValue 表示順番
-	 * @return this
-	 */
 	public ItemSet withSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 		return this;
 	}
-	/** 有効期限 */
-	protected Long expiresAt;
 
-	/**
-	 * 有効期限を取得
-	 *
-	 * @return 有効期限
-	 */
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
 
-	/**
-	 * 有効期限を設定
-	 *
-	 * @param expiresAt 有効期限
-	 */
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
 
-	/**
-	 * 有効期限を設定
-	 *
-	 * @param expiresAt 有効期限
-	 * @return this
-	 */
 	public ItemSet withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public ItemSet withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public ItemSet withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> referenceOf = new ArrayList<>();
-        if(this.referenceOf != null) {
-            for(String item : this.referenceOf) {
-                referenceOf.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static ItemSet fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("itemSetId", this.getItemSetId())
-            .put("name", this.getName())
-            .put("inventoryName", this.getInventoryName())
-            .put("userId", this.getUserId())
-            .put("itemName", this.getItemName())
-            .put("count", this.getCount())
-            .put("sortValue", this.getSortValue())
-            .put("expiresAt", this.getExpiresAt())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("referenceOf", JsonNodeFactory.instance.arrayNode().addAll(referenceOf));
-        return body_;
+        return new ItemSet()
+            .withItemSetId(data.get("itemSetId") == null || data.get("itemSetId").isNull() ? null : data.get("itemSetId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").longValue())
+            .withReferenceOf(data.get("referenceOf") == null || data.get("referenceOf").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("referenceOf").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withSortValue(data.get("sortValue") == null || data.get("sortValue").isNull() ? null : data.get("sortValue").intValue())
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("itemSetId", getItemSetId());
+                put("name", getName());
+                put("inventoryName", getInventoryName());
+                put("userId", getUserId());
+                put("itemName", getItemName());
+                put("count", getCount());
+                put("referenceOf", getReferenceOf() == null ? new ArrayList<String>() :
+                    getReferenceOf().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("sortValue", getSortValue());
+                put("expiresAt", getExpiresAt());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(ItemSet o) {
 		return itemSetId.compareTo(o.itemSetId);

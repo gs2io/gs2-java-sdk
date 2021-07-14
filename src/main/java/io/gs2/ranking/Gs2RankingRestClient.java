@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.ranking;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.ranking.request.*;
 import io.gs2.ranking.result.*;
-import io.gs2.ranking.model.*;
+import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient> {
 
-/**
- * GS2 Ranking API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2RankingRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,26 +152,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -206,25 +177,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -251,15 +211,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -270,7 +233,7 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -294,25 +257,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -339,15 +291,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -358,7 +313,7 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -382,25 +337,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -427,15 +371,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -446,25 +393,15 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -482,25 +419,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -527,15 +453,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -546,7 +475,7 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -570,25 +499,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -615,15 +533,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeCategoryModelsTask(
             DescribeCategoryModelsRequest request,
-            AsyncAction<AsyncResult<DescribeCategoryModelsResult>> userCallback,
-            Class<DescribeCategoryModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeCategoryModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeCategoryModelsResult parse(JsonNode data) {
+            return DescribeCategoryModelsResult.fromJson(data);
         }
 
         @Override
@@ -634,7 +555,7 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/category";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -658,25 +579,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * カテゴリの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeCategoryModelsAsync(
             DescribeCategoryModelsRequest request,
             AsyncAction<AsyncResult<DescribeCategoryModelsResult>> callback
     ) {
-        DescribeCategoryModelsTask task = new DescribeCategoryModelsTask(request, callback, DescribeCategoryModelsResult.class);
+        DescribeCategoryModelsTask task = new DescribeCategoryModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カテゴリの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeCategoryModelsResult describeCategoryModels(
             DescribeCategoryModelsRequest request
     ) {
@@ -703,15 +613,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetCategoryModelTask(
             GetCategoryModelRequest request,
-            AsyncAction<AsyncResult<GetCategoryModelResult>> userCallback,
-            Class<GetCategoryModelResult> clazz
+            AsyncAction<AsyncResult<GetCategoryModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCategoryModelResult parse(JsonNode data) {
+            return GetCategoryModelResult.fromJson(data);
         }
 
         @Override
@@ -722,8 +635,8 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/category/{categoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -747,25 +660,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * カテゴリを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCategoryModelAsync(
             GetCategoryModelRequest request,
             AsyncAction<AsyncResult<GetCategoryModelResult>> callback
     ) {
-        GetCategoryModelTask task = new GetCategoryModelTask(request, callback, GetCategoryModelResult.class);
+        GetCategoryModelTask task = new GetCategoryModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カテゴリを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCategoryModelResult getCategoryModel(
             GetCategoryModelRequest request
     ) {
@@ -792,15 +694,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeCategoryModelMastersTask(
             DescribeCategoryModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeCategoryModelMastersResult>> userCallback,
-            Class<DescribeCategoryModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeCategoryModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeCategoryModelMastersResult parse(JsonNode data) {
+            return DescribeCategoryModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -811,7 +716,7 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/category";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -841,25 +746,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * カテゴリマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeCategoryModelMastersAsync(
             DescribeCategoryModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeCategoryModelMastersResult>> callback
     ) {
-        DescribeCategoryModelMastersTask task = new DescribeCategoryModelMastersTask(request, callback, DescribeCategoryModelMastersResult.class);
+        DescribeCategoryModelMastersTask task = new DescribeCategoryModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カテゴリマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeCategoryModelMastersResult describeCategoryModelMasters(
             DescribeCategoryModelMastersRequest request
     ) {
@@ -886,15 +780,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public CreateCategoryModelMasterTask(
             CreateCategoryModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateCategoryModelMasterResult>> userCallback,
-            Class<CreateCategoryModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateCategoryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateCategoryModelMasterResult parse(JsonNode data) {
+            return CreateCategoryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -905,57 +802,27 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/category";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getMinimumValue() != null) {
-                json.put("minimumValue", this.request.getMinimumValue());
-            }
-            if (this.request.getMaximumValue() != null) {
-                json.put("maximumValue", this.request.getMaximumValue());
-            }
-            if (this.request.getOrderDirection() != null) {
-                json.put("orderDirection", this.request.getOrderDirection());
-            }
-            if (this.request.getScope() != null) {
-                json.put("scope", this.request.getScope());
-            }
-            if (this.request.getUniqueByUserId() != null) {
-                json.put("uniqueByUserId", this.request.getUniqueByUserId());
-            }
-            if (this.request.getCalculateFixedTimingHour() != null) {
-                json.put("calculateFixedTimingHour", this.request.getCalculateFixedTimingHour());
-            }
-            if (this.request.getCalculateFixedTimingMinute() != null) {
-                json.put("calculateFixedTimingMinute", this.request.getCalculateFixedTimingMinute());
-            }
-            if (this.request.getCalculateIntervalMinutes() != null) {
-                json.put("calculateIntervalMinutes", this.request.getCalculateIntervalMinutes());
-            }
-            if (this.request.getEntryPeriodEventId() != null) {
-                json.put("entryPeriodEventId", this.request.getEntryPeriodEventId());
-            }
-            if (this.request.getAccessPeriodEventId() != null) {
-                json.put("accessPeriodEventId", this.request.getAccessPeriodEventId());
-            }
-            if (this.request.getGeneration() != null) {
-                json.put("generation", this.request.getGeneration());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("minimumValue", request.getMinimumValue());
+                    put("maximumValue", request.getMaximumValue());
+                    put("orderDirection", request.getOrderDirection());
+                    put("scope", request.getScope());
+                    put("uniqueByUserId", request.getUniqueByUserId());
+                    put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
+                    put("calculateFixedTimingMinute", request.getCalculateFixedTimingMinute());
+                    put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
+                    put("entryPeriodEventId", request.getEntryPeriodEventId());
+                    put("accessPeriodEventId", request.getAccessPeriodEventId());
+                    put("generation", request.getGeneration());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -973,25 +840,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * カテゴリマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createCategoryModelMasterAsync(
             CreateCategoryModelMasterRequest request,
             AsyncAction<AsyncResult<CreateCategoryModelMasterResult>> callback
     ) {
-        CreateCategoryModelMasterTask task = new CreateCategoryModelMasterTask(request, callback, CreateCategoryModelMasterResult.class);
+        CreateCategoryModelMasterTask task = new CreateCategoryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カテゴリマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateCategoryModelMasterResult createCategoryModelMaster(
             CreateCategoryModelMasterRequest request
     ) {
@@ -1018,15 +874,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetCategoryModelMasterTask(
             GetCategoryModelMasterRequest request,
-            AsyncAction<AsyncResult<GetCategoryModelMasterResult>> userCallback,
-            Class<GetCategoryModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetCategoryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCategoryModelMasterResult parse(JsonNode data) {
+            return GetCategoryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1037,8 +896,8 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/category/{categoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1062,25 +921,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * カテゴリマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCategoryModelMasterAsync(
             GetCategoryModelMasterRequest request,
             AsyncAction<AsyncResult<GetCategoryModelMasterResult>> callback
     ) {
-        GetCategoryModelMasterTask task = new GetCategoryModelMasterTask(request, callback, GetCategoryModelMasterResult.class);
+        GetCategoryModelMasterTask task = new GetCategoryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カテゴリマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCategoryModelMasterResult getCategoryModelMaster(
             GetCategoryModelMasterRequest request
     ) {
@@ -1107,15 +955,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public UpdateCategoryModelMasterTask(
             UpdateCategoryModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCategoryModelMasterResult>> userCallback,
-            Class<UpdateCategoryModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCategoryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCategoryModelMasterResult parse(JsonNode data) {
+            return UpdateCategoryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1126,55 +977,27 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/category/{categoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getMinimumValue() != null) {
-                json.put("minimumValue", this.request.getMinimumValue());
-            }
-            if (this.request.getMaximumValue() != null) {
-                json.put("maximumValue", this.request.getMaximumValue());
-            }
-            if (this.request.getOrderDirection() != null) {
-                json.put("orderDirection", this.request.getOrderDirection());
-            }
-            if (this.request.getScope() != null) {
-                json.put("scope", this.request.getScope());
-            }
-            if (this.request.getUniqueByUserId() != null) {
-                json.put("uniqueByUserId", this.request.getUniqueByUserId());
-            }
-            if (this.request.getCalculateFixedTimingHour() != null) {
-                json.put("calculateFixedTimingHour", this.request.getCalculateFixedTimingHour());
-            }
-            if (this.request.getCalculateFixedTimingMinute() != null) {
-                json.put("calculateFixedTimingMinute", this.request.getCalculateFixedTimingMinute());
-            }
-            if (this.request.getCalculateIntervalMinutes() != null) {
-                json.put("calculateIntervalMinutes", this.request.getCalculateIntervalMinutes());
-            }
-            if (this.request.getEntryPeriodEventId() != null) {
-                json.put("entryPeriodEventId", this.request.getEntryPeriodEventId());
-            }
-            if (this.request.getAccessPeriodEventId() != null) {
-                json.put("accessPeriodEventId", this.request.getAccessPeriodEventId());
-            }
-            if (this.request.getGeneration() != null) {
-                json.put("generation", this.request.getGeneration());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("minimumValue", request.getMinimumValue());
+                    put("maximumValue", request.getMaximumValue());
+                    put("orderDirection", request.getOrderDirection());
+                    put("scope", request.getScope());
+                    put("uniqueByUserId", request.getUniqueByUserId());
+                    put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
+                    put("calculateFixedTimingMinute", request.getCalculateFixedTimingMinute());
+                    put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
+                    put("entryPeriodEventId", request.getEntryPeriodEventId());
+                    put("accessPeriodEventId", request.getAccessPeriodEventId());
+                    put("generation", request.getGeneration());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1192,25 +1015,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * カテゴリマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCategoryModelMasterAsync(
             UpdateCategoryModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateCategoryModelMasterResult>> callback
     ) {
-        UpdateCategoryModelMasterTask task = new UpdateCategoryModelMasterTask(request, callback, UpdateCategoryModelMasterResult.class);
+        UpdateCategoryModelMasterTask task = new UpdateCategoryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カテゴリマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCategoryModelMasterResult updateCategoryModelMaster(
             UpdateCategoryModelMasterRequest request
     ) {
@@ -1237,15 +1049,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DeleteCategoryModelMasterTask(
             DeleteCategoryModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteCategoryModelMasterResult>> userCallback,
-            Class<DeleteCategoryModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteCategoryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteCategoryModelMasterResult parse(JsonNode data) {
+            return DeleteCategoryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1256,8 +1071,8 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/category/{categoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1281,25 +1096,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * カテゴリマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteCategoryModelMasterAsync(
             DeleteCategoryModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteCategoryModelMasterResult>> callback
     ) {
-        DeleteCategoryModelMasterTask task = new DeleteCategoryModelMasterTask(request, callback, DeleteCategoryModelMasterResult.class);
+        DeleteCategoryModelMasterTask task = new DeleteCategoryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * カテゴリマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteCategoryModelMasterResult deleteCategoryModelMaster(
             DeleteCategoryModelMasterRequest request
     ) {
@@ -1326,15 +1130,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeSubscribesByCategoryNameTask(
             DescribeSubscribesByCategoryNameRequest request,
-            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameResult>> userCallback,
-            Class<DescribeSubscribesByCategoryNameResult> clazz
+            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeSubscribesByCategoryNameResult parse(JsonNode data) {
+            return DescribeSubscribesByCategoryNameResult.fromJson(data);
         }
 
         @Override
@@ -1345,8 +1152,8 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/subscribe/category/{categoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1366,9 +1173,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1376,25 +1180,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * 購読しているユーザIDの一覧取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeSubscribesByCategoryNameAsync(
             DescribeSubscribesByCategoryNameRequest request,
             AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameResult>> callback
     ) {
-        DescribeSubscribesByCategoryNameTask task = new DescribeSubscribesByCategoryNameTask(request, callback, DescribeSubscribesByCategoryNameResult.class);
+        DescribeSubscribesByCategoryNameTask task = new DescribeSubscribesByCategoryNameTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 購読しているユーザIDの一覧取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeSubscribesByCategoryNameResult describeSubscribesByCategoryName(
             DescribeSubscribesByCategoryNameRequest request
     ) {
@@ -1421,15 +1214,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeSubscribesByCategoryNameAndUserIdTask(
             DescribeSubscribesByCategoryNameAndUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameAndUserIdResult>> userCallback,
-            Class<DescribeSubscribesByCategoryNameAndUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameAndUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeSubscribesByCategoryNameAndUserIdResult parse(JsonNode data) {
+            return DescribeSubscribesByCategoryNameAndUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1440,9 +1236,9 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1459,9 +1255,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1469,25 +1262,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して購読しているユーザIDの一覧取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeSubscribesByCategoryNameAndUserIdAsync(
             DescribeSubscribesByCategoryNameAndUserIdRequest request,
             AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameAndUserIdResult>> callback
     ) {
-        DescribeSubscribesByCategoryNameAndUserIdTask task = new DescribeSubscribesByCategoryNameAndUserIdTask(request, callback, DescribeSubscribesByCategoryNameAndUserIdResult.class);
+        DescribeSubscribesByCategoryNameAndUserIdTask task = new DescribeSubscribesByCategoryNameAndUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して購読しているユーザIDの一覧取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeSubscribesByCategoryNameAndUserIdResult describeSubscribesByCategoryNameAndUserId(
             DescribeSubscribesByCategoryNameAndUserIdRequest request
     ) {
@@ -1514,15 +1296,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public SubscribeTask(
             SubscribeRequest request,
-            AsyncAction<AsyncResult<SubscribeResult>> userCallback,
-            Class<SubscribeResult> clazz
+            AsyncAction<AsyncResult<SubscribeResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SubscribeResult parse(JsonNode data) {
+            return SubscribeResult.fromJson(data);
         }
 
         @Override
@@ -1533,17 +1318,15 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/subscribe/category/{categoryName}/target/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1557,9 +1340,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1567,25 +1347,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ユーザIDを購読<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void subscribeAsync(
             SubscribeRequest request,
             AsyncAction<AsyncResult<SubscribeResult>> callback
     ) {
-        SubscribeTask task = new SubscribeTask(request, callback, SubscribeResult.class);
+        SubscribeTask task = new SubscribeTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを購読<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SubscribeResult subscribe(
             SubscribeRequest request
     ) {
@@ -1612,15 +1381,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public SubscribeByUserIdTask(
             SubscribeByUserIdRequest request,
-            AsyncAction<AsyncResult<SubscribeByUserIdResult>> userCallback,
-            Class<SubscribeByUserIdResult> clazz
+            AsyncAction<AsyncResult<SubscribeByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SubscribeByUserIdResult parse(JsonNode data) {
+            return SubscribeByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1631,18 +1403,16 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}/target/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1653,9 +1423,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1663,25 +1430,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してユーザIDを購読<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void subscribeByUserIdAsync(
             SubscribeByUserIdRequest request,
             AsyncAction<AsyncResult<SubscribeByUserIdResult>> callback
     ) {
-        SubscribeByUserIdTask task = new SubscribeByUserIdTask(request, callback, SubscribeByUserIdResult.class);
+        SubscribeByUserIdTask task = new SubscribeByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してユーザIDを購読<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SubscribeByUserIdResult subscribeByUserId(
             SubscribeByUserIdRequest request
     ) {
@@ -1708,15 +1464,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetSubscribeTask(
             GetSubscribeRequest request,
-            AsyncAction<AsyncResult<GetSubscribeResult>> userCallback,
-            Class<GetSubscribeResult> clazz
+            AsyncAction<AsyncResult<GetSubscribeResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetSubscribeResult parse(JsonNode data) {
+            return GetSubscribeResult.fromJson(data);
         }
 
         @Override
@@ -1727,9 +1486,9 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/subscribe/category/{categoryName}/target/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1749,9 +1508,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1759,25 +1515,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * 購読を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getSubscribeAsync(
             GetSubscribeRequest request,
             AsyncAction<AsyncResult<GetSubscribeResult>> callback
     ) {
-        GetSubscribeTask task = new GetSubscribeTask(request, callback, GetSubscribeResult.class);
+        GetSubscribeTask task = new GetSubscribeTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 購読を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetSubscribeResult getSubscribe(
             GetSubscribeRequest request
     ) {
@@ -1804,15 +1549,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetSubscribeByUserIdTask(
             GetSubscribeByUserIdRequest request,
-            AsyncAction<AsyncResult<GetSubscribeByUserIdResult>> userCallback,
-            Class<GetSubscribeByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetSubscribeByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetSubscribeByUserIdResult parse(JsonNode data) {
+            return GetSubscribeByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1823,10 +1571,10 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}/target/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1843,9 +1591,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1853,25 +1598,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して購読を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getSubscribeByUserIdAsync(
             GetSubscribeByUserIdRequest request,
             AsyncAction<AsyncResult<GetSubscribeByUserIdResult>> callback
     ) {
-        GetSubscribeByUserIdTask task = new GetSubscribeByUserIdTask(request, callback, GetSubscribeByUserIdResult.class);
+        GetSubscribeByUserIdTask task = new GetSubscribeByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して購読を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetSubscribeByUserIdResult getSubscribeByUserId(
             GetSubscribeByUserIdRequest request
     ) {
@@ -1898,15 +1632,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public UnsubscribeTask(
             UnsubscribeRequest request,
-            AsyncAction<AsyncResult<UnsubscribeResult>> userCallback,
-            Class<UnsubscribeResult> clazz
+            AsyncAction<AsyncResult<UnsubscribeResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UnsubscribeResult parse(JsonNode data) {
+            return UnsubscribeResult.fromJson(data);
         }
 
         @Override
@@ -1917,9 +1654,9 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/subscribe/category/{categoryName}/target/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1939,9 +1676,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1949,25 +1683,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * 購読の購読を解除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void unsubscribeAsync(
             UnsubscribeRequest request,
             AsyncAction<AsyncResult<UnsubscribeResult>> callback
     ) {
-        UnsubscribeTask task = new UnsubscribeTask(request, callback, UnsubscribeResult.class);
+        UnsubscribeTask task = new UnsubscribeTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 購読の購読を解除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UnsubscribeResult unsubscribe(
             UnsubscribeRequest request
     ) {
@@ -1994,15 +1717,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public UnsubscribeByUserIdTask(
             UnsubscribeByUserIdRequest request,
-            AsyncAction<AsyncResult<UnsubscribeByUserIdResult>> userCallback,
-            Class<UnsubscribeByUserIdResult> clazz
+            AsyncAction<AsyncResult<UnsubscribeByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UnsubscribeByUserIdResult parse(JsonNode data) {
+            return UnsubscribeByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2013,10 +1739,10 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}/target/{targetUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null|| this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2033,9 +1759,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2043,25 +1766,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して購読の購読を解除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void unsubscribeByUserIdAsync(
             UnsubscribeByUserIdRequest request,
             AsyncAction<AsyncResult<UnsubscribeByUserIdResult>> callback
     ) {
-        UnsubscribeByUserIdTask task = new UnsubscribeByUserIdTask(request, callback, UnsubscribeByUserIdResult.class);
+        UnsubscribeByUserIdTask task = new UnsubscribeByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して購読の購読を解除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UnsubscribeByUserIdResult unsubscribeByUserId(
             UnsubscribeByUserIdRequest request
     ) {
@@ -2088,15 +1800,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeScoresTask(
             DescribeScoresRequest request,
-            AsyncAction<AsyncResult<DescribeScoresResult>> userCallback,
-            Class<DescribeScoresResult> clazz
+            AsyncAction<AsyncResult<DescribeScoresResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeScoresResult parse(JsonNode data) {
+            return DescribeScoresResult.fromJson(data);
         }
 
         @Override
@@ -2107,9 +1822,9 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/category/{categoryName}/scorer/{scorerUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null|| this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null || this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2135,9 +1850,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2145,25 +1857,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * スコアの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeScoresAsync(
             DescribeScoresRequest request,
             AsyncAction<AsyncResult<DescribeScoresResult>> callback
     ) {
-        DescribeScoresTask task = new DescribeScoresTask(request, callback, DescribeScoresResult.class);
+        DescribeScoresTask task = new DescribeScoresTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スコアの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeScoresResult describeScores(
             DescribeScoresRequest request
     ) {
@@ -2190,15 +1891,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeScoresByUserIdTask(
             DescribeScoresByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeScoresByUserIdResult>> userCallback,
-            Class<DescribeScoresByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeScoresByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeScoresByUserIdResult parse(JsonNode data) {
+            return DescribeScoresByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2209,10 +1913,10 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/category/{categoryName}/scorer/{scorerUserId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null|| this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null || this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2235,9 +1939,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2245,25 +1946,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * スコアの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeScoresByUserIdAsync(
             DescribeScoresByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeScoresByUserIdResult>> callback
     ) {
-        DescribeScoresByUserIdTask task = new DescribeScoresByUserIdTask(request, callback, DescribeScoresByUserIdResult.class);
+        DescribeScoresByUserIdTask task = new DescribeScoresByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スコアの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeScoresByUserIdResult describeScoresByUserId(
             DescribeScoresByUserIdRequest request
     ) {
@@ -2290,15 +1980,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetScoreTask(
             GetScoreRequest request,
-            AsyncAction<AsyncResult<GetScoreResult>> userCallback,
-            Class<GetScoreResult> clazz
+            AsyncAction<AsyncResult<GetScoreResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetScoreResult parse(JsonNode data) {
+            return GetScoreResult.fromJson(data);
         }
 
         @Override
@@ -2309,10 +2002,10 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/category/{categoryName}/scorer/{scorerUserId}/score/{uniqueId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null|| this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
-            url = url.replace("{uniqueId}", this.request.getUniqueId() == null|| this.request.getUniqueId().length() == 0 ? "null" : String.valueOf(this.request.getUniqueId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null || this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
+            url = url.replace("{uniqueId}", this.request.getUniqueId() == null || this.request.getUniqueId().length() == 0 ? "null" : String.valueOf(this.request.getUniqueId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2332,9 +2025,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2342,25 +2032,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * スコアを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getScoreAsync(
             GetScoreRequest request,
             AsyncAction<AsyncResult<GetScoreResult>> callback
     ) {
-        GetScoreTask task = new GetScoreTask(request, callback, GetScoreResult.class);
+        GetScoreTask task = new GetScoreTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スコアを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetScoreResult getScore(
             GetScoreRequest request
     ) {
@@ -2387,15 +2066,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetScoreByUserIdTask(
             GetScoreByUserIdRequest request,
-            AsyncAction<AsyncResult<GetScoreByUserIdResult>> userCallback,
-            Class<GetScoreByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetScoreByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetScoreByUserIdResult parse(JsonNode data) {
+            return GetScoreByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2406,11 +2088,11 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/category/{categoryName}/scorer/{scorerUserId}/score/{uniqueId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null|| this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
-            url = url.replace("{uniqueId}", this.request.getUniqueId() == null|| this.request.getUniqueId().length() == 0 ? "null" : String.valueOf(this.request.getUniqueId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null || this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
+            url = url.replace("{uniqueId}", this.request.getUniqueId() == null || this.request.getUniqueId().length() == 0 ? "null" : String.valueOf(this.request.getUniqueId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2427,9 +2109,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2437,25 +2116,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * スコアを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getScoreByUserIdAsync(
             GetScoreByUserIdRequest request,
             AsyncAction<AsyncResult<GetScoreByUserIdResult>> callback
     ) {
-        GetScoreByUserIdTask task = new GetScoreByUserIdTask(request, callback, GetScoreByUserIdResult.class);
+        GetScoreByUserIdTask task = new GetScoreByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スコアを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetScoreByUserIdResult getScoreByUserId(
             GetScoreByUserIdRequest request
     ) {
@@ -2482,15 +2150,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeRankingsTask(
             DescribeRankingsRequest request,
-            AsyncAction<AsyncResult<DescribeRankingsResult>> userCallback,
-            Class<DescribeRankingsResult> clazz
+            AsyncAction<AsyncResult<DescribeRankingsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRankingsResult parse(JsonNode data) {
+            return DescribeRankingsResult.fromJson(data);
         }
 
         @Override
@@ -2501,8 +2172,8 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/category/{categoryName}/ranking";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2531,9 +2202,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2541,25 +2209,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ランキングを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRankingsAsync(
             DescribeRankingsRequest request,
             AsyncAction<AsyncResult<DescribeRankingsResult>> callback
     ) {
-        DescribeRankingsTask task = new DescribeRankingsTask(request, callback, DescribeRankingsResult.class);
+        DescribeRankingsTask task = new DescribeRankingsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランキングを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRankingsResult describeRankings(
             DescribeRankingsRequest request
     ) {
@@ -2586,15 +2243,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeRankingssByUserIdTask(
             DescribeRankingssByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeRankingssByUserIdResult>> userCallback,
-            Class<DescribeRankingssByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeRankingssByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRankingssByUserIdResult parse(JsonNode data) {
+            return DescribeRankingssByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2605,9 +2265,9 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/category/{categoryName}/ranking";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2633,9 +2293,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2643,25 +2300,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してランキングを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRankingssByUserIdAsync(
             DescribeRankingssByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeRankingssByUserIdResult>> callback
     ) {
-        DescribeRankingssByUserIdTask task = new DescribeRankingssByUserIdTask(request, callback, DescribeRankingssByUserIdResult.class);
+        DescribeRankingssByUserIdTask task = new DescribeRankingssByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してランキングを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRankingssByUserIdResult describeRankingssByUserId(
             DescribeRankingssByUserIdRequest request
     ) {
@@ -2688,15 +2334,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public DescribeNearRankingsTask(
             DescribeNearRankingsRequest request,
-            AsyncAction<AsyncResult<DescribeNearRankingsResult>> userCallback,
-            Class<DescribeNearRankingsResult> clazz
+            AsyncAction<AsyncResult<DescribeNearRankingsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNearRankingsResult parse(JsonNode data) {
+            return DescribeNearRankingsResult.fromJson(data);
         }
 
         @Override
@@ -2707,8 +2356,8 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/category/{categoryName}/ranking/near";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2735,29 +2384,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * 指定したスコア付近のランキングを取得<br>
-     *   <br>
-     *   このAPIはグローバルランキングのときのみ使用できます<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNearRankingsAsync(
             DescribeNearRankingsRequest request,
             AsyncAction<AsyncResult<DescribeNearRankingsResult>> callback
     ) {
-        DescribeNearRankingsTask task = new DescribeNearRankingsTask(request, callback, DescribeNearRankingsResult.class);
+        DescribeNearRankingsTask task = new DescribeNearRankingsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 指定したスコア付近のランキングを取得<br>
-     *   <br>
-     *   このAPIはグローバルランキングのときのみ使用できます<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNearRankingsResult describeNearRankings(
             DescribeNearRankingsRequest request
     ) {
@@ -2784,15 +2418,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetRankingTask(
             GetRankingRequest request,
-            AsyncAction<AsyncResult<GetRankingResult>> userCallback,
-            Class<GetRankingResult> clazz
+            AsyncAction<AsyncResult<GetRankingResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRankingResult parse(JsonNode data) {
+            return GetRankingResult.fromJson(data);
         }
 
         @Override
@@ -2803,10 +2440,10 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/category/{categoryName}/ranking/scorer/{scorerUserId}/score/{uniqueId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null|| this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
-            url = url.replace("{uniqueId}", this.request.getUniqueId() == null|| this.request.getUniqueId().length() == 0 ? "null" : String.valueOf(this.request.getUniqueId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null || this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
+            url = url.replace("{uniqueId}", this.request.getUniqueId() == null || this.request.getUniqueId().length() == 0 ? "null" : String.valueOf(this.request.getUniqueId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2826,9 +2463,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2836,25 +2470,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ランキングを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRankingAsync(
             GetRankingRequest request,
             AsyncAction<AsyncResult<GetRankingResult>> callback
     ) {
-        GetRankingTask task = new GetRankingTask(request, callback, GetRankingResult.class);
+        GetRankingTask task = new GetRankingTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランキングを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRankingResult getRanking(
             GetRankingRequest request
     ) {
@@ -2881,15 +2504,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetRankingByUserIdTask(
             GetRankingByUserIdRequest request,
-            AsyncAction<AsyncResult<GetRankingByUserIdResult>> userCallback,
-            Class<GetRankingByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetRankingByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRankingByUserIdResult parse(JsonNode data) {
+            return GetRankingByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2900,11 +2526,11 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/category/{categoryName}/ranking/scorer/{scorerUserId}/score/{uniqueId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null|| this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
-            url = url.replace("{uniqueId}", this.request.getUniqueId() == null|| this.request.getUniqueId().length() == 0 ? "null" : String.valueOf(this.request.getUniqueId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{scorerUserId}", this.request.getScorerUserId() == null || this.request.getScorerUserId().length() == 0 ? "null" : String.valueOf(this.request.getScorerUserId()));
+            url = url.replace("{uniqueId}", this.request.getUniqueId() == null || this.request.getUniqueId().length() == 0 ? "null" : String.valueOf(this.request.getUniqueId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2921,9 +2547,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2931,25 +2554,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ランキングを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRankingByUserIdAsync(
             GetRankingByUserIdRequest request,
             AsyncAction<AsyncResult<GetRankingByUserIdResult>> callback
     ) {
-        GetRankingByUserIdTask task = new GetRankingByUserIdTask(request, callback, GetRankingByUserIdResult.class);
+        GetRankingByUserIdTask task = new GetRankingByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ランキングを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRankingByUserIdResult getRankingByUserId(
             GetRankingByUserIdRequest request
     ) {
@@ -2976,15 +2588,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public PutScoreTask(
             PutScoreRequest request,
-            AsyncAction<AsyncResult<PutScoreResult>> userCallback,
-            Class<PutScoreResult> clazz
+            AsyncAction<AsyncResult<PutScoreResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PutScoreResult parse(JsonNode data) {
+            return PutScoreResult.fromJson(data);
         }
 
         @Override
@@ -2995,22 +2610,16 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/category/{categoryName}/ranking";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getScore() != null) {
-                json.put("score", this.request.getScore());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("score", request.getScore());
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3024,9 +2633,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3034,25 +2640,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * スコアを登録<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void putScoreAsync(
             PutScoreRequest request,
             AsyncAction<AsyncResult<PutScoreResult>> callback
     ) {
-        PutScoreTask task = new PutScoreTask(request, callback, PutScoreResult.class);
+        PutScoreTask task = new PutScoreTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スコアを登録<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PutScoreResult putScore(
             PutScoreRequest request
     ) {
@@ -3079,15 +2674,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public PutScoreByUserIdTask(
             PutScoreByUserIdRequest request,
-            AsyncAction<AsyncResult<PutScoreByUserIdResult>> userCallback,
-            Class<PutScoreByUserIdResult> clazz
+            AsyncAction<AsyncResult<PutScoreByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public PutScoreByUserIdResult parse(JsonNode data) {
+            return PutScoreByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3098,23 +2696,17 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/category/{categoryName}/ranking";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null|| this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getScore() != null) {
-                json.put("score", this.request.getScore());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("score", request.getScore());
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3125,9 +2717,6 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3135,25 +2724,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * ユーザーIDを指定してスコアを登録<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void putScoreByUserIdAsync(
             PutScoreByUserIdRequest request,
             AsyncAction<AsyncResult<PutScoreByUserIdResult>> callback
     ) {
-        PutScoreByUserIdTask task = new PutScoreByUserIdTask(request, callback, PutScoreByUserIdResult.class);
+        PutScoreByUserIdTask task = new PutScoreByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してスコアを登録<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public PutScoreByUserIdResult putScoreByUserId(
             PutScoreByUserIdRequest request
     ) {
@@ -3180,15 +2758,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -3199,7 +2780,7 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3223,25 +2804,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * 現在有効なランキング設定のマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なランキング設定のマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -3268,15 +2838,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public GetCurrentRankingMasterTask(
             GetCurrentRankingMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentRankingMasterResult>> userCallback,
-            Class<GetCurrentRankingMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentRankingMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentRankingMasterResult parse(JsonNode data) {
+            return GetCurrentRankingMasterResult.fromJson(data);
         }
 
         @Override
@@ -3287,7 +2860,7 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3311,25 +2884,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * 現在有効なランキング設定を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentRankingMasterAsync(
             GetCurrentRankingMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentRankingMasterResult>> callback
     ) {
-        GetCurrentRankingMasterTask task = new GetCurrentRankingMasterTask(request, callback, GetCurrentRankingMasterResult.class);
+        GetCurrentRankingMasterTask task = new GetCurrentRankingMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なランキング設定を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentRankingMasterResult getCurrentRankingMaster(
             GetCurrentRankingMasterRequest request
     ) {
@@ -3356,15 +2918,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public UpdateCurrentRankingMasterTask(
             UpdateCurrentRankingMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRankingMasterResult>> userCallback,
-            Class<UpdateCurrentRankingMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentRankingMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentRankingMasterResult parse(JsonNode data) {
+            return UpdateCurrentRankingMasterResult.fromJson(data);
         }
 
         @Override
@@ -3375,18 +2940,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3404,25 +2965,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * 現在有効なランキング設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentRankingMasterAsync(
             UpdateCurrentRankingMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentRankingMasterResult>> callback
     ) {
-        UpdateCurrentRankingMasterTask task = new UpdateCurrentRankingMasterTask(request, callback, UpdateCurrentRankingMasterResult.class);
+        UpdateCurrentRankingMasterTask task = new UpdateCurrentRankingMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なランキング設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentRankingMasterResult updateCurrentRankingMaster(
             UpdateCurrentRankingMasterRequest request
     ) {
@@ -3449,15 +2999,18 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
 
         public UpdateCurrentRankingMasterFromGitHubTask(
             UpdateCurrentRankingMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRankingMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentRankingMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentRankingMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentRankingMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentRankingMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -3468,22 +3021,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3501,25 +3046,14 @@ public class Gs2RankingRestClient extends AbstractGs2Client<Gs2RankingRestClient
         }
     }
 
-    /**
-     * 現在有効なランキング設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentRankingMasterFromGitHubAsync(
             UpdateCurrentRankingMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentRankingMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentRankingMasterFromGitHubTask task = new UpdateCurrentRankingMasterFromGitHubTask(request, callback, UpdateCurrentRankingMasterFromGitHubResult.class);
+        UpdateCurrentRankingMasterFromGitHubTask task = new UpdateCurrentRankingMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なランキング設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentRankingMasterFromGitHubResult updateCurrentRankingMasterFromGitHub(
             UpdateCurrentRankingMasterFromGitHubRequest request
     ) {

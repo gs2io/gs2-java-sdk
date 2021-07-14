@@ -16,124 +16,80 @@
 
 package io.gs2.ranking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 購読対象
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SubscribeUser implements IModel, Serializable {
-	/** カテゴリ名 */
-	protected String categoryName;
+	private String categoryName;
+	private String userId;
+	private String targetUserId;
 
-	/**
-	 * カテゴリ名を取得
-	 *
-	 * @return カテゴリ名
-	 */
 	public String getCategoryName() {
 		return categoryName;
 	}
 
-	/**
-	 * カテゴリ名を設定
-	 *
-	 * @param categoryName カテゴリ名
-	 */
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
 
-	/**
-	 * カテゴリ名を設定
-	 *
-	 * @param categoryName カテゴリ名
-	 * @return this
-	 */
 	public SubscribeUser withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-	/** 購読するユーザID */
-	protected String userId;
 
-	/**
-	 * 購読するユーザIDを取得
-	 *
-	 * @return 購読するユーザID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * 購読するユーザIDを設定
-	 *
-	 * @param userId 購読するユーザID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * 購読するユーザIDを設定
-	 *
-	 * @param userId 購読するユーザID
-	 * @return this
-	 */
 	public SubscribeUser withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 購読されるユーザID */
-	protected String targetUserId;
 
-	/**
-	 * 購読されるユーザIDを取得
-	 *
-	 * @return 購読されるユーザID
-	 */
 	public String getTargetUserId() {
 		return targetUserId;
 	}
 
-	/**
-	 * 購読されるユーザIDを設定
-	 *
-	 * @param targetUserId 購読されるユーザID
-	 */
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
 
-	/**
-	 * 購読されるユーザIDを設定
-	 *
-	 * @param targetUserId 購読されるユーザID
-	 * @return this
-	 */
 	public SubscribeUser withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("categoryName", this.getCategoryName())
-            .put("userId", this.getUserId())
-            .put("targetUserId", this.getTargetUserId());
-        return body_;
+    public static SubscribeUser fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SubscribeUser()
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("categoryName", getCategoryName());
+                put("userId", getUserId());
+                put("targetUserId", getTargetUserId());
+            }}
+        );
     }
 
 	@Override

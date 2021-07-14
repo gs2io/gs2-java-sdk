@@ -16,349 +16,178 @@
 
 package io.gs2.project.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * GS2アカウント
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Account implements IModel, Serializable, Comparable<Account> {
-	/** GS2アカウント */
-	protected String accountId;
+	private String accountId;
+	private String ownerId;
+	private String name;
+	private String email;
+	private String fullName;
+	private String companyName;
+	private String status;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * GS2アカウントを取得
-	 *
-	 * @return GS2アカウント
-	 */
 	public String getAccountId() {
 		return accountId;
 	}
 
-	/**
-	 * GS2アカウントを設定
-	 *
-	 * @param accountId GS2アカウント
-	 */
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 
-	/**
-	 * GS2アカウントを設定
-	 *
-	 * @param accountId GS2アカウント
-	 * @return this
-	 */
 	public Account withAccountId(String accountId) {
 		this.accountId = accountId;
 		return this;
 	}
-	/** None */
-	protected String ownerId;
 
-	/**
-	 * Noneを取得
-	 *
-	 * @return None
-	 */
 	public String getOwnerId() {
 		return ownerId;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param ownerId None
-	 */
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param ownerId None
-	 * @return this
-	 */
 	public Account withOwnerId(String ownerId) {
 		this.ownerId = ownerId;
 		return this;
 	}
-	/** GS2アカウントの名前 */
-	protected String name;
 
-	/**
-	 * GS2アカウントの名前を取得
-	 *
-	 * @return GS2アカウントの名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * GS2アカウントの名前を設定
-	 *
-	 * @param name GS2アカウントの名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * GS2アカウントの名前を設定
-	 *
-	 * @param name GS2アカウントの名前
-	 * @return this
-	 */
 	public Account withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** メールアドレス */
-	protected String email;
 
-	/**
-	 * メールアドレスを取得
-	 *
-	 * @return メールアドレス
-	 */
 	public String getEmail() {
 		return email;
 	}
 
-	/**
-	 * メールアドレスを設定
-	 *
-	 * @param email メールアドレス
-	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	/**
-	 * メールアドレスを設定
-	 *
-	 * @param email メールアドレス
-	 * @return this
-	 */
 	public Account withEmail(String email) {
 		this.email = email;
 		return this;
 	}
-	/** フルネーム */
-	protected String fullName;
 
-	/**
-	 * フルネームを取得
-	 *
-	 * @return フルネーム
-	 */
 	public String getFullName() {
 		return fullName;
 	}
 
-	/**
-	 * フルネームを設定
-	 *
-	 * @param fullName フルネーム
-	 */
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
 
-	/**
-	 * フルネームを設定
-	 *
-	 * @param fullName フルネーム
-	 * @return this
-	 */
 	public Account withFullName(String fullName) {
 		this.fullName = fullName;
 		return this;
 	}
-	/** 会社名 */
-	protected String companyName;
 
-	/**
-	 * 会社名を取得
-	 *
-	 * @return 会社名
-	 */
 	public String getCompanyName() {
 		return companyName;
 	}
 
-	/**
-	 * 会社名を設定
-	 *
-	 * @param companyName 会社名
-	 */
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
 
-	/**
-	 * 会社名を設定
-	 *
-	 * @param companyName 会社名
-	 * @return this
-	 */
 	public Account withCompanyName(String companyName) {
 		this.companyName = companyName;
 		return this;
 	}
-	/** パスワード */
-	protected String password;
 
-	/**
-	 * パスワードを取得
-	 *
-	 * @return パスワード
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * パスワードを設定
-	 *
-	 * @param password パスワード
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * パスワードを設定
-	 *
-	 * @param password パスワード
-	 * @return this
-	 */
-	public Account withPassword(String password) {
-		this.password = password;
-		return this;
-	}
-	/** ステータス */
-	protected String status;
-
-	/**
-	 * ステータスを取得
-	 *
-	 * @return ステータス
-	 */
 	public String getStatus() {
 		return status;
 	}
 
-	/**
-	 * ステータスを設定
-	 *
-	 * @param status ステータス
-	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	/**
-	 * ステータスを設定
-	 *
-	 * @param status ステータス
-	 * @return this
-	 */
 	public Account withStatus(String status) {
 		this.status = status;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Account withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Account withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("accountId", this.getAccountId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("email", this.getEmail())
-            .put("fullName", this.getFullName())
-            .put("companyName", this.getCompanyName())
-            .put("password", this.getPassword())
-            .put("status", this.getStatus())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Account fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Account()
+            .withAccountId(data.get("accountId") == null || data.get("accountId").isNull() ? null : data.get("accountId").asText())
+            .withOwnerId(data.get("ownerId") == null || data.get("ownerId").isNull() ? null : data.get("ownerId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withEmail(data.get("email") == null || data.get("email").isNull() ? null : data.get("email").asText())
+            .withFullName(data.get("fullName") == null || data.get("fullName").isNull() ? null : data.get("fullName").asText())
+            .withCompanyName(data.get("companyName") == null || data.get("companyName").isNull() ? null : data.get("companyName").asText())
+            .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountId", getAccountId());
+                put("ownerId", getOwnerId());
+                put("name", getName());
+                put("email", getEmail());
+                put("fullName", getFullName());
+                put("companyName", getCompanyName());
+                put("status", getStatus());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Account o) {
 		return accountId.compareTo(o.accountId);
@@ -374,7 +203,6 @@ public class Account implements IModel, Serializable, Comparable<Account> {
         result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
         result = prime * result + ((this.fullName == null) ? 0 : this.fullName.hashCode());
         result = prime * result + ((this.companyName == null) ? 0 : this.companyName.hashCode());
-        result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -418,11 +246,6 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		if (companyName == null) {
 			return other.companyName == null;
 		} else if (!companyName.equals(other.companyName)) {
-			return false;
-		}
-		if (password == null) {
-			return other.password == null;
-		} else if (!password.equals(other.password)) {
 			return false;
 		}
 		if (status == null) {

@@ -16,82 +16,62 @@
 
 package io.gs2.chat.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.chat.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ルームを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetRoomRequest extends Gs2BasicRequest<GetRoomRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ルームを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームを取得
-     * @return this
-     */
-    public GetRoomRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ルーム名 */
     private String roomName;
 
-    /**
-     * ルーム名を取得
-     *
-     * @return ルームを取得
-     */
-    public String getRoomName() {
-        return roomName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetRoomRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public GetRoomRequest withRoomName(String roomName) {
+		this.roomName = roomName;
+		return this;
+	}
+
+    public static GetRoomRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetRoomRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText());
     }
 
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ルームを取得
-     */
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("roomName", getRoomName());
+            }}
+        );
     }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ルームを取得
-     * @return this
-     */
-    public GetRoomRequest withRoomName(String roomName) {
-        setRoomName(roomName);
-        return this;
-    }
-
 }

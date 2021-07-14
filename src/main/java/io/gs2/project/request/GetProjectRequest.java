@@ -16,82 +16,62 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * プロジェクトを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetProjectRequest extends Gs2BasicRequest<GetProjectRequest> {
-
-    /** GS2アカウントトークン */
     private String accountToken;
-
-    /**
-     * GS2アカウントトークンを取得
-     *
-     * @return プロジェクトを取得
-     */
-    public String getAccountToken() {
-        return accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトを取得
-     */
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken プロジェクトを取得
-     * @return this
-     */
-    public GetProjectRequest withAccountToken(String accountToken) {
-        setAccountToken(accountToken);
-        return this;
-    }
-
-    /** プロジェクト名 */
     private String projectName;
 
-    /**
-     * プロジェクト名を取得
-     *
-     * @return プロジェクトを取得
-     */
-    public String getProjectName() {
-        return projectName;
+	public String getAccountToken() {
+		return accountToken;
+	}
+
+	public void setAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+	}
+
+	public GetProjectRequest withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public GetProjectRequest withProjectName(String projectName) {
+		this.projectName = projectName;
+		return this;
+	}
+
+    public static GetProjectRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetProjectRequest()
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText())
+            .withProjectName(data.get("projectName") == null || data.get("projectName").isNull() ? null : data.get("projectName").asText());
     }
 
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトを取得
-     */
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountToken", getAccountToken());
+                put("projectName", getProjectName());
+            }}
+        );
     }
-
-    /**
-     * プロジェクト名を設定
-     *
-     * @param projectName プロジェクトを取得
-     * @return this
-     */
-    public GetProjectRequest withProjectName(String projectName) {
-        setProjectName(projectName);
-        return this;
-    }
-
 }

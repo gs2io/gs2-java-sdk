@@ -16,194 +16,122 @@
 
 package io.gs2.lottery.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 景品
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Prize implements IModel, Serializable {
-	/** 景品ID */
-	protected String prizeId;
+	private String prizeId;
+	private String type;
+	private List<AcquireAction> acquireActions;
+	private String prizeTableName;
+	private Integer weight;
 
-	/**
-	 * 景品IDを取得
-	 *
-	 * @return 景品ID
-	 */
 	public String getPrizeId() {
 		return prizeId;
 	}
 
-	/**
-	 * 景品IDを設定
-	 *
-	 * @param prizeId 景品ID
-	 */
 	public void setPrizeId(String prizeId) {
 		this.prizeId = prizeId;
 	}
 
-	/**
-	 * 景品IDを設定
-	 *
-	 * @param prizeId 景品ID
-	 * @return this
-	 */
 	public Prize withPrizeId(String prizeId) {
 		this.prizeId = prizeId;
 		return this;
 	}
-	/** 景品の種類 */
-	protected String type;
 
-	/**
-	 * 景品の種類を取得
-	 *
-	 * @return 景品の種類
-	 */
 	public String getType() {
 		return type;
 	}
 
-	/**
-	 * 景品の種類を設定
-	 *
-	 * @param type 景品の種類
-	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	/**
-	 * 景品の種類を設定
-	 *
-	 * @param type 景品の種類
-	 * @return this
-	 */
 	public Prize withType(String type) {
 		this.type = type;
 		return this;
 	}
-	/** 景品の入手アクションリスト */
-	protected List<AcquireAction> acquireActions;
 
-	/**
-	 * 景品の入手アクションリストを取得
-	 *
-	 * @return 景品の入手アクションリスト
-	 */
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
 
-	/**
-	 * 景品の入手アクションリストを設定
-	 *
-	 * @param acquireActions 景品の入手アクションリスト
-	 */
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
 
-	/**
-	 * 景品の入手アクションリストを設定
-	 *
-	 * @param acquireActions 景品の入手アクションリスト
-	 * @return this
-	 */
 	public Prize withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
-	/** 排出確率テーブルの名前 */
-	protected String prizeTableName;
 
-	/**
-	 * 排出確率テーブルの名前を取得
-	 *
-	 * @return 排出確率テーブルの名前
-	 */
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
 
-	/**
-	 * 排出確率テーブルの名前を設定
-	 *
-	 * @param prizeTableName 排出確率テーブルの名前
-	 */
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
 
-	/**
-	 * 排出確率テーブルの名前を設定
-	 *
-	 * @param prizeTableName 排出確率テーブルの名前
-	 * @return this
-	 */
 	public Prize withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-	/** 排出重み */
-	protected Integer weight;
 
-	/**
-	 * 排出重みを取得
-	 *
-	 * @return 排出重み
-	 */
 	public Integer getWeight() {
 		return weight;
 	}
 
-	/**
-	 * 排出重みを設定
-	 *
-	 * @param weight 排出重み
-	 */
 	public void setWeight(Integer weight) {
 		this.weight = weight;
 	}
 
-	/**
-	 * 排出重みを設定
-	 *
-	 * @param weight 排出重み
-	 * @return this
-	 */
 	public Prize withWeight(Integer weight) {
 		this.weight = weight;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> acquireActions = new ArrayList<>();
-        if(this.acquireActions != null) {
-            for(AcquireAction item : this.acquireActions) {
-                acquireActions.add(item.toJson());
-            }
+    public static Prize fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("prizeId", this.getPrizeId())
-            .put("type", this.getType())
-            .put("prizeTableName", this.getPrizeTableName())
-            .put("weight", this.getWeight());
-        body_.set("acquireActions", JsonNodeFactory.instance.arrayNode().addAll(acquireActions));
-        return body_;
+        return new Prize()
+            .withPrizeId(data.get("prizeId") == null || data.get("prizeId").isNull() ? null : data.get("prizeId").asText())
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").asText())
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withPrizeTableName(data.get("prizeTableName") == null || data.get("prizeTableName").isNull() ? null : data.get("prizeTableName").asText())
+            .withWeight(data.get("weight") == null || data.get("weight").isNull() ? null : data.get("weight").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("prizeId", getPrizeId());
+                put("type", getType());
+                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("prizeTableName", getPrizeTableName());
+                put("weight", getWeight());
+            }}
+        );
     }
 
 	@Override

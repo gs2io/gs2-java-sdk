@@ -16,39 +16,48 @@
 
 package io.gs2.matchmaking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.Ballot;
 
-/**
- * 対戦結果をまとめて投票します。 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VoteMultipleResult implements IResult, Serializable {
-	/** 投票用紙 */
-	private Ballot item;
+    private Ballot item;
 
-	/**
-	 * 投票用紙を取得
-	 *
-	 * @return 対戦結果をまとめて投票します。
-	 */
 	public Ballot getItem() {
 		return item;
 	}
 
-	/**
-	 * 投票用紙を設定
-	 *
-	 * @param item 対戦結果をまとめて投票します。
-	 */
 	public void setItem(Ballot item) {
 		this.item = item;
 	}
+
+	public VoteMultipleResult withItem(Ballot item) {
+		this.item = item;
+		return this;
+	}
+
+    public static VoteMultipleResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new VoteMultipleResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Ballot.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

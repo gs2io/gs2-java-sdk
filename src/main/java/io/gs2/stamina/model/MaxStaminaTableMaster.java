@@ -16,291 +16,170 @@
 
 package io.gs2.stamina.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スタミナの最大値テーブルマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MaxStaminaTableMaster implements IModel, Serializable, Comparable<MaxStaminaTableMaster> {
-	/** スタミナの最大値テーブルマスター */
-	protected String maxStaminaTableId;
+	private String maxStaminaTableId;
+	private String name;
+	private String metadata;
+	private String description;
+	private String experienceModelId;
+	private List<Integer> values;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * スタミナの最大値テーブルマスターを取得
-	 *
-	 * @return スタミナの最大値テーブルマスター
-	 */
 	public String getMaxStaminaTableId() {
 		return maxStaminaTableId;
 	}
 
-	/**
-	 * スタミナの最大値テーブルマスターを設定
-	 *
-	 * @param maxStaminaTableId スタミナの最大値テーブルマスター
-	 */
 	public void setMaxStaminaTableId(String maxStaminaTableId) {
 		this.maxStaminaTableId = maxStaminaTableId;
 	}
 
-	/**
-	 * スタミナの最大値テーブルマスターを設定
-	 *
-	 * @param maxStaminaTableId スタミナの最大値テーブルマスター
-	 * @return this
-	 */
 	public MaxStaminaTableMaster withMaxStaminaTableId(String maxStaminaTableId) {
 		this.maxStaminaTableId = maxStaminaTableId;
 		return this;
 	}
-	/** 最大スタミナ値テーブル名 */
-	protected String name;
 
-	/**
-	 * 最大スタミナ値テーブル名を取得
-	 *
-	 * @return 最大スタミナ値テーブル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 最大スタミナ値テーブル名を設定
-	 *
-	 * @param name 最大スタミナ値テーブル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 最大スタミナ値テーブル名を設定
-	 *
-	 * @param name 最大スタミナ値テーブル名
-	 * @return this
-	 */
 	public MaxStaminaTableMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 最大スタミナ値テーブルのメタデータ */
-	protected String metadata;
 
-	/**
-	 * 最大スタミナ値テーブルのメタデータを取得
-	 *
-	 * @return 最大スタミナ値テーブルのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 最大スタミナ値テーブルのメタデータを設定
-	 *
-	 * @param metadata 最大スタミナ値テーブルのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 最大スタミナ値テーブルのメタデータを設定
-	 *
-	 * @param metadata 最大スタミナ値テーブルのメタデータ
-	 * @return this
-	 */
 	public MaxStaminaTableMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** スタミナの最大値テーブルマスターの説明 */
-	protected String description;
 
-	/**
-	 * スタミナの最大値テーブルマスターの説明を取得
-	 *
-	 * @return スタミナの最大値テーブルマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * スタミナの最大値テーブルマスターの説明を設定
-	 *
-	 * @param description スタミナの最大値テーブルマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * スタミナの最大値テーブルマスターの説明を設定
-	 *
-	 * @param description スタミナの最大値テーブルマスターの説明
-	 * @return this
-	 */
 	public MaxStaminaTableMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 経験値の種類マスター のGRN */
-	protected String experienceModelId;
 
-	/**
-	 * 経験値の種類マスター のGRNを取得
-	 *
-	 * @return 経験値の種類マスター のGRN
-	 */
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
 
-	/**
-	 * 経験値の種類マスター のGRNを設定
-	 *
-	 * @param experienceModelId 経験値の種類マスター のGRN
-	 */
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
 
-	/**
-	 * 経験値の種類マスター のGRNを設定
-	 *
-	 * @param experienceModelId 経験値の種類マスター のGRN
-	 * @return this
-	 */
 	public MaxStaminaTableMaster withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-	/** ランク毎のスタミナの最大値テーブル */
-	protected List<Integer> values;
 
-	/**
-	 * ランク毎のスタミナの最大値テーブルを取得
-	 *
-	 * @return ランク毎のスタミナの最大値テーブル
-	 */
 	public List<Integer> getValues() {
 		return values;
 	}
 
-	/**
-	 * ランク毎のスタミナの最大値テーブルを設定
-	 *
-	 * @param values ランク毎のスタミナの最大値テーブル
-	 */
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
 
-	/**
-	 * ランク毎のスタミナの最大値テーブルを設定
-	 *
-	 * @param values ランク毎のスタミナの最大値テーブル
-	 * @return this
-	 */
 	public MaxStaminaTableMaster withValues(List<Integer> values) {
 		this.values = values;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public MaxStaminaTableMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public MaxStaminaTableMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> values = new ArrayList<>();
-        if(this.values != null) {
-            for(Integer item : this.values) {
-                values.add(JsonNodeFactory.instance.numberNode(item));
-            }
+    public static MaxStaminaTableMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("maxStaminaTableId", this.getMaxStaminaTableId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("description", this.getDescription())
-            .put("experienceModelId", this.getExperienceModelId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("values", JsonNodeFactory.instance.arrayNode().addAll(values));
-        return body_;
+        return new MaxStaminaTableMaster()
+            .withMaxStaminaTableId(data.get("maxStaminaTableId") == null || data.get("maxStaminaTableId").isNull() ? null : data.get("maxStaminaTableId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Integer>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.intValue();
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("maxStaminaTableId", getMaxStaminaTableId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("experienceModelId", getExperienceModelId());
+                put("values", getValues() == null ? new ArrayList<Integer>() :
+                    getValues().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(MaxStaminaTableMaster o) {
 		return maxStaminaTableId.compareTo(o.maxStaminaTableId);

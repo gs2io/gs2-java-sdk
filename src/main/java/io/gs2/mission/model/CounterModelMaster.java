@@ -16,291 +16,172 @@
 
 package io.gs2.mission.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * カウンターの種類マスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CounterModelMaster implements IModel, Serializable, Comparable<CounterModelMaster> {
-	/** カウンターの種類マスター */
-	protected String counterId;
+	private String counterId;
+	private String name;
+	private String metadata;
+	private String description;
+	private List<CounterScopeModel> scopes;
+	private String challengePeriodEventId;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * カウンターの種類マスターを取得
-	 *
-	 * @return カウンターの種類マスター
-	 */
 	public String getCounterId() {
 		return counterId;
 	}
 
-	/**
-	 * カウンターの種類マスターを設定
-	 *
-	 * @param counterId カウンターの種類マスター
-	 */
 	public void setCounterId(String counterId) {
 		this.counterId = counterId;
 	}
 
-	/**
-	 * カウンターの種類マスターを設定
-	 *
-	 * @param counterId カウンターの種類マスター
-	 * @return this
-	 */
 	public CounterModelMaster withCounterId(String counterId) {
 		this.counterId = counterId;
 		return this;
 	}
-	/** カウンター名 */
-	protected String name;
 
-	/**
-	 * カウンター名を取得
-	 *
-	 * @return カウンター名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * カウンター名を設定
-	 *
-	 * @param name カウンター名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * カウンター名を設定
-	 *
-	 * @param name カウンター名
-	 * @return this
-	 */
 	public CounterModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public CounterModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** カウンターの種類マスターの説明 */
-	protected String description;
 
-	/**
-	 * カウンターの種類マスターの説明を取得
-	 *
-	 * @return カウンターの種類マスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * カウンターの種類マスターの説明を設定
-	 *
-	 * @param description カウンターの種類マスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * カウンターの種類マスターの説明を設定
-	 *
-	 * @param description カウンターの種類マスターの説明
-	 * @return this
-	 */
 	public CounterModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** カウンターのリセットタイミング */
-	protected List<CounterScopeModel> scopes;
 
-	/**
-	 * カウンターのリセットタイミングを取得
-	 *
-	 * @return カウンターのリセットタイミング
-	 */
 	public List<CounterScopeModel> getScopes() {
 		return scopes;
 	}
 
-	/**
-	 * カウンターのリセットタイミングを設定
-	 *
-	 * @param scopes カウンターのリセットタイミング
-	 */
 	public void setScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 	}
 
-	/**
-	 * カウンターのリセットタイミングを設定
-	 *
-	 * @param scopes カウンターのリセットタイミング
-	 * @return this
-	 */
 	public CounterModelMaster withScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 		return this;
 	}
-	/** カウントアップ可能な期間を指定するイベントマスター のGRN */
-	protected String challengePeriodEventId;
 
-	/**
-	 * カウントアップ可能な期間を指定するイベントマスター のGRNを取得
-	 *
-	 * @return カウントアップ可能な期間を指定するイベントマスター のGRN
-	 */
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
 
-	/**
-	 * カウントアップ可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId カウントアップ可能な期間を指定するイベントマスター のGRN
-	 */
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
 
-	/**
-	 * カウントアップ可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId カウントアップ可能な期間を指定するイベントマスター のGRN
-	 * @return this
-	 */
 	public CounterModelMaster withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public CounterModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public CounterModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> scopes = new ArrayList<>();
-        if(this.scopes != null) {
-            for(CounterScopeModel item : this.scopes) {
-                scopes.add(item.toJson());
-            }
+    public static CounterModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("counterId", this.getCounterId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("description", this.getDescription())
-            .put("challengePeriodEventId", this.getChallengePeriodEventId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("scopes", JsonNodeFactory.instance.arrayNode().addAll(scopes));
-        return body_;
+        return new CounterModelMaster()
+            .withCounterId(data.get("counterId") == null || data.get("counterId").isNull() ? null : data.get("counterId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? new ArrayList<CounterScopeModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scopes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return CounterScopeModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("counterId", getCounterId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("scopes", getScopes() == null ? new ArrayList<CounterScopeModel>() :
+                    getScopes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("challengePeriodEventId", getChallengePeriodEventId());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(CounterModelMaster o) {
 		return counterId.compareTo(o.counterId);

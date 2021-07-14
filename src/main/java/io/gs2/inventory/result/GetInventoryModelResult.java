@@ -16,39 +16,49 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.ItemModel;
+import io.gs2.inventory.model.InventoryModel;
 
-/**
- * インベントリモデルを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetInventoryModelResult implements IResult, Serializable {
-	/** インベントリモデル */
-	private InventoryModel item;
+    private InventoryModel item;
 
-	/**
-	 * インベントリモデルを取得
-	 *
-	 * @return インベントリモデルを取得
-	 */
 	public InventoryModel getItem() {
 		return item;
 	}
 
-	/**
-	 * インベントリモデルを設定
-	 *
-	 * @param item インベントリモデルを取得
-	 */
 	public void setItem(InventoryModel item) {
 		this.item = item;
 	}
+
+	public GetInventoryModelResult withItem(InventoryModel item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetInventoryModelResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetInventoryModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : InventoryModel.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

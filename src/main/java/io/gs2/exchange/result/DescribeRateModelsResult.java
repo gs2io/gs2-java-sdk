@@ -16,39 +16,60 @@
 
 package io.gs2.exchange.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.exchange.model.*;
+import io.gs2.exchange.model.ConsumeAction;
+import io.gs2.exchange.model.AcquireAction;
+import io.gs2.exchange.model.RateModel;
 
-/**
- * 交換レートモデルの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeRateModelsResult implements IResult, Serializable {
-	/** 交換レートモデルのリスト */
-	private List<RateModel> items;
+    private List<RateModel> items;
 
-	/**
-	 * 交換レートモデルのリストを取得
-	 *
-	 * @return 交換レートモデルの一覧を取得
-	 */
 	public List<RateModel> getItems() {
 		return items;
 	}
 
-	/**
-	 * 交換レートモデルのリストを設定
-	 *
-	 * @param items 交換レートモデルの一覧を取得
-	 */
 	public void setItems(List<RateModel> items) {
 		this.items = items;
 	}
+
+	public DescribeRateModelsResult withItems(List<RateModel> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static DescribeRateModelsResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeRateModelsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RateModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return RateModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<RateModel>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

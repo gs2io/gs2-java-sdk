@@ -16,309 +16,200 @@
 
 package io.gs2.quest.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * None
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class QuestModel implements IModel, Serializable, Comparable<QuestModel> {
-	/** クエストモデル */
-	protected String questModelId;
+	private String questModelId;
+	private String name;
+	private String metadata;
+	private List<Contents> contents;
+	private String challengePeriodEventId;
+	private List<ConsumeAction> consumeActions;
+	private List<AcquireAction> failedAcquireActions;
+	private List<String> premiseQuestNames;
 
-	/**
-	 * クエストモデルを取得
-	 *
-	 * @return クエストモデル
-	 */
 	public String getQuestModelId() {
 		return questModelId;
 	}
 
-	/**
-	 * クエストモデルを設定
-	 *
-	 * @param questModelId クエストモデル
-	 */
 	public void setQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 	}
 
-	/**
-	 * クエストモデルを設定
-	 *
-	 * @param questModelId クエストモデル
-	 * @return this
-	 */
 	public QuestModel withQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 		return this;
 	}
-	/** クエストモデル名 */
-	protected String name;
 
-	/**
-	 * クエストモデル名を取得
-	 *
-	 * @return クエストモデル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * クエストモデル名を設定
-	 *
-	 * @param name クエストモデル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * クエストモデル名を設定
-	 *
-	 * @param name クエストモデル名
-	 * @return this
-	 */
 	public QuestModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** クエストモデルのメタデータ */
-	protected String metadata;
 
-	/**
-	 * クエストモデルのメタデータを取得
-	 *
-	 * @return クエストモデルのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * クエストモデルのメタデータを設定
-	 *
-	 * @param metadata クエストモデルのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * クエストモデルのメタデータを設定
-	 *
-	 * @param metadata クエストモデルのメタデータ
-	 * @return this
-	 */
 	public QuestModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** クエストの内容 */
-	protected List<Contents> contents;
 
-	/**
-	 * クエストの内容を取得
-	 *
-	 * @return クエストの内容
-	 */
 	public List<Contents> getContents() {
 		return contents;
 	}
 
-	/**
-	 * クエストの内容を設定
-	 *
-	 * @param contents クエストの内容
-	 */
 	public void setContents(List<Contents> contents) {
 		this.contents = contents;
 	}
 
-	/**
-	 * クエストの内容を設定
-	 *
-	 * @param contents クエストの内容
-	 * @return this
-	 */
 	public QuestModel withContents(List<Contents> contents) {
 		this.contents = contents;
 		return this;
 	}
-	/** 挑戦可能な期間を指定するイベントマスター のGRN */
-	protected String challengePeriodEventId;
 
-	/**
-	 * 挑戦可能な期間を指定するイベントマスター のGRNを取得
-	 *
-	 * @return 挑戦可能な期間を指定するイベントマスター のGRN
-	 */
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
 
-	/**
-	 * 挑戦可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId 挑戦可能な期間を指定するイベントマスター のGRN
-	 */
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
 
-	/**
-	 * 挑戦可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId 挑戦可能な期間を指定するイベントマスター のGRN
-	 * @return this
-	 */
 	public QuestModel withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-	/** クエストの参加料 */
-	protected List<ConsumeAction> consumeActions;
 
-	/**
-	 * クエストの参加料を取得
-	 *
-	 * @return クエストの参加料
-	 */
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
 
-	/**
-	 * クエストの参加料を設定
-	 *
-	 * @param consumeActions クエストの参加料
-	 */
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
 
-	/**
-	 * クエストの参加料を設定
-	 *
-	 * @param consumeActions クエストの参加料
-	 * @return this
-	 */
 	public QuestModel withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;
 	}
-	/** クエスト失敗時の報酬 */
-	protected List<AcquireAction> failedAcquireActions;
 
-	/**
-	 * クエスト失敗時の報酬を取得
-	 *
-	 * @return クエスト失敗時の報酬
-	 */
 	public List<AcquireAction> getFailedAcquireActions() {
 		return failedAcquireActions;
 	}
 
-	/**
-	 * クエスト失敗時の報酬を設定
-	 *
-	 * @param failedAcquireActions クエスト失敗時の報酬
-	 */
 	public void setFailedAcquireActions(List<AcquireAction> failedAcquireActions) {
 		this.failedAcquireActions = failedAcquireActions;
 	}
 
-	/**
-	 * クエスト失敗時の報酬を設定
-	 *
-	 * @param failedAcquireActions クエスト失敗時の報酬
-	 * @return this
-	 */
 	public QuestModel withFailedAcquireActions(List<AcquireAction> failedAcquireActions) {
 		this.failedAcquireActions = failedAcquireActions;
 		return this;
 	}
-	/** クエストに挑戦するためにクリアしておく必要のあるクエスト名 */
-	protected List<String> premiseQuestNames;
 
-	/**
-	 * クエストに挑戦するためにクリアしておく必要のあるクエスト名を取得
-	 *
-	 * @return クエストに挑戦するためにクリアしておく必要のあるクエスト名
-	 */
 	public List<String> getPremiseQuestNames() {
 		return premiseQuestNames;
 	}
 
-	/**
-	 * クエストに挑戦するためにクリアしておく必要のあるクエスト名を設定
-	 *
-	 * @param premiseQuestNames クエストに挑戦するためにクリアしておく必要のあるクエスト名
-	 */
 	public void setPremiseQuestNames(List<String> premiseQuestNames) {
 		this.premiseQuestNames = premiseQuestNames;
 	}
 
-	/**
-	 * クエストに挑戦するためにクリアしておく必要のあるクエスト名を設定
-	 *
-	 * @param premiseQuestNames クエストに挑戦するためにクリアしておく必要のあるクエスト名
-	 * @return this
-	 */
 	public QuestModel withPremiseQuestNames(List<String> premiseQuestNames) {
 		this.premiseQuestNames = premiseQuestNames;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> contents = new ArrayList<>();
-        if(this.contents != null) {
-            for(Contents item : this.contents) {
-                contents.add(item.toJson());
-            }
+    public static QuestModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-        List<JsonNode> consumeActions = new ArrayList<>();
-        if(this.consumeActions != null) {
-            for(ConsumeAction item : this.consumeActions) {
-                consumeActions.add(item.toJson());
-            }
-        }
-        List<JsonNode> failedAcquireActions = new ArrayList<>();
-        if(this.failedAcquireActions != null) {
-            for(AcquireAction item : this.failedAcquireActions) {
-                failedAcquireActions.add(item.toJson());
-            }
-        }
-        List<JsonNode> premiseQuestNames = new ArrayList<>();
-        if(this.premiseQuestNames != null) {
-            for(String item : this.premiseQuestNames) {
-                premiseQuestNames.add(JsonNodeFactory.instance.textNode(item));
-            }
-        }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("questModelId", this.getQuestModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("challengePeriodEventId", this.getChallengePeriodEventId());
-        body_.set("contents", JsonNodeFactory.instance.arrayNode().addAll(contents));
-        body_.set("consumeActions", JsonNodeFactory.instance.arrayNode().addAll(consumeActions));
-        body_.set("failedAcquireActions", JsonNodeFactory.instance.arrayNode().addAll(failedAcquireActions));
-        body_.set("premiseQuestNames", JsonNodeFactory.instance.arrayNode().addAll(premiseQuestNames));
-        return body_;
+        return new QuestModel()
+            .withQuestModelId(data.get("questModelId") == null || data.get("questModelId").isNull() ? null : data.get("questModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withContents(data.get("contents") == null || data.get("contents").isNull() ? new ArrayList<Contents>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("contents").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Contents.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
+            .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ConsumeAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withFailedAcquireActions(data.get("failedAcquireActions") == null || data.get("failedAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("failedAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withPremiseQuestNames(data.get("premiseQuestNames") == null || data.get("premiseQuestNames").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("premiseQuestNames").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("questModelId", getQuestModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("contents", getContents() == null ? new ArrayList<Contents>() :
+                    getContents().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("challengePeriodEventId", getChallengePeriodEventId());
+                put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    getConsumeActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("failedAcquireActions", getFailedAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getFailedAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("premiseQuestNames", getPremiseQuestNames() == null ? new ArrayList<String>() :
+                    getPremiseQuestNames().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(QuestModel o) {
 		return questModelId.compareTo(o.questModelId);

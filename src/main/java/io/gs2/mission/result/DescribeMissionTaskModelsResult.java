@@ -16,39 +16,59 @@
 
 package io.gs2.mission.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
+import io.gs2.mission.model.AcquireAction;
+import io.gs2.mission.model.MissionTaskModel;
 
-/**
- * ミッションタスクの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeMissionTaskModelsResult implements IResult, Serializable {
-	/** ミッションタスクのリスト */
-	private List<MissionTaskModel> items;
+    private List<MissionTaskModel> items;
 
-	/**
-	 * ミッションタスクのリストを取得
-	 *
-	 * @return ミッションタスクの一覧を取得
-	 */
 	public List<MissionTaskModel> getItems() {
 		return items;
 	}
 
-	/**
-	 * ミッションタスクのリストを設定
-	 *
-	 * @param items ミッションタスクの一覧を取得
-	 */
 	public void setItems(List<MissionTaskModel> items) {
 		this.items = items;
 	}
+
+	public DescribeMissionTaskModelsResult withItems(List<MissionTaskModel> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static DescribeMissionTaskModelsResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeMissionTaskModelsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<MissionTaskModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return MissionTaskModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<MissionTaskModel>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

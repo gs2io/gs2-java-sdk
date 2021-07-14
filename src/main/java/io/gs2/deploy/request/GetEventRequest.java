@@ -16,82 +16,62 @@
 
 package io.gs2.deploy.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.deploy.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 発生したイベントを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetEventRequest extends Gs2BasicRequest<GetEventRequest> {
-
-    /** スタック名 */
     private String stackName;
-
-    /**
-     * スタック名を取得
-     *
-     * @return 発生したイベントを取得
-     */
-    public String getStackName() {
-        return stackName;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param stackName 発生したイベントを取得
-     */
-    public void setStackName(String stackName) {
-        this.stackName = stackName;
-    }
-
-    /**
-     * スタック名を設定
-     *
-     * @param stackName 発生したイベントを取得
-     * @return this
-     */
-    public GetEventRequest withStackName(String stackName) {
-        setStackName(stackName);
-        return this;
-    }
-
-    /** イベント名 */
     private String eventName;
 
-    /**
-     * イベント名を取得
-     *
-     * @return 発生したイベントを取得
-     */
-    public String getEventName() {
-        return eventName;
+	public String getStackName() {
+		return stackName;
+	}
+
+	public void setStackName(String stackName) {
+		this.stackName = stackName;
+	}
+
+	public GetEventRequest withStackName(String stackName) {
+		this.stackName = stackName;
+		return this;
+	}
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	public GetEventRequest withEventName(String eventName) {
+		this.eventName = eventName;
+		return this;
+	}
+
+    public static GetEventRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetEventRequest()
+            .withStackName(data.get("stackName") == null || data.get("stackName").isNull() ? null : data.get("stackName").asText())
+            .withEventName(data.get("eventName") == null || data.get("eventName").isNull() ? null : data.get("eventName").asText());
     }
 
-    /**
-     * イベント名を設定
-     *
-     * @param eventName 発生したイベントを取得
-     */
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stackName", getStackName());
+                put("eventName", getEventName());
+            }}
+        );
     }
-
-    /**
-     * イベント名を設定
-     *
-     * @param eventName 発生したイベントを取得
-     * @return this
-     */
-    public GetEventRequest withEventName(String eventName) {
-        setEventName(eventName);
-        return this;
-    }
-
 }

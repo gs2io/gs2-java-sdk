@@ -16,156 +16,96 @@
 
 package io.gs2.jobQueue.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ジョブの実行結果
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class JobResultBody implements IModel, Serializable {
-	/** 試行回数 */
-	protected Integer tryNumber;
+	private Integer tryNumber;
+	private Integer statusCode;
+	private String result;
+	private Long tryAt;
 
-	/**
-	 * 試行回数を取得
-	 *
-	 * @return 試行回数
-	 */
 	public Integer getTryNumber() {
 		return tryNumber;
 	}
 
-	/**
-	 * 試行回数を設定
-	 *
-	 * @param tryNumber 試行回数
-	 */
 	public void setTryNumber(Integer tryNumber) {
 		this.tryNumber = tryNumber;
 	}
 
-	/**
-	 * 試行回数を設定
-	 *
-	 * @param tryNumber 試行回数
-	 * @return this
-	 */
 	public JobResultBody withTryNumber(Integer tryNumber) {
 		this.tryNumber = tryNumber;
 		return this;
 	}
-	/** ステータスコード */
-	protected Integer statusCode;
 
-	/**
-	 * ステータスコードを取得
-	 *
-	 * @return ステータスコード
-	 */
 	public Integer getStatusCode() {
 		return statusCode;
 	}
 
-	/**
-	 * ステータスコードを設定
-	 *
-	 * @param statusCode ステータスコード
-	 */
 	public void setStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 	}
 
-	/**
-	 * ステータスコードを設定
-	 *
-	 * @param statusCode ステータスコード
-	 * @return this
-	 */
 	public JobResultBody withStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 		return this;
 	}
-	/** レスポンスの内容 */
-	protected String result;
 
-	/**
-	 * レスポンスの内容を取得
-	 *
-	 * @return レスポンスの内容
-	 */
 	public String getResult() {
 		return result;
 	}
 
-	/**
-	 * レスポンスの内容を設定
-	 *
-	 * @param result レスポンスの内容
-	 */
 	public void setResult(String result) {
 		this.result = result;
 	}
 
-	/**
-	 * レスポンスの内容を設定
-	 *
-	 * @param result レスポンスの内容
-	 * @return this
-	 */
 	public JobResultBody withResult(String result) {
 		this.result = result;
 		return this;
 	}
-	/** 実行日時 */
-	protected Long tryAt;
 
-	/**
-	 * 実行日時を取得
-	 *
-	 * @return 実行日時
-	 */
 	public Long getTryAt() {
 		return tryAt;
 	}
 
-	/**
-	 * 実行日時を設定
-	 *
-	 * @param tryAt 実行日時
-	 */
 	public void setTryAt(Long tryAt) {
 		this.tryAt = tryAt;
 	}
 
-	/**
-	 * 実行日時を設定
-	 *
-	 * @param tryAt 実行日時
-	 * @return this
-	 */
 	public JobResultBody withTryAt(Long tryAt) {
 		this.tryAt = tryAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("tryNumber", this.getTryNumber())
-            .put("statusCode", this.getStatusCode())
-            .put("result", this.getResult())
-            .put("tryAt", this.getTryAt());
-        return body_;
+    public static JobResultBody fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new JobResultBody()
+            .withTryNumber(data.get("tryNumber") == null || data.get("tryNumber").isNull() ? null : data.get("tryNumber").intValue())
+            .withStatusCode(data.get("statusCode") == null || data.get("statusCode").isNull() ? null : data.get("statusCode").intValue())
+            .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText())
+            .withTryAt(data.get("tryAt") == null || data.get("tryAt").isNull() ? null : data.get("tryAt").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("tryNumber", getTryNumber());
+                put("statusCode", getStatusCode());
+                put("result", getResult());
+                put("tryAt", getTryAt());
+            }}
+        );
     }
 
 	@Override

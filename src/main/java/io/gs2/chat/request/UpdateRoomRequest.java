@@ -16,178 +16,118 @@
 
 package io.gs2.chat.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.chat.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ルームを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateRoomRequest extends Gs2BasicRequest<UpdateRoomRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ルームを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ルームを更新
-     * @return this
-     */
-    public UpdateRoomRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ルーム名 */
     private String roomName;
-
-    /**
-     * ルーム名を取得
-     *
-     * @return ルームを更新
-     */
-    public String getRoomName() {
-        return roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ルームを更新
-     */
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName ルームを更新
-     * @return this
-     */
-    public UpdateRoomRequest withRoomName(String roomName) {
-        setRoomName(roomName);
-        return this;
-    }
-
-    /** メタデータ */
     private String metadata;
-
-    /**
-     * メタデータを取得
-     *
-     * @return ルームを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata ルームを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata ルームを更新
-     * @return this
-     */
-    public UpdateRoomRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** メッセージを投稿するために必要となるパスワード */
     private String password;
-
-    /**
-     * メッセージを投稿するために必要となるパスワードを取得
-     *
-     * @return ルームを更新
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * メッセージを投稿するために必要となるパスワードを設定
-     *
-     * @param password ルームを更新
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * メッセージを投稿するために必要となるパスワードを設定
-     *
-     * @param password ルームを更新
-     * @return this
-     */
-    public UpdateRoomRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    /** ルームに参加可能なユーザIDリスト */
     private List<String> whiteListUserIds;
 
-    /**
-     * ルームに参加可能なユーザIDリストを取得
-     *
-     * @return ルームを更新
-     */
-    public List<String> getWhiteListUserIds() {
-        return whiteListUserIds;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateRoomRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public UpdateRoomRequest withRoomName(String roomName) {
+		this.roomName = roomName;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateRoomRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public UpdateRoomRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+	public List<String> getWhiteListUserIds() {
+		return whiteListUserIds;
+	}
+
+	public void setWhiteListUserIds(List<String> whiteListUserIds) {
+		this.whiteListUserIds = whiteListUserIds;
+	}
+
+	public UpdateRoomRequest withWhiteListUserIds(List<String> whiteListUserIds) {
+		this.whiteListUserIds = whiteListUserIds;
+		return this;
+	}
+
+    public static UpdateRoomRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateRoomRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withWhiteListUserIds(data.get("whiteListUserIds") == null || data.get("whiteListUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("whiteListUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * ルームに参加可能なユーザIDリストを設定
-     *
-     * @param whiteListUserIds ルームを更新
-     */
-    public void setWhiteListUserIds(List<String> whiteListUserIds) {
-        this.whiteListUserIds = whiteListUserIds;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("roomName", getRoomName());
+                put("metadata", getMetadata());
+                put("password", getPassword());
+                put("whiteListUserIds", getWhiteListUserIds() == null ? new ArrayList<String>() :
+                    getWhiteListUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * ルームに参加可能なユーザIDリストを設定
-     *
-     * @param whiteListUserIds ルームを更新
-     * @return this
-     */
-    public UpdateRoomRequest withWhiteListUserIds(List<String> whiteListUserIds) {
-        setWhiteListUserIds(whiteListUserIds);
-        return this;
-    }
-
 }

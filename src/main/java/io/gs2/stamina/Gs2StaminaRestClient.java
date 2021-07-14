@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.stamina;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.stamina.request.*;
 import io.gs2.stamina.result.*;
-import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient> {
 
-/**
- * GS2 Stamina API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2StaminaRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,32 +152,15 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getOverflowTriggerScriptId() != null) {
-                json.put("overflowTriggerScriptId", this.request.getOverflowTriggerScriptId());
-            }
-            if (this.request.getOverflowTriggerNamespaceId() != null) {
-                json.put("overflowTriggerNamespaceId", this.request.getOverflowTriggerNamespaceId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("overflowTriggerScript", request.getOverflowTriggerScript() != null ? request.getOverflowTriggerScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -212,25 +178,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -257,15 +212,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -276,7 +234,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -300,25 +258,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -345,15 +292,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -364,7 +314,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -388,25 +338,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -433,15 +372,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -452,31 +394,16 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getOverflowTriggerScriptId() != null) {
-                json.put("overflowTriggerScriptId", this.request.getOverflowTriggerScriptId());
-            }
-            if (this.request.getOverflowTriggerNamespaceId() != null) {
-                json.put("overflowTriggerNamespaceId", this.request.getOverflowTriggerNamespaceId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("overflowTriggerScript", request.getOverflowTriggerScript() != null ? request.getOverflowTriggerScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -494,25 +421,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -539,15 +455,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -558,7 +477,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -582,25 +501,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -627,15 +535,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DescribeStaminaModelMastersTask(
             DescribeStaminaModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeStaminaModelMastersResult>> userCallback,
-            Class<DescribeStaminaModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeStaminaModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeStaminaModelMastersResult parse(JsonNode data) {
+            return DescribeStaminaModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -646,7 +557,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -676,25 +587,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナモデルマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeStaminaModelMastersAsync(
             DescribeStaminaModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeStaminaModelMastersResult>> callback
     ) {
-        DescribeStaminaModelMastersTask task = new DescribeStaminaModelMastersTask(request, callback, DescribeStaminaModelMastersResult.class);
+        DescribeStaminaModelMastersTask task = new DescribeStaminaModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナモデルマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeStaminaModelMastersResult describeStaminaModelMasters(
             DescribeStaminaModelMastersRequest request
     ) {
@@ -721,15 +621,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public CreateStaminaModelMasterTask(
             CreateStaminaModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateStaminaModelMasterResult>> userCallback,
-            Class<CreateStaminaModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateStaminaModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateStaminaModelMasterResult parse(JsonNode data) {
+            return CreateStaminaModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -740,48 +643,24 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getRecoverIntervalMinutes() != null) {
-                json.put("recoverIntervalMinutes", this.request.getRecoverIntervalMinutes());
-            }
-            if (this.request.getRecoverValue() != null) {
-                json.put("recoverValue", this.request.getRecoverValue());
-            }
-            if (this.request.getInitialCapacity() != null) {
-                json.put("initialCapacity", this.request.getInitialCapacity());
-            }
-            if (this.request.getIsOverflow() != null) {
-                json.put("isOverflow", this.request.getIsOverflow());
-            }
-            if (this.request.getMaxCapacity() != null) {
-                json.put("maxCapacity", this.request.getMaxCapacity());
-            }
-            if (this.request.getMaxStaminaTableName() != null) {
-                json.put("maxStaminaTableName", this.request.getMaxStaminaTableName());
-            }
-            if (this.request.getRecoverIntervalTableName() != null) {
-                json.put("recoverIntervalTableName", this.request.getRecoverIntervalTableName());
-            }
-            if (this.request.getRecoverValueTableName() != null) {
-                json.put("recoverValueTableName", this.request.getRecoverValueTableName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("recoverIntervalMinutes", request.getRecoverIntervalMinutes());
+                    put("recoverValue", request.getRecoverValue());
+                    put("initialCapacity", request.getInitialCapacity());
+                    put("isOverflow", request.getIsOverflow());
+                    put("maxCapacity", request.getMaxCapacity());
+                    put("maxStaminaTableName", request.getMaxStaminaTableName());
+                    put("recoverIntervalTableName", request.getRecoverIntervalTableName());
+                    put("recoverValueTableName", request.getRecoverValueTableName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -799,25 +678,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナモデルマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createStaminaModelMasterAsync(
             CreateStaminaModelMasterRequest request,
             AsyncAction<AsyncResult<CreateStaminaModelMasterResult>> callback
     ) {
-        CreateStaminaModelMasterTask task = new CreateStaminaModelMasterTask(request, callback, CreateStaminaModelMasterResult.class);
+        CreateStaminaModelMasterTask task = new CreateStaminaModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナモデルマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateStaminaModelMasterResult createStaminaModelMaster(
             CreateStaminaModelMasterRequest request
     ) {
@@ -844,15 +712,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetStaminaModelMasterTask(
             GetStaminaModelMasterRequest request,
-            AsyncAction<AsyncResult<GetStaminaModelMasterResult>> userCallback,
-            Class<GetStaminaModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetStaminaModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetStaminaModelMasterResult parse(JsonNode data) {
+            return GetStaminaModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -863,8 +734,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{staminaName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -888,25 +759,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナモデルマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getStaminaModelMasterAsync(
             GetStaminaModelMasterRequest request,
             AsyncAction<AsyncResult<GetStaminaModelMasterResult>> callback
     ) {
-        GetStaminaModelMasterTask task = new GetStaminaModelMasterTask(request, callback, GetStaminaModelMasterResult.class);
+        GetStaminaModelMasterTask task = new GetStaminaModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナモデルマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetStaminaModelMasterResult getStaminaModelMaster(
             GetStaminaModelMasterRequest request
     ) {
@@ -933,15 +793,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public UpdateStaminaModelMasterTask(
             UpdateStaminaModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateStaminaModelMasterResult>> userCallback,
-            Class<UpdateStaminaModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateStaminaModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateStaminaModelMasterResult parse(JsonNode data) {
+            return UpdateStaminaModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -952,46 +815,24 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{staminaName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getRecoverIntervalMinutes() != null) {
-                json.put("recoverIntervalMinutes", this.request.getRecoverIntervalMinutes());
-            }
-            if (this.request.getRecoverValue() != null) {
-                json.put("recoverValue", this.request.getRecoverValue());
-            }
-            if (this.request.getInitialCapacity() != null) {
-                json.put("initialCapacity", this.request.getInitialCapacity());
-            }
-            if (this.request.getIsOverflow() != null) {
-                json.put("isOverflow", this.request.getIsOverflow());
-            }
-            if (this.request.getMaxCapacity() != null) {
-                json.put("maxCapacity", this.request.getMaxCapacity());
-            }
-            if (this.request.getMaxStaminaTableName() != null) {
-                json.put("maxStaminaTableName", this.request.getMaxStaminaTableName());
-            }
-            if (this.request.getRecoverIntervalTableName() != null) {
-                json.put("recoverIntervalTableName", this.request.getRecoverIntervalTableName());
-            }
-            if (this.request.getRecoverValueTableName() != null) {
-                json.put("recoverValueTableName", this.request.getRecoverValueTableName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("recoverIntervalMinutes", request.getRecoverIntervalMinutes());
+                    put("recoverValue", request.getRecoverValue());
+                    put("initialCapacity", request.getInitialCapacity());
+                    put("isOverflow", request.getIsOverflow());
+                    put("maxCapacity", request.getMaxCapacity());
+                    put("maxStaminaTableName", request.getMaxStaminaTableName());
+                    put("recoverIntervalTableName", request.getRecoverIntervalTableName());
+                    put("recoverValueTableName", request.getRecoverValueTableName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1009,25 +850,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナモデルマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateStaminaModelMasterAsync(
             UpdateStaminaModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateStaminaModelMasterResult>> callback
     ) {
-        UpdateStaminaModelMasterTask task = new UpdateStaminaModelMasterTask(request, callback, UpdateStaminaModelMasterResult.class);
+        UpdateStaminaModelMasterTask task = new UpdateStaminaModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナモデルマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateStaminaModelMasterResult updateStaminaModelMaster(
             UpdateStaminaModelMasterRequest request
     ) {
@@ -1054,15 +884,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DeleteStaminaModelMasterTask(
             DeleteStaminaModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteStaminaModelMasterResult>> userCallback,
-            Class<DeleteStaminaModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteStaminaModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteStaminaModelMasterResult parse(JsonNode data) {
+            return DeleteStaminaModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1073,8 +906,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{staminaName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1098,25 +931,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナモデルマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteStaminaModelMasterAsync(
             DeleteStaminaModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteStaminaModelMasterResult>> callback
     ) {
-        DeleteStaminaModelMasterTask task = new DeleteStaminaModelMasterTask(request, callback, DeleteStaminaModelMasterResult.class);
+        DeleteStaminaModelMasterTask task = new DeleteStaminaModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナモデルマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteStaminaModelMasterResult deleteStaminaModelMaster(
             DeleteStaminaModelMasterRequest request
     ) {
@@ -1143,15 +965,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DescribeMaxStaminaTableMastersTask(
             DescribeMaxStaminaTableMastersRequest request,
-            AsyncAction<AsyncResult<DescribeMaxStaminaTableMastersResult>> userCallback,
-            Class<DescribeMaxStaminaTableMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeMaxStaminaTableMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeMaxStaminaTableMastersResult parse(JsonNode data) {
+            return DescribeMaxStaminaTableMastersResult.fromJson(data);
         }
 
         @Override
@@ -1162,7 +987,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/maxStaminaTable";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1192,25 +1017,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナの最大値テーブルマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeMaxStaminaTableMastersAsync(
             DescribeMaxStaminaTableMastersRequest request,
             AsyncAction<AsyncResult<DescribeMaxStaminaTableMastersResult>> callback
     ) {
-        DescribeMaxStaminaTableMastersTask task = new DescribeMaxStaminaTableMastersTask(request, callback, DescribeMaxStaminaTableMastersResult.class);
+        DescribeMaxStaminaTableMastersTask task = new DescribeMaxStaminaTableMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナの最大値テーブルマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeMaxStaminaTableMastersResult describeMaxStaminaTableMasters(
             DescribeMaxStaminaTableMastersRequest request
     ) {
@@ -1237,15 +1051,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public CreateMaxStaminaTableMasterTask(
             CreateMaxStaminaTableMasterRequest request,
-            AsyncAction<AsyncResult<CreateMaxStaminaTableMasterResult>> userCallback,
-            Class<CreateMaxStaminaTableMasterResult> clazz
+            AsyncAction<AsyncResult<CreateMaxStaminaTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateMaxStaminaTableMasterResult parse(JsonNode data) {
+            return CreateMaxStaminaTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -1256,35 +1073,22 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/maxStaminaTable";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getExperienceModelId() != null) {
-                json.put("experienceModelId", this.request.getExperienceModelId());
-            }
-            if (this.request.getValues() != null) {
-                JSONArray array = new JSONArray();
-                for(Integer item : this.request.getValues())
-                {
-                    array.put(item);
-                }
-                json.put("values", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                        request.getValues().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1302,25 +1106,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナの最大値テーブルマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createMaxStaminaTableMasterAsync(
             CreateMaxStaminaTableMasterRequest request,
             AsyncAction<AsyncResult<CreateMaxStaminaTableMasterResult>> callback
     ) {
-        CreateMaxStaminaTableMasterTask task = new CreateMaxStaminaTableMasterTask(request, callback, CreateMaxStaminaTableMasterResult.class);
+        CreateMaxStaminaTableMasterTask task = new CreateMaxStaminaTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナの最大値テーブルマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateMaxStaminaTableMasterResult createMaxStaminaTableMaster(
             CreateMaxStaminaTableMasterRequest request
     ) {
@@ -1347,15 +1140,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetMaxStaminaTableMasterTask(
             GetMaxStaminaTableMasterRequest request,
-            AsyncAction<AsyncResult<GetMaxStaminaTableMasterResult>> userCallback,
-            Class<GetMaxStaminaTableMasterResult> clazz
+            AsyncAction<AsyncResult<GetMaxStaminaTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetMaxStaminaTableMasterResult parse(JsonNode data) {
+            return GetMaxStaminaTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -1366,8 +1162,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/maxStaminaTable/{maxStaminaTableName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{maxStaminaTableName}", this.request.getMaxStaminaTableName() == null|| this.request.getMaxStaminaTableName().length() == 0 ? "null" : String.valueOf(this.request.getMaxStaminaTableName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{maxStaminaTableName}", this.request.getMaxStaminaTableName() == null || this.request.getMaxStaminaTableName().length() == 0 ? "null" : String.valueOf(this.request.getMaxStaminaTableName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1391,25 +1187,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナの最大値テーブルマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getMaxStaminaTableMasterAsync(
             GetMaxStaminaTableMasterRequest request,
             AsyncAction<AsyncResult<GetMaxStaminaTableMasterResult>> callback
     ) {
-        GetMaxStaminaTableMasterTask task = new GetMaxStaminaTableMasterTask(request, callback, GetMaxStaminaTableMasterResult.class);
+        GetMaxStaminaTableMasterTask task = new GetMaxStaminaTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナの最大値テーブルマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetMaxStaminaTableMasterResult getMaxStaminaTableMaster(
             GetMaxStaminaTableMasterRequest request
     ) {
@@ -1436,15 +1221,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public UpdateMaxStaminaTableMasterTask(
             UpdateMaxStaminaTableMasterRequest request,
-            AsyncAction<AsyncResult<UpdateMaxStaminaTableMasterResult>> userCallback,
-            Class<UpdateMaxStaminaTableMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateMaxStaminaTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateMaxStaminaTableMasterResult parse(JsonNode data) {
+            return UpdateMaxStaminaTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -1455,33 +1243,22 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/maxStaminaTable/{maxStaminaTableName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{maxStaminaTableName}", this.request.getMaxStaminaTableName() == null|| this.request.getMaxStaminaTableName().length() == 0 ? "null" : String.valueOf(this.request.getMaxStaminaTableName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{maxStaminaTableName}", this.request.getMaxStaminaTableName() == null || this.request.getMaxStaminaTableName().length() == 0 ? "null" : String.valueOf(this.request.getMaxStaminaTableName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getExperienceModelId() != null) {
-                json.put("experienceModelId", this.request.getExperienceModelId());
-            }
-            if (this.request.getValues() != null) {
-                JSONArray array = new JSONArray();
-                for(Integer item : this.request.getValues())
-                {
-                    array.put(item);
-                }
-                json.put("values", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                        request.getValues().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1499,25 +1276,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナの最大値テーブルマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateMaxStaminaTableMasterAsync(
             UpdateMaxStaminaTableMasterRequest request,
             AsyncAction<AsyncResult<UpdateMaxStaminaTableMasterResult>> callback
     ) {
-        UpdateMaxStaminaTableMasterTask task = new UpdateMaxStaminaTableMasterTask(request, callback, UpdateMaxStaminaTableMasterResult.class);
+        UpdateMaxStaminaTableMasterTask task = new UpdateMaxStaminaTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナの最大値テーブルマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateMaxStaminaTableMasterResult updateMaxStaminaTableMaster(
             UpdateMaxStaminaTableMasterRequest request
     ) {
@@ -1544,15 +1310,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DeleteMaxStaminaTableMasterTask(
             DeleteMaxStaminaTableMasterRequest request,
-            AsyncAction<AsyncResult<DeleteMaxStaminaTableMasterResult>> userCallback,
-            Class<DeleteMaxStaminaTableMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteMaxStaminaTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteMaxStaminaTableMasterResult parse(JsonNode data) {
+            return DeleteMaxStaminaTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -1563,8 +1332,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/maxStaminaTable/{maxStaminaTableName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{maxStaminaTableName}", this.request.getMaxStaminaTableName() == null|| this.request.getMaxStaminaTableName().length() == 0 ? "null" : String.valueOf(this.request.getMaxStaminaTableName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{maxStaminaTableName}", this.request.getMaxStaminaTableName() == null || this.request.getMaxStaminaTableName().length() == 0 ? "null" : String.valueOf(this.request.getMaxStaminaTableName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1588,25 +1357,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナの最大値テーブルマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteMaxStaminaTableMasterAsync(
             DeleteMaxStaminaTableMasterRequest request,
             AsyncAction<AsyncResult<DeleteMaxStaminaTableMasterResult>> callback
     ) {
-        DeleteMaxStaminaTableMasterTask task = new DeleteMaxStaminaTableMasterTask(request, callback, DeleteMaxStaminaTableMasterResult.class);
+        DeleteMaxStaminaTableMasterTask task = new DeleteMaxStaminaTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナの最大値テーブルマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteMaxStaminaTableMasterResult deleteMaxStaminaTableMaster(
             DeleteMaxStaminaTableMasterRequest request
     ) {
@@ -1633,15 +1391,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DescribeRecoverIntervalTableMastersTask(
             DescribeRecoverIntervalTableMastersRequest request,
-            AsyncAction<AsyncResult<DescribeRecoverIntervalTableMastersResult>> userCallback,
-            Class<DescribeRecoverIntervalTableMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeRecoverIntervalTableMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRecoverIntervalTableMastersResult parse(JsonNode data) {
+            return DescribeRecoverIntervalTableMastersResult.fromJson(data);
         }
 
         @Override
@@ -1652,7 +1413,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverIntervalTable";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1682,25 +1443,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRecoverIntervalTableMastersAsync(
             DescribeRecoverIntervalTableMastersRequest request,
             AsyncAction<AsyncResult<DescribeRecoverIntervalTableMastersResult>> callback
     ) {
-        DescribeRecoverIntervalTableMastersTask task = new DescribeRecoverIntervalTableMastersTask(request, callback, DescribeRecoverIntervalTableMastersResult.class);
+        DescribeRecoverIntervalTableMastersTask task = new DescribeRecoverIntervalTableMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRecoverIntervalTableMastersResult describeRecoverIntervalTableMasters(
             DescribeRecoverIntervalTableMastersRequest request
     ) {
@@ -1727,15 +1477,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public CreateRecoverIntervalTableMasterTask(
             CreateRecoverIntervalTableMasterRequest request,
-            AsyncAction<AsyncResult<CreateRecoverIntervalTableMasterResult>> userCallback,
-            Class<CreateRecoverIntervalTableMasterResult> clazz
+            AsyncAction<AsyncResult<CreateRecoverIntervalTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateRecoverIntervalTableMasterResult parse(JsonNode data) {
+            return CreateRecoverIntervalTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -1746,35 +1499,22 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverIntervalTable";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getExperienceModelId() != null) {
-                json.put("experienceModelId", this.request.getExperienceModelId());
-            }
-            if (this.request.getValues() != null) {
-                JSONArray array = new JSONArray();
-                for(Integer item : this.request.getValues())
-                {
-                    array.put(item);
-                }
-                json.put("values", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                        request.getValues().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1792,25 +1532,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createRecoverIntervalTableMasterAsync(
             CreateRecoverIntervalTableMasterRequest request,
             AsyncAction<AsyncResult<CreateRecoverIntervalTableMasterResult>> callback
     ) {
-        CreateRecoverIntervalTableMasterTask task = new CreateRecoverIntervalTableMasterTask(request, callback, CreateRecoverIntervalTableMasterResult.class);
+        CreateRecoverIntervalTableMasterTask task = new CreateRecoverIntervalTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateRecoverIntervalTableMasterResult createRecoverIntervalTableMaster(
             CreateRecoverIntervalTableMasterRequest request
     ) {
@@ -1837,15 +1566,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetRecoverIntervalTableMasterTask(
             GetRecoverIntervalTableMasterRequest request,
-            AsyncAction<AsyncResult<GetRecoverIntervalTableMasterResult>> userCallback,
-            Class<GetRecoverIntervalTableMasterResult> clazz
+            AsyncAction<AsyncResult<GetRecoverIntervalTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRecoverIntervalTableMasterResult parse(JsonNode data) {
+            return GetRecoverIntervalTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -1856,8 +1588,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverIntervalTable/{recoverIntervalTableName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{recoverIntervalTableName}", this.request.getRecoverIntervalTableName() == null|| this.request.getRecoverIntervalTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverIntervalTableName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{recoverIntervalTableName}", this.request.getRecoverIntervalTableName() == null || this.request.getRecoverIntervalTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverIntervalTableName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1881,25 +1613,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRecoverIntervalTableMasterAsync(
             GetRecoverIntervalTableMasterRequest request,
             AsyncAction<AsyncResult<GetRecoverIntervalTableMasterResult>> callback
     ) {
-        GetRecoverIntervalTableMasterTask task = new GetRecoverIntervalTableMasterTask(request, callback, GetRecoverIntervalTableMasterResult.class);
+        GetRecoverIntervalTableMasterTask task = new GetRecoverIntervalTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRecoverIntervalTableMasterResult getRecoverIntervalTableMaster(
             GetRecoverIntervalTableMasterRequest request
     ) {
@@ -1926,15 +1647,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public UpdateRecoverIntervalTableMasterTask(
             UpdateRecoverIntervalTableMasterRequest request,
-            AsyncAction<AsyncResult<UpdateRecoverIntervalTableMasterResult>> userCallback,
-            Class<UpdateRecoverIntervalTableMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateRecoverIntervalTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateRecoverIntervalTableMasterResult parse(JsonNode data) {
+            return UpdateRecoverIntervalTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -1945,33 +1669,22 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverIntervalTable/{recoverIntervalTableName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{recoverIntervalTableName}", this.request.getRecoverIntervalTableName() == null|| this.request.getRecoverIntervalTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverIntervalTableName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{recoverIntervalTableName}", this.request.getRecoverIntervalTableName() == null || this.request.getRecoverIntervalTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverIntervalTableName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getExperienceModelId() != null) {
-                json.put("experienceModelId", this.request.getExperienceModelId());
-            }
-            if (this.request.getValues() != null) {
-                JSONArray array = new JSONArray();
-                for(Integer item : this.request.getValues())
-                {
-                    array.put(item);
-                }
-                json.put("values", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                        request.getValues().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1989,25 +1702,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateRecoverIntervalTableMasterAsync(
             UpdateRecoverIntervalTableMasterRequest request,
             AsyncAction<AsyncResult<UpdateRecoverIntervalTableMasterResult>> callback
     ) {
-        UpdateRecoverIntervalTableMasterTask task = new UpdateRecoverIntervalTableMasterTask(request, callback, UpdateRecoverIntervalTableMasterResult.class);
+        UpdateRecoverIntervalTableMasterTask task = new UpdateRecoverIntervalTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateRecoverIntervalTableMasterResult updateRecoverIntervalTableMaster(
             UpdateRecoverIntervalTableMasterRequest request
     ) {
@@ -2034,15 +1736,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DeleteRecoverIntervalTableMasterTask(
             DeleteRecoverIntervalTableMasterRequest request,
-            AsyncAction<AsyncResult<DeleteRecoverIntervalTableMasterResult>> userCallback,
-            Class<DeleteRecoverIntervalTableMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteRecoverIntervalTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteRecoverIntervalTableMasterResult parse(JsonNode data) {
+            return DeleteRecoverIntervalTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -2053,8 +1758,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverIntervalTable/{recoverIntervalTableName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{recoverIntervalTableName}", this.request.getRecoverIntervalTableName() == null|| this.request.getRecoverIntervalTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverIntervalTableName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{recoverIntervalTableName}", this.request.getRecoverIntervalTableName() == null || this.request.getRecoverIntervalTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverIntervalTableName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2078,25 +1783,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteRecoverIntervalTableMasterAsync(
             DeleteRecoverIntervalTableMasterRequest request,
             AsyncAction<AsyncResult<DeleteRecoverIntervalTableMasterResult>> callback
     ) {
-        DeleteRecoverIntervalTableMasterTask task = new DeleteRecoverIntervalTableMasterTask(request, callback, DeleteRecoverIntervalTableMasterResult.class);
+        DeleteRecoverIntervalTableMasterTask task = new DeleteRecoverIntervalTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復間隔テーブルマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteRecoverIntervalTableMasterResult deleteRecoverIntervalTableMaster(
             DeleteRecoverIntervalTableMasterRequest request
     ) {
@@ -2123,15 +1817,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DescribeRecoverValueTableMastersTask(
             DescribeRecoverValueTableMastersRequest request,
-            AsyncAction<AsyncResult<DescribeRecoverValueTableMastersResult>> userCallback,
-            Class<DescribeRecoverValueTableMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeRecoverValueTableMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRecoverValueTableMastersResult parse(JsonNode data) {
+            return DescribeRecoverValueTableMastersResult.fromJson(data);
         }
 
         @Override
@@ -2142,7 +1839,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverValueTable";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2172,25 +1869,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復量テーブルマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRecoverValueTableMastersAsync(
             DescribeRecoverValueTableMastersRequest request,
             AsyncAction<AsyncResult<DescribeRecoverValueTableMastersResult>> callback
     ) {
-        DescribeRecoverValueTableMastersTask task = new DescribeRecoverValueTableMastersTask(request, callback, DescribeRecoverValueTableMastersResult.class);
+        DescribeRecoverValueTableMastersTask task = new DescribeRecoverValueTableMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復量テーブルマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRecoverValueTableMastersResult describeRecoverValueTableMasters(
             DescribeRecoverValueTableMastersRequest request
     ) {
@@ -2217,15 +1903,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public CreateRecoverValueTableMasterTask(
             CreateRecoverValueTableMasterRequest request,
-            AsyncAction<AsyncResult<CreateRecoverValueTableMasterResult>> userCallback,
-            Class<CreateRecoverValueTableMasterResult> clazz
+            AsyncAction<AsyncResult<CreateRecoverValueTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateRecoverValueTableMasterResult parse(JsonNode data) {
+            return CreateRecoverValueTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -2236,35 +1925,22 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverValueTable";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getExperienceModelId() != null) {
-                json.put("experienceModelId", this.request.getExperienceModelId());
-            }
-            if (this.request.getValues() != null) {
-                JSONArray array = new JSONArray();
-                for(Integer item : this.request.getValues())
-                {
-                    array.put(item);
-                }
-                json.put("values", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                        request.getValues().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2282,25 +1958,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復量テーブルマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createRecoverValueTableMasterAsync(
             CreateRecoverValueTableMasterRequest request,
             AsyncAction<AsyncResult<CreateRecoverValueTableMasterResult>> callback
     ) {
-        CreateRecoverValueTableMasterTask task = new CreateRecoverValueTableMasterTask(request, callback, CreateRecoverValueTableMasterResult.class);
+        CreateRecoverValueTableMasterTask task = new CreateRecoverValueTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復量テーブルマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateRecoverValueTableMasterResult createRecoverValueTableMaster(
             CreateRecoverValueTableMasterRequest request
     ) {
@@ -2327,15 +1992,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetRecoverValueTableMasterTask(
             GetRecoverValueTableMasterRequest request,
-            AsyncAction<AsyncResult<GetRecoverValueTableMasterResult>> userCallback,
-            Class<GetRecoverValueTableMasterResult> clazz
+            AsyncAction<AsyncResult<GetRecoverValueTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRecoverValueTableMasterResult parse(JsonNode data) {
+            return GetRecoverValueTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -2346,8 +2014,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverValueTable/{recoverValueTableName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{recoverValueTableName}", this.request.getRecoverValueTableName() == null|| this.request.getRecoverValueTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverValueTableName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{recoverValueTableName}", this.request.getRecoverValueTableName() == null || this.request.getRecoverValueTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverValueTableName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2371,25 +2039,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復量テーブルマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRecoverValueTableMasterAsync(
             GetRecoverValueTableMasterRequest request,
             AsyncAction<AsyncResult<GetRecoverValueTableMasterResult>> callback
     ) {
-        GetRecoverValueTableMasterTask task = new GetRecoverValueTableMasterTask(request, callback, GetRecoverValueTableMasterResult.class);
+        GetRecoverValueTableMasterTask task = new GetRecoverValueTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復量テーブルマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRecoverValueTableMasterResult getRecoverValueTableMaster(
             GetRecoverValueTableMasterRequest request
     ) {
@@ -2416,15 +2073,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public UpdateRecoverValueTableMasterTask(
             UpdateRecoverValueTableMasterRequest request,
-            AsyncAction<AsyncResult<UpdateRecoverValueTableMasterResult>> userCallback,
-            Class<UpdateRecoverValueTableMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateRecoverValueTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateRecoverValueTableMasterResult parse(JsonNode data) {
+            return UpdateRecoverValueTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -2435,33 +2095,22 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverValueTable/{recoverValueTableName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{recoverValueTableName}", this.request.getRecoverValueTableName() == null|| this.request.getRecoverValueTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverValueTableName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{recoverValueTableName}", this.request.getRecoverValueTableName() == null || this.request.getRecoverValueTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverValueTableName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getExperienceModelId() != null) {
-                json.put("experienceModelId", this.request.getExperienceModelId());
-            }
-            if (this.request.getValues() != null) {
-                JSONArray array = new JSONArray();
-                for(Integer item : this.request.getValues())
-                {
-                    array.put(item);
-                }
-                json.put("values", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("values", request.getValues() == null ? new ArrayList<Integer>() :
+                        request.getValues().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2479,25 +2128,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復量テーブルマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateRecoverValueTableMasterAsync(
             UpdateRecoverValueTableMasterRequest request,
             AsyncAction<AsyncResult<UpdateRecoverValueTableMasterResult>> callback
     ) {
-        UpdateRecoverValueTableMasterTask task = new UpdateRecoverValueTableMasterTask(request, callback, UpdateRecoverValueTableMasterResult.class);
+        UpdateRecoverValueTableMasterTask task = new UpdateRecoverValueTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復量テーブルマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateRecoverValueTableMasterResult updateRecoverValueTableMaster(
             UpdateRecoverValueTableMasterRequest request
     ) {
@@ -2524,15 +2162,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DeleteRecoverValueTableMasterTask(
             DeleteRecoverValueTableMasterRequest request,
-            AsyncAction<AsyncResult<DeleteRecoverValueTableMasterResult>> userCallback,
-            Class<DeleteRecoverValueTableMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteRecoverValueTableMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteRecoverValueTableMasterResult parse(JsonNode data) {
+            return DeleteRecoverValueTableMasterResult.fromJson(data);
         }
 
         @Override
@@ -2543,8 +2184,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/recoverValueTable/{recoverValueTableName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{recoverValueTableName}", this.request.getRecoverValueTableName() == null|| this.request.getRecoverValueTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverValueTableName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{recoverValueTableName}", this.request.getRecoverValueTableName() == null || this.request.getRecoverValueTableName().length() == 0 ? "null" : String.valueOf(this.request.getRecoverValueTableName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2568,25 +2209,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナ回復量テーブルマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteRecoverValueTableMasterAsync(
             DeleteRecoverValueTableMasterRequest request,
             AsyncAction<AsyncResult<DeleteRecoverValueTableMasterResult>> callback
     ) {
-        DeleteRecoverValueTableMasterTask task = new DeleteRecoverValueTableMasterTask(request, callback, DeleteRecoverValueTableMasterResult.class);
+        DeleteRecoverValueTableMasterTask task = new DeleteRecoverValueTableMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナ回復量テーブルマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteRecoverValueTableMasterResult deleteRecoverValueTableMaster(
             DeleteRecoverValueTableMasterRequest request
     ) {
@@ -2613,15 +2243,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -2632,7 +2265,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2656,25 +2289,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * 現在有効なスタミナマスターのマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なスタミナマスターのマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -2701,15 +2323,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetCurrentStaminaMasterTask(
             GetCurrentStaminaMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentStaminaMasterResult>> userCallback,
-            Class<GetCurrentStaminaMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentStaminaMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentStaminaMasterResult parse(JsonNode data) {
+            return GetCurrentStaminaMasterResult.fromJson(data);
         }
 
         @Override
@@ -2720,7 +2345,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2744,25 +2369,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * 現在有効なスタミナマスターを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentStaminaMasterAsync(
             GetCurrentStaminaMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentStaminaMasterResult>> callback
     ) {
-        GetCurrentStaminaMasterTask task = new GetCurrentStaminaMasterTask(request, callback, GetCurrentStaminaMasterResult.class);
+        GetCurrentStaminaMasterTask task = new GetCurrentStaminaMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なスタミナマスターを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentStaminaMasterResult getCurrentStaminaMaster(
             GetCurrentStaminaMasterRequest request
     ) {
@@ -2789,15 +2403,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public UpdateCurrentStaminaMasterTask(
             UpdateCurrentStaminaMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentStaminaMasterResult>> userCallback,
-            Class<UpdateCurrentStaminaMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentStaminaMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentStaminaMasterResult parse(JsonNode data) {
+            return UpdateCurrentStaminaMasterResult.fromJson(data);
         }
 
         @Override
@@ -2808,18 +2425,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2837,25 +2450,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * 現在有効なスタミナマスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentStaminaMasterAsync(
             UpdateCurrentStaminaMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentStaminaMasterResult>> callback
     ) {
-        UpdateCurrentStaminaMasterTask task = new UpdateCurrentStaminaMasterTask(request, callback, UpdateCurrentStaminaMasterResult.class);
+        UpdateCurrentStaminaMasterTask task = new UpdateCurrentStaminaMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なスタミナマスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentStaminaMasterResult updateCurrentStaminaMaster(
             UpdateCurrentStaminaMasterRequest request
     ) {
@@ -2882,15 +2484,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public UpdateCurrentStaminaMasterFromGitHubTask(
             UpdateCurrentStaminaMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentStaminaMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentStaminaMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentStaminaMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentStaminaMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentStaminaMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2901,22 +2506,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2934,25 +2531,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * 現在有効なスタミナマスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentStaminaMasterFromGitHubAsync(
             UpdateCurrentStaminaMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentStaminaMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentStaminaMasterFromGitHubTask task = new UpdateCurrentStaminaMasterFromGitHubTask(request, callback, UpdateCurrentStaminaMasterFromGitHubResult.class);
+        UpdateCurrentStaminaMasterFromGitHubTask task = new UpdateCurrentStaminaMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なスタミナマスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentStaminaMasterFromGitHubResult updateCurrentStaminaMasterFromGitHub(
             UpdateCurrentStaminaMasterFromGitHubRequest request
     ) {
@@ -2979,15 +2565,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DescribeStaminaModelsTask(
             DescribeStaminaModelsRequest request,
-            AsyncAction<AsyncResult<DescribeStaminaModelsResult>> userCallback,
-            Class<DescribeStaminaModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeStaminaModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeStaminaModelsResult parse(JsonNode data) {
+            return DescribeStaminaModelsResult.fromJson(data);
         }
 
         @Override
@@ -2998,7 +2587,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3022,25 +2611,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナモデルの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeStaminaModelsAsync(
             DescribeStaminaModelsRequest request,
             AsyncAction<AsyncResult<DescribeStaminaModelsResult>> callback
     ) {
-        DescribeStaminaModelsTask task = new DescribeStaminaModelsTask(request, callback, DescribeStaminaModelsResult.class);
+        DescribeStaminaModelsTask task = new DescribeStaminaModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナモデルの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeStaminaModelsResult describeStaminaModels(
             DescribeStaminaModelsRequest request
     ) {
@@ -3067,15 +2645,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetStaminaModelTask(
             GetStaminaModelRequest request,
-            AsyncAction<AsyncResult<GetStaminaModelResult>> userCallback,
-            Class<GetStaminaModelResult> clazz
+            AsyncAction<AsyncResult<GetStaminaModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetStaminaModelResult parse(JsonNode data) {
+            return GetStaminaModelResult.fromJson(data);
         }
 
         @Override
@@ -3086,8 +2667,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model/{staminaName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3111,25 +2692,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナモデルを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getStaminaModelAsync(
             GetStaminaModelRequest request,
             AsyncAction<AsyncResult<GetStaminaModelResult>> callback
     ) {
-        GetStaminaModelTask task = new GetStaminaModelTask(request, callback, GetStaminaModelResult.class);
+        GetStaminaModelTask task = new GetStaminaModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナモデルを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetStaminaModelResult getStaminaModel(
             GetStaminaModelRequest request
     ) {
@@ -3156,15 +2726,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DescribeStaminasTask(
             DescribeStaminasRequest request,
-            AsyncAction<AsyncResult<DescribeStaminasResult>> userCallback,
-            Class<DescribeStaminasResult> clazz
+            AsyncAction<AsyncResult<DescribeStaminasResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeStaminasResult parse(JsonNode data) {
+            return DescribeStaminasResult.fromJson(data);
         }
 
         @Override
@@ -3175,7 +2748,7 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/stamina";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3201,9 +2774,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3211,25 +2781,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeStaminasAsync(
             DescribeStaminasRequest request,
             AsyncAction<AsyncResult<DescribeStaminasResult>> callback
     ) {
-        DescribeStaminasTask task = new DescribeStaminasTask(request, callback, DescribeStaminasResult.class);
+        DescribeStaminasTask task = new DescribeStaminasTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeStaminasResult describeStaminas(
             DescribeStaminasRequest request
     ) {
@@ -3256,15 +2815,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DescribeStaminasByUserIdTask(
             DescribeStaminasByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeStaminasByUserIdResult>> userCallback,
-            Class<DescribeStaminasByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeStaminasByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeStaminasByUserIdResult parse(JsonNode data) {
+            return DescribeStaminasByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3275,8 +2837,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3299,9 +2861,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3309,25 +2868,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeStaminasByUserIdAsync(
             DescribeStaminasByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeStaminasByUserIdResult>> callback
     ) {
-        DescribeStaminasByUserIdTask task = new DescribeStaminasByUserIdTask(request, callback, DescribeStaminasByUserIdResult.class);
+        DescribeStaminasByUserIdTask task = new DescribeStaminasByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeStaminasByUserIdResult describeStaminasByUserId(
             DescribeStaminasByUserIdRequest request
     ) {
@@ -3354,15 +2902,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetStaminaTask(
             GetStaminaRequest request,
-            AsyncAction<AsyncResult<GetStaminaResult>> userCallback,
-            Class<GetStaminaResult> clazz
+            AsyncAction<AsyncResult<GetStaminaResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetStaminaResult parse(JsonNode data) {
+            return GetStaminaResult.fromJson(data);
         }
 
         @Override
@@ -3373,8 +2924,8 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/stamina/{staminaName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3394,9 +2945,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3404,25 +2952,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getStaminaAsync(
             GetStaminaRequest request,
             AsyncAction<AsyncResult<GetStaminaResult>> callback
     ) {
-        GetStaminaTask task = new GetStaminaTask(request, callback, GetStaminaResult.class);
+        GetStaminaTask task = new GetStaminaTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetStaminaResult getStamina(
             GetStaminaRequest request
     ) {
@@ -3449,15 +2986,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public GetStaminaByUserIdTask(
             GetStaminaByUserIdRequest request,
-            AsyncAction<AsyncResult<GetStaminaByUserIdResult>> userCallback,
-            Class<GetStaminaByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetStaminaByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetStaminaByUserIdResult parse(JsonNode data) {
+            return GetStaminaByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3468,9 +3008,9 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina/{staminaName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3487,9 +3027,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3497,25 +3034,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getStaminaByUserIdAsync(
             GetStaminaByUserIdRequest request,
             AsyncAction<AsyncResult<GetStaminaByUserIdResult>> callback
     ) {
-        GetStaminaByUserIdTask task = new GetStaminaByUserIdTask(request, callback, GetStaminaByUserIdResult.class);
+        GetStaminaByUserIdTask task = new GetStaminaByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetStaminaByUserIdResult getStaminaByUserId(
             GetStaminaByUserIdRequest request
     ) {
@@ -3542,15 +3068,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public UpdateStaminaByUserIdTask(
             UpdateStaminaByUserIdRequest request,
-            AsyncAction<AsyncResult<UpdateStaminaByUserIdResult>> userCallback,
-            Class<UpdateStaminaByUserIdResult> clazz
+            AsyncAction<AsyncResult<UpdateStaminaByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateStaminaByUserIdResult parse(JsonNode data) {
+            return UpdateStaminaByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3561,29 +3090,19 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina/{staminaName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getValue() != null) {
-                json.put("value", this.request.getValue());
-            }
-            if (this.request.getMaxValue() != null) {
-                json.put("maxValue", this.request.getMaxValue());
-            }
-            if (this.request.getRecoverIntervalMinutes() != null) {
-                json.put("recoverIntervalMinutes", this.request.getRecoverIntervalMinutes());
-            }
-            if (this.request.getRecoverValue() != null) {
-                json.put("recoverValue", this.request.getRecoverValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("maxValue", request.getMaxValue());
+                    put("recoverIntervalMinutes", request.getRecoverIntervalMinutes());
+                    put("recoverValue", request.getRecoverValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3594,9 +3113,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3604,25 +3120,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナを作成・更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateStaminaByUserIdAsync(
             UpdateStaminaByUserIdRequest request,
             AsyncAction<AsyncResult<UpdateStaminaByUserIdResult>> callback
     ) {
-        UpdateStaminaByUserIdTask task = new UpdateStaminaByUserIdTask(request, callback, UpdateStaminaByUserIdResult.class);
+        UpdateStaminaByUserIdTask task = new UpdateStaminaByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナを作成・更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateStaminaByUserIdResult updateStaminaByUserId(
             UpdateStaminaByUserIdRequest request
     ) {
@@ -3649,15 +3154,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public ConsumeStaminaTask(
             ConsumeStaminaRequest request,
-            AsyncAction<AsyncResult<ConsumeStaminaResult>> userCallback,
-            Class<ConsumeStaminaResult> clazz
+            AsyncAction<AsyncResult<ConsumeStaminaResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ConsumeStaminaResult parse(JsonNode data) {
+            return ConsumeStaminaResult.fromJson(data);
         }
 
         @Override
@@ -3668,19 +3176,15 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/stamina/{staminaName}/consume";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConsumeValue() != null) {
-                json.put("consumeValue", this.request.getConsumeValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("consumeValue", request.getConsumeValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3694,9 +3198,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3704,25 +3205,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナを消費<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void consumeStaminaAsync(
             ConsumeStaminaRequest request,
             AsyncAction<AsyncResult<ConsumeStaminaResult>> callback
     ) {
-        ConsumeStaminaTask task = new ConsumeStaminaTask(request, callback, ConsumeStaminaResult.class);
+        ConsumeStaminaTask task = new ConsumeStaminaTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナを消費<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ConsumeStaminaResult consumeStamina(
             ConsumeStaminaRequest request
     ) {
@@ -3749,15 +3239,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public ConsumeStaminaByUserIdTask(
             ConsumeStaminaByUserIdRequest request,
-            AsyncAction<AsyncResult<ConsumeStaminaByUserIdResult>> userCallback,
-            Class<ConsumeStaminaByUserIdResult> clazz
+            AsyncAction<AsyncResult<ConsumeStaminaByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ConsumeStaminaByUserIdResult parse(JsonNode data) {
+            return ConsumeStaminaByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3768,20 +3261,16 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina/{staminaName}/consume";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConsumeValue() != null) {
-                json.put("consumeValue", this.request.getConsumeValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("consumeValue", request.getConsumeValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3792,9 +3281,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3802,25 +3288,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナを消費<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void consumeStaminaByUserIdAsync(
             ConsumeStaminaByUserIdRequest request,
             AsyncAction<AsyncResult<ConsumeStaminaByUserIdResult>> callback
     ) {
-        ConsumeStaminaByUserIdTask task = new ConsumeStaminaByUserIdTask(request, callback, ConsumeStaminaByUserIdResult.class);
+        ConsumeStaminaByUserIdTask task = new ConsumeStaminaByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナを消費<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ConsumeStaminaByUserIdResult consumeStaminaByUserId(
             ConsumeStaminaByUserIdRequest request
     ) {
@@ -3847,15 +3322,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public RecoverStaminaByUserIdTask(
             RecoverStaminaByUserIdRequest request,
-            AsyncAction<AsyncResult<RecoverStaminaByUserIdResult>> userCallback,
-            Class<RecoverStaminaByUserIdResult> clazz
+            AsyncAction<AsyncResult<RecoverStaminaByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RecoverStaminaByUserIdResult parse(JsonNode data) {
+            return RecoverStaminaByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3866,20 +3344,16 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina/{staminaName}/recover";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getRecoverValue() != null) {
-                json.put("recoverValue", this.request.getRecoverValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("recoverValue", request.getRecoverValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3890,9 +3364,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3900,25 +3371,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナを回復<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void recoverStaminaByUserIdAsync(
             RecoverStaminaByUserIdRequest request,
             AsyncAction<AsyncResult<RecoverStaminaByUserIdResult>> callback
     ) {
-        RecoverStaminaByUserIdTask task = new RecoverStaminaByUserIdTask(request, callback, RecoverStaminaByUserIdResult.class);
+        RecoverStaminaByUserIdTask task = new RecoverStaminaByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナを回復<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RecoverStaminaByUserIdResult recoverStaminaByUserId(
             RecoverStaminaByUserIdRequest request
     ) {
@@ -3945,15 +3405,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public RaiseMaxValueByUserIdTask(
             RaiseMaxValueByUserIdRequest request,
-            AsyncAction<AsyncResult<RaiseMaxValueByUserIdResult>> userCallback,
-            Class<RaiseMaxValueByUserIdResult> clazz
+            AsyncAction<AsyncResult<RaiseMaxValueByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RaiseMaxValueByUserIdResult parse(JsonNode data) {
+            return RaiseMaxValueByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3964,20 +3427,16 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina/{staminaName}/raise";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getRaiseValue() != null) {
-                json.put("raiseValue", this.request.getRaiseValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("raiseValue", request.getRaiseValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3988,9 +3447,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3998,25 +3454,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナの最大値を加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void raiseMaxValueByUserIdAsync(
             RaiseMaxValueByUserIdRequest request,
             AsyncAction<AsyncResult<RaiseMaxValueByUserIdResult>> callback
     ) {
-        RaiseMaxValueByUserIdTask task = new RaiseMaxValueByUserIdTask(request, callback, RaiseMaxValueByUserIdResult.class);
+        RaiseMaxValueByUserIdTask task = new RaiseMaxValueByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナの最大値を加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RaiseMaxValueByUserIdResult raiseMaxValueByUserId(
             RaiseMaxValueByUserIdRequest request
     ) {
@@ -4043,15 +3488,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public SetMaxValueByUserIdTask(
             SetMaxValueByUserIdRequest request,
-            AsyncAction<AsyncResult<SetMaxValueByUserIdResult>> userCallback,
-            Class<SetMaxValueByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetMaxValueByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetMaxValueByUserIdResult parse(JsonNode data) {
+            return SetMaxValueByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4062,20 +3510,16 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina/{staminaName}/set";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getMaxValue() != null) {
-                json.put("maxValue", this.request.getMaxValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("maxValue", request.getMaxValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4086,9 +3530,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4096,25 +3537,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナの最大値を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setMaxValueByUserIdAsync(
             SetMaxValueByUserIdRequest request,
             AsyncAction<AsyncResult<SetMaxValueByUserIdResult>> callback
     ) {
-        SetMaxValueByUserIdTask task = new SetMaxValueByUserIdTask(request, callback, SetMaxValueByUserIdResult.class);
+        SetMaxValueByUserIdTask task = new SetMaxValueByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナの最大値を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetMaxValueByUserIdResult setMaxValueByUserId(
             SetMaxValueByUserIdRequest request
     ) {
@@ -4141,15 +3571,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public SetRecoverIntervalByUserIdTask(
             SetRecoverIntervalByUserIdRequest request,
-            AsyncAction<AsyncResult<SetRecoverIntervalByUserIdResult>> userCallback,
-            Class<SetRecoverIntervalByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetRecoverIntervalByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetRecoverIntervalByUserIdResult parse(JsonNode data) {
+            return SetRecoverIntervalByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4160,20 +3593,16 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina/{staminaName}/recoverInterval/set";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getRecoverIntervalMinutes() != null) {
-                json.put("recoverIntervalMinutes", this.request.getRecoverIntervalMinutes());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("recoverIntervalMinutes", request.getRecoverIntervalMinutes());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4184,9 +3613,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4194,25 +3620,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナの回復間隔(分)を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setRecoverIntervalByUserIdAsync(
             SetRecoverIntervalByUserIdRequest request,
             AsyncAction<AsyncResult<SetRecoverIntervalByUserIdResult>> callback
     ) {
-        SetRecoverIntervalByUserIdTask task = new SetRecoverIntervalByUserIdTask(request, callback, SetRecoverIntervalByUserIdResult.class);
+        SetRecoverIntervalByUserIdTask task = new SetRecoverIntervalByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナの回復間隔(分)を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetRecoverIntervalByUserIdResult setRecoverIntervalByUserId(
             SetRecoverIntervalByUserIdRequest request
     ) {
@@ -4239,15 +3654,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public SetRecoverValueByUserIdTask(
             SetRecoverValueByUserIdRequest request,
-            AsyncAction<AsyncResult<SetRecoverValueByUserIdResult>> userCallback,
-            Class<SetRecoverValueByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetRecoverValueByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetRecoverValueByUserIdResult parse(JsonNode data) {
+            return SetRecoverValueByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4258,20 +3676,16 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina/{staminaName}/recoverValue/set";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getRecoverValue() != null) {
-                json.put("recoverValue", this.request.getRecoverValue());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("recoverValue", request.getRecoverValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4282,9 +3696,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4292,25 +3703,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナの回復間隔(分)を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setRecoverValueByUserIdAsync(
             SetRecoverValueByUserIdRequest request,
             AsyncAction<AsyncResult<SetRecoverValueByUserIdResult>> callback
     ) {
-        SetRecoverValueByUserIdTask task = new SetRecoverValueByUserIdTask(request, callback, SetRecoverValueByUserIdResult.class);
+        SetRecoverValueByUserIdTask task = new SetRecoverValueByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナの回復間隔(分)を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetRecoverValueByUserIdResult setRecoverValueByUserId(
             SetRecoverValueByUserIdRequest request
     ) {
@@ -4337,15 +3737,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public SetMaxValueByStatusTask(
             SetMaxValueByStatusRequest request,
-            AsyncAction<AsyncResult<SetMaxValueByStatusResult>> userCallback,
-            Class<SetMaxValueByStatusResult> clazz
+            AsyncAction<AsyncResult<SetMaxValueByStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetMaxValueByStatusResult parse(JsonNode data) {
+            return SetMaxValueByStatusResult.fromJson(data);
         }
 
         @Override
@@ -4356,25 +3759,17 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/stamina/{staminaName}/set";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getSignedStatusBody() != null) {
-                json.put("signedStatusBody", this.request.getSignedStatusBody());
-            }
-            if (this.request.getSignedStatusSignature() != null) {
-                json.put("signedStatusSignature", this.request.getSignedStatusSignature());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("keyId", request.getKeyId());
+                    put("signedStatusBody", request.getSignedStatusBody());
+                    put("signedStatusSignature", request.getSignedStatusSignature());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4388,9 +3783,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4398,25 +3790,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナの最大値をGS2-Experienceのステータスを使用して更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setMaxValueByStatusAsync(
             SetMaxValueByStatusRequest request,
             AsyncAction<AsyncResult<SetMaxValueByStatusResult>> callback
     ) {
-        SetMaxValueByStatusTask task = new SetMaxValueByStatusTask(request, callback, SetMaxValueByStatusResult.class);
+        SetMaxValueByStatusTask task = new SetMaxValueByStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナの最大値をGS2-Experienceのステータスを使用して更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetMaxValueByStatusResult setMaxValueByStatus(
             SetMaxValueByStatusRequest request
     ) {
@@ -4443,15 +3824,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public SetRecoverIntervalByStatusTask(
             SetRecoverIntervalByStatusRequest request,
-            AsyncAction<AsyncResult<SetRecoverIntervalByStatusResult>> userCallback,
-            Class<SetRecoverIntervalByStatusResult> clazz
+            AsyncAction<AsyncResult<SetRecoverIntervalByStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetRecoverIntervalByStatusResult parse(JsonNode data) {
+            return SetRecoverIntervalByStatusResult.fromJson(data);
         }
 
         @Override
@@ -4462,25 +3846,17 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/stamina/{staminaName}/recoverInterval/set";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getSignedStatusBody() != null) {
-                json.put("signedStatusBody", this.request.getSignedStatusBody());
-            }
-            if (this.request.getSignedStatusSignature() != null) {
-                json.put("signedStatusSignature", this.request.getSignedStatusSignature());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("keyId", request.getKeyId());
+                    put("signedStatusBody", request.getSignedStatusBody());
+                    put("signedStatusSignature", request.getSignedStatusSignature());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4494,9 +3870,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4504,25 +3877,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナの最大値をGS2-Experienceのステータスを使用して更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setRecoverIntervalByStatusAsync(
             SetRecoverIntervalByStatusRequest request,
             AsyncAction<AsyncResult<SetRecoverIntervalByStatusResult>> callback
     ) {
-        SetRecoverIntervalByStatusTask task = new SetRecoverIntervalByStatusTask(request, callback, SetRecoverIntervalByStatusResult.class);
+        SetRecoverIntervalByStatusTask task = new SetRecoverIntervalByStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナの最大値をGS2-Experienceのステータスを使用して更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetRecoverIntervalByStatusResult setRecoverIntervalByStatus(
             SetRecoverIntervalByStatusRequest request
     ) {
@@ -4549,15 +3911,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public SetRecoverValueByStatusTask(
             SetRecoverValueByStatusRequest request,
-            AsyncAction<AsyncResult<SetRecoverValueByStatusResult>> userCallback,
-            Class<SetRecoverValueByStatusResult> clazz
+            AsyncAction<AsyncResult<SetRecoverValueByStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetRecoverValueByStatusResult parse(JsonNode data) {
+            return SetRecoverValueByStatusResult.fromJson(data);
         }
 
         @Override
@@ -4566,27 +3931,19 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "stamina")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/stamina/{staminaName}/reoverValue/set";
+                + "/{namespaceName}/user/me/stamina/{staminaName}/recoverValue/set";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getSignedStatusBody() != null) {
-                json.put("signedStatusBody", this.request.getSignedStatusBody());
-            }
-            if (this.request.getSignedStatusSignature() != null) {
-                json.put("signedStatusSignature", this.request.getSignedStatusSignature());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("keyId", request.getKeyId());
+                    put("signedStatusBody", request.getSignedStatusBody());
+                    put("signedStatusSignature", request.getSignedStatusSignature());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4600,9 +3957,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4610,25 +3964,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタミナの最大値をGS2-Experienceのステータスを使用して更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setRecoverValueByStatusAsync(
             SetRecoverValueByStatusRequest request,
             AsyncAction<AsyncResult<SetRecoverValueByStatusResult>> callback
     ) {
-        SetRecoverValueByStatusTask task = new SetRecoverValueByStatusTask(request, callback, SetRecoverValueByStatusResult.class);
+        SetRecoverValueByStatusTask task = new SetRecoverValueByStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタミナの最大値をGS2-Experienceのステータスを使用して更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetRecoverValueByStatusResult setRecoverValueByStatus(
             SetRecoverValueByStatusRequest request
     ) {
@@ -4655,15 +3998,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public DeleteStaminaByUserIdTask(
             DeleteStaminaByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteStaminaByUserIdResult>> userCallback,
-            Class<DeleteStaminaByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteStaminaByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteStaminaByUserIdResult parse(JsonNode data) {
+            return DeleteStaminaByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -4674,9 +4020,9 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/stamina/{staminaName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{staminaName}", this.request.getStaminaName() == null|| this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4693,9 +4039,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4703,25 +4046,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してスタミナを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteStaminaByUserIdAsync(
             DeleteStaminaByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteStaminaByUserIdResult>> callback
     ) {
-        DeleteStaminaByUserIdTask task = new DeleteStaminaByUserIdTask(request, callback, DeleteStaminaByUserIdResult.class);
+        DeleteStaminaByUserIdTask task = new DeleteStaminaByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してスタミナを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteStaminaByUserIdResult deleteStaminaByUserId(
             DeleteStaminaByUserIdRequest request
     ) {
@@ -4748,15 +4080,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public RecoverStaminaByStampSheetTask(
             RecoverStaminaByStampSheetRequest request,
-            AsyncAction<AsyncResult<RecoverStaminaByStampSheetResult>> userCallback,
-            Class<RecoverStaminaByStampSheetResult> clazz
+            AsyncAction<AsyncResult<RecoverStaminaByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RecoverStaminaByStampSheetResult parse(JsonNode data) {
+            return RecoverStaminaByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -4767,19 +4102,13 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/stamina/recover";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4790,9 +4119,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4800,25 +4126,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタンプシートを使用してスタミナを回復<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void recoverStaminaByStampSheetAsync(
             RecoverStaminaByStampSheetRequest request,
             AsyncAction<AsyncResult<RecoverStaminaByStampSheetResult>> callback
     ) {
-        RecoverStaminaByStampSheetTask task = new RecoverStaminaByStampSheetTask(request, callback, RecoverStaminaByStampSheetResult.class);
+        RecoverStaminaByStampSheetTask task = new RecoverStaminaByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートを使用してスタミナを回復<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RecoverStaminaByStampSheetResult recoverStaminaByStampSheet(
             RecoverStaminaByStampSheetRequest request
     ) {
@@ -4845,15 +4160,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public RaiseMaxValueByStampSheetTask(
             RaiseMaxValueByStampSheetRequest request,
-            AsyncAction<AsyncResult<RaiseMaxValueByStampSheetResult>> userCallback,
-            Class<RaiseMaxValueByStampSheetResult> clazz
+            AsyncAction<AsyncResult<RaiseMaxValueByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public RaiseMaxValueByStampSheetResult parse(JsonNode data) {
+            return RaiseMaxValueByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -4864,19 +4182,13 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/stamina/raise";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4887,9 +4199,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4897,25 +4206,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタンプシートでスタミナの最大値を加算<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void raiseMaxValueByStampSheetAsync(
             RaiseMaxValueByStampSheetRequest request,
             AsyncAction<AsyncResult<RaiseMaxValueByStampSheetResult>> callback
     ) {
-        RaiseMaxValueByStampSheetTask task = new RaiseMaxValueByStampSheetTask(request, callback, RaiseMaxValueByStampSheetResult.class);
+        RaiseMaxValueByStampSheetTask task = new RaiseMaxValueByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでスタミナの最大値を加算<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public RaiseMaxValueByStampSheetResult raiseMaxValueByStampSheet(
             RaiseMaxValueByStampSheetRequest request
     ) {
@@ -4942,15 +4240,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public SetMaxValueByStampSheetTask(
             SetMaxValueByStampSheetRequest request,
-            AsyncAction<AsyncResult<SetMaxValueByStampSheetResult>> userCallback,
-            Class<SetMaxValueByStampSheetResult> clazz
+            AsyncAction<AsyncResult<SetMaxValueByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetMaxValueByStampSheetResult parse(JsonNode data) {
+            return SetMaxValueByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -4961,19 +4262,13 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/stamina/max/set";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -4984,9 +4279,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -4994,25 +4286,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタンプシートでスタミナの最大値を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setMaxValueByStampSheetAsync(
             SetMaxValueByStampSheetRequest request,
             AsyncAction<AsyncResult<SetMaxValueByStampSheetResult>> callback
     ) {
-        SetMaxValueByStampSheetTask task = new SetMaxValueByStampSheetTask(request, callback, SetMaxValueByStampSheetResult.class);
+        SetMaxValueByStampSheetTask task = new SetMaxValueByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでスタミナの最大値を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetMaxValueByStampSheetResult setMaxValueByStampSheet(
             SetMaxValueByStampSheetRequest request
     ) {
@@ -5039,15 +4320,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public SetRecoverIntervalByStampSheetTask(
             SetRecoverIntervalByStampSheetRequest request,
-            AsyncAction<AsyncResult<SetRecoverIntervalByStampSheetResult>> userCallback,
-            Class<SetRecoverIntervalByStampSheetResult> clazz
+            AsyncAction<AsyncResult<SetRecoverIntervalByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetRecoverIntervalByStampSheetResult parse(JsonNode data) {
+            return SetRecoverIntervalByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -5058,19 +4342,13 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/stamina/recoverInterval/set";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -5081,9 +4359,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5091,25 +4366,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタンプシートでスタミナの最大値を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setRecoverIntervalByStampSheetAsync(
             SetRecoverIntervalByStampSheetRequest request,
             AsyncAction<AsyncResult<SetRecoverIntervalByStampSheetResult>> callback
     ) {
-        SetRecoverIntervalByStampSheetTask task = new SetRecoverIntervalByStampSheetTask(request, callback, SetRecoverIntervalByStampSheetResult.class);
+        SetRecoverIntervalByStampSheetTask task = new SetRecoverIntervalByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでスタミナの最大値を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetRecoverIntervalByStampSheetResult setRecoverIntervalByStampSheet(
             SetRecoverIntervalByStampSheetRequest request
     ) {
@@ -5136,15 +4400,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public SetRecoverValueByStampSheetTask(
             SetRecoverValueByStampSheetRequest request,
-            AsyncAction<AsyncResult<SetRecoverValueByStampSheetResult>> userCallback,
-            Class<SetRecoverValueByStampSheetResult> clazz
+            AsyncAction<AsyncResult<SetRecoverValueByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetRecoverValueByStampSheetResult parse(JsonNode data) {
+            return SetRecoverValueByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -5155,19 +4422,13 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/stamina/recoverValue/set";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -5178,9 +4439,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5188,25 +4446,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタンプシートでスタミナの最大値を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setRecoverValueByStampSheetAsync(
             SetRecoverValueByStampSheetRequest request,
             AsyncAction<AsyncResult<SetRecoverValueByStampSheetResult>> callback
     ) {
-        SetRecoverValueByStampSheetTask task = new SetRecoverValueByStampSheetTask(request, callback, SetRecoverValueByStampSheetResult.class);
+        SetRecoverValueByStampSheetTask task = new SetRecoverValueByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでスタミナの最大値を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetRecoverValueByStampSheetResult setRecoverValueByStampSheet(
             SetRecoverValueByStampSheetRequest request
     ) {
@@ -5233,15 +4480,18 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
 
         public ConsumeStaminaByStampTaskTask(
             ConsumeStaminaByStampTaskRequest request,
-            AsyncAction<AsyncResult<ConsumeStaminaByStampTaskResult>> userCallback,
-            Class<ConsumeStaminaByStampTaskResult> clazz
+            AsyncAction<AsyncResult<ConsumeStaminaByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ConsumeStaminaByStampTaskResult parse(JsonNode data) {
+            return ConsumeStaminaByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -5252,19 +4502,13 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/stamina/consume";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -5275,9 +4519,6 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -5285,25 +4526,14 @@ public class Gs2StaminaRestClient extends AbstractGs2Client<Gs2StaminaRestClient
         }
     }
 
-    /**
-     * スタンプタスクを使用してスタミナを消費<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void consumeStaminaByStampTaskAsync(
             ConsumeStaminaByStampTaskRequest request,
             AsyncAction<AsyncResult<ConsumeStaminaByStampTaskResult>> callback
     ) {
-        ConsumeStaminaByStampTaskTask task = new ConsumeStaminaByStampTaskTask(request, callback, ConsumeStaminaByStampTaskResult.class);
+        ConsumeStaminaByStampTaskTask task = new ConsumeStaminaByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプタスクを使用してスタミナを消費<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ConsumeStaminaByStampTaskResult consumeStaminaByStampTask(
             ConsumeStaminaByStampTaskRequest request
     ) {

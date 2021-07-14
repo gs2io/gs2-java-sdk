@@ -16,114 +16,78 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * セキュリティポリシーを新規作成します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateSecurityPolicyRequest extends Gs2BasicRequest<CreateSecurityPolicyRequest> {
-
-    /** セキュリティポリシー名 */
     private String name;
-
-    /**
-     * セキュリティポリシー名を取得
-     *
-     * @return セキュリティポリシーを新規作成します
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * セキュリティポリシー名を設定
-     *
-     * @param name セキュリティポリシーを新規作成します
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * セキュリティポリシー名を設定
-     *
-     * @param name セキュリティポリシーを新規作成します
-     * @return this
-     */
-    public CreateSecurityPolicyRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** セキュリティポリシーの説明 */
     private String description;
-
-    /**
-     * セキュリティポリシーの説明を取得
-     *
-     * @return セキュリティポリシーを新規作成します
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * セキュリティポリシーの説明を設定
-     *
-     * @param description セキュリティポリシーを新規作成します
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * セキュリティポリシーの説明を設定
-     *
-     * @param description セキュリティポリシーを新規作成します
-     * @return this
-     */
-    public CreateSecurityPolicyRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** ポリシードキュメント */
     private String policy;
 
-    /**
-     * ポリシードキュメントを取得
-     *
-     * @return セキュリティポリシーを新規作成します
-     */
-    public String getPolicy() {
-        return policy;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateSecurityPolicyRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateSecurityPolicyRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getPolicy() {
+		return policy;
+	}
+
+	public void setPolicy(String policy) {
+		this.policy = policy;
+	}
+
+	public CreateSecurityPolicyRequest withPolicy(String policy) {
+		this.policy = policy;
+		return this;
+	}
+
+    public static CreateSecurityPolicyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateSecurityPolicyRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withPolicy(data.get("policy") == null || data.get("policy").isNull() ? null : data.get("policy").asText());
     }
 
-    /**
-     * ポリシードキュメントを設定
-     *
-     * @param policy セキュリティポリシーを新規作成します
-     */
-    public void setPolicy(String policy) {
-        this.policy = policy;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("policy", getPolicy());
+            }}
+        );
     }
-
-    /**
-     * ポリシードキュメントを設定
-     *
-     * @param policy セキュリティポリシーを新規作成します
-     * @return this
-     */
-    public CreateSecurityPolicyRequest withPolicy(String policy) {
-        setPolicy(policy);
-        return this;
-    }
-
 }

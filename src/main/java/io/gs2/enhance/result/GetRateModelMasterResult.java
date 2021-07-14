@@ -16,39 +16,49 @@
 
 package io.gs2.enhance.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.enhance.model.*;
+import io.gs2.enhance.model.BonusRate;
+import io.gs2.enhance.model.RateModelMaster;
 
-/**
- * 強化レートマスターを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetRateModelMasterResult implements IResult, Serializable {
-	/** 強化レートマスター */
-	private RateModelMaster item;
+    private RateModelMaster item;
 
-	/**
-	 * 強化レートマスターを取得
-	 *
-	 * @return 強化レートマスターを取得
-	 */
 	public RateModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 強化レートマスターを設定
-	 *
-	 * @param item 強化レートマスターを取得
-	 */
 	public void setItem(RateModelMaster item) {
 		this.item = item;
 	}
+
+	public GetRateModelMasterResult withItem(RateModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetRateModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetRateModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RateModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

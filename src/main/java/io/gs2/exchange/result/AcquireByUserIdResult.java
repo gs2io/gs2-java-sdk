@@ -16,79 +16,80 @@
 
 package io.gs2.exchange.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.exchange.model.*;
+import io.gs2.exchange.model.Await;
 
-/**
- * 交換待機の報酬を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AcquireByUserIdResult implements IResult, Serializable {
-	/** 交換待機 */
-	private Await item;
-	/** 報酬取得処理の実行に使用するスタンプシート */
-	private String stampSheet;
-	/** スタンプシートの署名計算に使用した暗号鍵GRN */
-	private String stampSheetEncryptionKeyId;
+    private Await item;
+    private String stampSheet;
+    private String stampSheetEncryptionKeyId;
 
-	/**
-	 * 交換待機を取得
-	 *
-	 * @return 交換待機の報酬を取得
-	 */
 	public Await getItem() {
 		return item;
 	}
 
-	/**
-	 * 交換待機を設定
-	 *
-	 * @param item 交換待機の報酬を取得
-	 */
 	public void setItem(Await item) {
 		this.item = item;
 	}
 
-	/**
-	 * 報酬取得処理の実行に使用するスタンプシートを取得
-	 *
-	 * @return 交換待機の報酬を取得
-	 */
+	public AcquireByUserIdResult withItem(Await item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getStampSheet() {
 		return stampSheet;
 	}
 
-	/**
-	 * 報酬取得処理の実行に使用するスタンプシートを設定
-	 *
-	 * @param stampSheet 交換待機の報酬を取得
-	 */
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを取得
-	 *
-	 * @return 交換待機の報酬を取得
-	 */
+	public AcquireByUserIdResult withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
 	public String getStampSheetEncryptionKeyId() {
 		return stampSheetEncryptionKeyId;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを設定
-	 *
-	 * @param stampSheetEncryptionKeyId 交換待機の報酬を取得
-	 */
 	public void setStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
 		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
 	}
+
+	public AcquireByUserIdResult withStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
+		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
+		return this;
+	}
+
+    public static AcquireByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AcquireByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Await.fromJson(data.get("item")))
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("stampSheet", getStampSheet());
+                put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+            }}
+        );
+    }
 }

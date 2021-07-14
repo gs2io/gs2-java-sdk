@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.dictionary;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.dictionary.request.*;
 import io.gs2.dictionary.result.*;
-import io.gs2.dictionary.model.*;
+import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRestClient> {
 
-/**
- * GS2 Dictionary API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2DictionaryRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,40 +152,16 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getEntryScript() != null) {
-                try {
-                    json.put("entryScript", new JSONObject(mapper.writeValueAsString(this.request.getEntryScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDuplicateEntryScript() != null) {
-                try {
-                    json.put("duplicateEntryScript", new JSONObject(mapper.writeValueAsString(this.request.getDuplicateEntryScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("entryScript", request.getEntryScript() != null ? request.getEntryScript().toJson() : null);
+                    put("duplicateEntryScript", request.getDuplicateEntryScript() != null ? request.getDuplicateEntryScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -220,25 +179,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -265,15 +213,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -284,7 +235,7 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -308,25 +259,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -353,15 +293,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -372,7 +315,7 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -396,25 +339,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -441,15 +373,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -460,39 +395,17 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getEntryScript() != null) {
-                try {
-                    json.put("entryScript", new JSONObject(mapper.writeValueAsString(this.request.getEntryScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDuplicateEntryScript() != null) {
-                try {
-                    json.put("duplicateEntryScript", new JSONObject(mapper.writeValueAsString(this.request.getDuplicateEntryScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("entryScript", request.getEntryScript() != null ? request.getEntryScript().toJson() : null);
+                    put("duplicateEntryScript", request.getDuplicateEntryScript() != null ? request.getDuplicateEntryScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -510,25 +423,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -555,15 +457,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -574,7 +479,7 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -598,25 +503,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -643,15 +537,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public DescribeEntryModelsTask(
             DescribeEntryModelsRequest request,
-            AsyncAction<AsyncResult<DescribeEntryModelsResult>> userCallback,
-            Class<DescribeEntryModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeEntryModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeEntryModelsResult parse(JsonNode data) {
+            return DescribeEntryModelsResult.fromJson(data);
         }
 
         @Override
@@ -662,7 +559,7 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -686,25 +583,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーモデルの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeEntryModelsAsync(
             DescribeEntryModelsRequest request,
             AsyncAction<AsyncResult<DescribeEntryModelsResult>> callback
     ) {
-        DescribeEntryModelsTask task = new DescribeEntryModelsTask(request, callback, DescribeEntryModelsResult.class);
+        DescribeEntryModelsTask task = new DescribeEntryModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーモデルの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeEntryModelsResult describeEntryModels(
             DescribeEntryModelsRequest request
     ) {
@@ -731,15 +617,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public GetEntryModelTask(
             GetEntryModelRequest request,
-            AsyncAction<AsyncResult<GetEntryModelResult>> userCallback,
-            Class<GetEntryModelResult> clazz
+            AsyncAction<AsyncResult<GetEntryModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEntryModelResult parse(JsonNode data) {
+            return GetEntryModelResult.fromJson(data);
         }
 
         @Override
@@ -750,8 +639,8 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model/{entryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{entryName}", this.request.getEntryName() == null|| this.request.getEntryName().length() == 0 ? "null" : String.valueOf(this.request.getEntryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{entryName}", this.request.getEntryName() == null || this.request.getEntryName().length() == 0 ? "null" : String.valueOf(this.request.getEntryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -775,25 +664,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーモデルを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEntryModelAsync(
             GetEntryModelRequest request,
             AsyncAction<AsyncResult<GetEntryModelResult>> callback
     ) {
-        GetEntryModelTask task = new GetEntryModelTask(request, callback, GetEntryModelResult.class);
+        GetEntryModelTask task = new GetEntryModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーモデルを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEntryModelResult getEntryModel(
             GetEntryModelRequest request
     ) {
@@ -820,15 +698,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public DescribeEntryModelMastersTask(
             DescribeEntryModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeEntryModelMastersResult>> userCallback,
-            Class<DescribeEntryModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeEntryModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeEntryModelMastersResult parse(JsonNode data) {
+            return DescribeEntryModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -839,7 +720,7 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -869,25 +750,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーモデルマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeEntryModelMastersAsync(
             DescribeEntryModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeEntryModelMastersResult>> callback
     ) {
-        DescribeEntryModelMastersTask task = new DescribeEntryModelMastersTask(request, callback, DescribeEntryModelMastersResult.class);
+        DescribeEntryModelMastersTask task = new DescribeEntryModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーモデルマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeEntryModelMastersResult describeEntryModelMasters(
             DescribeEntryModelMastersRequest request
     ) {
@@ -914,15 +784,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public CreateEntryModelMasterTask(
             CreateEntryModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateEntryModelMasterResult>> userCallback,
-            Class<CreateEntryModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateEntryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateEntryModelMasterResult parse(JsonNode data) {
+            return CreateEntryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -933,24 +806,16 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -968,25 +833,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーモデルマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createEntryModelMasterAsync(
             CreateEntryModelMasterRequest request,
             AsyncAction<AsyncResult<CreateEntryModelMasterResult>> callback
     ) {
-        CreateEntryModelMasterTask task = new CreateEntryModelMasterTask(request, callback, CreateEntryModelMasterResult.class);
+        CreateEntryModelMasterTask task = new CreateEntryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーモデルマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateEntryModelMasterResult createEntryModelMaster(
             CreateEntryModelMasterRequest request
     ) {
@@ -1013,15 +867,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public GetEntryModelMasterTask(
             GetEntryModelMasterRequest request,
-            AsyncAction<AsyncResult<GetEntryModelMasterResult>> userCallback,
-            Class<GetEntryModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetEntryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEntryModelMasterResult parse(JsonNode data) {
+            return GetEntryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1032,8 +889,8 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{entryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{entryName}", this.request.getEntryName() == null|| this.request.getEntryName().length() == 0 ? "null" : String.valueOf(this.request.getEntryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{entryName}", this.request.getEntryName() == null || this.request.getEntryName().length() == 0 ? "null" : String.valueOf(this.request.getEntryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1057,25 +914,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーモデルマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEntryModelMasterAsync(
             GetEntryModelMasterRequest request,
             AsyncAction<AsyncResult<GetEntryModelMasterResult>> callback
     ) {
-        GetEntryModelMasterTask task = new GetEntryModelMasterTask(request, callback, GetEntryModelMasterResult.class);
+        GetEntryModelMasterTask task = new GetEntryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーモデルマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEntryModelMasterResult getEntryModelMaster(
             GetEntryModelMasterRequest request
     ) {
@@ -1102,15 +948,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public UpdateEntryModelMasterTask(
             UpdateEntryModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateEntryModelMasterResult>> userCallback,
-            Class<UpdateEntryModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateEntryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateEntryModelMasterResult parse(JsonNode data) {
+            return UpdateEntryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1121,22 +970,16 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{entryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{entryName}", this.request.getEntryName() == null|| this.request.getEntryName().length() == 0 ? "null" : String.valueOf(this.request.getEntryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{entryName}", this.request.getEntryName() == null || this.request.getEntryName().length() == 0 ? "null" : String.valueOf(this.request.getEntryName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1154,25 +997,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーモデルマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateEntryModelMasterAsync(
             UpdateEntryModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateEntryModelMasterResult>> callback
     ) {
-        UpdateEntryModelMasterTask task = new UpdateEntryModelMasterTask(request, callback, UpdateEntryModelMasterResult.class);
+        UpdateEntryModelMasterTask task = new UpdateEntryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーモデルマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateEntryModelMasterResult updateEntryModelMaster(
             UpdateEntryModelMasterRequest request
     ) {
@@ -1199,15 +1031,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public DeleteEntryModelMasterTask(
             DeleteEntryModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteEntryModelMasterResult>> userCallback,
-            Class<DeleteEntryModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteEntryModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteEntryModelMasterResult parse(JsonNode data) {
+            return DeleteEntryModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1218,8 +1053,8 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{entryName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{entryName}", this.request.getEntryName() == null|| this.request.getEntryName().length() == 0 ? "null" : String.valueOf(this.request.getEntryName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{entryName}", this.request.getEntryName() == null || this.request.getEntryName().length() == 0 ? "null" : String.valueOf(this.request.getEntryName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1243,25 +1078,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーモデルマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteEntryModelMasterAsync(
             DeleteEntryModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteEntryModelMasterResult>> callback
     ) {
-        DeleteEntryModelMasterTask task = new DeleteEntryModelMasterTask(request, callback, DeleteEntryModelMasterResult.class);
+        DeleteEntryModelMasterTask task = new DeleteEntryModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーモデルマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteEntryModelMasterResult deleteEntryModelMaster(
             DeleteEntryModelMasterRequest request
     ) {
@@ -1288,15 +1112,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public DescribeEntriesTask(
             DescribeEntriesRequest request,
-            AsyncAction<AsyncResult<DescribeEntriesResult>> userCallback,
-            Class<DescribeEntriesResult> clazz
+            AsyncAction<AsyncResult<DescribeEntriesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeEntriesResult parse(JsonNode data) {
+            return DescribeEntriesResult.fromJson(data);
         }
 
         @Override
@@ -1307,7 +1134,7 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/entry";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1333,9 +1160,6 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1343,25 +1167,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeEntriesAsync(
             DescribeEntriesRequest request,
             AsyncAction<AsyncResult<DescribeEntriesResult>> callback
     ) {
-        DescribeEntriesTask task = new DescribeEntriesTask(request, callback, DescribeEntriesResult.class);
+        DescribeEntriesTask task = new DescribeEntriesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeEntriesResult describeEntries(
             DescribeEntriesRequest request
     ) {
@@ -1388,15 +1201,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public DescribeEntriesByUserIdTask(
             DescribeEntriesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeEntriesByUserIdResult>> userCallback,
-            Class<DescribeEntriesByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeEntriesByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeEntriesByUserIdResult parse(JsonNode data) {
+            return DescribeEntriesByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1407,8 +1223,8 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/entry";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1431,9 +1247,6 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1441,25 +1254,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ユーザIDを指定してエントリーの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeEntriesByUserIdAsync(
             DescribeEntriesByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeEntriesByUserIdResult>> callback
     ) {
-        DescribeEntriesByUserIdTask task = new DescribeEntriesByUserIdTask(request, callback, DescribeEntriesByUserIdResult.class);
+        DescribeEntriesByUserIdTask task = new DescribeEntriesByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してエントリーの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeEntriesByUserIdResult describeEntriesByUserId(
             DescribeEntriesByUserIdRequest request
     ) {
@@ -1486,15 +1288,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public AddEntriesByUserIdTask(
             AddEntriesByUserIdRequest request,
-            AsyncAction<AsyncResult<AddEntriesByUserIdResult>> userCallback,
-            Class<AddEntriesByUserIdResult> clazz
+            AsyncAction<AsyncResult<AddEntriesByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddEntriesByUserIdResult parse(JsonNode data) {
+            return AddEntriesByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1505,24 +1310,19 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/entry";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getEntryModelNames() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getEntryModelNames())
-                {
-                    array.put(item);
-                }
-                json.put("entryModelNames", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("entryModelNames", request.getEntryModelNames() == null ? new ArrayList<String>() :
+                        request.getEntryModelNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1533,9 +1333,6 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1543,25 +1340,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ユーザIDを指定してエントリーを入手済みとして登録<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addEntriesByUserIdAsync(
             AddEntriesByUserIdRequest request,
             AsyncAction<AsyncResult<AddEntriesByUserIdResult>> callback
     ) {
-        AddEntriesByUserIdTask task = new AddEntriesByUserIdTask(request, callback, AddEntriesByUserIdResult.class);
+        AddEntriesByUserIdTask task = new AddEntriesByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してエントリーを入手済みとして登録<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddEntriesByUserIdResult addEntriesByUserId(
             AddEntriesByUserIdRequest request
     ) {
@@ -1588,15 +1374,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public GetEntryTask(
             GetEntryRequest request,
-            AsyncAction<AsyncResult<GetEntryResult>> userCallback,
-            Class<GetEntryResult> clazz
+            AsyncAction<AsyncResult<GetEntryResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEntryResult parse(JsonNode data) {
+            return GetEntryResult.fromJson(data);
         }
 
         @Override
@@ -1607,8 +1396,8 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/entry/{entryModelName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null|| this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null || this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1628,9 +1417,6 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1638,25 +1424,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEntryAsync(
             GetEntryRequest request,
             AsyncAction<AsyncResult<GetEntryResult>> callback
     ) {
-        GetEntryTask task = new GetEntryTask(request, callback, GetEntryResult.class);
+        GetEntryTask task = new GetEntryTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEntryResult getEntry(
             GetEntryRequest request
     ) {
@@ -1683,15 +1458,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public GetEntryByUserIdTask(
             GetEntryByUserIdRequest request,
-            AsyncAction<AsyncResult<GetEntryByUserIdResult>> userCallback,
-            Class<GetEntryByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetEntryByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEntryByUserIdResult parse(JsonNode data) {
+            return GetEntryByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1702,9 +1480,9 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/entry/{entryModelName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null|| this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null || this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1721,9 +1499,6 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1731,25 +1506,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ユーザIDを指定してエントリーを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEntryByUserIdAsync(
             GetEntryByUserIdRequest request,
             AsyncAction<AsyncResult<GetEntryByUserIdResult>> callback
     ) {
-        GetEntryByUserIdTask task = new GetEntryByUserIdTask(request, callback, GetEntryByUserIdResult.class);
+        GetEntryByUserIdTask task = new GetEntryByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してエントリーを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEntryByUserIdResult getEntryByUserId(
             GetEntryByUserIdRequest request
     ) {
@@ -1776,15 +1540,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public GetEntryWithSignatureTask(
             GetEntryWithSignatureRequest request,
-            AsyncAction<AsyncResult<GetEntryWithSignatureResult>> userCallback,
-            Class<GetEntryWithSignatureResult> clazz
+            AsyncAction<AsyncResult<GetEntryWithSignatureResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEntryWithSignatureResult parse(JsonNode data) {
+            return GetEntryWithSignatureResult.fromJson(data);
         }
 
         @Override
@@ -1795,8 +1562,8 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/entry/{entryModelName}/signature";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null|| this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null || this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1819,9 +1586,6 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1829,25 +1593,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEntryWithSignatureAsync(
             GetEntryWithSignatureRequest request,
             AsyncAction<AsyncResult<GetEntryWithSignatureResult>> callback
     ) {
-        GetEntryWithSignatureTask task = new GetEntryWithSignatureTask(request, callback, GetEntryWithSignatureResult.class);
+        GetEntryWithSignatureTask task = new GetEntryWithSignatureTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEntryWithSignatureResult getEntryWithSignature(
             GetEntryWithSignatureRequest request
     ) {
@@ -1874,15 +1627,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public GetEntryWithSignatureByUserIdTask(
             GetEntryWithSignatureByUserIdRequest request,
-            AsyncAction<AsyncResult<GetEntryWithSignatureByUserIdResult>> userCallback,
-            Class<GetEntryWithSignatureByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetEntryWithSignatureByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetEntryWithSignatureByUserIdResult parse(JsonNode data) {
+            return GetEntryWithSignatureByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1893,9 +1649,9 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/entry/{entryModelName}/signature";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null|| this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null || this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1915,9 +1671,6 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1925,25 +1678,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * ユーザIDを指定してエントリーを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getEntryWithSignatureByUserIdAsync(
             GetEntryWithSignatureByUserIdRequest request,
             AsyncAction<AsyncResult<GetEntryWithSignatureByUserIdResult>> callback
     ) {
-        GetEntryWithSignatureByUserIdTask task = new GetEntryWithSignatureByUserIdTask(request, callback, GetEntryWithSignatureByUserIdResult.class);
+        GetEntryWithSignatureByUserIdTask task = new GetEntryWithSignatureByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してエントリーを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetEntryWithSignatureByUserIdResult getEntryWithSignatureByUserId(
             GetEntryWithSignatureByUserIdRequest request
     ) {
@@ -1970,15 +1712,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public ResetByUserIdTask(
             ResetByUserIdRequest request,
-            AsyncAction<AsyncResult<ResetByUserIdResult>> userCallback,
-            Class<ResetByUserIdResult> clazz
+            AsyncAction<AsyncResult<ResetByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ResetByUserIdResult parse(JsonNode data) {
+            return ResetByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1989,8 +1734,8 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/entry";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2007,9 +1752,6 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2017,25 +1759,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * エントリーをリセット<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void resetByUserIdAsync(
             ResetByUserIdRequest request,
             AsyncAction<AsyncResult<ResetByUserIdResult>> callback
     ) {
-        ResetByUserIdTask task = new ResetByUserIdTask(request, callback, ResetByUserIdResult.class);
+        ResetByUserIdTask task = new ResetByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * エントリーをリセット<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ResetByUserIdResult resetByUserId(
             ResetByUserIdRequest request
     ) {
@@ -2062,15 +1793,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public AddEntriesByStampSheetTask(
             AddEntriesByStampSheetRequest request,
-            AsyncAction<AsyncResult<AddEntriesByStampSheetResult>> userCallback,
-            Class<AddEntriesByStampSheetResult> clazz
+            AsyncAction<AsyncResult<AddEntriesByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AddEntriesByStampSheetResult parse(JsonNode data) {
+            return AddEntriesByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -2081,19 +1815,13 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/entry/add";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2104,9 +1832,6 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2114,25 +1839,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * スタンプシートでエントリーを追加<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void addEntriesByStampSheetAsync(
             AddEntriesByStampSheetRequest request,
             AsyncAction<AsyncResult<AddEntriesByStampSheetResult>> callback
     ) {
-        AddEntriesByStampSheetTask task = new AddEntriesByStampSheetTask(request, callback, AddEntriesByStampSheetResult.class);
+        AddEntriesByStampSheetTask task = new AddEntriesByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでエントリーを追加<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AddEntriesByStampSheetResult addEntriesByStampSheet(
             AddEntriesByStampSheetRequest request
     ) {
@@ -2159,15 +1873,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -2178,7 +1895,7 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2202,25 +1919,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * 現在有効なエントリー設定のマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なエントリー設定のマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -2247,15 +1953,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public GetCurrentEntryMasterTask(
             GetCurrentEntryMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentEntryMasterResult>> userCallback,
-            Class<GetCurrentEntryMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentEntryMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentEntryMasterResult parse(JsonNode data) {
+            return GetCurrentEntryMasterResult.fromJson(data);
         }
 
         @Override
@@ -2266,7 +1975,7 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2290,25 +1999,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * 現在有効なエントリー設定を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentEntryMasterAsync(
             GetCurrentEntryMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentEntryMasterResult>> callback
     ) {
-        GetCurrentEntryMasterTask task = new GetCurrentEntryMasterTask(request, callback, GetCurrentEntryMasterResult.class);
+        GetCurrentEntryMasterTask task = new GetCurrentEntryMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なエントリー設定を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentEntryMasterResult getCurrentEntryMaster(
             GetCurrentEntryMasterRequest request
     ) {
@@ -2335,15 +2033,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public UpdateCurrentEntryMasterTask(
             UpdateCurrentEntryMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentEntryMasterResult>> userCallback,
-            Class<UpdateCurrentEntryMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentEntryMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentEntryMasterResult parse(JsonNode data) {
+            return UpdateCurrentEntryMasterResult.fromJson(data);
         }
 
         @Override
@@ -2354,18 +2055,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2383,25 +2080,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * 現在有効なエントリー設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentEntryMasterAsync(
             UpdateCurrentEntryMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentEntryMasterResult>> callback
     ) {
-        UpdateCurrentEntryMasterTask task = new UpdateCurrentEntryMasterTask(request, callback, UpdateCurrentEntryMasterResult.class);
+        UpdateCurrentEntryMasterTask task = new UpdateCurrentEntryMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なエントリー設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentEntryMasterResult updateCurrentEntryMaster(
             UpdateCurrentEntryMasterRequest request
     ) {
@@ -2428,15 +2114,18 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
 
         public UpdateCurrentEntryMasterFromGitHubTask(
             UpdateCurrentEntryMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentEntryMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentEntryMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentEntryMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentEntryMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentEntryMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2447,22 +2136,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2480,25 +2161,14 @@ public class Gs2DictionaryRestClient extends AbstractGs2Client<Gs2DictionaryRest
         }
     }
 
-    /**
-     * 現在有効なエントリー設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentEntryMasterFromGitHubAsync(
             UpdateCurrentEntryMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentEntryMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentEntryMasterFromGitHubTask task = new UpdateCurrentEntryMasterFromGitHubTask(request, callback, UpdateCurrentEntryMasterFromGitHubResult.class);
+        UpdateCurrentEntryMasterFromGitHubTask task = new UpdateCurrentEntryMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なエントリー設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentEntryMasterFromGitHubResult updateCurrentEntryMasterFromGitHub(
             UpdateCurrentEntryMasterFromGitHubRequest request
     ) {

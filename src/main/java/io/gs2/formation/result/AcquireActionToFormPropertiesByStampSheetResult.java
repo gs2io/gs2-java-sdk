@@ -16,99 +16,98 @@
 
 package io.gs2.formation.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
+import io.gs2.formation.model.Slot;
+import io.gs2.formation.model.Form;
+import io.gs2.formation.model.Mold;
 
-/**
- * スタンプシートでアイテムをインベントリに追加 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AcquireActionToFormPropertiesByStampSheetResult implements IResult, Serializable {
-	/** フォーム */
-	private Form item;
-	/** 保存したフォーム */
-	private Mold mold;
-	/** スタンプシート */
-	private String stampSheet;
-	/** スタンプシートの署名計算に使用した暗号鍵GRN */
-	private String stampSheetEncryptionKeyId;
+    private Form item;
+    private Mold mold;
+    private String stampSheet;
+    private String stampSheetEncryptionKeyId;
 
-	/**
-	 * フォームを取得
-	 *
-	 * @return スタンプシートでアイテムをインベントリに追加
-	 */
 	public Form getItem() {
 		return item;
 	}
 
-	/**
-	 * フォームを設定
-	 *
-	 * @param item スタンプシートでアイテムをインベントリに追加
-	 */
 	public void setItem(Form item) {
 		this.item = item;
 	}
 
-	/**
-	 * 保存したフォームを取得
-	 *
-	 * @return スタンプシートでアイテムをインベントリに追加
-	 */
+	public AcquireActionToFormPropertiesByStampSheetResult withItem(Form item) {
+		this.item = item;
+		return this;
+	}
+
 	public Mold getMold() {
 		return mold;
 	}
 
-	/**
-	 * 保存したフォームを設定
-	 *
-	 * @param mold スタンプシートでアイテムをインベントリに追加
-	 */
 	public void setMold(Mold mold) {
 		this.mold = mold;
 	}
 
-	/**
-	 * スタンプシートを取得
-	 *
-	 * @return スタンプシートでアイテムをインベントリに追加
-	 */
+	public AcquireActionToFormPropertiesByStampSheetResult withMold(Mold mold) {
+		this.mold = mold;
+		return this;
+	}
+
 	public String getStampSheet() {
 		return stampSheet;
 	}
 
-	/**
-	 * スタンプシートを設定
-	 *
-	 * @param stampSheet スタンプシートでアイテムをインベントリに追加
-	 */
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを取得
-	 *
-	 * @return スタンプシートでアイテムをインベントリに追加
-	 */
+	public AcquireActionToFormPropertiesByStampSheetResult withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
 	public String getStampSheetEncryptionKeyId() {
 		return stampSheetEncryptionKeyId;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを設定
-	 *
-	 * @param stampSheetEncryptionKeyId スタンプシートでアイテムをインベントリに追加
-	 */
 	public void setStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
 		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
 	}
+
+	public AcquireActionToFormPropertiesByStampSheetResult withStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
+		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
+		return this;
+	}
+
+    public static AcquireActionToFormPropertiesByStampSheetResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AcquireActionToFormPropertiesByStampSheetResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Form.fromJson(data.get("item")))
+            .withMold(data.get("mold") == null || data.get("mold").isNull() ? null : Mold.fromJson(data.get("mold")))
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("mold", getMold() != null ? getMold().toJson() : null);
+                put("stampSheet", getStampSheet());
+                put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+            }}
+        );
+    }
 }

@@ -16,146 +16,94 @@
 
 package io.gs2.script.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.script.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スクリプトを新規作成します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateScriptRequest extends Gs2BasicRequest<CreateScriptRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return スクリプトを新規作成します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スクリプトを新規作成します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スクリプトを新規作成します
-     * @return this
-     */
-    public CreateScriptRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** スクリプト名 */
     private String name;
-
-    /**
-     * スクリプト名を取得
-     *
-     * @return スクリプトを新規作成します
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * スクリプト名を設定
-     *
-     * @param name スクリプトを新規作成します
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * スクリプト名を設定
-     *
-     * @param name スクリプトを新規作成します
-     * @return this
-     */
-    public CreateScriptRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** 説明文 */
     private String description;
-
-    /**
-     * 説明文を取得
-     *
-     * @return スクリプトを新規作成します
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description スクリプトを新規作成します
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description スクリプトを新規作成します
-     * @return this
-     */
-    public CreateScriptRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** Luaスクリプト */
     private String script;
 
-    /**
-     * Luaスクリプトを取得
-     *
-     * @return スクリプトを新規作成します
-     */
-    public String getScript() {
-        return script;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateScriptRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateScriptRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateScriptRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getScript() {
+		return script;
+	}
+
+	public void setScript(String script) {
+		this.script = script;
+	}
+
+	public CreateScriptRequest withScript(String script) {
+		this.script = script;
+		return this;
+	}
+
+    public static CreateScriptRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateScriptRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText());
     }
 
-    /**
-     * Luaスクリプトを設定
-     *
-     * @param script スクリプトを新規作成します
-     */
-    public void setScript(String script) {
-        this.script = script;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("description", getDescription());
+                put("script", getScript());
+            }}
+        );
     }
-
-    /**
-     * Luaスクリプトを設定
-     *
-     * @param script スクリプトを新規作成します
-     * @return this
-     */
-    public CreateScriptRequest withScript(String script) {
-        setScript(script);
-        return this;
-    }
-
 }

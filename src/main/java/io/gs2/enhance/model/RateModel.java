@@ -16,361 +16,212 @@
 
 package io.gs2.enhance.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 強化レートモデル
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RateModel implements IModel, Serializable, Comparable<RateModel> {
-	/** 強化レートモデル */
-	protected String rateModelId;
+	private String rateModelId;
+	private String name;
+	private String description;
+	private String metadata;
+	private String targetInventoryModelId;
+	private String acquireExperienceSuffix;
+	private String materialInventoryModelId;
+	private List<String> acquireExperienceHierarchy;
+	private String experienceModelId;
+	private List<BonusRate> bonusRates;
 
-	/**
-	 * 強化レートモデルを取得
-	 *
-	 * @return 強化レートモデル
-	 */
 	public String getRateModelId() {
 		return rateModelId;
 	}
 
-	/**
-	 * 強化レートモデルを設定
-	 *
-	 * @param rateModelId 強化レートモデル
-	 */
 	public void setRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 	}
 
-	/**
-	 * 強化レートモデルを設定
-	 *
-	 * @param rateModelId 強化レートモデル
-	 * @return this
-	 */
 	public RateModel withRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 		return this;
 	}
-	/** 強化レート名 */
-	protected String name;
 
-	/**
-	 * 強化レート名を取得
-	 *
-	 * @return 強化レート名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 強化レート名を設定
-	 *
-	 * @param name 強化レート名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 強化レート名を設定
-	 *
-	 * @param name 強化レート名
-	 * @return this
-	 */
 	public RateModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 強化レートの説明 */
-	protected String description;
 
-	/**
-	 * 強化レートの説明を取得
-	 *
-	 * @return 強化レートの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 強化レートの説明を設定
-	 *
-	 * @param description 強化レートの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 強化レートの説明を設定
-	 *
-	 * @param description 強化レートの説明
-	 * @return this
-	 */
 	public RateModel withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 強化レートのメタデータ */
-	protected String metadata;
 
-	/**
-	 * 強化レートのメタデータを取得
-	 *
-	 * @return 強化レートのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 強化レートのメタデータを設定
-	 *
-	 * @param metadata 強化レートのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 強化レートのメタデータを設定
-	 *
-	 * @param metadata 強化レートのメタデータ
-	 * @return this
-	 */
 	public RateModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 強化対象に使用できるインベントリモデル のGRN */
-	protected String targetInventoryModelId;
 
-	/**
-	 * 強化対象に使用できるインベントリモデル のGRNを取得
-	 *
-	 * @return 強化対象に使用できるインベントリモデル のGRN
-	 */
 	public String getTargetInventoryModelId() {
 		return targetInventoryModelId;
 	}
 
-	/**
-	 * 強化対象に使用できるインベントリモデル のGRNを設定
-	 *
-	 * @param targetInventoryModelId 強化対象に使用できるインベントリモデル のGRN
-	 */
 	public void setTargetInventoryModelId(String targetInventoryModelId) {
 		this.targetInventoryModelId = targetInventoryModelId;
 	}
 
-	/**
-	 * 強化対象に使用できるインベントリモデル のGRNを設定
-	 *
-	 * @param targetInventoryModelId 強化対象に使用できるインベントリモデル のGRN
-	 * @return this
-	 */
 	public RateModel withTargetInventoryModelId(String targetInventoryModelId) {
 		this.targetInventoryModelId = targetInventoryModelId;
 		return this;
 	}
-	/** GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックス */
-	protected String acquireExperienceSuffix;
 
-	/**
-	 * GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックスを取得
-	 *
-	 * @return GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックス
-	 */
 	public String getAcquireExperienceSuffix() {
 		return acquireExperienceSuffix;
 	}
 
-	/**
-	 * GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックスを設定
-	 *
-	 * @param acquireExperienceSuffix GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックス
-	 */
 	public void setAcquireExperienceSuffix(String acquireExperienceSuffix) {
 		this.acquireExperienceSuffix = acquireExperienceSuffix;
 	}
 
-	/**
-	 * GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックスを設定
-	 *
-	 * @param acquireExperienceSuffix GS2-Experience で入手した経験値を格納する プロパティID に付与するサフィックス
-	 * @return this
-	 */
 	public RateModel withAcquireExperienceSuffix(String acquireExperienceSuffix) {
 		this.acquireExperienceSuffix = acquireExperienceSuffix;
 		return this;
 	}
-	/** 強化素材に使用できるインベントリモデル のGRN */
-	protected String materialInventoryModelId;
 
-	/**
-	 * 強化素材に使用できるインベントリモデル のGRNを取得
-	 *
-	 * @return 強化素材に使用できるインベントリモデル のGRN
-	 */
 	public String getMaterialInventoryModelId() {
 		return materialInventoryModelId;
 	}
 
-	/**
-	 * 強化素材に使用できるインベントリモデル のGRNを設定
-	 *
-	 * @param materialInventoryModelId 強化素材に使用できるインベントリモデル のGRN
-	 */
 	public void setMaterialInventoryModelId(String materialInventoryModelId) {
 		this.materialInventoryModelId = materialInventoryModelId;
 	}
 
-	/**
-	 * 強化素材に使用できるインベントリモデル のGRNを設定
-	 *
-	 * @param materialInventoryModelId 強化素材に使用できるインベントリモデル のGRN
-	 * @return this
-	 */
 	public RateModel withMaterialInventoryModelId(String materialInventoryModelId) {
 		this.materialInventoryModelId = materialInventoryModelId;
 		return this;
 	}
-	/** 入手経験値を格納しているメタデータのJSON階層 */
-	protected List<String> acquireExperienceHierarchy;
 
-	/**
-	 * 入手経験値を格納しているメタデータのJSON階層を取得
-	 *
-	 * @return 入手経験値を格納しているメタデータのJSON階層
-	 */
 	public List<String> getAcquireExperienceHierarchy() {
 		return acquireExperienceHierarchy;
 	}
 
-	/**
-	 * 入手経験値を格納しているメタデータのJSON階層を設定
-	 *
-	 * @param acquireExperienceHierarchy 入手経験値を格納しているメタデータのJSON階層
-	 */
 	public void setAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
 		this.acquireExperienceHierarchy = acquireExperienceHierarchy;
 	}
 
-	/**
-	 * 入手経験値を格納しているメタデータのJSON階層を設定
-	 *
-	 * @param acquireExperienceHierarchy 入手経験値を格納しているメタデータのJSON階層
-	 * @return this
-	 */
 	public RateModel withAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
 		this.acquireExperienceHierarchy = acquireExperienceHierarchy;
 		return this;
 	}
-	/** 獲得できる経験値の種類マスター のGRN */
-	protected String experienceModelId;
 
-	/**
-	 * 獲得できる経験値の種類マスター のGRNを取得
-	 *
-	 * @return 獲得できる経験値の種類マスター のGRN
-	 */
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
 
-	/**
-	 * 獲得できる経験値の種類マスター のGRNを設定
-	 *
-	 * @param experienceModelId 獲得できる経験値の種類マスター のGRN
-	 */
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
 
-	/**
-	 * 獲得できる経験値の種類マスター のGRNを設定
-	 *
-	 * @param experienceModelId 獲得できる経験値の種類マスター のGRN
-	 * @return this
-	 */
 	public RateModel withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-	/** 経験値獲得量ボーナス */
-	protected List<BonusRate> bonusRates;
 
-	/**
-	 * 経験値獲得量ボーナスを取得
-	 *
-	 * @return 経験値獲得量ボーナス
-	 */
 	public List<BonusRate> getBonusRates() {
 		return bonusRates;
 	}
 
-	/**
-	 * 経験値獲得量ボーナスを設定
-	 *
-	 * @param bonusRates 経験値獲得量ボーナス
-	 */
 	public void setBonusRates(List<BonusRate> bonusRates) {
 		this.bonusRates = bonusRates;
 	}
 
-	/**
-	 * 経験値獲得量ボーナスを設定
-	 *
-	 * @param bonusRates 経験値獲得量ボーナス
-	 * @return this
-	 */
 	public RateModel withBonusRates(List<BonusRate> bonusRates) {
 		this.bonusRates = bonusRates;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> acquireExperienceHierarchy = new ArrayList<>();
-        if(this.acquireExperienceHierarchy != null) {
-            for(String item : this.acquireExperienceHierarchy) {
-                acquireExperienceHierarchy.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static RateModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-        List<JsonNode> bonusRates = new ArrayList<>();
-        if(this.bonusRates != null) {
-            for(BonusRate item : this.bonusRates) {
-                bonusRates.add(item.toJson());
-            }
-        }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("rateModelId", this.getRateModelId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("targetInventoryModelId", this.getTargetInventoryModelId())
-            .put("acquireExperienceSuffix", this.getAcquireExperienceSuffix())
-            .put("materialInventoryModelId", this.getMaterialInventoryModelId())
-            .put("experienceModelId", this.getExperienceModelId());
-        body_.set("acquireExperienceHierarchy", JsonNodeFactory.instance.arrayNode().addAll(acquireExperienceHierarchy));
-        body_.set("bonusRates", JsonNodeFactory.instance.arrayNode().addAll(bonusRates));
-        return body_;
+        return new RateModel()
+            .withRateModelId(data.get("rateModelId") == null || data.get("rateModelId").isNull() ? null : data.get("rateModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withTargetInventoryModelId(data.get("targetInventoryModelId") == null || data.get("targetInventoryModelId").isNull() ? null : data.get("targetInventoryModelId").asText())
+            .withAcquireExperienceSuffix(data.get("acquireExperienceSuffix") == null || data.get("acquireExperienceSuffix").isNull() ? null : data.get("acquireExperienceSuffix").asText())
+            .withMaterialInventoryModelId(data.get("materialInventoryModelId") == null || data.get("materialInventoryModelId").isNull() ? null : data.get("materialInventoryModelId").asText())
+            .withAcquireExperienceHierarchy(data.get("acquireExperienceHierarchy") == null || data.get("acquireExperienceHierarchy").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireExperienceHierarchy").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withBonusRates(data.get("bonusRates") == null || data.get("bonusRates").isNull() ? new ArrayList<BonusRate>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("bonusRates").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return BonusRate.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("rateModelId", getRateModelId());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("targetInventoryModelId", getTargetInventoryModelId());
+                put("acquireExperienceSuffix", getAcquireExperienceSuffix());
+                put("materialInventoryModelId", getMaterialInventoryModelId());
+                put("acquireExperienceHierarchy", getAcquireExperienceHierarchy() == null ? new ArrayList<String>() :
+                    getAcquireExperienceHierarchy().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("experienceModelId", getExperienceModelId());
+                put("bonusRates", getBonusRates() == null ? new ArrayList<BonusRate>() :
+                    getBonusRates().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(RateModel o) {
 		return rateModelId.compareTo(o.rateModelId);

@@ -16,79 +16,81 @@
 
 package io.gs2.inbox.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inbox.model.*;
+import io.gs2.inbox.model.AcquireAction;
+import io.gs2.inbox.model.Message;
 
-/**
- * ユーザーIDを指定してメッセージを開封 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReadMessageByUserIdResult implements IResult, Serializable {
-	/** メッセージ */
-	private Message item;
-	/** スタンプシート */
-	private String stampSheet;
-	/** スタンプシートの署名計算に使用した暗号鍵GRN */
-	private String stampSheetEncryptionKeyId;
+    private Message item;
+    private String stampSheet;
+    private String stampSheetEncryptionKeyId;
 
-	/**
-	 * メッセージを取得
-	 *
-	 * @return ユーザーIDを指定してメッセージを開封
-	 */
 	public Message getItem() {
 		return item;
 	}
 
-	/**
-	 * メッセージを設定
-	 *
-	 * @param item ユーザーIDを指定してメッセージを開封
-	 */
 	public void setItem(Message item) {
 		this.item = item;
 	}
 
-	/**
-	 * スタンプシートを取得
-	 *
-	 * @return ユーザーIDを指定してメッセージを開封
-	 */
+	public ReadMessageByUserIdResult withItem(Message item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getStampSheet() {
 		return stampSheet;
 	}
 
-	/**
-	 * スタンプシートを設定
-	 *
-	 * @param stampSheet ユーザーIDを指定してメッセージを開封
-	 */
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを取得
-	 *
-	 * @return ユーザーIDを指定してメッセージを開封
-	 */
+	public ReadMessageByUserIdResult withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
 	public String getStampSheetEncryptionKeyId() {
 		return stampSheetEncryptionKeyId;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを設定
-	 *
-	 * @param stampSheetEncryptionKeyId ユーザーIDを指定してメッセージを開封
-	 */
 	public void setStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
 		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
 	}
+
+	public ReadMessageByUserIdResult withStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
+		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
+		return this;
+	}
+
+    public static ReadMessageByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ReadMessageByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Message.fromJson(data.get("item")))
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("stampSheet", getStampSheet());
+                put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+            }}
+        );
+    }
 }

@@ -16,92 +16,64 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 対戦結果
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GameResult implements IModel, Serializable {
-	/** 順位 */
-	protected Integer rank;
+	private Integer rank;
+	private String userId;
 
-	/**
-	 * 順位を取得
-	 *
-	 * @return 順位
-	 */
 	public Integer getRank() {
 		return rank;
 	}
 
-	/**
-	 * 順位を設定
-	 *
-	 * @param rank 順位
-	 */
 	public void setRank(Integer rank) {
 		this.rank = rank;
 	}
 
-	/**
-	 * 順位を設定
-	 *
-	 * @param rank 順位
-	 * @return this
-	 */
 	public GameResult withRank(Integer rank) {
 		this.rank = rank;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public GameResult withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("rank", this.getRank())
-            .put("userId", this.getUserId());
-        return body_;
+    public static GameResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GameResult()
+            .withRank(data.get("rank") == null || data.get("rank").isNull() ? null : data.get("rank").intValue())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("rank", getRank());
+                put("userId", getUserId());
+            }}
+        );
     }
 
 	@Override

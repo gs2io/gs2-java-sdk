@@ -16,98 +16,74 @@
 
 package io.gs2.formation.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 入手アクションコンフィグ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AcquireActionConfig implements IModel, Serializable {
-	/** スロット名 */
-	protected String name;
+	private String name;
+	private List<Config> config;
 
-	/**
-	 * スロット名を取得
-	 *
-	 * @return スロット名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * スロット名を設定
-	 *
-	 * @param name スロット名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * スロット名を設定
-	 *
-	 * @param name スロット名
-	 * @return this
-	 */
 	public AcquireActionConfig withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** スタンプシートに使用するコンフィグ */
-	protected List<Config> config;
 
-	/**
-	 * スタンプシートに使用するコンフィグを取得
-	 *
-	 * @return スタンプシートに使用するコンフィグ
-	 */
 	public List<Config> getConfig() {
 		return config;
 	}
 
-	/**
-	 * スタンプシートに使用するコンフィグを設定
-	 *
-	 * @param config スタンプシートに使用するコンフィグ
-	 */
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
 
-	/**
-	 * スタンプシートに使用するコンフィグを設定
-	 *
-	 * @param config スタンプシートに使用するコンフィグ
-	 * @return this
-	 */
 	public AcquireActionConfig withConfig(List<Config> config) {
 		this.config = config;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> config = new ArrayList<>();
-        if(this.config != null) {
-            for(Config item : this.config) {
-                config.add(item.toJson());
-            }
+    public static AcquireActionConfig fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("name", this.getName());
-        body_.set("config", JsonNodeFactory.instance.arrayNode().addAll(config));
-        return body_;
+        return new AcquireActionConfig()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Config.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("config", getConfig() == null ? new ArrayList<Config>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
 
 	@Override

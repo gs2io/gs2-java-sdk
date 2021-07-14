@@ -16,381 +16,210 @@
 
 package io.gs2.money.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * レシート
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Receipt implements IModel, Serializable, Comparable<Receipt> {
-	/** レシート */
-	protected String receiptId;
+	private String receiptId;
+	private String transactionId;
+	private String userId;
+	private String type;
+	private Integer slot;
+	private Float price;
+	private Integer paid;
+	private Integer free;
+	private Integer total;
+	private String contentsId;
+	private Long createdAt;
 
-	/**
-	 * レシートを取得
-	 *
-	 * @return レシート
-	 */
 	public String getReceiptId() {
 		return receiptId;
 	}
 
-	/**
-	 * レシートを設定
-	 *
-	 * @param receiptId レシート
-	 */
 	public void setReceiptId(String receiptId) {
 		this.receiptId = receiptId;
 	}
 
-	/**
-	 * レシートを設定
-	 *
-	 * @param receiptId レシート
-	 * @return this
-	 */
 	public Receipt withReceiptId(String receiptId) {
 		this.receiptId = receiptId;
 		return this;
 	}
-	/** トランザクションID */
-	protected String transactionId;
 
-	/**
-	 * トランザクションIDを取得
-	 *
-	 * @return トランザクションID
-	 */
 	public String getTransactionId() {
 		return transactionId;
 	}
 
-	/**
-	 * トランザクションIDを設定
-	 *
-	 * @param transactionId トランザクションID
-	 */
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
 
-	/**
-	 * トランザクションIDを設定
-	 *
-	 * @param transactionId トランザクションID
-	 * @return this
-	 */
 	public Receipt withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Receipt withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 種類 */
-	protected String type;
 
-	/**
-	 * 種類を取得
-	 *
-	 * @return 種類
-	 */
 	public String getType() {
 		return type;
 	}
 
-	/**
-	 * 種類を設定
-	 *
-	 * @param type 種類
-	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	/**
-	 * 種類を設定
-	 *
-	 * @param type 種類
-	 * @return this
-	 */
 	public Receipt withType(String type) {
 		this.type = type;
 		return this;
 	}
-	/** スロット番号 */
-	protected Integer slot;
 
-	/**
-	 * スロット番号を取得
-	 *
-	 * @return スロット番号
-	 */
 	public Integer getSlot() {
 		return slot;
 	}
 
-	/**
-	 * スロット番号を設定
-	 *
-	 * @param slot スロット番号
-	 */
 	public void setSlot(Integer slot) {
 		this.slot = slot;
 	}
 
-	/**
-	 * スロット番号を設定
-	 *
-	 * @param slot スロット番号
-	 * @return this
-	 */
 	public Receipt withSlot(Integer slot) {
 		this.slot = slot;
 		return this;
 	}
-	/** 単価 */
-	protected Float price;
 
-	/**
-	 * 単価を取得
-	 *
-	 * @return 単価
-	 */
 	public Float getPrice() {
 		return price;
 	}
 
-	/**
-	 * 単価を設定
-	 *
-	 * @param price 単価
-	 */
 	public void setPrice(Float price) {
 		this.price = price;
 	}
 
-	/**
-	 * 単価を設定
-	 *
-	 * @param price 単価
-	 * @return this
-	 */
 	public Receipt withPrice(Float price) {
 		this.price = price;
 		return this;
 	}
-	/** 有償課金通貨 */
-	protected Integer paid;
 
-	/**
-	 * 有償課金通貨を取得
-	 *
-	 * @return 有償課金通貨
-	 */
 	public Integer getPaid() {
 		return paid;
 	}
 
-	/**
-	 * 有償課金通貨を設定
-	 *
-	 * @param paid 有償課金通貨
-	 */
 	public void setPaid(Integer paid) {
 		this.paid = paid;
 	}
 
-	/**
-	 * 有償課金通貨を設定
-	 *
-	 * @param paid 有償課金通貨
-	 * @return this
-	 */
 	public Receipt withPaid(Integer paid) {
 		this.paid = paid;
 		return this;
 	}
-	/** 無償課金通貨 */
-	protected Integer free;
 
-	/**
-	 * 無償課金通貨を取得
-	 *
-	 * @return 無償課金通貨
-	 */
 	public Integer getFree() {
 		return free;
 	}
 
-	/**
-	 * 無償課金通貨を設定
-	 *
-	 * @param free 無償課金通貨
-	 */
 	public void setFree(Integer free) {
 		this.free = free;
 	}
 
-	/**
-	 * 無償課金通貨を設定
-	 *
-	 * @param free 無償課金通貨
-	 * @return this
-	 */
 	public Receipt withFree(Integer free) {
 		this.free = free;
 		return this;
 	}
-	/** 総数 */
-	protected Integer total;
 
-	/**
-	 * 総数を取得
-	 *
-	 * @return 総数
-	 */
 	public Integer getTotal() {
 		return total;
 	}
 
-	/**
-	 * 総数を設定
-	 *
-	 * @param total 総数
-	 */
 	public void setTotal(Integer total) {
 		this.total = total;
 	}
 
-	/**
-	 * 総数を設定
-	 *
-	 * @param total 総数
-	 * @return this
-	 */
 	public Receipt withTotal(Integer total) {
 		this.total = total;
 		return this;
 	}
-	/** ストアプラットフォームで販売されているコンテンツID */
-	protected String contentsId;
 
-	/**
-	 * ストアプラットフォームで販売されているコンテンツIDを取得
-	 *
-	 * @return ストアプラットフォームで販売されているコンテンツID
-	 */
 	public String getContentsId() {
 		return contentsId;
 	}
 
-	/**
-	 * ストアプラットフォームで販売されているコンテンツIDを設定
-	 *
-	 * @param contentsId ストアプラットフォームで販売されているコンテンツID
-	 */
 	public void setContentsId(String contentsId) {
 		this.contentsId = contentsId;
 	}
 
-	/**
-	 * ストアプラットフォームで販売されているコンテンツIDを設定
-	 *
-	 * @param contentsId ストアプラットフォームで販売されているコンテンツID
-	 * @return this
-	 */
 	public Receipt withContentsId(String contentsId) {
 		this.contentsId = contentsId;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Receipt withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("receiptId", this.getReceiptId())
-            .put("transactionId", this.getTransactionId())
-            .put("userId", this.getUserId())
-            .put("type", this.getType())
-            .put("slot", this.getSlot())
-            .put("price", this.getPrice())
-            .put("paid", this.getPaid())
-            .put("free", this.getFree())
-            .put("total", this.getTotal())
-            .put("contentsId", this.getContentsId())
-            .put("createdAt", this.getCreatedAt());
-        return body_;
+    public static Receipt fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Receipt()
+            .withReceiptId(data.get("receiptId") == null || data.get("receiptId").isNull() ? null : data.get("receiptId").asText())
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").asText())
+            .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
+            .withPrice(data.get("price") == null || data.get("price").isNull() ? null : data.get("price").floatValue())
+            .withPaid(data.get("paid") == null || data.get("paid").isNull() ? null : data.get("paid").intValue())
+            .withFree(data.get("free") == null || data.get("free").isNull() ? null : data.get("free").intValue())
+            .withTotal(data.get("total") == null || data.get("total").isNull() ? null : data.get("total").intValue())
+            .withContentsId(data.get("contentsId") == null || data.get("contentsId").isNull() ? null : data.get("contentsId").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("receiptId", getReceiptId());
+                put("transactionId", getTransactionId());
+                put("userId", getUserId());
+                put("type", getType());
+                put("slot", getSlot());
+                put("price", getPrice());
+                put("paid", getPaid());
+                put("free", getFree());
+                put("total", getTotal());
+                put("contentsId", getContentsId());
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Receipt o) {
 		return receiptId.compareTo(o.receiptId);

@@ -16,59 +16,65 @@
 
 package io.gs2.inbox.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inbox.model.*;
+import io.gs2.inbox.model.AcquireAction;
+import io.gs2.inbox.model.Message;
 
-/**
- * メッセージを作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenByStampTaskResult implements IResult, Serializable {
-	/** メッセージ */
-	private Message item;
-	/** スタンプタスクの実行結果を記録したコンテキスト */
-	private String newContextStack;
+    private Message item;
+    private String newContextStack;
 
-	/**
-	 * メッセージを取得
-	 *
-	 * @return メッセージを作成
-	 */
 	public Message getItem() {
 		return item;
 	}
 
-	/**
-	 * メッセージを設定
-	 *
-	 * @param item メッセージを作成
-	 */
 	public void setItem(Message item) {
 		this.item = item;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを取得
-	 *
-	 * @return メッセージを作成
-	 */
+	public OpenByStampTaskResult withItem(Message item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getNewContextStack() {
 		return newContextStack;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを設定
-	 *
-	 * @param newContextStack メッセージを作成
-	 */
 	public void setNewContextStack(String newContextStack) {
 		this.newContextStack = newContextStack;
 	}
+
+	public OpenByStampTaskResult withNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
+		return this;
+	}
+
+    public static OpenByStampTaskResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new OpenByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Message.fromJson(data.get("item")))
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("newContextStack", getNewContextStack());
+            }}
+        );
+    }
 }

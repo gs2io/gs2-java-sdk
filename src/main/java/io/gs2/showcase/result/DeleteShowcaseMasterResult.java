@@ -16,39 +16,49 @@
 
 package io.gs2.showcase.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.showcase.model.*;
+import io.gs2.showcase.model.DisplayItemMaster;
+import io.gs2.showcase.model.ShowcaseMaster;
 
-/**
- * 陳列棚マスターを削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteShowcaseMasterResult implements IResult, Serializable {
-	/** 削除した陳列棚マスター */
-	private ShowcaseMaster item;
+    private ShowcaseMaster item;
 
-	/**
-	 * 削除した陳列棚マスターを取得
-	 *
-	 * @return 陳列棚マスターを削除
-	 */
 	public ShowcaseMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 削除した陳列棚マスターを設定
-	 *
-	 * @param item 陳列棚マスターを削除
-	 */
 	public void setItem(ShowcaseMaster item) {
 		this.item = item;
 	}
+
+	public DeleteShowcaseMasterResult withItem(ShowcaseMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteShowcaseMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteShowcaseMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : ShowcaseMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

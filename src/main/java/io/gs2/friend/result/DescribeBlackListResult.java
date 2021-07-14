@@ -16,39 +16,55 @@
 
 package io.gs2.friend.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.friend.model.*;
 
-/**
- * ブラックリストを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeBlackListResult implements IResult, Serializable {
-	/** ブラックリストに登録されたユーザIDリスト */
-	private List<String> items;
+    private List<String> items;
 
-	/**
-	 * ブラックリストに登録されたユーザIDリストを取得
-	 *
-	 * @return ブラックリストを取得
-	 */
 	public List<String> getItems() {
 		return items;
 	}
 
-	/**
-	 * ブラックリストに登録されたユーザIDリストを設定
-	 *
-	 * @param items ブラックリストを取得
-	 */
 	public void setItems(List<String> items) {
 		this.items = items;
 	}
+
+	public DescribeBlackListResult withItems(List<String> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static DescribeBlackListResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeBlackListResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<String>() :
+                    getItems().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

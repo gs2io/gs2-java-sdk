@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.enhance;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.enhance.request.*;
 import io.gs2.enhance.result.*;
-import io.gs2.enhance.model.*;
+import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient> {
 
-/**
- * GS2 Enhance API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2EnhanceRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,35 +152,17 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getEnableDirectEnhance() != null) {
-                json.put("enableDirectEnhance", this.request.getEnableDirectEnhance());
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("enableDirectEnhance", request.getEnableDirectEnhance());
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -215,25 +180,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -260,15 +214,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -279,7 +236,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -303,25 +260,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -348,15 +294,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -367,7 +316,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -391,25 +340,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -436,15 +374,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -455,34 +396,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getEnableDirectEnhance() != null) {
-                json.put("enableDirectEnhance", this.request.getEnableDirectEnhance());
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("enableDirectEnhance", request.getEnableDirectEnhance());
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -500,25 +425,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -545,15 +459,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -564,7 +481,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -588,25 +505,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -633,15 +539,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DescribeRateModelsTask(
             DescribeRateModelsRequest request,
-            AsyncAction<AsyncResult<DescribeRateModelsResult>> userCallback,
-            Class<DescribeRateModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeRateModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRateModelsResult parse(JsonNode data) {
+            return DescribeRateModelsResult.fromJson(data);
         }
 
         @Override
@@ -652,7 +561,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -676,25 +585,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化レートモデルの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRateModelsAsync(
             DescribeRateModelsRequest request,
             AsyncAction<AsyncResult<DescribeRateModelsResult>> callback
     ) {
-        DescribeRateModelsTask task = new DescribeRateModelsTask(request, callback, DescribeRateModelsResult.class);
+        DescribeRateModelsTask task = new DescribeRateModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化レートモデルの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRateModelsResult describeRateModels(
             DescribeRateModelsRequest request
     ) {
@@ -721,15 +619,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public GetRateModelTask(
             GetRateModelRequest request,
-            AsyncAction<AsyncResult<GetRateModelResult>> userCallback,
-            Class<GetRateModelResult> clazz
+            AsyncAction<AsyncResult<GetRateModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRateModelResult parse(JsonNode data) {
+            return GetRateModelResult.fromJson(data);
         }
 
         @Override
@@ -740,8 +641,8 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/model/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -765,25 +666,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化レートモデルを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRateModelAsync(
             GetRateModelRequest request,
             AsyncAction<AsyncResult<GetRateModelResult>> callback
     ) {
-        GetRateModelTask task = new GetRateModelTask(request, callback, GetRateModelResult.class);
+        GetRateModelTask task = new GetRateModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化レートモデルを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRateModelResult getRateModel(
             GetRateModelRequest request
     ) {
@@ -810,15 +700,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DescribeRateModelMastersTask(
             DescribeRateModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeRateModelMastersResult>> userCallback,
-            Class<DescribeRateModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeRateModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRateModelMastersResult parse(JsonNode data) {
+            return DescribeRateModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -829,7 +722,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -859,25 +752,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化レートマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRateModelMastersAsync(
             DescribeRateModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeRateModelMastersResult>> callback
     ) {
-        DescribeRateModelMastersTask task = new DescribeRateModelMastersTask(request, callback, DescribeRateModelMastersResult.class);
+        DescribeRateModelMastersTask task = new DescribeRateModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化レートマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRateModelMastersResult describeRateModelMasters(
             DescribeRateModelMastersRequest request
     ) {
@@ -904,15 +786,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public CreateRateModelMasterTask(
             CreateRateModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateRateModelMasterResult>> userCallback,
-            Class<CreateRateModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateRateModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateRateModelMasterResult parse(JsonNode data) {
+            return CreateRateModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -923,56 +808,31 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getTargetInventoryModelId() != null) {
-                json.put("targetInventoryModelId", this.request.getTargetInventoryModelId());
-            }
-            if (this.request.getAcquireExperienceSuffix() != null) {
-                json.put("acquireExperienceSuffix", this.request.getAcquireExperienceSuffix());
-            }
-            if (this.request.getMaterialInventoryModelId() != null) {
-                json.put("materialInventoryModelId", this.request.getMaterialInventoryModelId());
-            }
-            if (this.request.getAcquireExperienceHierarchy() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getAcquireExperienceHierarchy())
-                {
-                    array.put(item);
-                }
-                json.put("acquireExperienceHierarchy", array);
-            }
-            if (this.request.getExperienceModelId() != null) {
-                json.put("experienceModelId", this.request.getExperienceModelId());
-            }
-            if (this.request.getBonusRates() != null) {
-                JSONArray array = new JSONArray();
-                for(BonusRate item : this.request.getBonusRates())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("bonusRates", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("targetInventoryModelId", request.getTargetInventoryModelId());
+                    put("acquireExperienceSuffix", request.getAcquireExperienceSuffix());
+                    put("materialInventoryModelId", request.getMaterialInventoryModelId());
+                    put("acquireExperienceHierarchy", request.getAcquireExperienceHierarchy() == null ? new ArrayList<String>() :
+                        request.getAcquireExperienceHierarchy().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("bonusRates", request.getBonusRates() == null ? new ArrayList<BonusRate>() :
+                        request.getBonusRates().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -990,25 +850,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化レートマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createRateModelMasterAsync(
             CreateRateModelMasterRequest request,
             AsyncAction<AsyncResult<CreateRateModelMasterResult>> callback
     ) {
-        CreateRateModelMasterTask task = new CreateRateModelMasterTask(request, callback, CreateRateModelMasterResult.class);
+        CreateRateModelMasterTask task = new CreateRateModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化レートマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateRateModelMasterResult createRateModelMaster(
             CreateRateModelMasterRequest request
     ) {
@@ -1035,15 +884,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public GetRateModelMasterTask(
             GetRateModelMasterRequest request,
-            AsyncAction<AsyncResult<GetRateModelMasterResult>> userCallback,
-            Class<GetRateModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetRateModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRateModelMasterResult parse(JsonNode data) {
+            return GetRateModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1054,8 +906,8 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1079,25 +931,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化レートマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRateModelMasterAsync(
             GetRateModelMasterRequest request,
             AsyncAction<AsyncResult<GetRateModelMasterResult>> callback
     ) {
-        GetRateModelMasterTask task = new GetRateModelMasterTask(request, callback, GetRateModelMasterResult.class);
+        GetRateModelMasterTask task = new GetRateModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化レートマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRateModelMasterResult getRateModelMaster(
             GetRateModelMasterRequest request
     ) {
@@ -1124,15 +965,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public UpdateRateModelMasterTask(
             UpdateRateModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateRateModelMasterResult>> userCallback,
-            Class<UpdateRateModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateRateModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateRateModelMasterResult parse(JsonNode data) {
+            return UpdateRateModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1143,54 +987,31 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getTargetInventoryModelId() != null) {
-                json.put("targetInventoryModelId", this.request.getTargetInventoryModelId());
-            }
-            if (this.request.getAcquireExperienceSuffix() != null) {
-                json.put("acquireExperienceSuffix", this.request.getAcquireExperienceSuffix());
-            }
-            if (this.request.getMaterialInventoryModelId() != null) {
-                json.put("materialInventoryModelId", this.request.getMaterialInventoryModelId());
-            }
-            if (this.request.getAcquireExperienceHierarchy() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getAcquireExperienceHierarchy())
-                {
-                    array.put(item);
-                }
-                json.put("acquireExperienceHierarchy", array);
-            }
-            if (this.request.getExperienceModelId() != null) {
-                json.put("experienceModelId", this.request.getExperienceModelId());
-            }
-            if (this.request.getBonusRates() != null) {
-                JSONArray array = new JSONArray();
-                for(BonusRate item : this.request.getBonusRates())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("bonusRates", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("targetInventoryModelId", request.getTargetInventoryModelId());
+                    put("acquireExperienceSuffix", request.getAcquireExperienceSuffix());
+                    put("materialInventoryModelId", request.getMaterialInventoryModelId());
+                    put("acquireExperienceHierarchy", request.getAcquireExperienceHierarchy() == null ? new ArrayList<String>() :
+                        request.getAcquireExperienceHierarchy().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("bonusRates", request.getBonusRates() == null ? new ArrayList<BonusRate>() :
+                        request.getBonusRates().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1208,25 +1029,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化レートマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateRateModelMasterAsync(
             UpdateRateModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateRateModelMasterResult>> callback
     ) {
-        UpdateRateModelMasterTask task = new UpdateRateModelMasterTask(request, callback, UpdateRateModelMasterResult.class);
+        UpdateRateModelMasterTask task = new UpdateRateModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化レートマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateRateModelMasterResult updateRateModelMaster(
             UpdateRateModelMasterRequest request
     ) {
@@ -1253,15 +1063,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DeleteRateModelMasterTask(
             DeleteRateModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteRateModelMasterResult>> userCallback,
-            Class<DeleteRateModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteRateModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteRateModelMasterResult parse(JsonNode data) {
+            return DeleteRateModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1272,8 +1085,8 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/model/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1297,25 +1110,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化レートマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteRateModelMasterAsync(
             DeleteRateModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteRateModelMasterResult>> callback
     ) {
-        DeleteRateModelMasterTask task = new DeleteRateModelMasterTask(request, callback, DeleteRateModelMasterResult.class);
+        DeleteRateModelMasterTask task = new DeleteRateModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化レートマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteRateModelMasterResult deleteRateModelMaster(
             DeleteRateModelMasterRequest request
     ) {
@@ -1342,15 +1144,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DirectEnhanceTask(
             DirectEnhanceRequest request,
-            AsyncAction<AsyncResult<DirectEnhanceResult>> userCallback,
-            Class<DirectEnhanceResult> clazz
+            AsyncAction<AsyncResult<DirectEnhanceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DirectEnhanceResult parse(JsonNode data) {
+            return DirectEnhanceResult.fromJson(data);
         }
 
         @Override
@@ -1361,43 +1166,27 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/enhance/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTargetItemSetId() != null) {
-                json.put("targetItemSetId", this.request.getTargetItemSetId());
-            }
-            if (this.request.getMaterials() != null) {
-                JSONArray array = new JSONArray();
-                for(Material item : this.request.getMaterials())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("materials", array);
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("targetItemSetId", request.getTargetItemSetId());
+                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                        request.getMaterials().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1411,9 +1200,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1421,41 +1207,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化を実行<br>
-     *   <br>
-     *   このAPIは実行速度を最適化する代わりにセキュリティ的に課題を抱えています。<br>
-     *   <br>
-     *   スタンプシートの発行と同時に「成功」「大成功」を表現するためのボーナスレートも応答していますが、<br>
-     *   それによって、スタンプシートを発行だけして実行しないことで、選別が可能となっています。<br>
-     *   選別を出来ないようにするには、Progress にある Start / End APIを利用することで、<br>
-     *   Start を呼び出したタイミングで強化素材を消費し、ボーナスレートを確定し<br>
-     *   End を呼び出したタイミングで経験値を得るためのスタンプシートを発行するようにすることができます。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void directEnhanceAsync(
             DirectEnhanceRequest request,
             AsyncAction<AsyncResult<DirectEnhanceResult>> callback
     ) {
-        DirectEnhanceTask task = new DirectEnhanceTask(request, callback, DirectEnhanceResult.class);
+        DirectEnhanceTask task = new DirectEnhanceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化を実行<br>
-     *   <br>
-     *   このAPIは実行速度を最適化する代わりにセキュリティ的に課題を抱えています。<br>
-     *   <br>
-     *   スタンプシートの発行と同時に「成功」「大成功」を表現するためのボーナスレートも応答していますが、<br>
-     *   それによって、スタンプシートを発行だけして実行しないことで、選別が可能となっています。<br>
-     *   選別を出来ないようにするには、Progress にある Start / End APIを利用することで、<br>
-     *   Start を呼び出したタイミングで強化素材を消費し、ボーナスレートを確定し<br>
-     *   End を呼び出したタイミングで経験値を得るためのスタンプシートを発行するようにすることができます。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DirectEnhanceResult directEnhance(
             DirectEnhanceRequest request
     ) {
@@ -1482,15 +1241,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DirectEnhanceByUserIdTask(
             DirectEnhanceByUserIdRequest request,
-            AsyncAction<AsyncResult<DirectEnhanceByUserIdResult>> userCallback,
-            Class<DirectEnhanceByUserIdResult> clazz
+            AsyncAction<AsyncResult<DirectEnhanceByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DirectEnhanceByUserIdResult parse(JsonNode data) {
+            return DirectEnhanceByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1501,44 +1263,28 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/enhance/{rateName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTargetItemSetId() != null) {
-                json.put("targetItemSetId", this.request.getTargetItemSetId());
-            }
-            if (this.request.getMaterials() != null) {
-                JSONArray array = new JSONArray();
-                for(Material item : this.request.getMaterials())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("materials", array);
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("targetItemSetId", request.getTargetItemSetId());
+                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                        request.getMaterials().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1549,9 +1295,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1559,41 +1302,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して強化を実行<br>
-     *   <br>
-     *   このAPIは実行速度を最適化する代わりにセキュリティ的に課題を抱えています。<br>
-     *   <br>
-     *   スタンプシートの発行と同時に「成功」「大成功」を表現するためのボーナスレートも応答していますが、<br>
-     *   それによって、スタンプシートを発行だけして実行しないことで、選別が可能となっています。<br>
-     *   選別を出来ないようにするには、Progress にある Start / End APIを利用することで、<br>
-     *   Start を呼び出したタイミングで強化素材を消費し、ボーナスレートを確定し<br>
-     *   End を呼び出したタイミングで経験値を得るためのスタンプシートを発行するようにすることができます。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void directEnhanceByUserIdAsync(
             DirectEnhanceByUserIdRequest request,
             AsyncAction<AsyncResult<DirectEnhanceByUserIdResult>> callback
     ) {
-        DirectEnhanceByUserIdTask task = new DirectEnhanceByUserIdTask(request, callback, DirectEnhanceByUserIdResult.class);
+        DirectEnhanceByUserIdTask task = new DirectEnhanceByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して強化を実行<br>
-     *   <br>
-     *   このAPIは実行速度を最適化する代わりにセキュリティ的に課題を抱えています。<br>
-     *   <br>
-     *   スタンプシートの発行と同時に「成功」「大成功」を表現するためのボーナスレートも応答していますが、<br>
-     *   それによって、スタンプシートを発行だけして実行しないことで、選別が可能となっています。<br>
-     *   選別を出来ないようにするには、Progress にある Start / End APIを利用することで、<br>
-     *   Start を呼び出したタイミングで強化素材を消費し、ボーナスレートを確定し<br>
-     *   End を呼び出したタイミングで経験値を得るためのスタンプシートを発行するようにすることができます。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DirectEnhanceByUserIdResult directEnhanceByUserId(
             DirectEnhanceByUserIdRequest request
     ) {
@@ -1620,15 +1336,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DirectEnhanceByStampSheetTask(
             DirectEnhanceByStampSheetRequest request,
-            AsyncAction<AsyncResult<DirectEnhanceByStampSheetResult>> userCallback,
-            Class<DirectEnhanceByStampSheetResult> clazz
+            AsyncAction<AsyncResult<DirectEnhanceByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DirectEnhanceByStampSheetResult parse(JsonNode data) {
+            return DirectEnhanceByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -1639,19 +1358,13 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/enhance/direct";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1662,9 +1375,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1672,25 +1382,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * スタンプシートで強化を実行<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void directEnhanceByStampSheetAsync(
             DirectEnhanceByStampSheetRequest request,
             AsyncAction<AsyncResult<DirectEnhanceByStampSheetResult>> callback
     ) {
-        DirectEnhanceByStampSheetTask task = new DirectEnhanceByStampSheetTask(request, callback, DirectEnhanceByStampSheetResult.class);
+        DirectEnhanceByStampSheetTask task = new DirectEnhanceByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートで強化を実行<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DirectEnhanceByStampSheetResult directEnhanceByStampSheet(
             DirectEnhanceByStampSheetRequest request
     ) {
@@ -1717,15 +1416,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DescribeProgressesByUserIdTask(
             DescribeProgressesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeProgressesByUserIdResult>> userCallback,
-            Class<DescribeProgressesByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeProgressesByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeProgressesByUserIdResult parse(JsonNode data) {
+            return DescribeProgressesByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1736,7 +1438,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1762,9 +1464,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1772,25 +1471,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化実行の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeProgressesByUserIdAsync(
             DescribeProgressesByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeProgressesByUserIdResult>> callback
     ) {
-        DescribeProgressesByUserIdTask task = new DescribeProgressesByUserIdTask(request, callback, DescribeProgressesByUserIdResult.class);
+        DescribeProgressesByUserIdTask task = new DescribeProgressesByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化実行の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeProgressesByUserIdResult describeProgressesByUserId(
             DescribeProgressesByUserIdRequest request
     ) {
@@ -1817,15 +1505,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public CreateProgressByUserIdTask(
             CreateProgressByUserIdRequest request,
-            AsyncAction<AsyncResult<CreateProgressByUserIdResult>> userCallback,
-            Class<CreateProgressByUserIdResult> clazz
+            AsyncAction<AsyncResult<CreateProgressByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateProgressByUserIdResult parse(JsonNode data) {
+            return CreateProgressByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1836,37 +1527,23 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getRateName() != null) {
-                json.put("rateName", this.request.getRateName());
-            }
-            if (this.request.getTargetItemSetId() != null) {
-                json.put("targetItemSetId", this.request.getTargetItemSetId());
-            }
-            if (this.request.getMaterials() != null) {
-                JSONArray array = new JSONArray();
-                for(Material item : this.request.getMaterials())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("materials", array);
-            }
-            if (this.request.getForce() != null) {
-                json.put("force", this.request.getForce());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("rateName", request.getRateName());
+                    put("targetItemSetId", request.getTargetItemSetId());
+                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                        request.getMaterials().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("force", request.getForce());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1877,9 +1554,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1887,25 +1561,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して強化実行を作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createProgressByUserIdAsync(
             CreateProgressByUserIdRequest request,
             AsyncAction<AsyncResult<CreateProgressByUserIdResult>> callback
     ) {
-        CreateProgressByUserIdTask task = new CreateProgressByUserIdTask(request, callback, CreateProgressByUserIdResult.class);
+        CreateProgressByUserIdTask task = new CreateProgressByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して強化実行を作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateProgressByUserIdResult createProgressByUserId(
             CreateProgressByUserIdRequest request
     ) {
@@ -1932,15 +1595,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public GetProgressTask(
             GetProgressRequest request,
-            AsyncAction<AsyncResult<GetProgressResult>> userCallback,
-            Class<GetProgressResult> clazz
+            AsyncAction<AsyncResult<GetProgressResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetProgressResult parse(JsonNode data) {
+            return GetProgressResult.fromJson(data);
         }
 
         @Override
@@ -1951,7 +1617,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1971,9 +1637,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1981,25 +1644,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化実行を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getProgressAsync(
             GetProgressRequest request,
             AsyncAction<AsyncResult<GetProgressResult>> callback
     ) {
-        GetProgressTask task = new GetProgressTask(request, callback, GetProgressResult.class);
+        GetProgressTask task = new GetProgressTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化実行を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetProgressResult getProgress(
             GetProgressRequest request
     ) {
@@ -2026,15 +1678,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public GetProgressByUserIdTask(
             GetProgressByUserIdRequest request,
-            AsyncAction<AsyncResult<GetProgressByUserIdResult>> userCallback,
-            Class<GetProgressByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetProgressByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetProgressByUserIdResult parse(JsonNode data) {
+            return GetProgressByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2045,8 +1700,8 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2063,9 +1718,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2073,25 +1725,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して強化実行を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getProgressByUserIdAsync(
             GetProgressByUserIdRequest request,
             AsyncAction<AsyncResult<GetProgressByUserIdResult>> callback
     ) {
-        GetProgressByUserIdTask task = new GetProgressByUserIdTask(request, callback, GetProgressByUserIdResult.class);
+        GetProgressByUserIdTask task = new GetProgressByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して強化実行を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetProgressByUserIdResult getProgressByUserId(
             GetProgressByUserIdRequest request
     ) {
@@ -2118,15 +1759,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public StartTask(
             StartRequest request,
-            AsyncAction<AsyncResult<StartResult>> userCallback,
-            Class<StartResult> clazz
+            AsyncAction<AsyncResult<StartResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public StartResult parse(JsonNode data) {
+            return StartResult.fromJson(data);
         }
 
         @Override
@@ -2137,46 +1781,28 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/progress/rate/{rateName}/start";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTargetItemSetId() != null) {
-                json.put("targetItemSetId", this.request.getTargetItemSetId());
-            }
-            if (this.request.getMaterials() != null) {
-                JSONArray array = new JSONArray();
-                for(Material item : this.request.getMaterials())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("materials", array);
-            }
-            if (this.request.getForce() != null) {
-                json.put("force", this.request.getForce());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("targetItemSetId", request.getTargetItemSetId());
+                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                        request.getMaterials().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("force", request.getForce());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2190,9 +1816,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2200,25 +1823,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化を開始<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void startAsync(
             StartRequest request,
             AsyncAction<AsyncResult<StartResult>> callback
     ) {
-        StartTask task = new StartTask(request, callback, StartResult.class);
+        StartTask task = new StartTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化を開始<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public StartResult start(
             StartRequest request
     ) {
@@ -2245,15 +1857,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public StartByUserIdTask(
             StartByUserIdRequest request,
-            AsyncAction<AsyncResult<StartByUserIdResult>> userCallback,
-            Class<StartByUserIdResult> clazz
+            AsyncAction<AsyncResult<StartByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public StartByUserIdResult parse(JsonNode data) {
+            return StartByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2264,47 +1879,29 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress/rate/{rateName}/start";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null|| this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTargetItemSetId() != null) {
-                json.put("targetItemSetId", this.request.getTargetItemSetId());
-            }
-            if (this.request.getMaterials() != null) {
-                JSONArray array = new JSONArray();
-                for(Material item : this.request.getMaterials())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("materials", array);
-            }
-            if (this.request.getForce() != null) {
-                json.put("force", this.request.getForce());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("targetItemSetId", request.getTargetItemSetId());
+                    put("materials", request.getMaterials() == null ? new ArrayList<Material>() :
+                        request.getMaterials().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("force", request.getForce());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2315,9 +1912,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2325,25 +1919,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して強化を開始<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void startByUserIdAsync(
             StartByUserIdRequest request,
             AsyncAction<AsyncResult<StartByUserIdResult>> callback
     ) {
-        StartByUserIdTask task = new StartByUserIdTask(request, callback, StartByUserIdResult.class);
+        StartByUserIdTask task = new StartByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して強化を開始<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public StartByUserIdResult startByUserId(
             StartByUserIdRequest request
     ) {
@@ -2370,15 +1953,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public EndTask(
             EndRequest request,
-            AsyncAction<AsyncResult<EndResult>> userCallback,
-            Class<EndResult> clazz
+            AsyncAction<AsyncResult<EndResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public EndResult parse(JsonNode data) {
+            return EndResult.fromJson(data);
         }
 
         @Override
@@ -2389,27 +1975,19 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/progress/end";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2423,9 +2001,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2433,25 +2008,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化を完了<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void endAsync(
             EndRequest request,
             AsyncAction<AsyncResult<EndResult>> callback
     ) {
-        EndTask task = new EndTask(request, callback, EndResult.class);
+        EndTask task = new EndTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化を完了<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public EndResult end(
             EndRequest request
     ) {
@@ -2478,15 +2042,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public EndByUserIdTask(
             EndByUserIdRequest request,
-            AsyncAction<AsyncResult<EndByUserIdResult>> userCallback,
-            Class<EndByUserIdResult> clazz
+            AsyncAction<AsyncResult<EndByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public EndByUserIdResult parse(JsonNode data) {
+            return EndByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2497,28 +2064,20 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress/end";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2529,9 +2088,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2539,31 +2095,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して強化を完了<br>
-     *   <br>
-     *   開始時に受け取った強化において入手可能な報酬とその数量の"最大値"のうち、強化内で実際に入手した報酬を rewards で報告します。<br>
-     *   isComplete には強化をクリアできたかを報告します。強化に失敗した場合、rewards の値は無視して強化に設定された失敗した場合の報酬が付与されます。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void endByUserIdAsync(
             EndByUserIdRequest request,
             AsyncAction<AsyncResult<EndByUserIdResult>> callback
     ) {
-        EndByUserIdTask task = new EndByUserIdTask(request, callback, EndByUserIdResult.class);
+        EndByUserIdTask task = new EndByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して強化を完了<br>
-     *   <br>
-     *   開始時に受け取った強化において入手可能な報酬とその数量の"最大値"のうち、強化内で実際に入手した報酬を rewards で報告します。<br>
-     *   isComplete には強化をクリアできたかを報告します。強化に失敗した場合、rewards の値は無視して強化に設定された失敗した場合の報酬が付与されます。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public EndByUserIdResult endByUserId(
             EndByUserIdRequest request
     ) {
@@ -2590,15 +2129,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DeleteProgressTask(
             DeleteProgressRequest request,
-            AsyncAction<AsyncResult<DeleteProgressResult>> userCallback,
-            Class<DeleteProgressResult> clazz
+            AsyncAction<AsyncResult<DeleteProgressResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteProgressResult parse(JsonNode data) {
+            return DeleteProgressResult.fromJson(data);
         }
 
         @Override
@@ -2609,7 +2151,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2629,9 +2171,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2639,25 +2178,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 強化実行を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteProgressAsync(
             DeleteProgressRequest request,
             AsyncAction<AsyncResult<DeleteProgressResult>> callback
     ) {
-        DeleteProgressTask task = new DeleteProgressTask(request, callback, DeleteProgressResult.class);
+        DeleteProgressTask task = new DeleteProgressTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 強化実行を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteProgressResult deleteProgress(
             DeleteProgressRequest request
     ) {
@@ -2684,15 +2212,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DeleteProgressByUserIdTask(
             DeleteProgressByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteProgressByUserIdResult>> userCallback,
-            Class<DeleteProgressByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteProgressByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteProgressByUserIdResult parse(JsonNode data) {
+            return DeleteProgressByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2703,8 +2234,8 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2721,9 +2252,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2731,25 +2259,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定して強化実行を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteProgressByUserIdAsync(
             DeleteProgressByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteProgressByUserIdResult>> callback
     ) {
-        DeleteProgressByUserIdTask task = new DeleteProgressByUserIdTask(request, callback, DeleteProgressByUserIdResult.class);
+        DeleteProgressByUserIdTask task = new DeleteProgressByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定して強化実行を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteProgressByUserIdResult deleteProgressByUserId(
             DeleteProgressByUserIdRequest request
     ) {
@@ -2776,15 +2293,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public CreateProgressByStampSheetTask(
             CreateProgressByStampSheetRequest request,
-            AsyncAction<AsyncResult<CreateProgressByStampSheetResult>> userCallback,
-            Class<CreateProgressByStampSheetResult> clazz
+            AsyncAction<AsyncResult<CreateProgressByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateProgressByStampSheetResult parse(JsonNode data) {
+            return CreateProgressByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -2795,19 +2315,13 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/progress/create";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2818,9 +2332,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2828,25 +2339,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * スタンプシートで強化を開始<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createProgressByStampSheetAsync(
             CreateProgressByStampSheetRequest request,
             AsyncAction<AsyncResult<CreateProgressByStampSheetResult>> callback
     ) {
-        CreateProgressByStampSheetTask task = new CreateProgressByStampSheetTask(request, callback, CreateProgressByStampSheetResult.class);
+        CreateProgressByStampSheetTask task = new CreateProgressByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートで強化を開始<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateProgressByStampSheetResult createProgressByStampSheet(
             CreateProgressByStampSheetRequest request
     ) {
@@ -2873,15 +2373,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public DeleteProgressByStampTaskTask(
             DeleteProgressByStampTaskRequest request,
-            AsyncAction<AsyncResult<DeleteProgressByStampTaskResult>> userCallback,
-            Class<DeleteProgressByStampTaskResult> clazz
+            AsyncAction<AsyncResult<DeleteProgressByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteProgressByStampTaskResult parse(JsonNode data) {
+            return DeleteProgressByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -2892,19 +2395,13 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/progress/delete";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2915,9 +2412,6 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2925,25 +2419,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * スタンプタスクで 強化実行 を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteProgressByStampTaskAsync(
             DeleteProgressByStampTaskRequest request,
             AsyncAction<AsyncResult<DeleteProgressByStampTaskResult>> callback
     ) {
-        DeleteProgressByStampTaskTask task = new DeleteProgressByStampTaskTask(request, callback, DeleteProgressByStampTaskResult.class);
+        DeleteProgressByStampTaskTask task = new DeleteProgressByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプタスクで 強化実行 を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteProgressByStampTaskResult deleteProgressByStampTask(
             DeleteProgressByStampTaskRequest request
     ) {
@@ -2970,15 +2453,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -2989,7 +2475,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3013,25 +2499,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 現在有効な強化レート設定のマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な強化レート設定のマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -3058,15 +2533,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public GetCurrentRateMasterTask(
             GetCurrentRateMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentRateMasterResult>> userCallback,
-            Class<GetCurrentRateMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentRateMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentRateMasterResult parse(JsonNode data) {
+            return GetCurrentRateMasterResult.fromJson(data);
         }
 
         @Override
@@ -3077,7 +2555,7 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3101,25 +2579,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 現在有効な強化レート設定を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentRateMasterAsync(
             GetCurrentRateMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentRateMasterResult>> callback
     ) {
-        GetCurrentRateMasterTask task = new GetCurrentRateMasterTask(request, callback, GetCurrentRateMasterResult.class);
+        GetCurrentRateMasterTask task = new GetCurrentRateMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な強化レート設定を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentRateMasterResult getCurrentRateMaster(
             GetCurrentRateMasterRequest request
     ) {
@@ -3146,15 +2613,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public UpdateCurrentRateMasterTask(
             UpdateCurrentRateMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRateMasterResult>> userCallback,
-            Class<UpdateCurrentRateMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentRateMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentRateMasterResult parse(JsonNode data) {
+            return UpdateCurrentRateMasterResult.fromJson(data);
         }
 
         @Override
@@ -3165,18 +2635,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3194,25 +2660,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 現在有効な強化レート設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentRateMasterAsync(
             UpdateCurrentRateMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentRateMasterResult>> callback
     ) {
-        UpdateCurrentRateMasterTask task = new UpdateCurrentRateMasterTask(request, callback, UpdateCurrentRateMasterResult.class);
+        UpdateCurrentRateMasterTask task = new UpdateCurrentRateMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な強化レート設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentRateMasterResult updateCurrentRateMaster(
             UpdateCurrentRateMasterRequest request
     ) {
@@ -3239,15 +2694,18 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
 
         public UpdateCurrentRateMasterFromGitHubTask(
             UpdateCurrentRateMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRateMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentRateMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentRateMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentRateMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentRateMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -3258,22 +2716,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3291,25 +2741,14 @@ public class Gs2EnhanceRestClient extends AbstractGs2Client<Gs2EnhanceRestClient
         }
     }
 
-    /**
-     * 現在有効な強化レート設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentRateMasterFromGitHubAsync(
             UpdateCurrentRateMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentRateMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentRateMasterFromGitHubTask task = new UpdateCurrentRateMasterFromGitHubTask(request, callback, UpdateCurrentRateMasterFromGitHubResult.class);
+        UpdateCurrentRateMasterFromGitHubTask task = new UpdateCurrentRateMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効な強化レート設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentRateMasterFromGitHubResult updateCurrentRateMasterFromGitHub(
             UpdateCurrentRateMasterFromGitHubRequest request
     ) {

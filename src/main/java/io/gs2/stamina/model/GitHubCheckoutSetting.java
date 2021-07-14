@@ -16,252 +16,144 @@
 
 package io.gs2.stamina.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * GitHubからリソースをチェックアウトしてくる設定
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GitHubCheckoutSetting implements IModel, Serializable {
-	/** リソースの取得に使用するGitHub のAPIキー のGRN */
-	protected String apiKeyId;
+	private String apiKeyId;
+	private String repositoryName;
+	private String sourcePath;
+	private String referenceType;
+	private String commitHash;
+	private String branchName;
+	private String tagName;
 
-	/**
-	 * リソースの取得に使用するGitHub のAPIキー のGRNを取得
-	 *
-	 * @return リソースの取得に使用するGitHub のAPIキー のGRN
-	 */
 	public String getApiKeyId() {
 		return apiKeyId;
 	}
 
-	/**
-	 * リソースの取得に使用するGitHub のAPIキー のGRNを設定
-	 *
-	 * @param apiKeyId リソースの取得に使用するGitHub のAPIキー のGRN
-	 */
 	public void setApiKeyId(String apiKeyId) {
 		this.apiKeyId = apiKeyId;
 	}
 
-	/**
-	 * リソースの取得に使用するGitHub のAPIキー のGRNを設定
-	 *
-	 * @param apiKeyId リソースの取得に使用するGitHub のAPIキー のGRN
-	 * @return this
-	 */
 	public GitHubCheckoutSetting withApiKeyId(String apiKeyId) {
 		this.apiKeyId = apiKeyId;
 		return this;
 	}
-	/** リポジトリ名 */
-	protected String repositoryName;
 
-	/**
-	 * リポジトリ名を取得
-	 *
-	 * @return リポジトリ名
-	 */
 	public String getRepositoryName() {
 		return repositoryName;
 	}
 
-	/**
-	 * リポジトリ名を設定
-	 *
-	 * @param repositoryName リポジトリ名
-	 */
 	public void setRepositoryName(String repositoryName) {
 		this.repositoryName = repositoryName;
 	}
 
-	/**
-	 * リポジトリ名を設定
-	 *
-	 * @param repositoryName リポジトリ名
-	 * @return this
-	 */
 	public GitHubCheckoutSetting withRepositoryName(String repositoryName) {
 		this.repositoryName = repositoryName;
 		return this;
 	}
-	/** ソースコードのファイルパス */
-	protected String sourcePath;
 
-	/**
-	 * ソースコードのファイルパスを取得
-	 *
-	 * @return ソースコードのファイルパス
-	 */
 	public String getSourcePath() {
 		return sourcePath;
 	}
 
-	/**
-	 * ソースコードのファイルパスを設定
-	 *
-	 * @param sourcePath ソースコードのファイルパス
-	 */
 	public void setSourcePath(String sourcePath) {
 		this.sourcePath = sourcePath;
 	}
 
-	/**
-	 * ソースコードのファイルパスを設定
-	 *
-	 * @param sourcePath ソースコードのファイルパス
-	 * @return this
-	 */
 	public GitHubCheckoutSetting withSourcePath(String sourcePath) {
 		this.sourcePath = sourcePath;
 		return this;
 	}
-	/** コードの取得元 */
-	protected String referenceType;
 
-	/**
-	 * コードの取得元を取得
-	 *
-	 * @return コードの取得元
-	 */
 	public String getReferenceType() {
 		return referenceType;
 	}
 
-	/**
-	 * コードの取得元を設定
-	 *
-	 * @param referenceType コードの取得元
-	 */
 	public void setReferenceType(String referenceType) {
 		this.referenceType = referenceType;
 	}
 
-	/**
-	 * コードの取得元を設定
-	 *
-	 * @param referenceType コードの取得元
-	 * @return this
-	 */
 	public GitHubCheckoutSetting withReferenceType(String referenceType) {
 		this.referenceType = referenceType;
 		return this;
 	}
-	/** コミットハッシュ */
-	protected String commitHash;
 
-	/**
-	 * コミットハッシュを取得
-	 *
-	 * @return コミットハッシュ
-	 */
 	public String getCommitHash() {
 		return commitHash;
 	}
 
-	/**
-	 * コミットハッシュを設定
-	 *
-	 * @param commitHash コミットハッシュ
-	 */
 	public void setCommitHash(String commitHash) {
 		this.commitHash = commitHash;
 	}
 
-	/**
-	 * コミットハッシュを設定
-	 *
-	 * @param commitHash コミットハッシュ
-	 * @return this
-	 */
 	public GitHubCheckoutSetting withCommitHash(String commitHash) {
 		this.commitHash = commitHash;
 		return this;
 	}
-	/** ブランチ名 */
-	protected String branchName;
 
-	/**
-	 * ブランチ名を取得
-	 *
-	 * @return ブランチ名
-	 */
 	public String getBranchName() {
 		return branchName;
 	}
 
-	/**
-	 * ブランチ名を設定
-	 *
-	 * @param branchName ブランチ名
-	 */
 	public void setBranchName(String branchName) {
 		this.branchName = branchName;
 	}
 
-	/**
-	 * ブランチ名を設定
-	 *
-	 * @param branchName ブランチ名
-	 * @return this
-	 */
 	public GitHubCheckoutSetting withBranchName(String branchName) {
 		this.branchName = branchName;
 		return this;
 	}
-	/** タグ名 */
-	protected String tagName;
 
-	/**
-	 * タグ名を取得
-	 *
-	 * @return タグ名
-	 */
 	public String getTagName() {
 		return tagName;
 	}
 
-	/**
-	 * タグ名を設定
-	 *
-	 * @param tagName タグ名
-	 */
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
 	}
 
-	/**
-	 * タグ名を設定
-	 *
-	 * @param tagName タグ名
-	 * @return this
-	 */
 	public GitHubCheckoutSetting withTagName(String tagName) {
 		this.tagName = tagName;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("apiKeyId", this.getApiKeyId())
-            .put("repositoryName", this.getRepositoryName())
-            .put("sourcePath", this.getSourcePath())
-            .put("referenceType", this.getReferenceType())
-            .put("commitHash", this.getCommitHash())
-            .put("branchName", this.getBranchName())
-            .put("tagName", this.getTagName());
-        return body_;
+    public static GitHubCheckoutSetting fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GitHubCheckoutSetting()
+            .withApiKeyId(data.get("apiKeyId") == null || data.get("apiKeyId").isNull() ? null : data.get("apiKeyId").asText())
+            .withRepositoryName(data.get("repositoryName") == null || data.get("repositoryName").isNull() ? null : data.get("repositoryName").asText())
+            .withSourcePath(data.get("sourcePath") == null || data.get("sourcePath").isNull() ? null : data.get("sourcePath").asText())
+            .withReferenceType(data.get("referenceType") == null || data.get("referenceType").isNull() ? null : data.get("referenceType").asText())
+            .withCommitHash(data.get("commitHash") == null || data.get("commitHash").isNull() ? null : data.get("commitHash").asText())
+            .withBranchName(data.get("branchName") == null || data.get("branchName").isNull() ? null : data.get("branchName").asText())
+            .withTagName(data.get("tagName") == null || data.get("tagName").isNull() ? null : data.get("tagName").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("apiKeyId", getApiKeyId());
+                put("repositoryName", getRepositoryName());
+                put("sourcePath", getSourcePath());
+                put("referenceType", getReferenceType());
+                put("commitHash", getCommitHash());
+                put("branchName", getBranchName());
+                put("tagName", getTagName());
+            }}
+        );
     }
 
 	@Override

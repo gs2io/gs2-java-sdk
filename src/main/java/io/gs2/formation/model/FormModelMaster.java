@@ -16,259 +16,156 @@
 
 package io.gs2.formation.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * フォームマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FormModelMaster implements IModel, Serializable, Comparable<FormModelMaster> {
-	/** フォームマスター */
-	protected String formModelId;
+	private String formModelId;
+	private String name;
+	private String description;
+	private String metadata;
+	private List<SlotModel> slots;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * フォームマスターを取得
-	 *
-	 * @return フォームマスター
-	 */
 	public String getFormModelId() {
 		return formModelId;
 	}
 
-	/**
-	 * フォームマスターを設定
-	 *
-	 * @param formModelId フォームマスター
-	 */
 	public void setFormModelId(String formModelId) {
 		this.formModelId = formModelId;
 	}
 
-	/**
-	 * フォームマスターを設定
-	 *
-	 * @param formModelId フォームマスター
-	 * @return this
-	 */
 	public FormModelMaster withFormModelId(String formModelId) {
 		this.formModelId = formModelId;
 		return this;
 	}
-	/** フォーム名 */
-	protected String name;
 
-	/**
-	 * フォーム名を取得
-	 *
-	 * @return フォーム名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * フォーム名を設定
-	 *
-	 * @param name フォーム名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * フォーム名を設定
-	 *
-	 * @param name フォーム名
-	 * @return this
-	 */
 	public FormModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** フォームマスターの説明 */
-	protected String description;
 
-	/**
-	 * フォームマスターの説明を取得
-	 *
-	 * @return フォームマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * フォームマスターの説明を設定
-	 *
-	 * @param description フォームマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * フォームマスターの説明を設定
-	 *
-	 * @param description フォームマスターの説明
-	 * @return this
-	 */
 	public FormModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** フォームのメタデータ */
-	protected String metadata;
 
-	/**
-	 * フォームのメタデータを取得
-	 *
-	 * @return フォームのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * フォームのメタデータを設定
-	 *
-	 * @param metadata フォームのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * フォームのメタデータを設定
-	 *
-	 * @param metadata フォームのメタデータ
-	 * @return this
-	 */
 	public FormModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** スロットリスト */
-	protected List<SlotModel> slots;
 
-	/**
-	 * スロットリストを取得
-	 *
-	 * @return スロットリスト
-	 */
 	public List<SlotModel> getSlots() {
 		return slots;
 	}
 
-	/**
-	 * スロットリストを設定
-	 *
-	 * @param slots スロットリスト
-	 */
 	public void setSlots(List<SlotModel> slots) {
 		this.slots = slots;
 	}
 
-	/**
-	 * スロットリストを設定
-	 *
-	 * @param slots スロットリスト
-	 * @return this
-	 */
 	public FormModelMaster withSlots(List<SlotModel> slots) {
 		this.slots = slots;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public FormModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public FormModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> slots = new ArrayList<>();
-        if(this.slots != null) {
-            for(SlotModel item : this.slots) {
-                slots.add(item.toJson());
-            }
+    public static FormModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("formModelId", this.getFormModelId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("slots", JsonNodeFactory.instance.arrayNode().addAll(slots));
-        return body_;
+        return new FormModelMaster()
+            .withFormModelId(data.get("formModelId") == null || data.get("formModelId").isNull() ? null : data.get("formModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<SlotModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return SlotModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("formModelId", getFormModelId());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("slots", getSlots() == null ? new ArrayList<SlotModel>() :
+                    getSlots().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(FormModelMaster o) {
 		return formModelId.compareTo(o.formModelId);

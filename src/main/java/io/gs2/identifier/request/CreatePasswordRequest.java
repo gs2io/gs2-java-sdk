@@ -16,82 +16,62 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * パスワードを新規作成します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreatePasswordRequest extends Gs2BasicRequest<CreatePasswordRequest> {
-
-    /** ユーザー名 */
     private String userName;
-
-    /**
-     * ユーザー名を取得
-     *
-     * @return パスワードを新規作成します
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName パスワードを新規作成します
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName パスワードを新規作成します
-     * @return this
-     */
-    public CreatePasswordRequest withUserName(String userName) {
-        setUserName(userName);
-        return this;
-    }
-
-    /** パスワード */
     private String password;
 
-    /**
-     * パスワードを取得
-     *
-     * @return パスワードを新規作成します
-     */
-    public String getPassword() {
-        return password;
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public CreatePasswordRequest withUserName(String userName) {
+		this.userName = userName;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public CreatePasswordRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+    public static CreatePasswordRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreatePasswordRequest()
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
     }
 
-    /**
-     * パスワードを設定
-     *
-     * @param password パスワードを新規作成します
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userName", getUserName());
+                put("password", getPassword());
+            }}
+        );
     }
-
-    /**
-     * パスワードを設定
-     *
-     * @param password パスワードを新規作成します
-     * @return this
-     */
-    public CreatePasswordRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
 }

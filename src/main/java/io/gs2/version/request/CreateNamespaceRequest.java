@@ -16,210 +16,128 @@
 
 package io.gs2.version.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.version.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.version.model.ScriptSetting;
+import io.gs2.version.model.LogSetting;
 
-/**
- * ネームスペースを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String name;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param name ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** 説明文 */
     private String description;
-
-    /**
-     * 説明文を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description ネームスペースを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRN */
     private String assumeUserId;
-
-    /**
-     * バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getAssumeUserId() {
-        return assumeUserId;
-    }
-
-    /**
-     * バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRNを設定
-     *
-     * @param assumeUserId ネームスペースを新規作成
-     */
-    public void setAssumeUserId(String assumeUserId) {
-        this.assumeUserId = assumeUserId;
-    }
-
-    /**
-     * バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRNを設定
-     *
-     * @param assumeUserId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withAssumeUserId(String assumeUserId) {
-        setAssumeUserId(assumeUserId);
-        return this;
-    }
-
-    /** バージョンを承認したときに実行するスクリプト */
     private ScriptSetting acceptVersionScript;
-
-    /**
-     * バージョンを承認したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public ScriptSetting getAcceptVersionScript() {
-        return acceptVersionScript;
-    }
-
-    /**
-     * バージョンを承認したときに実行するスクリプトを設定
-     *
-     * @param acceptVersionScript ネームスペースを新規作成
-     */
-    public void setAcceptVersionScript(ScriptSetting acceptVersionScript) {
-        this.acceptVersionScript = acceptVersionScript;
-    }
-
-    /**
-     * バージョンを承認したときに実行するスクリプトを設定
-     *
-     * @param acceptVersionScript ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withAcceptVersionScript(ScriptSetting acceptVersionScript) {
-        setAcceptVersionScript(acceptVersionScript);
-        return this;
-    }
-
-    /** バージョンチェック時 に実行されるスクリプト のGRN */
     private String checkVersionTriggerScriptId;
-
-    /**
-     * バージョンチェック時 に実行されるスクリプト のGRNを取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public String getCheckVersionTriggerScriptId() {
-        return checkVersionTriggerScriptId;
-    }
-
-    /**
-     * バージョンチェック時 に実行されるスクリプト のGRNを設定
-     *
-     * @param checkVersionTriggerScriptId ネームスペースを新規作成
-     */
-    public void setCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
-        this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
-    }
-
-    /**
-     * バージョンチェック時 に実行されるスクリプト のGRNを設定
-     *
-     * @param checkVersionTriggerScriptId ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
-        setCheckVersionTriggerScriptId(checkVersionTriggerScriptId);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを新規作成
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateNamespaceRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getAssumeUserId() {
+		return assumeUserId;
+	}
+
+	public void setAssumeUserId(String assumeUserId) {
+		this.assumeUserId = assumeUserId;
+	}
+
+	public CreateNamespaceRequest withAssumeUserId(String assumeUserId) {
+		this.assumeUserId = assumeUserId;
+		return this;
+	}
+
+	public ScriptSetting getAcceptVersionScript() {
+		return acceptVersionScript;
+	}
+
+	public void setAcceptVersionScript(ScriptSetting acceptVersionScript) {
+		this.acceptVersionScript = acceptVersionScript;
+	}
+
+	public CreateNamespaceRequest withAcceptVersionScript(ScriptSetting acceptVersionScript) {
+		this.acceptVersionScript = acceptVersionScript;
+		return this;
+	}
+
+	public String getCheckVersionTriggerScriptId() {
+		return checkVersionTriggerScriptId;
+	}
+
+	public void setCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
+		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
+	}
+
+	public CreateNamespaceRequest withCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
+		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static CreateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateNamespaceRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withAssumeUserId(data.get("assumeUserId") == null || data.get("assumeUserId").isNull() ? null : data.get("assumeUserId").asText())
+            .withAcceptVersionScript(data.get("acceptVersionScript") == null || data.get("acceptVersionScript").isNull() ? null : ScriptSetting.fromJson(data.get("acceptVersionScript")))
+            .withCheckVersionTriggerScriptId(data.get("checkVersionTriggerScriptId") == null || data.get("checkVersionTriggerScriptId").isNull() ? null : data.get("checkVersionTriggerScriptId").asText())
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("assumeUserId", getAssumeUserId());
+                put("acceptVersionScript", getAcceptVersionScript() != null ? getAcceptVersionScript().toJson() : null);
+                put("checkVersionTriggerScriptId", getCheckVersionTriggerScriptId());
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを新規作成
-     * @return this
-     */
-    public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

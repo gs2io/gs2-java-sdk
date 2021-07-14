@@ -16,82 +16,62 @@
 
 package io.gs2.inbox.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inbox.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 全ユーザに向けたメッセージを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetGlobalMessageMasterRequest extends Gs2BasicRequest<GetGlobalMessageMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 全ユーザに向けたメッセージを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 全ユーザに向けたメッセージを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 全ユーザに向けたメッセージを取得
-     * @return this
-     */
-    public GetGlobalMessageMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 全ユーザに向けたメッセージ名 */
     private String globalMessageName;
 
-    /**
-     * 全ユーザに向けたメッセージ名を取得
-     *
-     * @return 全ユーザに向けたメッセージを取得
-     */
-    public String getGlobalMessageName() {
-        return globalMessageName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetGlobalMessageMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getGlobalMessageName() {
+		return globalMessageName;
+	}
+
+	public void setGlobalMessageName(String globalMessageName) {
+		this.globalMessageName = globalMessageName;
+	}
+
+	public GetGlobalMessageMasterRequest withGlobalMessageName(String globalMessageName) {
+		this.globalMessageName = globalMessageName;
+		return this;
+	}
+
+    public static GetGlobalMessageMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetGlobalMessageMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withGlobalMessageName(data.get("globalMessageName") == null || data.get("globalMessageName").isNull() ? null : data.get("globalMessageName").asText());
     }
 
-    /**
-     * 全ユーザに向けたメッセージ名を設定
-     *
-     * @param globalMessageName 全ユーザに向けたメッセージを取得
-     */
-    public void setGlobalMessageName(String globalMessageName) {
-        this.globalMessageName = globalMessageName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("globalMessageName", getGlobalMessageName());
+            }}
+        );
     }
-
-    /**
-     * 全ユーザに向けたメッセージ名を設定
-     *
-     * @param globalMessageName 全ユーザに向けたメッセージを取得
-     * @return this
-     */
-    public GetGlobalMessageMasterRequest withGlobalMessageName(String globalMessageName) {
-        setGlobalMessageName(globalMessageName);
-        return this;
-    }
-
 }

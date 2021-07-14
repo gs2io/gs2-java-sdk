@@ -16,130 +16,90 @@
 
 package io.gs2.quest.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * コンテンツ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Contents implements IModel, Serializable {
-	/** クエストモデルのメタデータ */
-	protected String metadata;
+	private String metadata;
+	private List<AcquireAction> completeAcquireActions;
+	private Integer weight;
 
-	/**
-	 * クエストモデルのメタデータを取得
-	 *
-	 * @return クエストモデルのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * クエストモデルのメタデータを設定
-	 *
-	 * @param metadata クエストモデルのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * クエストモデルのメタデータを設定
-	 *
-	 * @param metadata クエストモデルのメタデータ
-	 * @return this
-	 */
 	public Contents withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** クエストクリア時の報酬 */
-	protected List<AcquireAction> completeAcquireActions;
 
-	/**
-	 * クエストクリア時の報酬を取得
-	 *
-	 * @return クエストクリア時の報酬
-	 */
 	public List<AcquireAction> getCompleteAcquireActions() {
 		return completeAcquireActions;
 	}
 
-	/**
-	 * クエストクリア時の報酬を設定
-	 *
-	 * @param completeAcquireActions クエストクリア時の報酬
-	 */
 	public void setCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 	}
 
-	/**
-	 * クエストクリア時の報酬を設定
-	 *
-	 * @param completeAcquireActions クエストクリア時の報酬
-	 * @return this
-	 */
 	public Contents withCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 		return this;
 	}
-	/** 抽選する重み */
-	protected Integer weight;
 
-	/**
-	 * 抽選する重みを取得
-	 *
-	 * @return 抽選する重み
-	 */
 	public Integer getWeight() {
 		return weight;
 	}
 
-	/**
-	 * 抽選する重みを設定
-	 *
-	 * @param weight 抽選する重み
-	 */
 	public void setWeight(Integer weight) {
 		this.weight = weight;
 	}
 
-	/**
-	 * 抽選する重みを設定
-	 *
-	 * @param weight 抽選する重み
-	 * @return this
-	 */
 	public Contents withWeight(Integer weight) {
 		this.weight = weight;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> completeAcquireActions = new ArrayList<>();
-        if(this.completeAcquireActions != null) {
-            for(AcquireAction item : this.completeAcquireActions) {
-                completeAcquireActions.add(item.toJson());
-            }
+    public static Contents fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("metadata", this.getMetadata())
-            .put("weight", this.getWeight());
-        body_.set("completeAcquireActions", JsonNodeFactory.instance.arrayNode().addAll(completeAcquireActions));
-        return body_;
+        return new Contents()
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withWeight(data.get("weight") == null || data.get("weight").isNull() ? null : data.get("weight").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("metadata", getMetadata());
+                put("completeAcquireActions", getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getCompleteAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("weight", getWeight());
+            }}
+        );
     }
 
 	@Override

@@ -16,178 +16,110 @@
 
 package io.gs2.chat.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.chat.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * メッセージの一覧取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return メッセージの一覧取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName メッセージの一覧取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName メッセージの一覧取得
-     * @return this
-     */
-    public DescribeMessagesRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ルーム名 */
     private String roomName;
-
-    /**
-     * ルーム名を取得
-     *
-     * @return メッセージの一覧取得
-     */
-    public String getRoomName() {
-        return roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName メッセージの一覧取得
-     */
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-
-    /**
-     * ルーム名を設定
-     *
-     * @param roomName メッセージの一覧取得
-     * @return this
-     */
-    public DescribeMessagesRequest withRoomName(String roomName) {
-        setRoomName(roomName);
-        return this;
-    }
-
-    /** メッセージを投稿するために必要となるパスワード */
     private String password;
-
-    /**
-     * メッセージを投稿するために必要となるパスワードを取得
-     *
-     * @return メッセージの一覧取得
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * メッセージを投稿するために必要となるパスワードを設定
-     *
-     * @param password メッセージの一覧取得
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * メッセージを投稿するために必要となるパスワードを設定
-     *
-     * @param password メッセージの一覧取得
-     * @return this
-     */
-    public DescribeMessagesRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    /** メッセージの取得を開始する時間 */
     private Long startAt;
+    private Integer limit;
 
-    /**
-     * メッセージの取得を開始する時間を取得
-     *
-     * @return メッセージの一覧取得
-     */
-    public Long getStartAt() {
-        return startAt;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeMessagesRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public DescribeMessagesRequest withRoomName(String roomName) {
+		this.roomName = roomName;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public DescribeMessagesRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+	public Long getStartAt() {
+		return startAt;
+	}
+
+	public void setStartAt(Long startAt) {
+		this.startAt = startAt;
+	}
+
+	public DescribeMessagesRequest withStartAt(Long startAt) {
+		this.startAt = startAt;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeMessagesRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static DescribeMessagesRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeMessagesRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withStartAt(data.get("startAt") == null || data.get("startAt").isNull() ? null : data.get("startAt").longValue())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
-    /**
-     * メッセージの取得を開始する時間を設定
-     *
-     * @param startAt メッセージの一覧取得
-     */
-    public void setStartAt(Long startAt) {
-        this.startAt = startAt;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("roomName", getRoomName());
+                put("password", getPassword());
+                put("startAt", getStartAt());
+                put("limit", getLimit());
+            }}
+        );
     }
-
-    /**
-     * メッセージの取得を開始する時間を設定
-     *
-     * @param startAt メッセージの一覧取得
-     * @return this
-     */
-    public DescribeMessagesRequest withStartAt(Long startAt) {
-        setStartAt(startAt);
-        return this;
-    }
-
-    /** データの取得件数 */
-    private Long limit;
-
-    /**
-     * データの取得件数を取得
-     *
-     * @return メッセージの一覧取得
-     */
-    public Long getLimit() {
-        return limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit メッセージの一覧取得
-     */
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit メッセージの一覧取得
-     * @return this
-     */
-    public DescribeMessagesRequest withLimit(Long limit) {
-        setLimit(limit);
-        return this;
-    }
-
 }

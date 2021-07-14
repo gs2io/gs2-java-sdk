@@ -16,82 +16,62 @@
 
 package io.gs2.experience.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.experience.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 経験値の種類マスターを削除 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteExperienceModelMasterRequest extends Gs2BasicRequest<DeleteExperienceModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 経験値の種類マスターを削除
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 経験値の種類マスターを削除
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 経験値の種類マスターを削除
-     * @return this
-     */
-    public DeleteExperienceModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 経験値の種類名 */
     private String experienceName;
 
-    /**
-     * 経験値の種類名を取得
-     *
-     * @return 経験値の種類マスターを削除
-     */
-    public String getExperienceName() {
-        return experienceName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DeleteExperienceModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getExperienceName() {
+		return experienceName;
+	}
+
+	public void setExperienceName(String experienceName) {
+		this.experienceName = experienceName;
+	}
+
+	public DeleteExperienceModelMasterRequest withExperienceName(String experienceName) {
+		this.experienceName = experienceName;
+		return this;
+	}
+
+    public static DeleteExperienceModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteExperienceModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText());
     }
 
-    /**
-     * 経験値の種類名を設定
-     *
-     * @param experienceName 経験値の種類マスターを削除
-     */
-    public void setExperienceName(String experienceName) {
-        this.experienceName = experienceName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("experienceName", getExperienceName());
+            }}
+        );
     }
-
-    /**
-     * 経験値の種類名を設定
-     *
-     * @param experienceName 経験値の種類マスターを削除
-     * @return this
-     */
-    public DeleteExperienceModelMasterRequest withExperienceName(String experienceName) {
-        setExperienceName(experienceName);
-        return this;
-    }
-
 }

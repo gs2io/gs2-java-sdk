@@ -16,50 +16,46 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * GS2アカウントを有効化します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class VerifyRequest extends Gs2BasicRequest<VerifyRequest> {
-
-    /** 有効化に使用するトークン */
     private String verifyToken;
 
-    /**
-     * 有効化に使用するトークンを取得
-     *
-     * @return GS2アカウントを有効化します
-     */
-    public String getVerifyToken() {
-        return verifyToken;
+	public String getVerifyToken() {
+		return verifyToken;
+	}
+
+	public void setVerifyToken(String verifyToken) {
+		this.verifyToken = verifyToken;
+	}
+
+	public VerifyRequest withVerifyToken(String verifyToken) {
+		this.verifyToken = verifyToken;
+		return this;
+	}
+
+    public static VerifyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new VerifyRequest()
+            .withVerifyToken(data.get("verifyToken") == null || data.get("verifyToken").isNull() ? null : data.get("verifyToken").asText());
     }
 
-    /**
-     * 有効化に使用するトークンを設定
-     *
-     * @param verifyToken GS2アカウントを有効化します
-     */
-    public void setVerifyToken(String verifyToken) {
-        this.verifyToken = verifyToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("verifyToken", getVerifyToken());
+            }}
+        );
     }
-
-    /**
-     * 有効化に使用するトークンを設定
-     *
-     * @param verifyToken GS2アカウントを有効化します
-     * @return this
-     */
-    public VerifyRequest withVerifyToken(String verifyToken) {
-        setVerifyToken(verifyToken);
-        return this;
-    }
-
 }

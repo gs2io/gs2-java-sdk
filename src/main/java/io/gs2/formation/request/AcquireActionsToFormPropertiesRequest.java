@@ -16,306 +16,171 @@
 
 package io.gs2.formation.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.formation.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.formation.model.AcquireAction;
+import io.gs2.formation.model.Config;
+import io.gs2.formation.model.AcquireActionConfig;
 
-/**
- * 署名付きスロットを使ってフォームを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<AcquireActionsToFormPropertiesRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 署名付きスロットを使ってフォームを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 署名付きスロットを使ってフォームを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 署名付きスロットを使ってフォームを更新
-     * @return this
-     */
-    public AcquireActionsToFormPropertiesRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return 署名付きスロットを使ってフォームを更新
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId 署名付きスロットを使ってフォームを更新
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId 署名付きスロットを使ってフォームを更新
-     * @return this
-     */
-    public AcquireActionsToFormPropertiesRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** フォームの保存領域の名前 */
     private String moldName;
-
-    /**
-     * フォームの保存領域の名前を取得
-     *
-     * @return 署名付きスロットを使ってフォームを更新
-     */
-    public String getMoldName() {
-        return moldName;
-    }
-
-    /**
-     * フォームの保存領域の名前を設定
-     *
-     * @param moldName 署名付きスロットを使ってフォームを更新
-     */
-    public void setMoldName(String moldName) {
-        this.moldName = moldName;
-    }
-
-    /**
-     * フォームの保存領域の名前を設定
-     *
-     * @param moldName 署名付きスロットを使ってフォームを更新
-     * @return this
-     */
-    public AcquireActionsToFormPropertiesRequest withMoldName(String moldName) {
-        setMoldName(moldName);
-        return this;
-    }
-
-    /** 保存領域のインデックス */
     private Integer index;
-
-    /**
-     * 保存領域のインデックスを取得
-     *
-     * @return 署名付きスロットを使ってフォームを更新
-     */
-    public Integer getIndex() {
-        return index;
-    }
-
-    /**
-     * 保存領域のインデックスを設定
-     *
-     * @param index 署名付きスロットを使ってフォームを更新
-     */
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
-
-    /**
-     * 保存領域のインデックスを設定
-     *
-     * @param index 署名付きスロットを使ってフォームを更新
-     * @return this
-     */
-    public AcquireActionsToFormPropertiesRequest withIndex(Integer index) {
-        setIndex(index);
-        return this;
-    }
-
-    /** フォームのプロパティに適用する入手アクション */
     private AcquireAction acquireAction;
-
-    /**
-     * フォームのプロパティに適用する入手アクションを取得
-     *
-     * @return 署名付きスロットを使ってフォームを更新
-     */
-    public AcquireAction getAcquireAction() {
-        return acquireAction;
-    }
-
-    /**
-     * フォームのプロパティに適用する入手アクションを設定
-     *
-     * @param acquireAction 署名付きスロットを使ってフォームを更新
-     */
-    public void setAcquireAction(AcquireAction acquireAction) {
-        this.acquireAction = acquireAction;
-    }
-
-    /**
-     * フォームのプロパティに適用する入手アクションを設定
-     *
-     * @param acquireAction 署名付きスロットを使ってフォームを更新
-     * @return this
-     */
-    public AcquireActionsToFormPropertiesRequest withAcquireAction(AcquireAction acquireAction) {
-        setAcquireAction(acquireAction);
-        return this;
-    }
-
-    /** 入手処理を登録する GS2-JobQueue のネームスペース のGRN */
     private String queueNamespaceId;
-
-    /**
-     * 入手処理を登録する GS2-JobQueue のネームスペース のGRNを取得
-     *
-     * @return 署名付きスロットを使ってフォームを更新
-     */
-    public String getQueueNamespaceId() {
-        return queueNamespaceId;
-    }
-
-    /**
-     * 入手処理を登録する GS2-JobQueue のネームスペース のGRNを設定
-     *
-     * @param queueNamespaceId 署名付きスロットを使ってフォームを更新
-     */
-    public void setQueueNamespaceId(String queueNamespaceId) {
-        this.queueNamespaceId = queueNamespaceId;
-    }
-
-    /**
-     * 入手処理を登録する GS2-JobQueue のネームスペース のGRNを設定
-     *
-     * @param queueNamespaceId 署名付きスロットを使ってフォームを更新
-     * @return this
-     */
-    public AcquireActionsToFormPropertiesRequest withQueueNamespaceId(String queueNamespaceId) {
-        setQueueNamespaceId(queueNamespaceId);
-        return this;
-    }
-
-    /** スタンプシートの発行に使用する GS2-Key の暗号鍵 のGRN */
     private String keyId;
-
-    /**
-     * スタンプシートの発行に使用する GS2-Key の暗号鍵 のGRNを取得
-     *
-     * @return 署名付きスロットを使ってフォームを更新
-     */
-    public String getKeyId() {
-        return keyId;
-    }
-
-    /**
-     * スタンプシートの発行に使用する GS2-Key の暗号鍵 のGRNを設定
-     *
-     * @param keyId 署名付きスロットを使ってフォームを更新
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
-    }
-
-    /**
-     * スタンプシートの発行に使用する GS2-Key の暗号鍵 のGRNを設定
-     *
-     * @param keyId 署名付きスロットを使ってフォームを更新
-     * @return this
-     */
-    public AcquireActionsToFormPropertiesRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** 入手アクションに適用するコンフィグ */
     private List<AcquireActionConfig> config;
 
-    /**
-     * 入手アクションに適用するコンフィグを取得
-     *
-     * @return 署名付きスロットを使ってフォームを更新
-     */
-    public List<AcquireActionConfig> getConfig() {
-        return config;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public AcquireActionsToFormPropertiesRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public AcquireActionsToFormPropertiesRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getMoldName() {
+		return moldName;
+	}
+
+	public void setMoldName(String moldName) {
+		this.moldName = moldName;
+	}
+
+	public AcquireActionsToFormPropertiesRequest withMoldName(String moldName) {
+		this.moldName = moldName;
+		return this;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+
+	public AcquireActionsToFormPropertiesRequest withIndex(Integer index) {
+		this.index = index;
+		return this;
+	}
+
+	public AcquireAction getAcquireAction() {
+		return acquireAction;
+	}
+
+	public void setAcquireAction(AcquireAction acquireAction) {
+		this.acquireAction = acquireAction;
+	}
+
+	public AcquireActionsToFormPropertiesRequest withAcquireAction(AcquireAction acquireAction) {
+		this.acquireAction = acquireAction;
+		return this;
+	}
+
+	public String getQueueNamespaceId() {
+		return queueNamespaceId;
+	}
+
+	public void setQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+	}
+
+	public AcquireActionsToFormPropertiesRequest withQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public AcquireActionsToFormPropertiesRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+	public List<AcquireActionConfig> getConfig() {
+		return config;
+	}
+
+	public void setConfig(List<AcquireActionConfig> config) {
+		this.config = config;
+	}
+
+	public AcquireActionsToFormPropertiesRequest withConfig(List<AcquireActionConfig> config) {
+		this.config = config;
+		return this;
+	}
+
+    public static AcquireActionsToFormPropertiesRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AcquireActionsToFormPropertiesRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
+            .withAcquireAction(data.get("acquireAction") == null || data.get("acquireAction").isNull() ? null : AcquireAction.fromJson(data.get("acquireAction")))
+            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<AcquireActionConfig>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireActionConfig.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 入手アクションに適用するコンフィグを設定
-     *
-     * @param config 署名付きスロットを使ってフォームを更新
-     */
-    public void setConfig(List<AcquireActionConfig> config) {
-        this.config = config;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("moldName", getMoldName());
+                put("index", getIndex());
+                put("acquireAction", getAcquireAction() != null ? getAcquireAction().toJson() : null);
+                put("queueNamespaceId", getQueueNamespaceId());
+                put("keyId", getKeyId());
+                put("config", getConfig() == null ? new ArrayList<AcquireActionConfig>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 入手アクションに適用するコンフィグを設定
-     *
-     * @param config 署名付きスロットを使ってフォームを更新
-     * @return this
-     */
-    public AcquireActionsToFormPropertiesRequest withConfig(List<AcquireActionConfig> config) {
-        setConfig(config);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 署名付きスロットを使ってフォームを更新
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 署名付きスロットを使ってフォームを更新
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 署名付きスロットを使ってフォームを更新
-     * @return this
-     */
-    public AcquireActionsToFormPropertiesRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

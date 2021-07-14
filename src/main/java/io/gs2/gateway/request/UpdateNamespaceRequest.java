@@ -16,146 +16,95 @@
 
 package io.gs2.gateway.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.gateway.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.gateway.model.LogSetting;
 
-/**
- * ネームスペースを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 説明文 */
     private String description;
-
-    /**
-     * 説明文を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description ネームスペースを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** Firebase の通知送信に使用するシークレットトークン */
     private String firebaseSecret;
-
-    /**
-     * Firebase の通知送信に使用するシークレットトークンを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getFirebaseSecret() {
-        return firebaseSecret;
-    }
-
-    /**
-     * Firebase の通知送信に使用するシークレットトークンを設定
-     *
-     * @param firebaseSecret ネームスペースを更新
-     */
-    public void setFirebaseSecret(String firebaseSecret) {
-        this.firebaseSecret = firebaseSecret;
-    }
-
-    /**
-     * Firebase の通知送信に使用するシークレットトークンを設定
-     *
-     * @param firebaseSecret ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withFirebaseSecret(String firebaseSecret) {
-        setFirebaseSecret(firebaseSecret);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getFirebaseSecret() {
+		return firebaseSecret;
+	}
+
+	public void setFirebaseSecret(String firebaseSecret) {
+		this.firebaseSecret = firebaseSecret;
+	}
+
+	public UpdateNamespaceRequest withFirebaseSecret(String firebaseSecret) {
+		this.firebaseSecret = firebaseSecret;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static UpdateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateNamespaceRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withFirebaseSecret(data.get("firebaseSecret") == null || data.get("firebaseSecret").isNull() ? null : data.get("firebaseSecret").asText())
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("description", getDescription());
+                put("firebaseSecret", getFirebaseSecret());
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

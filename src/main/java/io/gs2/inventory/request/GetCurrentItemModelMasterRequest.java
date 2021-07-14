@@ -16,50 +16,46 @@
 
 package io.gs2.inventory.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.inventory.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 現在有効な所持品マスターを取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetCurrentItemModelMasterRequest extends Gs2BasicRequest<GetCurrentItemModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
 
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 現在有効な所持品マスターを取得します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetCurrentItemModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+    public static GetCurrentItemModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetCurrentItemModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText());
     }
 
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 現在有効な所持品マスターを取得します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+            }}
+        );
     }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 現在有効な所持品マスターを取得します
-     * @return this
-     */
-    public GetCurrentItemModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
 }

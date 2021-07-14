@@ -16,39 +16,48 @@
 
 package io.gs2.lottery.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
+import io.gs2.lottery.model.Box;
 
-/**
- * ユーザIDを指定してボックスを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetRawBoxByUserIdResult implements IResult, Serializable {
-	/** ボックス */
-	private Box item;
+    private Box item;
 
-	/**
-	 * ボックスを取得
-	 *
-	 * @return ユーザIDを指定してボックスを取得
-	 */
 	public Box getItem() {
 		return item;
 	}
 
-	/**
-	 * ボックスを設定
-	 *
-	 * @param item ユーザIDを指定してボックスを取得
-	 */
 	public void setItem(Box item) {
 		this.item = item;
 	}
+
+	public GetRawBoxByUserIdResult withItem(Box item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetRawBoxByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetRawBoxByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Box.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,146 +16,94 @@
 
 package io.gs2.watch.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.watch.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 請求にまつわるアクティビティを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetBillingActivityRequest extends Gs2BasicRequest<GetBillingActivityRequest> {
-
-    /** イベントの発生年 */
     private Integer year;
-
-    /**
-     * イベントの発生年を取得
-     *
-     * @return 請求にまつわるアクティビティを取得
-     */
-    public Integer getYear() {
-        return year;
-    }
-
-    /**
-     * イベントの発生年を設定
-     *
-     * @param year 請求にまつわるアクティビティを取得
-     */
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    /**
-     * イベントの発生年を設定
-     *
-     * @param year 請求にまつわるアクティビティを取得
-     * @return this
-     */
-    public GetBillingActivityRequest withYear(Integer year) {
-        setYear(year);
-        return this;
-    }
-
-    /** イベントの発生月 */
     private Integer month;
-
-    /**
-     * イベントの発生月を取得
-     *
-     * @return 請求にまつわるアクティビティを取得
-     */
-    public Integer getMonth() {
-        return month;
-    }
-
-    /**
-     * イベントの発生月を設定
-     *
-     * @param month 請求にまつわるアクティビティを取得
-     */
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    /**
-     * イベントの発生月を設定
-     *
-     * @param month 請求にまつわるアクティビティを取得
-     * @return this
-     */
-    public GetBillingActivityRequest withMonth(Integer month) {
-        setMonth(month);
-        return this;
-    }
-
-    /** サービスの種類 */
     private String service;
-
-    /**
-     * サービスの種類を取得
-     *
-     * @return 請求にまつわるアクティビティを取得
-     */
-    public String getService() {
-        return service;
-    }
-
-    /**
-     * サービスの種類を設定
-     *
-     * @param service 請求にまつわるアクティビティを取得
-     */
-    public void setService(String service) {
-        this.service = service;
-    }
-
-    /**
-     * サービスの種類を設定
-     *
-     * @param service 請求にまつわるアクティビティを取得
-     * @return this
-     */
-    public GetBillingActivityRequest withService(String service) {
-        setService(service);
-        return this;
-    }
-
-    /** イベントの種類 */
     private String activityType;
 
-    /**
-     * イベントの種類を取得
-     *
-     * @return 請求にまつわるアクティビティを取得
-     */
-    public String getActivityType() {
-        return activityType;
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public GetBillingActivityRequest withYear(Integer year) {
+		this.year = year;
+		return this;
+	}
+
+	public Integer getMonth() {
+		return month;
+	}
+
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
+
+	public GetBillingActivityRequest withMonth(Integer month) {
+		this.month = month;
+		return this;
+	}
+
+	public String getService() {
+		return service;
+	}
+
+	public void setService(String service) {
+		this.service = service;
+	}
+
+	public GetBillingActivityRequest withService(String service) {
+		this.service = service;
+		return this;
+	}
+
+	public String getActivityType() {
+		return activityType;
+	}
+
+	public void setActivityType(String activityType) {
+		this.activityType = activityType;
+	}
+
+	public GetBillingActivityRequest withActivityType(String activityType) {
+		this.activityType = activityType;
+		return this;
+	}
+
+    public static GetBillingActivityRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetBillingActivityRequest()
+            .withYear(data.get("year") == null || data.get("year").isNull() ? null : data.get("year").intValue())
+            .withMonth(data.get("month") == null || data.get("month").isNull() ? null : data.get("month").intValue())
+            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
+            .withActivityType(data.get("activityType") == null || data.get("activityType").isNull() ? null : data.get("activityType").asText());
     }
 
-    /**
-     * イベントの種類を設定
-     *
-     * @param activityType 請求にまつわるアクティビティを取得
-     */
-    public void setActivityType(String activityType) {
-        this.activityType = activityType;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("year", getYear());
+                put("month", getMonth());
+                put("service", getService());
+                put("activityType", getActivityType());
+            }}
+        );
     }
-
-    /**
-     * イベントの種類を設定
-     *
-     * @param activityType 請求にまつわるアクティビティを取得
-     * @return this
-     */
-    public GetBillingActivityRequest withActivityType(String activityType) {
-        setActivityType(activityType);
-        return this;
-    }
-
 }

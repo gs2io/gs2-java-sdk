@@ -16,39 +16,50 @@
 
 package io.gs2.lottery.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
+import io.gs2.lottery.model.AcquireAction;
+import io.gs2.lottery.model.BoxItem;
+import io.gs2.lottery.model.BoxItems;
 
-/**
- * ボックスを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetBoxResult implements IResult, Serializable {
-	/** ボックスから取り出したアイテムのリスト */
-	private BoxItems item;
+    private BoxItems item;
 
-	/**
-	 * ボックスから取り出したアイテムのリストを取得
-	 *
-	 * @return ボックスを取得
-	 */
 	public BoxItems getItem() {
 		return item;
 	}
 
-	/**
-	 * ボックスから取り出したアイテムのリストを設定
-	 *
-	 * @param item ボックスを取得
-	 */
 	public void setItem(BoxItems item) {
 		this.item = item;
 	}
+
+	public GetBoxResult withItem(BoxItems item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetBoxResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetBoxResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : BoxItems.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

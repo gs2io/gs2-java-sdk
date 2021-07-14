@@ -16,349 +16,194 @@
 
 package io.gs2.jobQueue.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ジョブ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Job implements IModel, Serializable, Comparable<Job> {
-	/** ジョブ */
-	protected String jobId;
+	private String jobId;
+	private String name;
+	private String userId;
+	private String scriptId;
+	private String args;
+	private Integer currentRetryCount;
+	private Integer maxTryCount;
+	private Double index;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ジョブを取得
-	 *
-	 * @return ジョブ
-	 */
 	public String getJobId() {
 		return jobId;
 	}
 
-	/**
-	 * ジョブを設定
-	 *
-	 * @param jobId ジョブ
-	 */
 	public void setJobId(String jobId) {
 		this.jobId = jobId;
 	}
 
-	/**
-	 * ジョブを設定
-	 *
-	 * @param jobId ジョブ
-	 * @return this
-	 */
 	public Job withJobId(String jobId) {
 		this.jobId = jobId;
 		return this;
 	}
-	/** ジョブの名前 */
-	protected String name;
 
-	/**
-	 * ジョブの名前を取得
-	 *
-	 * @return ジョブの名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ジョブの名前を設定
-	 *
-	 * @param name ジョブの名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ジョブの名前を設定
-	 *
-	 * @param name ジョブの名前
-	 * @return this
-	 */
 	public Job withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Job withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** ジョブの実行に使用するスクリプト のGRN */
-	protected String scriptId;
 
-	/**
-	 * ジョブの実行に使用するスクリプト のGRNを取得
-	 *
-	 * @return ジョブの実行に使用するスクリプト のGRN
-	 */
 	public String getScriptId() {
 		return scriptId;
 	}
 
-	/**
-	 * ジョブの実行に使用するスクリプト のGRNを設定
-	 *
-	 * @param scriptId ジョブの実行に使用するスクリプト のGRN
-	 */
 	public void setScriptId(String scriptId) {
 		this.scriptId = scriptId;
 	}
 
-	/**
-	 * ジョブの実行に使用するスクリプト のGRNを設定
-	 *
-	 * @param scriptId ジョブの実行に使用するスクリプト のGRN
-	 * @return this
-	 */
 	public Job withScriptId(String scriptId) {
 		this.scriptId = scriptId;
 		return this;
 	}
-	/** 引数 */
-	protected String args;
 
-	/**
-	 * 引数を取得
-	 *
-	 * @return 引数
-	 */
 	public String getArgs() {
 		return args;
 	}
 
-	/**
-	 * 引数を設定
-	 *
-	 * @param args 引数
-	 */
 	public void setArgs(String args) {
 		this.args = args;
 	}
 
-	/**
-	 * 引数を設定
-	 *
-	 * @param args 引数
-	 * @return this
-	 */
 	public Job withArgs(String args) {
 		this.args = args;
 		return this;
 	}
-	/** 現在のリトライ回数 */
-	protected Integer currentRetryCount;
 
-	/**
-	 * 現在のリトライ回数を取得
-	 *
-	 * @return 現在のリトライ回数
-	 */
 	public Integer getCurrentRetryCount() {
 		return currentRetryCount;
 	}
 
-	/**
-	 * 現在のリトライ回数を設定
-	 *
-	 * @param currentRetryCount 現在のリトライ回数
-	 */
 	public void setCurrentRetryCount(Integer currentRetryCount) {
 		this.currentRetryCount = currentRetryCount;
 	}
 
-	/**
-	 * 現在のリトライ回数を設定
-	 *
-	 * @param currentRetryCount 現在のリトライ回数
-	 * @return this
-	 */
 	public Job withCurrentRetryCount(Integer currentRetryCount) {
 		this.currentRetryCount = currentRetryCount;
 		return this;
 	}
-	/** 最大試行回数 */
-	protected Integer maxTryCount;
 
-	/**
-	 * 最大試行回数を取得
-	 *
-	 * @return 最大試行回数
-	 */
 	public Integer getMaxTryCount() {
 		return maxTryCount;
 	}
 
-	/**
-	 * 最大試行回数を設定
-	 *
-	 * @param maxTryCount 最大試行回数
-	 */
 	public void setMaxTryCount(Integer maxTryCount) {
 		this.maxTryCount = maxTryCount;
 	}
 
-	/**
-	 * 最大試行回数を設定
-	 *
-	 * @param maxTryCount 最大試行回数
-	 * @return this
-	 */
 	public Job withMaxTryCount(Integer maxTryCount) {
 		this.maxTryCount = maxTryCount;
 		return this;
 	}
-	/** ソート用インデックス(現在時刻(ミリ秒).登録時のインデックス) */
-	protected Double index;
 
-	/**
-	 * ソート用インデックス(現在時刻(ミリ秒).登録時のインデックス)を取得
-	 *
-	 * @return ソート用インデックス(現在時刻(ミリ秒).登録時のインデックス)
-	 */
 	public Double getIndex() {
 		return index;
 	}
 
-	/**
-	 * ソート用インデックス(現在時刻(ミリ秒).登録時のインデックス)を設定
-	 *
-	 * @param index ソート用インデックス(現在時刻(ミリ秒).登録時のインデックス)
-	 */
 	public void setIndex(Double index) {
 		this.index = index;
 	}
 
-	/**
-	 * ソート用インデックス(現在時刻(ミリ秒).登録時のインデックス)を設定
-	 *
-	 * @param index ソート用インデックス(現在時刻(ミリ秒).登録時のインデックス)
-	 * @return this
-	 */
 	public Job withIndex(Double index) {
 		this.index = index;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Job withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Job withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("jobId", this.getJobId())
-            .put("name", this.getName())
-            .put("userId", this.getUserId())
-            .put("scriptId", this.getScriptId())
-            .put("args", this.getArgs())
-            .put("currentRetryCount", this.getCurrentRetryCount())
-            .put("maxTryCount", this.getMaxTryCount())
-            .put("index", this.getIndex())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Job fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Job()
+            .withJobId(data.get("jobId") == null || data.get("jobId").isNull() ? null : data.get("jobId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
+            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
+            .withCurrentRetryCount(data.get("currentRetryCount") == null || data.get("currentRetryCount").isNull() ? null : data.get("currentRetryCount").intValue())
+            .withMaxTryCount(data.get("maxTryCount") == null || data.get("maxTryCount").isNull() ? null : data.get("maxTryCount").intValue())
+            .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").doubleValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("jobId", getJobId());
+                put("name", getName());
+                put("userId", getUserId());
+                put("scriptId", getScriptId());
+                put("args", getArgs());
+                put("currentRetryCount", getCurrentRetryCount());
+                put("maxTryCount", getMaxTryCount());
+                put("index", getIndex());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Job o) {
 		return jobId.compareTo(o.jobId);

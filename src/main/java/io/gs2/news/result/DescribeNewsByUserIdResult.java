@@ -16,79 +16,90 @@
 
 package io.gs2.news.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.news.model.*;
+import io.gs2.news.model.News;
 
-/**
- * ユーザIDを指定してお知らせ記事の一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeNewsByUserIdResult implements IResult, Serializable {
-	/** お知らせ記事のリスト */
-	private List<News> items;
-	/** お知らせ記事データのハッシュ値 */
-	private String contentHash;
-	/** テンプレートデータのハッシュ値 */
-	private String templateHash;
+    private List<News> items;
+    private String contentHash;
+    private String templateHash;
 
-	/**
-	 * お知らせ記事のリストを取得
-	 *
-	 * @return ユーザIDを指定してお知らせ記事の一覧を取得
-	 */
 	public List<News> getItems() {
 		return items;
 	}
 
-	/**
-	 * お知らせ記事のリストを設定
-	 *
-	 * @param items ユーザIDを指定してお知らせ記事の一覧を取得
-	 */
 	public void setItems(List<News> items) {
 		this.items = items;
 	}
 
-	/**
-	 * お知らせ記事データのハッシュ値を取得
-	 *
-	 * @return ユーザIDを指定してお知らせ記事の一覧を取得
-	 */
+	public DescribeNewsByUserIdResult withItems(List<News> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getContentHash() {
 		return contentHash;
 	}
 
-	/**
-	 * お知らせ記事データのハッシュ値を設定
-	 *
-	 * @param contentHash ユーザIDを指定してお知らせ記事の一覧を取得
-	 */
 	public void setContentHash(String contentHash) {
 		this.contentHash = contentHash;
 	}
 
-	/**
-	 * テンプレートデータのハッシュ値を取得
-	 *
-	 * @return ユーザIDを指定してお知らせ記事の一覧を取得
-	 */
+	public DescribeNewsByUserIdResult withContentHash(String contentHash) {
+		this.contentHash = contentHash;
+		return this;
+	}
+
 	public String getTemplateHash() {
 		return templateHash;
 	}
 
-	/**
-	 * テンプレートデータのハッシュ値を設定
-	 *
-	 * @param templateHash ユーザIDを指定してお知らせ記事の一覧を取得
-	 */
 	public void setTemplateHash(String templateHash) {
 		this.templateHash = templateHash;
 	}
+
+	public DescribeNewsByUserIdResult withTemplateHash(String templateHash) {
+		this.templateHash = templateHash;
+		return this;
+	}
+
+    public static DescribeNewsByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeNewsByUserIdResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<News>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return News.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withContentHash(data.get("contentHash") == null || data.get("contentHash").isNull() ? null : data.get("contentHash").asText())
+            .withTemplateHash(data.get("templateHash") == null || data.get("templateHash").isNull() ? null : data.get("templateHash").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<News>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("contentHash", getContentHash());
+                put("templateHash", getTemplateHash());
+            }}
+        );
+    }
 }

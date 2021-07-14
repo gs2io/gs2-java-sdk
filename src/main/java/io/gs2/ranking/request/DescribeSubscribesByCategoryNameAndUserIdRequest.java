@@ -16,146 +16,78 @@
 
 package io.gs2.ranking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.ranking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定して購読しているユーザIDの一覧取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeSubscribesByCategoryNameAndUserIdRequest extends Gs2BasicRequest<DescribeSubscribesByCategoryNameAndUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定して購読しているユーザIDの一覧取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定して購読しているユーザIDの一覧取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定して購読しているユーザIDの一覧取得
-     * @return this
-     */
-    public DescribeSubscribesByCategoryNameAndUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** カテゴリ名 */
     private String categoryName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return ユーザIDを指定して購読しているユーザIDの一覧取得
-     */
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param categoryName ユーザIDを指定して購読しているユーザIDの一覧取得
-     */
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param categoryName ユーザIDを指定して購読しているユーザIDの一覧取得
-     * @return this
-     */
-    public DescribeSubscribesByCategoryNameAndUserIdRequest withCategoryName(String categoryName) {
-        setCategoryName(categoryName);
-        return this;
-    }
-
-    /** 購読するユーザID */
     private String userId;
 
-    /**
-     * 購読するユーザIDを取得
-     *
-     * @return ユーザIDを指定して購読しているユーザIDの一覧取得
-     */
-    public String getUserId() {
-        return userId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DescribeSubscribesByCategoryNameAndUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public DescribeSubscribesByCategoryNameAndUserIdRequest withCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public DescribeSubscribesByCategoryNameAndUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+    public static DescribeSubscribesByCategoryNameAndUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeSubscribesByCategoryNameAndUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
     }
 
-    /**
-     * 購読するユーザIDを設定
-     *
-     * @param userId ユーザIDを指定して購読しているユーザIDの一覧取得
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("categoryName", getCategoryName());
+                put("userId", getUserId());
+            }}
+        );
     }
-
-    /**
-     * 購読するユーザIDを設定
-     *
-     * @param userId ユーザIDを指定して購読しているユーザIDの一覧取得
-     * @return this
-     */
-    public DescribeSubscribesByCategoryNameAndUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定して購読しているユーザIDの一覧取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定して購読しているユーザIDの一覧取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定して購読しているユーザIDの一覧取得
-     * @return this
-     */
-    public DescribeSubscribesByCategoryNameAndUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

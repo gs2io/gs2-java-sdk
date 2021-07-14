@@ -16,39 +16,48 @@
 
 package io.gs2.deploy.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.deploy.model.*;
+import io.gs2.deploy.model.Event;
 
-/**
- * 発生したイベントを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetEventResult implements IResult, Serializable {
-	/** 発生したイベント */
-	private Event item;
+    private Event item;
 
-	/**
-	 * 発生したイベントを取得
-	 *
-	 * @return 発生したイベントを取得
-	 */
 	public Event getItem() {
 		return item;
 	}
 
-	/**
-	 * 発生したイベントを設定
-	 *
-	 * @param item 発生したイベントを取得
-	 */
 	public void setItem(Event item) {
 		this.item = item;
 	}
+
+	public GetEventResult withItem(Event item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetEventResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetEventResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Event.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,124 +16,80 @@
 
 package io.gs2.formation.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スロット
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Slot implements IModel, Serializable {
-	/** スロットモデル名 */
-	protected String name;
+	private String name;
+	private String propertyId;
+	private String metadata;
 
-	/**
-	 * スロットモデル名を取得
-	 *
-	 * @return スロットモデル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * スロットモデル名を設定
-	 *
-	 * @param name スロットモデル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * スロットモデル名を設定
-	 *
-	 * @param name スロットモデル名
-	 * @return this
-	 */
 	public Slot withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** プロパティID */
-	protected String propertyId;
 
-	/**
-	 * プロパティIDを取得
-	 *
-	 * @return プロパティID
-	 */
 	public String getPropertyId() {
 		return propertyId;
 	}
 
-	/**
-	 * プロパティIDを設定
-	 *
-	 * @param propertyId プロパティID
-	 */
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
 
-	/**
-	 * プロパティIDを設定
-	 *
-	 * @param propertyId プロパティID
-	 * @return this
-	 */
 	public Slot withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public Slot withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("name", this.getName())
-            .put("propertyId", this.getPropertyId())
-            .put("metadata", this.getMetadata());
-        return body_;
+    public static Slot fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Slot()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("propertyId", getPropertyId());
+                put("metadata", getMetadata());
+            }}
+        );
     }
 
 	@Override

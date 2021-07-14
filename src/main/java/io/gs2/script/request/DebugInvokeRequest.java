@@ -16,82 +16,62 @@
 
 package io.gs2.script.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.script.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スクリプトを実行します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
-
-    /** スクリプト */
     private String script;
-
-    /**
-     * スクリプトを取得
-     *
-     * @return スクリプトを実行します
-     */
-    public String getScript() {
-        return script;
-    }
-
-    /**
-     * スクリプトを設定
-     *
-     * @param script スクリプトを実行します
-     */
-    public void setScript(String script) {
-        this.script = script;
-    }
-
-    /**
-     * スクリプトを設定
-     *
-     * @param script スクリプトを実行します
-     * @return this
-     */
-    public DebugInvokeRequest withScript(String script) {
-        setScript(script);
-        return this;
-    }
-
-    /** None */
     private String args;
 
-    /**
-     * Noneを取得
-     *
-     * @return スクリプトを実行します
-     */
-    public String getArgs() {
-        return args;
+	public String getScript() {
+		return script;
+	}
+
+	public void setScript(String script) {
+		this.script = script;
+	}
+
+	public DebugInvokeRequest withScript(String script) {
+		this.script = script;
+		return this;
+	}
+
+	public String getArgs() {
+		return args;
+	}
+
+	public void setArgs(String args) {
+		this.args = args;
+	}
+
+	public DebugInvokeRequest withArgs(String args) {
+		this.args = args;
+		return this;
+	}
+
+    public static DebugInvokeRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DebugInvokeRequest()
+            .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText())
+            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText());
     }
 
-    /**
-     * Noneを設定
-     *
-     * @param args スクリプトを実行します
-     */
-    public void setArgs(String args) {
-        this.args = args;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("script", getScript());
+                put("args", getArgs());
+            }}
+        );
     }
-
-    /**
-     * Noneを設定
-     *
-     * @param args スクリプトを実行します
-     * @return this
-     */
-    public DebugInvokeRequest withArgs(String args) {
-        setArgs(args);
-        return this;
-    }
-
 }

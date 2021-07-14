@@ -16,82 +16,62 @@
 
 package io.gs2.experience.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.experience.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ランクアップ閾値マスターを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetThresholdMasterRequest extends Gs2BasicRequest<GetThresholdMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ランクアップ閾値マスターを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ランクアップ閾値マスターを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ランクアップ閾値マスターを取得
-     * @return this
-     */
-    public GetThresholdMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ランクアップ閾値名 */
     private String thresholdName;
 
-    /**
-     * ランクアップ閾値名を取得
-     *
-     * @return ランクアップ閾値マスターを取得
-     */
-    public String getThresholdName() {
-        return thresholdName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetThresholdMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getThresholdName() {
+		return thresholdName;
+	}
+
+	public void setThresholdName(String thresholdName) {
+		this.thresholdName = thresholdName;
+	}
+
+	public GetThresholdMasterRequest withThresholdName(String thresholdName) {
+		this.thresholdName = thresholdName;
+		return this;
+	}
+
+    public static GetThresholdMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetThresholdMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withThresholdName(data.get("thresholdName") == null || data.get("thresholdName").isNull() ? null : data.get("thresholdName").asText());
     }
 
-    /**
-     * ランクアップ閾値名を設定
-     *
-     * @param thresholdName ランクアップ閾値マスターを取得
-     */
-    public void setThresholdName(String thresholdName) {
-        this.thresholdName = thresholdName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("thresholdName", getThresholdName());
+            }}
+        );
     }
-
-    /**
-     * ランクアップ閾値名を設定
-     *
-     * @param thresholdName ランクアップ閾値マスターを取得
-     * @return this
-     */
-    public GetThresholdMasterRequest withThresholdName(String thresholdName) {
-        setThresholdName(thresholdName);
-        return this;
-    }
-
 }

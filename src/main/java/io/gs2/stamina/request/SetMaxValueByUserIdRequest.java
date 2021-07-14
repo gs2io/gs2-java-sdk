@@ -16,178 +16,94 @@
 
 package io.gs2.stamina.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.stamina.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ユーザIDを指定してスタミナの最大値を更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class SetMaxValueByUserIdRequest extends Gs2BasicRequest<SetMaxValueByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定してスタミナの最大値を更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してスタミナの最大値を更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定してスタミナの最大値を更新
-     * @return this
-     */
-    public SetMaxValueByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** スタミナの種類名 */
     private String staminaName;
-
-    /**
-     * スタミナの種類名を取得
-     *
-     * @return ユーザIDを指定してスタミナの最大値を更新
-     */
-    public String getStaminaName() {
-        return staminaName;
-    }
-
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName ユーザIDを指定してスタミナの最大値を更新
-     */
-    public void setStaminaName(String staminaName) {
-        this.staminaName = staminaName;
-    }
-
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName ユーザIDを指定してスタミナの最大値を更新
-     * @return this
-     */
-    public SetMaxValueByUserIdRequest withStaminaName(String staminaName) {
-        setStaminaName(staminaName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してスタミナの最大値を更新
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してスタミナの最大値を更新
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してスタミナの最大値を更新
-     * @return this
-     */
-    public SetMaxValueByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** スタミナの最大値 */
     private Integer maxValue;
 
-    /**
-     * スタミナの最大値を取得
-     *
-     * @return ユーザIDを指定してスタミナの最大値を更新
-     */
-    public Integer getMaxValue() {
-        return maxValue;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public SetMaxValueByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getStaminaName() {
+		return staminaName;
+	}
+
+	public void setStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+	}
+
+	public SetMaxValueByUserIdRequest withStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public SetMaxValueByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Integer getMaxValue() {
+		return maxValue;
+	}
+
+	public void setMaxValue(Integer maxValue) {
+		this.maxValue = maxValue;
+	}
+
+	public SetMaxValueByUserIdRequest withMaxValue(Integer maxValue) {
+		this.maxValue = maxValue;
+		return this;
+	}
+
+    public static SetMaxValueByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SetMaxValueByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withMaxValue(data.get("maxValue") == null || data.get("maxValue").isNull() ? null : data.get("maxValue").intValue());
     }
 
-    /**
-     * スタミナの最大値を設定
-     *
-     * @param maxValue ユーザIDを指定してスタミナの最大値を更新
-     */
-    public void setMaxValue(Integer maxValue) {
-        this.maxValue = maxValue;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("staminaName", getStaminaName());
+                put("userId", getUserId());
+                put("maxValue", getMaxValue());
+            }}
+        );
     }
-
-    /**
-     * スタミナの最大値を設定
-     *
-     * @param maxValue ユーザIDを指定してスタミナの最大値を更新
-     * @return this
-     */
-    public SetMaxValueByUserIdRequest withMaxValue(Integer maxValue) {
-        setMaxValue(maxValue);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してスタミナの最大値を更新
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してスタミナの最大値を更新
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してスタミナの最大値を更新
-     * @return this
-     */
-    public SetMaxValueByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

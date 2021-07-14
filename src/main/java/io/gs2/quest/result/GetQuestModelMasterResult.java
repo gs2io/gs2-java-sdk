@@ -16,39 +16,51 @@
 
 package io.gs2.quest.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.quest.model.*;
+import io.gs2.quest.model.AcquireAction;
+import io.gs2.quest.model.Contents;
+import io.gs2.quest.model.ConsumeAction;
+import io.gs2.quest.model.QuestModelMaster;
 
-/**
- * クエストモデルマスターを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetQuestModelMasterResult implements IResult, Serializable {
-	/** クエストモデルマスター */
-	private QuestModelMaster item;
+    private QuestModelMaster item;
 
-	/**
-	 * クエストモデルマスターを取得
-	 *
-	 * @return クエストモデルマスターを取得
-	 */
 	public QuestModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * クエストモデルマスターを設定
-	 *
-	 * @param item クエストモデルマスターを取得
-	 */
 	public void setItem(QuestModelMaster item) {
 		this.item = item;
 	}
+
+	public GetQuestModelMasterResult withItem(QuestModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetQuestModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetQuestModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : QuestModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

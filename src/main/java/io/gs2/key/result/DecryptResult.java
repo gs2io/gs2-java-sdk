@@ -16,39 +16,47 @@
 
 package io.gs2.key.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.key.model.*;
 
-/**
- * データを復号します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DecryptResult implements IResult, Serializable {
-	/** 復号済みデータ */
-	private String data;
+    private String data;
 
-	/**
-	 * 復号済みデータを取得
-	 *
-	 * @return データを復号します
-	 */
 	public String getData() {
 		return data;
 	}
 
-	/**
-	 * 復号済みデータを設定
-	 *
-	 * @param data データを復号します
-	 */
 	public void setData(String data) {
 		this.data = data;
 	}
+
+	public DecryptResult withData(String data) {
+		this.data = data;
+		return this;
+	}
+
+    public static DecryptResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DecryptResult()
+            .withData(data.get("data") == null || data.get("data").isNull() ? null : data.get("data").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("data", getData());
+            }}
+        );
+    }
 }

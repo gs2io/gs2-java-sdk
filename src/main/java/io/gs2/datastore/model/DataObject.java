@@ -16,387 +16,218 @@
 
 package io.gs2.datastore.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * データオブジェクト
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataObject implements IModel, Serializable, Comparable<DataObject> {
-	/** データオブジェクト */
-	protected String dataObjectId;
+	private String dataObjectId;
+	private String name;
+	private String userId;
+	private String scope;
+	private List<String> allowUserIds;
+	private String platform;
+	private String status;
+	private String generation;
+	private String previousGeneration;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * データオブジェクトを取得
-	 *
-	 * @return データオブジェクト
-	 */
 	public String getDataObjectId() {
 		return dataObjectId;
 	}
 
-	/**
-	 * データオブジェクトを設定
-	 *
-	 * @param dataObjectId データオブジェクト
-	 */
 	public void setDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 	}
 
-	/**
-	 * データオブジェクトを設定
-	 *
-	 * @param dataObjectId データオブジェクト
-	 * @return this
-	 */
 	public DataObject withDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 		return this;
 	}
-	/** データの名前 */
-	protected String name;
 
-	/**
-	 * データの名前を取得
-	 *
-	 * @return データの名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * データの名前を設定
-	 *
-	 * @param name データの名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * データの名前を設定
-	 *
-	 * @param name データの名前
-	 * @return this
-	 */
 	public DataObject withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public DataObject withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** ファイルのアクセス権 */
-	protected String scope;
 
-	/**
-	 * ファイルのアクセス権を取得
-	 *
-	 * @return ファイルのアクセス権
-	 */
 	public String getScope() {
 		return scope;
 	}
 
-	/**
-	 * ファイルのアクセス権を設定
-	 *
-	 * @param scope ファイルのアクセス権
-	 */
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
 
-	/**
-	 * ファイルのアクセス権を設定
-	 *
-	 * @param scope ファイルのアクセス権
-	 * @return this
-	 */
 	public DataObject withScope(String scope) {
 		this.scope = scope;
 		return this;
 	}
-	/** 公開するユーザIDリスト */
-	protected List<String> allowUserIds;
 
-	/**
-	 * 公開するユーザIDリストを取得
-	 *
-	 * @return 公開するユーザIDリスト
-	 */
 	public List<String> getAllowUserIds() {
 		return allowUserIds;
 	}
 
-	/**
-	 * 公開するユーザIDリストを設定
-	 *
-	 * @param allowUserIds 公開するユーザIDリスト
-	 */
 	public void setAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 	}
 
-	/**
-	 * 公開するユーザIDリストを設定
-	 *
-	 * @param allowUserIds 公開するユーザIDリスト
-	 * @return this
-	 */
 	public DataObject withAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 		return this;
 	}
-	/** プラットフォーム */
-	protected String platform;
 
-	/**
-	 * プラットフォームを取得
-	 *
-	 * @return プラットフォーム
-	 */
 	public String getPlatform() {
 		return platform;
 	}
 
-	/**
-	 * プラットフォームを設定
-	 *
-	 * @param platform プラットフォーム
-	 */
 	public void setPlatform(String platform) {
 		this.platform = platform;
 	}
 
-	/**
-	 * プラットフォームを設定
-	 *
-	 * @param platform プラットフォーム
-	 * @return this
-	 */
 	public DataObject withPlatform(String platform) {
 		this.platform = platform;
 		return this;
 	}
-	/** 状態 */
-	protected String status;
 
-	/**
-	 * 状態を取得
-	 *
-	 * @return 状態
-	 */
 	public String getStatus() {
 		return status;
 	}
 
-	/**
-	 * 状態を設定
-	 *
-	 * @param status 状態
-	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	/**
-	 * 状態を設定
-	 *
-	 * @param status 状態
-	 * @return this
-	 */
 	public DataObject withStatus(String status) {
 		this.status = status;
 		return this;
 	}
-	/** データの世代 */
-	protected String generation;
 
-	/**
-	 * データの世代を取得
-	 *
-	 * @return データの世代
-	 */
 	public String getGeneration() {
 		return generation;
 	}
 
-	/**
-	 * データの世代を設定
-	 *
-	 * @param generation データの世代
-	 */
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
 
-	/**
-	 * データの世代を設定
-	 *
-	 * @param generation データの世代
-	 * @return this
-	 */
 	public DataObject withGeneration(String generation) {
 		this.generation = generation;
 		return this;
 	}
-	/** 以前有効だったデータの世代 */
-	protected String previousGeneration;
 
-	/**
-	 * 以前有効だったデータの世代を取得
-	 *
-	 * @return 以前有効だったデータの世代
-	 */
 	public String getPreviousGeneration() {
 		return previousGeneration;
 	}
 
-	/**
-	 * 以前有効だったデータの世代を設定
-	 *
-	 * @param previousGeneration 以前有効だったデータの世代
-	 */
 	public void setPreviousGeneration(String previousGeneration) {
 		this.previousGeneration = previousGeneration;
 	}
 
-	/**
-	 * 以前有効だったデータの世代を設定
-	 *
-	 * @param previousGeneration 以前有効だったデータの世代
-	 * @return this
-	 */
 	public DataObject withPreviousGeneration(String previousGeneration) {
 		this.previousGeneration = previousGeneration;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public DataObject withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public DataObject withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> allowUserIds = new ArrayList<>();
-        if(this.allowUserIds != null) {
-            for(String item : this.allowUserIds) {
-                allowUserIds.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static DataObject fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("dataObjectId", this.getDataObjectId())
-            .put("name", this.getName())
-            .put("userId", this.getUserId())
-            .put("scope", this.getScope())
-            .put("platform", this.getPlatform())
-            .put("status", this.getStatus())
-            .put("generation", this.getGeneration())
-            .put("previousGeneration", this.getPreviousGeneration())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("allowUserIds", JsonNodeFactory.instance.arrayNode().addAll(allowUserIds));
-        return body_;
+        return new DataObject()
+            .withDataObjectId(data.get("dataObjectId") == null || data.get("dataObjectId").isNull() ? null : data.get("dataObjectId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
+            .withAllowUserIds(data.get("allowUserIds") == null || data.get("allowUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("allowUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withPlatform(data.get("platform") == null || data.get("platform").isNull() ? null : data.get("platform").asText())
+            .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText())
+            .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText())
+            .withPreviousGeneration(data.get("previousGeneration") == null || data.get("previousGeneration").isNull() ? null : data.get("previousGeneration").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("dataObjectId", getDataObjectId());
+                put("name", getName());
+                put("userId", getUserId());
+                put("scope", getScope());
+                put("allowUserIds", getAllowUserIds() == null ? new ArrayList<String>() :
+                    getAllowUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("platform", getPlatform());
+                put("status", getStatus());
+                put("generation", getGeneration());
+                put("previousGeneration", getPreviousGeneration());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(DataObject o) {
 		return dataObjectId.compareTo(o.dataObjectId);

@@ -16,39 +16,48 @@
 
 package io.gs2.identifier.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.identifier.model.*;
+import io.gs2.identifier.model.Password;
 
-/**
- * パスワードを取得します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetPasswordResult implements IResult, Serializable {
-	/** パスワード */
-	private Password item;
+    private Password item;
 
-	/**
-	 * パスワードを取得
-	 *
-	 * @return パスワードを取得します
-	 */
 	public Password getItem() {
 		return item;
 	}
 
-	/**
-	 * パスワードを設定
-	 *
-	 * @param item パスワードを取得します
-	 */
 	public void setItem(Password item) {
 		this.item = item;
 	}
+
+	public GetPasswordResult withItem(Password item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetPasswordResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetPasswordResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Password.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

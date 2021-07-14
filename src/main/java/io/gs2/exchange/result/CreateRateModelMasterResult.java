@@ -16,39 +16,50 @@
 
 package io.gs2.exchange.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.exchange.model.*;
+import io.gs2.exchange.model.ConsumeAction;
+import io.gs2.exchange.model.AcquireAction;
+import io.gs2.exchange.model.RateModelMaster;
 
-/**
- * 交換レートマスターを新規作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateRateModelMasterResult implements IResult, Serializable {
-	/** 作成した交換レートマスター */
-	private RateModelMaster item;
+    private RateModelMaster item;
 
-	/**
-	 * 作成した交換レートマスターを取得
-	 *
-	 * @return 交換レートマスターを新規作成
-	 */
 	public RateModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 作成した交換レートマスターを設定
-	 *
-	 * @param item 交換レートマスターを新規作成
-	 */
 	public void setItem(RateModelMaster item) {
 		this.item = item;
 	}
+
+	public CreateRateModelMasterResult withItem(RateModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateRateModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateRateModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RateModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

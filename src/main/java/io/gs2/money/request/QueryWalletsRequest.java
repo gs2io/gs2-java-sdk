@@ -127,14 +127,14 @@ public class QueryWalletsRequest extends Gs2BasicRequest<QueryWalletsRequest> {
     }
 
     /** データの取得件数 */
-    private Long limit;
+    private Integer limit;
 
     /**
      * データの取得件数を取得
      *
      * @return ウォレット一覧を取得します
      */
-    public Long getLimit() {
+    public Integer getLimit() {
         return limit;
     }
 
@@ -143,7 +143,7 @@ public class QueryWalletsRequest extends Gs2BasicRequest<QueryWalletsRequest> {
      *
      * @param limit ウォレット一覧を取得します
      */
-    public void setLimit(Long limit) {
+    public void setLimit(Integer limit) {
         this.limit = limit;
     }
 
@@ -153,7 +153,7 @@ public class QueryWalletsRequest extends Gs2BasicRequest<QueryWalletsRequest> {
      * @param limit ウォレット一覧を取得します
      * @return this
      */
-    public QueryWalletsRequest withLimit(Long limit) {
+    public QueryWalletsRequest withLimit(Integer limit) {
         setLimit(limit);
         return this;
     }

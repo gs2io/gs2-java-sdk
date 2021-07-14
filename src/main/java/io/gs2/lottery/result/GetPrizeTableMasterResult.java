@@ -16,39 +16,50 @@
 
 package io.gs2.lottery.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
+import io.gs2.lottery.model.AcquireAction;
+import io.gs2.lottery.model.Prize;
+import io.gs2.lottery.model.PrizeTableMaster;
 
-/**
- * 排出確率テーブルマスターを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetPrizeTableMasterResult implements IResult, Serializable {
-	/** 排出確率テーブルマスター */
-	private PrizeTableMaster item;
+    private PrizeTableMaster item;
 
-	/**
-	 * 排出確率テーブルマスターを取得
-	 *
-	 * @return 排出確率テーブルマスターを取得
-	 */
 	public PrizeTableMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 排出確率テーブルマスターを設定
-	 *
-	 * @param item 排出確率テーブルマスターを取得
-	 */
 	public void setItem(PrizeTableMaster item) {
 		this.item = item;
 	}
+
+	public GetPrizeTableMasterResult withItem(PrizeTableMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetPrizeTableMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetPrizeTableMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : PrizeTableMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

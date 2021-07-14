@@ -16,99 +16,108 @@
 
 package io.gs2.inventory.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inventory.model.*;
+import io.gs2.inventory.model.ItemSet;
+import io.gs2.inventory.model.ItemModel;
+import io.gs2.inventory.model.Inventory;
 
-/**
- * スタンプシートでインベントリのアイテムを消費 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConsumeItemSetByStampTaskResult implements IResult, Serializable {
-	/** 消費後の有効期限ごとのアイテム所持数量のリスト */
-	private List<ItemSet> items;
-	/** アイテムモデル */
-	private ItemModel itemModel;
-	/** インベントリ */
-	private Inventory inventory;
-	/** スタンプタスクの実行結果を記録したコンテキスト */
-	private String newContextStack;
+    private List<ItemSet> items;
+    private ItemModel itemModel;
+    private Inventory inventory;
+    private String newContextStack;
 
-	/**
-	 * 消費後の有効期限ごとのアイテム所持数量のリストを取得
-	 *
-	 * @return スタンプシートでインベントリのアイテムを消費
-	 */
 	public List<ItemSet> getItems() {
 		return items;
 	}
 
-	/**
-	 * 消費後の有効期限ごとのアイテム所持数量のリストを設定
-	 *
-	 * @param items スタンプシートでインベントリのアイテムを消費
-	 */
 	public void setItems(List<ItemSet> items) {
 		this.items = items;
 	}
 
-	/**
-	 * アイテムモデルを取得
-	 *
-	 * @return スタンプシートでインベントリのアイテムを消費
-	 */
+	public ConsumeItemSetByStampTaskResult withItems(List<ItemSet> items) {
+		this.items = items;
+		return this;
+	}
+
 	public ItemModel getItemModel() {
 		return itemModel;
 	}
 
-	/**
-	 * アイテムモデルを設定
-	 *
-	 * @param itemModel スタンプシートでインベントリのアイテムを消費
-	 */
 	public void setItemModel(ItemModel itemModel) {
 		this.itemModel = itemModel;
 	}
 
-	/**
-	 * インベントリを取得
-	 *
-	 * @return スタンプシートでインベントリのアイテムを消費
-	 */
+	public ConsumeItemSetByStampTaskResult withItemModel(ItemModel itemModel) {
+		this.itemModel = itemModel;
+		return this;
+	}
+
 	public Inventory getInventory() {
 		return inventory;
 	}
 
-	/**
-	 * インベントリを設定
-	 *
-	 * @param inventory スタンプシートでインベントリのアイテムを消費
-	 */
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを取得
-	 *
-	 * @return スタンプシートでインベントリのアイテムを消費
-	 */
+	public ConsumeItemSetByStampTaskResult withInventory(Inventory inventory) {
+		this.inventory = inventory;
+		return this;
+	}
+
 	public String getNewContextStack() {
 		return newContextStack;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを設定
-	 *
-	 * @param newContextStack スタンプシートでインベントリのアイテムを消費
-	 */
 	public void setNewContextStack(String newContextStack) {
 		this.newContextStack = newContextStack;
 	}
+
+	public ConsumeItemSetByStampTaskResult withNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
+		return this;
+	}
+
+    public static ConsumeItemSetByStampTaskResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ConsumeItemSetByStampTaskResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<ItemSet>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ItemSet.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withItemModel(data.get("itemModel") == null || data.get("itemModel").isNull() ? null : ItemModel.fromJson(data.get("itemModel")))
+            .withInventory(data.get("inventory") == null || data.get("inventory").isNull() ? null : Inventory.fromJson(data.get("inventory")))
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<ItemSet>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("itemModel", getItemModel() != null ? getItemModel().toJson() : null);
+                put("inventory", getInventory() != null ? getInventory().toJson() : null);
+                put("newContextStack", getNewContextStack());
+            }}
+        );
+    }
 }

@@ -16,306 +16,174 @@
 
 package io.gs2.mission.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.mission.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ミッショングループマスターを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateMissionGroupModelMasterRequest extends Gs2BasicRequest<CreateMissionGroupModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ミッショングループマスターを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッショングループマスターを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッショングループマスターを新規作成
-     * @return this
-     */
-    public CreateMissionGroupModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ミッショングループ名 */
     private String name;
-
-    /**
-     * ミッショングループ名を取得
-     *
-     * @return ミッショングループマスターを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param name ミッショングループマスターを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param name ミッショングループマスターを新規作成
-     * @return this
-     */
-    public CreateMissionGroupModelMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** メタデータ */
     private String metadata;
-
-    /**
-     * メタデータを取得
-     *
-     * @return ミッショングループマスターを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata ミッショングループマスターを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata ミッショングループマスターを新規作成
-     * @return this
-     */
-    public CreateMissionGroupModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** ミッショングループの説明 */
     private String description;
-
-    /**
-     * ミッショングループの説明を取得
-     *
-     * @return ミッショングループマスターを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ミッショングループの説明を設定
-     *
-     * @param description ミッショングループマスターを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ミッショングループの説明を設定
-     *
-     * @param description ミッショングループマスターを新規作成
-     * @return this
-     */
-    public CreateMissionGroupModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** リセットタイミング */
     private String resetType;
-
-    /**
-     * リセットタイミングを取得
-     *
-     * @return ミッショングループマスターを新規作成
-     */
-    public String getResetType() {
-        return resetType;
-    }
-
-    /**
-     * リセットタイミングを設定
-     *
-     * @param resetType ミッショングループマスターを新規作成
-     */
-    public void setResetType(String resetType) {
-        this.resetType = resetType;
-    }
-
-    /**
-     * リセットタイミングを設定
-     *
-     * @param resetType ミッショングループマスターを新規作成
-     * @return this
-     */
-    public CreateMissionGroupModelMasterRequest withResetType(String resetType) {
-        setResetType(resetType);
-        return this;
-    }
-
-    /** リセットをする日にち */
     private Integer resetDayOfMonth;
-
-    /**
-     * リセットをする日にちを取得
-     *
-     * @return ミッショングループマスターを新規作成
-     */
-    public Integer getResetDayOfMonth() {
-        return resetDayOfMonth;
-    }
-
-    /**
-     * リセットをする日にちを設定
-     *
-     * @param resetDayOfMonth ミッショングループマスターを新規作成
-     */
-    public void setResetDayOfMonth(Integer resetDayOfMonth) {
-        this.resetDayOfMonth = resetDayOfMonth;
-    }
-
-    /**
-     * リセットをする日にちを設定
-     *
-     * @param resetDayOfMonth ミッショングループマスターを新規作成
-     * @return this
-     */
-    public CreateMissionGroupModelMasterRequest withResetDayOfMonth(Integer resetDayOfMonth) {
-        setResetDayOfMonth(resetDayOfMonth);
-        return this;
-    }
-
-    /** リセットする曜日 */
     private String resetDayOfWeek;
-
-    /**
-     * リセットする曜日を取得
-     *
-     * @return ミッショングループマスターを新規作成
-     */
-    public String getResetDayOfWeek() {
-        return resetDayOfWeek;
-    }
-
-    /**
-     * リセットする曜日を設定
-     *
-     * @param resetDayOfWeek ミッショングループマスターを新規作成
-     */
-    public void setResetDayOfWeek(String resetDayOfWeek) {
-        this.resetDayOfWeek = resetDayOfWeek;
-    }
-
-    /**
-     * リセットする曜日を設定
-     *
-     * @param resetDayOfWeek ミッショングループマスターを新規作成
-     * @return this
-     */
-    public CreateMissionGroupModelMasterRequest withResetDayOfWeek(String resetDayOfWeek) {
-        setResetDayOfWeek(resetDayOfWeek);
-        return this;
-    }
-
-    /** リセット時刻 */
     private Integer resetHour;
-
-    /**
-     * リセット時刻を取得
-     *
-     * @return ミッショングループマスターを新規作成
-     */
-    public Integer getResetHour() {
-        return resetHour;
-    }
-
-    /**
-     * リセット時刻を設定
-     *
-     * @param resetHour ミッショングループマスターを新規作成
-     */
-    public void setResetHour(Integer resetHour) {
-        this.resetHour = resetHour;
-    }
-
-    /**
-     * リセット時刻を設定
-     *
-     * @param resetHour ミッショングループマスターを新規作成
-     * @return this
-     */
-    public CreateMissionGroupModelMasterRequest withResetHour(Integer resetHour) {
-        setResetHour(resetHour);
-        return this;
-    }
-
-    /** ミッションを達成したときの通知先ネームスペース のGRN */
     private String completeNotificationNamespaceId;
 
-    /**
-     * ミッションを達成したときの通知先ネームスペース のGRNを取得
-     *
-     * @return ミッショングループマスターを新規作成
-     */
-    public String getCompleteNotificationNamespaceId() {
-        return completeNotificationNamespaceId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateMissionGroupModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateMissionGroupModelMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateMissionGroupModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateMissionGroupModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getResetType() {
+		return resetType;
+	}
+
+	public void setResetType(String resetType) {
+		this.resetType = resetType;
+	}
+
+	public CreateMissionGroupModelMasterRequest withResetType(String resetType) {
+		this.resetType = resetType;
+		return this;
+	}
+
+	public Integer getResetDayOfMonth() {
+		return resetDayOfMonth;
+	}
+
+	public void setResetDayOfMonth(Integer resetDayOfMonth) {
+		this.resetDayOfMonth = resetDayOfMonth;
+	}
+
+	public CreateMissionGroupModelMasterRequest withResetDayOfMonth(Integer resetDayOfMonth) {
+		this.resetDayOfMonth = resetDayOfMonth;
+		return this;
+	}
+
+	public String getResetDayOfWeek() {
+		return resetDayOfWeek;
+	}
+
+	public void setResetDayOfWeek(String resetDayOfWeek) {
+		this.resetDayOfWeek = resetDayOfWeek;
+	}
+
+	public CreateMissionGroupModelMasterRequest withResetDayOfWeek(String resetDayOfWeek) {
+		this.resetDayOfWeek = resetDayOfWeek;
+		return this;
+	}
+
+	public Integer getResetHour() {
+		return resetHour;
+	}
+
+	public void setResetHour(Integer resetHour) {
+		this.resetHour = resetHour;
+	}
+
+	public CreateMissionGroupModelMasterRequest withResetHour(Integer resetHour) {
+		this.resetHour = resetHour;
+		return this;
+	}
+
+	public String getCompleteNotificationNamespaceId() {
+		return completeNotificationNamespaceId;
+	}
+
+	public void setCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
+		this.completeNotificationNamespaceId = completeNotificationNamespaceId;
+	}
+
+	public CreateMissionGroupModelMasterRequest withCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
+		this.completeNotificationNamespaceId = completeNotificationNamespaceId;
+		return this;
+	}
+
+    public static CreateMissionGroupModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateMissionGroupModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
+            .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
+            .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
+            .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
+            .withCompleteNotificationNamespaceId(data.get("completeNotificationNamespaceId") == null || data.get("completeNotificationNamespaceId").isNull() ? null : data.get("completeNotificationNamespaceId").asText());
     }
 
-    /**
-     * ミッションを達成したときの通知先ネームスペース のGRNを設定
-     *
-     * @param completeNotificationNamespaceId ミッショングループマスターを新規作成
-     */
-    public void setCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
-        this.completeNotificationNamespaceId = completeNotificationNamespaceId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("resetType", getResetType());
+                put("resetDayOfMonth", getResetDayOfMonth());
+                put("resetDayOfWeek", getResetDayOfWeek());
+                put("resetHour", getResetHour());
+                put("completeNotificationNamespaceId", getCompleteNotificationNamespaceId());
+            }}
+        );
     }
-
-    /**
-     * ミッションを達成したときの通知先ネームスペース のGRNを設定
-     *
-     * @param completeNotificationNamespaceId ミッショングループマスターを新規作成
-     * @return this
-     */
-    public CreateMissionGroupModelMasterRequest withCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
-        setCompleteNotificationNamespaceId(completeNotificationNamespaceId);
-        return this;
-    }
-
 }

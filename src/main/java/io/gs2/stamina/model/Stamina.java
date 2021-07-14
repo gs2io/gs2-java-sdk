@@ -16,413 +16,226 @@
 
 package io.gs2.stamina.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スタミナ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Stamina implements IModel, Serializable, Comparable<Stamina> {
-	/** スタミナ */
-	protected String staminaId;
+	private String staminaId;
+	private String staminaName;
+	private String userId;
+	private Integer value;
+	private Integer maxValue;
+	private Integer recoverIntervalMinutes;
+	private Integer recoverValue;
+	private Integer overflowValue;
+	private Long nextRecoverAt;
+	private Long lastRecoveredAt;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * スタミナを取得
-	 *
-	 * @return スタミナ
-	 */
 	public String getStaminaId() {
 		return staminaId;
 	}
 
-	/**
-	 * スタミナを設定
-	 *
-	 * @param staminaId スタミナ
-	 */
 	public void setStaminaId(String staminaId) {
 		this.staminaId = staminaId;
 	}
 
-	/**
-	 * スタミナを設定
-	 *
-	 * @param staminaId スタミナ
-	 * @return this
-	 */
 	public Stamina withStaminaId(String staminaId) {
 		this.staminaId = staminaId;
 		return this;
 	}
-	/** スタミナモデルの名前 */
-	protected String staminaName;
 
-	/**
-	 * スタミナモデルの名前を取得
-	 *
-	 * @return スタミナモデルの名前
-	 */
 	public String getStaminaName() {
 		return staminaName;
 	}
 
-	/**
-	 * スタミナモデルの名前を設定
-	 *
-	 * @param staminaName スタミナモデルの名前
-	 */
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
 
-	/**
-	 * スタミナモデルの名前を設定
-	 *
-	 * @param staminaName スタミナモデルの名前
-	 * @return this
-	 */
 	public Stamina withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Stamina withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 最終更新時におけるスタミナ値 */
-	protected Integer value;
 
-	/**
-	 * 最終更新時におけるスタミナ値を取得
-	 *
-	 * @return 最終更新時におけるスタミナ値
-	 */
 	public Integer getValue() {
 		return value;
 	}
 
-	/**
-	 * 最終更新時におけるスタミナ値を設定
-	 *
-	 * @param value 最終更新時におけるスタミナ値
-	 */
 	public void setValue(Integer value) {
 		this.value = value;
 	}
 
-	/**
-	 * 最終更新時におけるスタミナ値を設定
-	 *
-	 * @param value 最終更新時におけるスタミナ値
-	 * @return this
-	 */
 	public Stamina withValue(Integer value) {
 		this.value = value;
 		return this;
 	}
-	/** スタミナの最大値 */
-	protected Integer maxValue;
 
-	/**
-	 * スタミナの最大値を取得
-	 *
-	 * @return スタミナの最大値
-	 */
 	public Integer getMaxValue() {
 		return maxValue;
 	}
 
-	/**
-	 * スタミナの最大値を設定
-	 *
-	 * @param maxValue スタミナの最大値
-	 */
 	public void setMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 	}
 
-	/**
-	 * スタミナの最大値を設定
-	 *
-	 * @param maxValue スタミナの最大値
-	 * @return this
-	 */
 	public Stamina withMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 		return this;
 	}
-	/** スタミナの回復間隔(分) */
-	protected Integer recoverIntervalMinutes;
 
-	/**
-	 * スタミナの回復間隔(分)を取得
-	 *
-	 * @return スタミナの回復間隔(分)
-	 */
 	public Integer getRecoverIntervalMinutes() {
 		return recoverIntervalMinutes;
 	}
 
-	/**
-	 * スタミナの回復間隔(分)を設定
-	 *
-	 * @param recoverIntervalMinutes スタミナの回復間隔(分)
-	 */
 	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 	}
 
-	/**
-	 * スタミナの回復間隔(分)を設定
-	 *
-	 * @param recoverIntervalMinutes スタミナの回復間隔(分)
-	 * @return this
-	 */
 	public Stamina withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;
 	}
-	/** スタミナの回復量 */
-	protected Integer recoverValue;
 
-	/**
-	 * スタミナの回復量を取得
-	 *
-	 * @return スタミナの回復量
-	 */
 	public Integer getRecoverValue() {
 		return recoverValue;
 	}
 
-	/**
-	 * スタミナの回復量を設定
-	 *
-	 * @param recoverValue スタミナの回復量
-	 */
 	public void setRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 	}
 
-	/**
-	 * スタミナの回復量を設定
-	 *
-	 * @param recoverValue スタミナの回復量
-	 * @return this
-	 */
 	public Stamina withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 		return this;
 	}
-	/** スタミナの最大値を超えて格納されているスタミナ値 */
-	protected Integer overflowValue;
 
-	/**
-	 * スタミナの最大値を超えて格納されているスタミナ値を取得
-	 *
-	 * @return スタミナの最大値を超えて格納されているスタミナ値
-	 */
 	public Integer getOverflowValue() {
 		return overflowValue;
 	}
 
-	/**
-	 * スタミナの最大値を超えて格納されているスタミナ値を設定
-	 *
-	 * @param overflowValue スタミナの最大値を超えて格納されているスタミナ値
-	 */
 	public void setOverflowValue(Integer overflowValue) {
 		this.overflowValue = overflowValue;
 	}
 
-	/**
-	 * スタミナの最大値を超えて格納されているスタミナ値を設定
-	 *
-	 * @param overflowValue スタミナの最大値を超えて格納されているスタミナ値
-	 * @return this
-	 */
 	public Stamina withOverflowValue(Integer overflowValue) {
 		this.overflowValue = overflowValue;
 		return this;
 	}
-	/** 次回スタミナが回復する時間 */
-	protected Long nextRecoverAt;
 
-	/**
-	 * 次回スタミナが回復する時間を取得
-	 *
-	 * @return 次回スタミナが回復する時間
-	 */
 	public Long getNextRecoverAt() {
 		return nextRecoverAt;
 	}
 
-	/**
-	 * 次回スタミナが回復する時間を設定
-	 *
-	 * @param nextRecoverAt 次回スタミナが回復する時間
-	 */
 	public void setNextRecoverAt(Long nextRecoverAt) {
 		this.nextRecoverAt = nextRecoverAt;
 	}
 
-	/**
-	 * 次回スタミナが回復する時間を設定
-	 *
-	 * @param nextRecoverAt 次回スタミナが回復する時間
-	 * @return this
-	 */
 	public Stamina withNextRecoverAt(Long nextRecoverAt) {
 		this.nextRecoverAt = nextRecoverAt;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long lastRecoveredAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getLastRecoveredAt() {
 		return lastRecoveredAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param lastRecoveredAt 作成日時
-	 */
 	public void setLastRecoveredAt(Long lastRecoveredAt) {
 		this.lastRecoveredAt = lastRecoveredAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param lastRecoveredAt 作成日時
-	 * @return this
-	 */
 	public Stamina withLastRecoveredAt(Long lastRecoveredAt) {
 		this.lastRecoveredAt = lastRecoveredAt;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Stamina withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Stamina withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("staminaId", this.getStaminaId())
-            .put("staminaName", this.getStaminaName())
-            .put("userId", this.getUserId())
-            .put("value", this.getValue())
-            .put("maxValue", this.getMaxValue())
-            .put("recoverIntervalMinutes", this.getRecoverIntervalMinutes())
-            .put("recoverValue", this.getRecoverValue())
-            .put("overflowValue", this.getOverflowValue())
-            .put("nextRecoverAt", this.getNextRecoverAt())
-            .put("lastRecoveredAt", this.getLastRecoveredAt())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Stamina fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Stamina()
+            .withStaminaId(data.get("staminaId") == null || data.get("staminaId").isNull() ? null : data.get("staminaId").asText())
+            .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").intValue())
+            .withMaxValue(data.get("maxValue") == null || data.get("maxValue").isNull() ? null : data.get("maxValue").intValue())
+            .withRecoverIntervalMinutes(data.get("recoverIntervalMinutes") == null || data.get("recoverIntervalMinutes").isNull() ? null : data.get("recoverIntervalMinutes").intValue())
+            .withRecoverValue(data.get("recoverValue") == null || data.get("recoverValue").isNull() ? null : data.get("recoverValue").intValue())
+            .withOverflowValue(data.get("overflowValue") == null || data.get("overflowValue").isNull() ? null : data.get("overflowValue").intValue())
+            .withNextRecoverAt(data.get("nextRecoverAt") == null || data.get("nextRecoverAt").isNull() ? null : data.get("nextRecoverAt").longValue())
+            .withLastRecoveredAt(data.get("lastRecoveredAt") == null || data.get("lastRecoveredAt").isNull() ? null : data.get("lastRecoveredAt").longValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("staminaId", getStaminaId());
+                put("staminaName", getStaminaName());
+                put("userId", getUserId());
+                put("value", getValue());
+                put("maxValue", getMaxValue());
+                put("recoverIntervalMinutes", getRecoverIntervalMinutes());
+                put("recoverValue", getRecoverValue());
+                put("overflowValue", getOverflowValue());
+                put("nextRecoverAt", getNextRecoverAt());
+                put("lastRecoveredAt", getLastRecoveredAt());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Stamina o) {
 		return staminaId.compareTo(o.staminaId);

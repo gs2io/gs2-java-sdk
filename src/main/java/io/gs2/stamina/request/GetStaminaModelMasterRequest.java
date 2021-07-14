@@ -16,82 +16,62 @@
 
 package io.gs2.stamina.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.stamina.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタミナモデルマスターを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetStaminaModelMasterRequest extends Gs2BasicRequest<GetStaminaModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return スタミナモデルマスターを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタミナモデルマスターを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタミナモデルマスターを取得
-     * @return this
-     */
-    public GetStaminaModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** スタミナの種類名 */
     private String staminaName;
 
-    /**
-     * スタミナの種類名を取得
-     *
-     * @return スタミナモデルマスターを取得
-     */
-    public String getStaminaName() {
-        return staminaName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetStaminaModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getStaminaName() {
+		return staminaName;
+	}
+
+	public void setStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+	}
+
+	public GetStaminaModelMasterRequest withStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+		return this;
+	}
+
+    public static GetStaminaModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetStaminaModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText());
     }
 
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName スタミナモデルマスターを取得
-     */
-    public void setStaminaName(String staminaName) {
-        this.staminaName = staminaName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("staminaName", getStaminaName());
+            }}
+        );
     }
-
-    /**
-     * スタミナの種類名を設定
-     *
-     * @param staminaName スタミナモデルマスターを取得
-     * @return this
-     */
-    public GetStaminaModelMasterRequest withStaminaName(String staminaName) {
-        setStaminaName(staminaName);
-        return this;
-    }
-
 }

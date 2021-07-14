@@ -16,82 +16,62 @@
 
 package io.gs2.formation.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.formation.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 現在有効なフォーム設定を更新します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateCurrentFormMasterRequest extends Gs2BasicRequest<UpdateCurrentFormMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 現在有効なフォーム設定を更新します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 現在有効なフォーム設定を更新します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 現在有効なフォーム設定を更新します
-     * @return this
-     */
-    public UpdateCurrentFormMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** マスターデータ */
     private String settings;
 
-    /**
-     * マスターデータを取得
-     *
-     * @return 現在有効なフォーム設定を更新します
-     */
-    public String getSettings() {
-        return settings;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateCurrentFormMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getSettings() {
+		return settings;
+	}
+
+	public void setSettings(String settings) {
+		this.settings = settings;
+	}
+
+	public UpdateCurrentFormMasterRequest withSettings(String settings) {
+		this.settings = settings;
+		return this;
+	}
+
+    public static UpdateCurrentFormMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateCurrentFormMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withSettings(data.get("settings") == null || data.get("settings").isNull() ? null : data.get("settings").asText());
     }
 
-    /**
-     * マスターデータを設定
-     *
-     * @param settings 現在有効なフォーム設定を更新します
-     */
-    public void setSettings(String settings) {
-        this.settings = settings;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("settings", getSettings());
+            }}
+        );
     }
-
-    /**
-     * マスターデータを設定
-     *
-     * @param settings 現在有効なフォーム設定を更新します
-     * @return this
-     */
-    public UpdateCurrentFormMasterRequest withSettings(String settings) {
-        setSettings(settings);
-        return this;
-    }
-
 }

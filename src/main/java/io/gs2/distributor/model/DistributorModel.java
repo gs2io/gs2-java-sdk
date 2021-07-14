@@ -16,195 +16,122 @@
 
 package io.gs2.distributor.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 配信設定
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DistributorModel implements IModel, Serializable, Comparable<DistributorModel> {
-	/** 配信設定 */
-	protected String distributorModelId;
+	private String distributorModelId;
+	private String name;
+	private String metadata;
+	private String inboxNamespaceId;
+	private List<String> whiteListTargetIds;
 
-	/**
-	 * 配信設定を取得
-	 *
-	 * @return 配信設定
-	 */
 	public String getDistributorModelId() {
 		return distributorModelId;
 	}
 
-	/**
-	 * 配信設定を設定
-	 *
-	 * @param distributorModelId 配信設定
-	 */
 	public void setDistributorModelId(String distributorModelId) {
 		this.distributorModelId = distributorModelId;
 	}
 
-	/**
-	 * 配信設定を設定
-	 *
-	 * @param distributorModelId 配信設定
-	 * @return this
-	 */
 	public DistributorModel withDistributorModelId(String distributorModelId) {
 		this.distributorModelId = distributorModelId;
 		return this;
 	}
-	/** ディストリビューターの種類名 */
-	protected String name;
 
-	/**
-	 * ディストリビューターの種類名を取得
-	 *
-	 * @return ディストリビューターの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ディストリビューターの種類名を設定
-	 *
-	 * @param name ディストリビューターの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ディストリビューターの種類名を設定
-	 *
-	 * @param name ディストリビューターの種類名
-	 * @return this
-	 */
 	public DistributorModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ディストリビューターの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * ディストリビューターの種類のメタデータを取得
-	 *
-	 * @return ディストリビューターの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * ディストリビューターの種類のメタデータを設定
-	 *
-	 * @param metadata ディストリビューターの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * ディストリビューターの種類のメタデータを設定
-	 *
-	 * @param metadata ディストリビューターの種類のメタデータ
-	 * @return this
-	 */
 	public DistributorModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN */
-	protected String inboxNamespaceId;
 
-	/**
-	 * 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRNを取得
-	 *
-	 * @return 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN
-	 */
 	public String getInboxNamespaceId() {
 		return inboxNamespaceId;
 	}
 
-	/**
-	 * 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRNを設定
-	 *
-	 * @param inboxNamespaceId 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN
-	 */
 	public void setInboxNamespaceId(String inboxNamespaceId) {
 		this.inboxNamespaceId = inboxNamespaceId;
 	}
 
-	/**
-	 * 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRNを設定
-	 *
-	 * @param inboxNamespaceId 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN
-	 * @return this
-	 */
 	public DistributorModel withInboxNamespaceId(String inboxNamespaceId) {
 		this.inboxNamespaceId = inboxNamespaceId;
 		return this;
 	}
-	/** ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリスト */
-	protected List<String> whiteListTargetIds;
 
-	/**
-	 * ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリストを取得
-	 *
-	 * @return ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリスト
-	 */
 	public List<String> getWhiteListTargetIds() {
 		return whiteListTargetIds;
 	}
 
-	/**
-	 * ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリストを設定
-	 *
-	 * @param whiteListTargetIds ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリスト
-	 */
 	public void setWhiteListTargetIds(List<String> whiteListTargetIds) {
 		this.whiteListTargetIds = whiteListTargetIds;
 	}
 
-	/**
-	 * ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリストを設定
-	 *
-	 * @param whiteListTargetIds ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリスト
-	 * @return this
-	 */
 	public DistributorModel withWhiteListTargetIds(List<String> whiteListTargetIds) {
 		this.whiteListTargetIds = whiteListTargetIds;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> whiteListTargetIds = new ArrayList<>();
-        if(this.whiteListTargetIds != null) {
-            for(String item : this.whiteListTargetIds) {
-                whiteListTargetIds.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static DistributorModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("distributorModelId", this.getDistributorModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("inboxNamespaceId", this.getInboxNamespaceId());
-        body_.set("whiteListTargetIds", JsonNodeFactory.instance.arrayNode().addAll(whiteListTargetIds));
-        return body_;
+        return new DistributorModel()
+            .withDistributorModelId(data.get("distributorModelId") == null || data.get("distributorModelId").isNull() ? null : data.get("distributorModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withInboxNamespaceId(data.get("inboxNamespaceId") == null || data.get("inboxNamespaceId").isNull() ? null : data.get("inboxNamespaceId").asText())
+            .withWhiteListTargetIds(data.get("whiteListTargetIds") == null || data.get("whiteListTargetIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("whiteListTargetIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("distributorModelId", getDistributorModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("inboxNamespaceId", getInboxNamespaceId());
+                put("whiteListTargetIds", getWhiteListTargetIds() == null ? new ArrayList<String>() :
+                    getWhiteListTargetIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(DistributorModel o) {
 		return distributorModelId.compareTo(o.distributorModelId);

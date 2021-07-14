@@ -16,189 +16,114 @@
 
 package io.gs2.datastore.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * データオブジェクト履歴
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataObjectHistory implements IModel, Serializable, Comparable<DataObjectHistory> {
-	/** データオブジェクト履歴 */
-	protected String dataObjectHistoryId;
+	private String dataObjectHistoryId;
+	private String dataObjectName;
+	private String generation;
+	private Long contentLength;
+	private Long createdAt;
 
-	/**
-	 * データオブジェクト履歴を取得
-	 *
-	 * @return データオブジェクト履歴
-	 */
 	public String getDataObjectHistoryId() {
 		return dataObjectHistoryId;
 	}
 
-	/**
-	 * データオブジェクト履歴を設定
-	 *
-	 * @param dataObjectHistoryId データオブジェクト履歴
-	 */
 	public void setDataObjectHistoryId(String dataObjectHistoryId) {
 		this.dataObjectHistoryId = dataObjectHistoryId;
 	}
 
-	/**
-	 * データオブジェクト履歴を設定
-	 *
-	 * @param dataObjectHistoryId データオブジェクト履歴
-	 * @return this
-	 */
 	public DataObjectHistory withDataObjectHistoryId(String dataObjectHistoryId) {
 		this.dataObjectHistoryId = dataObjectHistoryId;
 		return this;
 	}
-	/** データオブジェクト名 */
-	protected String dataObjectName;
 
-	/**
-	 * データオブジェクト名を取得
-	 *
-	 * @return データオブジェクト名
-	 */
 	public String getDataObjectName() {
 		return dataObjectName;
 	}
 
-	/**
-	 * データオブジェクト名を設定
-	 *
-	 * @param dataObjectName データオブジェクト名
-	 */
 	public void setDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 	}
 
-	/**
-	 * データオブジェクト名を設定
-	 *
-	 * @param dataObjectName データオブジェクト名
-	 * @return this
-	 */
 	public DataObjectHistory withDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 		return this;
 	}
-	/** 世代ID */
-	protected String generation;
 
-	/**
-	 * 世代IDを取得
-	 *
-	 * @return 世代ID
-	 */
 	public String getGeneration() {
 		return generation;
 	}
 
-	/**
-	 * 世代IDを設定
-	 *
-	 * @param generation 世代ID
-	 */
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
 
-	/**
-	 * 世代IDを設定
-	 *
-	 * @param generation 世代ID
-	 * @return this
-	 */
 	public DataObjectHistory withGeneration(String generation) {
 		this.generation = generation;
 		return this;
 	}
-	/** データサイズ */
-	protected Long contentLength;
 
-	/**
-	 * データサイズを取得
-	 *
-	 * @return データサイズ
-	 */
 	public Long getContentLength() {
 		return contentLength;
 	}
 
-	/**
-	 * データサイズを設定
-	 *
-	 * @param contentLength データサイズ
-	 */
 	public void setContentLength(Long contentLength) {
 		this.contentLength = contentLength;
 	}
 
-	/**
-	 * データサイズを設定
-	 *
-	 * @param contentLength データサイズ
-	 * @return this
-	 */
 	public DataObjectHistory withContentLength(Long contentLength) {
 		this.contentLength = contentLength;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public DataObjectHistory withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("dataObjectHistoryId", this.getDataObjectHistoryId())
-            .put("dataObjectName", this.getDataObjectName())
-            .put("generation", this.getGeneration())
-            .put("contentLength", this.getContentLength())
-            .put("createdAt", this.getCreatedAt());
-        return body_;
+    public static DataObjectHistory fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DataObjectHistory()
+            .withDataObjectHistoryId(data.get("dataObjectHistoryId") == null || data.get("dataObjectHistoryId").isNull() ? null : data.get("dataObjectHistoryId").asText())
+            .withDataObjectName(data.get("dataObjectName") == null || data.get("dataObjectName").isNull() ? null : data.get("dataObjectName").asText())
+            .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText())
+            .withContentLength(data.get("contentLength") == null || data.get("contentLength").isNull() ? null : data.get("contentLength").longValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("dataObjectHistoryId", getDataObjectHistoryId());
+                put("dataObjectName", getDataObjectName());
+                put("generation", getGeneration());
+                put("contentLength", getContentLength());
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(DataObjectHistory o) {
 		return dataObjectHistoryId.compareTo(o.dataObjectHistoryId);

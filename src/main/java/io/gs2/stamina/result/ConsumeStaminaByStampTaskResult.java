@@ -16,79 +16,84 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.Stamina;
+import io.gs2.stamina.model.MaxStaminaTable;
+import io.gs2.stamina.model.RecoverIntervalTable;
+import io.gs2.stamina.model.RecoverValueTable;
+import io.gs2.stamina.model.StaminaModel;
 
-/**
- * スタンプタスクを使用してスタミナを消費 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConsumeStaminaByStampTaskResult implements IResult, Serializable {
-	/** スタミナ */
-	private Stamina item;
-	/** スタミナモデル */
-	private StaminaModel staminaModel;
-	/** スタンプタスクの実行結果を記録したコンテキスト */
-	private String newContextStack;
+    private Stamina item;
+    private StaminaModel staminaModel;
+    private String newContextStack;
 
-	/**
-	 * スタミナを取得
-	 *
-	 * @return スタンプタスクを使用してスタミナを消費
-	 */
 	public Stamina getItem() {
 		return item;
 	}
 
-	/**
-	 * スタミナを設定
-	 *
-	 * @param item スタンプタスクを使用してスタミナを消費
-	 */
 	public void setItem(Stamina item) {
 		this.item = item;
 	}
 
-	/**
-	 * スタミナモデルを取得
-	 *
-	 * @return スタンプタスクを使用してスタミナを消費
-	 */
+	public ConsumeStaminaByStampTaskResult withItem(Stamina item) {
+		this.item = item;
+		return this;
+	}
+
 	public StaminaModel getStaminaModel() {
 		return staminaModel;
 	}
 
-	/**
-	 * スタミナモデルを設定
-	 *
-	 * @param staminaModel スタンプタスクを使用してスタミナを消費
-	 */
 	public void setStaminaModel(StaminaModel staminaModel) {
 		this.staminaModel = staminaModel;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを取得
-	 *
-	 * @return スタンプタスクを使用してスタミナを消費
-	 */
+	public ConsumeStaminaByStampTaskResult withStaminaModel(StaminaModel staminaModel) {
+		this.staminaModel = staminaModel;
+		return this;
+	}
+
 	public String getNewContextStack() {
 		return newContextStack;
 	}
 
-	/**
-	 * スタンプタスクの実行結果を記録したコンテキストを設定
-	 *
-	 * @param newContextStack スタンプタスクを使用してスタミナを消費
-	 */
 	public void setNewContextStack(String newContextStack) {
 		this.newContextStack = newContextStack;
 	}
+
+	public ConsumeStaminaByStampTaskResult withNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
+		return this;
+	}
+
+    public static ConsumeStaminaByStampTaskResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ConsumeStaminaByStampTaskResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Stamina.fromJson(data.get("item")))
+            .withStaminaModel(data.get("staminaModel") == null || data.get("staminaModel").isNull() ? null : StaminaModel.fromJson(data.get("staminaModel")))
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("staminaModel", getStaminaModel() != null ? getStaminaModel().toJson() : null);
+                put("newContextStack", getNewContextStack());
+            }}
+        );
+    }
 }

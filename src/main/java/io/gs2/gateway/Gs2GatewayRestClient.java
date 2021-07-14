@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.gateway;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.gateway.request.*;
 import io.gs2.gateway.result.*;
-import io.gs2.gateway.model.*;
+import io.gs2.gateway.model.*;public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient> {
 
-/**
- * GS2 Gateway API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2GatewayRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,29 +152,15 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getFirebaseSecret() != null) {
-                json.put("firebaseSecret", this.request.getFirebaseSecret());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("firebaseSecret", request.getFirebaseSecret());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -209,25 +178,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -254,15 +212,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -273,7 +234,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -297,25 +258,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -342,15 +292,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -361,7 +314,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -385,25 +338,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -430,15 +372,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -449,28 +394,16 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getFirebaseSecret() != null) {
-                json.put("firebaseSecret", this.request.getFirebaseSecret());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("firebaseSecret", request.getFirebaseSecret());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -488,25 +421,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -533,15 +455,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -552,7 +477,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -576,25 +501,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -621,15 +535,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public DescribeWebSocketSessionsTask(
             DescribeWebSocketSessionsRequest request,
-            AsyncAction<AsyncResult<DescribeWebSocketSessionsResult>> userCallback,
-            Class<DescribeWebSocketSessionsResult> clazz
+            AsyncAction<AsyncResult<DescribeWebSocketSessionsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeWebSocketSessionsResult parse(JsonNode data) {
+            return DescribeWebSocketSessionsResult.fromJson(data);
         }
 
         @Override
@@ -640,7 +557,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/session/user/me";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -666,9 +583,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -676,25 +590,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * Websocketセッションの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeWebSocketSessionsAsync(
             DescribeWebSocketSessionsRequest request,
             AsyncAction<AsyncResult<DescribeWebSocketSessionsResult>> callback
     ) {
-        DescribeWebSocketSessionsTask task = new DescribeWebSocketSessionsTask(request, callback, DescribeWebSocketSessionsResult.class);
+        DescribeWebSocketSessionsTask task = new DescribeWebSocketSessionsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * Websocketセッションの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeWebSocketSessionsResult describeWebSocketSessions(
             DescribeWebSocketSessionsRequest request
     ) {
@@ -721,15 +624,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public DescribeWebSocketSessionsByUserIdTask(
             DescribeWebSocketSessionsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeWebSocketSessionsByUserIdResult>> userCallback,
-            Class<DescribeWebSocketSessionsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeWebSocketSessionsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeWebSocketSessionsByUserIdResult parse(JsonNode data) {
+            return DescribeWebSocketSessionsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -740,8 +646,8 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/session/user/{userId}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -764,9 +670,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -774,25 +677,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してWebsocketセッションの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeWebSocketSessionsByUserIdAsync(
             DescribeWebSocketSessionsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeWebSocketSessionsByUserIdResult>> callback
     ) {
-        DescribeWebSocketSessionsByUserIdTask task = new DescribeWebSocketSessionsByUserIdTask(request, callback, DescribeWebSocketSessionsByUserIdResult.class);
+        DescribeWebSocketSessionsByUserIdTask task = new DescribeWebSocketSessionsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してWebsocketセッションの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeWebSocketSessionsByUserIdResult describeWebSocketSessionsByUserId(
             DescribeWebSocketSessionsByUserIdRequest request
     ) {
@@ -819,15 +711,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public SetUserIdTask(
             SetUserIdRequest request,
-            AsyncAction<AsyncResult<SetUserIdResult>> userCallback,
-            Class<SetUserIdResult> clazz
+            AsyncAction<AsyncResult<SetUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetUserIdResult parse(JsonNode data) {
+            return SetUserIdResult.fromJson(data);
         }
 
         @Override
@@ -838,18 +733,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/session/user/me/user";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAllowConcurrentAccess() != null) {
-                json.put("allowConcurrentAccess", this.request.getAllowConcurrentAccess());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("allowConcurrentAccess", request.getAllowConcurrentAccess());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -863,9 +754,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -873,25 +761,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * WebsocketセッションにユーザIDを設定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setUserIdAsync(
             SetUserIdRequest request,
             AsyncAction<AsyncResult<SetUserIdResult>> callback
     ) {
-        SetUserIdTask task = new SetUserIdTask(request, callback, SetUserIdResult.class);
+        SetUserIdTask task = new SetUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * WebsocketセッションにユーザIDを設定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetUserIdResult setUserId(
             SetUserIdRequest request
     ) {
@@ -918,15 +795,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public SetUserIdByUserIdTask(
             SetUserIdByUserIdRequest request,
-            AsyncAction<AsyncResult<SetUserIdByUserIdResult>> userCallback,
-            Class<SetUserIdByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetUserIdByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetUserIdByUserIdResult parse(JsonNode data) {
+            return SetUserIdByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -937,19 +817,15 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/session/user/{userId}/user";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAllowConcurrentAccess() != null) {
-                json.put("allowConcurrentAccess", this.request.getAllowConcurrentAccess());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("allowConcurrentAccess", request.getAllowConcurrentAccess());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -960,9 +836,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -970,25 +843,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * WebsocketセッションにユーザIDを設定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setUserIdByUserIdAsync(
             SetUserIdByUserIdRequest request,
             AsyncAction<AsyncResult<SetUserIdByUserIdResult>> callback
     ) {
-        SetUserIdByUserIdTask task = new SetUserIdByUserIdTask(request, callback, SetUserIdByUserIdResult.class);
+        SetUserIdByUserIdTask task = new SetUserIdByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * WebsocketセッションにユーザIDを設定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetUserIdByUserIdResult setUserIdByUserId(
             SetUserIdByUserIdRequest request
     ) {
@@ -1010,197 +872,23 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         return resultAsyncResult[0].getResult();
     }
 
-    class GetWebSocketSessionTask extends Gs2RestSessionTask<GetWebSocketSessionResult> {
-        private GetWebSocketSessionRequest request;
-
-        public GetWebSocketSessionTask(
-            GetWebSocketSessionRequest request,
-            AsyncAction<AsyncResult<GetWebSocketSessionResult>> userCallback,
-            Class<GetWebSocketSessionResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "gateway")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/session";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * Websocketセッションを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void getWebSocketSessionAsync(
-            GetWebSocketSessionRequest request,
-            AsyncAction<AsyncResult<GetWebSocketSessionResult>> callback
-    ) {
-        GetWebSocketSessionTask task = new GetWebSocketSessionTask(request, callback, GetWebSocketSessionResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * Websocketセッションを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public GetWebSocketSessionResult getWebSocketSession(
-            GetWebSocketSessionRequest request
-    ) {
-        final AsyncResult<GetWebSocketSessionResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getWebSocketSessionAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetWebSocketSessionByConnectionIdTask extends Gs2RestSessionTask<GetWebSocketSessionByConnectionIdResult> {
-        private GetWebSocketSessionByConnectionIdRequest request;
-
-        public GetWebSocketSessionByConnectionIdTask(
-            GetWebSocketSessionByConnectionIdRequest request,
-            AsyncAction<AsyncResult<GetWebSocketSessionByConnectionIdResult>> userCallback,
-            Class<GetWebSocketSessionByConnectionIdResult> clazz
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback,
-                    clazz
-            );
-            this.request = request;
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "gateway")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/session/{connectionId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{connectionId}", this.request.getConnectionId() == null|| this.request.getConnectionId().length() == 0 ? "null" : String.valueOf(this.request.getConnectionId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    /**
-     * ユーザIDを指定してWebsocketセッションを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
-    public void getWebSocketSessionByConnectionIdAsync(
-            GetWebSocketSessionByConnectionIdRequest request,
-            AsyncAction<AsyncResult<GetWebSocketSessionByConnectionIdResult>> callback
-    ) {
-        GetWebSocketSessionByConnectionIdTask task = new GetWebSocketSessionByConnectionIdTask(request, callback, GetWebSocketSessionByConnectionIdResult.class);
-        session.execute(task);
-    }
-
-    /**
-     * ユーザIDを指定してWebsocketセッションを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
-    public GetWebSocketSessionByConnectionIdResult getWebSocketSessionByConnectionId(
-            GetWebSocketSessionByConnectionIdRequest request
-    ) {
-        final AsyncResult<GetWebSocketSessionByConnectionIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getWebSocketSessionByConnectionIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
     class SendNotificationTask extends Gs2RestSessionTask<SendNotificationResult> {
         private SendNotificationRequest request;
 
         public SendNotificationTask(
             SendNotificationRequest request,
-            AsyncAction<AsyncResult<SendNotificationResult>> userCallback,
-            Class<SendNotificationResult> clazz
+            AsyncAction<AsyncResult<SendNotificationResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SendNotificationResult parse(JsonNode data) {
+            return SendNotificationResult.fromJson(data);
         }
 
         @Override
@@ -1211,28 +899,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/session/user/{userId}/notification";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSubject() != null) {
-                json.put("subject", this.request.getSubject());
-            }
-            if (this.request.getPayload() != null) {
-                json.put("payload", this.request.getPayload());
-            }
-            if (this.request.getEnableTransferMobileNotification() != null) {
-                json.put("enableTransferMobileNotification", this.request.getEnableTransferMobileNotification());
-            }
-            if (this.request.getSound() != null) {
-                json.put("sound", this.request.getSound());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("subject", request.getSubject());
+                    put("payload", request.getPayload());
+                    put("enableTransferMobileNotification", request.getEnableTransferMobileNotification());
+                    put("sound", request.getSound());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1243,9 +921,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1253,25 +928,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * 通知を送信<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void sendNotificationAsync(
             SendNotificationRequest request,
             AsyncAction<AsyncResult<SendNotificationResult>> callback
     ) {
-        SendNotificationTask task = new SendNotificationTask(request, callback, SendNotificationResult.class);
+        SendNotificationTask task = new SendNotificationTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 通知を送信<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SendNotificationResult sendNotification(
             SendNotificationRequest request
     ) {
@@ -1298,15 +962,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public SetFirebaseTokenTask(
             SetFirebaseTokenRequest request,
-            AsyncAction<AsyncResult<SetFirebaseTokenResult>> userCallback,
-            Class<SetFirebaseTokenResult> clazz
+            AsyncAction<AsyncResult<SetFirebaseTokenResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetFirebaseTokenResult parse(JsonNode data) {
+            return SetFirebaseTokenResult.fromJson(data);
         }
 
         @Override
@@ -1317,18 +984,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/firebase/token";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getToken() != null) {
-                json.put("token", this.request.getToken());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("token", request.getToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1342,9 +1005,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1352,25 +1012,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * デバイストークンを設定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setFirebaseTokenAsync(
             SetFirebaseTokenRequest request,
             AsyncAction<AsyncResult<SetFirebaseTokenResult>> callback
     ) {
-        SetFirebaseTokenTask task = new SetFirebaseTokenTask(request, callback, SetFirebaseTokenResult.class);
+        SetFirebaseTokenTask task = new SetFirebaseTokenTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * デバイストークンを設定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetFirebaseTokenResult setFirebaseToken(
             SetFirebaseTokenRequest request
     ) {
@@ -1397,15 +1046,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public SetFirebaseTokenByUserIdTask(
             SetFirebaseTokenByUserIdRequest request,
-            AsyncAction<AsyncResult<SetFirebaseTokenByUserIdResult>> userCallback,
-            Class<SetFirebaseTokenByUserIdResult> clazz
+            AsyncAction<AsyncResult<SetFirebaseTokenByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SetFirebaseTokenByUserIdResult parse(JsonNode data) {
+            return SetFirebaseTokenByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1416,19 +1068,15 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/firebase/token";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getToken() != null) {
-                json.put("token", this.request.getToken());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("token", request.getToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1439,9 +1087,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1449,25 +1094,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してデバイストークンを設定<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void setFirebaseTokenByUserIdAsync(
             SetFirebaseTokenByUserIdRequest request,
             AsyncAction<AsyncResult<SetFirebaseTokenByUserIdResult>> callback
     ) {
-        SetFirebaseTokenByUserIdTask task = new SetFirebaseTokenByUserIdTask(request, callback, SetFirebaseTokenByUserIdResult.class);
+        SetFirebaseTokenByUserIdTask task = new SetFirebaseTokenByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してデバイストークンを設定<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SetFirebaseTokenByUserIdResult setFirebaseTokenByUserId(
             SetFirebaseTokenByUserIdRequest request
     ) {
@@ -1494,15 +1128,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public GetFirebaseTokenTask(
             GetFirebaseTokenRequest request,
-            AsyncAction<AsyncResult<GetFirebaseTokenResult>> userCallback,
-            Class<GetFirebaseTokenResult> clazz
+            AsyncAction<AsyncResult<GetFirebaseTokenResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFirebaseTokenResult parse(JsonNode data) {
+            return GetFirebaseTokenResult.fromJson(data);
         }
 
         @Override
@@ -1513,7 +1150,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/firebase/token";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1533,9 +1170,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1543,25 +1177,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * Firebaseデバイストークンを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFirebaseTokenAsync(
             GetFirebaseTokenRequest request,
             AsyncAction<AsyncResult<GetFirebaseTokenResult>> callback
     ) {
-        GetFirebaseTokenTask task = new GetFirebaseTokenTask(request, callback, GetFirebaseTokenResult.class);
+        GetFirebaseTokenTask task = new GetFirebaseTokenTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * Firebaseデバイストークンを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFirebaseTokenResult getFirebaseToken(
             GetFirebaseTokenRequest request
     ) {
@@ -1588,15 +1211,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public GetFirebaseTokenByUserIdTask(
             GetFirebaseTokenByUserIdRequest request,
-            AsyncAction<AsyncResult<GetFirebaseTokenByUserIdResult>> userCallback,
-            Class<GetFirebaseTokenByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetFirebaseTokenByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetFirebaseTokenByUserIdResult parse(JsonNode data) {
+            return GetFirebaseTokenByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1607,8 +1233,8 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/firebase/token";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1625,9 +1251,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1635,25 +1258,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してFirebaseデバイストークンを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getFirebaseTokenByUserIdAsync(
             GetFirebaseTokenByUserIdRequest request,
             AsyncAction<AsyncResult<GetFirebaseTokenByUserIdResult>> callback
     ) {
-        GetFirebaseTokenByUserIdTask task = new GetFirebaseTokenByUserIdTask(request, callback, GetFirebaseTokenByUserIdResult.class);
+        GetFirebaseTokenByUserIdTask task = new GetFirebaseTokenByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してFirebaseデバイストークンを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetFirebaseTokenByUserIdResult getFirebaseTokenByUserId(
             GetFirebaseTokenByUserIdRequest request
     ) {
@@ -1680,15 +1292,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public DeleteFirebaseTokenTask(
             DeleteFirebaseTokenRequest request,
-            AsyncAction<AsyncResult<DeleteFirebaseTokenResult>> userCallback,
-            Class<DeleteFirebaseTokenResult> clazz
+            AsyncAction<AsyncResult<DeleteFirebaseTokenResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteFirebaseTokenResult parse(JsonNode data) {
+            return DeleteFirebaseTokenResult.fromJson(data);
         }
 
         @Override
@@ -1699,7 +1314,7 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/firebase/token";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1719,9 +1334,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1729,25 +1341,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * Firebaseデバイストークンを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteFirebaseTokenAsync(
             DeleteFirebaseTokenRequest request,
             AsyncAction<AsyncResult<DeleteFirebaseTokenResult>> callback
     ) {
-        DeleteFirebaseTokenTask task = new DeleteFirebaseTokenTask(request, callback, DeleteFirebaseTokenResult.class);
+        DeleteFirebaseTokenTask task = new DeleteFirebaseTokenTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * Firebaseデバイストークンを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteFirebaseTokenResult deleteFirebaseToken(
             DeleteFirebaseTokenRequest request
     ) {
@@ -1774,15 +1375,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public DeleteFirebaseTokenByUserIdTask(
             DeleteFirebaseTokenByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteFirebaseTokenByUserIdResult>> userCallback,
-            Class<DeleteFirebaseTokenByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteFirebaseTokenByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteFirebaseTokenByUserIdResult parse(JsonNode data) {
+            return DeleteFirebaseTokenByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1793,8 +1397,8 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/firebase/token";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1811,9 +1415,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1821,25 +1422,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * ユーザIDを指定してFirebaseデバイストークンを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteFirebaseTokenByUserIdAsync(
             DeleteFirebaseTokenByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteFirebaseTokenByUserIdResult>> callback
     ) {
-        DeleteFirebaseTokenByUserIdTask task = new DeleteFirebaseTokenByUserIdTask(request, callback, DeleteFirebaseTokenByUserIdResult.class);
+        DeleteFirebaseTokenByUserIdTask task = new DeleteFirebaseTokenByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してFirebaseデバイストークンを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteFirebaseTokenByUserIdResult deleteFirebaseTokenByUserId(
             DeleteFirebaseTokenByUserIdRequest request
     ) {
@@ -1866,15 +1456,18 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
 
         public SendMobileNotificationByUserIdTask(
             SendMobileNotificationByUserIdRequest request,
-            AsyncAction<AsyncResult<SendMobileNotificationByUserIdResult>> userCallback,
-            Class<SendMobileNotificationByUserIdResult> clazz
+            AsyncAction<AsyncResult<SendMobileNotificationByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SendMobileNotificationByUserIdResult parse(JsonNode data) {
+            return SendMobileNotificationByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1885,25 +1478,17 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/firebase/token/notification";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSubject() != null) {
-                json.put("subject", this.request.getSubject());
-            }
-            if (this.request.getPayload() != null) {
-                json.put("payload", this.request.getPayload());
-            }
-            if (this.request.getSound() != null) {
-                json.put("sound", this.request.getSound());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("subject", request.getSubject());
+                    put("payload", request.getPayload());
+                    put("sound", request.getSound());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1914,9 +1499,6 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1924,25 +1506,14 @@ public class Gs2GatewayRestClient extends AbstractGs2Client<Gs2GatewayRestClient
         }
     }
 
-    /**
-     * モバイルプッシュ通知を送信<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void sendMobileNotificationByUserIdAsync(
             SendMobileNotificationByUserIdRequest request,
             AsyncAction<AsyncResult<SendMobileNotificationByUserIdResult>> callback
     ) {
-        SendMobileNotificationByUserIdTask task = new SendMobileNotificationByUserIdTask(request, callback, SendMobileNotificationByUserIdResult.class);
+        SendMobileNotificationByUserIdTask task = new SendMobileNotificationByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * モバイルプッシュ通知を送信<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SendMobileNotificationByUserIdResult sendMobileNotificationByUserId(
             SendMobileNotificationByUserIdRequest request
     ) {

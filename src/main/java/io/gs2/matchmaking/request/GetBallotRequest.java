@@ -16,242 +16,126 @@
 
 package io.gs2.matchmaking.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.matchmaking.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 投票用紙を取得します。 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetBallotRequest extends Gs2BasicRequest<GetBallotRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 投票用紙を取得します。
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 投票用紙を取得します。
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 投票用紙を取得します。
-     * @return this
-     */
-    public GetBallotRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** レーティング名 */
     private String ratingName;
-
-    /**
-     * レーティング名を取得
-     *
-     * @return 投票用紙を取得します。
-     */
-    public String getRatingName() {
-        return ratingName;
-    }
-
-    /**
-     * レーティング名を設定
-     *
-     * @param ratingName 投票用紙を取得します。
-     */
-    public void setRatingName(String ratingName) {
-        this.ratingName = ratingName;
-    }
-
-    /**
-     * レーティング名を設定
-     *
-     * @param ratingName 投票用紙を取得します。
-     * @return this
-     */
-    public GetBallotRequest withRatingName(String ratingName) {
-        setRatingName(ratingName);
-        return this;
-    }
-
-    /** 投票対象のギャザリング名 */
     private String gatheringName;
-
-    /**
-     * 投票対象のギャザリング名を取得
-     *
-     * @return 投票用紙を取得します。
-     */
-    public String getGatheringName() {
-        return gatheringName;
-    }
-
-    /**
-     * 投票対象のギャザリング名を設定
-     *
-     * @param gatheringName 投票用紙を取得します。
-     */
-    public void setGatheringName(String gatheringName) {
-        this.gatheringName = gatheringName;
-    }
-
-    /**
-     * 投票対象のギャザリング名を設定
-     *
-     * @param gatheringName 投票用紙を取得します。
-     * @return this
-     */
-    public GetBallotRequest withGatheringName(String gatheringName) {
-        setGatheringName(gatheringName);
-        return this;
-    }
-
-    /** 参加人数 */
+    private String accessToken;
     private Integer numberOfPlayer;
-
-    /**
-     * 参加人数を取得
-     *
-     * @return 投票用紙を取得します。
-     */
-    public Integer getNumberOfPlayer() {
-        return numberOfPlayer;
-    }
-
-    /**
-     * 参加人数を設定
-     *
-     * @param numberOfPlayer 投票用紙を取得します。
-     */
-    public void setNumberOfPlayer(Integer numberOfPlayer) {
-        this.numberOfPlayer = numberOfPlayer;
-    }
-
-    /**
-     * 参加人数を設定
-     *
-     * @param numberOfPlayer 投票用紙を取得します。
-     * @return this
-     */
-    public GetBallotRequest withNumberOfPlayer(Integer numberOfPlayer) {
-        setNumberOfPlayer(numberOfPlayer);
-        return this;
-    }
-
-    /** 投票用紙の署名計算に使用する暗号鍵 のGRN */
     private String keyId;
 
-    /**
-     * 投票用紙の署名計算に使用する暗号鍵 のGRNを取得
-     *
-     * @return 投票用紙を取得します。
-     */
-    public String getKeyId() {
-        return keyId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetBallotRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRatingName() {
+		return ratingName;
+	}
+
+	public void setRatingName(String ratingName) {
+		this.ratingName = ratingName;
+	}
+
+	public GetBallotRequest withRatingName(String ratingName) {
+		this.ratingName = ratingName;
+		return this;
+	}
+
+	public String getGatheringName() {
+		return gatheringName;
+	}
+
+	public void setGatheringName(String gatheringName) {
+		this.gatheringName = gatheringName;
+	}
+
+	public GetBallotRequest withGatheringName(String gatheringName) {
+		this.gatheringName = gatheringName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public GetBallotRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public Integer getNumberOfPlayer() {
+		return numberOfPlayer;
+	}
+
+	public void setNumberOfPlayer(Integer numberOfPlayer) {
+		this.numberOfPlayer = numberOfPlayer;
+	}
+
+	public GetBallotRequest withNumberOfPlayer(Integer numberOfPlayer) {
+		this.numberOfPlayer = numberOfPlayer;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public GetBallotRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+    public static GetBallotRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetBallotRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText())
+            .withGatheringName(data.get("gatheringName") == null || data.get("gatheringName").isNull() ? null : data.get("gatheringName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withNumberOfPlayer(data.get("numberOfPlayer") == null || data.get("numberOfPlayer").isNull() ? null : data.get("numberOfPlayer").intValue())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
-    /**
-     * 投票用紙の署名計算に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId 投票用紙を取得します。
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("ratingName", getRatingName());
+                put("gatheringName", getGatheringName());
+                put("accessToken", getAccessToken());
+                put("numberOfPlayer", getNumberOfPlayer());
+                put("keyId", getKeyId());
+            }}
+        );
     }
-
-    /**
-     * 投票用紙の署名計算に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId 投票用紙を取得します。
-     * @return this
-     */
-    public GetBallotRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 投票用紙を取得します。
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 投票用紙を取得します。
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 投票用紙を取得します。
-     * @return this
-     */
-    public GetBallotRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public GetBallotRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

@@ -16,227 +16,140 @@
 
 package io.gs2.formation.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * フォーム
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Form implements IModel, Serializable, Comparable<Form> {
-	/** フォーム */
-	protected String formId;
+	private String formId;
+	private String name;
+	private Integer index;
+	private List<Slot> slots;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * フォームを取得
-	 *
-	 * @return フォーム
-	 */
 	public String getFormId() {
 		return formId;
 	}
 
-	/**
-	 * フォームを設定
-	 *
-	 * @param formId フォーム
-	 */
 	public void setFormId(String formId) {
 		this.formId = formId;
 	}
 
-	/**
-	 * フォームを設定
-	 *
-	 * @param formId フォーム
-	 * @return this
-	 */
 	public Form withFormId(String formId) {
 		this.formId = formId;
 		return this;
 	}
-	/** フォームの保存領域の名前 */
-	protected String name;
 
-	/**
-	 * フォームの保存領域の名前を取得
-	 *
-	 * @return フォームの保存領域の名前
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * フォームの保存領域の名前を設定
-	 *
-	 * @param name フォームの保存領域の名前
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * フォームの保存領域の名前を設定
-	 *
-	 * @param name フォームの保存領域の名前
-	 * @return this
-	 */
 	public Form withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 保存領域のインデックス */
-	protected Integer index;
 
-	/**
-	 * 保存領域のインデックスを取得
-	 *
-	 * @return 保存領域のインデックス
-	 */
 	public Integer getIndex() {
 		return index;
 	}
 
-	/**
-	 * 保存領域のインデックスを設定
-	 *
-	 * @param index 保存領域のインデックス
-	 */
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
 
-	/**
-	 * 保存領域のインデックスを設定
-	 *
-	 * @param index 保存領域のインデックス
-	 * @return this
-	 */
 	public Form withIndex(Integer index) {
 		this.index = index;
 		return this;
 	}
-	/** スロットリスト */
-	protected List<Slot> slots;
 
-	/**
-	 * スロットリストを取得
-	 *
-	 * @return スロットリスト
-	 */
 	public List<Slot> getSlots() {
 		return slots;
 	}
 
-	/**
-	 * スロットリストを設定
-	 *
-	 * @param slots スロットリスト
-	 */
 	public void setSlots(List<Slot> slots) {
 		this.slots = slots;
 	}
 
-	/**
-	 * スロットリストを設定
-	 *
-	 * @param slots スロットリスト
-	 * @return this
-	 */
 	public Form withSlots(List<Slot> slots) {
 		this.slots = slots;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Form withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Form withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> slots = new ArrayList<>();
-        if(this.slots != null) {
-            for(Slot item : this.slots) {
-                slots.add(item.toJson());
-            }
+    public static Form fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("formId", this.getFormId())
-            .put("name", this.getName())
-            .put("index", this.getIndex())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("slots", JsonNodeFactory.instance.arrayNode().addAll(slots));
-        return body_;
+        return new Form()
+            .withFormId(data.get("formId") == null || data.get("formId").isNull() ? null : data.get("formId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<Slot>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Slot.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("formId", getFormId());
+                put("name", getName());
+                put("index", getIndex());
+                put("slots", getSlots() == null ? new ArrayList<Slot>() :
+                    getSlots().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Form o) {
 		return formId.compareTo(o.formId);

@@ -16,39 +16,48 @@
 
 package io.gs2.ranking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.ranking.model.*;
+import io.gs2.ranking.model.CategoryModel;
 
-/**
- * カテゴリを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetCategoryModelResult implements IResult, Serializable {
-	/** カテゴリ */
-	private CategoryModel item;
+    private CategoryModel item;
 
-	/**
-	 * カテゴリを取得
-	 *
-	 * @return カテゴリを取得
-	 */
 	public CategoryModel getItem() {
 		return item;
 	}
 
-	/**
-	 * カテゴリを設定
-	 *
-	 * @param item カテゴリを取得
-	 */
 	public void setItem(CategoryModel item) {
 		this.item = item;
 	}
+
+	public GetCategoryModelResult withItem(CategoryModel item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetCategoryModelResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetCategoryModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CategoryModel.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,178 +16,94 @@
 
 package io.gs2.money.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.money.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * レシートを記録 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class RecordReceiptRequest extends Gs2BasicRequest<RecordReceiptRequest> {
-
-    /** ネームスペースの名前 */
     private String namespaceName;
-
-    /**
-     * ネームスペースの名前を取得
-     *
-     * @return レシートを記録
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName レシートを記録
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName レシートを記録
-     * @return this
-     */
-    public RecordReceiptRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return レシートを記録
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId レシートを記録
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId レシートを記録
-     * @return this
-     */
-    public RecordReceiptRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** プラットフォームストアのコンテンツID */
     private String contentsId;
-
-    /**
-     * プラットフォームストアのコンテンツIDを取得
-     *
-     * @return レシートを記録
-     */
-    public String getContentsId() {
-        return contentsId;
-    }
-
-    /**
-     * プラットフォームストアのコンテンツIDを設定
-     *
-     * @param contentsId レシートを記録
-     */
-    public void setContentsId(String contentsId) {
-        this.contentsId = contentsId;
-    }
-
-    /**
-     * プラットフォームストアのコンテンツIDを設定
-     *
-     * @param contentsId レシートを記録
-     * @return this
-     */
-    public RecordReceiptRequest withContentsId(String contentsId) {
-        setContentsId(contentsId);
-        return this;
-    }
-
-    /** レシート */
     private String receipt;
 
-    /**
-     * レシートを取得
-     *
-     * @return レシートを記録
-     */
-    public String getReceipt() {
-        return receipt;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public RecordReceiptRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public RecordReceiptRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getContentsId() {
+		return contentsId;
+	}
+
+	public void setContentsId(String contentsId) {
+		this.contentsId = contentsId;
+	}
+
+	public RecordReceiptRequest withContentsId(String contentsId) {
+		this.contentsId = contentsId;
+		return this;
+	}
+
+	public String getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(String receipt) {
+		this.receipt = receipt;
+	}
+
+	public RecordReceiptRequest withReceipt(String receipt) {
+		this.receipt = receipt;
+		return this;
+	}
+
+    public static RecordReceiptRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new RecordReceiptRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withContentsId(data.get("contentsId") == null || data.get("contentsId").isNull() ? null : data.get("contentsId").asText())
+            .withReceipt(data.get("receipt") == null || data.get("receipt").isNull() ? null : data.get("receipt").asText());
     }
 
-    /**
-     * レシートを設定
-     *
-     * @param receipt レシートを記録
-     */
-    public void setReceipt(String receipt) {
-        this.receipt = receipt;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("contentsId", getContentsId());
+                put("receipt", getReceipt());
+            }}
+        );
     }
-
-    /**
-     * レシートを設定
-     *
-     * @param receipt レシートを記録
-     * @return this
-     */
-    public RecordReceiptRequest withReceipt(String receipt) {
-        setReceipt(receipt);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return レシートを記録
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider レシートを記録
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider レシートを記録
-     * @return this
-     */
-    public RecordReceiptRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

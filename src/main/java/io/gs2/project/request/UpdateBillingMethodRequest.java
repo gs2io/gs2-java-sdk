@@ -16,114 +16,78 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 支払い方法を更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateBillingMethodRequest extends Gs2BasicRequest<UpdateBillingMethodRequest> {
-
-    /** GS2アカウントトークン */
     private String accountToken;
-
-    /**
-     * GS2アカウントトークンを取得
-     *
-     * @return 支払い方法を更新
-     */
-    public String getAccountToken() {
-        return accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken 支払い方法を更新
-     */
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
-    }
-
-    /**
-     * GS2アカウントトークンを設定
-     *
-     * @param accountToken 支払い方法を更新
-     * @return this
-     */
-    public UpdateBillingMethodRequest withAccountToken(String accountToken) {
-        setAccountToken(accountToken);
-        return this;
-    }
-
-    /** 名前 */
     private String billingMethodName;
-
-    /**
-     * 名前を取得
-     *
-     * @return 支払い方法を更新
-     */
-    public String getBillingMethodName() {
-        return billingMethodName;
-    }
-
-    /**
-     * 名前を設定
-     *
-     * @param billingMethodName 支払い方法を更新
-     */
-    public void setBillingMethodName(String billingMethodName) {
-        this.billingMethodName = billingMethodName;
-    }
-
-    /**
-     * 名前を設定
-     *
-     * @param billingMethodName 支払い方法を更新
-     * @return this
-     */
-    public UpdateBillingMethodRequest withBillingMethodName(String billingMethodName) {
-        setBillingMethodName(billingMethodName);
-        return this;
-    }
-
-    /** 名前 */
     private String description;
 
-    /**
-     * 名前を取得
-     *
-     * @return 支払い方法を更新
-     */
-    public String getDescription() {
-        return description;
+	public String getAccountToken() {
+		return accountToken;
+	}
+
+	public void setAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+	}
+
+	public UpdateBillingMethodRequest withAccountToken(String accountToken) {
+		this.accountToken = accountToken;
+		return this;
+	}
+
+	public String getBillingMethodName() {
+		return billingMethodName;
+	}
+
+	public void setBillingMethodName(String billingMethodName) {
+		this.billingMethodName = billingMethodName;
+	}
+
+	public UpdateBillingMethodRequest withBillingMethodName(String billingMethodName) {
+		this.billingMethodName = billingMethodName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateBillingMethodRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+    public static UpdateBillingMethodRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateBillingMethodRequest()
+            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText())
+            .withBillingMethodName(data.get("billingMethodName") == null || data.get("billingMethodName").isNull() ? null : data.get("billingMethodName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText());
     }
 
-    /**
-     * 名前を設定
-     *
-     * @param description 支払い方法を更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("accountToken", getAccountToken());
+                put("billingMethodName", getBillingMethodName());
+                put("description", getDescription());
+            }}
+        );
     }
-
-    /**
-     * 名前を設定
-     *
-     * @param description 支払い方法を更新
-     * @return this
-     */
-    public UpdateBillingMethodRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
 }

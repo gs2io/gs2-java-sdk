@@ -16,130 +16,90 @@
 
 package io.gs2.lottery.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ボックスから取り出したアイテム
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BoxItem implements IModel, Serializable {
-	/** 入手アクションのリスト */
-	protected List<AcquireAction> acquireActions;
+	private List<AcquireAction> acquireActions;
+	private Integer remaining;
+	private Integer initial;
 
-	/**
-	 * 入手アクションのリストを取得
-	 *
-	 * @return 入手アクションのリスト
-	 */
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
 
-	/**
-	 * 入手アクションのリストを設定
-	 *
-	 * @param acquireActions 入手アクションのリスト
-	 */
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
 
-	/**
-	 * 入手アクションのリストを設定
-	 *
-	 * @param acquireActions 入手アクションのリスト
-	 * @return this
-	 */
 	public BoxItem withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
-	/** 残り数量 */
-	protected Integer remaining;
 
-	/**
-	 * 残り数量を取得
-	 *
-	 * @return 残り数量
-	 */
 	public Integer getRemaining() {
 		return remaining;
 	}
 
-	/**
-	 * 残り数量を設定
-	 *
-	 * @param remaining 残り数量
-	 */
 	public void setRemaining(Integer remaining) {
 		this.remaining = remaining;
 	}
 
-	/**
-	 * 残り数量を設定
-	 *
-	 * @param remaining 残り数量
-	 * @return this
-	 */
 	public BoxItem withRemaining(Integer remaining) {
 		this.remaining = remaining;
 		return this;
 	}
-	/** 初期数量 */
-	protected Integer initial;
 
-	/**
-	 * 初期数量を取得
-	 *
-	 * @return 初期数量
-	 */
 	public Integer getInitial() {
 		return initial;
 	}
 
-	/**
-	 * 初期数量を設定
-	 *
-	 * @param initial 初期数量
-	 */
 	public void setInitial(Integer initial) {
 		this.initial = initial;
 	}
 
-	/**
-	 * 初期数量を設定
-	 *
-	 * @param initial 初期数量
-	 * @return this
-	 */
 	public BoxItem withInitial(Integer initial) {
 		this.initial = initial;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> acquireActions = new ArrayList<>();
-        if(this.acquireActions != null) {
-            for(AcquireAction item : this.acquireActions) {
-                acquireActions.add(item.toJson());
-            }
+    public static BoxItem fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("remaining", this.getRemaining())
-            .put("initial", this.getInitial());
-        body_.set("acquireActions", JsonNodeFactory.instance.arrayNode().addAll(acquireActions));
-        return body_;
+        return new BoxItem()
+            .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withRemaining(data.get("remaining") == null || data.get("remaining").isNull() ? null : data.get("remaining").intValue())
+            .withInitial(data.get("initial") == null || data.get("initial").isNull() ? null : data.get("initial").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("remaining", getRemaining());
+                put("initial", getInitial());
+            }}
+        );
     }
 
 	@Override

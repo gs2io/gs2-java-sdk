@@ -16,59 +16,75 @@
 
 package io.gs2.deploy.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.deploy.model.*;
+import io.gs2.deploy.model.OutputField;
+import io.gs2.deploy.model.Resource;
 
-/**
- * 作成されたのリソースの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeResourcesResult implements IResult, Serializable {
-	/** 作成されたのリソースのリスト */
-	private List<Resource> items;
-	/** リストの続きを取得するためのページトークン */
-	private String nextPageToken;
+    private List<Resource> items;
+    private String nextPageToken;
 
-	/**
-	 * 作成されたのリソースのリストを取得
-	 *
-	 * @return 作成されたのリソースの一覧を取得
-	 */
 	public List<Resource> getItems() {
 		return items;
 	}
 
-	/**
-	 * 作成されたのリソースのリストを設定
-	 *
-	 * @param items 作成されたのリソースの一覧を取得
-	 */
 	public void setItems(List<Resource> items) {
 		this.items = items;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを取得
-	 *
-	 * @return 作成されたのリソースの一覧を取得
-	 */
+	public DescribeResourcesResult withItems(List<Resource> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	/**
-	 * リストの続きを取得するためのページトークンを設定
-	 *
-	 * @param nextPageToken 作成されたのリソースの一覧を取得
-	 */
 	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
+
+	public DescribeResourcesResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
+    public static DescribeResourcesResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeResourcesResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Resource>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Resource.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<Resource>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
+            }}
+        );
+    }
 }

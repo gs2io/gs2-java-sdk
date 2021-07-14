@@ -16,195 +16,124 @@
 
 package io.gs2.quest.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * クエストグループ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class QuestGroupModel implements IModel, Serializable, Comparable<QuestGroupModel> {
-	/** クエストグループ */
-	protected String questGroupModelId;
+	private String questGroupModelId;
+	private String name;
+	private String metadata;
+	private List<QuestModel> quests;
+	private String challengePeriodEventId;
 
-	/**
-	 * クエストグループを取得
-	 *
-	 * @return クエストグループ
-	 */
 	public String getQuestGroupModelId() {
 		return questGroupModelId;
 	}
 
-	/**
-	 * クエストグループを設定
-	 *
-	 * @param questGroupModelId クエストグループ
-	 */
 	public void setQuestGroupModelId(String questGroupModelId) {
 		this.questGroupModelId = questGroupModelId;
 	}
 
-	/**
-	 * クエストグループを設定
-	 *
-	 * @param questGroupModelId クエストグループ
-	 * @return this
-	 */
 	public QuestGroupModel withQuestGroupModelId(String questGroupModelId) {
 		this.questGroupModelId = questGroupModelId;
 		return this;
 	}
-	/** クエストグループ名 */
-	protected String name;
 
-	/**
-	 * クエストグループ名を取得
-	 *
-	 * @return クエストグループ名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * クエストグループ名を設定
-	 *
-	 * @param name クエストグループ名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * クエストグループ名を設定
-	 *
-	 * @param name クエストグループ名
-	 * @return this
-	 */
 	public QuestGroupModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** クエストグループのメタデータ */
-	protected String metadata;
 
-	/**
-	 * クエストグループのメタデータを取得
-	 *
-	 * @return クエストグループのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * クエストグループのメタデータを設定
-	 *
-	 * @param metadata クエストグループのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * クエストグループのメタデータを設定
-	 *
-	 * @param metadata クエストグループのメタデータ
-	 * @return this
-	 */
 	public QuestGroupModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** グループに属するクエスト */
-	protected List<QuestModel> quests;
 
-	/**
-	 * グループに属するクエストを取得
-	 *
-	 * @return グループに属するクエスト
-	 */
 	public List<QuestModel> getQuests() {
 		return quests;
 	}
 
-	/**
-	 * グループに属するクエストを設定
-	 *
-	 * @param quests グループに属するクエスト
-	 */
 	public void setQuests(List<QuestModel> quests) {
 		this.quests = quests;
 	}
 
-	/**
-	 * グループに属するクエストを設定
-	 *
-	 * @param quests グループに属するクエスト
-	 * @return this
-	 */
 	public QuestGroupModel withQuests(List<QuestModel> quests) {
 		this.quests = quests;
 		return this;
 	}
-	/** 挑戦可能な期間を指定するイベントマスター のGRN */
-	protected String challengePeriodEventId;
 
-	/**
-	 * 挑戦可能な期間を指定するイベントマスター のGRNを取得
-	 *
-	 * @return 挑戦可能な期間を指定するイベントマスター のGRN
-	 */
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
 
-	/**
-	 * 挑戦可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId 挑戦可能な期間を指定するイベントマスター のGRN
-	 */
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
 
-	/**
-	 * 挑戦可能な期間を指定するイベントマスター のGRNを設定
-	 *
-	 * @param challengePeriodEventId 挑戦可能な期間を指定するイベントマスター のGRN
-	 * @return this
-	 */
 	public QuestGroupModel withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> quests = new ArrayList<>();
-        if(this.quests != null) {
-            for(QuestModel item : this.quests) {
-                quests.add(item.toJson());
-            }
+    public static QuestGroupModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("questGroupModelId", this.getQuestGroupModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("challengePeriodEventId", this.getChallengePeriodEventId());
-        body_.set("quests", JsonNodeFactory.instance.arrayNode().addAll(quests));
-        return body_;
+        return new QuestGroupModel()
+            .withQuestGroupModelId(data.get("questGroupModelId") == null || data.get("questGroupModelId").isNull() ? null : data.get("questGroupModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withQuests(data.get("quests") == null || data.get("quests").isNull() ? new ArrayList<QuestModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("quests").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return QuestModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("questGroupModelId", getQuestGroupModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("quests", getQuests() == null ? new ArrayList<QuestModel>() :
+                    getQuests().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("challengePeriodEventId", getChallengePeriodEventId());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(QuestGroupModel o) {
 		return questGroupModelId.compareTo(o.questGroupModelId);

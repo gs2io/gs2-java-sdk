@@ -16,39 +16,48 @@
 
 package io.gs2.ranking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.ranking.model.*;
+import io.gs2.ranking.model.SubscribeUser;
 
-/**
- * ユーザIDを指定してユーザIDを購読 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SubscribeByUserIdResult implements IResult, Serializable {
-	/** 購読した購読対象 */
-	private SubscribeUser item;
+    private SubscribeUser item;
 
-	/**
-	 * 購読した購読対象を取得
-	 *
-	 * @return ユーザIDを指定してユーザIDを購読
-	 */
 	public SubscribeUser getItem() {
 		return item;
 	}
 
-	/**
-	 * 購読した購読対象を設定
-	 *
-	 * @param item ユーザIDを指定してユーザIDを購読
-	 */
 	public void setItem(SubscribeUser item) {
 		this.item = item;
 	}
+
+	public SubscribeByUserIdResult withItem(SubscribeUser item) {
+		this.item = item;
+		return this;
+	}
+
+    public static SubscribeByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SubscribeByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SubscribeUser.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

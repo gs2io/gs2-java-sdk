@@ -16,252 +16,144 @@
 
 package io.gs2.log.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * アクセスログ
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AccessLog implements IModel, Serializable {
-	/** 日時 */
-	protected Long timestamp;
+	private Long timestamp;
+	private String requestId;
+	private String service;
+	private String method;
+	private String userId;
+	private String request;
+	private String result;
 
-	/**
-	 * 日時を取得
-	 *
-	 * @return 日時
-	 */
 	public Long getTimestamp() {
 		return timestamp;
 	}
 
-	/**
-	 * 日時を設定
-	 *
-	 * @param timestamp 日時
-	 */
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
 
-	/**
-	 * 日時を設定
-	 *
-	 * @param timestamp 日時
-	 * @return this
-	 */
 	public AccessLog withTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
-	/** リクエストID */
-	protected String requestId;
 
-	/**
-	 * リクエストIDを取得
-	 *
-	 * @return リクエストID
-	 */
 	public String getRequestId() {
 		return requestId;
 	}
 
-	/**
-	 * リクエストIDを設定
-	 *
-	 * @param requestId リクエストID
-	 */
 	public void setRequestId(String requestId) {
 		this.requestId = requestId;
 	}
 
-	/**
-	 * リクエストIDを設定
-	 *
-	 * @param requestId リクエストID
-	 * @return this
-	 */
 	public AccessLog withRequestId(String requestId) {
 		this.requestId = requestId;
 		return this;
 	}
-	/** マイクロサービスの種類 */
-	protected String service;
 
-	/**
-	 * マイクロサービスの種類を取得
-	 *
-	 * @return マイクロサービスの種類
-	 */
 	public String getService() {
 		return service;
 	}
 
-	/**
-	 * マイクロサービスの種類を設定
-	 *
-	 * @param service マイクロサービスの種類
-	 */
 	public void setService(String service) {
 		this.service = service;
 	}
 
-	/**
-	 * マイクロサービスの種類を設定
-	 *
-	 * @param service マイクロサービスの種類
-	 * @return this
-	 */
 	public AccessLog withService(String service) {
 		this.service = service;
 		return this;
 	}
-	/** マイクロサービスのメソッド */
-	protected String method;
 
-	/**
-	 * マイクロサービスのメソッドを取得
-	 *
-	 * @return マイクロサービスのメソッド
-	 */
 	public String getMethod() {
 		return method;
 	}
 
-	/**
-	 * マイクロサービスのメソッドを設定
-	 *
-	 * @param method マイクロサービスのメソッド
-	 */
 	public void setMethod(String method) {
 		this.method = method;
 	}
 
-	/**
-	 * マイクロサービスのメソッドを設定
-	 *
-	 * @param method マイクロサービスのメソッド
-	 * @return this
-	 */
 	public AccessLog withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public AccessLog withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** リクエストパラメータ */
-	protected String request;
 
-	/**
-	 * リクエストパラメータを取得
-	 *
-	 * @return リクエストパラメータ
-	 */
 	public String getRequest() {
 		return request;
 	}
 
-	/**
-	 * リクエストパラメータを設定
-	 *
-	 * @param request リクエストパラメータ
-	 */
 	public void setRequest(String request) {
 		this.request = request;
 	}
 
-	/**
-	 * リクエストパラメータを設定
-	 *
-	 * @param request リクエストパラメータ
-	 * @return this
-	 */
 	public AccessLog withRequest(String request) {
 		this.request = request;
 		return this;
 	}
-	/** 応答内容 */
-	protected String result;
 
-	/**
-	 * 応答内容を取得
-	 *
-	 * @return 応答内容
-	 */
 	public String getResult() {
 		return result;
 	}
 
-	/**
-	 * 応答内容を設定
-	 *
-	 * @param result 応答内容
-	 */
 	public void setResult(String result) {
 		this.result = result;
 	}
 
-	/**
-	 * 応答内容を設定
-	 *
-	 * @param result 応答内容
-	 * @return this
-	 */
 	public AccessLog withResult(String result) {
 		this.result = result;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("timestamp", this.getTimestamp())
-            .put("requestId", this.getRequestId())
-            .put("service", this.getService())
-            .put("method", this.getMethod())
-            .put("userId", this.getUserId())
-            .put("request", this.getRequest())
-            .put("result", this.getResult());
-        return body_;
+    public static AccessLog fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AccessLog()
+            .withTimestamp(data.get("timestamp") == null || data.get("timestamp").isNull() ? null : data.get("timestamp").longValue())
+            .withRequestId(data.get("requestId") == null || data.get("requestId").isNull() ? null : data.get("requestId").asText())
+            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
+            .withMethod(data.get("method") == null || data.get("method").isNull() ? null : data.get("method").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withRequest(data.get("request") == null || data.get("request").isNull() ? null : data.get("request").asText())
+            .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("timestamp", getTimestamp());
+                put("requestId", getRequestId());
+                put("service", getService());
+                put("method", getMethod());
+                put("userId", getUserId());
+                put("request", getRequest());
+                put("result", getResult());
+            }}
+        );
     }
 
 	@Override

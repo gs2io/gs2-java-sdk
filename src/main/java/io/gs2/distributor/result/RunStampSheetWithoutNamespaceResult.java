@@ -16,39 +16,47 @@
 
 package io.gs2.distributor.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.distributor.model.*;
 
-/**
- * スタンプシートの完了を報告する のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RunStampSheetWithoutNamespaceResult implements IResult, Serializable {
-	/** レスポンス内容 */
-	private String result;
+    private String result;
 
-	/**
-	 * レスポンス内容を取得
-	 *
-	 * @return スタンプシートの完了を報告する
-	 */
 	public String getResult() {
 		return result;
 	}
 
-	/**
-	 * レスポンス内容を設定
-	 *
-	 * @param result スタンプシートの完了を報告する
-	 */
 	public void setResult(String result) {
 		this.result = result;
 	}
+
+	public RunStampSheetWithoutNamespaceResult withResult(String result) {
+		this.result = result;
+		return this;
+	}
+
+    public static RunStampSheetWithoutNamespaceResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new RunStampSheetWithoutNamespaceResult()
+            .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("result", getResult());
+            }}
+        );
+    }
 }

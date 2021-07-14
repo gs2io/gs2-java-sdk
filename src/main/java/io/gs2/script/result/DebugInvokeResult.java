@@ -16,119 +16,119 @@
 
 package io.gs2.script.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.script.model.*;
 
-/**
- * スクリプトを実行します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DebugInvokeResult implements IResult, Serializable {
-	/** ステータスコード */
-	private Integer code;
-	/** 戻り値 */
-	private String result;
-	/** スクリプトの実行時間(ミリ秒) */
-	private Integer executeTime;
-	/** 費用の計算対象となった時間(秒) */
-	private Integer charged;
-	/** 標準出力の内容のリスト */
-	private List<String> output;
+    private Integer code;
+    private String result;
+    private Integer executeTime;
+    private Integer charged;
+    private List<String> output;
 
-	/**
-	 * ステータスコードを取得
-	 *
-	 * @return スクリプトを実行します
-	 */
 	public Integer getCode() {
 		return code;
 	}
 
-	/**
-	 * ステータスコードを設定
-	 *
-	 * @param code スクリプトを実行します
-	 */
 	public void setCode(Integer code) {
 		this.code = code;
 	}
 
-	/**
-	 * 戻り値を取得
-	 *
-	 * @return スクリプトを実行します
-	 */
+	public DebugInvokeResult withCode(Integer code) {
+		this.code = code;
+		return this;
+	}
+
 	public String getResult() {
 		return result;
 	}
 
-	/**
-	 * 戻り値を設定
-	 *
-	 * @param result スクリプトを実行します
-	 */
 	public void setResult(String result) {
 		this.result = result;
 	}
 
-	/**
-	 * スクリプトの実行時間(ミリ秒)を取得
-	 *
-	 * @return スクリプトを実行します
-	 */
+	public DebugInvokeResult withResult(String result) {
+		this.result = result;
+		return this;
+	}
+
 	public Integer getExecuteTime() {
 		return executeTime;
 	}
 
-	/**
-	 * スクリプトの実行時間(ミリ秒)を設定
-	 *
-	 * @param executeTime スクリプトを実行します
-	 */
 	public void setExecuteTime(Integer executeTime) {
 		this.executeTime = executeTime;
 	}
 
-	/**
-	 * 費用の計算対象となった時間(秒)を取得
-	 *
-	 * @return スクリプトを実行します
-	 */
+	public DebugInvokeResult withExecuteTime(Integer executeTime) {
+		this.executeTime = executeTime;
+		return this;
+	}
+
 	public Integer getCharged() {
 		return charged;
 	}
 
-	/**
-	 * 費用の計算対象となった時間(秒)を設定
-	 *
-	 * @param charged スクリプトを実行します
-	 */
 	public void setCharged(Integer charged) {
 		this.charged = charged;
 	}
 
-	/**
-	 * 標準出力の内容のリストを取得
-	 *
-	 * @return スクリプトを実行します
-	 */
+	public DebugInvokeResult withCharged(Integer charged) {
+		this.charged = charged;
+		return this;
+	}
+
 	public List<String> getOutput() {
 		return output;
 	}
 
-	/**
-	 * 標準出力の内容のリストを設定
-	 *
-	 * @param output スクリプトを実行します
-	 */
 	public void setOutput(List<String> output) {
 		this.output = output;
 	}
+
+	public DebugInvokeResult withOutput(List<String> output) {
+		this.output = output;
+		return this;
+	}
+
+    public static DebugInvokeResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DebugInvokeResult()
+            .withCode(data.get("code") == null || data.get("code").isNull() ? null : data.get("code").intValue())
+            .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText())
+            .withExecuteTime(data.get("executeTime") == null || data.get("executeTime").isNull() ? null : data.get("executeTime").intValue())
+            .withCharged(data.get("charged") == null || data.get("charged").isNull() ? null : data.get("charged").intValue())
+            .withOutput(data.get("output") == null || data.get("output").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("output").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("code", getCode());
+                put("result", getResult());
+                put("executeTime", getExecuteTime());
+                put("charged", getCharged());
+                put("output", getOutput() == null ? new ArrayList<String>() :
+                    getOutput().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

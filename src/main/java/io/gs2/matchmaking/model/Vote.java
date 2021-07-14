@@ -16,227 +16,140 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 投票状況
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Vote implements IModel, Serializable, Comparable<Vote> {
-	/** 投票状況 */
-	protected String voteId;
+	private String voteId;
+	private String ratingName;
+	private String gatheringName;
+	private List<WrittenBallot> writtenBallots;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 投票状況を取得
-	 *
-	 * @return 投票状況
-	 */
 	public String getVoteId() {
 		return voteId;
 	}
 
-	/**
-	 * 投票状況を設定
-	 *
-	 * @param voteId 投票状況
-	 */
 	public void setVoteId(String voteId) {
 		this.voteId = voteId;
 	}
 
-	/**
-	 * 投票状況を設定
-	 *
-	 * @param voteId 投票状況
-	 * @return this
-	 */
 	public Vote withVoteId(String voteId) {
 		this.voteId = voteId;
 		return this;
 	}
-	/** レーティング名 */
-	protected String ratingName;
 
-	/**
-	 * レーティング名を取得
-	 *
-	 * @return レーティング名
-	 */
 	public String getRatingName() {
 		return ratingName;
 	}
 
-	/**
-	 * レーティング名を設定
-	 *
-	 * @param ratingName レーティング名
-	 */
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
 
-	/**
-	 * レーティング名を設定
-	 *
-	 * @param ratingName レーティング名
-	 * @return this
-	 */
 	public Vote withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;
 	}
-	/** 投票対象のギャザリング名 */
-	protected String gatheringName;
 
-	/**
-	 * 投票対象のギャザリング名を取得
-	 *
-	 * @return 投票対象のギャザリング名
-	 */
 	public String getGatheringName() {
 		return gatheringName;
 	}
 
-	/**
-	 * 投票対象のギャザリング名を設定
-	 *
-	 * @param gatheringName 投票対象のギャザリング名
-	 */
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
 
-	/**
-	 * 投票対象のギャザリング名を設定
-	 *
-	 * @param gatheringName 投票対象のギャザリング名
-	 * @return this
-	 */
 	public Vote withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;
 	}
-	/** 投票用紙のリスト */
-	protected List<WrittenBallot> writtenBallots;
 
-	/**
-	 * 投票用紙のリストを取得
-	 *
-	 * @return 投票用紙のリスト
-	 */
 	public List<WrittenBallot> getWrittenBallots() {
 		return writtenBallots;
 	}
 
-	/**
-	 * 投票用紙のリストを設定
-	 *
-	 * @param writtenBallots 投票用紙のリスト
-	 */
 	public void setWrittenBallots(List<WrittenBallot> writtenBallots) {
 		this.writtenBallots = writtenBallots;
 	}
 
-	/**
-	 * 投票用紙のリストを設定
-	 *
-	 * @param writtenBallots 投票用紙のリスト
-	 * @return this
-	 */
 	public Vote withWrittenBallots(List<WrittenBallot> writtenBallots) {
 		this.writtenBallots = writtenBallots;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Vote withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Vote withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> writtenBallots = new ArrayList<>();
-        if(this.writtenBallots != null) {
-            for(WrittenBallot item : this.writtenBallots) {
-                writtenBallots.add(item.toJson());
-            }
+    public static Vote fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("voteId", this.getVoteId())
-            .put("ratingName", this.getRatingName())
-            .put("gatheringName", this.getGatheringName())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("writtenBallots", JsonNodeFactory.instance.arrayNode().addAll(writtenBallots));
-        return body_;
+        return new Vote()
+            .withVoteId(data.get("voteId") == null || data.get("voteId").isNull() ? null : data.get("voteId").asText())
+            .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText())
+            .withGatheringName(data.get("gatheringName") == null || data.get("gatheringName").isNull() ? null : data.get("gatheringName").asText())
+            .withWrittenBallots(data.get("writtenBallots") == null || data.get("writtenBallots").isNull() ? new ArrayList<WrittenBallot>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("writtenBallots").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return WrittenBallot.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("voteId", getVoteId());
+                put("ratingName", getRatingName());
+                put("gatheringName", getGatheringName());
+                put("writtenBallots", getWrittenBallots() == null ? new ArrayList<WrittenBallot>() :
+                    getWrittenBallots().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Vote o) {
 		return voteId.compareTo(o.voteId);

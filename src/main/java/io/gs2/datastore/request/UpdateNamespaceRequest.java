@@ -16,146 +16,96 @@
 
 package io.gs2.datastore.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.datastore.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.datastore.model.LogSetting;
+import io.gs2.datastore.model.ScriptSetting;
 
-/**
- * ネームスペースを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
-
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
-    }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
-    }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
-    /** アップロード完了報告時に実行するスクリプト */
     private ScriptSetting doneUploadScript;
 
-    /**
-     * アップロード完了報告時に実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getDoneUploadScript() {
-        return doneUploadScript;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+	public ScriptSetting getDoneUploadScript() {
+		return doneUploadScript;
+	}
+
+	public void setDoneUploadScript(ScriptSetting doneUploadScript) {
+		this.doneUploadScript = doneUploadScript;
+	}
+
+	public UpdateNamespaceRequest withDoneUploadScript(ScriptSetting doneUploadScript) {
+		this.doneUploadScript = doneUploadScript;
+		return this;
+	}
+
+    public static UpdateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateNamespaceRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withDoneUploadScript(data.get("doneUploadScript") == null || data.get("doneUploadScript").isNull() ? null : ScriptSetting.fromJson(data.get("doneUploadScript")));
     }
 
-    /**
-     * アップロード完了報告時に実行するスクリプトを設定
-     *
-     * @param doneUploadScript ネームスペースを更新
-     */
-    public void setDoneUploadScript(ScriptSetting doneUploadScript) {
-        this.doneUploadScript = doneUploadScript;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("description", getDescription());
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("doneUploadScript", getDoneUploadScript() != null ? getDoneUploadScript().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * アップロード完了報告時に実行するスクリプトを設定
-     *
-     * @param doneUploadScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDoneUploadScript(ScriptSetting doneUploadScript) {
-        setDoneUploadScript(doneUploadScript);
-        return this;
-    }
-
 }

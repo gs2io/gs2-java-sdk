@@ -16,530 +16,286 @@
 
 package io.gs2.schedule.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.schedule.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * イベントマスターを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName イベントマスターを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** イベントの種類名 */
     private String name;
-
-    /**
-     * イベントの種類名を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * イベントの種類名を設定
-     *
-     * @param name イベントマスターを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * イベントの種類名を設定
-     *
-     * @param name イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** イベントマスターの説明 */
     private String description;
-
-    /**
-     * イベントマスターの説明を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * イベントマスターの説明を設定
-     *
-     * @param description イベントマスターを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * イベントマスターの説明を設定
-     *
-     * @param description イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** イベントの種類のメタデータ */
     private String metadata;
-
-    /**
-     * イベントの種類のメタデータを取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * イベントの種類のメタデータを設定
-     *
-     * @param metadata イベントマスターを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * イベントの種類のメタデータを設定
-     *
-     * @param metadata イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** イベント期間の種類 */
     private String scheduleType;
-
-    /**
-     * イベント期間の種類を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public String getScheduleType() {
-        return scheduleType;
-    }
-
-    /**
-     * イベント期間の種類を設定
-     *
-     * @param scheduleType イベントマスターを新規作成
-     */
-    public void setScheduleType(String scheduleType) {
-        this.scheduleType = scheduleType;
-    }
-
-    /**
-     * イベント期間の種類を設定
-     *
-     * @param scheduleType イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withScheduleType(String scheduleType) {
-        setScheduleType(scheduleType);
-        return this;
-    }
-
-    /** イベントの開始日時 */
     private Long absoluteBegin;
-
-    /**
-     * イベントの開始日時を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public Long getAbsoluteBegin() {
-        return absoluteBegin;
-    }
-
-    /**
-     * イベントの開始日時を設定
-     *
-     * @param absoluteBegin イベントマスターを新規作成
-     */
-    public void setAbsoluteBegin(Long absoluteBegin) {
-        this.absoluteBegin = absoluteBegin;
-    }
-
-    /**
-     * イベントの開始日時を設定
-     *
-     * @param absoluteBegin イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withAbsoluteBegin(Long absoluteBegin) {
-        setAbsoluteBegin(absoluteBegin);
-        return this;
-    }
-
-    /** イベントの終了日時 */
     private Long absoluteEnd;
-
-    /**
-     * イベントの終了日時を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public Long getAbsoluteEnd() {
-        return absoluteEnd;
-    }
-
-    /**
-     * イベントの終了日時を設定
-     *
-     * @param absoluteEnd イベントマスターを新規作成
-     */
-    public void setAbsoluteEnd(Long absoluteEnd) {
-        this.absoluteEnd = absoluteEnd;
-    }
-
-    /**
-     * イベントの終了日時を設定
-     *
-     * @param absoluteEnd イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withAbsoluteEnd(Long absoluteEnd) {
-        setAbsoluteEnd(absoluteEnd);
-        return this;
-    }
-
-    /** 繰り返しの種類 */
     private String repeatType;
-
-    /**
-     * 繰り返しの種類を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public String getRepeatType() {
-        return repeatType;
-    }
-
-    /**
-     * 繰り返しの種類を設定
-     *
-     * @param repeatType イベントマスターを新規作成
-     */
-    public void setRepeatType(String repeatType) {
-        this.repeatType = repeatType;
-    }
-
-    /**
-     * 繰り返しの種類を設定
-     *
-     * @param repeatType イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withRepeatType(String repeatType) {
-        setRepeatType(repeatType);
-        return this;
-    }
-
-    /** イベントの繰り返し開始日 */
     private Integer repeatBeginDayOfMonth;
-
-    /**
-     * イベントの繰り返し開始日を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public Integer getRepeatBeginDayOfMonth() {
-        return repeatBeginDayOfMonth;
-    }
-
-    /**
-     * イベントの繰り返し開始日を設定
-     *
-     * @param repeatBeginDayOfMonth イベントマスターを新規作成
-     */
-    public void setRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
-        this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
-    }
-
-    /**
-     * イベントの繰り返し開始日を設定
-     *
-     * @param repeatBeginDayOfMonth イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
-        setRepeatBeginDayOfMonth(repeatBeginDayOfMonth);
-        return this;
-    }
-
-    /** イベントの繰り返し終了日 */
     private Integer repeatEndDayOfMonth;
-
-    /**
-     * イベントの繰り返し終了日を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public Integer getRepeatEndDayOfMonth() {
-        return repeatEndDayOfMonth;
-    }
-
-    /**
-     * イベントの繰り返し終了日を設定
-     *
-     * @param repeatEndDayOfMonth イベントマスターを新規作成
-     */
-    public void setRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
-        this.repeatEndDayOfMonth = repeatEndDayOfMonth;
-    }
-
-    /**
-     * イベントの繰り返し終了日を設定
-     *
-     * @param repeatEndDayOfMonth イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
-        setRepeatEndDayOfMonth(repeatEndDayOfMonth);
-        return this;
-    }
-
-    /** イベントの繰り返し開始曜日 */
     private String repeatBeginDayOfWeek;
-
-    /**
-     * イベントの繰り返し開始曜日を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public String getRepeatBeginDayOfWeek() {
-        return repeatBeginDayOfWeek;
-    }
-
-    /**
-     * イベントの繰り返し開始曜日を設定
-     *
-     * @param repeatBeginDayOfWeek イベントマスターを新規作成
-     */
-    public void setRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
-        this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
-    }
-
-    /**
-     * イベントの繰り返し開始曜日を設定
-     *
-     * @param repeatBeginDayOfWeek イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
-        setRepeatBeginDayOfWeek(repeatBeginDayOfWeek);
-        return this;
-    }
-
-    /** イベントの繰り返し終了曜日 */
     private String repeatEndDayOfWeek;
-
-    /**
-     * イベントの繰り返し終了曜日を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public String getRepeatEndDayOfWeek() {
-        return repeatEndDayOfWeek;
-    }
-
-    /**
-     * イベントの繰り返し終了曜日を設定
-     *
-     * @param repeatEndDayOfWeek イベントマスターを新規作成
-     */
-    public void setRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
-        this.repeatEndDayOfWeek = repeatEndDayOfWeek;
-    }
-
-    /**
-     * イベントの繰り返し終了曜日を設定
-     *
-     * @param repeatEndDayOfWeek イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
-        setRepeatEndDayOfWeek(repeatEndDayOfWeek);
-        return this;
-    }
-
-    /** イベントの繰り返し開始時間 */
     private Integer repeatBeginHour;
-
-    /**
-     * イベントの繰り返し開始時間を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public Integer getRepeatBeginHour() {
-        return repeatBeginHour;
-    }
-
-    /**
-     * イベントの繰り返し開始時間を設定
-     *
-     * @param repeatBeginHour イベントマスターを新規作成
-     */
-    public void setRepeatBeginHour(Integer repeatBeginHour) {
-        this.repeatBeginHour = repeatBeginHour;
-    }
-
-    /**
-     * イベントの繰り返し開始時間を設定
-     *
-     * @param repeatBeginHour イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withRepeatBeginHour(Integer repeatBeginHour) {
-        setRepeatBeginHour(repeatBeginHour);
-        return this;
-    }
-
-    /** イベントの繰り返し終了時間 */
     private Integer repeatEndHour;
-
-    /**
-     * イベントの繰り返し終了時間を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public Integer getRepeatEndHour() {
-        return repeatEndHour;
-    }
-
-    /**
-     * イベントの繰り返し終了時間を設定
-     *
-     * @param repeatEndHour イベントマスターを新規作成
-     */
-    public void setRepeatEndHour(Integer repeatEndHour) {
-        this.repeatEndHour = repeatEndHour;
-    }
-
-    /**
-     * イベントの繰り返し終了時間を設定
-     *
-     * @param repeatEndHour イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withRepeatEndHour(Integer repeatEndHour) {
-        setRepeatEndHour(repeatEndHour);
-        return this;
-    }
-
-    /** イベントの開始トリガー名 */
     private String relativeTriggerName;
-
-    /**
-     * イベントの開始トリガー名を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public String getRelativeTriggerName() {
-        return relativeTriggerName;
-    }
-
-    /**
-     * イベントの開始トリガー名を設定
-     *
-     * @param relativeTriggerName イベントマスターを新規作成
-     */
-    public void setRelativeTriggerName(String relativeTriggerName) {
-        this.relativeTriggerName = relativeTriggerName;
-    }
-
-    /**
-     * イベントの開始トリガー名を設定
-     *
-     * @param relativeTriggerName イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withRelativeTriggerName(String relativeTriggerName) {
-        setRelativeTriggerName(relativeTriggerName);
-        return this;
-    }
-
-    /** イベントの開催期間(秒) */
     private Integer relativeDuration;
 
-    /**
-     * イベントの開催期間(秒)を取得
-     *
-     * @return イベントマスターを新規作成
-     */
-    public Integer getRelativeDuration() {
-        return relativeDuration;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateEventMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateEventMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateEventMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateEventMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getScheduleType() {
+		return scheduleType;
+	}
+
+	public void setScheduleType(String scheduleType) {
+		this.scheduleType = scheduleType;
+	}
+
+	public CreateEventMasterRequest withScheduleType(String scheduleType) {
+		this.scheduleType = scheduleType;
+		return this;
+	}
+
+	public Long getAbsoluteBegin() {
+		return absoluteBegin;
+	}
+
+	public void setAbsoluteBegin(Long absoluteBegin) {
+		this.absoluteBegin = absoluteBegin;
+	}
+
+	public CreateEventMasterRequest withAbsoluteBegin(Long absoluteBegin) {
+		this.absoluteBegin = absoluteBegin;
+		return this;
+	}
+
+	public Long getAbsoluteEnd() {
+		return absoluteEnd;
+	}
+
+	public void setAbsoluteEnd(Long absoluteEnd) {
+		this.absoluteEnd = absoluteEnd;
+	}
+
+	public CreateEventMasterRequest withAbsoluteEnd(Long absoluteEnd) {
+		this.absoluteEnd = absoluteEnd;
+		return this;
+	}
+
+	public String getRepeatType() {
+		return repeatType;
+	}
+
+	public void setRepeatType(String repeatType) {
+		this.repeatType = repeatType;
+	}
+
+	public CreateEventMasterRequest withRepeatType(String repeatType) {
+		this.repeatType = repeatType;
+		return this;
+	}
+
+	public Integer getRepeatBeginDayOfMonth() {
+		return repeatBeginDayOfMonth;
+	}
+
+	public void setRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
+		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
+	}
+
+	public CreateEventMasterRequest withRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
+		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
+		return this;
+	}
+
+	public Integer getRepeatEndDayOfMonth() {
+		return repeatEndDayOfMonth;
+	}
+
+	public void setRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
+		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
+	}
+
+	public CreateEventMasterRequest withRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
+		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
+		return this;
+	}
+
+	public String getRepeatBeginDayOfWeek() {
+		return repeatBeginDayOfWeek;
+	}
+
+	public void setRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
+		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
+	}
+
+	public CreateEventMasterRequest withRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
+		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
+		return this;
+	}
+
+	public String getRepeatEndDayOfWeek() {
+		return repeatEndDayOfWeek;
+	}
+
+	public void setRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
+		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
+	}
+
+	public CreateEventMasterRequest withRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
+		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
+		return this;
+	}
+
+	public Integer getRepeatBeginHour() {
+		return repeatBeginHour;
+	}
+
+	public void setRepeatBeginHour(Integer repeatBeginHour) {
+		this.repeatBeginHour = repeatBeginHour;
+	}
+
+	public CreateEventMasterRequest withRepeatBeginHour(Integer repeatBeginHour) {
+		this.repeatBeginHour = repeatBeginHour;
+		return this;
+	}
+
+	public Integer getRepeatEndHour() {
+		return repeatEndHour;
+	}
+
+	public void setRepeatEndHour(Integer repeatEndHour) {
+		this.repeatEndHour = repeatEndHour;
+	}
+
+	public CreateEventMasterRequest withRepeatEndHour(Integer repeatEndHour) {
+		this.repeatEndHour = repeatEndHour;
+		return this;
+	}
+
+	public String getRelativeTriggerName() {
+		return relativeTriggerName;
+	}
+
+	public void setRelativeTriggerName(String relativeTriggerName) {
+		this.relativeTriggerName = relativeTriggerName;
+	}
+
+	public CreateEventMasterRequest withRelativeTriggerName(String relativeTriggerName) {
+		this.relativeTriggerName = relativeTriggerName;
+		return this;
+	}
+
+	public Integer getRelativeDuration() {
+		return relativeDuration;
+	}
+
+	public void setRelativeDuration(Integer relativeDuration) {
+		this.relativeDuration = relativeDuration;
+	}
+
+	public CreateEventMasterRequest withRelativeDuration(Integer relativeDuration) {
+		this.relativeDuration = relativeDuration;
+		return this;
+	}
+
+    public static CreateEventMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateEventMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withScheduleType(data.get("scheduleType") == null || data.get("scheduleType").isNull() ? null : data.get("scheduleType").asText())
+            .withAbsoluteBegin(data.get("absoluteBegin") == null || data.get("absoluteBegin").isNull() ? null : data.get("absoluteBegin").longValue())
+            .withAbsoluteEnd(data.get("absoluteEnd") == null || data.get("absoluteEnd").isNull() ? null : data.get("absoluteEnd").longValue())
+            .withRepeatType(data.get("repeatType") == null || data.get("repeatType").isNull() ? null : data.get("repeatType").asText())
+            .withRepeatBeginDayOfMonth(data.get("repeatBeginDayOfMonth") == null || data.get("repeatBeginDayOfMonth").isNull() ? null : data.get("repeatBeginDayOfMonth").intValue())
+            .withRepeatEndDayOfMonth(data.get("repeatEndDayOfMonth") == null || data.get("repeatEndDayOfMonth").isNull() ? null : data.get("repeatEndDayOfMonth").intValue())
+            .withRepeatBeginDayOfWeek(data.get("repeatBeginDayOfWeek") == null || data.get("repeatBeginDayOfWeek").isNull() ? null : data.get("repeatBeginDayOfWeek").asText())
+            .withRepeatEndDayOfWeek(data.get("repeatEndDayOfWeek") == null || data.get("repeatEndDayOfWeek").isNull() ? null : data.get("repeatEndDayOfWeek").asText())
+            .withRepeatBeginHour(data.get("repeatBeginHour") == null || data.get("repeatBeginHour").isNull() ? null : data.get("repeatBeginHour").intValue())
+            .withRepeatEndHour(data.get("repeatEndHour") == null || data.get("repeatEndHour").isNull() ? null : data.get("repeatEndHour").intValue())
+            .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText())
+            .withRelativeDuration(data.get("relativeDuration") == null || data.get("relativeDuration").isNull() ? null : data.get("relativeDuration").intValue());
     }
 
-    /**
-     * イベントの開催期間(秒)を設定
-     *
-     * @param relativeDuration イベントマスターを新規作成
-     */
-    public void setRelativeDuration(Integer relativeDuration) {
-        this.relativeDuration = relativeDuration;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("scheduleType", getScheduleType());
+                put("absoluteBegin", getAbsoluteBegin());
+                put("absoluteEnd", getAbsoluteEnd());
+                put("repeatType", getRepeatType());
+                put("repeatBeginDayOfMonth", getRepeatBeginDayOfMonth());
+                put("repeatEndDayOfMonth", getRepeatEndDayOfMonth());
+                put("repeatBeginDayOfWeek", getRepeatBeginDayOfWeek());
+                put("repeatEndDayOfWeek", getRepeatEndDayOfWeek());
+                put("repeatBeginHour", getRepeatBeginHour());
+                put("repeatEndHour", getRepeatEndHour());
+                put("relativeTriggerName", getRelativeTriggerName());
+                put("relativeDuration", getRelativeDuration());
+            }}
+        );
     }
-
-    /**
-     * イベントの開催期間(秒)を設定
-     *
-     * @param relativeDuration イベントマスターを新規作成
-     * @return this
-     */
-    public CreateEventMasterRequest withRelativeDuration(Integer relativeDuration) {
-        setRelativeDuration(relativeDuration);
-        return this;
-    }
-
 }

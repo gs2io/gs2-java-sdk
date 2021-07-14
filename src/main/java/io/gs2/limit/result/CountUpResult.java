@@ -16,39 +16,48 @@
 
 package io.gs2.limit.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.limit.model.*;
+import io.gs2.limit.model.Counter;
 
-/**
- * カウントアップ のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CountUpResult implements IResult, Serializable {
-	/** カウントを増やしたカウンター */
-	private Counter item;
+    private Counter item;
 
-	/**
-	 * カウントを増やしたカウンターを取得
-	 *
-	 * @return カウントアップ
-	 */
 	public Counter getItem() {
 		return item;
 	}
 
-	/**
-	 * カウントを増やしたカウンターを設定
-	 *
-	 * @param item カウントアップ
-	 */
 	public void setItem(Counter item) {
 		this.item = item;
 	}
+
+	public CountUpResult withItem(Counter item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CountUpResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CountUpResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

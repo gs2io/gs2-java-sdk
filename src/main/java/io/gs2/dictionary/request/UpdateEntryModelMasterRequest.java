@@ -16,146 +16,94 @@
 
 package io.gs2.dictionary.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.dictionary.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * エントリーモデルマスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateEntryModelMasterRequest extends Gs2BasicRequest<UpdateEntryModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return エントリーモデルマスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName エントリーモデルマスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName エントリーモデルマスターを更新
-     * @return this
-     */
-    public UpdateEntryModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** エントリーモデル名 */
     private String entryName;
-
-    /**
-     * エントリーモデル名を取得
-     *
-     * @return エントリーモデルマスターを更新
-     */
-    public String getEntryName() {
-        return entryName;
-    }
-
-    /**
-     * エントリーモデル名を設定
-     *
-     * @param entryName エントリーモデルマスターを更新
-     */
-    public void setEntryName(String entryName) {
-        this.entryName = entryName;
-    }
-
-    /**
-     * エントリーモデル名を設定
-     *
-     * @param entryName エントリーモデルマスターを更新
-     * @return this
-     */
-    public UpdateEntryModelMasterRequest withEntryName(String entryName) {
-        setEntryName(entryName);
-        return this;
-    }
-
-    /** エントリーモデルマスターの説明 */
     private String description;
-
-    /**
-     * エントリーモデルマスターの説明を取得
-     *
-     * @return エントリーモデルマスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * エントリーモデルマスターの説明を設定
-     *
-     * @param description エントリーモデルマスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * エントリーモデルマスターの説明を設定
-     *
-     * @param description エントリーモデルマスターを更新
-     * @return this
-     */
-    public UpdateEntryModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** エントリーモデルのメタデータ */
     private String metadata;
 
-    /**
-     * エントリーモデルのメタデータを取得
-     *
-     * @return エントリーモデルマスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateEntryModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getEntryName() {
+		return entryName;
+	}
+
+	public void setEntryName(String entryName) {
+		this.entryName = entryName;
+	}
+
+	public UpdateEntryModelMasterRequest withEntryName(String entryName) {
+		this.entryName = entryName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateEntryModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateEntryModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+    public static UpdateEntryModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateEntryModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withEntryName(data.get("entryName") == null || data.get("entryName").isNull() ? null : data.get("entryName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
     }
 
-    /**
-     * エントリーモデルのメタデータを設定
-     *
-     * @param metadata エントリーモデルマスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("entryName", getEntryName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+            }}
+        );
     }
-
-    /**
-     * エントリーモデルのメタデータを設定
-     *
-     * @param metadata エントリーモデルマスターを更新
-     * @return this
-     */
-    public UpdateEntryModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
 }

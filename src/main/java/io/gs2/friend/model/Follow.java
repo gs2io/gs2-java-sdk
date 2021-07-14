@@ -16,195 +16,122 @@
 
 package io.gs2.friend.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * フォロー
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Follow implements IModel, Serializable, Comparable<Follow> {
-	/** フォロー */
-	protected String followId;
+	private String followId;
+	private String userId;
+	private List<String> targetUserIds;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * フォローを取得
-	 *
-	 * @return フォロー
-	 */
 	public String getFollowId() {
 		return followId;
 	}
 
-	/**
-	 * フォローを設定
-	 *
-	 * @param followId フォロー
-	 */
 	public void setFollowId(String followId) {
 		this.followId = followId;
 	}
 
-	/**
-	 * フォローを設定
-	 *
-	 * @param followId フォロー
-	 * @return this
-	 */
 	public Follow withFollowId(String followId) {
 		this.followId = followId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Follow withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** フォローしているユーザーIDリスト */
-	protected List<String> targetUserIds;
 
-	/**
-	 * フォローしているユーザーIDリストを取得
-	 *
-	 * @return フォローしているユーザーIDリスト
-	 */
 	public List<String> getTargetUserIds() {
 		return targetUserIds;
 	}
 
-	/**
-	 * フォローしているユーザーIDリストを設定
-	 *
-	 * @param targetUserIds フォローしているユーザーIDリスト
-	 */
 	public void setTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 	}
 
-	/**
-	 * フォローしているユーザーIDリストを設定
-	 *
-	 * @param targetUserIds フォローしているユーザーIDリスト
-	 * @return this
-	 */
 	public Follow withTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Follow withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Follow withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> targetUserIds = new ArrayList<>();
-        if(this.targetUserIds != null) {
-            for(String item : this.targetUserIds) {
-                targetUserIds.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static Follow fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("followId", this.getFollowId())
-            .put("userId", this.getUserId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("targetUserIds", JsonNodeFactory.instance.arrayNode().addAll(targetUserIds));
-        return body_;
+        return new Follow()
+            .withFollowId(data.get("followId") == null || data.get("followId").isNull() ? null : data.get("followId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTargetUserIds(data.get("targetUserIds") == null || data.get("targetUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("targetUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("followId", getFollowId());
+                put("userId", getUserId());
+                put("targetUserIds", getTargetUserIds() == null ? new ArrayList<String>() :
+                    getTargetUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Follow o) {
 		return followId.compareTo(o.followId);

@@ -16,39 +16,48 @@
 
 package io.gs2.project.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.project.model.*;
+import io.gs2.project.model.Account;
 
-/**
- * アカウントを新規作成 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateAccountResult implements IResult, Serializable {
-	/** 作成したGS2アカウント */
-	private Account item;
+    private Account item;
 
-	/**
-	 * 作成したGS2アカウントを取得
-	 *
-	 * @return アカウントを新規作成
-	 */
 	public Account getItem() {
 		return item;
 	}
 
-	/**
-	 * 作成したGS2アカウントを設定
-	 *
-	 * @param item アカウントを新規作成
-	 */
 	public void setItem(Account item) {
 		this.item = item;
 	}
+
+	public CreateAccountResult withItem(Account item) {
+		this.item = item;
+		return this;
+	}
+
+    public static CreateAccountResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateAccountResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Account.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,39 +16,48 @@
 
 package io.gs2.chat.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.chat.model.*;
+import io.gs2.chat.model.Room;
 
-/**
- * ルームを更新 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateRoomResult implements IResult, Serializable {
-	/** 更新したルーム */
-	private Room item;
+    private Room item;
 
-	/**
-	 * 更新したルームを取得
-	 *
-	 * @return ルームを更新
-	 */
 	public Room getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新したルームを設定
-	 *
-	 * @param item ルームを更新
-	 */
 	public void setItem(Room item) {
 		this.item = item;
 	}
+
+	public UpdateRoomResult withItem(Room item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateRoomResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateRoomResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Room.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

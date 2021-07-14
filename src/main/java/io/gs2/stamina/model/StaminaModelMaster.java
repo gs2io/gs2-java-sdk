@@ -16,477 +16,258 @@
 
 package io.gs2.stamina.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スタミナモデルマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class StaminaModelMaster implements IModel, Serializable, Comparable<StaminaModelMaster> {
-	/** スタミナモデルマスター */
-	protected String staminaModelId;
+	private String staminaModelId;
+	private String name;
+	private String metadata;
+	private String description;
+	private Integer recoverIntervalMinutes;
+	private Integer recoverValue;
+	private Integer initialCapacity;
+	private Boolean isOverflow;
+	private Integer maxCapacity;
+	private String maxStaminaTableName;
+	private String recoverIntervalTableName;
+	private String recoverValueTableName;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * スタミナモデルマスターを取得
-	 *
-	 * @return スタミナモデルマスター
-	 */
 	public String getStaminaModelId() {
 		return staminaModelId;
 	}
 
-	/**
-	 * スタミナモデルマスターを設定
-	 *
-	 * @param staminaModelId スタミナモデルマスター
-	 */
 	public void setStaminaModelId(String staminaModelId) {
 		this.staminaModelId = staminaModelId;
 	}
 
-	/**
-	 * スタミナモデルマスターを設定
-	 *
-	 * @param staminaModelId スタミナモデルマスター
-	 * @return this
-	 */
 	public StaminaModelMaster withStaminaModelId(String staminaModelId) {
 		this.staminaModelId = staminaModelId;
 		return this;
 	}
-	/** スタミナの種類名 */
-	protected String name;
 
-	/**
-	 * スタミナの種類名を取得
-	 *
-	 * @return スタミナの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * スタミナの種類名を設定
-	 *
-	 * @param name スタミナの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * スタミナの種類名を設定
-	 *
-	 * @param name スタミナの種類名
-	 * @return this
-	 */
 	public StaminaModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** スタミナの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * スタミナの種類のメタデータを取得
-	 *
-	 * @return スタミナの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * スタミナの種類のメタデータを設定
-	 *
-	 * @param metadata スタミナの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * スタミナの種類のメタデータを設定
-	 *
-	 * @param metadata スタミナの種類のメタデータ
-	 * @return this
-	 */
 	public StaminaModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** スタミナモデルマスターの説明 */
-	protected String description;
 
-	/**
-	 * スタミナモデルマスターの説明を取得
-	 *
-	 * @return スタミナモデルマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * スタミナモデルマスターの説明を設定
-	 *
-	 * @param description スタミナモデルマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * スタミナモデルマスターの説明を設定
-	 *
-	 * @param description スタミナモデルマスターの説明
-	 * @return this
-	 */
 	public StaminaModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** スタミナを回復する速度(分) */
-	protected Integer recoverIntervalMinutes;
 
-	/**
-	 * スタミナを回復する速度(分)を取得
-	 *
-	 * @return スタミナを回復する速度(分)
-	 */
 	public Integer getRecoverIntervalMinutes() {
 		return recoverIntervalMinutes;
 	}
 
-	/**
-	 * スタミナを回復する速度(分)を設定
-	 *
-	 * @param recoverIntervalMinutes スタミナを回復する速度(分)
-	 */
 	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 	}
 
-	/**
-	 * スタミナを回復する速度(分)を設定
-	 *
-	 * @param recoverIntervalMinutes スタミナを回復する速度(分)
-	 * @return this
-	 */
 	public StaminaModelMaster withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;
 	}
-	/** 時間経過後に回復する量 */
-	protected Integer recoverValue;
 
-	/**
-	 * 時間経過後に回復する量を取得
-	 *
-	 * @return 時間経過後に回復する量
-	 */
 	public Integer getRecoverValue() {
 		return recoverValue;
 	}
 
-	/**
-	 * 時間経過後に回復する量を設定
-	 *
-	 * @param recoverValue 時間経過後に回復する量
-	 */
 	public void setRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 	}
 
-	/**
-	 * 時間経過後に回復する量を設定
-	 *
-	 * @param recoverValue 時間経過後に回復する量
-	 * @return this
-	 */
 	public StaminaModelMaster withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 		return this;
 	}
-	/** スタミナの最大値の初期値 */
-	protected Integer initialCapacity;
 
-	/**
-	 * スタミナの最大値の初期値を取得
-	 *
-	 * @return スタミナの最大値の初期値
-	 */
 	public Integer getInitialCapacity() {
 		return initialCapacity;
 	}
 
-	/**
-	 * スタミナの最大値の初期値を設定
-	 *
-	 * @param initialCapacity スタミナの最大値の初期値
-	 */
 	public void setInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 	}
 
-	/**
-	 * スタミナの最大値の初期値を設定
-	 *
-	 * @param initialCapacity スタミナの最大値の初期値
-	 * @return this
-	 */
 	public StaminaModelMaster withInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 		return this;
 	}
-	/** 最大値を超えて回復するか */
-	protected Boolean isOverflow;
 
-	/**
-	 * 最大値を超えて回復するかを取得
-	 *
-	 * @return 最大値を超えて回復するか
-	 */
 	public Boolean getIsOverflow() {
 		return isOverflow;
 	}
 
-	/**
-	 * 最大値を超えて回復するかを設定
-	 *
-	 * @param isOverflow 最大値を超えて回復するか
-	 */
 	public void setIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 	}
 
-	/**
-	 * 最大値を超えて回復するかを設定
-	 *
-	 * @param isOverflow 最大値を超えて回復するか
-	 * @return this
-	 */
 	public StaminaModelMaster withIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 		return this;
 	}
-	/** 溢れた状況での最大値 */
-	protected Integer maxCapacity;
 
-	/**
-	 * 溢れた状況での最大値を取得
-	 *
-	 * @return 溢れた状況での最大値
-	 */
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
 
-	/**
-	 * 溢れた状況での最大値を設定
-	 *
-	 * @param maxCapacity 溢れた状況での最大値
-	 */
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
 
-	/**
-	 * 溢れた状況での最大値を設定
-	 *
-	 * @param maxCapacity 溢れた状況での最大値
-	 * @return this
-	 */
 	public StaminaModelMaster withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-	/** GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名 */
-	protected String maxStaminaTableName;
 
-	/**
-	 * GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名を取得
-	 *
-	 * @return GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名
-	 */
 	public String getMaxStaminaTableName() {
 		return maxStaminaTableName;
 	}
 
-	/**
-	 * GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名を設定
-	 *
-	 * @param maxStaminaTableName GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名
-	 */
 	public void setMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 	}
 
-	/**
-	 * GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名を設定
-	 *
-	 * @param maxStaminaTableName GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名
-	 * @return this
-	 */
 	public StaminaModelMaster withMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 		return this;
 	}
-	/** GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名 */
-	protected String recoverIntervalTableName;
 
-	/**
-	 * GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名を取得
-	 *
-	 * @return GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名
-	 */
 	public String getRecoverIntervalTableName() {
 		return recoverIntervalTableName;
 	}
 
-	/**
-	 * GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名を設定
-	 *
-	 * @param recoverIntervalTableName GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名
-	 */
 	public void setRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 	}
 
-	/**
-	 * GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名を設定
-	 *
-	 * @param recoverIntervalTableName GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名
-	 * @return this
-	 */
 	public StaminaModelMaster withRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 		return this;
 	}
-	/** GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名 */
-	protected String recoverValueTableName;
 
-	/**
-	 * GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名を取得
-	 *
-	 * @return GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名
-	 */
 	public String getRecoverValueTableName() {
 		return recoverValueTableName;
 	}
 
-	/**
-	 * GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名を設定
-	 *
-	 * @param recoverValueTableName GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名
-	 */
 	public void setRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 	}
 
-	/**
-	 * GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名を設定
-	 *
-	 * @param recoverValueTableName GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名
-	 * @return this
-	 */
 	public StaminaModelMaster withRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public StaminaModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public StaminaModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("staminaModelId", this.getStaminaModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("description", this.getDescription())
-            .put("recoverIntervalMinutes", this.getRecoverIntervalMinutes())
-            .put("recoverValue", this.getRecoverValue())
-            .put("initialCapacity", this.getInitialCapacity())
-            .put("isOverflow", this.getIsOverflow())
-            .put("maxCapacity", this.getMaxCapacity())
-            .put("maxStaminaTableName", this.getMaxStaminaTableName())
-            .put("recoverIntervalTableName", this.getRecoverIntervalTableName())
-            .put("recoverValueTableName", this.getRecoverValueTableName())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static StaminaModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new StaminaModelMaster()
+            .withStaminaModelId(data.get("staminaModelId") == null || data.get("staminaModelId").isNull() ? null : data.get("staminaModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withRecoverIntervalMinutes(data.get("recoverIntervalMinutes") == null || data.get("recoverIntervalMinutes").isNull() ? null : data.get("recoverIntervalMinutes").intValue())
+            .withRecoverValue(data.get("recoverValue") == null || data.get("recoverValue").isNull() ? null : data.get("recoverValue").intValue())
+            .withInitialCapacity(data.get("initialCapacity") == null || data.get("initialCapacity").isNull() ? null : data.get("initialCapacity").intValue())
+            .withIsOverflow(data.get("isOverflow") == null || data.get("isOverflow").isNull() ? null : data.get("isOverflow").booleanValue())
+            .withMaxCapacity(data.get("maxCapacity") == null || data.get("maxCapacity").isNull() ? null : data.get("maxCapacity").intValue())
+            .withMaxStaminaTableName(data.get("maxStaminaTableName") == null || data.get("maxStaminaTableName").isNull() ? null : data.get("maxStaminaTableName").asText())
+            .withRecoverIntervalTableName(data.get("recoverIntervalTableName") == null || data.get("recoverIntervalTableName").isNull() ? null : data.get("recoverIntervalTableName").asText())
+            .withRecoverValueTableName(data.get("recoverValueTableName") == null || data.get("recoverValueTableName").isNull() ? null : data.get("recoverValueTableName").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("staminaModelId", getStaminaModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("recoverIntervalMinutes", getRecoverIntervalMinutes());
+                put("recoverValue", getRecoverValue());
+                put("initialCapacity", getInitialCapacity());
+                put("isOverflow", getIsOverflow());
+                put("maxCapacity", getMaxCapacity());
+                put("maxStaminaTableName", getMaxStaminaTableName());
+                put("recoverIntervalTableName", getRecoverIntervalTableName());
+                put("recoverValueTableName", getRecoverValueTableName());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(StaminaModelMaster o) {
 		return staminaModelId.compareTo(o.staminaModelId);

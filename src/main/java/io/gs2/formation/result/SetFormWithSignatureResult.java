@@ -16,99 +16,101 @@
 
 package io.gs2.formation.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
+import io.gs2.formation.model.Slot;
+import io.gs2.formation.model.Form;
+import io.gs2.formation.model.Mold;
+import io.gs2.formation.model.SlotModel;
+import io.gs2.formation.model.FormModel;
+import io.gs2.formation.model.MoldModel;
 
-/**
- * 署名付きスロットを使ってフォームを更新 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SetFormWithSignatureResult implements IResult, Serializable {
-	/** フォーム */
-	private Form item;
-	/** 保存したフォーム */
-	private Mold mold;
-	/** フォームの保存領域 */
-	private MoldModel moldModel;
-	/** フォームモデル */
-	private FormModel formModel;
+    private Form item;
+    private Mold mold;
+    private MoldModel moldModel;
+    private FormModel formModel;
 
-	/**
-	 * フォームを取得
-	 *
-	 * @return 署名付きスロットを使ってフォームを更新
-	 */
 	public Form getItem() {
 		return item;
 	}
 
-	/**
-	 * フォームを設定
-	 *
-	 * @param item 署名付きスロットを使ってフォームを更新
-	 */
 	public void setItem(Form item) {
 		this.item = item;
 	}
 
-	/**
-	 * 保存したフォームを取得
-	 *
-	 * @return 署名付きスロットを使ってフォームを更新
-	 */
+	public SetFormWithSignatureResult withItem(Form item) {
+		this.item = item;
+		return this;
+	}
+
 	public Mold getMold() {
 		return mold;
 	}
 
-	/**
-	 * 保存したフォームを設定
-	 *
-	 * @param mold 署名付きスロットを使ってフォームを更新
-	 */
 	public void setMold(Mold mold) {
 		this.mold = mold;
 	}
 
-	/**
-	 * フォームの保存領域を取得
-	 *
-	 * @return 署名付きスロットを使ってフォームを更新
-	 */
+	public SetFormWithSignatureResult withMold(Mold mold) {
+		this.mold = mold;
+		return this;
+	}
+
 	public MoldModel getMoldModel() {
 		return moldModel;
 	}
 
-	/**
-	 * フォームの保存領域を設定
-	 *
-	 * @param moldModel 署名付きスロットを使ってフォームを更新
-	 */
 	public void setMoldModel(MoldModel moldModel) {
 		this.moldModel = moldModel;
 	}
 
-	/**
-	 * フォームモデルを取得
-	 *
-	 * @return 署名付きスロットを使ってフォームを更新
-	 */
+	public SetFormWithSignatureResult withMoldModel(MoldModel moldModel) {
+		this.moldModel = moldModel;
+		return this;
+	}
+
 	public FormModel getFormModel() {
 		return formModel;
 	}
 
-	/**
-	 * フォームモデルを設定
-	 *
-	 * @param formModel 署名付きスロットを使ってフォームを更新
-	 */
 	public void setFormModel(FormModel formModel) {
 		this.formModel = formModel;
 	}
+
+	public SetFormWithSignatureResult withFormModel(FormModel formModel) {
+		this.formModel = formModel;
+		return this;
+	}
+
+    public static SetFormWithSignatureResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SetFormWithSignatureResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Form.fromJson(data.get("item")))
+            .withMold(data.get("mold") == null || data.get("mold").isNull() ? null : Mold.fromJson(data.get("mold")))
+            .withMoldModel(data.get("moldModel") == null || data.get("moldModel").isNull() ? null : MoldModel.fromJson(data.get("moldModel")))
+            .withFormModel(data.get("formModel") == null || data.get("formModel").isNull() ? null : FormModel.fromJson(data.get("formModel")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("mold", getMold() != null ? getMold().toJson() : null);
+                put("moldModel", getMoldModel() != null ? getMoldModel().toJson() : null);
+                put("formModel", getFormModel() != null ? getFormModel().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,178 +16,121 @@
 
 package io.gs2.formation.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.formation.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.formation.model.SlotModel;
 
-/**
- * フォームマスターを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateFormModelMasterRequest extends Gs2BasicRequest<CreateFormModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return フォームマスターを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName フォームマスターを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName フォームマスターを新規作成
-     * @return this
-     */
-    public CreateFormModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** フォーム名 */
     private String name;
-
-    /**
-     * フォーム名を取得
-     *
-     * @return フォームマスターを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * フォーム名を設定
-     *
-     * @param name フォームマスターを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * フォーム名を設定
-     *
-     * @param name フォームマスターを新規作成
-     * @return this
-     */
-    public CreateFormModelMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** フォームマスターの説明 */
     private String description;
-
-    /**
-     * フォームマスターの説明を取得
-     *
-     * @return フォームマスターを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * フォームマスターの説明を設定
-     *
-     * @param description フォームマスターを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * フォームマスターの説明を設定
-     *
-     * @param description フォームマスターを新規作成
-     * @return this
-     */
-    public CreateFormModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** フォームのメタデータ */
     private String metadata;
-
-    /**
-     * フォームのメタデータを取得
-     *
-     * @return フォームマスターを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * フォームのメタデータを設定
-     *
-     * @param metadata フォームマスターを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * フォームのメタデータを設定
-     *
-     * @param metadata フォームマスターを新規作成
-     * @return this
-     */
-    public CreateFormModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** スロットリスト */
     private List<SlotModel> slots;
 
-    /**
-     * スロットリストを取得
-     *
-     * @return フォームマスターを新規作成
-     */
-    public List<SlotModel> getSlots() {
-        return slots;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateFormModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateFormModelMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateFormModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateFormModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public List<SlotModel> getSlots() {
+		return slots;
+	}
+
+	public void setSlots(List<SlotModel> slots) {
+		this.slots = slots;
+	}
+
+	public CreateFormModelMasterRequest withSlots(List<SlotModel> slots) {
+		this.slots = slots;
+		return this;
+	}
+
+    public static CreateFormModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateFormModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<SlotModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return SlotModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * スロットリストを設定
-     *
-     * @param slots フォームマスターを新規作成
-     */
-    public void setSlots(List<SlotModel> slots) {
-        this.slots = slots;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("slots", getSlots() == null ? new ArrayList<SlotModel>() :
+                    getSlots().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * スロットリストを設定
-     *
-     * @param slots フォームマスターを新規作成
-     * @return this
-     */
-    public CreateFormModelMasterRequest withSlots(List<SlotModel> slots) {
-        setSlots(slots);
-        return this;
-    }
-
 }

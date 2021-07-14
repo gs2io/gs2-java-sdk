@@ -16,39 +16,48 @@
 
 package io.gs2.inbox.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inbox.model.*;
+import io.gs2.inbox.model.Received;
 
-/**
- * ユーザーIDを指定して受信済みグローバルメッセージ名を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetReceivedByUserIdResult implements IResult, Serializable {
-	/** 受信済みグローバルメッセージ名 */
-	private Received item;
+    private Received item;
 
-	/**
-	 * 受信済みグローバルメッセージ名を取得
-	 *
-	 * @return ユーザーIDを指定して受信済みグローバルメッセージ名を取得
-	 */
 	public Received getItem() {
 		return item;
 	}
 
-	/**
-	 * 受信済みグローバルメッセージ名を設定
-	 *
-	 * @param item ユーザーIDを指定して受信済みグローバルメッセージ名を取得
-	 */
 	public void setItem(Received item) {
 		this.item = item;
 	}
+
+	public GetReceivedByUserIdResult withItem(Received item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetReceivedByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetReceivedByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Received.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

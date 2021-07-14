@@ -16,178 +16,110 @@
 
 package io.gs2.watch.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.watch.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 請求にまつわるアクティビティの一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeBillingActivitiesRequest extends Gs2BasicRequest<DescribeBillingActivitiesRequest> {
-
-    /** イベントの発生年 */
     private Integer year;
-
-    /**
-     * イベントの発生年を取得
-     *
-     * @return 請求にまつわるアクティビティの一覧を取得
-     */
-    public Integer getYear() {
-        return year;
-    }
-
-    /**
-     * イベントの発生年を設定
-     *
-     * @param year 請求にまつわるアクティビティの一覧を取得
-     */
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    /**
-     * イベントの発生年を設定
-     *
-     * @param year 請求にまつわるアクティビティの一覧を取得
-     * @return this
-     */
-    public DescribeBillingActivitiesRequest withYear(Integer year) {
-        setYear(year);
-        return this;
-    }
-
-    /** イベントの発生月 */
     private Integer month;
-
-    /**
-     * イベントの発生月を取得
-     *
-     * @return 請求にまつわるアクティビティの一覧を取得
-     */
-    public Integer getMonth() {
-        return month;
-    }
-
-    /**
-     * イベントの発生月を設定
-     *
-     * @param month 請求にまつわるアクティビティの一覧を取得
-     */
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    /**
-     * イベントの発生月を設定
-     *
-     * @param month 請求にまつわるアクティビティの一覧を取得
-     * @return this
-     */
-    public DescribeBillingActivitiesRequest withMonth(Integer month) {
-        setMonth(month);
-        return this;
-    }
-
-    /** サービスの種類 */
     private String service;
-
-    /**
-     * サービスの種類を取得
-     *
-     * @return 請求にまつわるアクティビティの一覧を取得
-     */
-    public String getService() {
-        return service;
-    }
-
-    /**
-     * サービスの種類を設定
-     *
-     * @param service 請求にまつわるアクティビティの一覧を取得
-     */
-    public void setService(String service) {
-        this.service = service;
-    }
-
-    /**
-     * サービスの種類を設定
-     *
-     * @param service 請求にまつわるアクティビティの一覧を取得
-     * @return this
-     */
-    public DescribeBillingActivitiesRequest withService(String service) {
-        setService(service);
-        return this;
-    }
-
-    /** データの取得を開始する位置を指定するトークン */
     private String pageToken;
+    private Integer limit;
 
-    /**
-     * データの取得を開始する位置を指定するトークンを取得
-     *
-     * @return 請求にまつわるアクティビティの一覧を取得
-     */
-    public String getPageToken() {
-        return pageToken;
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public DescribeBillingActivitiesRequest withYear(Integer year) {
+		this.year = year;
+		return this;
+	}
+
+	public Integer getMonth() {
+		return month;
+	}
+
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
+
+	public DescribeBillingActivitiesRequest withMonth(Integer month) {
+		this.month = month;
+		return this;
+	}
+
+	public String getService() {
+		return service;
+	}
+
+	public void setService(String service) {
+		this.service = service;
+	}
+
+	public DescribeBillingActivitiesRequest withService(String service) {
+		this.service = service;
+		return this;
+	}
+
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public DescribeBillingActivitiesRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeBillingActivitiesRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static DescribeBillingActivitiesRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeBillingActivitiesRequest()
+            .withYear(data.get("year") == null || data.get("year").isNull() ? null : data.get("year").intValue())
+            .withMonth(data.get("month") == null || data.get("month").isNull() ? null : data.get("month").intValue())
+            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken 請求にまつわるアクティビティの一覧を取得
-     */
-    public void setPageToken(String pageToken) {
-        this.pageToken = pageToken;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("year", getYear());
+                put("month", getMonth());
+                put("service", getService());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
+            }}
+        );
     }
-
-    /**
-     * データの取得を開始する位置を指定するトークンを設定
-     *
-     * @param pageToken 請求にまつわるアクティビティの一覧を取得
-     * @return this
-     */
-    public DescribeBillingActivitiesRequest withPageToken(String pageToken) {
-        setPageToken(pageToken);
-        return this;
-    }
-
-    /** データの取得件数 */
-    private Long limit;
-
-    /**
-     * データの取得件数を取得
-     *
-     * @return 請求にまつわるアクティビティの一覧を取得
-     */
-    public Long getLimit() {
-        return limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit 請求にまつわるアクティビティの一覧を取得
-     */
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * データの取得件数を設定
-     *
-     * @param limit 請求にまつわるアクティビティの一覧を取得
-     * @return this
-     */
-    public DescribeBillingActivitiesRequest withLimit(Long limit) {
-        setLimit(limit);
-        return this;
-    }
-
 }

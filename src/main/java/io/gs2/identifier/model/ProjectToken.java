@@ -16,60 +16,48 @@
 
 package io.gs2.identifier.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * プロジェクトトークン
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectToken implements IModel, Serializable {
-	/** プロジェクトトークン */
-	protected String token;
+	private String token;
 
-	/**
-	 * プロジェクトトークンを取得
-	 *
-	 * @return プロジェクトトークン
-	 */
 	public String getToken() {
 		return token;
 	}
 
-	/**
-	 * プロジェクトトークンを設定
-	 *
-	 * @param token プロジェクトトークン
-	 */
 	public void setToken(String token) {
 		this.token = token;
 	}
 
-	/**
-	 * プロジェクトトークンを設定
-	 *
-	 * @param token プロジェクトトークン
-	 * @return this
-	 */
 	public ProjectToken withToken(String token) {
 		this.token = token;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("token", this.getToken());
-        return body_;
+    public static ProjectToken fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ProjectToken()
+            .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("token", getToken());
+            }}
+        );
     }
 
 	@Override

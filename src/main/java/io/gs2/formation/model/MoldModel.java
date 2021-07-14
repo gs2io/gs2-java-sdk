@@ -16,222 +16,130 @@
 
 package io.gs2.formation.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * フォームの保存領域
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MoldModel implements IModel, Serializable, Comparable<MoldModel> {
-	/** フォームの保存領域マスター */
-	protected String moldModelId;
+	private String moldModelId;
+	private String name;
+	private String metadata;
+	private Integer initialMaxCapacity;
+	private Integer maxCapacity;
+	private FormModel formModel;
 
-	/**
-	 * フォームの保存領域マスターを取得
-	 *
-	 * @return フォームの保存領域マスター
-	 */
 	public String getMoldModelId() {
 		return moldModelId;
 	}
 
-	/**
-	 * フォームの保存領域マスターを設定
-	 *
-	 * @param moldModelId フォームの保存領域マスター
-	 */
 	public void setMoldModelId(String moldModelId) {
 		this.moldModelId = moldModelId;
 	}
 
-	/**
-	 * フォームの保存領域マスターを設定
-	 *
-	 * @param moldModelId フォームの保存領域マスター
-	 * @return this
-	 */
 	public MoldModel withMoldModelId(String moldModelId) {
 		this.moldModelId = moldModelId;
 		return this;
 	}
-	/** フォームの保存領域名 */
-	protected String name;
 
-	/**
-	 * フォームの保存領域名を取得
-	 *
-	 * @return フォームの保存領域名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * フォームの保存領域名を設定
-	 *
-	 * @param name フォームの保存領域名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * フォームの保存領域名を設定
-	 *
-	 * @param name フォームの保存領域名
-	 * @return this
-	 */
 	public MoldModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** メタデータ */
-	protected String metadata;
 
-	/**
-	 * メタデータを取得
-	 *
-	 * @return メタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * メタデータを設定
-	 *
-	 * @param metadata メタデータ
-	 * @return this
-	 */
 	public MoldModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** フォームを保存できる初期キャパシティ */
-	protected Integer initialMaxCapacity;
 
-	/**
-	 * フォームを保存できる初期キャパシティを取得
-	 *
-	 * @return フォームを保存できる初期キャパシティ
-	 */
 	public Integer getInitialMaxCapacity() {
 		return initialMaxCapacity;
 	}
 
-	/**
-	 * フォームを保存できる初期キャパシティを設定
-	 *
-	 * @param initialMaxCapacity フォームを保存できる初期キャパシティ
-	 */
 	public void setInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 	}
 
-	/**
-	 * フォームを保存できる初期キャパシティを設定
-	 *
-	 * @param initialMaxCapacity フォームを保存できる初期キャパシティ
-	 * @return this
-	 */
 	public MoldModel withInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 		return this;
 	}
-	/** フォームを保存できるキャパシティ */
-	protected Integer maxCapacity;
 
-	/**
-	 * フォームを保存できるキャパシティを取得
-	 *
-	 * @return フォームを保存できるキャパシティ
-	 */
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
 
-	/**
-	 * フォームを保存できるキャパシティを設定
-	 *
-	 * @param maxCapacity フォームを保存できるキャパシティ
-	 */
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
 
-	/**
-	 * フォームを保存できるキャパシティを設定
-	 *
-	 * @param maxCapacity フォームを保存できるキャパシティ
-	 * @return this
-	 */
 	public MoldModel withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-	/** None */
-	protected FormModel formModel;
 
-	/**
-	 * Noneを取得
-	 *
-	 * @return None
-	 */
 	public FormModel getFormModel() {
 		return formModel;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param formModel None
-	 */
 	public void setFormModel(FormModel formModel) {
 		this.formModel = formModel;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param formModel None
-	 * @return this
-	 */
 	public MoldModel withFormModel(FormModel formModel) {
 		this.formModel = formModel;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode formModel = this.getFormModel().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("moldModelId", this.getMoldModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("initialMaxCapacity", this.getInitialMaxCapacity())
-            .put("maxCapacity", this.getMaxCapacity());
-        body_.set("formModel", formModel);
-        return body_;
+    public static MoldModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new MoldModel()
+            .withMoldModelId(data.get("moldModelId") == null || data.get("moldModelId").isNull() ? null : data.get("moldModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withInitialMaxCapacity(data.get("initialMaxCapacity") == null || data.get("initialMaxCapacity").isNull() ? null : data.get("initialMaxCapacity").intValue())
+            .withMaxCapacity(data.get("maxCapacity") == null || data.get("maxCapacity").isNull() ? null : data.get("maxCapacity").intValue())
+            .withFormModel(data.get("formModel") == null || data.get("formModel").isNull() ? null : FormModel.fromJson(data.get("formModel")));
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("moldModelId", getMoldModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("initialMaxCapacity", getInitialMaxCapacity());
+                put("maxCapacity", getMaxCapacity());
+                put("formModel", getFormModel() != null ? getFormModel().toJson() : null);
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(MoldModel o) {
 		return moldModelId.compareTo(o.moldModelId);

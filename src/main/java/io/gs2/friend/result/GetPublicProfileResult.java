@@ -16,39 +16,48 @@
 
 package io.gs2.friend.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.friend.model.*;
+import io.gs2.friend.model.PublicProfile;
 
-/**
- * 公開プロフィールを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetPublicProfileResult implements IResult, Serializable {
-	/** 公開プロフィール */
-	private PublicProfile item;
+    private PublicProfile item;
 
-	/**
-	 * 公開プロフィールを取得
-	 *
-	 * @return 公開プロフィールを取得
-	 */
 	public PublicProfile getItem() {
 		return item;
 	}
 
-	/**
-	 * 公開プロフィールを設定
-	 *
-	 * @param item 公開プロフィールを取得
-	 */
 	public void setItem(PublicProfile item) {
 		this.item = item;
 	}
+
+	public GetPublicProfileResult withItem(PublicProfile item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetPublicProfileResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetPublicProfileResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : PublicProfile.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

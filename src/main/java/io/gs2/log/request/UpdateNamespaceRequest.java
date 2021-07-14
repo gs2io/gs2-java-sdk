@@ -16,338 +16,190 @@
 
 package io.gs2.log.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.log.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ネームスペースを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** ログの書き出し方法 */
     private String type;
-
-    /**
-     * ログの書き出し方法を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * ログの書き出し方法を設定
-     *
-     * @param type ネームスペースを更新
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /**
-     * ログの書き出し方法を設定
-     *
-     * @param type ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withType(String type) {
-        setType(type);
-        return this;
-    }
-
-    /** GCPのクレデンシャル */
     private String gcpCredentialJson;
-
-    /**
-     * GCPのクレデンシャルを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getGcpCredentialJson() {
-        return gcpCredentialJson;
-    }
-
-    /**
-     * GCPのクレデンシャルを設定
-     *
-     * @param gcpCredentialJson ネームスペースを更新
-     */
-    public void setGcpCredentialJson(String gcpCredentialJson) {
-        this.gcpCredentialJson = gcpCredentialJson;
-    }
-
-    /**
-     * GCPのクレデンシャルを設定
-     *
-     * @param gcpCredentialJson ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withGcpCredentialJson(String gcpCredentialJson) {
-        setGcpCredentialJson(gcpCredentialJson);
-        return this;
-    }
-
-    /** BigQueryのデータセット名 */
     private String bigQueryDatasetName;
-
-    /**
-     * BigQueryのデータセット名を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getBigQueryDatasetName() {
-        return bigQueryDatasetName;
-    }
-
-    /**
-     * BigQueryのデータセット名を設定
-     *
-     * @param bigQueryDatasetName ネームスペースを更新
-     */
-    public void setBigQueryDatasetName(String bigQueryDatasetName) {
-        this.bigQueryDatasetName = bigQueryDatasetName;
-    }
-
-    /**
-     * BigQueryのデータセット名を設定
-     *
-     * @param bigQueryDatasetName ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withBigQueryDatasetName(String bigQueryDatasetName) {
-        setBigQueryDatasetName(bigQueryDatasetName);
-        return this;
-    }
-
-    /** ログの保存期間(日) */
     private Integer logExpireDays;
-
-    /**
-     * ログの保存期間(日)を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public Integer getLogExpireDays() {
-        return logExpireDays;
-    }
-
-    /**
-     * ログの保存期間(日)を設定
-     *
-     * @param logExpireDays ネームスペースを更新
-     */
-    public void setLogExpireDays(Integer logExpireDays) {
-        this.logExpireDays = logExpireDays;
-    }
-
-    /**
-     * ログの保存期間(日)を設定
-     *
-     * @param logExpireDays ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withLogExpireDays(Integer logExpireDays) {
-        setLogExpireDays(logExpireDays);
-        return this;
-    }
-
-    /** AWSのリージョン */
     private String awsRegion;
-
-    /**
-     * AWSのリージョンを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getAwsRegion() {
-        return awsRegion;
-    }
-
-    /**
-     * AWSのリージョンを設定
-     *
-     * @param awsRegion ネームスペースを更新
-     */
-    public void setAwsRegion(String awsRegion) {
-        this.awsRegion = awsRegion;
-    }
-
-    /**
-     * AWSのリージョンを設定
-     *
-     * @param awsRegion ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withAwsRegion(String awsRegion) {
-        setAwsRegion(awsRegion);
-        return this;
-    }
-
-    /** AWSのアクセスキーID */
     private String awsAccessKeyId;
-
-    /**
-     * AWSのアクセスキーIDを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getAwsAccessKeyId() {
-        return awsAccessKeyId;
-    }
-
-    /**
-     * AWSのアクセスキーIDを設定
-     *
-     * @param awsAccessKeyId ネームスペースを更新
-     */
-    public void setAwsAccessKeyId(String awsAccessKeyId) {
-        this.awsAccessKeyId = awsAccessKeyId;
-    }
-
-    /**
-     * AWSのアクセスキーIDを設定
-     *
-     * @param awsAccessKeyId ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withAwsAccessKeyId(String awsAccessKeyId) {
-        setAwsAccessKeyId(awsAccessKeyId);
-        return this;
-    }
-
-    /** AWSのシークレットアクセスキー */
     private String awsSecretAccessKey;
-
-    /**
-     * AWSのシークレットアクセスキーを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getAwsSecretAccessKey() {
-        return awsSecretAccessKey;
-    }
-
-    /**
-     * AWSのシークレットアクセスキーを設定
-     *
-     * @param awsSecretAccessKey ネームスペースを更新
-     */
-    public void setAwsSecretAccessKey(String awsSecretAccessKey) {
-        this.awsSecretAccessKey = awsSecretAccessKey;
-    }
-
-    /**
-     * AWSのシークレットアクセスキーを設定
-     *
-     * @param awsSecretAccessKey ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withAwsSecretAccessKey(String awsSecretAccessKey) {
-        setAwsSecretAccessKey(awsSecretAccessKey);
-        return this;
-    }
-
-    /** Kinesis Firehose のストリーム名 */
     private String firehoseStreamName;
 
-    /**
-     * Kinesis Firehose のストリーム名を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getFirehoseStreamName() {
-        return firehoseStreamName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public UpdateNamespaceRequest withType(String type) {
+		this.type = type;
+		return this;
+	}
+
+	public String getGcpCredentialJson() {
+		return gcpCredentialJson;
+	}
+
+	public void setGcpCredentialJson(String gcpCredentialJson) {
+		this.gcpCredentialJson = gcpCredentialJson;
+	}
+
+	public UpdateNamespaceRequest withGcpCredentialJson(String gcpCredentialJson) {
+		this.gcpCredentialJson = gcpCredentialJson;
+		return this;
+	}
+
+	public String getBigQueryDatasetName() {
+		return bigQueryDatasetName;
+	}
+
+	public void setBigQueryDatasetName(String bigQueryDatasetName) {
+		this.bigQueryDatasetName = bigQueryDatasetName;
+	}
+
+	public UpdateNamespaceRequest withBigQueryDatasetName(String bigQueryDatasetName) {
+		this.bigQueryDatasetName = bigQueryDatasetName;
+		return this;
+	}
+
+	public Integer getLogExpireDays() {
+		return logExpireDays;
+	}
+
+	public void setLogExpireDays(Integer logExpireDays) {
+		this.logExpireDays = logExpireDays;
+	}
+
+	public UpdateNamespaceRequest withLogExpireDays(Integer logExpireDays) {
+		this.logExpireDays = logExpireDays;
+		return this;
+	}
+
+	public String getAwsRegion() {
+		return awsRegion;
+	}
+
+	public void setAwsRegion(String awsRegion) {
+		this.awsRegion = awsRegion;
+	}
+
+	public UpdateNamespaceRequest withAwsRegion(String awsRegion) {
+		this.awsRegion = awsRegion;
+		return this;
+	}
+
+	public String getAwsAccessKeyId() {
+		return awsAccessKeyId;
+	}
+
+	public void setAwsAccessKeyId(String awsAccessKeyId) {
+		this.awsAccessKeyId = awsAccessKeyId;
+	}
+
+	public UpdateNamespaceRequest withAwsAccessKeyId(String awsAccessKeyId) {
+		this.awsAccessKeyId = awsAccessKeyId;
+		return this;
+	}
+
+	public String getAwsSecretAccessKey() {
+		return awsSecretAccessKey;
+	}
+
+	public void setAwsSecretAccessKey(String awsSecretAccessKey) {
+		this.awsSecretAccessKey = awsSecretAccessKey;
+	}
+
+	public UpdateNamespaceRequest withAwsSecretAccessKey(String awsSecretAccessKey) {
+		this.awsSecretAccessKey = awsSecretAccessKey;
+		return this;
+	}
+
+	public String getFirehoseStreamName() {
+		return firehoseStreamName;
+	}
+
+	public void setFirehoseStreamName(String firehoseStreamName) {
+		this.firehoseStreamName = firehoseStreamName;
+	}
+
+	public UpdateNamespaceRequest withFirehoseStreamName(String firehoseStreamName) {
+		this.firehoseStreamName = firehoseStreamName;
+		return this;
+	}
+
+    public static UpdateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateNamespaceRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").asText())
+            .withGcpCredentialJson(data.get("gcpCredentialJson") == null || data.get("gcpCredentialJson").isNull() ? null : data.get("gcpCredentialJson").asText())
+            .withBigQueryDatasetName(data.get("bigQueryDatasetName") == null || data.get("bigQueryDatasetName").isNull() ? null : data.get("bigQueryDatasetName").asText())
+            .withLogExpireDays(data.get("logExpireDays") == null || data.get("logExpireDays").isNull() ? null : data.get("logExpireDays").intValue())
+            .withAwsRegion(data.get("awsRegion") == null || data.get("awsRegion").isNull() ? null : data.get("awsRegion").asText())
+            .withAwsAccessKeyId(data.get("awsAccessKeyId") == null || data.get("awsAccessKeyId").isNull() ? null : data.get("awsAccessKeyId").asText())
+            .withAwsSecretAccessKey(data.get("awsSecretAccessKey") == null || data.get("awsSecretAccessKey").isNull() ? null : data.get("awsSecretAccessKey").asText())
+            .withFirehoseStreamName(data.get("firehoseStreamName") == null || data.get("firehoseStreamName").isNull() ? null : data.get("firehoseStreamName").asText());
     }
 
-    /**
-     * Kinesis Firehose のストリーム名を設定
-     *
-     * @param firehoseStreamName ネームスペースを更新
-     */
-    public void setFirehoseStreamName(String firehoseStreamName) {
-        this.firehoseStreamName = firehoseStreamName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("description", getDescription());
+                put("type", getType());
+                put("gcpCredentialJson", getGcpCredentialJson());
+                put("bigQueryDatasetName", getBigQueryDatasetName());
+                put("logExpireDays", getLogExpireDays());
+                put("awsRegion", getAwsRegion());
+                put("awsAccessKeyId", getAwsAccessKeyId());
+                put("awsSecretAccessKey", getAwsSecretAccessKey());
+                put("firehoseStreamName", getFirehoseStreamName());
+            }}
+        );
     }
-
-    /**
-     * Kinesis Firehose のストリーム名を設定
-     *
-     * @param firehoseStreamName ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withFirehoseStreamName(String firehoseStreamName) {
-        setFirehoseStreamName(firehoseStreamName);
-        return this;
-    }
-
 }

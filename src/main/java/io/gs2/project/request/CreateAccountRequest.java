@@ -16,146 +16,94 @@
 
 package io.gs2.project.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.project.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * アカウントを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateAccountRequest extends Gs2BasicRequest<CreateAccountRequest> {
-
-    /** メールアドレス */
     private String email;
-
-    /**
-     * メールアドレスを取得
-     *
-     * @return アカウントを新規作成
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * メールアドレスを設定
-     *
-     * @param email アカウントを新規作成
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * メールアドレスを設定
-     *
-     * @param email アカウントを新規作成
-     * @return this
-     */
-    public CreateAccountRequest withEmail(String email) {
-        setEmail(email);
-        return this;
-    }
-
-    /** フルネーム */
     private String fullName;
-
-    /**
-     * フルネームを取得
-     *
-     * @return アカウントを新規作成
-     */
-    public String getFullName() {
-        return fullName;
-    }
-
-    /**
-     * フルネームを設定
-     *
-     * @param fullName アカウントを新規作成
-     */
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    /**
-     * フルネームを設定
-     *
-     * @param fullName アカウントを新規作成
-     * @return this
-     */
-    public CreateAccountRequest withFullName(String fullName) {
-        setFullName(fullName);
-        return this;
-    }
-
-    /** 会社名 */
     private String companyName;
-
-    /**
-     * 会社名を取得
-     *
-     * @return アカウントを新規作成
-     */
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    /**
-     * 会社名を設定
-     *
-     * @param companyName アカウントを新規作成
-     */
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    /**
-     * 会社名を設定
-     *
-     * @param companyName アカウントを新規作成
-     * @return this
-     */
-    public CreateAccountRequest withCompanyName(String companyName) {
-        setCompanyName(companyName);
-        return this;
-    }
-
-    /** パスワード */
     private String password;
 
-    /**
-     * パスワードを取得
-     *
-     * @return アカウントを新規作成
-     */
-    public String getPassword() {
-        return password;
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public CreateAccountRequest withEmail(String email) {
+		this.email = email;
+		return this;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public CreateAccountRequest withFullName(String fullName) {
+		this.fullName = fullName;
+		return this;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public CreateAccountRequest withCompanyName(String companyName) {
+		this.companyName = companyName;
+		return this;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public CreateAccountRequest withPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+    public static CreateAccountRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateAccountRequest()
+            .withEmail(data.get("email") == null || data.get("email").isNull() ? null : data.get("email").asText())
+            .withFullName(data.get("fullName") == null || data.get("fullName").isNull() ? null : data.get("fullName").asText())
+            .withCompanyName(data.get("companyName") == null || data.get("companyName").isNull() ? null : data.get("companyName").asText())
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
     }
 
-    /**
-     * パスワードを設定
-     *
-     * @param password アカウントを新規作成
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("email", getEmail());
+                put("fullName", getFullName());
+                put("companyName", getCompanyName());
+                put("password", getPassword());
+            }}
+        );
     }
-
-    /**
-     * パスワードを設定
-     *
-     * @param password アカウントを新規作成
-     * @return this
-     */
-    public CreateAccountRequest withPassword(String password) {
-        setPassword(password);
-        return this;
-    }
-
 }

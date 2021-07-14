@@ -16,99 +16,109 @@
 
 package io.gs2.lottery.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
+import io.gs2.lottery.model.AcquireAction;
+import io.gs2.lottery.model.DrawnPrize;
+import io.gs2.lottery.model.BoxItem;
+import io.gs2.lottery.model.BoxItems;
 
-/**
- * ユーザIDを指定して抽選を実行 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DrawByUserIdResult implements IResult, Serializable {
-	/** 抽選結果の景品リスト */
-	private List<DrawnPrize> items;
-	/** 排出された景品を入手するスタンプシート */
-	private String stampSheet;
-	/** スタンプシートの署名計算に使用した暗号鍵GRN */
-	private String stampSheetEncryptionKeyId;
-	/** ボックスから取り出したアイテムのリスト */
-	private BoxItems boxItems;
+    private List<DrawnPrize> items;
+    private String stampSheet;
+    private String stampSheetEncryptionKeyId;
+    private BoxItems boxItems;
 
-	/**
-	 * 抽選結果の景品リストを取得
-	 *
-	 * @return ユーザIDを指定して抽選を実行
-	 */
 	public List<DrawnPrize> getItems() {
 		return items;
 	}
 
-	/**
-	 * 抽選結果の景品リストを設定
-	 *
-	 * @param items ユーザIDを指定して抽選を実行
-	 */
 	public void setItems(List<DrawnPrize> items) {
 		this.items = items;
 	}
 
-	/**
-	 * 排出された景品を入手するスタンプシートを取得
-	 *
-	 * @return ユーザIDを指定して抽選を実行
-	 */
+	public DrawByUserIdResult withItems(List<DrawnPrize> items) {
+		this.items = items;
+		return this;
+	}
+
 	public String getStampSheet() {
 		return stampSheet;
 	}
 
-	/**
-	 * 排出された景品を入手するスタンプシートを設定
-	 *
-	 * @param stampSheet ユーザIDを指定して抽選を実行
-	 */
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを取得
-	 *
-	 * @return ユーザIDを指定して抽選を実行
-	 */
+	public DrawByUserIdResult withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
 	public String getStampSheetEncryptionKeyId() {
 		return stampSheetEncryptionKeyId;
 	}
 
-	/**
-	 * スタンプシートの署名計算に使用した暗号鍵GRNを設定
-	 *
-	 * @param stampSheetEncryptionKeyId ユーザIDを指定して抽選を実行
-	 */
 	public void setStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
 		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
 	}
 
-	/**
-	 * ボックスから取り出したアイテムのリストを取得
-	 *
-	 * @return ユーザIDを指定して抽選を実行
-	 */
+	public DrawByUserIdResult withStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
+		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
+		return this;
+	}
+
 	public BoxItems getBoxItems() {
 		return boxItems;
 	}
 
-	/**
-	 * ボックスから取り出したアイテムのリストを設定
-	 *
-	 * @param boxItems ユーザIDを指定して抽選を実行
-	 */
 	public void setBoxItems(BoxItems boxItems) {
 		this.boxItems = boxItems;
 	}
+
+	public DrawByUserIdResult withBoxItems(BoxItems boxItems) {
+		this.boxItems = boxItems;
+		return this;
+	}
+
+    public static DrawByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DrawByUserIdResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<DrawnPrize>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return DrawnPrize.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
+            .withBoxItems(data.get("boxItems") == null || data.get("boxItems").isNull() ? null : BoxItems.fromJson(data.get("boxItems")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<DrawnPrize>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("stampSheet", getStampSheet());
+                put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+                put("boxItems", getBoxItems() != null ? getBoxItems().toJson() : null);
+            }}
+        );
+    }
 }

@@ -16,274 +16,158 @@
 
 package io.gs2.limit.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.limit.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 回数制限の種類マスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateLimitModelMasterRequest extends Gs2BasicRequest<UpdateLimitModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 回数制限の種類マスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 回数制限の種類マスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 回数制限の種類マスターを更新
-     * @return this
-     */
-    public UpdateLimitModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 回数制限の種類名 */
     private String limitName;
-
-    /**
-     * 回数制限の種類名を取得
-     *
-     * @return 回数制限の種類マスターを更新
-     */
-    public String getLimitName() {
-        return limitName;
-    }
-
-    /**
-     * 回数制限の種類名を設定
-     *
-     * @param limitName 回数制限の種類マスターを更新
-     */
-    public void setLimitName(String limitName) {
-        this.limitName = limitName;
-    }
-
-    /**
-     * 回数制限の種類名を設定
-     *
-     * @param limitName 回数制限の種類マスターを更新
-     * @return this
-     */
-    public UpdateLimitModelMasterRequest withLimitName(String limitName) {
-        setLimitName(limitName);
-        return this;
-    }
-
-    /** 回数制限の種類マスターの説明 */
     private String description;
-
-    /**
-     * 回数制限の種類マスターの説明を取得
-     *
-     * @return 回数制限の種類マスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 回数制限の種類マスターの説明を設定
-     *
-     * @param description 回数制限の種類マスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 回数制限の種類マスターの説明を設定
-     *
-     * @param description 回数制限の種類マスターを更新
-     * @return this
-     */
-    public UpdateLimitModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 回数制限の種類のメタデータ */
     private String metadata;
-
-    /**
-     * 回数制限の種類のメタデータを取得
-     *
-     * @return 回数制限の種類マスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 回数制限の種類のメタデータを設定
-     *
-     * @param metadata 回数制限の種類マスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 回数制限の種類のメタデータを設定
-     *
-     * @param metadata 回数制限の種類マスターを更新
-     * @return this
-     */
-    public UpdateLimitModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** リセットタイミング */
     private String resetType;
-
-    /**
-     * リセットタイミングを取得
-     *
-     * @return 回数制限の種類マスターを更新
-     */
-    public String getResetType() {
-        return resetType;
-    }
-
-    /**
-     * リセットタイミングを設定
-     *
-     * @param resetType 回数制限の種類マスターを更新
-     */
-    public void setResetType(String resetType) {
-        this.resetType = resetType;
-    }
-
-    /**
-     * リセットタイミングを設定
-     *
-     * @param resetType 回数制限の種類マスターを更新
-     * @return this
-     */
-    public UpdateLimitModelMasterRequest withResetType(String resetType) {
-        setResetType(resetType);
-        return this;
-    }
-
-    /** リセットをする日にち */
     private Integer resetDayOfMonth;
-
-    /**
-     * リセットをする日にちを取得
-     *
-     * @return 回数制限の種類マスターを更新
-     */
-    public Integer getResetDayOfMonth() {
-        return resetDayOfMonth;
-    }
-
-    /**
-     * リセットをする日にちを設定
-     *
-     * @param resetDayOfMonth 回数制限の種類マスターを更新
-     */
-    public void setResetDayOfMonth(Integer resetDayOfMonth) {
-        this.resetDayOfMonth = resetDayOfMonth;
-    }
-
-    /**
-     * リセットをする日にちを設定
-     *
-     * @param resetDayOfMonth 回数制限の種類マスターを更新
-     * @return this
-     */
-    public UpdateLimitModelMasterRequest withResetDayOfMonth(Integer resetDayOfMonth) {
-        setResetDayOfMonth(resetDayOfMonth);
-        return this;
-    }
-
-    /** リセットする曜日 */
     private String resetDayOfWeek;
-
-    /**
-     * リセットする曜日を取得
-     *
-     * @return 回数制限の種類マスターを更新
-     */
-    public String getResetDayOfWeek() {
-        return resetDayOfWeek;
-    }
-
-    /**
-     * リセットする曜日を設定
-     *
-     * @param resetDayOfWeek 回数制限の種類マスターを更新
-     */
-    public void setResetDayOfWeek(String resetDayOfWeek) {
-        this.resetDayOfWeek = resetDayOfWeek;
-    }
-
-    /**
-     * リセットする曜日を設定
-     *
-     * @param resetDayOfWeek 回数制限の種類マスターを更新
-     * @return this
-     */
-    public UpdateLimitModelMasterRequest withResetDayOfWeek(String resetDayOfWeek) {
-        setResetDayOfWeek(resetDayOfWeek);
-        return this;
-    }
-
-    /** リセット時刻 */
     private Integer resetHour;
 
-    /**
-     * リセット時刻を取得
-     *
-     * @return 回数制限の種類マスターを更新
-     */
-    public Integer getResetHour() {
-        return resetHour;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateLimitModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getLimitName() {
+		return limitName;
+	}
+
+	public void setLimitName(String limitName) {
+		this.limitName = limitName;
+	}
+
+	public UpdateLimitModelMasterRequest withLimitName(String limitName) {
+		this.limitName = limitName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateLimitModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateLimitModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getResetType() {
+		return resetType;
+	}
+
+	public void setResetType(String resetType) {
+		this.resetType = resetType;
+	}
+
+	public UpdateLimitModelMasterRequest withResetType(String resetType) {
+		this.resetType = resetType;
+		return this;
+	}
+
+	public Integer getResetDayOfMonth() {
+		return resetDayOfMonth;
+	}
+
+	public void setResetDayOfMonth(Integer resetDayOfMonth) {
+		this.resetDayOfMonth = resetDayOfMonth;
+	}
+
+	public UpdateLimitModelMasterRequest withResetDayOfMonth(Integer resetDayOfMonth) {
+		this.resetDayOfMonth = resetDayOfMonth;
+		return this;
+	}
+
+	public String getResetDayOfWeek() {
+		return resetDayOfWeek;
+	}
+
+	public void setResetDayOfWeek(String resetDayOfWeek) {
+		this.resetDayOfWeek = resetDayOfWeek;
+	}
+
+	public UpdateLimitModelMasterRequest withResetDayOfWeek(String resetDayOfWeek) {
+		this.resetDayOfWeek = resetDayOfWeek;
+		return this;
+	}
+
+	public Integer getResetHour() {
+		return resetHour;
+	}
+
+	public void setResetHour(Integer resetHour) {
+		this.resetHour = resetHour;
+	}
+
+	public UpdateLimitModelMasterRequest withResetHour(Integer resetHour) {
+		this.resetHour = resetHour;
+		return this;
+	}
+
+    public static UpdateLimitModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateLimitModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withLimitName(data.get("limitName") == null || data.get("limitName").isNull() ? null : data.get("limitName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
+            .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
+            .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
+            .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue());
     }
 
-    /**
-     * リセット時刻を設定
-     *
-     * @param resetHour 回数制限の種類マスターを更新
-     */
-    public void setResetHour(Integer resetHour) {
-        this.resetHour = resetHour;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("limitName", getLimitName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("resetType", getResetType());
+                put("resetDayOfMonth", getResetDayOfMonth());
+                put("resetDayOfWeek", getResetDayOfWeek());
+                put("resetHour", getResetHour());
+            }}
+        );
     }
-
-    /**
-     * リセット時刻を設定
-     *
-     * @param resetHour 回数制限の種類マスターを更新
-     * @return this
-     */
-    public UpdateLimitModelMasterRequest withResetHour(Integer resetHour) {
-        setResetHour(resetHour);
-        return this;
-    }
-
 }

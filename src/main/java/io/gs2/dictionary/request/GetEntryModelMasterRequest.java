@@ -16,82 +16,62 @@
 
 package io.gs2.dictionary.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.dictionary.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * エントリーモデルマスターを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetEntryModelMasterRequest extends Gs2BasicRequest<GetEntryModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return エントリーモデルマスターを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName エントリーモデルマスターを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName エントリーモデルマスターを取得
-     * @return this
-     */
-    public GetEntryModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** エントリーモデル名 */
     private String entryName;
 
-    /**
-     * エントリーモデル名を取得
-     *
-     * @return エントリーモデルマスターを取得
-     */
-    public String getEntryName() {
-        return entryName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetEntryModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getEntryName() {
+		return entryName;
+	}
+
+	public void setEntryName(String entryName) {
+		this.entryName = entryName;
+	}
+
+	public GetEntryModelMasterRequest withEntryName(String entryName) {
+		this.entryName = entryName;
+		return this;
+	}
+
+    public static GetEntryModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetEntryModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withEntryName(data.get("entryName") == null || data.get("entryName").isNull() ? null : data.get("entryName").asText());
     }
 
-    /**
-     * エントリーモデル名を設定
-     *
-     * @param entryName エントリーモデルマスターを取得
-     */
-    public void setEntryName(String entryName) {
-        this.entryName = entryName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("entryName", getEntryName());
+            }}
+        );
     }
-
-    /**
-     * エントリーモデル名を設定
-     *
-     * @param entryName エントリーモデルマスターを取得
-     * @return this
-     */
-    public GetEntryModelMasterRequest withEntryName(String entryName) {
-        setEntryName(entryName);
-        return this;
-    }
-
 }

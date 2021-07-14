@@ -16,39 +16,58 @@
 
 package io.gs2.matchmaking.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.RatingModel;
 
-/**
- * レーティングモデルの一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeRatingModelsResult implements IResult, Serializable {
-	/** レーティングモデルのリスト */
-	private List<RatingModel> items;
+    private List<RatingModel> items;
 
-	/**
-	 * レーティングモデルのリストを取得
-	 *
-	 * @return レーティングモデルの一覧を取得
-	 */
 	public List<RatingModel> getItems() {
 		return items;
 	}
 
-	/**
-	 * レーティングモデルのリストを設定
-	 *
-	 * @param items レーティングモデルの一覧を取得
-	 */
 	public void setItems(List<RatingModel> items) {
 		this.items = items;
 	}
+
+	public DescribeRatingModelsResult withItems(List<RatingModel> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static DescribeRatingModelsResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeRatingModelsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RatingModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return RatingModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<RatingModel>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

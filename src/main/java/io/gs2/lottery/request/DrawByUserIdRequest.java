@@ -16,210 +16,121 @@
 
 package io.gs2.lottery.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.lottery.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.lottery.model.Config;
 
-/**
- * ユーザIDを指定して抽選を実行 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ユーザIDを指定して抽選を実行
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定して抽選を実行
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ユーザIDを指定して抽選を実行
-     * @return this
-     */
-    public DrawByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 抽選モデルの種類名 */
     private String lotteryName;
-
-    /**
-     * 抽選モデルの種類名を取得
-     *
-     * @return ユーザIDを指定して抽選を実行
-     */
-    public String getLotteryName() {
-        return lotteryName;
-    }
-
-    /**
-     * 抽選モデルの種類名を設定
-     *
-     * @param lotteryName ユーザIDを指定して抽選を実行
-     */
-    public void setLotteryName(String lotteryName) {
-        this.lotteryName = lotteryName;
-    }
-
-    /**
-     * 抽選モデルの種類名を設定
-     *
-     * @param lotteryName ユーザIDを指定して抽選を実行
-     * @return this
-     */
-    public DrawByUserIdRequest withLotteryName(String lotteryName) {
-        setLotteryName(lotteryName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定して抽選を実行
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定して抽選を実行
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定して抽選を実行
-     * @return this
-     */
-    public DrawByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 抽選回数 */
     private Integer count;
-
-    /**
-     * 抽選回数を取得
-     *
-     * @return ユーザIDを指定して抽選を実行
-     */
-    public Integer getCount() {
-        return count;
-    }
-
-    /**
-     * 抽選回数を設定
-     *
-     * @param count ユーザIDを指定して抽選を実行
-     */
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    /**
-     * 抽選回数を設定
-     *
-     * @param count ユーザIDを指定して抽選を実行
-     * @return this
-     */
-    public DrawByUserIdRequest withCount(Integer count) {
-        setCount(count);
-        return this;
-    }
-
-    /** スタンプシートのプレースホルダの適用する設定値 */
     private List<Config> config;
 
-    /**
-     * スタンプシートのプレースホルダの適用する設定値を取得
-     *
-     * @return ユーザIDを指定して抽選を実行
-     */
-    public List<Config> getConfig() {
-        return config;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public DrawByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getLotteryName() {
+		return lotteryName;
+	}
+
+	public void setLotteryName(String lotteryName) {
+		this.lotteryName = lotteryName;
+	}
+
+	public DrawByUserIdRequest withLotteryName(String lotteryName) {
+		this.lotteryName = lotteryName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public DrawByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public DrawByUserIdRequest withCount(Integer count) {
+		this.count = count;
+		return this;
+	}
+
+	public List<Config> getConfig() {
+		return config;
+	}
+
+	public void setConfig(List<Config> config) {
+		this.config = config;
+	}
+
+	public DrawByUserIdRequest withConfig(List<Config> config) {
+		this.config = config;
+		return this;
+	}
+
+    public static DrawByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DrawByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withLotteryName(data.get("lotteryName") == null || data.get("lotteryName").isNull() ? null : data.get("lotteryName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Config.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * スタンプシートのプレースホルダの適用する設定値を設定
-     *
-     * @param config ユーザIDを指定して抽選を実行
-     */
-    public void setConfig(List<Config> config) {
-        this.config = config;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("lotteryName", getLotteryName());
+                put("userId", getUserId());
+                put("count", getCount());
+                put("config", getConfig() == null ? new ArrayList<Config>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * スタンプシートのプレースホルダの適用する設定値を設定
-     *
-     * @param config ユーザIDを指定して抽選を実行
-     * @return this
-     */
-    public DrawByUserIdRequest withConfig(List<Config> config) {
-        setConfig(config);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定して抽選を実行
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定して抽選を実行
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定して抽選を実行
-     * @return this
-     */
-    public DrawByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

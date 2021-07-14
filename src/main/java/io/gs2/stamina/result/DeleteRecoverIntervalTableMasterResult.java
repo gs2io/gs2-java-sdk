@@ -16,39 +16,48 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.RecoverIntervalTableMaster;
 
-/**
- * スタミナ回復間隔テーブルマスターを削除 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteRecoverIntervalTableMasterResult implements IResult, Serializable {
-	/** 削除したスタミナ回復間隔テーブルマスター */
-	private RecoverIntervalTableMaster item;
+    private RecoverIntervalTableMaster item;
 
-	/**
-	 * 削除したスタミナ回復間隔テーブルマスターを取得
-	 *
-	 * @return スタミナ回復間隔テーブルマスターを削除
-	 */
 	public RecoverIntervalTableMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 削除したスタミナ回復間隔テーブルマスターを設定
-	 *
-	 * @param item スタミナ回復間隔テーブルマスターを削除
-	 */
 	public void setItem(RecoverIntervalTableMaster item) {
 		this.item = item;
 	}
+
+	public DeleteRecoverIntervalTableMasterResult withItem(RecoverIntervalTableMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static DeleteRecoverIntervalTableMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DeleteRecoverIntervalTableMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RecoverIntervalTableMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

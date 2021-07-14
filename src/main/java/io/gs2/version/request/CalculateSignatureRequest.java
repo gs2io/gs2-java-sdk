@@ -16,114 +16,79 @@
 
 package io.gs2.version.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.version.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.version.model.Version;
 
-/**
- * スタンプシートのタスクを実行する のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CalculateSignatureRequest extends Gs2BasicRequest<CalculateSignatureRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return スタンプシートのタスクを実行する
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタンプシートのタスクを実行する
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタンプシートのタスクを実行する
-     * @return this
-     */
-    public CalculateSignatureRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** バージョンの種類名 */
     private String versionName;
-
-    /**
-     * バージョンの種類名を取得
-     *
-     * @return スタンプシートのタスクを実行する
-     */
-    public String getVersionName() {
-        return versionName;
-    }
-
-    /**
-     * バージョンの種類名を設定
-     *
-     * @param versionName スタンプシートのタスクを実行する
-     */
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
-    }
-
-    /**
-     * バージョンの種類名を設定
-     *
-     * @param versionName スタンプシートのタスクを実行する
-     * @return this
-     */
-    public CalculateSignatureRequest withVersionName(String versionName) {
-        setVersionName(versionName);
-        return this;
-    }
-
-    /** バージョン */
     private Version version;
 
-    /**
-     * バージョンを取得
-     *
-     * @return スタンプシートのタスクを実行する
-     */
-    public Version getVersion() {
-        return version;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CalculateSignatureRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getVersionName() {
+		return versionName;
+	}
+
+	public void setVersionName(String versionName) {
+		this.versionName = versionName;
+	}
+
+	public CalculateSignatureRequest withVersionName(String versionName) {
+		this.versionName = versionName;
+		return this;
+	}
+
+	public Version getVersion() {
+		return version;
+	}
+
+	public void setVersion(Version version) {
+		this.version = version;
+	}
+
+	public CalculateSignatureRequest withVersion(Version version) {
+		this.version = version;
+		return this;
+	}
+
+    public static CalculateSignatureRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CalculateSignatureRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withVersionName(data.get("versionName") == null || data.get("versionName").isNull() ? null : data.get("versionName").asText())
+            .withVersion(data.get("version") == null || data.get("version").isNull() ? null : Version.fromJson(data.get("version")));
     }
 
-    /**
-     * バージョンを設定
-     *
-     * @param version スタンプシートのタスクを実行する
-     */
-    public void setVersion(Version version) {
-        this.version = version;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("versionName", getVersionName());
+                put("version", getVersion() != null ? getVersion().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * バージョンを設定
-     *
-     * @param version スタンプシートのタスクを実行する
-     * @return this
-     */
-    public CalculateSignatureRequest withVersion(Version version) {
-        setVersion(version);
-        return this;
-    }
-
 }

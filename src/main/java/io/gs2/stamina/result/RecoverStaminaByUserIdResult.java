@@ -16,79 +16,84 @@
 
 package io.gs2.stamina.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
+import io.gs2.stamina.model.Stamina;
+import io.gs2.stamina.model.MaxStaminaTable;
+import io.gs2.stamina.model.RecoverIntervalTable;
+import io.gs2.stamina.model.RecoverValueTable;
+import io.gs2.stamina.model.StaminaModel;
 
-/**
- * ユーザIDを指定してスタミナを回復 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RecoverStaminaByUserIdResult implements IResult, Serializable {
-	/** スタミナ */
-	private Stamina item;
-	/** スタミナモデル */
-	private StaminaModel staminaModel;
-	/** スタミナ値の上限を超えて受け取れずに GS2-Inbox に転送したスタミナ値 */
-	private Long overflowValue;
+    private Stamina item;
+    private StaminaModel staminaModel;
+    private Long overflowValue;
 
-	/**
-	 * スタミナを取得
-	 *
-	 * @return ユーザIDを指定してスタミナを回復
-	 */
 	public Stamina getItem() {
 		return item;
 	}
 
-	/**
-	 * スタミナを設定
-	 *
-	 * @param item ユーザIDを指定してスタミナを回復
-	 */
 	public void setItem(Stamina item) {
 		this.item = item;
 	}
 
-	/**
-	 * スタミナモデルを取得
-	 *
-	 * @return ユーザIDを指定してスタミナを回復
-	 */
+	public RecoverStaminaByUserIdResult withItem(Stamina item) {
+		this.item = item;
+		return this;
+	}
+
 	public StaminaModel getStaminaModel() {
 		return staminaModel;
 	}
 
-	/**
-	 * スタミナモデルを設定
-	 *
-	 * @param staminaModel ユーザIDを指定してスタミナを回復
-	 */
 	public void setStaminaModel(StaminaModel staminaModel) {
 		this.staminaModel = staminaModel;
 	}
 
-	/**
-	 * スタミナ値の上限を超えて受け取れずに GS2-Inbox に転送したスタミナ値を取得
-	 *
-	 * @return ユーザIDを指定してスタミナを回復
-	 */
+	public RecoverStaminaByUserIdResult withStaminaModel(StaminaModel staminaModel) {
+		this.staminaModel = staminaModel;
+		return this;
+	}
+
 	public Long getOverflowValue() {
 		return overflowValue;
 	}
 
-	/**
-	 * スタミナ値の上限を超えて受け取れずに GS2-Inbox に転送したスタミナ値を設定
-	 *
-	 * @param overflowValue ユーザIDを指定してスタミナを回復
-	 */
 	public void setOverflowValue(Long overflowValue) {
 		this.overflowValue = overflowValue;
 	}
+
+	public RecoverStaminaByUserIdResult withOverflowValue(Long overflowValue) {
+		this.overflowValue = overflowValue;
+		return this;
+	}
+
+    public static RecoverStaminaByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new RecoverStaminaByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Stamina.fromJson(data.get("item")))
+            .withStaminaModel(data.get("staminaModel") == null || data.get("staminaModel").isNull() ? null : StaminaModel.fromJson(data.get("staminaModel")))
+            .withOverflowValue(data.get("overflowValue") == null || data.get("overflowValue").isNull() ? null : data.get("overflowValue").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("staminaModel", getStaminaModel() != null ? getStaminaModel().toJson() : null);
+                put("overflowValue", getOverflowValue());
+            }}
+        );
+    }
 }

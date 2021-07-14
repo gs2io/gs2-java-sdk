@@ -16,146 +16,78 @@
 
 package io.gs2.distributor.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.distributor.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * スタンプシートの完了を報告する のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class RunStampSheetRequest extends Gs2BasicRequest<RunStampSheetRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return スタンプシートの完了を報告する
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタンプシートの完了を報告する
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName スタンプシートの完了を報告する
-     * @return this
-     */
-    public RunStampSheetRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 実行するスタンプタスク */
     private String stampSheet;
-
-    /**
-     * 実行するスタンプタスクを取得
-     *
-     * @return スタンプシートの完了を報告する
-     */
-    public String getStampSheet() {
-        return stampSheet;
-    }
-
-    /**
-     * 実行するスタンプタスクを設定
-     *
-     * @param stampSheet スタンプシートの完了を報告する
-     */
-    public void setStampSheet(String stampSheet) {
-        this.stampSheet = stampSheet;
-    }
-
-    /**
-     * 実行するスタンプタスクを設定
-     *
-     * @param stampSheet スタンプシートの完了を報告する
-     * @return this
-     */
-    public RunStampSheetRequest withStampSheet(String stampSheet) {
-        setStampSheet(stampSheet);
-        return this;
-    }
-
-    /** スタンプシートの暗号化に使用した暗号鍵GRN */
     private String keyId;
 
-    /**
-     * スタンプシートの暗号化に使用した暗号鍵GRNを取得
-     *
-     * @return スタンプシートの完了を報告する
-     */
-    public String getKeyId() {
-        return keyId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public RunStampSheetRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getStampSheet() {
+		return stampSheet;
+	}
+
+	public void setStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+	}
+
+	public RunStampSheetRequest withStampSheet(String stampSheet) {
+		this.stampSheet = stampSheet;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public RunStampSheetRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+    public static RunStampSheetRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new RunStampSheetRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
-    /**
-     * スタンプシートの暗号化に使用した暗号鍵GRNを設定
-     *
-     * @param keyId スタンプシートの完了を報告する
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("stampSheet", getStampSheet());
+                put("keyId", getKeyId());
+            }}
+        );
     }
-
-    /**
-     * スタンプシートの暗号化に使用した暗号鍵GRNを設定
-     *
-     * @param keyId スタンプシートの完了を報告する
-     * @return this
-     */
-    public RunStampSheetRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return スタンプシートの完了を報告する
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider スタンプシートの完了を報告する
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider スタンプシートの完了を報告する
-     * @return this
-     */
-    public RunStampSheetRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

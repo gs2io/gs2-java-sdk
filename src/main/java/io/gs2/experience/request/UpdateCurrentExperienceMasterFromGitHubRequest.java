@@ -16,82 +16,63 @@
 
 package io.gs2.experience.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.experience.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.experience.model.GitHubCheckoutSetting;
 
-/**
- * 現在有効な経験値設定を更新します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateCurrentExperienceMasterFromGitHubRequest extends Gs2BasicRequest<UpdateCurrentExperienceMasterFromGitHubRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 現在有効な経験値設定を更新します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 現在有効な経験値設定を更新します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 現在有効な経験値設定を更新します
-     * @return this
-     */
-    public UpdateCurrentExperienceMasterFromGitHubRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** GitHubからマスターデータをチェックアウトしてくる設定 */
     private GitHubCheckoutSetting checkoutSetting;
 
-    /**
-     * GitHubからマスターデータをチェックアウトしてくる設定を取得
-     *
-     * @return 現在有効な経験値設定を更新します
-     */
-    public GitHubCheckoutSetting getCheckoutSetting() {
-        return checkoutSetting;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateCurrentExperienceMasterFromGitHubRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public GitHubCheckoutSetting getCheckoutSetting() {
+		return checkoutSetting;
+	}
+
+	public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+		this.checkoutSetting = checkoutSetting;
+	}
+
+	public UpdateCurrentExperienceMasterFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+		this.checkoutSetting = checkoutSetting;
+		return this;
+	}
+
+    public static UpdateCurrentExperienceMasterFromGitHubRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateCurrentExperienceMasterFromGitHubRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withCheckoutSetting(data.get("checkoutSetting") == null || data.get("checkoutSetting").isNull() ? null : GitHubCheckoutSetting.fromJson(data.get("checkoutSetting")));
     }
 
-    /**
-     * GitHubからマスターデータをチェックアウトしてくる設定を設定
-     *
-     * @param checkoutSetting 現在有効な経験値設定を更新します
-     */
-    public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
-        this.checkoutSetting = checkoutSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("checkoutSetting", getCheckoutSetting() != null ? getCheckoutSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * GitHubからマスターデータをチェックアウトしてくる設定を設定
-     *
-     * @param checkoutSetting 現在有効な経験値設定を更新します
-     * @return this
-     */
-    public UpdateCurrentExperienceMasterFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
-        setCheckoutSetting(checkoutSetting);
-        return this;
-    }
-
 }

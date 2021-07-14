@@ -16,351 +16,178 @@
 
 package io.gs2.version.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ネームスペース
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Namespace implements IModel, Serializable, Comparable<Namespace> {
-	/** ネームスペース */
-	protected String namespaceId;
+	private String namespaceId;
+	private String name;
+	private String description;
+	private String assumeUserId;
+	private ScriptSetting acceptVersionScript;
+	private String checkVersionTriggerScriptId;
+	private LogSetting logSetting;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * ネームスペースを取得
-	 *
-	 * @return ネームスペース
-	 */
 	public String getNamespaceId() {
 		return namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 */
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
 
-	/**
-	 * ネームスペースを設定
-	 *
-	 * @param namespaceId ネームスペース
-	 * @return this
-	 */
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Namespace withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** ネームスペース名 */
-	protected String name;
-
-	/**
-	 * ネームスペース名を取得
-	 *
-	 * @return ネームスペース名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * ネームスペース名を設定
-	 *
-	 * @param name ネームスペース名
-	 * @return this
-	 */
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 説明文 */
-	protected String description;
 
-	/**
-	 * 説明文を取得
-	 *
-	 * @return 説明文
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 説明文を設定
-	 *
-	 * @param description 説明文
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 説明文を設定
-	 *
-	 * @param description 説明文
-	 * @return this
-	 */
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRN */
-	protected String assumeUserId;
 
-	/**
-	 * バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRNを取得
-	 *
-	 * @return バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRN
-	 */
 	public String getAssumeUserId() {
 		return assumeUserId;
 	}
 
-	/**
-	 * バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRNを設定
-	 *
-	 * @param assumeUserId バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRN
-	 */
 	public void setAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 	}
 
-	/**
-	 * バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRNを設定
-	 *
-	 * @param assumeUserId バージョンチェック通過後に改めて発行するプロジェクトトークンの権限判定に使用する ユーザ のGRN
-	 * @return this
-	 */
 	public Namespace withAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 		return this;
 	}
-	/** バージョンを承認したときに実行するスクリプト */
-	protected ScriptSetting acceptVersionScript;
 
-	/**
-	 * バージョンを承認したときに実行するスクリプトを取得
-	 *
-	 * @return バージョンを承認したときに実行するスクリプト
-	 */
 	public ScriptSetting getAcceptVersionScript() {
 		return acceptVersionScript;
 	}
 
-	/**
-	 * バージョンを承認したときに実行するスクリプトを設定
-	 *
-	 * @param acceptVersionScript バージョンを承認したときに実行するスクリプト
-	 */
 	public void setAcceptVersionScript(ScriptSetting acceptVersionScript) {
 		this.acceptVersionScript = acceptVersionScript;
 	}
 
-	/**
-	 * バージョンを承認したときに実行するスクリプトを設定
-	 *
-	 * @param acceptVersionScript バージョンを承認したときに実行するスクリプト
-	 * @return this
-	 */
 	public Namespace withAcceptVersionScript(ScriptSetting acceptVersionScript) {
 		this.acceptVersionScript = acceptVersionScript;
 		return this;
 	}
-	/** バージョンチェック時 に実行されるスクリプト のGRN */
-	protected String checkVersionTriggerScriptId;
 
-	/**
-	 * バージョンチェック時 に実行されるスクリプト のGRNを取得
-	 *
-	 * @return バージョンチェック時 に実行されるスクリプト のGRN
-	 */
 	public String getCheckVersionTriggerScriptId() {
 		return checkVersionTriggerScriptId;
 	}
 
-	/**
-	 * バージョンチェック時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param checkVersionTriggerScriptId バージョンチェック時 に実行されるスクリプト のGRN
-	 */
 	public void setCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
 		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
 	}
 
-	/**
-	 * バージョンチェック時 に実行されるスクリプト のGRNを設定
-	 *
-	 * @param checkVersionTriggerScriptId バージョンチェック時 に実行されるスクリプト のGRN
-	 * @return this
-	 */
 	public Namespace withCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
 		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
 		return this;
 	}
-	/** ログの出力設定 */
-	protected LogSetting logSetting;
 
-	/**
-	 * ログの出力設定を取得
-	 *
-	 * @return ログの出力設定
-	 */
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 */
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
 
-	/**
-	 * ログの出力設定を設定
-	 *
-	 * @param logSetting ログの出力設定
-	 * @return this
-	 */
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        JsonNode acceptVersionScript = this.getAcceptVersionScript().toJson();
-        JsonNode logSetting = this.getLogSetting().toJson();
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("namespaceId", this.getNamespaceId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("assumeUserId", this.getAssumeUserId())
-            .put("checkVersionTriggerScriptId", this.getCheckVersionTriggerScriptId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("acceptVersionScript", acceptVersionScript);
-        body_.set("logSetting", logSetting);
-        return body_;
+    public static Namespace fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Namespace()
+            .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withAssumeUserId(data.get("assumeUserId") == null || data.get("assumeUserId").isNull() ? null : data.get("assumeUserId").asText())
+            .withAcceptVersionScript(data.get("acceptVersionScript") == null || data.get("acceptVersionScript").isNull() ? null : ScriptSetting.fromJson(data.get("acceptVersionScript")))
+            .withCheckVersionTriggerScriptId(data.get("checkVersionTriggerScriptId") == null || data.get("checkVersionTriggerScriptId").isNull() ? null : data.get("checkVersionTriggerScriptId").asText())
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceId", getNamespaceId());
+                put("name", getName());
+                put("description", getDescription());
+                put("assumeUserId", getAssumeUserId());
+                put("acceptVersionScript", getAcceptVersionScript() != null ? getAcceptVersionScript().toJson() : null);
+                put("checkVersionTriggerScriptId", getCheckVersionTriggerScriptId());
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Namespace o) {
 		return namespaceId.compareTo(o.namespaceId);
@@ -371,7 +198,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.assumeUserId == null) ? 0 : this.assumeUserId.hashCode());
@@ -395,11 +221,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (namespaceId == null) {
 			return other.namespaceId == null;
 		} else if (!namespaceId.equals(other.namespaceId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {

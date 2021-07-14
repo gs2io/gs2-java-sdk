@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.identifier;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.identifier.request.*;
 import io.gs2.identifier.result.*;
-import io.gs2.identifier.model.*;
+import io.gs2.identifier.model.*;public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRestClient> {
 
-/**
- * GS2 Identifier API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2IdentifierRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DescribeUsersTask(
             DescribeUsersRequest request,
-            AsyncAction<AsyncResult<DescribeUsersResult>> userCallback,
-            Class<DescribeUsersResult> clazz
+            AsyncAction<AsyncResult<DescribeUsersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeUsersResult parse(JsonNode data) {
+            return DescribeUsersResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * ユーザの一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeUsersAsync(
             DescribeUsersRequest request,
             AsyncAction<AsyncResult<DescribeUsersResult>> callback
     ) {
-        DescribeUsersTask task = new DescribeUsersTask(request, callback, DescribeUsersResult.class);
+        DescribeUsersTask task = new DescribeUsersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザの一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeUsersResult describeUsers(
             DescribeUsersRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public CreateUserTask(
             CreateUserRequest request,
-            AsyncAction<AsyncResult<CreateUserResult>> userCallback,
-            Class<CreateUserResult> clazz
+            AsyncAction<AsyncResult<CreateUserResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateUserResult parse(JsonNode data) {
+            return CreateUserResult.fromJson(data);
         }
 
         @Override
@@ -169,19 +152,13 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -199,25 +176,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * ユーザを新規作成します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createUserAsync(
             CreateUserRequest request,
             AsyncAction<AsyncResult<CreateUserResult>> callback
     ) {
-        CreateUserTask task = new CreateUserTask(request, callback, CreateUserResult.class);
+        CreateUserTask task = new CreateUserTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザを新規作成します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateUserResult createUser(
             CreateUserRequest request
     ) {
@@ -244,15 +210,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public UpdateUserTask(
             UpdateUserRequest request,
-            AsyncAction<AsyncResult<UpdateUserResult>> userCallback,
-            Class<UpdateUserResult> clazz
+            AsyncAction<AsyncResult<UpdateUserResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateUserResult parse(JsonNode data) {
+            return UpdateUserResult.fromJson(data);
         }
 
         @Override
@@ -263,18 +232,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -292,25 +257,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * ユーザを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateUserAsync(
             UpdateUserRequest request,
             AsyncAction<AsyncResult<UpdateUserResult>> callback
     ) {
-        UpdateUserTask task = new UpdateUserTask(request, callback, UpdateUserResult.class);
+        UpdateUserTask task = new UpdateUserTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateUserResult updateUser(
             UpdateUserRequest request
     ) {
@@ -337,15 +291,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public GetUserTask(
             GetUserRequest request,
-            AsyncAction<AsyncResult<GetUserResult>> userCallback,
-            Class<GetUserResult> clazz
+            AsyncAction<AsyncResult<GetUserResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetUserResult parse(JsonNode data) {
+            return GetUserResult.fromJson(data);
         }
 
         @Override
@@ -356,7 +313,7 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -380,25 +337,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * ユーザを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getUserAsync(
             GetUserRequest request,
             AsyncAction<AsyncResult<GetUserResult>> callback
     ) {
-        GetUserTask task = new GetUserTask(request, callback, GetUserResult.class);
+        GetUserTask task = new GetUserTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetUserResult getUser(
             GetUserRequest request
     ) {
@@ -425,15 +371,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DeleteUserTask(
             DeleteUserRequest request,
-            AsyncAction<AsyncResult<DeleteUserResult>> userCallback,
-            Class<DeleteUserResult> clazz
+            AsyncAction<AsyncResult<DeleteUserResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteUserResult parse(JsonNode data) {
+            return DeleteUserResult.fromJson(data);
         }
 
         @Override
@@ -444,7 +393,7 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -468,25 +417,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * ユーザを削除します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteUserAsync(
             DeleteUserRequest request,
             AsyncAction<AsyncResult<DeleteUserResult>> callback
     ) {
-        DeleteUserTask task = new DeleteUserTask(request, callback, DeleteUserResult.class);
+        DeleteUserTask task = new DeleteUserTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザを削除します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteUserResult deleteUser(
             DeleteUserRequest request
     ) {
@@ -513,15 +451,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DescribeSecurityPoliciesTask(
             DescribeSecurityPoliciesRequest request,
-            AsyncAction<AsyncResult<DescribeSecurityPoliciesResult>> userCallback,
-            Class<DescribeSecurityPoliciesResult> clazz
+            AsyncAction<AsyncResult<DescribeSecurityPoliciesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeSecurityPoliciesResult parse(JsonNode data) {
+            return DescribeSecurityPoliciesResult.fromJson(data);
         }
 
         @Override
@@ -560,25 +501,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * セキュリティポリシーの一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeSecurityPoliciesAsync(
             DescribeSecurityPoliciesRequest request,
             AsyncAction<AsyncResult<DescribeSecurityPoliciesResult>> callback
     ) {
-        DescribeSecurityPoliciesTask task = new DescribeSecurityPoliciesTask(request, callback, DescribeSecurityPoliciesResult.class);
+        DescribeSecurityPoliciesTask task = new DescribeSecurityPoliciesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * セキュリティポリシーの一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeSecurityPoliciesResult describeSecurityPolicies(
             DescribeSecurityPoliciesRequest request
     ) {
@@ -605,15 +535,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DescribeCommonSecurityPoliciesTask(
             DescribeCommonSecurityPoliciesRequest request,
-            AsyncAction<AsyncResult<DescribeCommonSecurityPoliciesResult>> userCallback,
-            Class<DescribeCommonSecurityPoliciesResult> clazz
+            AsyncAction<AsyncResult<DescribeCommonSecurityPoliciesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeCommonSecurityPoliciesResult parse(JsonNode data) {
+            return DescribeCommonSecurityPoliciesResult.fromJson(data);
         }
 
         @Override
@@ -652,25 +585,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * オーナーIDを指定してセキュリティポリシーの一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeCommonSecurityPoliciesAsync(
             DescribeCommonSecurityPoliciesRequest request,
             AsyncAction<AsyncResult<DescribeCommonSecurityPoliciesResult>> callback
     ) {
-        DescribeCommonSecurityPoliciesTask task = new DescribeCommonSecurityPoliciesTask(request, callback, DescribeCommonSecurityPoliciesResult.class);
+        DescribeCommonSecurityPoliciesTask task = new DescribeCommonSecurityPoliciesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * オーナーIDを指定してセキュリティポリシーの一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeCommonSecurityPoliciesResult describeCommonSecurityPolicies(
             DescribeCommonSecurityPoliciesRequest request
     ) {
@@ -697,15 +619,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public CreateSecurityPolicyTask(
             CreateSecurityPolicyRequest request,
-            AsyncAction<AsyncResult<CreateSecurityPolicyResult>> userCallback,
-            Class<CreateSecurityPolicyResult> clazz
+            AsyncAction<AsyncResult<CreateSecurityPolicyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateSecurityPolicyResult parse(JsonNode data) {
+            return CreateSecurityPolicyResult.fromJson(data);
         }
 
         @Override
@@ -716,22 +641,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/securityPolicy";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getPolicy() != null) {
-                json.put("policy", this.request.getPolicy());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("policy", request.getPolicy());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -749,25 +666,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * セキュリティポリシーを新規作成します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createSecurityPolicyAsync(
             CreateSecurityPolicyRequest request,
             AsyncAction<AsyncResult<CreateSecurityPolicyResult>> callback
     ) {
-        CreateSecurityPolicyTask task = new CreateSecurityPolicyTask(request, callback, CreateSecurityPolicyResult.class);
+        CreateSecurityPolicyTask task = new CreateSecurityPolicyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * セキュリティポリシーを新規作成します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateSecurityPolicyResult createSecurityPolicy(
             CreateSecurityPolicyRequest request
     ) {
@@ -794,15 +700,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public UpdateSecurityPolicyTask(
             UpdateSecurityPolicyRequest request,
-            AsyncAction<AsyncResult<UpdateSecurityPolicyResult>> userCallback,
-            Class<UpdateSecurityPolicyResult> clazz
+            AsyncAction<AsyncResult<UpdateSecurityPolicyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateSecurityPolicyResult parse(JsonNode data) {
+            return UpdateSecurityPolicyResult.fromJson(data);
         }
 
         @Override
@@ -813,21 +722,15 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/securityPolicy/{securityPolicyName}";
 
-            url = url.replace("{securityPolicyName}", this.request.getSecurityPolicyName() == null|| this.request.getSecurityPolicyName().length() == 0 ? "null" : String.valueOf(this.request.getSecurityPolicyName()));
+            url = url.replace("{securityPolicyName}", this.request.getSecurityPolicyName() == null || this.request.getSecurityPolicyName().length() == 0 ? "null" : String.valueOf(this.request.getSecurityPolicyName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getPolicy() != null) {
-                json.put("policy", this.request.getPolicy());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("policy", request.getPolicy());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -845,25 +748,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * セキュリティポリシーを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateSecurityPolicyAsync(
             UpdateSecurityPolicyRequest request,
             AsyncAction<AsyncResult<UpdateSecurityPolicyResult>> callback
     ) {
-        UpdateSecurityPolicyTask task = new UpdateSecurityPolicyTask(request, callback, UpdateSecurityPolicyResult.class);
+        UpdateSecurityPolicyTask task = new UpdateSecurityPolicyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * セキュリティポリシーを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateSecurityPolicyResult updateSecurityPolicy(
             UpdateSecurityPolicyRequest request
     ) {
@@ -890,15 +782,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public GetSecurityPolicyTask(
             GetSecurityPolicyRequest request,
-            AsyncAction<AsyncResult<GetSecurityPolicyResult>> userCallback,
-            Class<GetSecurityPolicyResult> clazz
+            AsyncAction<AsyncResult<GetSecurityPolicyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetSecurityPolicyResult parse(JsonNode data) {
+            return GetSecurityPolicyResult.fromJson(data);
         }
 
         @Override
@@ -909,7 +804,7 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/securityPolicy/{securityPolicyName}";
 
-            url = url.replace("{securityPolicyName}", this.request.getSecurityPolicyName() == null|| this.request.getSecurityPolicyName().length() == 0 ? "null" : String.valueOf(this.request.getSecurityPolicyName()));
+            url = url.replace("{securityPolicyName}", this.request.getSecurityPolicyName() == null || this.request.getSecurityPolicyName().length() == 0 ? "null" : String.valueOf(this.request.getSecurityPolicyName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -933,25 +828,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * セキュリティポリシーを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getSecurityPolicyAsync(
             GetSecurityPolicyRequest request,
             AsyncAction<AsyncResult<GetSecurityPolicyResult>> callback
     ) {
-        GetSecurityPolicyTask task = new GetSecurityPolicyTask(request, callback, GetSecurityPolicyResult.class);
+        GetSecurityPolicyTask task = new GetSecurityPolicyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * セキュリティポリシーを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetSecurityPolicyResult getSecurityPolicy(
             GetSecurityPolicyRequest request
     ) {
@@ -978,15 +862,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DeleteSecurityPolicyTask(
             DeleteSecurityPolicyRequest request,
-            AsyncAction<AsyncResult<DeleteSecurityPolicyResult>> userCallback,
-            Class<DeleteSecurityPolicyResult> clazz
+            AsyncAction<AsyncResult<DeleteSecurityPolicyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteSecurityPolicyResult parse(JsonNode data) {
+            return DeleteSecurityPolicyResult.fromJson(data);
         }
 
         @Override
@@ -997,7 +884,7 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/securityPolicy/{securityPolicyName}";
 
-            url = url.replace("{securityPolicyName}", this.request.getSecurityPolicyName() == null|| this.request.getSecurityPolicyName().length() == 0 ? "null" : String.valueOf(this.request.getSecurityPolicyName()));
+            url = url.replace("{securityPolicyName}", this.request.getSecurityPolicyName() == null || this.request.getSecurityPolicyName().length() == 0 ? "null" : String.valueOf(this.request.getSecurityPolicyName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1021,25 +908,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * セキュリティポリシーを削除します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteSecurityPolicyAsync(
             DeleteSecurityPolicyRequest request,
             AsyncAction<AsyncResult<DeleteSecurityPolicyResult>> callback
     ) {
-        DeleteSecurityPolicyTask task = new DeleteSecurityPolicyTask(request, callback, DeleteSecurityPolicyResult.class);
+        DeleteSecurityPolicyTask task = new DeleteSecurityPolicyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * セキュリティポリシーを削除します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteSecurityPolicyResult deleteSecurityPolicy(
             DeleteSecurityPolicyRequest request
     ) {
@@ -1066,15 +942,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DescribeIdentifiersTask(
             DescribeIdentifiersRequest request,
-            AsyncAction<AsyncResult<DescribeIdentifiersResult>> userCallback,
-            Class<DescribeIdentifiersResult> clazz
+            AsyncAction<AsyncResult<DescribeIdentifiersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeIdentifiersResult parse(JsonNode data) {
+            return DescribeIdentifiersResult.fromJson(data);
         }
 
         @Override
@@ -1085,7 +964,7 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/identifier";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1115,25 +994,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * クレデンシャルの一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeIdentifiersAsync(
             DescribeIdentifiersRequest request,
             AsyncAction<AsyncResult<DescribeIdentifiersResult>> callback
     ) {
-        DescribeIdentifiersTask task = new DescribeIdentifiersTask(request, callback, DescribeIdentifiersResult.class);
+        DescribeIdentifiersTask task = new DescribeIdentifiersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クレデンシャルの一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeIdentifiersResult describeIdentifiers(
             DescribeIdentifiersRequest request
     ) {
@@ -1160,15 +1028,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public CreateIdentifierTask(
             CreateIdentifierRequest request,
-            AsyncAction<AsyncResult<CreateIdentifierResult>> userCallback,
-            Class<CreateIdentifierResult> clazz
+            AsyncAction<AsyncResult<CreateIdentifierResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateIdentifierResult parse(JsonNode data) {
+            return CreateIdentifierResult.fromJson(data);
         }
 
         @Override
@@ -1179,15 +1050,13 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/identifier";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1205,25 +1074,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * クレデンシャルを新規作成します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createIdentifierAsync(
             CreateIdentifierRequest request,
             AsyncAction<AsyncResult<CreateIdentifierResult>> callback
     ) {
-        CreateIdentifierTask task = new CreateIdentifierTask(request, callback, CreateIdentifierResult.class);
+        CreateIdentifierTask task = new CreateIdentifierTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クレデンシャルを新規作成します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateIdentifierResult createIdentifier(
             CreateIdentifierRequest request
     ) {
@@ -1250,15 +1108,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public GetIdentifierTask(
             GetIdentifierRequest request,
-            AsyncAction<AsyncResult<GetIdentifierResult>> userCallback,
-            Class<GetIdentifierResult> clazz
+            AsyncAction<AsyncResult<GetIdentifierResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetIdentifierResult parse(JsonNode data) {
+            return GetIdentifierResult.fromJson(data);
         }
 
         @Override
@@ -1269,8 +1130,8 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/identifier/{clientId}";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
-            url = url.replace("{clientId}", this.request.getClientId() == null|| this.request.getClientId().length() == 0 ? "null" : String.valueOf(this.request.getClientId()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{clientId}", this.request.getClientId() == null || this.request.getClientId().length() == 0 ? "null" : String.valueOf(this.request.getClientId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1294,25 +1155,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * クレデンシャルを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getIdentifierAsync(
             GetIdentifierRequest request,
             AsyncAction<AsyncResult<GetIdentifierResult>> callback
     ) {
-        GetIdentifierTask task = new GetIdentifierTask(request, callback, GetIdentifierResult.class);
+        GetIdentifierTask task = new GetIdentifierTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クレデンシャルを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetIdentifierResult getIdentifier(
             GetIdentifierRequest request
     ) {
@@ -1339,15 +1189,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DeleteIdentifierTask(
             DeleteIdentifierRequest request,
-            AsyncAction<AsyncResult<DeleteIdentifierResult>> userCallback,
-            Class<DeleteIdentifierResult> clazz
+            AsyncAction<AsyncResult<DeleteIdentifierResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteIdentifierResult parse(JsonNode data) {
+            return DeleteIdentifierResult.fromJson(data);
         }
 
         @Override
@@ -1358,8 +1211,8 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/identifier/{clientId}";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
-            url = url.replace("{clientId}", this.request.getClientId() == null|| this.request.getClientId().length() == 0 ? "null" : String.valueOf(this.request.getClientId()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{clientId}", this.request.getClientId() == null || this.request.getClientId().length() == 0 ? "null" : String.valueOf(this.request.getClientId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1383,25 +1236,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * クレデンシャルを削除します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteIdentifierAsync(
             DeleteIdentifierRequest request,
             AsyncAction<AsyncResult<DeleteIdentifierResult>> callback
     ) {
-        DeleteIdentifierTask task = new DeleteIdentifierTask(request, callback, DeleteIdentifierResult.class);
+        DeleteIdentifierTask task = new DeleteIdentifierTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クレデンシャルを削除します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteIdentifierResult deleteIdentifier(
             DeleteIdentifierRequest request
     ) {
@@ -1428,15 +1270,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DescribePasswordsTask(
             DescribePasswordsRequest request,
-            AsyncAction<AsyncResult<DescribePasswordsResult>> userCallback,
-            Class<DescribePasswordsResult> clazz
+            AsyncAction<AsyncResult<DescribePasswordsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribePasswordsResult parse(JsonNode data) {
+            return DescribePasswordsResult.fromJson(data);
         }
 
         @Override
@@ -1447,7 +1292,7 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/password";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1477,25 +1322,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * パスワードの一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describePasswordsAsync(
             DescribePasswordsRequest request,
             AsyncAction<AsyncResult<DescribePasswordsResult>> callback
     ) {
-        DescribePasswordsTask task = new DescribePasswordsTask(request, callback, DescribePasswordsResult.class);
+        DescribePasswordsTask task = new DescribePasswordsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * パスワードの一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribePasswordsResult describePasswords(
             DescribePasswordsRequest request
     ) {
@@ -1522,15 +1356,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public CreatePasswordTask(
             CreatePasswordRequest request,
-            AsyncAction<AsyncResult<CreatePasswordResult>> userCallback,
-            Class<CreatePasswordResult> clazz
+            AsyncAction<AsyncResult<CreatePasswordResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreatePasswordResult parse(JsonNode data) {
+            return CreatePasswordResult.fromJson(data);
         }
 
         @Override
@@ -1541,18 +1378,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/password";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1570,25 +1403,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * パスワードを新規作成します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createPasswordAsync(
             CreatePasswordRequest request,
             AsyncAction<AsyncResult<CreatePasswordResult>> callback
     ) {
-        CreatePasswordTask task = new CreatePasswordTask(request, callback, CreatePasswordResult.class);
+        CreatePasswordTask task = new CreatePasswordTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * パスワードを新規作成します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreatePasswordResult createPassword(
             CreatePasswordRequest request
     ) {
@@ -1615,15 +1437,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public GetPasswordTask(
             GetPasswordRequest request,
-            AsyncAction<AsyncResult<GetPasswordResult>> userCallback,
-            Class<GetPasswordResult> clazz
+            AsyncAction<AsyncResult<GetPasswordResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetPasswordResult parse(JsonNode data) {
+            return GetPasswordResult.fromJson(data);
         }
 
         @Override
@@ -1634,7 +1459,7 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/password/entity";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1658,25 +1483,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * パスワードを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getPasswordAsync(
             GetPasswordRequest request,
             AsyncAction<AsyncResult<GetPasswordResult>> callback
     ) {
-        GetPasswordTask task = new GetPasswordTask(request, callback, GetPasswordResult.class);
+        GetPasswordTask task = new GetPasswordTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * パスワードを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetPasswordResult getPassword(
             GetPasswordRequest request
     ) {
@@ -1703,15 +1517,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DeletePasswordTask(
             DeletePasswordRequest request,
-            AsyncAction<AsyncResult<DeletePasswordResult>> userCallback,
-            Class<DeletePasswordResult> clazz
+            AsyncAction<AsyncResult<DeletePasswordResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeletePasswordResult parse(JsonNode data) {
+            return DeletePasswordResult.fromJson(data);
         }
 
         @Override
@@ -1722,7 +1539,7 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/password/entity";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1746,25 +1563,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * パスワードを削除します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deletePasswordAsync(
             DeletePasswordRequest request,
             AsyncAction<AsyncResult<DeletePasswordResult>> callback
     ) {
-        DeletePasswordTask task = new DeletePasswordTask(request, callback, DeletePasswordResult.class);
+        DeletePasswordTask task = new DeletePasswordTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * パスワードを削除します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeletePasswordResult deletePassword(
             DeletePasswordRequest request
     ) {
@@ -1791,15 +1597,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public GetHasSecurityPolicyTask(
             GetHasSecurityPolicyRequest request,
-            AsyncAction<AsyncResult<GetHasSecurityPolicyResult>> userCallback,
-            Class<GetHasSecurityPolicyResult> clazz
+            AsyncAction<AsyncResult<GetHasSecurityPolicyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetHasSecurityPolicyResult parse(JsonNode data) {
+            return GetHasSecurityPolicyResult.fromJson(data);
         }
 
         @Override
@@ -1810,7 +1619,7 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/securityPolicy";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1834,25 +1643,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * 割り当てられたセキュリティポリシーの一覧を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getHasSecurityPolicyAsync(
             GetHasSecurityPolicyRequest request,
             AsyncAction<AsyncResult<GetHasSecurityPolicyResult>> callback
     ) {
-        GetHasSecurityPolicyTask task = new GetHasSecurityPolicyTask(request, callback, GetHasSecurityPolicyResult.class);
+        GetHasSecurityPolicyTask task = new GetHasSecurityPolicyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 割り当てられたセキュリティポリシーの一覧を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetHasSecurityPolicyResult getHasSecurityPolicy(
             GetHasSecurityPolicyRequest request
     ) {
@@ -1879,15 +1677,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public AttachSecurityPolicyTask(
             AttachSecurityPolicyRequest request,
-            AsyncAction<AsyncResult<AttachSecurityPolicyResult>> userCallback,
-            Class<AttachSecurityPolicyResult> clazz
+            AsyncAction<AsyncResult<AttachSecurityPolicyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public AttachSecurityPolicyResult parse(JsonNode data) {
+            return AttachSecurityPolicyResult.fromJson(data);
         }
 
         @Override
@@ -1898,18 +1699,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/securityPolicy";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSecurityPolicyId() != null) {
-                json.put("securityPolicyId", this.request.getSecurityPolicyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("securityPolicyId", request.getSecurityPolicyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1927,25 +1724,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * 割り当てられたセキュリティポリシーを新しくユーザーに割り当てます<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void attachSecurityPolicyAsync(
             AttachSecurityPolicyRequest request,
             AsyncAction<AsyncResult<AttachSecurityPolicyResult>> callback
     ) {
-        AttachSecurityPolicyTask task = new AttachSecurityPolicyTask(request, callback, AttachSecurityPolicyResult.class);
+        AttachSecurityPolicyTask task = new AttachSecurityPolicyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 割り当てられたセキュリティポリシーを新しくユーザーに割り当てます<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public AttachSecurityPolicyResult attachSecurityPolicy(
             AttachSecurityPolicyRequest request
     ) {
@@ -1972,15 +1758,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public DetachSecurityPolicyTask(
             DetachSecurityPolicyRequest request,
-            AsyncAction<AsyncResult<DetachSecurityPolicyResult>> userCallback,
-            Class<DetachSecurityPolicyResult> clazz
+            AsyncAction<AsyncResult<DetachSecurityPolicyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DetachSecurityPolicyResult parse(JsonNode data) {
+            return DetachSecurityPolicyResult.fromJson(data);
         }
 
         @Override
@@ -1991,8 +1780,8 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/user/{userName}/securityPolicy/{securityPolicyId}";
 
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
-            url = url.replace("{securityPolicyId}", this.request.getSecurityPolicyId() == null|| this.request.getSecurityPolicyId().length() == 0 ? "null" : String.valueOf(this.request.getSecurityPolicyId()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{securityPolicyId}", this.request.getSecurityPolicyId() == null || this.request.getSecurityPolicyId().length() == 0 ? "null" : String.valueOf(this.request.getSecurityPolicyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2016,25 +1805,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * 割り当てられたセキュリティポリシーをユーザーから外します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void detachSecurityPolicyAsync(
             DetachSecurityPolicyRequest request,
             AsyncAction<AsyncResult<DetachSecurityPolicyResult>> callback
     ) {
-        DetachSecurityPolicyTask task = new DetachSecurityPolicyTask(request, callback, DetachSecurityPolicyResult.class);
+        DetachSecurityPolicyTask task = new DetachSecurityPolicyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 割り当てられたセキュリティポリシーをユーザーから外します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DetachSecurityPolicyResult detachSecurityPolicy(
             DetachSecurityPolicyRequest request
     ) {
@@ -2061,15 +1839,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public LoginTask(
             LoginRequest request,
-            AsyncAction<AsyncResult<LoginResult>> userCallback,
-            Class<LoginResult> clazz
+            AsyncAction<AsyncResult<LoginResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public LoginResult parse(JsonNode data) {
+            return LoginResult.fromJson(data);
         }
 
         @Override
@@ -2080,19 +1861,13 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/projectToken/login";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getClientId() != null) {
-                json.put("clientId", this.request.getClientId());
-            }
-            if (this.request.getClientSecret() != null) {
-                json.put("clientSecret", this.request.getClientSecret());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("clientId", request.getClientId());
+                    put("clientSecret", request.getClientSecret());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2110,25 +1885,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * プロジェクトトークン を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void loginAsync(
             LoginRequest request,
             AsyncAction<AsyncResult<LoginResult>> callback
     ) {
-        LoginTask task = new LoginTask(request, callback, LoginResult.class);
+        LoginTask task = new LoginTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロジェクトトークン を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public LoginResult login(
             LoginRequest request
     ) {
@@ -2155,15 +1919,18 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
 
         public LoginByUserTask(
             LoginByUserRequest request,
-            AsyncAction<AsyncResult<LoginByUserResult>> userCallback,
-            Class<LoginByUserResult> clazz
+            AsyncAction<AsyncResult<LoginByUserResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public LoginByUserResult parse(JsonNode data) {
+            return LoginByUserResult.fromJson(data);
         }
 
         @Override
@@ -2174,19 +1941,13 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
                 .replace("{region}", session.getRegion().getName())
                 + "/projectToken/login/user";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getUserName() != null) {
-                json.put("userName", this.request.getUserName());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userName", request.getUserName());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2204,25 +1965,14 @@ public class Gs2IdentifierRestClient extends AbstractGs2Client<Gs2IdentifierRest
         }
     }
 
-    /**
-     * プロジェクトトークン を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void loginByUserAsync(
             LoginByUserRequest request,
             AsyncAction<AsyncResult<LoginByUserResult>> callback
     ) {
-        LoginByUserTask task = new LoginByUserTask(request, callback, LoginByUserResult.class);
+        LoginByUserTask task = new LoginByUserTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロジェクトトークン を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public LoginByUserResult loginByUser(
             LoginByUserRequest request
     ) {

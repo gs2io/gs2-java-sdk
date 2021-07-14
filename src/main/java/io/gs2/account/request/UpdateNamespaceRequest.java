@@ -16,274 +16,160 @@
 
 package io.gs2.account.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.account.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.account.model.ScriptSetting;
+import io.gs2.account.model.LogSetting;
 
-/**
- * ネームスペースを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 説明文 */
     private String description;
-
-    /**
-     * 説明文を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description ネームスペースを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** アカウント引き継ぎ時にパスワードを変更するか */
     private Boolean changePasswordIfTakeOver;
-
-    /**
-     * アカウント引き継ぎ時にパスワードを変更するかを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public Boolean getChangePasswordIfTakeOver() {
-        return changePasswordIfTakeOver;
-    }
-
-    /**
-     * アカウント引き継ぎ時にパスワードを変更するかを設定
-     *
-     * @param changePasswordIfTakeOver ネームスペースを更新
-     */
-    public void setChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
-        this.changePasswordIfTakeOver = changePasswordIfTakeOver;
-    }
-
-    /**
-     * アカウント引き継ぎ時にパスワードを変更するかを設定
-     *
-     * @param changePasswordIfTakeOver ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
-        setChangePasswordIfTakeOver(changePasswordIfTakeOver);
-        return this;
-    }
-
-    /** アカウント新規作成したときに実行するスクリプト */
     private ScriptSetting createAccountScript;
-
-    /**
-     * アカウント新規作成したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getCreateAccountScript() {
-        return createAccountScript;
-    }
-
-    /**
-     * アカウント新規作成したときに実行するスクリプトを設定
-     *
-     * @param createAccountScript ネームスペースを更新
-     */
-    public void setCreateAccountScript(ScriptSetting createAccountScript) {
-        this.createAccountScript = createAccountScript;
-    }
-
-    /**
-     * アカウント新規作成したときに実行するスクリプトを設定
-     *
-     * @param createAccountScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withCreateAccountScript(ScriptSetting createAccountScript) {
-        setCreateAccountScript(createAccountScript);
-        return this;
-    }
-
-    /** 認証したときに実行するスクリプト */
     private ScriptSetting authenticationScript;
-
-    /**
-     * 認証したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getAuthenticationScript() {
-        return authenticationScript;
-    }
-
-    /**
-     * 認証したときに実行するスクリプトを設定
-     *
-     * @param authenticationScript ネームスペースを更新
-     */
-    public void setAuthenticationScript(ScriptSetting authenticationScript) {
-        this.authenticationScript = authenticationScript;
-    }
-
-    /**
-     * 認証したときに実行するスクリプトを設定
-     *
-     * @param authenticationScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withAuthenticationScript(ScriptSetting authenticationScript) {
-        setAuthenticationScript(authenticationScript);
-        return this;
-    }
-
-    /** 引き継ぎ情報登録したときに実行するスクリプト */
     private ScriptSetting createTakeOverScript;
-
-    /**
-     * 引き継ぎ情報登録したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getCreateTakeOverScript() {
-        return createTakeOverScript;
-    }
-
-    /**
-     * 引き継ぎ情報登録したときに実行するスクリプトを設定
-     *
-     * @param createTakeOverScript ネームスペースを更新
-     */
-    public void setCreateTakeOverScript(ScriptSetting createTakeOverScript) {
-        this.createTakeOverScript = createTakeOverScript;
-    }
-
-    /**
-     * 引き継ぎ情報登録したときに実行するスクリプトを設定
-     *
-     * @param createTakeOverScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withCreateTakeOverScript(ScriptSetting createTakeOverScript) {
-        setCreateTakeOverScript(createTakeOverScript);
-        return this;
-    }
-
-    /** 引き継ぎ実行したときに実行するスクリプト */
     private ScriptSetting doTakeOverScript;
-
-    /**
-     * 引き継ぎ実行したときに実行するスクリプトを取得
-     *
-     * @return ネームスペースを更新
-     */
-    public ScriptSetting getDoTakeOverScript() {
-        return doTakeOverScript;
-    }
-
-    /**
-     * 引き継ぎ実行したときに実行するスクリプトを設定
-     *
-     * @param doTakeOverScript ネームスペースを更新
-     */
-    public void setDoTakeOverScript(ScriptSetting doTakeOverScript) {
-        this.doTakeOverScript = doTakeOverScript;
-    }
-
-    /**
-     * 引き継ぎ実行したときに実行するスクリプトを設定
-     *
-     * @param doTakeOverScript ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDoTakeOverScript(ScriptSetting doTakeOverScript) {
-        setDoTakeOverScript(doTakeOverScript);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return ネームスペースを更新
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public Boolean getChangePasswordIfTakeOver() {
+		return changePasswordIfTakeOver;
+	}
+
+	public void setChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
+		this.changePasswordIfTakeOver = changePasswordIfTakeOver;
+	}
+
+	public UpdateNamespaceRequest withChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
+		this.changePasswordIfTakeOver = changePasswordIfTakeOver;
+		return this;
+	}
+
+	public ScriptSetting getCreateAccountScript() {
+		return createAccountScript;
+	}
+
+	public void setCreateAccountScript(ScriptSetting createAccountScript) {
+		this.createAccountScript = createAccountScript;
+	}
+
+	public UpdateNamespaceRequest withCreateAccountScript(ScriptSetting createAccountScript) {
+		this.createAccountScript = createAccountScript;
+		return this;
+	}
+
+	public ScriptSetting getAuthenticationScript() {
+		return authenticationScript;
+	}
+
+	public void setAuthenticationScript(ScriptSetting authenticationScript) {
+		this.authenticationScript = authenticationScript;
+	}
+
+	public UpdateNamespaceRequest withAuthenticationScript(ScriptSetting authenticationScript) {
+		this.authenticationScript = authenticationScript;
+		return this;
+	}
+
+	public ScriptSetting getCreateTakeOverScript() {
+		return createTakeOverScript;
+	}
+
+	public void setCreateTakeOverScript(ScriptSetting createTakeOverScript) {
+		this.createTakeOverScript = createTakeOverScript;
+	}
+
+	public UpdateNamespaceRequest withCreateTakeOverScript(ScriptSetting createTakeOverScript) {
+		this.createTakeOverScript = createTakeOverScript;
+		return this;
+	}
+
+	public ScriptSetting getDoTakeOverScript() {
+		return doTakeOverScript;
+	}
+
+	public void setDoTakeOverScript(ScriptSetting doTakeOverScript) {
+		this.doTakeOverScript = doTakeOverScript;
+	}
+
+	public UpdateNamespaceRequest withDoTakeOverScript(ScriptSetting doTakeOverScript) {
+		this.doTakeOverScript = doTakeOverScript;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static UpdateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateNamespaceRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withChangePasswordIfTakeOver(data.get("changePasswordIfTakeOver") == null || data.get("changePasswordIfTakeOver").isNull() ? null : data.get("changePasswordIfTakeOver").booleanValue())
+            .withCreateAccountScript(data.get("createAccountScript") == null || data.get("createAccountScript").isNull() ? null : ScriptSetting.fromJson(data.get("createAccountScript")))
+            .withAuthenticationScript(data.get("authenticationScript") == null || data.get("authenticationScript").isNull() ? null : ScriptSetting.fromJson(data.get("authenticationScript")))
+            .withCreateTakeOverScript(data.get("createTakeOverScript") == null || data.get("createTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("createTakeOverScript")))
+            .withDoTakeOverScript(data.get("doTakeOverScript") == null || data.get("doTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("doTakeOverScript")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("description", getDescription());
+                put("changePasswordIfTakeOver", getChangePasswordIfTakeOver());
+                put("createAccountScript", getCreateAccountScript() != null ? getCreateAccountScript().toJson() : null);
+                put("authenticationScript", getAuthenticationScript() != null ? getAuthenticationScript().toJson() : null);
+                put("createTakeOverScript", getCreateTakeOverScript() != null ? getCreateTakeOverScript().toJson() : null);
+                put("doTakeOverScript", getDoTakeOverScript() != null ? getDoTakeOverScript().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting ネームスペースを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

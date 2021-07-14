@@ -16,124 +16,80 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ギャザリング参加可能な属性値の範囲
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AttributeRange implements IModel, Serializable {
-	/** 属性名 */
-	protected String name;
+	private String name;
+	private Integer min;
+	private Integer max;
 
-	/**
-	 * 属性名を取得
-	 *
-	 * @return 属性名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 属性名を設定
-	 *
-	 * @param name 属性名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 属性名を設定
-	 *
-	 * @param name 属性名
-	 * @return this
-	 */
 	public AttributeRange withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ギャザリング参加可能な属性値の最小値 */
-	protected Integer min;
 
-	/**
-	 * ギャザリング参加可能な属性値の最小値を取得
-	 *
-	 * @return ギャザリング参加可能な属性値の最小値
-	 */
 	public Integer getMin() {
 		return min;
 	}
 
-	/**
-	 * ギャザリング参加可能な属性値の最小値を設定
-	 *
-	 * @param min ギャザリング参加可能な属性値の最小値
-	 */
 	public void setMin(Integer min) {
 		this.min = min;
 	}
 
-	/**
-	 * ギャザリング参加可能な属性値の最小値を設定
-	 *
-	 * @param min ギャザリング参加可能な属性値の最小値
-	 * @return this
-	 */
 	public AttributeRange withMin(Integer min) {
 		this.min = min;
 		return this;
 	}
-	/** ギャザリング参加可能な属性値の最大値 */
-	protected Integer max;
 
-	/**
-	 * ギャザリング参加可能な属性値の最大値を取得
-	 *
-	 * @return ギャザリング参加可能な属性値の最大値
-	 */
 	public Integer getMax() {
 		return max;
 	}
 
-	/**
-	 * ギャザリング参加可能な属性値の最大値を設定
-	 *
-	 * @param max ギャザリング参加可能な属性値の最大値
-	 */
 	public void setMax(Integer max) {
 		this.max = max;
 	}
 
-	/**
-	 * ギャザリング参加可能な属性値の最大値を設定
-	 *
-	 * @param max ギャザリング参加可能な属性値の最大値
-	 * @return this
-	 */
 	public AttributeRange withMax(Integer max) {
 		this.max = max;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("name", this.getName())
-            .put("min", this.getMin())
-            .put("max", this.getMax());
-        return body_;
+    public static AttributeRange fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new AttributeRange()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMin(data.get("min") == null || data.get("min").isNull() ? null : data.get("min").intValue())
+            .withMax(data.get("max") == null || data.get("max").isNull() ? null : data.get("max").intValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("min", getMin());
+                put("max", getMax());
+            }}
+        );
     }
 
 	@Override

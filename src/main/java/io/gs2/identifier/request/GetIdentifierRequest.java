@@ -16,82 +16,62 @@
 
 package io.gs2.identifier.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.identifier.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * クレデンシャルを取得します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetIdentifierRequest extends Gs2BasicRequest<GetIdentifierRequest> {
-
-    /** ユーザー名 */
     private String userName;
-
-    /**
-     * ユーザー名を取得
-     *
-     * @return クレデンシャルを取得します
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName クレデンシャルを取得します
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * ユーザー名を設定
-     *
-     * @param userName クレデンシャルを取得します
-     * @return this
-     */
-    public GetIdentifierRequest withUserName(String userName) {
-        setUserName(userName);
-        return this;
-    }
-
-    /** クライアントID */
     private String clientId;
 
-    /**
-     * クライアントIDを取得
-     *
-     * @return クレデンシャルを取得します
-     */
-    public String getClientId() {
-        return clientId;
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public GetIdentifierRequest withUserName(String userName) {
+		this.userName = userName;
+		return this;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
+	public GetIdentifierRequest withClientId(String clientId) {
+		this.clientId = clientId;
+		return this;
+	}
+
+    public static GetIdentifierRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetIdentifierRequest()
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withClientId(data.get("clientId") == null || data.get("clientId").isNull() ? null : data.get("clientId").asText());
     }
 
-    /**
-     * クライアントIDを設定
-     *
-     * @param clientId クレデンシャルを取得します
-     */
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("userName", getUserName());
+                put("clientId", getClientId());
+            }}
+        );
     }
-
-    /**
-     * クライアントIDを設定
-     *
-     * @param clientId クレデンシャルを取得します
-     * @return this
-     */
-    public GetIdentifierRequest withClientId(String clientId) {
-        setClientId(clientId);
-        return this;
-    }
-
 }

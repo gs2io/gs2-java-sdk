@@ -16,39 +16,49 @@
 
 package io.gs2.mission.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
+import io.gs2.mission.model.AcquireAction;
+import io.gs2.mission.model.MissionTaskModel;
 
-/**
- * ミッションタスクを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetMissionTaskModelResult implements IResult, Serializable {
-	/** ミッションタスク */
-	private MissionTaskModel item;
+    private MissionTaskModel item;
 
-	/**
-	 * ミッションタスクを取得
-	 *
-	 * @return ミッションタスクを取得
-	 */
 	public MissionTaskModel getItem() {
 		return item;
 	}
 
-	/**
-	 * ミッションタスクを設定
-	 *
-	 * @param item ミッションタスクを取得
-	 */
 	public void setItem(MissionTaskModel item) {
 		this.item = item;
 	}
+
+	public GetMissionTaskModelResult withItem(MissionTaskModel item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetMissionTaskModelResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetMissionTaskModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : MissionTaskModel.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

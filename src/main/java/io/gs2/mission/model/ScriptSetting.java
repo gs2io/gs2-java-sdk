@@ -16,156 +16,96 @@
 
 package io.gs2.mission.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スクリプト設定
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ScriptSetting implements IModel, Serializable {
-	/** 実行前に使用する GS2-Script のスクリプト のGRN */
-	protected String triggerScriptId;
+	private String triggerScriptId;
+	private String doneTriggerTargetType;
+	private String doneTriggerScriptId;
+	private String doneTriggerQueueNamespaceId;
 
-	/**
-	 * 実行前に使用する GS2-Script のスクリプト のGRNを取得
-	 *
-	 * @return 実行前に使用する GS2-Script のスクリプト のGRN
-	 */
 	public String getTriggerScriptId() {
 		return triggerScriptId;
 	}
 
-	/**
-	 * 実行前に使用する GS2-Script のスクリプト のGRNを設定
-	 *
-	 * @param triggerScriptId 実行前に使用する GS2-Script のスクリプト のGRN
-	 */
 	public void setTriggerScriptId(String triggerScriptId) {
 		this.triggerScriptId = triggerScriptId;
 	}
 
-	/**
-	 * 実行前に使用する GS2-Script のスクリプト のGRNを設定
-	 *
-	 * @param triggerScriptId 実行前に使用する GS2-Script のスクリプト のGRN
-	 * @return this
-	 */
 	public ScriptSetting withTriggerScriptId(String triggerScriptId) {
 		this.triggerScriptId = triggerScriptId;
 		return this;
 	}
-	/** 完了通知の通知先 */
-	protected String doneTriggerTargetType;
 
-	/**
-	 * 完了通知の通知先を取得
-	 *
-	 * @return 完了通知の通知先
-	 */
 	public String getDoneTriggerTargetType() {
 		return doneTriggerTargetType;
 	}
 
-	/**
-	 * 完了通知の通知先を設定
-	 *
-	 * @param doneTriggerTargetType 完了通知の通知先
-	 */
 	public void setDoneTriggerTargetType(String doneTriggerTargetType) {
 		this.doneTriggerTargetType = doneTriggerTargetType;
 	}
 
-	/**
-	 * 完了通知の通知先を設定
-	 *
-	 * @param doneTriggerTargetType 完了通知の通知先
-	 * @return this
-	 */
 	public ScriptSetting withDoneTriggerTargetType(String doneTriggerTargetType) {
 		this.doneTriggerTargetType = doneTriggerTargetType;
 		return this;
 	}
-	/** 完了時に使用する GS2-Script のスクリプト のGRN */
-	protected String doneTriggerScriptId;
 
-	/**
-	 * 完了時に使用する GS2-Script のスクリプト のGRNを取得
-	 *
-	 * @return 完了時に使用する GS2-Script のスクリプト のGRN
-	 */
 	public String getDoneTriggerScriptId() {
 		return doneTriggerScriptId;
 	}
 
-	/**
-	 * 完了時に使用する GS2-Script のスクリプト のGRNを設定
-	 *
-	 * @param doneTriggerScriptId 完了時に使用する GS2-Script のスクリプト のGRN
-	 */
 	public void setDoneTriggerScriptId(String doneTriggerScriptId) {
 		this.doneTriggerScriptId = doneTriggerScriptId;
 	}
 
-	/**
-	 * 完了時に使用する GS2-Script のスクリプト のGRNを設定
-	 *
-	 * @param doneTriggerScriptId 完了時に使用する GS2-Script のスクリプト のGRN
-	 * @return this
-	 */
 	public ScriptSetting withDoneTriggerScriptId(String doneTriggerScriptId) {
 		this.doneTriggerScriptId = doneTriggerScriptId;
 		return this;
 	}
-	/** 完了時に使用する GS2-JobQueue のネームスペース のGRN */
-	protected String doneTriggerQueueNamespaceId;
 
-	/**
-	 * 完了時に使用する GS2-JobQueue のネームスペース のGRNを取得
-	 *
-	 * @return 完了時に使用する GS2-JobQueue のネームスペース のGRN
-	 */
 	public String getDoneTriggerQueueNamespaceId() {
 		return doneTriggerQueueNamespaceId;
 	}
 
-	/**
-	 * 完了時に使用する GS2-JobQueue のネームスペース のGRNを設定
-	 *
-	 * @param doneTriggerQueueNamespaceId 完了時に使用する GS2-JobQueue のネームスペース のGRN
-	 */
 	public void setDoneTriggerQueueNamespaceId(String doneTriggerQueueNamespaceId) {
 		this.doneTriggerQueueNamespaceId = doneTriggerQueueNamespaceId;
 	}
 
-	/**
-	 * 完了時に使用する GS2-JobQueue のネームスペース のGRNを設定
-	 *
-	 * @param doneTriggerQueueNamespaceId 完了時に使用する GS2-JobQueue のネームスペース のGRN
-	 * @return this
-	 */
 	public ScriptSetting withDoneTriggerQueueNamespaceId(String doneTriggerQueueNamespaceId) {
 		this.doneTriggerQueueNamespaceId = doneTriggerQueueNamespaceId;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("triggerScriptId", this.getTriggerScriptId())
-            .put("doneTriggerTargetType", this.getDoneTriggerTargetType())
-            .put("doneTriggerScriptId", this.getDoneTriggerScriptId())
-            .put("doneTriggerQueueNamespaceId", this.getDoneTriggerQueueNamespaceId());
-        return body_;
+    public static ScriptSetting fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ScriptSetting()
+            .withTriggerScriptId(data.get("triggerScriptId") == null || data.get("triggerScriptId").isNull() ? null : data.get("triggerScriptId").asText())
+            .withDoneTriggerTargetType(data.get("doneTriggerTargetType") == null || data.get("doneTriggerTargetType").isNull() ? null : data.get("doneTriggerTargetType").asText())
+            .withDoneTriggerScriptId(data.get("doneTriggerScriptId") == null || data.get("doneTriggerScriptId").isNull() ? null : data.get("doneTriggerScriptId").asText())
+            .withDoneTriggerQueueNamespaceId(data.get("doneTriggerQueueNamespaceId") == null || data.get("doneTriggerQueueNamespaceId").isNull() ? null : data.get("doneTriggerQueueNamespaceId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("triggerScriptId", getTriggerScriptId());
+                put("doneTriggerTargetType", getDoneTriggerTargetType());
+                put("doneTriggerScriptId", getDoneTriggerScriptId());
+                put("doneTriggerQueueNamespaceId", getDoneTriggerQueueNamespaceId());
+            }}
+        );
     }
 
 	@Override

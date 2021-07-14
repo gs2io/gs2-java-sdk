@@ -16,114 +16,78 @@
 
 package io.gs2.key.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.key.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 暗号鍵を新規作成します のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateKeyRequest extends Gs2BasicRequest<CreateKeyRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 暗号鍵を新規作成します
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 暗号鍵を新規作成します
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 暗号鍵を新規作成します
-     * @return this
-     */
-    public CreateKeyRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 暗号鍵名 */
     private String name;
-
-    /**
-     * 暗号鍵名を取得
-     *
-     * @return 暗号鍵を新規作成します
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 暗号鍵名を設定
-     *
-     * @param name 暗号鍵を新規作成します
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * 暗号鍵名を設定
-     *
-     * @param name 暗号鍵を新規作成します
-     * @return this
-     */
-    public CreateKeyRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** 説明文 */
     private String description;
 
-    /**
-     * 説明文を取得
-     *
-     * @return 暗号鍵を新規作成します
-     */
-    public String getDescription() {
-        return description;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateKeyRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateKeyRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateKeyRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+    public static CreateKeyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateKeyRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText());
     }
 
-    /**
-     * 説明文を設定
-     *
-     * @param description 暗号鍵を新規作成します
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("description", getDescription());
+            }}
+        );
     }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description 暗号鍵を新規作成します
-     * @return this
-     */
-    public CreateKeyRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
 }

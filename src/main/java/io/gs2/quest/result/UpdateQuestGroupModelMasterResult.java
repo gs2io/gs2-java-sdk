@@ -16,39 +16,48 @@
 
 package io.gs2.quest.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.quest.model.*;
+import io.gs2.quest.model.QuestGroupModelMaster;
 
-/**
- * クエストグループマスターを更新 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateQuestGroupModelMasterResult implements IResult, Serializable {
-	/** 更新したクエストグループマスター */
-	private QuestGroupModelMaster item;
+    private QuestGroupModelMaster item;
 
-	/**
-	 * 更新したクエストグループマスターを取得
-	 *
-	 * @return クエストグループマスターを更新
-	 */
 	public QuestGroupModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新したクエストグループマスターを設定
-	 *
-	 * @param item クエストグループマスターを更新
-	 */
 	public void setItem(QuestGroupModelMaster item) {
 		this.item = item;
 	}
+
+	public UpdateQuestGroupModelMasterResult withItem(QuestGroupModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateQuestGroupModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateQuestGroupModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : QuestGroupModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

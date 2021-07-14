@@ -16,39 +16,50 @@
 
 package io.gs2.formation.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
+import io.gs2.formation.model.SlotModel;
+import io.gs2.formation.model.FormModel;
+import io.gs2.formation.model.MoldModel;
 
-/**
- * フォームの保存領域を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetMoldModelResult implements IResult, Serializable {
-	/** フォームの保存領域 */
-	private MoldModel item;
+    private MoldModel item;
 
-	/**
-	 * フォームの保存領域を取得
-	 *
-	 * @return フォームの保存領域を取得
-	 */
 	public MoldModel getItem() {
 		return item;
 	}
 
-	/**
-	 * フォームの保存領域を設定
-	 *
-	 * @param item フォームの保存領域を取得
-	 */
 	public void setItem(MoldModel item) {
 		this.item = item;
 	}
+
+	public GetMoldModelResult withItem(MoldModel item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetMoldModelResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetMoldModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : MoldModel.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

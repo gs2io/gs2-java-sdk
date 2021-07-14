@@ -16,39 +16,48 @@
 
 package io.gs2.watch.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.watch.model.*;
+import io.gs2.watch.model.BillingActivity;
 
-/**
- * 請求にまつわるアクティビティを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetBillingActivityResult implements IResult, Serializable {
-	/** 請求にまつわるアクティビティ */
-	private BillingActivity item;
+    private BillingActivity item;
 
-	/**
-	 * 請求にまつわるアクティビティを取得
-	 *
-	 * @return 請求にまつわるアクティビティを取得
-	 */
 	public BillingActivity getItem() {
 		return item;
 	}
 
-	/**
-	 * 請求にまつわるアクティビティを設定
-	 *
-	 * @param item 請求にまつわるアクティビティを取得
-	 */
 	public void setItem(BillingActivity item) {
 		this.item = item;
 	}
+
+	public GetBillingActivityResult withItem(BillingActivity item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetBillingActivityResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetBillingActivityResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : BillingActivity.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

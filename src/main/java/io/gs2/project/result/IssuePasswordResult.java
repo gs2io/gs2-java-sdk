@@ -16,39 +16,47 @@
 
 package io.gs2.project.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.project.model.*;
 
-/**
- * パスワードを再発行 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IssuePasswordResult implements IResult, Serializable {
-	/** 新しいパスワード */
-	private String newPassword;
+    private String newPassword;
 
-	/**
-	 * 新しいパスワードを取得
-	 *
-	 * @return パスワードを再発行
-	 */
 	public String getNewPassword() {
 		return newPassword;
 	}
 
-	/**
-	 * 新しいパスワードを設定
-	 *
-	 * @param newPassword パスワードを再発行
-	 */
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
+
+	public IssuePasswordResult withNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+		return this;
+	}
+
+    public static IssuePasswordResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new IssuePasswordResult()
+            .withNewPassword(data.get("newPassword") == null || data.get("newPassword").isNull() ? null : data.get("newPassword").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("newPassword", getNewPassword());
+            }}
+        );
+    }
 }

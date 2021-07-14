@@ -16,39 +16,48 @@
 
 package io.gs2.account.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.account.model.*;
+import io.gs2.account.model.TakeOver;
 
-/**
- * 引き継ぎ設定を更新 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateTakeOverResult implements IResult, Serializable {
-	/** 引き継ぎ設定 */
-	private TakeOver item;
+    private TakeOver item;
 
-	/**
-	 * 引き継ぎ設定を取得
-	 *
-	 * @return 引き継ぎ設定を更新
-	 */
 	public TakeOver getItem() {
 		return item;
 	}
 
-	/**
-	 * 引き継ぎ設定を設定
-	 *
-	 * @param item 引き継ぎ設定を更新
-	 */
 	public void setItem(TakeOver item) {
 		this.item = item;
 	}
+
+	public UpdateTakeOverResult withItem(TakeOver item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateTakeOverResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateTakeOverResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : TakeOver.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

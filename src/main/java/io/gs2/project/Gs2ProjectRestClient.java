@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.project;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.project.request.*;
 import io.gs2.project.result.*;
-import io.gs2.project.model.*;
+import io.gs2.project.model.*;public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient> {
 
-/**
- * GS2 Project API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2ProjectRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public CreateAccountTask(
             CreateAccountRequest request,
-            AsyncAction<AsyncResult<CreateAccountResult>> userCallback,
-            Class<CreateAccountResult> clazz
+            AsyncAction<AsyncResult<CreateAccountResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateAccountResult parse(JsonNode data) {
+            return CreateAccountResult.fromJson(data);
         }
 
         @Override
@@ -77,25 +68,15 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getEmail() != null) {
-                json.put("email", this.request.getEmail());
-            }
-            if (this.request.getFullName() != null) {
-                json.put("fullName", this.request.getFullName());
-            }
-            if (this.request.getCompanyName() != null) {
-                json.put("companyName", this.request.getCompanyName());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("email", request.getEmail());
+                    put("fullName", request.getFullName());
+                    put("companyName", request.getCompanyName());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -113,25 +94,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * アカウントを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createAccountAsync(
             CreateAccountRequest request,
             AsyncAction<AsyncResult<CreateAccountResult>> callback
     ) {
-        CreateAccountTask task = new CreateAccountTask(request, callback, CreateAccountResult.class);
+        CreateAccountTask task = new CreateAccountTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * アカウントを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateAccountResult createAccount(
             CreateAccountRequest request
     ) {
@@ -158,15 +128,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public VerifyTask(
             VerifyRequest request,
-            AsyncAction<AsyncResult<VerifyResult>> userCallback,
-            Class<VerifyResult> clazz
+            AsyncAction<AsyncResult<VerifyResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public VerifyResult parse(JsonNode data) {
+            return VerifyResult.fromJson(data);
         }
 
         @Override
@@ -177,16 +150,12 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/verify";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getVerifyToken() != null) {
-                json.put("verifyToken", this.request.getVerifyToken());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("verifyToken", request.getVerifyToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -204,25 +173,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * GS2アカウントを有効化します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void verifyAsync(
             VerifyRequest request,
             AsyncAction<AsyncResult<VerifyResult>> callback
     ) {
-        VerifyTask task = new VerifyTask(request, callback, VerifyResult.class);
+        VerifyTask task = new VerifyTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GS2アカウントを有効化します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public VerifyResult verify(
             VerifyRequest request
     ) {
@@ -249,15 +207,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public SignInTask(
             SignInRequest request,
-            AsyncAction<AsyncResult<SignInResult>> userCallback,
-            Class<SignInResult> clazz
+            AsyncAction<AsyncResult<SignInResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SignInResult parse(JsonNode data) {
+            return SignInResult.fromJson(data);
         }
 
         @Override
@@ -268,19 +229,13 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/signIn";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getEmail() != null) {
-                json.put("email", this.request.getEmail());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("email", request.getEmail());
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -298,25 +253,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * サインインします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void signInAsync(
             SignInRequest request,
             AsyncAction<AsyncResult<SignInResult>> callback
     ) {
-        SignInTask task = new SignInTask(request, callback, SignInResult.class);
+        SignInTask task = new SignInTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * サインインします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SignInResult signIn(
             SignInRequest request
     ) {
@@ -343,15 +287,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public IssueAccountTokenTask(
             IssueAccountTokenRequest request,
-            AsyncAction<AsyncResult<IssueAccountTokenResult>> userCallback,
-            Class<IssueAccountTokenResult> clazz
+            AsyncAction<AsyncResult<IssueAccountTokenResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public IssueAccountTokenResult parse(JsonNode data) {
+            return IssueAccountTokenResult.fromJson(data);
         }
 
         @Override
@@ -362,16 +309,12 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/accountToken";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAccountName() != null) {
-                json.put("accountName", this.request.getAccountName());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("accountName", request.getAccountName());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -389,25 +332,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * 指定したアカウント名のアカウントトークンを発行<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void issueAccountTokenAsync(
             IssueAccountTokenRequest request,
             AsyncAction<AsyncResult<IssueAccountTokenResult>> callback
     ) {
-        IssueAccountTokenTask task = new IssueAccountTokenTask(request, callback, IssueAccountTokenResult.class);
+        IssueAccountTokenTask task = new IssueAccountTokenTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 指定したアカウント名のアカウントトークンを発行<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public IssueAccountTokenResult issueAccountToken(
             IssueAccountTokenRequest request
     ) {
@@ -434,15 +366,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public ForgetTask(
             ForgetRequest request,
-            AsyncAction<AsyncResult<ForgetResult>> userCallback,
-            Class<ForgetResult> clazz
+            AsyncAction<AsyncResult<ForgetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ForgetResult parse(JsonNode data) {
+            return ForgetResult.fromJson(data);
         }
 
         @Override
@@ -453,16 +388,12 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/forget";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getEmail() != null) {
-                json.put("email", this.request.getEmail());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("email", request.getEmail());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -480,25 +411,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * パスワード再発行トークンを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void forgetAsync(
             ForgetRequest request,
             AsyncAction<AsyncResult<ForgetResult>> callback
     ) {
-        ForgetTask task = new ForgetTask(request, callback, ForgetResult.class);
+        ForgetTask task = new ForgetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * パスワード再発行トークンを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ForgetResult forget(
             ForgetRequest request
     ) {
@@ -525,15 +445,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public IssuePasswordTask(
             IssuePasswordRequest request,
-            AsyncAction<AsyncResult<IssuePasswordResult>> userCallback,
-            Class<IssuePasswordResult> clazz
+            AsyncAction<AsyncResult<IssuePasswordResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public IssuePasswordResult parse(JsonNode data) {
+            return IssuePasswordResult.fromJson(data);
         }
 
         @Override
@@ -544,16 +467,12 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/password/issue";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getIssuePasswordToken() != null) {
-                json.put("issuePasswordToken", this.request.getIssuePasswordToken());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("issuePasswordToken", request.getIssuePasswordToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -571,25 +490,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * パスワードを再発行<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void issuePasswordAsync(
             IssuePasswordRequest request,
             AsyncAction<AsyncResult<IssuePasswordResult>> callback
     ) {
-        IssuePasswordTask task = new IssuePasswordTask(request, callback, IssuePasswordResult.class);
+        IssuePasswordTask task = new IssuePasswordTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * パスワードを再発行<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public IssuePasswordResult issuePassword(
             IssuePasswordRequest request
     ) {
@@ -616,15 +524,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public UpdateAccountTask(
             UpdateAccountRequest request,
-            AsyncAction<AsyncResult<UpdateAccountResult>> userCallback,
-            Class<UpdateAccountResult> clazz
+            AsyncAction<AsyncResult<UpdateAccountResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateAccountResult parse(JsonNode data) {
+            return UpdateAccountResult.fromJson(data);
         }
 
         @Override
@@ -635,28 +546,16 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getEmail() != null) {
-                json.put("email", this.request.getEmail());
-            }
-            if (this.request.getFullName() != null) {
-                json.put("fullName", this.request.getFullName());
-            }
-            if (this.request.getCompanyName() != null) {
-                json.put("companyName", this.request.getCompanyName());
-            }
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getAccountToken() != null) {
-                json.put("accountToken", this.request.getAccountToken());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("email", request.getEmail());
+                    put("fullName", request.getFullName());
+                    put("companyName", request.getCompanyName());
+                    put("password", request.getPassword());
+                    put("accountToken", request.getAccountToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -674,25 +573,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * GS2アカウントを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateAccountAsync(
             UpdateAccountRequest request,
             AsyncAction<AsyncResult<UpdateAccountResult>> callback
     ) {
-        UpdateAccountTask task = new UpdateAccountTask(request, callback, UpdateAccountResult.class);
+        UpdateAccountTask task = new UpdateAccountTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GS2アカウントを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateAccountResult updateAccount(
             UpdateAccountRequest request
     ) {
@@ -719,15 +607,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public DeleteAccountTask(
             DeleteAccountRequest request,
-            AsyncAction<AsyncResult<DeleteAccountResult>> userCallback,
-            Class<DeleteAccountResult> clazz
+            AsyncAction<AsyncResult<DeleteAccountResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteAccountResult parse(JsonNode data) {
+            return DeleteAccountResult.fromJson(data);
         }
 
         @Override
@@ -760,25 +651,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * GS2アカウントを削除します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteAccountAsync(
             DeleteAccountRequest request,
             AsyncAction<AsyncResult<DeleteAccountResult>> callback
     ) {
-        DeleteAccountTask task = new DeleteAccountTask(request, callback, DeleteAccountResult.class);
+        DeleteAccountTask task = new DeleteAccountTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * GS2アカウントを削除します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteAccountResult deleteAccount(
             DeleteAccountRequest request
     ) {
@@ -805,15 +685,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public DescribeProjectsTask(
             DescribeProjectsRequest request,
-            AsyncAction<AsyncResult<DescribeProjectsResult>> userCallback,
-            Class<DescribeProjectsResult> clazz
+            AsyncAction<AsyncResult<DescribeProjectsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeProjectsResult parse(JsonNode data) {
+            return DescribeProjectsResult.fromJson(data);
         }
 
         @Override
@@ -855,25 +738,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * プロジェクトの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeProjectsAsync(
             DescribeProjectsRequest request,
             AsyncAction<AsyncResult<DescribeProjectsResult>> callback
     ) {
-        DescribeProjectsTask task = new DescribeProjectsTask(request, callback, DescribeProjectsResult.class);
+        DescribeProjectsTask task = new DescribeProjectsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロジェクトの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeProjectsResult describeProjects(
             DescribeProjectsRequest request
     ) {
@@ -900,15 +772,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public CreateProjectTask(
             CreateProjectRequest request,
-            AsyncAction<AsyncResult<CreateProjectResult>> userCallback,
-            Class<CreateProjectResult> clazz
+            AsyncAction<AsyncResult<CreateProjectResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateProjectResult parse(JsonNode data) {
+            return CreateProjectResult.fromJson(data);
         }
 
         @Override
@@ -919,37 +794,19 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/me/project";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAccountToken() != null) {
-                json.put("accountToken", this.request.getAccountToken());
-            }
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getPlan() != null) {
-                json.put("plan", this.request.getPlan());
-            }
-            if (this.request.getBillingMethodName() != null) {
-                json.put("billingMethodName", this.request.getBillingMethodName());
-            }
-            if (this.request.getEnableEventBridge() != null) {
-                json.put("enableEventBridge", this.request.getEnableEventBridge());
-            }
-            if (this.request.getEventBridgeAwsAccountId() != null) {
-                json.put("eventBridgeAwsAccountId", this.request.getEventBridgeAwsAccountId());
-            }
-            if (this.request.getEventBridgeAwsRegion() != null) {
-                json.put("eventBridgeAwsRegion", this.request.getEventBridgeAwsRegion());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("accountToken", request.getAccountToken());
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("plan", request.getPlan());
+                    put("billingMethodName", request.getBillingMethodName());
+                    put("enableEventBridge", request.getEnableEventBridge());
+                    put("eventBridgeAwsAccountId", request.getEventBridgeAwsAccountId());
+                    put("eventBridgeAwsRegion", request.getEventBridgeAwsRegion());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -967,25 +824,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * プロジェクトを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createProjectAsync(
             CreateProjectRequest request,
             AsyncAction<AsyncResult<CreateProjectResult>> callback
     ) {
-        CreateProjectTask task = new CreateProjectTask(request, callback, CreateProjectResult.class);
+        CreateProjectTask task = new CreateProjectTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロジェクトを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateProjectResult createProject(
             CreateProjectRequest request
     ) {
@@ -1012,15 +858,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public GetProjectTask(
             GetProjectRequest request,
-            AsyncAction<AsyncResult<GetProjectResult>> userCallback,
-            Class<GetProjectResult> clazz
+            AsyncAction<AsyncResult<GetProjectResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetProjectResult parse(JsonNode data) {
+            return GetProjectResult.fromJson(data);
         }
 
         @Override
@@ -1031,7 +880,7 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/me/project/{projectName}";
 
-            url = url.replace("{projectName}", this.request.getProjectName() == null|| this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
+            url = url.replace("{projectName}", this.request.getProjectName() == null || this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1058,25 +907,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * プロジェクトを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getProjectAsync(
             GetProjectRequest request,
             AsyncAction<AsyncResult<GetProjectResult>> callback
     ) {
-        GetProjectTask task = new GetProjectTask(request, callback, GetProjectResult.class);
+        GetProjectTask task = new GetProjectTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロジェクトを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetProjectResult getProject(
             GetProjectRequest request
     ) {
@@ -1103,15 +941,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public GetProjectTokenTask(
             GetProjectTokenRequest request,
-            AsyncAction<AsyncResult<GetProjectTokenResult>> userCallback,
-            Class<GetProjectTokenResult> clazz
+            AsyncAction<AsyncResult<GetProjectTokenResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetProjectTokenResult parse(JsonNode data) {
+            return GetProjectTokenResult.fromJson(data);
         }
 
         @Override
@@ -1122,18 +963,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/project/{projectName}/projectToken";
 
-            url = url.replace("{projectName}", this.request.getProjectName() == null|| this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
+            url = url.replace("{projectName}", this.request.getProjectName() == null || this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAccountToken() != null) {
-                json.put("accountToken", this.request.getAccountToken());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("accountToken", request.getAccountToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1151,25 +988,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * プロジェクトトークンを発行します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getProjectTokenAsync(
             GetProjectTokenRequest request,
             AsyncAction<AsyncResult<GetProjectTokenResult>> callback
     ) {
-        GetProjectTokenTask task = new GetProjectTokenTask(request, callback, GetProjectTokenResult.class);
+        GetProjectTokenTask task = new GetProjectTokenTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロジェクトトークンを発行します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetProjectTokenResult getProjectToken(
             GetProjectTokenRequest request
     ) {
@@ -1196,15 +1022,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public GetProjectTokenByIdentifierTask(
             GetProjectTokenByIdentifierRequest request,
-            AsyncAction<AsyncResult<GetProjectTokenByIdentifierResult>> userCallback,
-            Class<GetProjectTokenByIdentifierResult> clazz
+            AsyncAction<AsyncResult<GetProjectTokenByIdentifierResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetProjectTokenByIdentifierResult parse(JsonNode data) {
+            return GetProjectTokenByIdentifierResult.fromJson(data);
         }
 
         @Override
@@ -1215,20 +1044,16 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/{accountName}/project/{projectName}/user/{userName}/projectToken";
 
-            url = url.replace("{accountName}", this.request.getAccountName() == null|| this.request.getAccountName().length() == 0 ? "null" : String.valueOf(this.request.getAccountName()));
-            url = url.replace("{projectName}", this.request.getProjectName() == null|| this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
-            url = url.replace("{userName}", this.request.getUserName() == null|| this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+            url = url.replace("{accountName}", this.request.getAccountName() == null || this.request.getAccountName().length() == 0 ? "null" : String.valueOf(this.request.getAccountName()));
+            url = url.replace("{projectName}", this.request.getProjectName() == null || this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getPassword() != null) {
-                json.put("password", this.request.getPassword());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("password", request.getPassword());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1246,25 +1071,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * プロジェクトトークンを発行します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getProjectTokenByIdentifierAsync(
             GetProjectTokenByIdentifierRequest request,
             AsyncAction<AsyncResult<GetProjectTokenByIdentifierResult>> callback
     ) {
-        GetProjectTokenByIdentifierTask task = new GetProjectTokenByIdentifierTask(request, callback, GetProjectTokenByIdentifierResult.class);
+        GetProjectTokenByIdentifierTask task = new GetProjectTokenByIdentifierTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロジェクトトークンを発行します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetProjectTokenByIdentifierResult getProjectTokenByIdentifier(
             GetProjectTokenByIdentifierRequest request
     ) {
@@ -1291,15 +1105,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public UpdateProjectTask(
             UpdateProjectRequest request,
-            AsyncAction<AsyncResult<UpdateProjectResult>> userCallback,
-            Class<UpdateProjectResult> clazz
+            AsyncAction<AsyncResult<UpdateProjectResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateProjectResult parse(JsonNode data) {
+            return UpdateProjectResult.fromJson(data);
         }
 
         @Override
@@ -1310,36 +1127,20 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/me/project/{projectName}";
 
-            url = url.replace("{projectName}", this.request.getProjectName() == null|| this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
+            url = url.replace("{projectName}", this.request.getProjectName() == null || this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAccountToken() != null) {
-                json.put("accountToken", this.request.getAccountToken());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getPlan() != null) {
-                json.put("plan", this.request.getPlan());
-            }
-            if (this.request.getBillingMethodName() != null) {
-                json.put("billingMethodName", this.request.getBillingMethodName());
-            }
-            if (this.request.getEnableEventBridge() != null) {
-                json.put("enableEventBridge", this.request.getEnableEventBridge());
-            }
-            if (this.request.getEventBridgeAwsAccountId() != null) {
-                json.put("eventBridgeAwsAccountId", this.request.getEventBridgeAwsAccountId());
-            }
-            if (this.request.getEventBridgeAwsRegion() != null) {
-                json.put("eventBridgeAwsRegion", this.request.getEventBridgeAwsRegion());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("accountToken", request.getAccountToken());
+                    put("description", request.getDescription());
+                    put("plan", request.getPlan());
+                    put("billingMethodName", request.getBillingMethodName());
+                    put("enableEventBridge", request.getEnableEventBridge());
+                    put("eventBridgeAwsAccountId", request.getEventBridgeAwsAccountId());
+                    put("eventBridgeAwsRegion", request.getEventBridgeAwsRegion());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1357,25 +1158,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * プロジェクトを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateProjectAsync(
             UpdateProjectRequest request,
             AsyncAction<AsyncResult<UpdateProjectResult>> callback
     ) {
-        UpdateProjectTask task = new UpdateProjectTask(request, callback, UpdateProjectResult.class);
+        UpdateProjectTask task = new UpdateProjectTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロジェクトを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateProjectResult updateProject(
             UpdateProjectRequest request
     ) {
@@ -1402,15 +1192,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public DeleteProjectTask(
             DeleteProjectRequest request,
-            AsyncAction<AsyncResult<DeleteProjectResult>> userCallback,
-            Class<DeleteProjectResult> clazz
+            AsyncAction<AsyncResult<DeleteProjectResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteProjectResult parse(JsonNode data) {
+            return DeleteProjectResult.fromJson(data);
         }
 
         @Override
@@ -1421,7 +1214,7 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/me/project/{projectName}";
 
-            url = url.replace("{projectName}", this.request.getProjectName() == null|| this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
+            url = url.replace("{projectName}", this.request.getProjectName() == null || this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1448,25 +1241,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * プロジェクトを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteProjectAsync(
             DeleteProjectRequest request,
             AsyncAction<AsyncResult<DeleteProjectResult>> callback
     ) {
-        DeleteProjectTask task = new DeleteProjectTask(request, callback, DeleteProjectResult.class);
+        DeleteProjectTask task = new DeleteProjectTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * プロジェクトを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteProjectResult deleteProject(
             DeleteProjectRequest request
     ) {
@@ -1493,15 +1275,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public DescribeBillingMethodsTask(
             DescribeBillingMethodsRequest request,
-            AsyncAction<AsyncResult<DescribeBillingMethodsResult>> userCallback,
-            Class<DescribeBillingMethodsResult> clazz
+            AsyncAction<AsyncResult<DescribeBillingMethodsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeBillingMethodsResult parse(JsonNode data) {
+            return DescribeBillingMethodsResult.fromJson(data);
         }
 
         @Override
@@ -1543,25 +1328,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * 支払い方法の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeBillingMethodsAsync(
             DescribeBillingMethodsRequest request,
             AsyncAction<AsyncResult<DescribeBillingMethodsResult>> callback
     ) {
-        DescribeBillingMethodsTask task = new DescribeBillingMethodsTask(request, callback, DescribeBillingMethodsResult.class);
+        DescribeBillingMethodsTask task = new DescribeBillingMethodsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 支払い方法の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeBillingMethodsResult describeBillingMethods(
             DescribeBillingMethodsRequest request
     ) {
@@ -1588,15 +1362,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public CreateBillingMethodTask(
             CreateBillingMethodRequest request,
-            AsyncAction<AsyncResult<CreateBillingMethodResult>> userCallback,
-            Class<CreateBillingMethodResult> clazz
+            AsyncAction<AsyncResult<CreateBillingMethodResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateBillingMethodResult parse(JsonNode data) {
+            return CreateBillingMethodResult.fromJson(data);
         }
 
         @Override
@@ -1607,28 +1384,16 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/me/billingMethod";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAccountToken() != null) {
-                json.put("accountToken", this.request.getAccountToken());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMethodType() != null) {
-                json.put("methodType", this.request.getMethodType());
-            }
-            if (this.request.getCardCustomerId() != null) {
-                json.put("cardCustomerId", this.request.getCardCustomerId());
-            }
-            if (this.request.getPartnerId() != null) {
-                json.put("partnerId", this.request.getPartnerId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("accountToken", request.getAccountToken());
+                    put("description", request.getDescription());
+                    put("methodType", request.getMethodType());
+                    put("cardCustomerId", request.getCardCustomerId());
+                    put("partnerId", request.getPartnerId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1646,25 +1411,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * 支払い方法を新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createBillingMethodAsync(
             CreateBillingMethodRequest request,
             AsyncAction<AsyncResult<CreateBillingMethodResult>> callback
     ) {
-        CreateBillingMethodTask task = new CreateBillingMethodTask(request, callback, CreateBillingMethodResult.class);
+        CreateBillingMethodTask task = new CreateBillingMethodTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 支払い方法を新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateBillingMethodResult createBillingMethod(
             CreateBillingMethodRequest request
     ) {
@@ -1691,15 +1445,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public GetBillingMethodTask(
             GetBillingMethodRequest request,
-            AsyncAction<AsyncResult<GetBillingMethodResult>> userCallback,
-            Class<GetBillingMethodResult> clazz
+            AsyncAction<AsyncResult<GetBillingMethodResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetBillingMethodResult parse(JsonNode data) {
+            return GetBillingMethodResult.fromJson(data);
         }
 
         @Override
@@ -1710,7 +1467,7 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/me/billingMethod/{billingMethodName}";
 
-            url = url.replace("{billingMethodName}", this.request.getBillingMethodName() == null|| this.request.getBillingMethodName().length() == 0 ? "null" : String.valueOf(this.request.getBillingMethodName()));
+            url = url.replace("{billingMethodName}", this.request.getBillingMethodName() == null || this.request.getBillingMethodName().length() == 0 ? "null" : String.valueOf(this.request.getBillingMethodName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1737,25 +1494,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * 支払い方法を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getBillingMethodAsync(
             GetBillingMethodRequest request,
             AsyncAction<AsyncResult<GetBillingMethodResult>> callback
     ) {
-        GetBillingMethodTask task = new GetBillingMethodTask(request, callback, GetBillingMethodResult.class);
+        GetBillingMethodTask task = new GetBillingMethodTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 支払い方法を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetBillingMethodResult getBillingMethod(
             GetBillingMethodRequest request
     ) {
@@ -1782,15 +1528,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public UpdateBillingMethodTask(
             UpdateBillingMethodRequest request,
-            AsyncAction<AsyncResult<UpdateBillingMethodResult>> userCallback,
-            Class<UpdateBillingMethodResult> clazz
+            AsyncAction<AsyncResult<UpdateBillingMethodResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateBillingMethodResult parse(JsonNode data) {
+            return UpdateBillingMethodResult.fromJson(data);
         }
 
         @Override
@@ -1801,21 +1550,15 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/me/billingMethod/{billingMethodName}";
 
-            url = url.replace("{billingMethodName}", this.request.getBillingMethodName() == null|| this.request.getBillingMethodName().length() == 0 ? "null" : String.valueOf(this.request.getBillingMethodName()));
+            url = url.replace("{billingMethodName}", this.request.getBillingMethodName() == null || this.request.getBillingMethodName().length() == 0 ? "null" : String.valueOf(this.request.getBillingMethodName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getAccountToken() != null) {
-                json.put("accountToken", this.request.getAccountToken());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("accountToken", request.getAccountToken());
+                    put("description", request.getDescription());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1833,25 +1576,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * 支払い方法を更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateBillingMethodAsync(
             UpdateBillingMethodRequest request,
             AsyncAction<AsyncResult<UpdateBillingMethodResult>> callback
     ) {
-        UpdateBillingMethodTask task = new UpdateBillingMethodTask(request, callback, UpdateBillingMethodResult.class);
+        UpdateBillingMethodTask task = new UpdateBillingMethodTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 支払い方法を更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateBillingMethodResult updateBillingMethod(
             UpdateBillingMethodRequest request
     ) {
@@ -1878,15 +1610,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public DeleteBillingMethodTask(
             DeleteBillingMethodRequest request,
-            AsyncAction<AsyncResult<DeleteBillingMethodResult>> userCallback,
-            Class<DeleteBillingMethodResult> clazz
+            AsyncAction<AsyncResult<DeleteBillingMethodResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteBillingMethodResult parse(JsonNode data) {
+            return DeleteBillingMethodResult.fromJson(data);
         }
 
         @Override
@@ -1897,7 +1632,7 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/me/billingMethod/{billingMethodName}";
 
-            url = url.replace("{billingMethodName}", this.request.getBillingMethodName() == null|| this.request.getBillingMethodName().length() == 0 ? "null" : String.valueOf(this.request.getBillingMethodName()));
+            url = url.replace("{billingMethodName}", this.request.getBillingMethodName() == null || this.request.getBillingMethodName().length() == 0 ? "null" : String.valueOf(this.request.getBillingMethodName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1924,25 +1659,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * 支払い方法を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteBillingMethodAsync(
             DeleteBillingMethodRequest request,
             AsyncAction<AsyncResult<DeleteBillingMethodResult>> callback
     ) {
-        DeleteBillingMethodTask task = new DeleteBillingMethodTask(request, callback, DeleteBillingMethodResult.class);
+        DeleteBillingMethodTask task = new DeleteBillingMethodTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 支払い方法を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteBillingMethodResult deleteBillingMethod(
             DeleteBillingMethodRequest request
     ) {
@@ -1969,15 +1693,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public DescribeReceiptsTask(
             DescribeReceiptsRequest request,
-            AsyncAction<AsyncResult<DescribeReceiptsResult>> userCallback,
-            Class<DescribeReceiptsResult> clazz
+            AsyncAction<AsyncResult<DescribeReceiptsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeReceiptsResult parse(JsonNode data) {
+            return DescribeReceiptsResult.fromJson(data);
         }
 
         @Override
@@ -2019,25 +1746,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * 領収書の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeReceiptsAsync(
             DescribeReceiptsRequest request,
             AsyncAction<AsyncResult<DescribeReceiptsResult>> callback
     ) {
-        DescribeReceiptsTask task = new DescribeReceiptsTask(request, callback, DescribeReceiptsResult.class);
+        DescribeReceiptsTask task = new DescribeReceiptsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 領収書の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeReceiptsResult describeReceipts(
             DescribeReceiptsRequest request
     ) {
@@ -2064,15 +1780,18 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
 
         public DescribeBillingsTask(
             DescribeBillingsRequest request,
-            AsyncAction<AsyncResult<DescribeBillingsResult>> userCallback,
-            Class<DescribeBillingsResult> clazz
+            AsyncAction<AsyncResult<DescribeBillingsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeBillingsResult parse(JsonNode data) {
+            return DescribeBillingsResult.fromJson(data);
         }
 
         @Override
@@ -2083,9 +1802,9 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
                 .replace("{region}", session.getRegion().getName())
                 + "/account/me/billing/{projectName}/{year}/{month}";
 
-            url = url.replace("{projectName}", this.request.getProjectName() == null|| this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
-            url = url.replace("{year}", this.request.getYear() == null ? "null" : String.valueOf(this.request.getYear()));
-            url = url.replace("{month}", this.request.getMonth() == null ? "null" : String.valueOf(this.request.getMonth()));
+            url = url.replace("{projectName}", this.request.getProjectName() == null || this.request.getProjectName().length() == 0 ? "null" : String.valueOf(this.request.getProjectName()));
+            url = url.replace("{year}", this.request.getYear() == null  ? "null" : String.valueOf(this.request.getYear()));
+            url = url.replace("{month}", this.request.getMonth() == null  ? "null" : String.valueOf(this.request.getMonth()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2118,25 +1837,14 @@ public class Gs2ProjectRestClient extends AbstractGs2Client<Gs2ProjectRestClient
         }
     }
 
-    /**
-     * 利用状況の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeBillingsAsync(
             DescribeBillingsRequest request,
             AsyncAction<AsyncResult<DescribeBillingsResult>> callback
     ) {
-        DescribeBillingsTask task = new DescribeBillingsTask(request, callback, DescribeBillingsResult.class);
+        DescribeBillingsTask task = new DescribeBillingsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 利用状況の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeBillingsResult describeBillings(
             DescribeBillingsRequest request
     ) {

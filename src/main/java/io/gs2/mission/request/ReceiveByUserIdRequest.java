@@ -16,178 +16,94 @@
 
 package io.gs2.mission.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.mission.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * ミッション達成報酬を受領する のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ReceiveByUserIdRequest extends Gs2BasicRequest<ReceiveByUserIdRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return ミッション達成報酬を受領する
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッション達成報酬を受領する
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName ミッション達成報酬を受領する
-     * @return this
-     */
-    public ReceiveByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ミッショングループ名 */
     private String missionGroupName;
-
-    /**
-     * ミッショングループ名を取得
-     *
-     * @return ミッション達成報酬を受領する
-     */
-    public String getMissionGroupName() {
-        return missionGroupName;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param missionGroupName ミッション達成報酬を受領する
-     */
-    public void setMissionGroupName(String missionGroupName) {
-        this.missionGroupName = missionGroupName;
-    }
-
-    /**
-     * ミッショングループ名を設定
-     *
-     * @param missionGroupName ミッション達成報酬を受領する
-     * @return this
-     */
-    public ReceiveByUserIdRequest withMissionGroupName(String missionGroupName) {
-        setMissionGroupName(missionGroupName);
-        return this;
-    }
-
-    /** タスク名 */
     private String missionTaskName;
-
-    /**
-     * タスク名を取得
-     *
-     * @return ミッション達成報酬を受領する
-     */
-    public String getMissionTaskName() {
-        return missionTaskName;
-    }
-
-    /**
-     * タスク名を設定
-     *
-     * @param missionTaskName ミッション達成報酬を受領する
-     */
-    public void setMissionTaskName(String missionTaskName) {
-        this.missionTaskName = missionTaskName;
-    }
-
-    /**
-     * タスク名を設定
-     *
-     * @param missionTaskName ミッション達成報酬を受領する
-     * @return this
-     */
-    public ReceiveByUserIdRequest withMissionTaskName(String missionTaskName) {
-        setMissionTaskName(missionTaskName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
 
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ミッション達成報酬を受領する
-     */
-    public String getUserId() {
-        return userId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public ReceiveByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getMissionGroupName() {
+		return missionGroupName;
+	}
+
+	public void setMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+	}
+
+	public ReceiveByUserIdRequest withMissionGroupName(String missionGroupName) {
+		this.missionGroupName = missionGroupName;
+		return this;
+	}
+
+	public String getMissionTaskName() {
+		return missionTaskName;
+	}
+
+	public void setMissionTaskName(String missionTaskName) {
+		this.missionTaskName = missionTaskName;
+	}
+
+	public ReceiveByUserIdRequest withMissionTaskName(String missionTaskName) {
+		this.missionTaskName = missionTaskName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public ReceiveByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+    public static ReceiveByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ReceiveByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
+            .withMissionTaskName(data.get("missionTaskName") == null || data.get("missionTaskName").isNull() ? null : data.get("missionTaskName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
     }
 
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ミッション達成報酬を受領する
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("missionGroupName", getMissionGroupName());
+                put("missionTaskName", getMissionTaskName());
+                put("userId", getUserId());
+            }}
+        );
     }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ミッション達成報酬を受領する
-     * @return this
-     */
-    public ReceiveByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ミッション達成報酬を受領する
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ミッション達成報酬を受領する
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ミッション達成報酬を受領する
-     * @return this
-     */
-    public ReceiveByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

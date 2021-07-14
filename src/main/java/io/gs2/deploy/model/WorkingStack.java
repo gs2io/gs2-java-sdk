@@ -16,221 +16,130 @@
 
 package io.gs2.deploy.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 実行中のスタック
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WorkingStack implements IModel, Serializable, Comparable<WorkingStack> {
-	/** 実行中のスタック */
-	protected String stackId;
+	private String stackId;
+	private String ownerId;
+	private String name;
+	private String workId;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 実行中のスタックを取得
-	 *
-	 * @return 実行中のスタック
-	 */
 	public String getStackId() {
 		return stackId;
 	}
 
-	/**
-	 * 実行中のスタックを設定
-	 *
-	 * @param stackId 実行中のスタック
-	 */
 	public void setStackId(String stackId) {
 		this.stackId = stackId;
 	}
 
-	/**
-	 * 実行中のスタックを設定
-	 *
-	 * @param stackId 実行中のスタック
-	 * @return this
-	 */
 	public WorkingStack withStackId(String stackId) {
 		this.stackId = stackId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
 	public String getOwnerId() {
 		return ownerId;
 	}
 
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
 	}
 
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
 	public WorkingStack withOwnerId(String ownerId) {
 		this.ownerId = ownerId;
 		return this;
 	}
-	/** 実行中のスタック名 */
-	protected String name;
 
-	/**
-	 * 実行中のスタック名を取得
-	 *
-	 * @return 実行中のスタック名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 実行中のスタック名を設定
-	 *
-	 * @param name 実行中のスタック名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 実行中のスタック名を設定
-	 *
-	 * @param name 実行中のスタック名
-	 * @return this
-	 */
 	public WorkingStack withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 実行に対して割り振られる一意な ID */
-	protected String workId;
 
-	/**
-	 * 実行に対して割り振られる一意な IDを取得
-	 *
-	 * @return 実行に対して割り振られる一意な ID
-	 */
 	public String getWorkId() {
 		return workId;
 	}
 
-	/**
-	 * 実行に対して割り振られる一意な IDを設定
-	 *
-	 * @param workId 実行に対して割り振られる一意な ID
-	 */
 	public void setWorkId(String workId) {
 		this.workId = workId;
 	}
 
-	/**
-	 * 実行に対して割り振られる一意な IDを設定
-	 *
-	 * @param workId 実行に対して割り振られる一意な ID
-	 * @return this
-	 */
 	public WorkingStack withWorkId(String workId) {
 		this.workId = workId;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public WorkingStack withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public WorkingStack withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("stackId", this.getStackId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("workId", this.getWorkId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static WorkingStack fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new WorkingStack()
+            .withStackId(data.get("stackId") == null || data.get("stackId").isNull() ? null : data.get("stackId").asText())
+            .withOwnerId(data.get("ownerId") == null || data.get("ownerId").isNull() ? null : data.get("ownerId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withWorkId(data.get("workId") == null || data.get("workId").isNull() ? null : data.get("workId").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stackId", getStackId());
+                put("ownerId", getOwnerId());
+                put("name", getName());
+                put("workId", getWorkId());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(WorkingStack o) {
 		return stackId.compareTo(o.stackId);

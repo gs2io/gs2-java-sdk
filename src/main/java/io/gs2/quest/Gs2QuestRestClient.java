@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.quest;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.quest.request.*;
 import io.gs2.quest.result.*;
-import io.gs2.quest.model.*;
+import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
-/**
- * GS2 Quest API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2QuestRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストを分類するカテゴリーの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストを分類するカテゴリーの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,53 +152,19 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getStartQuestScript() != null) {
-                try {
-                    json.put("startQuestScript", new JSONObject(mapper.writeValueAsString(this.request.getStartQuestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCompleteQuestScript() != null) {
-                try {
-                    json.put("completeQuestScript", new JSONObject(mapper.writeValueAsString(this.request.getCompleteQuestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getFailedQuestScript() != null) {
-                try {
-                    json.put("failedQuestScript", new JSONObject(mapper.writeValueAsString(this.request.getFailedQuestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("startQuestScript", request.getStartQuestScript() != null ? request.getStartQuestScript().toJson() : null);
+                    put("completeQuestScript", request.getCompleteQuestScript() != null ? request.getCompleteQuestScript().toJson() : null);
+                    put("failedQuestScript", request.getFailedQuestScript() != null ? request.getFailedQuestScript().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -233,25 +182,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストを分類するカテゴリーを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストを分類するカテゴリーを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -278,15 +216,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -297,7 +238,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -321,25 +262,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストを分類するカテゴリーの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストを分類するカテゴリーの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -366,15 +296,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -385,7 +318,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -409,25 +342,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストを分類するカテゴリーを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストを分類するカテゴリーを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -454,15 +376,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -473,52 +398,20 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getStartQuestScript() != null) {
-                try {
-                    json.put("startQuestScript", new JSONObject(mapper.writeValueAsString(this.request.getStartQuestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getCompleteQuestScript() != null) {
-                try {
-                    json.put("completeQuestScript", new JSONObject(mapper.writeValueAsString(this.request.getCompleteQuestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getFailedQuestScript() != null) {
-                try {
-                    json.put("failedQuestScript", new JSONObject(mapper.writeValueAsString(this.request.getFailedQuestScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("startQuestScript", request.getStartQuestScript() != null ? request.getStartQuestScript().toJson() : null);
+                    put("completeQuestScript", request.getCompleteQuestScript() != null ? request.getCompleteQuestScript().toJson() : null);
+                    put("failedQuestScript", request.getFailedQuestScript() != null ? request.getFailedQuestScript().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -536,25 +429,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストを分類するカテゴリーを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストを分類するカテゴリーを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -581,15 +463,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -600,7 +485,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -624,25 +509,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストを分類するカテゴリーを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストを分類するカテゴリーを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -669,15 +543,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DescribeQuestGroupModelMastersTask(
             DescribeQuestGroupModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeQuestGroupModelMastersResult>> userCallback,
-            Class<DescribeQuestGroupModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeQuestGroupModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeQuestGroupModelMastersResult parse(JsonNode data) {
+            return DescribeQuestGroupModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -688,7 +565,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -718,25 +595,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストグループマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeQuestGroupModelMastersAsync(
             DescribeQuestGroupModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeQuestGroupModelMastersResult>> callback
     ) {
-        DescribeQuestGroupModelMastersTask task = new DescribeQuestGroupModelMastersTask(request, callback, DescribeQuestGroupModelMastersResult.class);
+        DescribeQuestGroupModelMastersTask task = new DescribeQuestGroupModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストグループマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeQuestGroupModelMastersResult describeQuestGroupModelMasters(
             DescribeQuestGroupModelMastersRequest request
     ) {
@@ -763,15 +629,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public CreateQuestGroupModelMasterTask(
             CreateQuestGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateQuestGroupModelMasterResult>> userCallback,
-            Class<CreateQuestGroupModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateQuestGroupModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateQuestGroupModelMasterResult parse(JsonNode data) {
+            return CreateQuestGroupModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -782,27 +651,17 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getChallengePeriodEventId() != null) {
-                json.put("challengePeriodEventId", this.request.getChallengePeriodEventId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("challengePeriodEventId", request.getChallengePeriodEventId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -820,25 +679,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストグループマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createQuestGroupModelMasterAsync(
             CreateQuestGroupModelMasterRequest request,
             AsyncAction<AsyncResult<CreateQuestGroupModelMasterResult>> callback
     ) {
-        CreateQuestGroupModelMasterTask task = new CreateQuestGroupModelMasterTask(request, callback, CreateQuestGroupModelMasterResult.class);
+        CreateQuestGroupModelMasterTask task = new CreateQuestGroupModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストグループマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateQuestGroupModelMasterResult createQuestGroupModelMaster(
             CreateQuestGroupModelMasterRequest request
     ) {
@@ -865,15 +713,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetQuestGroupModelMasterTask(
             GetQuestGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<GetQuestGroupModelMasterResult>> userCallback,
-            Class<GetQuestGroupModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetQuestGroupModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetQuestGroupModelMasterResult parse(JsonNode data) {
+            return GetQuestGroupModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -884,8 +735,8 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group/{questGroupName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -909,25 +760,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストグループマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getQuestGroupModelMasterAsync(
             GetQuestGroupModelMasterRequest request,
             AsyncAction<AsyncResult<GetQuestGroupModelMasterResult>> callback
     ) {
-        GetQuestGroupModelMasterTask task = new GetQuestGroupModelMasterTask(request, callback, GetQuestGroupModelMasterResult.class);
+        GetQuestGroupModelMasterTask task = new GetQuestGroupModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストグループマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetQuestGroupModelMasterResult getQuestGroupModelMaster(
             GetQuestGroupModelMasterRequest request
     ) {
@@ -954,15 +794,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public UpdateQuestGroupModelMasterTask(
             UpdateQuestGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateQuestGroupModelMasterResult>> userCallback,
-            Class<UpdateQuestGroupModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateQuestGroupModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateQuestGroupModelMasterResult parse(JsonNode data) {
+            return UpdateQuestGroupModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -973,25 +816,17 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group/{questGroupName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getChallengePeriodEventId() != null) {
-                json.put("challengePeriodEventId", this.request.getChallengePeriodEventId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("challengePeriodEventId", request.getChallengePeriodEventId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1009,25 +844,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストグループマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateQuestGroupModelMasterAsync(
             UpdateQuestGroupModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateQuestGroupModelMasterResult>> callback
     ) {
-        UpdateQuestGroupModelMasterTask task = new UpdateQuestGroupModelMasterTask(request, callback, UpdateQuestGroupModelMasterResult.class);
+        UpdateQuestGroupModelMasterTask task = new UpdateQuestGroupModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストグループマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateQuestGroupModelMasterResult updateQuestGroupModelMaster(
             UpdateQuestGroupModelMasterRequest request
     ) {
@@ -1054,15 +878,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DeleteQuestGroupModelMasterTask(
             DeleteQuestGroupModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteQuestGroupModelMasterResult>> userCallback,
-            Class<DeleteQuestGroupModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteQuestGroupModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteQuestGroupModelMasterResult parse(JsonNode data) {
+            return DeleteQuestGroupModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1073,8 +900,8 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group/{questGroupName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1098,25 +925,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストグループマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteQuestGroupModelMasterAsync(
             DeleteQuestGroupModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteQuestGroupModelMasterResult>> callback
     ) {
-        DeleteQuestGroupModelMasterTask task = new DeleteQuestGroupModelMasterTask(request, callback, DeleteQuestGroupModelMasterResult.class);
+        DeleteQuestGroupModelMasterTask task = new DeleteQuestGroupModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストグループマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteQuestGroupModelMasterResult deleteQuestGroupModelMaster(
             DeleteQuestGroupModelMasterRequest request
     ) {
@@ -1143,15 +959,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DescribeQuestModelMastersTask(
             DescribeQuestModelMastersRequest request,
-            AsyncAction<AsyncResult<DescribeQuestModelMastersResult>> userCallback,
-            Class<DescribeQuestModelMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeQuestModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeQuestModelMastersResult parse(JsonNode data) {
+            return DescribeQuestModelMastersResult.fromJson(data);
         }
 
         @Override
@@ -1162,8 +981,8 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group/{questGroupName}/quest";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1193,25 +1012,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストモデルマスターの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeQuestModelMastersAsync(
             DescribeQuestModelMastersRequest request,
             AsyncAction<AsyncResult<DescribeQuestModelMastersResult>> callback
     ) {
-        DescribeQuestModelMastersTask task = new DescribeQuestModelMastersTask(request, callback, DescribeQuestModelMastersResult.class);
+        DescribeQuestModelMastersTask task = new DescribeQuestModelMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストモデルマスターの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeQuestModelMastersResult describeQuestModelMasters(
             DescribeQuestModelMastersRequest request
     ) {
@@ -1238,15 +1046,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public CreateQuestModelMasterTask(
             CreateQuestModelMasterRequest request,
-            AsyncAction<AsyncResult<CreateQuestModelMasterResult>> userCallback,
-            Class<CreateQuestModelMasterResult> clazz
+            AsyncAction<AsyncResult<CreateQuestModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateQuestModelMasterResult parse(JsonNode data) {
+            return CreateQuestModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1257,72 +1068,41 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group/{questGroupName}/quest";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getContents() != null) {
-                JSONArray array = new JSONArray();
-                for(Contents item : this.request.getContents())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("contents", array);
-            }
-            if (this.request.getChallengePeriodEventId() != null) {
-                json.put("challengePeriodEventId", this.request.getChallengePeriodEventId());
-            }
-            if (this.request.getConsumeActions() != null) {
-                JSONArray array = new JSONArray();
-                for(ConsumeAction item : this.request.getConsumeActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("consumeActions", array);
-            }
-            if (this.request.getFailedAcquireActions() != null) {
-                JSONArray array = new JSONArray();
-                for(AcquireAction item : this.request.getFailedAcquireActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("failedAcquireActions", array);
-            }
-            if (this.request.getPremiseQuestNames() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getPremiseQuestNames())
-                {
-                    array.put(item);
-                }
-                json.put("premiseQuestNames", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("contents", request.getContents() == null ? new ArrayList<Contents>() :
+                        request.getContents().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("challengePeriodEventId", request.getChallengePeriodEventId());
+                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getConsumeActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("failedAcquireActions", request.getFailedAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getFailedAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("premiseQuestNames", request.getPremiseQuestNames() == null ? new ArrayList<String>() :
+                        request.getPremiseQuestNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1340,25 +1120,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストモデルマスターを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createQuestModelMasterAsync(
             CreateQuestModelMasterRequest request,
             AsyncAction<AsyncResult<CreateQuestModelMasterResult>> callback
     ) {
-        CreateQuestModelMasterTask task = new CreateQuestModelMasterTask(request, callback, CreateQuestModelMasterResult.class);
+        CreateQuestModelMasterTask task = new CreateQuestModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストモデルマスターを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateQuestModelMasterResult createQuestModelMaster(
             CreateQuestModelMasterRequest request
     ) {
@@ -1385,15 +1154,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetQuestModelMasterTask(
             GetQuestModelMasterRequest request,
-            AsyncAction<AsyncResult<GetQuestModelMasterResult>> userCallback,
-            Class<GetQuestModelMasterResult> clazz
+            AsyncAction<AsyncResult<GetQuestModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetQuestModelMasterResult parse(JsonNode data) {
+            return GetQuestModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1404,9 +1176,9 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group/{questGroupName}/quest/{questName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
-            url = url.replace("{questName}", this.request.getQuestName() == null|| this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{questName}", this.request.getQuestName() == null || this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1430,25 +1202,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストモデルマスターを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getQuestModelMasterAsync(
             GetQuestModelMasterRequest request,
             AsyncAction<AsyncResult<GetQuestModelMasterResult>> callback
     ) {
-        GetQuestModelMasterTask task = new GetQuestModelMasterTask(request, callback, GetQuestModelMasterResult.class);
+        GetQuestModelMasterTask task = new GetQuestModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストモデルマスターを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetQuestModelMasterResult getQuestModelMaster(
             GetQuestModelMasterRequest request
     ) {
@@ -1475,15 +1236,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public UpdateQuestModelMasterTask(
             UpdateQuestModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateQuestModelMasterResult>> userCallback,
-            Class<UpdateQuestModelMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateQuestModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateQuestModelMasterResult parse(JsonNode data) {
+            return UpdateQuestModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1494,70 +1258,41 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group/{questGroupName}/quest/{questName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
-            url = url.replace("{questName}", this.request.getQuestName() == null|| this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{questName}", this.request.getQuestName() == null || this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getContents() != null) {
-                JSONArray array = new JSONArray();
-                for(Contents item : this.request.getContents())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("contents", array);
-            }
-            if (this.request.getChallengePeriodEventId() != null) {
-                json.put("challengePeriodEventId", this.request.getChallengePeriodEventId());
-            }
-            if (this.request.getConsumeActions() != null) {
-                JSONArray array = new JSONArray();
-                for(ConsumeAction item : this.request.getConsumeActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("consumeActions", array);
-            }
-            if (this.request.getFailedAcquireActions() != null) {
-                JSONArray array = new JSONArray();
-                for(AcquireAction item : this.request.getFailedAcquireActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("failedAcquireActions", array);
-            }
-            if (this.request.getPremiseQuestNames() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getPremiseQuestNames())
-                {
-                    array.put(item);
-                }
-                json.put("premiseQuestNames", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("contents", request.getContents() == null ? new ArrayList<Contents>() :
+                        request.getContents().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("challengePeriodEventId", request.getChallengePeriodEventId());
+                    put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getConsumeActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("failedAcquireActions", request.getFailedAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getFailedAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("premiseQuestNames", request.getPremiseQuestNames() == null ? new ArrayList<String>() :
+                        request.getPremiseQuestNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1575,25 +1310,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストモデルマスターを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateQuestModelMasterAsync(
             UpdateQuestModelMasterRequest request,
             AsyncAction<AsyncResult<UpdateQuestModelMasterResult>> callback
     ) {
-        UpdateQuestModelMasterTask task = new UpdateQuestModelMasterTask(request, callback, UpdateQuestModelMasterResult.class);
+        UpdateQuestModelMasterTask task = new UpdateQuestModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストモデルマスターを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateQuestModelMasterResult updateQuestModelMaster(
             UpdateQuestModelMasterRequest request
     ) {
@@ -1620,15 +1344,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DeleteQuestModelMasterTask(
             DeleteQuestModelMasterRequest request,
-            AsyncAction<AsyncResult<DeleteQuestModelMasterResult>> userCallback,
-            Class<DeleteQuestModelMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteQuestModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteQuestModelMasterResult parse(JsonNode data) {
+            return DeleteQuestModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -1639,9 +1366,9 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/group/{questGroupName}/quest/{questName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
-            url = url.replace("{questName}", this.request.getQuestName() == null|| this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{questName}", this.request.getQuestName() == null || this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1665,25 +1392,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストモデルマスターを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteQuestModelMasterAsync(
             DeleteQuestModelMasterRequest request,
             AsyncAction<AsyncResult<DeleteQuestModelMasterResult>> callback
     ) {
-        DeleteQuestModelMasterTask task = new DeleteQuestModelMasterTask(request, callback, DeleteQuestModelMasterResult.class);
+        DeleteQuestModelMasterTask task = new DeleteQuestModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストモデルマスターを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteQuestModelMasterResult deleteQuestModelMaster(
             DeleteQuestModelMasterRequest request
     ) {
@@ -1710,15 +1426,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -1729,7 +1448,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1753,25 +1472,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * 現在有効なクエストマスターのマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なクエストマスターのマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -1798,15 +1506,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetCurrentQuestMasterTask(
             GetCurrentQuestMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentQuestMasterResult>> userCallback,
-            Class<GetCurrentQuestMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentQuestMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentQuestMasterResult parse(JsonNode data) {
+            return GetCurrentQuestMasterResult.fromJson(data);
         }
 
         @Override
@@ -1817,7 +1528,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1841,25 +1552,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * 現在有効なクエストマスターを取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentQuestMasterAsync(
             GetCurrentQuestMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentQuestMasterResult>> callback
     ) {
-        GetCurrentQuestMasterTask task = new GetCurrentQuestMasterTask(request, callback, GetCurrentQuestMasterResult.class);
+        GetCurrentQuestMasterTask task = new GetCurrentQuestMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なクエストマスターを取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentQuestMasterResult getCurrentQuestMaster(
             GetCurrentQuestMasterRequest request
     ) {
@@ -1886,15 +1586,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public UpdateCurrentQuestMasterTask(
             UpdateCurrentQuestMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentQuestMasterResult>> userCallback,
-            Class<UpdateCurrentQuestMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentQuestMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentQuestMasterResult parse(JsonNode data) {
+            return UpdateCurrentQuestMasterResult.fromJson(data);
         }
 
         @Override
@@ -1905,18 +1608,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -1934,25 +1633,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * 現在有効なクエストマスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentQuestMasterAsync(
             UpdateCurrentQuestMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentQuestMasterResult>> callback
     ) {
-        UpdateCurrentQuestMasterTask task = new UpdateCurrentQuestMasterTask(request, callback, UpdateCurrentQuestMasterResult.class);
+        UpdateCurrentQuestMasterTask task = new UpdateCurrentQuestMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なクエストマスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentQuestMasterResult updateCurrentQuestMaster(
             UpdateCurrentQuestMasterRequest request
     ) {
@@ -1979,15 +1667,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public UpdateCurrentQuestMasterFromGitHubTask(
             UpdateCurrentQuestMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentQuestMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentQuestMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentQuestMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentQuestMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentQuestMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -1998,22 +1689,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2031,25 +1714,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * 現在有効なクエストマスターを更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentQuestMasterFromGitHubAsync(
             UpdateCurrentQuestMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentQuestMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentQuestMasterFromGitHubTask task = new UpdateCurrentQuestMasterFromGitHubTask(request, callback, UpdateCurrentQuestMasterFromGitHubResult.class);
+        UpdateCurrentQuestMasterFromGitHubTask task = new UpdateCurrentQuestMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なクエストマスターを更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentQuestMasterFromGitHubResult updateCurrentQuestMasterFromGitHub(
             UpdateCurrentQuestMasterFromGitHubRequest request
     ) {
@@ -2076,15 +1748,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DescribeProgressesByUserIdTask(
             DescribeProgressesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeProgressesByUserIdResult>> userCallback,
-            Class<DescribeProgressesByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeProgressesByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeProgressesByUserIdResult parse(JsonNode data) {
+            return DescribeProgressesByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2095,7 +1770,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2121,9 +1796,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2131,25 +1803,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエスト挑戦の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeProgressesByUserIdAsync(
             DescribeProgressesByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeProgressesByUserIdResult>> callback
     ) {
-        DescribeProgressesByUserIdTask task = new DescribeProgressesByUserIdTask(request, callback, DescribeProgressesByUserIdResult.class);
+        DescribeProgressesByUserIdTask task = new DescribeProgressesByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエスト挑戦の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeProgressesByUserIdResult describeProgressesByUserId(
             DescribeProgressesByUserIdRequest request
     ) {
@@ -2176,15 +1837,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public CreateProgressByUserIdTask(
             CreateProgressByUserIdRequest request,
-            AsyncAction<AsyncResult<CreateProgressByUserIdResult>> userCallback,
-            Class<CreateProgressByUserIdResult> clazz
+            AsyncAction<AsyncResult<CreateProgressByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateProgressByUserIdResult parse(JsonNode data) {
+            return CreateProgressByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2195,34 +1859,22 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getQuestModelId() != null) {
-                json.put("questModelId", this.request.getQuestModelId());
-            }
-            if (this.request.getForce() != null) {
-                json.put("force", this.request.getForce());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("questModelId", request.getQuestModelId());
+                    put("force", request.getForce());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2233,9 +1885,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2243,25 +1892,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してクエスト挑戦を作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createProgressByUserIdAsync(
             CreateProgressByUserIdRequest request,
             AsyncAction<AsyncResult<CreateProgressByUserIdResult>> callback
     ) {
-        CreateProgressByUserIdTask task = new CreateProgressByUserIdTask(request, callback, CreateProgressByUserIdResult.class);
+        CreateProgressByUserIdTask task = new CreateProgressByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してクエスト挑戦を作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateProgressByUserIdResult createProgressByUserId(
             CreateProgressByUserIdRequest request
     ) {
@@ -2288,15 +1926,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetProgressTask(
             GetProgressRequest request,
-            AsyncAction<AsyncResult<GetProgressResult>> userCallback,
-            Class<GetProgressResult> clazz
+            AsyncAction<AsyncResult<GetProgressResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetProgressResult parse(JsonNode data) {
+            return GetProgressResult.fromJson(data);
         }
 
         @Override
@@ -2307,7 +1948,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2327,9 +1968,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2337,25 +1975,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエスト挑戦を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getProgressAsync(
             GetProgressRequest request,
             AsyncAction<AsyncResult<GetProgressResult>> callback
     ) {
-        GetProgressTask task = new GetProgressTask(request, callback, GetProgressResult.class);
+        GetProgressTask task = new GetProgressTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエスト挑戦を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetProgressResult getProgress(
             GetProgressRequest request
     ) {
@@ -2382,15 +2009,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetProgressByUserIdTask(
             GetProgressByUserIdRequest request,
-            AsyncAction<AsyncResult<GetProgressByUserIdResult>> userCallback,
-            Class<GetProgressByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetProgressByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetProgressByUserIdResult parse(JsonNode data) {
+            return GetProgressByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2401,8 +2031,8 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2419,9 +2049,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2429,25 +2056,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してクエスト挑戦を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getProgressByUserIdAsync(
             GetProgressByUserIdRequest request,
             AsyncAction<AsyncResult<GetProgressByUserIdResult>> callback
     ) {
-        GetProgressByUserIdTask task = new GetProgressByUserIdTask(request, callback, GetProgressByUserIdResult.class);
+        GetProgressByUserIdTask task = new GetProgressByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してクエスト挑戦を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetProgressByUserIdResult getProgressByUserId(
             GetProgressByUserIdRequest request
     ) {
@@ -2474,15 +2090,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public StartTask(
             StartRequest request,
-            AsyncAction<AsyncResult<StartResult>> userCallback,
-            Class<StartResult> clazz
+            AsyncAction<AsyncResult<StartResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public StartResult parse(JsonNode data) {
+            return StartResult.fromJson(data);
         }
 
         @Override
@@ -2493,32 +2112,22 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/progress/group/{questGroupName}/quest/{questName}/start";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
-            url = url.replace("{questName}", this.request.getQuestName() == null|| this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{questName}", this.request.getQuestName() == null || this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getForce() != null) {
-                json.put("force", this.request.getForce());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("force", request.getForce());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2532,9 +2141,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2542,63 +2148,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストを開始<br>
-     *   <br>
-     *   同一カテゴリ内でゲームプレイヤーは同時に1つのクエストを実行できます。<br>
-     *   すでに同一カテゴリ内で実行中のクエストがある場合、このAPIはエラーを返します。<br>
-     *   進行中のクエストを取得するAPIを呼び出すことで、クエストを再開するために必要な情報を得ることができます。<br>
-     *   強制的にクエストを開始するには force パラメータに true を指定することで強制的にクエストを開始できます。<br>
-     *   <br>
-     *   クエストが正常に開始できた場合、Progress オブジェクトを応答します。<br>
-     *   Progress オブジェクトはクエストを実行するために必要ないくつかの情報を応答します。<br>
-     *   <br>
-     *   transactionId は実行中のクエスト固有のIDです。<br>
-     *   クエストの完了報告にはこのIDを指定する必要があります。<br>
-     *   <br>
-     *   randomSeed はクエストの内容を決定するために使用できる乱数シードです。<br>
-     *   クエストを開始するたびに異なる乱数が払い出されますので、この値をシード値としてゲームを進行させることで<br>
-     *   クエスト中にアプリケーションを強制終了したとしても同一条件で再開することができます。<br>
-     *   <br>
-     *   rewards にはこのクエストにおいて入手可能な報酬とその数量の"最大値"が得られます。<br>
-     *   クエストの完了報告にも rewards を渡すことができ、そこでクエスト中に実際に入手したアイテムの数量を指定します。<br>
-     *   詳細はクエストの完了報告APIのドキュメントを参照してください。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void startAsync(
             StartRequest request,
             AsyncAction<AsyncResult<StartResult>> callback
     ) {
-        StartTask task = new StartTask(request, callback, StartResult.class);
+        StartTask task = new StartTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストを開始<br>
-     *   <br>
-     *   同一カテゴリ内でゲームプレイヤーは同時に1つのクエストを実行できます。<br>
-     *   すでに同一カテゴリ内で実行中のクエストがある場合、このAPIはエラーを返します。<br>
-     *   進行中のクエストを取得するAPIを呼び出すことで、クエストを再開するために必要な情報を得ることができます。<br>
-     *   強制的にクエストを開始するには force パラメータに true を指定することで強制的にクエストを開始できます。<br>
-     *   <br>
-     *   クエストが正常に開始できた場合、Progress オブジェクトを応答します。<br>
-     *   Progress オブジェクトはクエストを実行するために必要ないくつかの情報を応答します。<br>
-     *   <br>
-     *   transactionId は実行中のクエスト固有のIDです。<br>
-     *   クエストの完了報告にはこのIDを指定する必要があります。<br>
-     *   <br>
-     *   randomSeed はクエストの内容を決定するために使用できる乱数シードです。<br>
-     *   クエストを開始するたびに異なる乱数が払い出されますので、この値をシード値としてゲームを進行させることで<br>
-     *   クエスト中にアプリケーションを強制終了したとしても同一条件で再開することができます。<br>
-     *   <br>
-     *   rewards にはこのクエストにおいて入手可能な報酬とその数量の"最大値"が得られます。<br>
-     *   クエストの完了報告にも rewards を渡すことができ、そこでクエスト中に実際に入手したアイテムの数量を指定します。<br>
-     *   詳細はクエストの完了報告APIのドキュメントを参照してください。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public StartResult start(
             StartRequest request
     ) {
@@ -2625,15 +2182,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public StartByUserIdTask(
             StartByUserIdRequest request,
-            AsyncAction<AsyncResult<StartByUserIdResult>> userCallback,
-            Class<StartByUserIdResult> clazz
+            AsyncAction<AsyncResult<StartByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public StartByUserIdResult parse(JsonNode data) {
+            return StartByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2644,33 +2204,23 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress/group/{questGroupName}/quest/{questName}/start";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
-            url = url.replace("{questName}", this.request.getQuestName() == null|| this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{questName}", this.request.getQuestName() == null || this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getForce() != null) {
-                json.put("force", this.request.getForce());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("force", request.getForce());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2681,9 +2231,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2691,63 +2238,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してクエストを開始<br>
-     *   <br>
-     *   同一カテゴリ内でゲームプレイヤーは同時に1つのクエストを実行できます。<br>
-     *   すでに同一カテゴリ内で実行中のクエストがある場合、このAPIはエラーを返します。<br>
-     *   進行中のクエストを取得するAPIを呼び出すことで、クエストを再開するために必要な情報を得ることができます。<br>
-     *   強制的にクエストを開始するには force パラメータに true を指定することで強制的にクエストを開始できます。<br>
-     *   <br>
-     *   クエストが正常に開始できた場合、Progress オブジェクトを応答します。<br>
-     *   Progress オブジェクトはクエストを実行するために必要ないくつかの情報を応答します。<br>
-     *   <br>
-     *   transactionId は実行中のクエスト固有のIDです。<br>
-     *   クエストの完了報告にはこのIDを指定する必要があります。<br>
-     *   <br>
-     *   randomSeed はクエストの内容を決定するために使用できる乱数シードです。<br>
-     *   クエストを開®®始するたびに異なる乱数が払い出されますので、この値をシード値としてゲームを進行させることで<br>
-     *   クエスト中にアプリケーションを強制終了したとしても同一条件で再開することができます。<br>
-     *   <br>
-     *   rewards にはこのクエストにおいて入手可能な報酬とその数量の"最大値"が得られます。<br>
-     *   クエストの完了報告にも rewards を渡すことができ、そこでクエスト中に実際に入手したアイテムの数量を指定します。<br>
-     *   詳細はクエストの完了報告APIのドキュメントを参照してください。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void startByUserIdAsync(
             StartByUserIdRequest request,
             AsyncAction<AsyncResult<StartByUserIdResult>> callback
     ) {
-        StartByUserIdTask task = new StartByUserIdTask(request, callback, StartByUserIdResult.class);
+        StartByUserIdTask task = new StartByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してクエストを開始<br>
-     *   <br>
-     *   同一カテゴリ内でゲームプレイヤーは同時に1つのクエストを実行できます。<br>
-     *   すでに同一カテゴリ内で実行中のクエストがある場合、このAPIはエラーを返します。<br>
-     *   進行中のクエストを取得するAPIを呼び出すことで、クエストを再開するために必要な情報を得ることができます。<br>
-     *   強制的にクエストを開始するには force パラメータに true を指定することで強制的にクエストを開始できます。<br>
-     *   <br>
-     *   クエストが正常に開始できた場合、Progress オブジェクトを応答します。<br>
-     *   Progress オブジェクトはクエストを実行するために必要ないくつかの情報を応答します。<br>
-     *   <br>
-     *   transactionId は実行中のクエスト固有のIDです。<br>
-     *   クエストの完了報告にはこのIDを指定する必要があります。<br>
-     *   <br>
-     *   randomSeed はクエストの内容を決定するために使用できる乱数シードです。<br>
-     *   クエストを開®®始するたびに異なる乱数が払い出されますので、この値をシード値としてゲームを進行させることで<br>
-     *   クエスト中にアプリケーションを強制終了したとしても同一条件で再開することができます。<br>
-     *   <br>
-     *   rewards にはこのクエストにおいて入手可能な報酬とその数量の"最大値"が得られます。<br>
-     *   クエストの完了報告にも rewards を渡すことができ、そこでクエスト中に実際に入手したアイテムの数量を指定します。<br>
-     *   詳細はクエストの完了報告APIのドキュメントを参照してください。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public StartByUserIdResult startByUserId(
             StartByUserIdRequest request
     ) {
@@ -2774,15 +2272,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public EndTask(
             EndRequest request,
-            AsyncAction<AsyncResult<EndResult>> userCallback,
-            Class<EndResult> clazz
+            AsyncAction<AsyncResult<EndResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public EndResult parse(JsonNode data) {
+            return EndResult.fromJson(data);
         }
 
         @Override
@@ -2793,45 +2294,27 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/progress/end";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTransactionId() != null) {
-                json.put("transactionId", this.request.getTransactionId());
-            }
-            if (this.request.getRewards() != null) {
-                JSONArray array = new JSONArray();
-                for(Reward item : this.request.getRewards())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("rewards", array);
-            }
-            if (this.request.getIsComplete() != null) {
-                json.put("isComplete", this.request.getIsComplete());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("transactionId", request.getTransactionId());
+                    put("rewards", request.getRewards() == null ? new ArrayList<Reward>() :
+                        request.getRewards().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("isComplete", request.getIsComplete());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2845,9 +2328,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2855,31 +2335,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストを完了<br>
-     *   <br>
-     *   開始時に受け取ったクエストにおいて入手可能な報酬とその数量の"最大値"のうち、クエスト内で実際に入手した報酬を rewards で報告します。<br>
-     *   isComplete にはクエストをクリアできたかを報告します。クエストに失敗した場合、rewards の値は無視してクエストに設定された失敗した場合の報酬が付与されます。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void endAsync(
             EndRequest request,
             AsyncAction<AsyncResult<EndResult>> callback
     ) {
-        EndTask task = new EndTask(request, callback, EndResult.class);
+        EndTask task = new EndTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストを完了<br>
-     *   <br>
-     *   開始時に受け取ったクエストにおいて入手可能な報酬とその数量の"最大値"のうち、クエスト内で実際に入手した報酬を rewards で報告します。<br>
-     *   isComplete にはクエストをクリアできたかを報告します。クエストに失敗した場合、rewards の値は無視してクエストに設定された失敗した場合の報酬が付与されます。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public EndResult end(
             EndRequest request
     ) {
@@ -2906,15 +2369,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public EndByUserIdTask(
             EndByUserIdRequest request,
-            AsyncAction<AsyncResult<EndByUserIdResult>> userCallback,
-            Class<EndByUserIdResult> clazz
+            AsyncAction<AsyncResult<EndByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public EndByUserIdResult parse(JsonNode data) {
+            return EndByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -2925,46 +2391,28 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress/end";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getTransactionId() != null) {
-                json.put("transactionId", this.request.getTransactionId());
-            }
-            if (this.request.getRewards() != null) {
-                JSONArray array = new JSONArray();
-                for(Reward item : this.request.getRewards())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("rewards", array);
-            }
-            if (this.request.getIsComplete() != null) {
-                json.put("isComplete", this.request.getIsComplete());
-            }
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("transactionId", request.getTransactionId());
+                    put("rewards", request.getRewards() == null ? new ArrayList<Reward>() :
+                        request.getRewards().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("isComplete", request.getIsComplete());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2975,9 +2423,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2985,31 +2430,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してクエストを完了<br>
-     *   <br>
-     *   開始時に受け取ったクエストにおいて入手可能な報酬とその数量の"最大値"のうち、クエスト内で実際に入手した報酬を rewards で報告します。<br>
-     *   isComplete にはクエストをクリアできたかを報告します。クエストに失敗した場合、rewards の値は無視してクエストに設定された失敗した場合の報酬が付与されます。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void endByUserIdAsync(
             EndByUserIdRequest request,
             AsyncAction<AsyncResult<EndByUserIdResult>> callback
     ) {
-        EndByUserIdTask task = new EndByUserIdTask(request, callback, EndByUserIdResult.class);
+        EndByUserIdTask task = new EndByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してクエストを完了<br>
-     *   <br>
-     *   開始時に受け取ったクエストにおいて入手可能な報酬とその数量の"最大値"のうち、クエスト内で実際に入手した報酬を rewards で報告します。<br>
-     *   isComplete にはクエストをクリアできたかを報告します。クエストに失敗した場合、rewards の値は無視してクエストに設定された失敗した場合の報酬が付与されます。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public EndByUserIdResult endByUserId(
             EndByUserIdRequest request
     ) {
@@ -3036,15 +2464,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DeleteProgressTask(
             DeleteProgressRequest request,
-            AsyncAction<AsyncResult<DeleteProgressResult>> userCallback,
-            Class<DeleteProgressResult> clazz
+            AsyncAction<AsyncResult<DeleteProgressResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteProgressResult parse(JsonNode data) {
+            return DeleteProgressResult.fromJson(data);
         }
 
         @Override
@@ -3055,7 +2486,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3075,9 +2506,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3085,25 +2513,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエスト挑戦を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteProgressAsync(
             DeleteProgressRequest request,
             AsyncAction<AsyncResult<DeleteProgressResult>> callback
     ) {
-        DeleteProgressTask task = new DeleteProgressTask(request, callback, DeleteProgressResult.class);
+        DeleteProgressTask task = new DeleteProgressTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエスト挑戦を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteProgressResult deleteProgress(
             DeleteProgressRequest request
     ) {
@@ -3130,15 +2547,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DeleteProgressByUserIdTask(
             DeleteProgressByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteProgressByUserIdResult>> userCallback,
-            Class<DeleteProgressByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteProgressByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteProgressByUserIdResult parse(JsonNode data) {
+            return DeleteProgressByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3149,8 +2569,8 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/progress";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3167,9 +2587,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3177,25 +2594,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してクエスト挑戦を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteProgressByUserIdAsync(
             DeleteProgressByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteProgressByUserIdResult>> callback
     ) {
-        DeleteProgressByUserIdTask task = new DeleteProgressByUserIdTask(request, callback, DeleteProgressByUserIdResult.class);
+        DeleteProgressByUserIdTask task = new DeleteProgressByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してクエスト挑戦を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteProgressByUserIdResult deleteProgressByUserId(
             DeleteProgressByUserIdRequest request
     ) {
@@ -3222,15 +2628,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public CreateProgressByStampSheetTask(
             CreateProgressByStampSheetRequest request,
-            AsyncAction<AsyncResult<CreateProgressByStampSheetResult>> userCallback,
-            Class<CreateProgressByStampSheetResult> clazz
+            AsyncAction<AsyncResult<CreateProgressByStampSheetResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateProgressByStampSheetResult parse(JsonNode data) {
+            return CreateProgressByStampSheetResult.fromJson(data);
         }
 
         @Override
@@ -3241,19 +2650,13 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/progress/create";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampSheet() != null) {
-                json.put("stampSheet", this.request.getStampSheet());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3264,9 +2667,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3274,25 +2674,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * スタンプシートでクエストを開始<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createProgressByStampSheetAsync(
             CreateProgressByStampSheetRequest request,
             AsyncAction<AsyncResult<CreateProgressByStampSheetResult>> callback
     ) {
-        CreateProgressByStampSheetTask task = new CreateProgressByStampSheetTask(request, callback, CreateProgressByStampSheetResult.class);
+        CreateProgressByStampSheetTask task = new CreateProgressByStampSheetTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプシートでクエストを開始<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateProgressByStampSheetResult createProgressByStampSheet(
             CreateProgressByStampSheetRequest request
     ) {
@@ -3319,15 +2708,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DeleteProgressByStampTaskTask(
             DeleteProgressByStampTaskRequest request,
-            AsyncAction<AsyncResult<DeleteProgressByStampTaskResult>> userCallback,
-            Class<DeleteProgressByStampTaskResult> clazz
+            AsyncAction<AsyncResult<DeleteProgressByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteProgressByStampTaskResult parse(JsonNode data) {
+            return DeleteProgressByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -3338,19 +2730,13 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/progress/delete";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -3361,9 +2747,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3371,25 +2754,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * スタンプタスクで クエスト挑戦 を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteProgressByStampTaskAsync(
             DeleteProgressByStampTaskRequest request,
             AsyncAction<AsyncResult<DeleteProgressByStampTaskResult>> callback
     ) {
-        DeleteProgressByStampTaskTask task = new DeleteProgressByStampTaskTask(request, callback, DeleteProgressByStampTaskResult.class);
+        DeleteProgressByStampTaskTask task = new DeleteProgressByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * スタンプタスクで クエスト挑戦 を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteProgressByStampTaskResult deleteProgressByStampTask(
             DeleteProgressByStampTaskRequest request
     ) {
@@ -3416,15 +2788,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DescribeCompletedQuestListsTask(
             DescribeCompletedQuestListsRequest request,
-            AsyncAction<AsyncResult<DescribeCompletedQuestListsResult>> userCallback,
-            Class<DescribeCompletedQuestListsResult> clazz
+            AsyncAction<AsyncResult<DescribeCompletedQuestListsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeCompletedQuestListsResult parse(JsonNode data) {
+            return DescribeCompletedQuestListsResult.fromJson(data);
         }
 
         @Override
@@ -3435,7 +2810,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/completed";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3461,9 +2836,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3471,25 +2843,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエスト進行の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeCompletedQuestListsAsync(
             DescribeCompletedQuestListsRequest request,
             AsyncAction<AsyncResult<DescribeCompletedQuestListsResult>> callback
     ) {
-        DescribeCompletedQuestListsTask task = new DescribeCompletedQuestListsTask(request, callback, DescribeCompletedQuestListsResult.class);
+        DescribeCompletedQuestListsTask task = new DescribeCompletedQuestListsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエスト進行の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeCompletedQuestListsResult describeCompletedQuestLists(
             DescribeCompletedQuestListsRequest request
     ) {
@@ -3516,15 +2877,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DescribeCompletedQuestListsByUserIdTask(
             DescribeCompletedQuestListsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeCompletedQuestListsByUserIdResult>> userCallback,
-            Class<DescribeCompletedQuestListsByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeCompletedQuestListsByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeCompletedQuestListsByUserIdResult parse(JsonNode data) {
+            return DescribeCompletedQuestListsByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3535,8 +2899,8 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/completed";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3559,9 +2923,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3569,25 +2930,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してクエスト進行の一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeCompletedQuestListsByUserIdAsync(
             DescribeCompletedQuestListsByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeCompletedQuestListsByUserIdResult>> callback
     ) {
-        DescribeCompletedQuestListsByUserIdTask task = new DescribeCompletedQuestListsByUserIdTask(request, callback, DescribeCompletedQuestListsByUserIdResult.class);
+        DescribeCompletedQuestListsByUserIdTask task = new DescribeCompletedQuestListsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してクエスト進行の一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeCompletedQuestListsByUserIdResult describeCompletedQuestListsByUserId(
             DescribeCompletedQuestListsByUserIdRequest request
     ) {
@@ -3614,15 +2964,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetCompletedQuestListTask(
             GetCompletedQuestListRequest request,
-            AsyncAction<AsyncResult<GetCompletedQuestListResult>> userCallback,
-            Class<GetCompletedQuestListResult> clazz
+            AsyncAction<AsyncResult<GetCompletedQuestListResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCompletedQuestListResult parse(JsonNode data) {
+            return GetCompletedQuestListResult.fromJson(data);
         }
 
         @Override
@@ -3633,8 +2986,8 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/completed/group/{questGroupName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3654,9 +3007,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3664,25 +3014,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエスト進行を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCompletedQuestListAsync(
             GetCompletedQuestListRequest request,
             AsyncAction<AsyncResult<GetCompletedQuestListResult>> callback
     ) {
-        GetCompletedQuestListTask task = new GetCompletedQuestListTask(request, callback, GetCompletedQuestListResult.class);
+        GetCompletedQuestListTask task = new GetCompletedQuestListTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエスト進行を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCompletedQuestListResult getCompletedQuestList(
             GetCompletedQuestListRequest request
     ) {
@@ -3709,15 +3048,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetCompletedQuestListByUserIdTask(
             GetCompletedQuestListByUserIdRequest request,
-            AsyncAction<AsyncResult<GetCompletedQuestListByUserIdResult>> userCallback,
-            Class<GetCompletedQuestListByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetCompletedQuestListByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCompletedQuestListByUserIdResult parse(JsonNode data) {
+            return GetCompletedQuestListByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3728,9 +3070,9 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/completed/group/{questGroupName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3747,9 +3089,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3757,25 +3096,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してクエスト進行を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCompletedQuestListByUserIdAsync(
             GetCompletedQuestListByUserIdRequest request,
             AsyncAction<AsyncResult<GetCompletedQuestListByUserIdResult>> callback
     ) {
-        GetCompletedQuestListByUserIdTask task = new GetCompletedQuestListByUserIdTask(request, callback, GetCompletedQuestListByUserIdResult.class);
+        GetCompletedQuestListByUserIdTask task = new GetCompletedQuestListByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してクエスト進行を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCompletedQuestListByUserIdResult getCompletedQuestListByUserId(
             GetCompletedQuestListByUserIdRequest request
     ) {
@@ -3802,15 +3130,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DeleteCompletedQuestListByUserIdTask(
             DeleteCompletedQuestListByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteCompletedQuestListByUserIdResult>> userCallback,
-            Class<DeleteCompletedQuestListByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteCompletedQuestListByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteCompletedQuestListByUserIdResult parse(JsonNode data) {
+            return DeleteCompletedQuestListByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3821,9 +3152,9 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/completed/group/{questGroupName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3840,9 +3171,6 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3850,25 +3178,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * ユーザIDを指定してクエスト進行を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteCompletedQuestListByUserIdAsync(
             DeleteCompletedQuestListByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteCompletedQuestListByUserIdResult>> callback
     ) {
-        DeleteCompletedQuestListByUserIdTask task = new DeleteCompletedQuestListByUserIdTask(request, callback, DeleteCompletedQuestListByUserIdResult.class);
+        DeleteCompletedQuestListByUserIdTask task = new DeleteCompletedQuestListByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザIDを指定してクエスト進行を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteCompletedQuestListByUserIdResult deleteCompletedQuestListByUserId(
             DeleteCompletedQuestListByUserIdRequest request
     ) {
@@ -3895,15 +3212,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DescribeQuestGroupModelsTask(
             DescribeQuestGroupModelsRequest request,
-            AsyncAction<AsyncResult<DescribeQuestGroupModelsResult>> userCallback,
-            Class<DescribeQuestGroupModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeQuestGroupModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeQuestGroupModelsResult parse(JsonNode data) {
+            return DescribeQuestGroupModelsResult.fromJson(data);
         }
 
         @Override
@@ -3914,7 +3234,7 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/group";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3938,25 +3258,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストグループの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeQuestGroupModelsAsync(
             DescribeQuestGroupModelsRequest request,
             AsyncAction<AsyncResult<DescribeQuestGroupModelsResult>> callback
     ) {
-        DescribeQuestGroupModelsTask task = new DescribeQuestGroupModelsTask(request, callback, DescribeQuestGroupModelsResult.class);
+        DescribeQuestGroupModelsTask task = new DescribeQuestGroupModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストグループの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeQuestGroupModelsResult describeQuestGroupModels(
             DescribeQuestGroupModelsRequest request
     ) {
@@ -3983,15 +3292,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetQuestGroupModelTask(
             GetQuestGroupModelRequest request,
-            AsyncAction<AsyncResult<GetQuestGroupModelResult>> userCallback,
-            Class<GetQuestGroupModelResult> clazz
+            AsyncAction<AsyncResult<GetQuestGroupModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetQuestGroupModelResult parse(JsonNode data) {
+            return GetQuestGroupModelResult.fromJson(data);
         }
 
         @Override
@@ -4002,8 +3314,8 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/group/{questGroupName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4027,25 +3339,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストグループを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getQuestGroupModelAsync(
             GetQuestGroupModelRequest request,
             AsyncAction<AsyncResult<GetQuestGroupModelResult>> callback
     ) {
-        GetQuestGroupModelTask task = new GetQuestGroupModelTask(request, callback, GetQuestGroupModelResult.class);
+        GetQuestGroupModelTask task = new GetQuestGroupModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストグループを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetQuestGroupModelResult getQuestGroupModel(
             GetQuestGroupModelRequest request
     ) {
@@ -4072,15 +3373,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public DescribeQuestModelsTask(
             DescribeQuestModelsRequest request,
-            AsyncAction<AsyncResult<DescribeQuestModelsResult>> userCallback,
-            Class<DescribeQuestModelsResult> clazz
+            AsyncAction<AsyncResult<DescribeQuestModelsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeQuestModelsResult parse(JsonNode data) {
+            return DescribeQuestModelsResult.fromJson(data);
         }
 
         @Override
@@ -4091,8 +3395,8 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/group/{questGroupName}/quest";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4116,25 +3420,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストモデルの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeQuestModelsAsync(
             DescribeQuestModelsRequest request,
             AsyncAction<AsyncResult<DescribeQuestModelsResult>> callback
     ) {
-        DescribeQuestModelsTask task = new DescribeQuestModelsTask(request, callback, DescribeQuestModelsResult.class);
+        DescribeQuestModelsTask task = new DescribeQuestModelsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストモデルの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeQuestModelsResult describeQuestModels(
             DescribeQuestModelsRequest request
     ) {
@@ -4161,15 +3454,18 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
 
         public GetQuestModelTask(
             GetQuestModelRequest request,
-            AsyncAction<AsyncResult<GetQuestModelResult>> userCallback,
-            Class<GetQuestModelResult> clazz
+            AsyncAction<AsyncResult<GetQuestModelResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetQuestModelResult parse(JsonNode data) {
+            return GetQuestModelResult.fromJson(data);
         }
 
         @Override
@@ -4180,9 +3476,9 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/group/{questGroupName}/quest/{questName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null|| this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
-            url = url.replace("{questName}", this.request.getQuestName() == null|| this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{questGroupName}", this.request.getQuestGroupName() == null || this.request.getQuestGroupName().length() == 0 ? "null" : String.valueOf(this.request.getQuestGroupName()));
+            url = url.replace("{questName}", this.request.getQuestName() == null || this.request.getQuestName().length() == 0 ? "null" : String.valueOf(this.request.getQuestName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4206,25 +3502,14 @@ public class Gs2QuestRestClient extends AbstractGs2Client<Gs2QuestRestClient> {
         }
     }
 
-    /**
-     * クエストモデルを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getQuestModelAsync(
             GetQuestModelRequest request,
             AsyncAction<AsyncResult<GetQuestModelResult>> callback
     ) {
-        GetQuestModelTask task = new GetQuestModelTask(request, callback, GetQuestModelResult.class);
+        GetQuestModelTask task = new GetQuestModelTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * クエストモデルを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetQuestModelResult getQuestModel(
             GetQuestModelRequest request
     ) {

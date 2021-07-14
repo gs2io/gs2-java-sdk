@@ -16,221 +16,130 @@
 
 package io.gs2.matchmaking.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * レーティング
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Rating implements IModel, Serializable, Comparable<Rating> {
-	/** レーティング */
-	protected String ratingId;
+	private String ratingId;
+	private String name;
+	private String userId;
+	private Float rateValue;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * レーティングを取得
-	 *
-	 * @return レーティング
-	 */
 	public String getRatingId() {
 		return ratingId;
 	}
 
-	/**
-	 * レーティングを設定
-	 *
-	 * @param ratingId レーティング
-	 */
 	public void setRatingId(String ratingId) {
 		this.ratingId = ratingId;
 	}
 
-	/**
-	 * レーティングを設定
-	 *
-	 * @param ratingId レーティング
-	 * @return this
-	 */
 	public Rating withRatingId(String ratingId) {
 		this.ratingId = ratingId;
 		return this;
 	}
-	/** レーティング名 */
-	protected String name;
 
-	/**
-	 * レーティング名を取得
-	 *
-	 * @return レーティング名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * レーティング名を設定
-	 *
-	 * @param name レーティング名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * レーティング名を設定
-	 *
-	 * @param name レーティング名
-	 * @return this
-	 */
 	public Rating withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public Rating withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** None */
-	protected Float rateValue;
 
-	/**
-	 * Noneを取得
-	 *
-	 * @return None
-	 */
 	public Float getRateValue() {
 		return rateValue;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param rateValue None
-	 */
 	public void setRateValue(Float rateValue) {
 		this.rateValue = rateValue;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param rateValue None
-	 * @return this
-	 */
 	public Rating withRateValue(Float rateValue) {
 		this.rateValue = rateValue;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Rating withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Rating withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("ratingId", this.getRatingId())
-            .put("name", this.getName())
-            .put("userId", this.getUserId())
-            .put("rateValue", this.getRateValue())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Rating fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Rating()
+            .withRatingId(data.get("ratingId") == null || data.get("ratingId").isNull() ? null : data.get("ratingId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withRateValue(data.get("rateValue") == null || data.get("rateValue").isNull() ? null : data.get("rateValue").floatValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("ratingId", getRatingId());
+                put("name", getName());
+                put("userId", getUserId());
+                put("rateValue", getRateValue());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Rating o) {
 		return ratingId.compareTo(o.ratingId);

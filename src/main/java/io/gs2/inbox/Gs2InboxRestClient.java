@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.inbox;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.inbox.request.*;
 import io.gs2.inbox.result.*;
-import io.gs2.inbox.model.*;
+import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
-/**
- * GS2 Inbox API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2InboxRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,63 +152,21 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getIsAutomaticDeletingEnabled() != null) {
-                json.put("isAutomaticDeletingEnabled", this.request.getIsAutomaticDeletingEnabled());
-            }
-            if (this.request.getReceiveMessageScript() != null) {
-                try {
-                    json.put("receiveMessageScript", new JSONObject(mapper.writeValueAsString(this.request.getReceiveMessageScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getReadMessageScript() != null) {
-                try {
-                    json.put("readMessageScript", new JSONObject(mapper.writeValueAsString(this.request.getReadMessageScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDeleteMessageScript() != null) {
-                try {
-                    json.put("deleteMessageScript", new JSONObject(mapper.writeValueAsString(this.request.getDeleteMessageScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getReceiveNotification() != null) {
-                try {
-                    json.put("receiveNotification", new JSONObject(mapper.writeValueAsString(this.request.getReceiveNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("isAutomaticDeletingEnabled", request.getIsAutomaticDeletingEnabled());
+                    put("receiveMessageScript", request.getReceiveMessageScript() != null ? request.getReceiveMessageScript().toJson() : null);
+                    put("readMessageScript", request.getReadMessageScript() != null ? request.getReadMessageScript().toJson() : null);
+                    put("deleteMessageScript", request.getDeleteMessageScript() != null ? request.getDeleteMessageScript().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
+                    put("receiveNotification", request.getReceiveNotification() != null ? request.getReceiveNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -243,25 +184,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -288,15 +218,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -307,7 +240,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -331,25 +264,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -376,15 +298,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -395,7 +320,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -419,25 +344,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -464,15 +378,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -483,62 +400,22 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getIsAutomaticDeletingEnabled() != null) {
-                json.put("isAutomaticDeletingEnabled", this.request.getIsAutomaticDeletingEnabled());
-            }
-            if (this.request.getReceiveMessageScript() != null) {
-                try {
-                    json.put("receiveMessageScript", new JSONObject(mapper.writeValueAsString(this.request.getReceiveMessageScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getReadMessageScript() != null) {
-                try {
-                    json.put("readMessageScript", new JSONObject(mapper.writeValueAsString(this.request.getReadMessageScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getDeleteMessageScript() != null) {
-                try {
-                    json.put("deleteMessageScript", new JSONObject(mapper.writeValueAsString(this.request.getDeleteMessageScript())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getQueueNamespaceId() != null) {
-                json.put("queueNamespaceId", this.request.getQueueNamespaceId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getReceiveNotification() != null) {
-                try {
-                    json.put("receiveNotification", new JSONObject(mapper.writeValueAsString(this.request.getReceiveNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("isAutomaticDeletingEnabled", request.getIsAutomaticDeletingEnabled());
+                    put("receiveMessageScript", request.getReceiveMessageScript() != null ? request.getReceiveMessageScript().toJson() : null);
+                    put("readMessageScript", request.getReadMessageScript() != null ? request.getReadMessageScript().toJson() : null);
+                    put("deleteMessageScript", request.getDeleteMessageScript() != null ? request.getDeleteMessageScript().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
+                    put("receiveNotification", request.getReceiveNotification() != null ? request.getReceiveNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -556,25 +433,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -601,15 +467,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -620,7 +489,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -644,25 +513,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -689,15 +547,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DescribeMessagesTask(
             DescribeMessagesRequest request,
-            AsyncAction<AsyncResult<DescribeMessagesResult>> userCallback,
-            Class<DescribeMessagesResult> clazz
+            AsyncAction<AsyncResult<DescribeMessagesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeMessagesResult parse(JsonNode data) {
+            return DescribeMessagesResult.fromJson(data);
         }
 
         @Override
@@ -708,7 +569,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/message";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -734,9 +595,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -744,25 +602,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * メッセージの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeMessagesAsync(
             DescribeMessagesRequest request,
             AsyncAction<AsyncResult<DescribeMessagesResult>> callback
     ) {
-        DescribeMessagesTask task = new DescribeMessagesTask(request, callback, DescribeMessagesResult.class);
+        DescribeMessagesTask task = new DescribeMessagesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * メッセージの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeMessagesResult describeMessages(
             DescribeMessagesRequest request
     ) {
@@ -789,15 +636,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DescribeMessagesByUserIdTask(
             DescribeMessagesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeMessagesByUserIdResult>> userCallback,
-            Class<DescribeMessagesByUserIdResult> clazz
+            AsyncAction<AsyncResult<DescribeMessagesByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeMessagesByUserIdResult parse(JsonNode data) {
+            return DescribeMessagesByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -808,7 +658,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/message";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -834,9 +684,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -844,25 +691,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * メッセージの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeMessagesByUserIdAsync(
             DescribeMessagesByUserIdRequest request,
             AsyncAction<AsyncResult<DescribeMessagesByUserIdResult>> callback
     ) {
-        DescribeMessagesByUserIdTask task = new DescribeMessagesByUserIdTask(request, callback, DescribeMessagesByUserIdResult.class);
+        DescribeMessagesByUserIdTask task = new DescribeMessagesByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * メッセージの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeMessagesByUserIdResult describeMessagesByUserId(
             DescribeMessagesByUserIdRequest request
     ) {
@@ -889,15 +725,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public SendMessageByUserIdTask(
             SendMessageByUserIdRequest request,
-            AsyncAction<AsyncResult<SendMessageByUserIdResult>> userCallback,
-            Class<SendMessageByUserIdResult> clazz
+            AsyncAction<AsyncResult<SendMessageByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public SendMessageByUserIdResult parse(JsonNode data) {
+            return SendMessageByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -908,41 +747,23 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/message";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getReadAcquireActions() != null) {
-                JSONArray array = new JSONArray();
-                for(AcquireAction item : this.request.getReadAcquireActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("readAcquireActions", array);
-            }
-            if (this.request.getExpiresAt() != null) {
-                json.put("expiresAt", this.request.getExpiresAt());
-            }
-            if (this.request.getExpiresTimeSpan() != null) {
-                try {
-                    json.put("expiresTimeSpan", new JSONObject(mapper.writeValueAsString(this.request.getExpiresTimeSpan())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("metadata", request.getMetadata());
+                    put("readAcquireActions", request.getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getReadAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("expiresAt", request.getExpiresAt());
+                    put("expiresTimeSpan", request.getExpiresTimeSpan() != null ? request.getExpiresTimeSpan().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -953,9 +774,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -963,25 +781,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * メッセージを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void sendMessageByUserIdAsync(
             SendMessageByUserIdRequest request,
             AsyncAction<AsyncResult<SendMessageByUserIdResult>> callback
     ) {
-        SendMessageByUserIdTask task = new SendMessageByUserIdTask(request, callback, SendMessageByUserIdResult.class);
+        SendMessageByUserIdTask task = new SendMessageByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * メッセージを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public SendMessageByUserIdResult sendMessageByUserId(
             SendMessageByUserIdRequest request
     ) {
@@ -1008,15 +815,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public GetMessageTask(
             GetMessageRequest request,
-            AsyncAction<AsyncResult<GetMessageResult>> userCallback,
-            Class<GetMessageResult> clazz
+            AsyncAction<AsyncResult<GetMessageResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetMessageResult parse(JsonNode data) {
+            return GetMessageResult.fromJson(data);
         }
 
         @Override
@@ -1027,8 +837,8 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/{messageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{messageName}", this.request.getMessageName() == null|| this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{messageName}", this.request.getMessageName() == null || this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1048,9 +858,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1058,25 +865,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * メッセージを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getMessageAsync(
             GetMessageRequest request,
             AsyncAction<AsyncResult<GetMessageResult>> callback
     ) {
-        GetMessageTask task = new GetMessageTask(request, callback, GetMessageResult.class);
+        GetMessageTask task = new GetMessageTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * メッセージを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetMessageResult getMessage(
             GetMessageRequest request
     ) {
@@ -1103,15 +899,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public GetMessageByUserIdTask(
             GetMessageByUserIdRequest request,
-            AsyncAction<AsyncResult<GetMessageByUserIdResult>> userCallback,
-            Class<GetMessageByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetMessageByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetMessageByUserIdResult parse(JsonNode data) {
+            return GetMessageByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1122,9 +921,9 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/{messageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{messageName}", this.request.getMessageName() == null|| this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{messageName}", this.request.getMessageName() == null || this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1141,9 +940,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1151,25 +947,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ユーザーIDを指定してメッセージを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getMessageByUserIdAsync(
             GetMessageByUserIdRequest request,
             AsyncAction<AsyncResult<GetMessageByUserIdResult>> callback
     ) {
-        GetMessageByUserIdTask task = new GetMessageByUserIdTask(request, callback, GetMessageByUserIdResult.class);
+        GetMessageByUserIdTask task = new GetMessageByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してメッセージを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetMessageByUserIdResult getMessageByUserId(
             GetMessageByUserIdRequest request
     ) {
@@ -1196,15 +981,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public ReceiveGlobalMessageTask(
             ReceiveGlobalMessageRequest request,
-            AsyncAction<AsyncResult<ReceiveGlobalMessageResult>> userCallback,
-            Class<ReceiveGlobalMessageResult> clazz
+            AsyncAction<AsyncResult<ReceiveGlobalMessageResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ReceiveGlobalMessageResult parse(JsonNode data) {
+            return ReceiveGlobalMessageResult.fromJson(data);
         }
 
         @Override
@@ -1213,17 +1001,15 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inbox")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/{messageName}/globalMessage/receive";
+                + "/{namespaceName}/user/me/message/globalMessage/receive";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1237,9 +1023,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1247,25 +1030,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * グローバルメッセージのうちまだ受け取っていないメッセージを受信<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void receiveGlobalMessageAsync(
             ReceiveGlobalMessageRequest request,
             AsyncAction<AsyncResult<ReceiveGlobalMessageResult>> callback
     ) {
-        ReceiveGlobalMessageTask task = new ReceiveGlobalMessageTask(request, callback, ReceiveGlobalMessageResult.class);
+        ReceiveGlobalMessageTask task = new ReceiveGlobalMessageTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * グローバルメッセージのうちまだ受け取っていないメッセージを受信<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ReceiveGlobalMessageResult receiveGlobalMessage(
             ReceiveGlobalMessageRequest request
     ) {
@@ -1292,15 +1064,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public ReceiveGlobalMessageByUserIdTask(
             ReceiveGlobalMessageByUserIdRequest request,
-            AsyncAction<AsyncResult<ReceiveGlobalMessageByUserIdResult>> userCallback,
-            Class<ReceiveGlobalMessageByUserIdResult> clazz
+            AsyncAction<AsyncResult<ReceiveGlobalMessageByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ReceiveGlobalMessageByUserIdResult parse(JsonNode data) {
+            return ReceiveGlobalMessageByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1309,18 +1084,16 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inbox")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/{messageName}/globalMessage/receive";
+                + "/{namespaceName}/user/{userId}/message/globalMessage/receive";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1331,9 +1104,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1341,25 +1111,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ユーザーIDを指定してグローバルメッセージのうちまだ受け取っていないメッセージを受信<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void receiveGlobalMessageByUserIdAsync(
             ReceiveGlobalMessageByUserIdRequest request,
             AsyncAction<AsyncResult<ReceiveGlobalMessageByUserIdResult>> callback
     ) {
-        ReceiveGlobalMessageByUserIdTask task = new ReceiveGlobalMessageByUserIdTask(request, callback, ReceiveGlobalMessageByUserIdResult.class);
+        ReceiveGlobalMessageByUserIdTask task = new ReceiveGlobalMessageByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してグローバルメッセージのうちまだ受け取っていないメッセージを受信<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ReceiveGlobalMessageByUserIdResult receiveGlobalMessageByUserId(
             ReceiveGlobalMessageByUserIdRequest request
     ) {
@@ -1386,15 +1145,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public OpenMessageTask(
             OpenMessageRequest request,
-            AsyncAction<AsyncResult<OpenMessageResult>> userCallback,
-            Class<OpenMessageResult> clazz
+            AsyncAction<AsyncResult<OpenMessageResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public OpenMessageResult parse(JsonNode data) {
+            return OpenMessageResult.fromJson(data);
         }
 
         @Override
@@ -1405,16 +1167,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/{messageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{messageName}", this.request.getMessageName() == null|| this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{messageName}", this.request.getMessageName() == null || this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1428,9 +1188,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1438,25 +1195,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * メッセージを開封<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void openMessageAsync(
             OpenMessageRequest request,
             AsyncAction<AsyncResult<OpenMessageResult>> callback
     ) {
-        OpenMessageTask task = new OpenMessageTask(request, callback, OpenMessageResult.class);
+        OpenMessageTask task = new OpenMessageTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * メッセージを開封<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public OpenMessageResult openMessage(
             OpenMessageRequest request
     ) {
@@ -1483,15 +1229,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public OpenMessageByUserIdTask(
             OpenMessageByUserIdRequest request,
-            AsyncAction<AsyncResult<OpenMessageByUserIdResult>> userCallback,
-            Class<OpenMessageByUserIdResult> clazz
+            AsyncAction<AsyncResult<OpenMessageByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public OpenMessageByUserIdResult parse(JsonNode data) {
+            return OpenMessageByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1502,17 +1251,15 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/{messageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{messageName}", this.request.getMessageName() == null|| this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{messageName}", this.request.getMessageName() == null || this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1523,9 +1270,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1533,25 +1277,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ユーザーIDを指定してメッセージを開封<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void openMessageByUserIdAsync(
             OpenMessageByUserIdRequest request,
             AsyncAction<AsyncResult<OpenMessageByUserIdResult>> callback
     ) {
-        OpenMessageByUserIdTask task = new OpenMessageByUserIdTask(request, callback, OpenMessageByUserIdResult.class);
+        OpenMessageByUserIdTask task = new OpenMessageByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してメッセージを開封<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public OpenMessageByUserIdResult openMessageByUserId(
             OpenMessageByUserIdRequest request
     ) {
@@ -1578,15 +1311,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public ReadMessageTask(
             ReadMessageRequest request,
-            AsyncAction<AsyncResult<ReadMessageResult>> userCallback,
-            Class<ReadMessageResult> clazz
+            AsyncAction<AsyncResult<ReadMessageResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ReadMessageResult parse(JsonNode data) {
+            return ReadMessageResult.fromJson(data);
         }
 
         @Override
@@ -1597,28 +1333,20 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/{messageName}/read";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{messageName}", this.request.getMessageName() == null|| this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{messageName}", this.request.getMessageName() == null || this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1632,9 +1360,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1642,25 +1367,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * メッセージを開封<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void readMessageAsync(
             ReadMessageRequest request,
             AsyncAction<AsyncResult<ReadMessageResult>> callback
     ) {
-        ReadMessageTask task = new ReadMessageTask(request, callback, ReadMessageResult.class);
+        ReadMessageTask task = new ReadMessageTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * メッセージを開封<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ReadMessageResult readMessage(
             ReadMessageRequest request
     ) {
@@ -1687,15 +1401,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public ReadMessageByUserIdTask(
             ReadMessageByUserIdRequest request,
-            AsyncAction<AsyncResult<ReadMessageByUserIdResult>> userCallback,
-            Class<ReadMessageByUserIdResult> clazz
+            AsyncAction<AsyncResult<ReadMessageByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ReadMessageByUserIdResult parse(JsonNode data) {
+            return ReadMessageByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1706,29 +1423,21 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/{messageName}/read";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{messageName}", this.request.getMessageName() == null|| this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{messageName}", this.request.getMessageName() == null || this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getConfig() != null) {
-                JSONArray array = new JSONArray();
-                for(Config item : this.request.getConfig())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("config", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -1739,9 +1448,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1749,25 +1455,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ユーザーIDを指定してメッセージを開封<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void readMessageByUserIdAsync(
             ReadMessageByUserIdRequest request,
             AsyncAction<AsyncResult<ReadMessageByUserIdResult>> callback
     ) {
-        ReadMessageByUserIdTask task = new ReadMessageByUserIdTask(request, callback, ReadMessageByUserIdResult.class);
+        ReadMessageByUserIdTask task = new ReadMessageByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してメッセージを開封<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ReadMessageByUserIdResult readMessageByUserId(
             ReadMessageByUserIdRequest request
     ) {
@@ -1794,15 +1489,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DeleteMessageTask(
             DeleteMessageRequest request,
-            AsyncAction<AsyncResult<DeleteMessageResult>> userCallback,
-            Class<DeleteMessageResult> clazz
+            AsyncAction<AsyncResult<DeleteMessageResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteMessageResult parse(JsonNode data) {
+            return DeleteMessageResult.fromJson(data);
         }
 
         @Override
@@ -1813,8 +1511,8 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/me/{messageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{messageName}", this.request.getMessageName() == null|| this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{messageName}", this.request.getMessageName() == null || this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1834,9 +1532,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1844,25 +1539,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * メッセージを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteMessageAsync(
             DeleteMessageRequest request,
             AsyncAction<AsyncResult<DeleteMessageResult>> callback
     ) {
-        DeleteMessageTask task = new DeleteMessageTask(request, callback, DeleteMessageResult.class);
+        DeleteMessageTask task = new DeleteMessageTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * メッセージを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteMessageResult deleteMessage(
             DeleteMessageRequest request
     ) {
@@ -1889,15 +1573,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DeleteMessageByUserIdTask(
             DeleteMessageByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteMessageByUserIdResult>> userCallback,
-            Class<DeleteMessageByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteMessageByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteMessageByUserIdResult parse(JsonNode data) {
+            return DeleteMessageByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -1908,9 +1595,9 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/{messageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{messageName}", this.request.getMessageName() == null|| this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{messageName}", this.request.getMessageName() == null || this.request.getMessageName().length() == 0 ? "null" : String.valueOf(this.request.getMessageName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1927,9 +1614,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1937,25 +1621,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ユーザーIDを指定してメッセージを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteMessageByUserIdAsync(
             DeleteMessageByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteMessageByUserIdResult>> callback
     ) {
-        DeleteMessageByUserIdTask task = new DeleteMessageByUserIdTask(request, callback, DeleteMessageByUserIdResult.class);
+        DeleteMessageByUserIdTask task = new DeleteMessageByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定してメッセージを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteMessageByUserIdResult deleteMessageByUserId(
             DeleteMessageByUserIdRequest request
     ) {
@@ -1982,15 +1655,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public OpenByStampTaskTask(
             OpenByStampTaskRequest request,
-            AsyncAction<AsyncResult<OpenByStampTaskResult>> userCallback,
-            Class<OpenByStampTaskResult> clazz
+            AsyncAction<AsyncResult<OpenByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public OpenByStampTaskResult parse(JsonNode data) {
+            return OpenByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -2001,19 +1677,13 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/stamp/open";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getStampTask() != null) {
-                json.put("stampTask", this.request.getStampTask());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2024,9 +1694,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2034,25 +1701,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * メッセージを作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void openByStampTaskAsync(
             OpenByStampTaskRequest request,
             AsyncAction<AsyncResult<OpenByStampTaskResult>> callback
     ) {
-        OpenByStampTaskTask task = new OpenByStampTaskTask(request, callback, OpenByStampTaskResult.class);
+        OpenByStampTaskTask task = new OpenByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * メッセージを作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public OpenByStampTaskResult openByStampTask(
             OpenByStampTaskRequest request
     ) {
@@ -2079,15 +1735,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public ExportMasterTask(
             ExportMasterRequest request,
-            AsyncAction<AsyncResult<ExportMasterResult>> userCallback,
-            Class<ExportMasterResult> clazz
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
         }
 
         @Override
@@ -2098,7 +1757,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/export";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2122,25 +1781,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 現在有効なグローバルメッセージ設定のマスターデータをエクスポートします<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void exportMasterAsync(
             ExportMasterRequest request,
             AsyncAction<AsyncResult<ExportMasterResult>> callback
     ) {
-        ExportMasterTask task = new ExportMasterTask(request, callback, ExportMasterResult.class);
+        ExportMasterTask task = new ExportMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なグローバルメッセージ設定のマスターデータをエクスポートします<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public ExportMasterResult exportMaster(
             ExportMasterRequest request
     ) {
@@ -2167,15 +1815,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public GetCurrentMessageMasterTask(
             GetCurrentMessageMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentMessageMasterResult>> userCallback,
-            Class<GetCurrentMessageMasterResult> clazz
+            AsyncAction<AsyncResult<GetCurrentMessageMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetCurrentMessageMasterResult parse(JsonNode data) {
+            return GetCurrentMessageMasterResult.fromJson(data);
         }
 
         @Override
@@ -2186,7 +1837,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2210,25 +1861,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 現在有効なグローバルメッセージ設定を取得します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getCurrentMessageMasterAsync(
             GetCurrentMessageMasterRequest request,
             AsyncAction<AsyncResult<GetCurrentMessageMasterResult>> callback
     ) {
-        GetCurrentMessageMasterTask task = new GetCurrentMessageMasterTask(request, callback, GetCurrentMessageMasterResult.class);
+        GetCurrentMessageMasterTask task = new GetCurrentMessageMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なグローバルメッセージ設定を取得します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetCurrentMessageMasterResult getCurrentMessageMaster(
             GetCurrentMessageMasterRequest request
     ) {
@@ -2255,15 +1895,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public UpdateCurrentMessageMasterTask(
             UpdateCurrentMessageMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentMessageMasterResult>> userCallback,
-            Class<UpdateCurrentMessageMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentMessageMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentMessageMasterResult parse(JsonNode data) {
+            return UpdateCurrentMessageMasterResult.fromJson(data);
         }
 
         @Override
@@ -2274,18 +1917,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getSettings() != null) {
-                json.put("settings", this.request.getSettings());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2303,25 +1942,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 現在有効なグローバルメッセージ設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentMessageMasterAsync(
             UpdateCurrentMessageMasterRequest request,
             AsyncAction<AsyncResult<UpdateCurrentMessageMasterResult>> callback
     ) {
-        UpdateCurrentMessageMasterTask task = new UpdateCurrentMessageMasterTask(request, callback, UpdateCurrentMessageMasterResult.class);
+        UpdateCurrentMessageMasterTask task = new UpdateCurrentMessageMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なグローバルメッセージ設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentMessageMasterResult updateCurrentMessageMaster(
             UpdateCurrentMessageMasterRequest request
     ) {
@@ -2348,15 +1976,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public UpdateCurrentMessageMasterFromGitHubTask(
             UpdateCurrentMessageMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentMessageMasterFromGitHubResult>> userCallback,
-            Class<UpdateCurrentMessageMasterFromGitHubResult> clazz
+            AsyncAction<AsyncResult<UpdateCurrentMessageMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentMessageMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentMessageMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2367,22 +1998,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/from_git_hub";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getCheckoutSetting() != null) {
-                try {
-                    json.put("checkoutSetting", new JSONObject(mapper.writeValueAsString(this.request.getCheckoutSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2400,25 +2023,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 現在有効なグローバルメッセージ設定を更新します<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateCurrentMessageMasterFromGitHubAsync(
             UpdateCurrentMessageMasterFromGitHubRequest request,
             AsyncAction<AsyncResult<UpdateCurrentMessageMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentMessageMasterFromGitHubTask task = new UpdateCurrentMessageMasterFromGitHubTask(request, callback, UpdateCurrentMessageMasterFromGitHubResult.class);
+        UpdateCurrentMessageMasterFromGitHubTask task = new UpdateCurrentMessageMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 現在有効なグローバルメッセージ設定を更新します<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateCurrentMessageMasterFromGitHubResult updateCurrentMessageMasterFromGitHub(
             UpdateCurrentMessageMasterFromGitHubRequest request
     ) {
@@ -2445,15 +2057,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DescribeGlobalMessageMastersTask(
             DescribeGlobalMessageMastersRequest request,
-            AsyncAction<AsyncResult<DescribeGlobalMessageMastersResult>> userCallback,
-            Class<DescribeGlobalMessageMastersResult> clazz
+            AsyncAction<AsyncResult<DescribeGlobalMessageMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeGlobalMessageMastersResult parse(JsonNode data) {
+            return DescribeGlobalMessageMastersResult.fromJson(data);
         }
 
         @Override
@@ -2464,7 +2079,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/globalMessage";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2494,25 +2109,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 全ユーザに向けたメッセージの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeGlobalMessageMastersAsync(
             DescribeGlobalMessageMastersRequest request,
             AsyncAction<AsyncResult<DescribeGlobalMessageMastersResult>> callback
     ) {
-        DescribeGlobalMessageMastersTask task = new DescribeGlobalMessageMastersTask(request, callback, DescribeGlobalMessageMastersResult.class);
+        DescribeGlobalMessageMastersTask task = new DescribeGlobalMessageMastersTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 全ユーザに向けたメッセージの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeGlobalMessageMastersResult describeGlobalMessageMasters(
             DescribeGlobalMessageMastersRequest request
     ) {
@@ -2539,15 +2143,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public CreateGlobalMessageMasterTask(
             CreateGlobalMessageMasterRequest request,
-            AsyncAction<AsyncResult<CreateGlobalMessageMasterResult>> userCallback,
-            Class<CreateGlobalMessageMasterResult> clazz
+            AsyncAction<AsyncResult<CreateGlobalMessageMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateGlobalMessageMasterResult parse(JsonNode data) {
+            return CreateGlobalMessageMasterResult.fromJson(data);
         }
 
         @Override
@@ -2558,43 +2165,23 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/globalMessage";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getReadAcquireActions() != null) {
-                JSONArray array = new JSONArray();
-                for(AcquireAction item : this.request.getReadAcquireActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("readAcquireActions", array);
-            }
-            if (this.request.getExpiresTimeSpan() != null) {
-                try {
-                    json.put("expiresTimeSpan", new JSONObject(mapper.writeValueAsString(this.request.getExpiresTimeSpan())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getExpiresAt() != null) {
-                json.put("expiresAt", this.request.getExpiresAt());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("metadata", request.getMetadata());
+                    put("readAcquireActions", request.getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getReadAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("expiresTimeSpan", request.getExpiresTimeSpan() != null ? request.getExpiresTimeSpan().toJson() : null);
+                    put("expiresAt", request.getExpiresAt());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -2612,25 +2199,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 全ユーザに向けたメッセージを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createGlobalMessageMasterAsync(
             CreateGlobalMessageMasterRequest request,
             AsyncAction<AsyncResult<CreateGlobalMessageMasterResult>> callback
     ) {
-        CreateGlobalMessageMasterTask task = new CreateGlobalMessageMasterTask(request, callback, CreateGlobalMessageMasterResult.class);
+        CreateGlobalMessageMasterTask task = new CreateGlobalMessageMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 全ユーザに向けたメッセージを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateGlobalMessageMasterResult createGlobalMessageMaster(
             CreateGlobalMessageMasterRequest request
     ) {
@@ -2657,15 +2233,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public GetGlobalMessageMasterTask(
             GetGlobalMessageMasterRequest request,
-            AsyncAction<AsyncResult<GetGlobalMessageMasterResult>> userCallback,
-            Class<GetGlobalMessageMasterResult> clazz
+            AsyncAction<AsyncResult<GetGlobalMessageMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetGlobalMessageMasterResult parse(JsonNode data) {
+            return GetGlobalMessageMasterResult.fromJson(data);
         }
 
         @Override
@@ -2676,8 +2255,8 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/globalMessage/{globalMessageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{globalMessageName}", this.request.getGlobalMessageName() == null|| this.request.getGlobalMessageName().length() == 0 ? "null" : String.valueOf(this.request.getGlobalMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{globalMessageName}", this.request.getGlobalMessageName() == null || this.request.getGlobalMessageName().length() == 0 ? "null" : String.valueOf(this.request.getGlobalMessageName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2701,25 +2280,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 全ユーザに向けたメッセージを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getGlobalMessageMasterAsync(
             GetGlobalMessageMasterRequest request,
             AsyncAction<AsyncResult<GetGlobalMessageMasterResult>> callback
     ) {
-        GetGlobalMessageMasterTask task = new GetGlobalMessageMasterTask(request, callback, GetGlobalMessageMasterResult.class);
+        GetGlobalMessageMasterTask task = new GetGlobalMessageMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 全ユーザに向けたメッセージを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetGlobalMessageMasterResult getGlobalMessageMaster(
             GetGlobalMessageMasterRequest request
     ) {
@@ -2746,15 +2314,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public UpdateGlobalMessageMasterTask(
             UpdateGlobalMessageMasterRequest request,
-            AsyncAction<AsyncResult<UpdateGlobalMessageMasterResult>> userCallback,
-            Class<UpdateGlobalMessageMasterResult> clazz
+            AsyncAction<AsyncResult<UpdateGlobalMessageMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateGlobalMessageMasterResult parse(JsonNode data) {
+            return UpdateGlobalMessageMasterResult.fromJson(data);
         }
 
         @Override
@@ -2765,41 +2336,23 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/globalMessage/{globalMessageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{globalMessageName}", this.request.getGlobalMessageName() == null|| this.request.getGlobalMessageName().length() == 0 ? "null" : String.valueOf(this.request.getGlobalMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{globalMessageName}", this.request.getGlobalMessageName() == null || this.request.getGlobalMessageName().length() == 0 ? "null" : String.valueOf(this.request.getGlobalMessageName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getMetadata() != null) {
-                json.put("metadata", this.request.getMetadata());
-            }
-            if (this.request.getReadAcquireActions() != null) {
-                JSONArray array = new JSONArray();
-                for(AcquireAction item : this.request.getReadAcquireActions())
-                {
-                    try {
-                        array.put(new JSONObject(mapper.writeValueAsString(item)));
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                json.put("readAcquireActions", array);
-            }
-            if (this.request.getExpiresTimeSpan() != null) {
-                try {
-                    json.put("expiresTimeSpan", new JSONObject(mapper.writeValueAsString(this.request.getExpiresTimeSpan())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getExpiresAt() != null) {
-                json.put("expiresAt", this.request.getExpiresAt());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("metadata", request.getMetadata());
+                    put("readAcquireActions", request.getReadAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getReadAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("expiresTimeSpan", request.getExpiresTimeSpan() != null ? request.getExpiresTimeSpan().toJson() : null);
+                    put("expiresAt", request.getExpiresAt());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -2817,25 +2370,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 全ユーザに向けたメッセージを開封<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateGlobalMessageMasterAsync(
             UpdateGlobalMessageMasterRequest request,
             AsyncAction<AsyncResult<UpdateGlobalMessageMasterResult>> callback
     ) {
-        UpdateGlobalMessageMasterTask task = new UpdateGlobalMessageMasterTask(request, callback, UpdateGlobalMessageMasterResult.class);
+        UpdateGlobalMessageMasterTask task = new UpdateGlobalMessageMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 全ユーザに向けたメッセージを開封<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateGlobalMessageMasterResult updateGlobalMessageMaster(
             UpdateGlobalMessageMasterRequest request
     ) {
@@ -2862,15 +2404,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DeleteGlobalMessageMasterTask(
             DeleteGlobalMessageMasterRequest request,
-            AsyncAction<AsyncResult<DeleteGlobalMessageMasterResult>> userCallback,
-            Class<DeleteGlobalMessageMasterResult> clazz
+            AsyncAction<AsyncResult<DeleteGlobalMessageMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteGlobalMessageMasterResult parse(JsonNode data) {
+            return DeleteGlobalMessageMasterResult.fromJson(data);
         }
 
         @Override
@@ -2881,8 +2426,8 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/master/globalMessage/{globalMessageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{globalMessageName}", this.request.getGlobalMessageName() == null|| this.request.getGlobalMessageName().length() == 0 ? "null" : String.valueOf(this.request.getGlobalMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{globalMessageName}", this.request.getGlobalMessageName() == null || this.request.getGlobalMessageName().length() == 0 ? "null" : String.valueOf(this.request.getGlobalMessageName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2906,25 +2451,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 全ユーザに向けたメッセージを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteGlobalMessageMasterAsync(
             DeleteGlobalMessageMasterRequest request,
             AsyncAction<AsyncResult<DeleteGlobalMessageMasterResult>> callback
     ) {
-        DeleteGlobalMessageMasterTask task = new DeleteGlobalMessageMasterTask(request, callback, DeleteGlobalMessageMasterResult.class);
+        DeleteGlobalMessageMasterTask task = new DeleteGlobalMessageMasterTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 全ユーザに向けたメッセージを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteGlobalMessageMasterResult deleteGlobalMessageMaster(
             DeleteGlobalMessageMasterRequest request
     ) {
@@ -2951,15 +2485,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DescribeGlobalMessagesTask(
             DescribeGlobalMessagesRequest request,
-            AsyncAction<AsyncResult<DescribeGlobalMessagesResult>> userCallback,
-            Class<DescribeGlobalMessagesResult> clazz
+            AsyncAction<AsyncResult<DescribeGlobalMessagesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeGlobalMessagesResult parse(JsonNode data) {
+            return DescribeGlobalMessagesResult.fromJson(data);
         }
 
         @Override
@@ -2970,7 +2507,7 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/globalMessage";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2994,25 +2531,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 全ユーザに向けたメッセージの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeGlobalMessagesAsync(
             DescribeGlobalMessagesRequest request,
             AsyncAction<AsyncResult<DescribeGlobalMessagesResult>> callback
     ) {
-        DescribeGlobalMessagesTask task = new DescribeGlobalMessagesTask(request, callback, DescribeGlobalMessagesResult.class);
+        DescribeGlobalMessagesTask task = new DescribeGlobalMessagesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 全ユーザに向けたメッセージの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeGlobalMessagesResult describeGlobalMessages(
             DescribeGlobalMessagesRequest request
     ) {
@@ -3039,15 +2565,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public GetGlobalMessageTask(
             GetGlobalMessageRequest request,
-            AsyncAction<AsyncResult<GetGlobalMessageResult>> userCallback,
-            Class<GetGlobalMessageResult> clazz
+            AsyncAction<AsyncResult<GetGlobalMessageResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetGlobalMessageResult parse(JsonNode data) {
+            return GetGlobalMessageResult.fromJson(data);
         }
 
         @Override
@@ -3058,8 +2587,8 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/globalMessage/{globalMessageName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{globalMessageName}", this.request.getGlobalMessageName() == null|| this.request.getGlobalMessageName().length() == 0 ? "null" : String.valueOf(this.request.getGlobalMessageName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{globalMessageName}", this.request.getGlobalMessageName() == null || this.request.getGlobalMessageName().length() == 0 ? "null" : String.valueOf(this.request.getGlobalMessageName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3083,25 +2612,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * 全ユーザに向けたメッセージを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getGlobalMessageAsync(
             GetGlobalMessageRequest request,
             AsyncAction<AsyncResult<GetGlobalMessageResult>> callback
     ) {
-        GetGlobalMessageTask task = new GetGlobalMessageTask(request, callback, GetGlobalMessageResult.class);
+        GetGlobalMessageTask task = new GetGlobalMessageTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 全ユーザに向けたメッセージを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetGlobalMessageResult getGlobalMessage(
             GetGlobalMessageRequest request
     ) {
@@ -3128,15 +2646,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public GetReceivedByUserIdTask(
             GetReceivedByUserIdRequest request,
-            AsyncAction<AsyncResult<GetReceivedByUserIdResult>> userCallback,
-            Class<GetReceivedByUserIdResult> clazz
+            AsyncAction<AsyncResult<GetReceivedByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetReceivedByUserIdResult parse(JsonNode data) {
+            return GetReceivedByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3147,8 +2668,8 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/received";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3165,9 +2686,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3175,25 +2693,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ユーザーIDを指定して受信済みグローバルメッセージ名を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getReceivedByUserIdAsync(
             GetReceivedByUserIdRequest request,
             AsyncAction<AsyncResult<GetReceivedByUserIdResult>> callback
     ) {
-        GetReceivedByUserIdTask task = new GetReceivedByUserIdTask(request, callback, GetReceivedByUserIdResult.class);
+        GetReceivedByUserIdTask task = new GetReceivedByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して受信済みグローバルメッセージ名を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetReceivedByUserIdResult getReceivedByUserId(
             GetReceivedByUserIdRequest request
     ) {
@@ -3220,15 +2727,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public UpdateReceivedByUserIdTask(
             UpdateReceivedByUserIdRequest request,
-            AsyncAction<AsyncResult<UpdateReceivedByUserIdResult>> userCallback,
-            Class<UpdateReceivedByUserIdResult> clazz
+            AsyncAction<AsyncResult<UpdateReceivedByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateReceivedByUserIdResult parse(JsonNode data) {
+            return UpdateReceivedByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3239,24 +2749,19 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/received";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getReceivedGlobalMessageNames() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getReceivedGlobalMessageNames())
-                {
-                    array.put(item);
-                }
-                json.put("receivedGlobalMessageNames", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("receivedGlobalMessageNames", request.getReceivedGlobalMessageNames() == null ? new ArrayList<String>() :
+                        request.getReceivedGlobalMessageNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -3267,9 +2772,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3277,25 +2779,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ユーザーIDを指定して受信済みグローバルメッセージ名を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateReceivedByUserIdAsync(
             UpdateReceivedByUserIdRequest request,
             AsyncAction<AsyncResult<UpdateReceivedByUserIdResult>> callback
     ) {
-        UpdateReceivedByUserIdTask task = new UpdateReceivedByUserIdTask(request, callback, UpdateReceivedByUserIdResult.class);
+        UpdateReceivedByUserIdTask task = new UpdateReceivedByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して受信済みグローバルメッセージ名を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateReceivedByUserIdResult updateReceivedByUserId(
             UpdateReceivedByUserIdRequest request
     ) {
@@ -3322,15 +2813,18 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
 
         public DeleteReceivedByUserIdTask(
             DeleteReceivedByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteReceivedByUserIdResult>> userCallback,
-            Class<DeleteReceivedByUserIdResult> clazz
+            AsyncAction<AsyncResult<DeleteReceivedByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteReceivedByUserIdResult parse(JsonNode data) {
+            return DeleteReceivedByUserIdResult.fromJson(data);
         }
 
         @Override
@@ -3341,8 +2835,8 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/user/{userId}/received";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null|| this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3359,9 +2853,6 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -3369,25 +2860,14 @@ public class Gs2InboxRestClient extends AbstractGs2Client<Gs2InboxRestClient> {
         }
     }
 
-    /**
-     * ユーザーIDを指定して受信済みグローバルメッセージ名を削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteReceivedByUserIdAsync(
             DeleteReceivedByUserIdRequest request,
             AsyncAction<AsyncResult<DeleteReceivedByUserIdResult>> callback
     ) {
-        DeleteReceivedByUserIdTask task = new DeleteReceivedByUserIdTask(request, callback, DeleteReceivedByUserIdResult.class);
+        DeleteReceivedByUserIdTask task = new DeleteReceivedByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ユーザーIDを指定して受信済みグローバルメッセージ名を削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteReceivedByUserIdResult deleteReceivedByUserId(
             DeleteReceivedByUserIdRequest request
     ) {

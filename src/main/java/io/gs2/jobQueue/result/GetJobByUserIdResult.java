@@ -16,39 +16,48 @@
 
 package io.gs2.jobQueue.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.jobQueue.model.*;
+import io.gs2.jobQueue.model.Job;
 
-/**
- * ジョブを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetJobByUserIdResult implements IResult, Serializable {
-	/** ジョブ */
-	private Job item;
+    private Job item;
 
-	/**
-	 * ジョブを取得
-	 *
-	 * @return ジョブを取得
-	 */
 	public Job getItem() {
 		return item;
 	}
 
-	/**
-	 * ジョブを設定
-	 *
-	 * @param item ジョブを取得
-	 */
 	public void setItem(Job item) {
 		this.item = item;
 	}
+
+	public GetJobByUserIdResult withItem(Job item) {
+		this.item = item;
+		return this;
+	}
+
+    public static GetJobByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetJobByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Job.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

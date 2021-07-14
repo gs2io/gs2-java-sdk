@@ -16,195 +16,122 @@
 
 package io.gs2.stamina.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スタミナ回復量テーブル
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RecoverValueTable implements IModel, Serializable, Comparable<RecoverValueTable> {
-	/** スタミナ回復量テーブルマスター */
-	protected String recoverValueTableId;
+	private String recoverValueTableId;
+	private String name;
+	private String metadata;
+	private String experienceModelId;
+	private List<Integer> values;
 
-	/**
-	 * スタミナ回復量テーブルマスターを取得
-	 *
-	 * @return スタミナ回復量テーブルマスター
-	 */
 	public String getRecoverValueTableId() {
 		return recoverValueTableId;
 	}
 
-	/**
-	 * スタミナ回復量テーブルマスターを設定
-	 *
-	 * @param recoverValueTableId スタミナ回復量テーブルマスター
-	 */
 	public void setRecoverValueTableId(String recoverValueTableId) {
 		this.recoverValueTableId = recoverValueTableId;
 	}
 
-	/**
-	 * スタミナ回復量テーブルマスターを設定
-	 *
-	 * @param recoverValueTableId スタミナ回復量テーブルマスター
-	 * @return this
-	 */
 	public RecoverValueTable withRecoverValueTableId(String recoverValueTableId) {
 		this.recoverValueTableId = recoverValueTableId;
 		return this;
 	}
-	/** スタミナ回復量テーブル名 */
-	protected String name;
 
-	/**
-	 * スタミナ回復量テーブル名を取得
-	 *
-	 * @return スタミナ回復量テーブル名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * スタミナ回復量テーブル名を設定
-	 *
-	 * @param name スタミナ回復量テーブル名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * スタミナ回復量テーブル名を設定
-	 *
-	 * @param name スタミナ回復量テーブル名
-	 * @return this
-	 */
 	public RecoverValueTable withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** スタミナ回復量テーブルのメタデータ */
-	protected String metadata;
 
-	/**
-	 * スタミナ回復量テーブルのメタデータを取得
-	 *
-	 * @return スタミナ回復量テーブルのメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * スタミナ回復量テーブルのメタデータを設定
-	 *
-	 * @param metadata スタミナ回復量テーブルのメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * スタミナ回復量テーブルのメタデータを設定
-	 *
-	 * @param metadata スタミナ回復量テーブルのメタデータ
-	 * @return this
-	 */
 	public RecoverValueTable withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 経験値の種類マスター のGRN */
-	protected String experienceModelId;
 
-	/**
-	 * 経験値の種類マスター のGRNを取得
-	 *
-	 * @return 経験値の種類マスター のGRN
-	 */
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
 
-	/**
-	 * 経験値の種類マスター のGRNを設定
-	 *
-	 * @param experienceModelId 経験値の種類マスター のGRN
-	 */
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
 
-	/**
-	 * 経験値の種類マスター のGRNを設定
-	 *
-	 * @param experienceModelId 経験値の種類マスター のGRN
-	 * @return this
-	 */
 	public RecoverValueTable withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-	/** ランク毎のスタミナ回復量テーブル */
-	protected List<Integer> values;
 
-	/**
-	 * ランク毎のスタミナ回復量テーブルを取得
-	 *
-	 * @return ランク毎のスタミナ回復量テーブル
-	 */
 	public List<Integer> getValues() {
 		return values;
 	}
 
-	/**
-	 * ランク毎のスタミナ回復量テーブルを設定
-	 *
-	 * @param values ランク毎のスタミナ回復量テーブル
-	 */
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
 
-	/**
-	 * ランク毎のスタミナ回復量テーブルを設定
-	 *
-	 * @param values ランク毎のスタミナ回復量テーブル
-	 * @return this
-	 */
 	public RecoverValueTable withValues(List<Integer> values) {
 		this.values = values;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> values = new ArrayList<>();
-        if(this.values != null) {
-            for(Integer item : this.values) {
-                values.add(JsonNodeFactory.instance.numberNode(item));
-            }
+    public static RecoverValueTable fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("recoverValueTableId", this.getRecoverValueTableId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("experienceModelId", this.getExperienceModelId());
-        body_.set("values", JsonNodeFactory.instance.arrayNode().addAll(values));
-        return body_;
+        return new RecoverValueTable()
+            .withRecoverValueTableId(data.get("recoverValueTableId") == null || data.get("recoverValueTableId").isNull() ? null : data.get("recoverValueTableId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withValues(data.get("values") == null || data.get("values").isNull() ? new ArrayList<Integer>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("values").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.intValue();
+                }
+            ).collect(Collectors.toList()));
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("recoverValueTableId", getRecoverValueTableId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("experienceModelId", getExperienceModelId());
+                put("values", getValues() == null ? new ArrayList<Integer>() :
+                    getValues().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(RecoverValueTable o) {
 		return recoverValueTableId.compareTo(o.recoverValueTableId);

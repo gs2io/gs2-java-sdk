@@ -16,274 +16,160 @@
 
 package io.gs2.quest.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.quest.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.quest.model.ScriptSetting;
+import io.gs2.quest.model.LogSetting;
 
-/**
- * クエストを分類するカテゴリーを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
-
-    /** カテゴリ名 */
     private String namespaceName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return クエストを分類するカテゴリーを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName クエストを分類するカテゴリーを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName クエストを分類するカテゴリーを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ネームスペースの説明 */
     private String description;
-
-    /**
-     * ネームスペースの説明を取得
-     *
-     * @return クエストを分類するカテゴリーを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description クエストを分類するカテゴリーを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * ネームスペースの説明を設定
-     *
-     * @param description クエストを分類するカテゴリーを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** クエスト開始したときに実行するスクリプト */
     private ScriptSetting startQuestScript;
-
-    /**
-     * クエスト開始したときに実行するスクリプトを取得
-     *
-     * @return クエストを分類するカテゴリーを更新
-     */
-    public ScriptSetting getStartQuestScript() {
-        return startQuestScript;
-    }
-
-    /**
-     * クエスト開始したときに実行するスクリプトを設定
-     *
-     * @param startQuestScript クエストを分類するカテゴリーを更新
-     */
-    public void setStartQuestScript(ScriptSetting startQuestScript) {
-        this.startQuestScript = startQuestScript;
-    }
-
-    /**
-     * クエスト開始したときに実行するスクリプトを設定
-     *
-     * @param startQuestScript クエストを分類するカテゴリーを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withStartQuestScript(ScriptSetting startQuestScript) {
-        setStartQuestScript(startQuestScript);
-        return this;
-    }
-
-    /** クエストクリアしたときに実行するスクリプト */
     private ScriptSetting completeQuestScript;
-
-    /**
-     * クエストクリアしたときに実行するスクリプトを取得
-     *
-     * @return クエストを分類するカテゴリーを更新
-     */
-    public ScriptSetting getCompleteQuestScript() {
-        return completeQuestScript;
-    }
-
-    /**
-     * クエストクリアしたときに実行するスクリプトを設定
-     *
-     * @param completeQuestScript クエストを分類するカテゴリーを更新
-     */
-    public void setCompleteQuestScript(ScriptSetting completeQuestScript) {
-        this.completeQuestScript = completeQuestScript;
-    }
-
-    /**
-     * クエストクリアしたときに実行するスクリプトを設定
-     *
-     * @param completeQuestScript クエストを分類するカテゴリーを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withCompleteQuestScript(ScriptSetting completeQuestScript) {
-        setCompleteQuestScript(completeQuestScript);
-        return this;
-    }
-
-    /** クエスト失敗したときに実行するスクリプト */
     private ScriptSetting failedQuestScript;
-
-    /**
-     * クエスト失敗したときに実行するスクリプトを取得
-     *
-     * @return クエストを分類するカテゴリーを更新
-     */
-    public ScriptSetting getFailedQuestScript() {
-        return failedQuestScript;
-    }
-
-    /**
-     * クエスト失敗したときに実行するスクリプトを設定
-     *
-     * @param failedQuestScript クエストを分類するカテゴリーを更新
-     */
-    public void setFailedQuestScript(ScriptSetting failedQuestScript) {
-        this.failedQuestScript = failedQuestScript;
-    }
-
-    /**
-     * クエスト失敗したときに実行するスクリプトを設定
-     *
-     * @param failedQuestScript クエストを分類するカテゴリーを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withFailedQuestScript(ScriptSetting failedQuestScript) {
-        setFailedQuestScript(failedQuestScript);
-        return this;
-    }
-
-    /** 報酬付与処理をジョブとして追加するキューのネームスペース のGRN */
     private String queueNamespaceId;
-
-    /**
-     * 報酬付与処理をジョブとして追加するキューのネームスペース のGRNを取得
-     *
-     * @return クエストを分類するカテゴリーを更新
-     */
-    public String getQueueNamespaceId() {
-        return queueNamespaceId;
-    }
-
-    /**
-     * 報酬付与処理をジョブとして追加するキューのネームスペース のGRNを設定
-     *
-     * @param queueNamespaceId クエストを分類するカテゴリーを更新
-     */
-    public void setQueueNamespaceId(String queueNamespaceId) {
-        this.queueNamespaceId = queueNamespaceId;
-    }
-
-    /**
-     * 報酬付与処理をジョブとして追加するキューのネームスペース のGRNを設定
-     *
-     * @param queueNamespaceId クエストを分類するカテゴリーを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
-        setQueueNamespaceId(queueNamespaceId);
-        return this;
-    }
-
-    /** 報酬付与処理のスタンプシートで使用する暗号鍵GRN */
     private String keyId;
-
-    /**
-     * 報酬付与処理のスタンプシートで使用する暗号鍵GRNを取得
-     *
-     * @return クエストを分類するカテゴリーを更新
-     */
-    public String getKeyId() {
-        return keyId;
-    }
-
-    /**
-     * 報酬付与処理のスタンプシートで使用する暗号鍵GRNを設定
-     *
-     * @param keyId クエストを分類するカテゴリーを更新
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
-    }
-
-    /**
-     * 報酬付与処理のスタンプシートで使用する暗号鍵GRNを設定
-     *
-     * @param keyId クエストを分類するカテゴリーを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** ログの出力設定 */
     private LogSetting logSetting;
 
-    /**
-     * ログの出力設定を取得
-     *
-     * @return クエストを分類するカテゴリーを更新
-     */
-    public LogSetting getLogSetting() {
-        return logSetting;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public ScriptSetting getStartQuestScript() {
+		return startQuestScript;
+	}
+
+	public void setStartQuestScript(ScriptSetting startQuestScript) {
+		this.startQuestScript = startQuestScript;
+	}
+
+	public UpdateNamespaceRequest withStartQuestScript(ScriptSetting startQuestScript) {
+		this.startQuestScript = startQuestScript;
+		return this;
+	}
+
+	public ScriptSetting getCompleteQuestScript() {
+		return completeQuestScript;
+	}
+
+	public void setCompleteQuestScript(ScriptSetting completeQuestScript) {
+		this.completeQuestScript = completeQuestScript;
+	}
+
+	public UpdateNamespaceRequest withCompleteQuestScript(ScriptSetting completeQuestScript) {
+		this.completeQuestScript = completeQuestScript;
+		return this;
+	}
+
+	public ScriptSetting getFailedQuestScript() {
+		return failedQuestScript;
+	}
+
+	public void setFailedQuestScript(ScriptSetting failedQuestScript) {
+		this.failedQuestScript = failedQuestScript;
+	}
+
+	public UpdateNamespaceRequest withFailedQuestScript(ScriptSetting failedQuestScript) {
+		this.failedQuestScript = failedQuestScript;
+		return this;
+	}
+
+	public String getQueueNamespaceId() {
+		return queueNamespaceId;
+	}
+
+	public void setQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+	}
+
+	public UpdateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public UpdateNamespaceRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static UpdateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateNamespaceRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withStartQuestScript(data.get("startQuestScript") == null || data.get("startQuestScript").isNull() ? null : ScriptSetting.fromJson(data.get("startQuestScript")))
+            .withCompleteQuestScript(data.get("completeQuestScript") == null || data.get("completeQuestScript").isNull() ? null : ScriptSetting.fromJson(data.get("completeQuestScript")))
+            .withFailedQuestScript(data.get("failedQuestScript") == null || data.get("failedQuestScript").isNull() ? null : ScriptSetting.fromJson(data.get("failedQuestScript")))
+            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting クエストを分類するカテゴリーを更新
-     */
-    public void setLogSetting(LogSetting logSetting) {
-        this.logSetting = logSetting;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("description", getDescription());
+                put("startQuestScript", getStartQuestScript() != null ? getStartQuestScript().toJson() : null);
+                put("completeQuestScript", getCompleteQuestScript() != null ? getCompleteQuestScript().toJson() : null);
+                put("failedQuestScript", getFailedQuestScript() != null ? getFailedQuestScript().toJson() : null);
+                put("queueNamespaceId", getQueueNamespaceId());
+                put("keyId", getKeyId());
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
     }
-
-    /**
-     * ログの出力設定を設定
-     *
-     * @param logSetting クエストを分類するカテゴリーを更新
-     * @return this
-     */
-    public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
-        setLogSetting(logSetting);
-        return this;
-    }
-
 }

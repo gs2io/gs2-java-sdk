@@ -16,39 +16,48 @@
 
 package io.gs2.experience.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.experience.model.*;
+import io.gs2.experience.model.ExperienceModelMaster;
 
-/**
- * 経験値の種類マスターを更新 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateExperienceModelMasterResult implements IResult, Serializable {
-	/** 更新した経験値の種類マスター */
-	private ExperienceModelMaster item;
+    private ExperienceModelMaster item;
 
-	/**
-	 * 更新した経験値の種類マスターを取得
-	 *
-	 * @return 経験値の種類マスターを更新
-	 */
 	public ExperienceModelMaster getItem() {
 		return item;
 	}
 
-	/**
-	 * 更新した経験値の種類マスターを設定
-	 *
-	 * @param item 経験値の種類マスターを更新
-	 */
 	public void setItem(ExperienceModelMaster item) {
 		this.item = item;
 	}
+
+	public UpdateExperienceModelMasterResult withItem(ExperienceModelMaster item) {
+		this.item = item;
+		return this;
+	}
+
+    public static UpdateExperienceModelMasterResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateExperienceModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : ExperienceModelMaster.fromJson(data.get("item")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+            }}
+        );
+    }
 }

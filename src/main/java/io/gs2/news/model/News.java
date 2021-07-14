@@ -16,220 +16,128 @@
 
 package io.gs2.news.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * お知らせ記事
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class News implements IModel, Serializable {
-	/** セクション名 */
-	protected String section;
+	private String section;
+	private String content;
+	private String title;
+	private String scheduleEventId;
+	private Long timestamp;
+	private String frontMatter;
 
-	/**
-	 * セクション名を取得
-	 *
-	 * @return セクション名
-	 */
 	public String getSection() {
 		return section;
 	}
 
-	/**
-	 * セクション名を設定
-	 *
-	 * @param section セクション名
-	 */
 	public void setSection(String section) {
 		this.section = section;
 	}
 
-	/**
-	 * セクション名を設定
-	 *
-	 * @param section セクション名
-	 * @return this
-	 */
 	public News withSection(String section) {
 		this.section = section;
 		return this;
 	}
-	/** コンテンツ名 */
-	protected String content;
 
-	/**
-	 * コンテンツ名を取得
-	 *
-	 * @return コンテンツ名
-	 */
 	public String getContent() {
 		return content;
 	}
 
-	/**
-	 * コンテンツ名を設定
-	 *
-	 * @param content コンテンツ名
-	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
 
-	/**
-	 * コンテンツ名を設定
-	 *
-	 * @param content コンテンツ名
-	 * @return this
-	 */
 	public News withContent(String content) {
 		this.content = content;
 		return this;
 	}
-	/** 記事見出し */
-	protected String title;
 
-	/**
-	 * 記事見出しを取得
-	 *
-	 * @return 記事見出し
-	 */
 	public String getTitle() {
 		return title;
 	}
 
-	/**
-	 * 記事見出しを設定
-	 *
-	 * @param title 記事見出し
-	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	/**
-	 * 記事見出しを設定
-	 *
-	 * @param title 記事見出し
-	 * @return this
-	 */
 	public News withTitle(String title) {
 		this.title = title;
 		return this;
 	}
-	/** 配信期間を決定する GS2-Schedule のイベントID */
-	protected String scheduleEventId;
 
-	/**
-	 * 配信期間を決定する GS2-Schedule のイベントIDを取得
-	 *
-	 * @return 配信期間を決定する GS2-Schedule のイベントID
-	 */
 	public String getScheduleEventId() {
 		return scheduleEventId;
 	}
 
-	/**
-	 * 配信期間を決定する GS2-Schedule のイベントIDを設定
-	 *
-	 * @param scheduleEventId 配信期間を決定する GS2-Schedule のイベントID
-	 */
 	public void setScheduleEventId(String scheduleEventId) {
 		this.scheduleEventId = scheduleEventId;
 	}
 
-	/**
-	 * 配信期間を決定する GS2-Schedule のイベントIDを設定
-	 *
-	 * @param scheduleEventId 配信期間を決定する GS2-Schedule のイベントID
-	 * @return this
-	 */
 	public News withScheduleEventId(String scheduleEventId) {
 		this.scheduleEventId = scheduleEventId;
 		return this;
 	}
-	/** タイムスタンプ */
-	protected Long timestamp;
 
-	/**
-	 * タイムスタンプを取得
-	 *
-	 * @return タイムスタンプ
-	 */
 	public Long getTimestamp() {
 		return timestamp;
 	}
 
-	/**
-	 * タイムスタンプを設定
-	 *
-	 * @param timestamp タイムスタンプ
-	 */
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
 
-	/**
-	 * タイムスタンプを設定
-	 *
-	 * @param timestamp タイムスタンプ
-	 * @return this
-	 */
 	public News withTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
-	/** Front Matter */
-	protected String frontMatter;
 
-	/**
-	 * Front Matterを取得
-	 *
-	 * @return Front Matter
-	 */
 	public String getFrontMatter() {
 		return frontMatter;
 	}
 
-	/**
-	 * Front Matterを設定
-	 *
-	 * @param frontMatter Front Matter
-	 */
 	public void setFrontMatter(String frontMatter) {
 		this.frontMatter = frontMatter;
 	}
 
-	/**
-	 * Front Matterを設定
-	 *
-	 * @param frontMatter Front Matter
-	 * @return this
-	 */
 	public News withFrontMatter(String frontMatter) {
 		this.frontMatter = frontMatter;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("section", this.getSection())
-            .put("content", this.getContent())
-            .put("title", this.getTitle())
-            .put("scheduleEventId", this.getScheduleEventId())
-            .put("timestamp", this.getTimestamp())
-            .put("frontMatter", this.getFrontMatter());
-        return body_;
+    public static News fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new News()
+            .withSection(data.get("section") == null || data.get("section").isNull() ? null : data.get("section").asText())
+            .withContent(data.get("content") == null || data.get("content").isNull() ? null : data.get("content").asText())
+            .withTitle(data.get("title") == null || data.get("title").isNull() ? null : data.get("title").asText())
+            .withScheduleEventId(data.get("scheduleEventId") == null || data.get("scheduleEventId").isNull() ? null : data.get("scheduleEventId").asText())
+            .withTimestamp(data.get("timestamp") == null || data.get("timestamp").isNull() ? null : data.get("timestamp").longValue())
+            .withFrontMatter(data.get("frontMatter") == null || data.get("frontMatter").isNull() ? null : data.get("frontMatter").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("section", getSection());
+                put("content", getContent());
+                put("title", getTitle());
+                put("scheduleEventId", getScheduleEventId());
+                put("timestamp", getTimestamp());
+                put("frontMatter", getFrontMatter());
+            }}
+        );
     }
 
 	@Override

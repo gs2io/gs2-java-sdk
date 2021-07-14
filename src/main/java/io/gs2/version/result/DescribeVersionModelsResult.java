@@ -16,39 +16,59 @@
 
 package io.gs2.version.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.version.model.*;
+import io.gs2.version.model.Version;
+import io.gs2.version.model.VersionModel;
 
-/**
- * バージョン設定の一覧を取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeVersionModelsResult implements IResult, Serializable {
-	/** バージョン設定のリスト */
-	private List<VersionModel> items;
+    private List<VersionModel> items;
 
-	/**
-	 * バージョン設定のリストを取得
-	 *
-	 * @return バージョン設定の一覧を取得
-	 */
 	public List<VersionModel> getItems() {
 		return items;
 	}
 
-	/**
-	 * バージョン設定のリストを設定
-	 *
-	 * @param items バージョン設定の一覧を取得
-	 */
 	public void setItems(List<VersionModel> items) {
 		this.items = items;
 	}
+
+	public DescribeVersionModelsResult withItems(List<VersionModel> items) {
+		this.items = items;
+		return this;
+	}
+
+    public static DescribeVersionModelsResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DescribeVersionModelsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<VersionModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VersionModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("items", getItems() == null ? new ArrayList<VersionModel>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
+    }
 }

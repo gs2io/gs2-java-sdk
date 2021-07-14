@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.realtime;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.realtime.request.*;
 import io.gs2.realtime.result.*;
-import io.gs2.realtime.model.*;
+import io.gs2.realtime.model.*;public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClient> {
 
-/**
- * GS2 Realtime API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2RealtimeRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public DescribeNamespacesTask(
             DescribeNamespacesRequest request,
-            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback,
-            Class<DescribeNamespacesResult> clazz
+            AsyncAction<AsyncResult<DescribeNamespacesResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeNamespacesResult parse(JsonNode data) {
+            return DescribeNamespacesResult.fromJson(data);
         }
 
         @Override
@@ -105,25 +96,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeNamespacesAsync(
             DescribeNamespacesRequest request,
             AsyncAction<AsyncResult<DescribeNamespacesResult>> callback
     ) {
-        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback, DescribeNamespacesResult.class);
+        DescribeNamespacesTask task = new DescribeNamespacesTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeNamespacesResult describeNamespaces(
             DescribeNamespacesRequest request
     ) {
@@ -150,15 +130,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public CreateNamespaceTask(
             CreateNamespaceRequest request,
-            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback,
-            Class<CreateNamespaceResult> clazz
+            AsyncAction<AsyncResult<CreateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public CreateNamespaceResult parse(JsonNode data) {
+            return CreateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -169,39 +152,17 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getServerType() != null) {
-                json.put("serverType", this.request.getServerType());
-            }
-            if (this.request.getServerSpec() != null) {
-                json.put("serverSpec", this.request.getServerSpec());
-            }
-            if (this.request.getCreateNotification() != null) {
-                try {
-                    json.put("createNotification", new JSONObject(mapper.writeValueAsString(this.request.getCreateNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("serverType", request.getServerType());
+                    put("serverSpec", request.getServerSpec());
+                    put("createNotification", request.getCreateNotification() != null ? request.getCreateNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -219,25 +180,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void createNamespaceAsync(
             CreateNamespaceRequest request,
             AsyncAction<AsyncResult<CreateNamespaceResult>> callback
     ) {
-        CreateNamespaceTask task = new CreateNamespaceTask(request, callback, CreateNamespaceResult.class);
+        CreateNamespaceTask task = new CreateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを新規作成<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public CreateNamespaceResult createNamespace(
             CreateNamespaceRequest request
     ) {
@@ -264,15 +214,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public GetNamespaceStatusTask(
             GetNamespaceStatusRequest request,
-            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback,
-            Class<GetNamespaceStatusResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceStatusResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceStatusResult parse(JsonNode data) {
+            return GetNamespaceStatusResult.fromJson(data);
         }
 
         @Override
@@ -283,7 +236,7 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -307,25 +260,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceStatusAsync(
             GetNamespaceStatusRequest request,
             AsyncAction<AsyncResult<GetNamespaceStatusResult>> callback
     ) {
-        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback, GetNamespaceStatusResult.class);
+        GetNamespaceStatusTask task = new GetNamespaceStatusTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースの状態を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceStatusResult getNamespaceStatus(
             GetNamespaceStatusRequest request
     ) {
@@ -352,15 +294,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public GetNamespaceTask(
             GetNamespaceRequest request,
-            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback,
-            Class<GetNamespaceResult> clazz
+            AsyncAction<AsyncResult<GetNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetNamespaceResult parse(JsonNode data) {
+            return GetNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -371,7 +316,7 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -395,25 +340,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getNamespaceAsync(
             GetNamespaceRequest request,
             AsyncAction<AsyncResult<GetNamespaceResult>> callback
     ) {
-        GetNamespaceTask task = new GetNamespaceTask(request, callback, GetNamespaceResult.class);
+        GetNamespaceTask task = new GetNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetNamespaceResult getNamespace(
             GetNamespaceRequest request
     ) {
@@ -440,15 +374,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public UpdateNamespaceTask(
             UpdateNamespaceRequest request,
-            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback,
-            Class<UpdateNamespaceResult> clazz
+            AsyncAction<AsyncResult<UpdateNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public UpdateNamespaceResult parse(JsonNode data) {
+            return UpdateNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -459,38 +396,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getDescription() != null) {
-                json.put("description", this.request.getDescription());
-            }
-            if (this.request.getServerType() != null) {
-                json.put("serverType", this.request.getServerType());
-            }
-            if (this.request.getServerSpec() != null) {
-                json.put("serverSpec", this.request.getServerSpec());
-            }
-            if (this.request.getCreateNotification() != null) {
-                try {
-                    json.put("createNotification", new JSONObject(mapper.writeValueAsString(this.request.getCreateNotification())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getLogSetting() != null) {
-                try {
-                    json.put("logSetting", new JSONObject(mapper.writeValueAsString(this.request.getLogSetting())));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("serverType", request.getServerType());
+                    put("serverSpec", request.getServerSpec());
+                    put("createNotification", request.getCreateNotification() != null ? request.getCreateNotification().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.PUT)
@@ -508,25 +425,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void updateNamespaceAsync(
             UpdateNamespaceRequest request,
             AsyncAction<AsyncResult<UpdateNamespaceResult>> callback
     ) {
-        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback, UpdateNamespaceResult.class);
+        UpdateNamespaceTask task = new UpdateNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを更新<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public UpdateNamespaceResult updateNamespace(
             UpdateNamespaceRequest request
     ) {
@@ -553,15 +459,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public DeleteNamespaceTask(
             DeleteNamespaceRequest request,
-            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback,
-            Class<DeleteNamespaceResult> clazz
+            AsyncAction<AsyncResult<DeleteNamespaceResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteNamespaceResult parse(JsonNode data) {
+            return DeleteNamespaceResult.fromJson(data);
         }
 
         @Override
@@ -572,7 +481,7 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -596,25 +505,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteNamespaceAsync(
             DeleteNamespaceRequest request,
             AsyncAction<AsyncResult<DeleteNamespaceResult>> callback
     ) {
-        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback, DeleteNamespaceResult.class);
+        DeleteNamespaceTask task = new DeleteNamespaceTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ネームスペースを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteNamespaceResult deleteNamespace(
             DeleteNamespaceRequest request
     ) {
@@ -641,15 +539,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public DescribeRoomsTask(
             DescribeRoomsRequest request,
-            AsyncAction<AsyncResult<DescribeRoomsResult>> userCallback,
-            Class<DescribeRoomsResult> clazz
+            AsyncAction<AsyncResult<DescribeRoomsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DescribeRoomsResult parse(JsonNode data) {
+            return DescribeRoomsResult.fromJson(data);
         }
 
         @Override
@@ -660,7 +561,7 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/room";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -690,25 +591,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ルームの一覧を取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void describeRoomsAsync(
             DescribeRoomsRequest request,
             AsyncAction<AsyncResult<DescribeRoomsResult>> callback
     ) {
-        DescribeRoomsTask task = new DescribeRoomsTask(request, callback, DescribeRoomsResult.class);
+        DescribeRoomsTask task = new DescribeRoomsTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ルームの一覧を取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DescribeRoomsResult describeRooms(
             DescribeRoomsRequest request
     ) {
@@ -735,15 +625,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public WantRoomTask(
             WantRoomRequest request,
-            AsyncAction<AsyncResult<WantRoomResult>> userCallback,
-            Class<WantRoomResult> clazz
+            AsyncAction<AsyncResult<WantRoomResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public WantRoomResult parse(JsonNode data) {
+            return WantRoomResult.fromJson(data);
         }
 
         @Override
@@ -754,26 +647,19 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/room";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getName() != null) {
-                json.put("name", this.request.getName());
-            }
-            if (this.request.getNotificationUserIds() != null) {
-                JSONArray array = new JSONArray();
-                for(String item : this.request.getNotificationUserIds())
-                {
-                    array.put(item);
-                }
-                json.put("notificationUserIds", array);
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("notificationUserIds", request.getNotificationUserIds() == null ? new ArrayList<String>() :
+                        request.getNotificationUserIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -791,25 +677,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ルームの作成依頼。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void wantRoomAsync(
             WantRoomRequest request,
             AsyncAction<AsyncResult<WantRoomResult>> callback
     ) {
-        WantRoomTask task = new WantRoomTask(request, callback, WantRoomResult.class);
+        WantRoomTask task = new WantRoomTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ルームの作成依頼。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public WantRoomResult wantRoom(
             WantRoomRequest request
     ) {
@@ -836,15 +711,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public GetRoomTask(
             GetRoomRequest request,
-            AsyncAction<AsyncResult<GetRoomResult>> userCallback,
-            Class<GetRoomResult> clazz
+            AsyncAction<AsyncResult<GetRoomResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public GetRoomResult parse(JsonNode data) {
+            return GetRoomResult.fromJson(data);
         }
 
         @Override
@@ -855,8 +733,8 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/room/{roomName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{roomName}", this.request.getRoomName() == null|| this.request.getRoomName().length() == 0 ? "null" : String.valueOf(this.request.getRoomName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{roomName}", this.request.getRoomName() == null || this.request.getRoomName().length() == 0 ? "null" : String.valueOf(this.request.getRoomName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -880,25 +758,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ルームを取得<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void getRoomAsync(
             GetRoomRequest request,
             AsyncAction<AsyncResult<GetRoomResult>> callback
     ) {
-        GetRoomTask task = new GetRoomTask(request, callback, GetRoomResult.class);
+        GetRoomTask task = new GetRoomTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ルームを取得<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public GetRoomResult getRoom(
             GetRoomRequest request
     ) {
@@ -925,15 +792,18 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
 
         public DeleteRoomTask(
             DeleteRoomRequest request,
-            AsyncAction<AsyncResult<DeleteRoomResult>> userCallback,
-            Class<DeleteRoomResult> clazz
+            AsyncAction<AsyncResult<DeleteRoomResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public DeleteRoomResult parse(JsonNode data) {
+            return DeleteRoomResult.fromJson(data);
         }
 
         @Override
@@ -944,8 +814,8 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/room/{roomName}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null|| this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{roomName}", this.request.getRoomName() == null|| this.request.getRoomName().length() == 0 ? "null" : String.valueOf(this.request.getRoomName()));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{roomName}", this.request.getRoomName() == null || this.request.getRoomName().length() == 0 ? "null" : String.valueOf(this.request.getRoomName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -969,25 +839,14 @@ public class Gs2RealtimeRestClient extends AbstractGs2Client<Gs2RealtimeRestClie
         }
     }
 
-    /**
-     * ルームを削除<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void deleteRoomAsync(
             DeleteRoomRequest request,
             AsyncAction<AsyncResult<DeleteRoomResult>> callback
     ) {
-        DeleteRoomTask task = new DeleteRoomTask(request, callback, DeleteRoomResult.class);
+        DeleteRoomTask task = new DeleteRoomTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * ルームを削除<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public DeleteRoomResult deleteRoom(
             DeleteRoomRequest request
     ) {

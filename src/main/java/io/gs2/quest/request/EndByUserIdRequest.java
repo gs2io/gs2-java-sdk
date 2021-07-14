@@ -16,242 +16,148 @@
 
 package io.gs2.quest.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.quest.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.quest.model.Reward;
+import io.gs2.quest.model.Config;
 
-/**
- * ユーザIDを指定してクエストを完了 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
-
-    /** カテゴリ名 */
     private String namespaceName;
-
-    /**
-     * カテゴリ名を取得
-     *
-     * @return ユーザIDを指定してクエストを完了
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName ユーザIDを指定してクエストを完了
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * カテゴリ名を設定
-     *
-     * @param namespaceName ユーザIDを指定してクエストを完了
-     * @return this
-     */
-    public EndByUserIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return ユーザIDを指定してクエストを完了
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してクエストを完了
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId ユーザIDを指定してクエストを完了
-     * @return this
-     */
-    public EndByUserIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** トランザクションID */
     private String transactionId;
-
-    /**
-     * トランザクションIDを取得
-     *
-     * @return ユーザIDを指定してクエストを完了
-     */
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    /**
-     * トランザクションIDを設定
-     *
-     * @param transactionId ユーザIDを指定してクエストを完了
-     */
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    /**
-     * トランザクションIDを設定
-     *
-     * @param transactionId ユーザIDを指定してクエストを完了
-     * @return this
-     */
-    public EndByUserIdRequest withTransactionId(String transactionId) {
-        setTransactionId(transactionId);
-        return this;
-    }
-
-    /** 実際にクエストで得た報酬 */
     private List<Reward> rewards;
-
-    /**
-     * 実際にクエストで得た報酬を取得
-     *
-     * @return ユーザIDを指定してクエストを完了
-     */
-    public List<Reward> getRewards() {
-        return rewards;
-    }
-
-    /**
-     * 実際にクエストで得た報酬を設定
-     *
-     * @param rewards ユーザIDを指定してクエストを完了
-     */
-    public void setRewards(List<Reward> rewards) {
-        this.rewards = rewards;
-    }
-
-    /**
-     * 実際にクエストで得た報酬を設定
-     *
-     * @param rewards ユーザIDを指定してクエストを完了
-     * @return this
-     */
-    public EndByUserIdRequest withRewards(List<Reward> rewards) {
-        setRewards(rewards);
-        return this;
-    }
-
-    /** クエストをクリアしたか */
     private Boolean isComplete;
-
-    /**
-     * クエストをクリアしたかを取得
-     *
-     * @return ユーザIDを指定してクエストを完了
-     */
-    public Boolean getIsComplete() {
-        return isComplete;
-    }
-
-    /**
-     * クエストをクリアしたかを設定
-     *
-     * @param isComplete ユーザIDを指定してクエストを完了
-     */
-    public void setIsComplete(Boolean isComplete) {
-        this.isComplete = isComplete;
-    }
-
-    /**
-     * クエストをクリアしたかを設定
-     *
-     * @param isComplete ユーザIDを指定してクエストを完了
-     * @return this
-     */
-    public EndByUserIdRequest withIsComplete(Boolean isComplete) {
-        setIsComplete(isComplete);
-        return this;
-    }
-
-    /** スタンプシートの変数に適用する設定値 */
     private List<Config> config;
 
-    /**
-     * スタンプシートの変数に適用する設定値を取得
-     *
-     * @return ユーザIDを指定してクエストを完了
-     */
-    public List<Config> getConfig() {
-        return config;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public EndByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public EndByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public EndByUserIdRequest withTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+		return this;
+	}
+
+	public List<Reward> getRewards() {
+		return rewards;
+	}
+
+	public void setRewards(List<Reward> rewards) {
+		this.rewards = rewards;
+	}
+
+	public EndByUserIdRequest withRewards(List<Reward> rewards) {
+		this.rewards = rewards;
+		return this;
+	}
+
+	public Boolean getIsComplete() {
+		return isComplete;
+	}
+
+	public void setIsComplete(Boolean isComplete) {
+		this.isComplete = isComplete;
+	}
+
+	public EndByUserIdRequest withIsComplete(Boolean isComplete) {
+		this.isComplete = isComplete;
+		return this;
+	}
+
+	public List<Config> getConfig() {
+		return config;
+	}
+
+	public void setConfig(List<Config> config) {
+		this.config = config;
+	}
+
+	public EndByUserIdRequest withConfig(List<Config> config) {
+		this.config = config;
+		return this;
+	}
+
+    public static EndByUserIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new EndByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
+            .withRewards(data.get("rewards") == null || data.get("rewards").isNull() ? new ArrayList<Reward>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("rewards").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Reward.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withIsComplete(data.get("isComplete") == null || data.get("isComplete").isNull() ? null : data.get("isComplete").booleanValue())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Config.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * スタンプシートの変数に適用する設定値を設定
-     *
-     * @param config ユーザIDを指定してクエストを完了
-     */
-    public void setConfig(List<Config> config) {
-        this.config = config;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("transactionId", getTransactionId());
+                put("rewards", getRewards() == null ? new ArrayList<Reward>() :
+                    getRewards().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("isComplete", getIsComplete());
+                put("config", getConfig() == null ? new ArrayList<Config>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * スタンプシートの変数に適用する設定値を設定
-     *
-     * @param config ユーザIDを指定してクエストを完了
-     * @return this
-     */
-    public EndByUserIdRequest withConfig(List<Config> config) {
-        setConfig(config);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return ユーザIDを指定してクエストを完了
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してクエストを完了
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider ユーザIDを指定してクエストを完了
-     * @return this
-     */
-    public EndByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

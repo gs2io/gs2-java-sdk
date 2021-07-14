@@ -16,178 +16,94 @@
 
 package io.gs2.exchange.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.exchange.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 交換待機を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetAwaitRequest extends Gs2BasicRequest<GetAwaitRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 交換待機を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 交換待機を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 交換待機を取得
-     * @return this
-     */
-    public GetAwaitRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 交換レート名 */
+    private String accessToken;
     private String rateName;
-
-    /**
-     * 交換レート名を取得
-     *
-     * @return 交換待機を取得
-     */
-    public String getRateName() {
-        return rateName;
-    }
-
-    /**
-     * 交換レート名を設定
-     *
-     * @param rateName 交換待機を取得
-     */
-    public void setRateName(String rateName) {
-        this.rateName = rateName;
-    }
-
-    /**
-     * 交換レート名を設定
-     *
-     * @param rateName 交換待機を取得
-     * @return this
-     */
-    public GetAwaitRequest withRateName(String rateName) {
-        setRateName(rateName);
-        return this;
-    }
-
-    /** 交換待機の名前 */
     private String awaitName;
 
-    /**
-     * 交換待機の名前を取得
-     *
-     * @return 交換待機を取得
-     */
-    public String getAwaitName() {
-        return awaitName;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetAwaitRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public GetAwaitRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getRateName() {
+		return rateName;
+	}
+
+	public void setRateName(String rateName) {
+		this.rateName = rateName;
+	}
+
+	public GetAwaitRequest withRateName(String rateName) {
+		this.rateName = rateName;
+		return this;
+	}
+
+	public String getAwaitName() {
+		return awaitName;
+	}
+
+	public void setAwaitName(String awaitName) {
+		this.awaitName = awaitName;
+	}
+
+	public GetAwaitRequest withAwaitName(String awaitName) {
+		this.awaitName = awaitName;
+		return this;
+	}
+
+    public static GetAwaitRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetAwaitRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
+            .withAwaitName(data.get("awaitName") == null || data.get("awaitName").isNull() ? null : data.get("awaitName").asText());
     }
 
-    /**
-     * 交換待機の名前を設定
-     *
-     * @param awaitName 交換待機を取得
-     */
-    public void setAwaitName(String awaitName) {
-        this.awaitName = awaitName;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("accessToken", getAccessToken());
+                put("rateName", getRateName());
+                put("awaitName", getAwaitName());
+            }}
+        );
     }
-
-    /**
-     * 交換待機の名前を設定
-     *
-     * @param awaitName 交換待機を取得
-     * @return this
-     */
-    public GetAwaitRequest withAwaitName(String awaitName) {
-        setAwaitName(awaitName);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 交換待機を取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 交換待機を取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 交換待機を取得
-     * @return this
-     */
-    public GetAwaitRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public GetAwaitRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

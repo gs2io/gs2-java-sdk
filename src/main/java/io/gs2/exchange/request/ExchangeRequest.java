@@ -16,210 +16,121 @@
 
 package io.gs2.exchange.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.exchange.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.exchange.model.Config;
 
-/**
- * 交換を実行 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ExchangeRequest extends Gs2BasicRequest<ExchangeRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 交換を実行
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 交換を実行
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 交換を実行
-     * @return this
-     */
-    public ExchangeRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 交換レートの種類名 */
     private String rateName;
-
-    /**
-     * 交換レートの種類名を取得
-     *
-     * @return 交換を実行
-     */
-    public String getRateName() {
-        return rateName;
-    }
-
-    /**
-     * 交換レートの種類名を設定
-     *
-     * @param rateName 交換を実行
-     */
-    public void setRateName(String rateName) {
-        this.rateName = rateName;
-    }
-
-    /**
-     * 交換レートの種類名を設定
-     *
-     * @param rateName 交換を実行
-     * @return this
-     */
-    public ExchangeRequest withRateName(String rateName) {
-        setRateName(rateName);
-        return this;
-    }
-
-    /** 交換するロット数 */
+    private String accessToken;
     private Integer count;
-
-    /**
-     * 交換するロット数を取得
-     *
-     * @return 交換を実行
-     */
-    public Integer getCount() {
-        return count;
-    }
-
-    /**
-     * 交換するロット数を設定
-     *
-     * @param count 交換を実行
-     */
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    /**
-     * 交換するロット数を設定
-     *
-     * @param count 交換を実行
-     * @return this
-     */
-    public ExchangeRequest withCount(Integer count) {
-        setCount(count);
-        return this;
-    }
-
-    /** 設定値 */
     private List<Config> config;
 
-    /**
-     * 設定値を取得
-     *
-     * @return 交換を実行
-     */
-    public List<Config> getConfig() {
-        return config;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public ExchangeRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getRateName() {
+		return rateName;
+	}
+
+	public void setRateName(String rateName) {
+		this.rateName = rateName;
+	}
+
+	public ExchangeRequest withRateName(String rateName) {
+		this.rateName = rateName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public ExchangeRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public ExchangeRequest withCount(Integer count) {
+		this.count = count;
+		return this;
+	}
+
+	public List<Config> getConfig() {
+		return config;
+	}
+
+	public void setConfig(List<Config> config) {
+		this.config = config;
+	}
+
+	public ExchangeRequest withConfig(List<Config> config) {
+		this.config = config;
+		return this;
+	}
+
+    public static ExchangeRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ExchangeRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Config.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
-    /**
-     * 設定値を設定
-     *
-     * @param config 交換を実行
-     */
-    public void setConfig(List<Config> config) {
-        this.config = config;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("rateName", getRateName());
+                put("accessToken", getAccessToken());
+                put("count", getCount());
+                put("config", getConfig() == null ? new ArrayList<Config>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+            }}
+        );
     }
-
-    /**
-     * 設定値を設定
-     *
-     * @param config 交換を実行
-     * @return this
-     */
-    public ExchangeRequest withConfig(List<Config> config) {
-        setConfig(config);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return 交換を実行
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 交換を実行
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider 交換を実行
-     * @return this
-     */
-    public ExchangeRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public ExchangeRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

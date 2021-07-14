@@ -16,291 +16,172 @@
 
 package io.gs2.showcase.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 陳列棚マスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ShowcaseMaster implements IModel, Serializable, Comparable<ShowcaseMaster> {
-	/** 陳列棚マスター */
-	protected String showcaseId;
+	private String showcaseId;
+	private String name;
+	private String description;
+	private String metadata;
+	private String salesPeriodEventId;
+	private List<DisplayItemMaster> displayItems;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * 陳列棚マスターを取得
-	 *
-	 * @return 陳列棚マスター
-	 */
 	public String getShowcaseId() {
 		return showcaseId;
 	}
 
-	/**
-	 * 陳列棚マスターを設定
-	 *
-	 * @param showcaseId 陳列棚マスター
-	 */
 	public void setShowcaseId(String showcaseId) {
 		this.showcaseId = showcaseId;
 	}
 
-	/**
-	 * 陳列棚マスターを設定
-	 *
-	 * @param showcaseId 陳列棚マスター
-	 * @return this
-	 */
 	public ShowcaseMaster withShowcaseId(String showcaseId) {
 		this.showcaseId = showcaseId;
 		return this;
 	}
-	/** 陳列棚名 */
-	protected String name;
 
-	/**
-	 * 陳列棚名を取得
-	 *
-	 * @return 陳列棚名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 陳列棚名を設定
-	 *
-	 * @param name 陳列棚名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 陳列棚名を設定
-	 *
-	 * @param name 陳列棚名
-	 * @return this
-	 */
 	public ShowcaseMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 陳列棚マスターの説明 */
-	protected String description;
 
-	/**
-	 * 陳列棚マスターの説明を取得
-	 *
-	 * @return 陳列棚マスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * 陳列棚マスターの説明を設定
-	 *
-	 * @param description 陳列棚マスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * 陳列棚マスターの説明を設定
-	 *
-	 * @param description 陳列棚マスターの説明
-	 * @return this
-	 */
 	public ShowcaseMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** 商品のメタデータ */
-	protected String metadata;
 
-	/**
-	 * 商品のメタデータを取得
-	 *
-	 * @return 商品のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 商品のメタデータを設定
-	 *
-	 * @param metadata 商品のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 商品のメタデータを設定
-	 *
-	 * @param metadata 商品のメタデータ
-	 * @return this
-	 */
 	public ShowcaseMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** 販売期間とするイベントマスター のGRN */
-	protected String salesPeriodEventId;
 
-	/**
-	 * 販売期間とするイベントマスター のGRNを取得
-	 *
-	 * @return 販売期間とするイベントマスター のGRN
-	 */
 	public String getSalesPeriodEventId() {
 		return salesPeriodEventId;
 	}
 
-	/**
-	 * 販売期間とするイベントマスター のGRNを設定
-	 *
-	 * @param salesPeriodEventId 販売期間とするイベントマスター のGRN
-	 */
 	public void setSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 	}
 
-	/**
-	 * 販売期間とするイベントマスター のGRNを設定
-	 *
-	 * @param salesPeriodEventId 販売期間とするイベントマスター のGRN
-	 * @return this
-	 */
 	public ShowcaseMaster withSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 		return this;
 	}
-	/** 陳列する商品モデル一覧 */
-	protected List<DisplayItemMaster> displayItems;
 
-	/**
-	 * 陳列する商品モデル一覧を取得
-	 *
-	 * @return 陳列する商品モデル一覧
-	 */
 	public List<DisplayItemMaster> getDisplayItems() {
 		return displayItems;
 	}
 
-	/**
-	 * 陳列する商品モデル一覧を設定
-	 *
-	 * @param displayItems 陳列する商品モデル一覧
-	 */
 	public void setDisplayItems(List<DisplayItemMaster> displayItems) {
 		this.displayItems = displayItems;
 	}
 
-	/**
-	 * 陳列する商品モデル一覧を設定
-	 *
-	 * @param displayItems 陳列する商品モデル一覧
-	 * @return this
-	 */
 	public ShowcaseMaster withDisplayItems(List<DisplayItemMaster> displayItems) {
 		this.displayItems = displayItems;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public ShowcaseMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public ShowcaseMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> displayItems = new ArrayList<>();
-        if(this.displayItems != null) {
-            for(DisplayItemMaster item : this.displayItems) {
-                displayItems.add(item.toJson());
-            }
+    public static ShowcaseMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("showcaseId", this.getShowcaseId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("salesPeriodEventId", this.getSalesPeriodEventId())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("displayItems", JsonNodeFactory.instance.arrayNode().addAll(displayItems));
-        return body_;
+        return new ShowcaseMaster()
+            .withShowcaseId(data.get("showcaseId") == null || data.get("showcaseId").isNull() ? null : data.get("showcaseId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withSalesPeriodEventId(data.get("salesPeriodEventId") == null || data.get("salesPeriodEventId").isNull() ? null : data.get("salesPeriodEventId").asText())
+            .withDisplayItems(data.get("displayItems") == null || data.get("displayItems").isNull() ? new ArrayList<DisplayItemMaster>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("displayItems").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return DisplayItemMaster.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("showcaseId", getShowcaseId());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("salesPeriodEventId", getSalesPeriodEventId());
+                put("displayItems", getDisplayItems() == null ? new ArrayList<DisplayItemMaster>() :
+                    getDisplayItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(ShowcaseMaster o) {
 		return showcaseId.compareTo(o.showcaseId);

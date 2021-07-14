@@ -16,274 +16,158 @@
 
 package io.gs2.experience.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.experience.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 経験値の種類マスターを更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateExperienceModelMasterRequest extends Gs2BasicRequest<UpdateExperienceModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 経験値の種類マスターを更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 経験値の種類マスターを更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 経験値の種類マスターを更新
-     * @return this
-     */
-    public UpdateExperienceModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 経験値の種類名 */
     private String experienceName;
-
-    /**
-     * 経験値の種類名を取得
-     *
-     * @return 経験値の種類マスターを更新
-     */
-    public String getExperienceName() {
-        return experienceName;
-    }
-
-    /**
-     * 経験値の種類名を設定
-     *
-     * @param experienceName 経験値の種類マスターを更新
-     */
-    public void setExperienceName(String experienceName) {
-        this.experienceName = experienceName;
-    }
-
-    /**
-     * 経験値の種類名を設定
-     *
-     * @param experienceName 経験値の種類マスターを更新
-     * @return this
-     */
-    public UpdateExperienceModelMasterRequest withExperienceName(String experienceName) {
-        setExperienceName(experienceName);
-        return this;
-    }
-
-    /** 経験値の種類マスターの説明 */
     private String description;
-
-    /**
-     * 経験値の種類マスターの説明を取得
-     *
-     * @return 経験値の種類マスターを更新
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 経験値の種類マスターの説明を設定
-     *
-     * @param description 経験値の種類マスターを更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 経験値の種類マスターの説明を設定
-     *
-     * @param description 経験値の種類マスターを更新
-     * @return this
-     */
-    public UpdateExperienceModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** 経験値の種類のメタデータ */
     private String metadata;
-
-    /**
-     * 経験値の種類のメタデータを取得
-     *
-     * @return 経験値の種類マスターを更新
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * 経験値の種類のメタデータを設定
-     *
-     * @param metadata 経験値の種類マスターを更新
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * 経験値の種類のメタデータを設定
-     *
-     * @param metadata 経験値の種類マスターを更新
-     * @return this
-     */
-    public UpdateExperienceModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** 経験値の初期値 */
     private Long defaultExperience;
-
-    /**
-     * 経験値の初期値を取得
-     *
-     * @return 経験値の種類マスターを更新
-     */
-    public Long getDefaultExperience() {
-        return defaultExperience;
-    }
-
-    /**
-     * 経験値の初期値を設定
-     *
-     * @param defaultExperience 経験値の種類マスターを更新
-     */
-    public void setDefaultExperience(Long defaultExperience) {
-        this.defaultExperience = defaultExperience;
-    }
-
-    /**
-     * 経験値の初期値を設定
-     *
-     * @param defaultExperience 経験値の種類マスターを更新
-     * @return this
-     */
-    public UpdateExperienceModelMasterRequest withDefaultExperience(Long defaultExperience) {
-        setDefaultExperience(defaultExperience);
-        return this;
-    }
-
-    /** ランクキャップの初期値 */
     private Long defaultRankCap;
-
-    /**
-     * ランクキャップの初期値を取得
-     *
-     * @return 経験値の種類マスターを更新
-     */
-    public Long getDefaultRankCap() {
-        return defaultRankCap;
-    }
-
-    /**
-     * ランクキャップの初期値を設定
-     *
-     * @param defaultRankCap 経験値の種類マスターを更新
-     */
-    public void setDefaultRankCap(Long defaultRankCap) {
-        this.defaultRankCap = defaultRankCap;
-    }
-
-    /**
-     * ランクキャップの初期値を設定
-     *
-     * @param defaultRankCap 経験値の種類マスターを更新
-     * @return this
-     */
-    public UpdateExperienceModelMasterRequest withDefaultRankCap(Long defaultRankCap) {
-        setDefaultRankCap(defaultRankCap);
-        return this;
-    }
-
-    /** ランクキャップの最大値 */
     private Long maxRankCap;
+    private String rankThresholdName;
 
-    /**
-     * ランクキャップの最大値を取得
-     *
-     * @return 経験値の種類マスターを更新
-     */
-    public Long getMaxRankCap() {
-        return maxRankCap;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateExperienceModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getExperienceName() {
+		return experienceName;
+	}
+
+	public void setExperienceName(String experienceName) {
+		this.experienceName = experienceName;
+	}
+
+	public UpdateExperienceModelMasterRequest withExperienceName(String experienceName) {
+		this.experienceName = experienceName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateExperienceModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public UpdateExperienceModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public Long getDefaultExperience() {
+		return defaultExperience;
+	}
+
+	public void setDefaultExperience(Long defaultExperience) {
+		this.defaultExperience = defaultExperience;
+	}
+
+	public UpdateExperienceModelMasterRequest withDefaultExperience(Long defaultExperience) {
+		this.defaultExperience = defaultExperience;
+		return this;
+	}
+
+	public Long getDefaultRankCap() {
+		return defaultRankCap;
+	}
+
+	public void setDefaultRankCap(Long defaultRankCap) {
+		this.defaultRankCap = defaultRankCap;
+	}
+
+	public UpdateExperienceModelMasterRequest withDefaultRankCap(Long defaultRankCap) {
+		this.defaultRankCap = defaultRankCap;
+		return this;
+	}
+
+	public Long getMaxRankCap() {
+		return maxRankCap;
+	}
+
+	public void setMaxRankCap(Long maxRankCap) {
+		this.maxRankCap = maxRankCap;
+	}
+
+	public UpdateExperienceModelMasterRequest withMaxRankCap(Long maxRankCap) {
+		this.maxRankCap = maxRankCap;
+		return this;
+	}
+
+	public String getRankThresholdName() {
+		return rankThresholdName;
+	}
+
+	public void setRankThresholdName(String rankThresholdName) {
+		this.rankThresholdName = rankThresholdName;
+	}
+
+	public UpdateExperienceModelMasterRequest withRankThresholdName(String rankThresholdName) {
+		this.rankThresholdName = rankThresholdName;
+		return this;
+	}
+
+    public static UpdateExperienceModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateExperienceModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDefaultExperience(data.get("defaultExperience") == null || data.get("defaultExperience").isNull() ? null : data.get("defaultExperience").longValue())
+            .withDefaultRankCap(data.get("defaultRankCap") == null || data.get("defaultRankCap").isNull() ? null : data.get("defaultRankCap").longValue())
+            .withMaxRankCap(data.get("maxRankCap") == null || data.get("maxRankCap").isNull() ? null : data.get("maxRankCap").longValue())
+            .withRankThresholdName(data.get("rankThresholdName") == null || data.get("rankThresholdName").isNull() ? null : data.get("rankThresholdName").asText());
     }
 
-    /**
-     * ランクキャップの最大値を設定
-     *
-     * @param maxRankCap 経験値の種類マスターを更新
-     */
-    public void setMaxRankCap(Long maxRankCap) {
-        this.maxRankCap = maxRankCap;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("experienceName", getExperienceName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("defaultExperience", getDefaultExperience());
+                put("defaultRankCap", getDefaultRankCap());
+                put("maxRankCap", getMaxRankCap());
+                put("rankThresholdName", getRankThresholdName());
+            }}
+        );
     }
-
-    /**
-     * ランクキャップの最大値を設定
-     *
-     * @param maxRankCap 経験値の種類マスターを更新
-     * @return this
-     */
-    public UpdateExperienceModelMasterRequest withMaxRankCap(Long maxRankCap) {
-        setMaxRankCap(maxRankCap);
-        return this;
-    }
-
-    /** ランク計算に用いる */
-    private String rankThresholdId;
-
-    /**
-     * ランク計算に用いるを取得
-     *
-     * @return 経験値の種類マスターを更新
-     */
-    public String getRankThresholdId() {
-        return rankThresholdId;
-    }
-
-    /**
-     * ランク計算に用いるを設定
-     *
-     * @param rankThresholdId 経験値の種類マスターを更新
-     */
-    public void setRankThresholdId(String rankThresholdId) {
-        this.rankThresholdId = rankThresholdId;
-    }
-
-    /**
-     * ランク計算に用いるを設定
-     *
-     * @param rankThresholdId 経験値の種類マスターを更新
-     * @return this
-     */
-    public UpdateExperienceModelMasterRequest withRankThresholdId(String rankThresholdId) {
-        setRankThresholdId(rankThresholdId);
-        return this;
-    }
-
 }

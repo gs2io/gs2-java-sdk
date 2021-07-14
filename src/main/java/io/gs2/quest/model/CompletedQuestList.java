@@ -16,227 +16,138 @@
 
 package io.gs2.quest.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * クエスト進行
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CompletedQuestList implements IModel, Serializable, Comparable<CompletedQuestList> {
-	/** クエスト進行 */
-	protected String completedQuestListId;
+	private String completedQuestListId;
+	private String userId;
+	private String questGroupName;
+	private List<String> completeQuestNames;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * クエスト進行を取得
-	 *
-	 * @return クエスト進行
-	 */
 	public String getCompletedQuestListId() {
 		return completedQuestListId;
 	}
 
-	/**
-	 * クエスト進行を設定
-	 *
-	 * @param completedQuestListId クエスト進行
-	 */
 	public void setCompletedQuestListId(String completedQuestListId) {
 		this.completedQuestListId = completedQuestListId;
 	}
 
-	/**
-	 * クエスト進行を設定
-	 *
-	 * @param completedQuestListId クエスト進行
-	 * @return this
-	 */
 	public CompletedQuestList withCompletedQuestListId(String completedQuestListId) {
 		this.completedQuestListId = completedQuestListId;
 		return this;
 	}
-	/** ユーザーID */
-	protected String userId;
 
-	/**
-	 * ユーザーIDを取得
-	 *
-	 * @return ユーザーID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * ユーザーIDを設定
-	 *
-	 * @param userId ユーザーID
-	 * @return this
-	 */
 	public CompletedQuestList withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** クエストグループ名 */
-	protected String questGroupName;
 
-	/**
-	 * クエストグループ名を取得
-	 *
-	 * @return クエストグループ名
-	 */
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
 
-	/**
-	 * クエストグループ名を設定
-	 *
-	 * @param questGroupName クエストグループ名
-	 */
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
 
-	/**
-	 * クエストグループ名を設定
-	 *
-	 * @param questGroupName クエストグループ名
-	 * @return this
-	 */
 	public CompletedQuestList withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;
 	}
-	/** 攻略済みのクエスト名一覧のリスト */
-	protected List<String> completeQuestNames;
 
-	/**
-	 * 攻略済みのクエスト名一覧のリストを取得
-	 *
-	 * @return 攻略済みのクエスト名一覧のリスト
-	 */
 	public List<String> getCompleteQuestNames() {
 		return completeQuestNames;
 	}
 
-	/**
-	 * 攻略済みのクエスト名一覧のリストを設定
-	 *
-	 * @param completeQuestNames 攻略済みのクエスト名一覧のリスト
-	 */
 	public void setCompleteQuestNames(List<String> completeQuestNames) {
 		this.completeQuestNames = completeQuestNames;
 	}
 
-	/**
-	 * 攻略済みのクエスト名一覧のリストを設定
-	 *
-	 * @param completeQuestNames 攻略済みのクエスト名一覧のリスト
-	 * @return this
-	 */
 	public CompletedQuestList withCompleteQuestNames(List<String> completeQuestNames) {
 		this.completeQuestNames = completeQuestNames;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public CompletedQuestList withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public CompletedQuestList withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> completeQuestNames = new ArrayList<>();
-        if(this.completeQuestNames != null) {
-            for(String item : this.completeQuestNames) {
-                completeQuestNames.add(JsonNodeFactory.instance.textNode(item));
-            }
+    public static CompletedQuestList fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("completedQuestListId", this.getCompletedQuestListId())
-            .put("userId", this.getUserId())
-            .put("questGroupName", this.getQuestGroupName())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        body_.set("completeQuestNames", JsonNodeFactory.instance.arrayNode().addAll(completeQuestNames));
-        return body_;
+        return new CompletedQuestList()
+            .withCompletedQuestListId(data.get("completedQuestListId") == null || data.get("completedQuestListId").isNull() ? null : data.get("completedQuestListId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withQuestGroupName(data.get("questGroupName") == null || data.get("questGroupName").isNull() ? null : data.get("questGroupName").asText())
+            .withCompleteQuestNames(data.get("completeQuestNames") == null || data.get("completeQuestNames").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeQuestNames").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("completedQuestListId", getCompletedQuestListId());
+                put("userId", getUserId());
+                put("questGroupName", getQuestGroupName());
+                put("completeQuestNames", getCompleteQuestNames() == null ? new ArrayList<String>() :
+                    getCompleteQuestNames().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(CompletedQuestList o) {
 		return completedQuestListId.compareTo(o.completedQuestListId);

@@ -16,82 +16,62 @@
 
 package io.gs2.watch.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.watch.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 累積値を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetCumulativeRequest extends Gs2BasicRequest<GetCumulativeRequest> {
-
-    /** 名前 */
     private String name;
-
-    /**
-     * 名前を取得
-     *
-     * @return 累積値を取得
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 名前を設定
-     *
-     * @param name 累積値を取得
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * 名前を設定
-     *
-     * @param name 累積値を取得
-     * @return this
-     */
-    public GetCumulativeRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** リソースのGRN */
     private String resourceGrn;
 
-    /**
-     * リソースのGRNを取得
-     *
-     * @return 累積値を取得
-     */
-    public String getResourceGrn() {
-        return resourceGrn;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public GetCumulativeRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getResourceGrn() {
+		return resourceGrn;
+	}
+
+	public void setResourceGrn(String resourceGrn) {
+		this.resourceGrn = resourceGrn;
+	}
+
+	public GetCumulativeRequest withResourceGrn(String resourceGrn) {
+		this.resourceGrn = resourceGrn;
+		return this;
+	}
+
+    public static GetCumulativeRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetCumulativeRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withResourceGrn(data.get("resourceGrn") == null || data.get("resourceGrn").isNull() ? null : data.get("resourceGrn").asText());
     }
 
-    /**
-     * リソースのGRNを設定
-     *
-     * @param resourceGrn 累積値を取得
-     */
-    public void setResourceGrn(String resourceGrn) {
-        this.resourceGrn = resourceGrn;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("resourceGrn", getResourceGrn());
+            }}
+        );
     }
-
-    /**
-     * リソースのGRNを設定
-     *
-     * @param resourceGrn 累積値を取得
-     * @return this
-     */
-    public GetCumulativeRequest withResourceGrn(String resourceGrn) {
-        setResourceGrn(resourceGrn);
-        return this;
-    }
-
 }

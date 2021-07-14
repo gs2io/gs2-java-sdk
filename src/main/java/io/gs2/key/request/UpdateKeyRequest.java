@@ -16,114 +16,78 @@
 
 package io.gs2.key.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.key.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * 暗号鍵を更新 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateKeyRequest extends Gs2BasicRequest<UpdateKeyRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return 暗号鍵を更新
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 暗号鍵を更新
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName 暗号鍵を更新
-     * @return this
-     */
-    public UpdateKeyRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** 暗号鍵名 */
     private String keyName;
-
-    /**
-     * 暗号鍵名を取得
-     *
-     * @return 暗号鍵を更新
-     */
-    public String getKeyName() {
-        return keyName;
-    }
-
-    /**
-     * 暗号鍵名を設定
-     *
-     * @param keyName 暗号鍵を更新
-     */
-    public void setKeyName(String keyName) {
-        this.keyName = keyName;
-    }
-
-    /**
-     * 暗号鍵名を設定
-     *
-     * @param keyName 暗号鍵を更新
-     * @return this
-     */
-    public UpdateKeyRequest withKeyName(String keyName) {
-        setKeyName(keyName);
-        return this;
-    }
-
-    /** 説明文 */
     private String description;
 
-    /**
-     * 説明文を取得
-     *
-     * @return 暗号鍵を更新
-     */
-    public String getDescription() {
-        return description;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public UpdateKeyRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getKeyName() {
+		return keyName;
+	}
+
+	public void setKeyName(String keyName) {
+		this.keyName = keyName;
+	}
+
+	public UpdateKeyRequest withKeyName(String keyName) {
+		this.keyName = keyName;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UpdateKeyRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+    public static UpdateKeyRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new UpdateKeyRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withKeyName(data.get("keyName") == null || data.get("keyName").isNull() ? null : data.get("keyName").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText());
     }
 
-    /**
-     * 説明文を設定
-     *
-     * @param description 暗号鍵を更新
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("keyName", getKeyName());
+                put("description", getDescription());
+            }}
+        );
     }
-
-    /**
-     * 説明文を設定
-     *
-     * @param description 暗号鍵を更新
-     * @return this
-     */
-    public UpdateKeyRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
 }

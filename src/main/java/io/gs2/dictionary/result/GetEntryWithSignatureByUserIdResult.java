@@ -16,79 +16,80 @@
 
 package io.gs2.dictionary.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.dictionary.model.*;
+import io.gs2.dictionary.model.Entry;
 
-/**
- * ユーザIDを指定してエントリーを取得 のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetEntryWithSignatureByUserIdResult implements IResult, Serializable {
-	/** エントリー */
-	private Entry item;
-	/** 署名対象のエントリー情報 */
-	private String body;
-	/** 署名 */
-	private String signature;
+    private Entry item;
+    private String body;
+    private String signature;
 
-	/**
-	 * エントリーを取得
-	 *
-	 * @return ユーザIDを指定してエントリーを取得
-	 */
 	public Entry getItem() {
 		return item;
 	}
 
-	/**
-	 * エントリーを設定
-	 *
-	 * @param item ユーザIDを指定してエントリーを取得
-	 */
 	public void setItem(Entry item) {
 		this.item = item;
 	}
 
-	/**
-	 * 署名対象のエントリー情報を取得
-	 *
-	 * @return ユーザIDを指定してエントリーを取得
-	 */
+	public GetEntryWithSignatureByUserIdResult withItem(Entry item) {
+		this.item = item;
+		return this;
+	}
+
 	public String getBody() {
 		return body;
 	}
 
-	/**
-	 * 署名対象のエントリー情報を設定
-	 *
-	 * @param body ユーザIDを指定してエントリーを取得
-	 */
 	public void setBody(String body) {
 		this.body = body;
 	}
 
-	/**
-	 * 署名を取得
-	 *
-	 * @return ユーザIDを指定してエントリーを取得
-	 */
+	public GetEntryWithSignatureByUserIdResult withBody(String body) {
+		this.body = body;
+		return this;
+	}
+
 	public String getSignature() {
 		return signature;
 	}
 
-	/**
-	 * 署名を設定
-	 *
-	 * @param signature ユーザIDを指定してエントリーを取得
-	 */
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
+
+	public GetEntryWithSignatureByUserIdResult withSignature(String signature) {
+		this.signature = signature;
+		return this;
+	}
+
+    public static GetEntryWithSignatureByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetEntryWithSignatureByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Entry.fromJson(data.get("item")))
+            .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
+            .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("body", getBody());
+                put("signature", getSignature());
+            }}
+        );
+    }
 }

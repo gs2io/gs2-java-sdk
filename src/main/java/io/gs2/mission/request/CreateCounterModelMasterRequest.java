@@ -16,210 +16,137 @@
 
 package io.gs2.mission.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.mission.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.mission.model.CounterScopeModel;
 
-/**
- * カウンターの種類マスターを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateCounterModelMasterRequest extends Gs2BasicRequest<CreateCounterModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return カウンターの種類マスターを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName カウンターの種類マスターを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName カウンターの種類マスターを新規作成
-     * @return this
-     */
-    public CreateCounterModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** カウンター名 */
     private String name;
-
-    /**
-     * カウンター名を取得
-     *
-     * @return カウンターの種類マスターを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * カウンター名を設定
-     *
-     * @param name カウンターの種類マスターを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * カウンター名を設定
-     *
-     * @param name カウンターの種類マスターを新規作成
-     * @return this
-     */
-    public CreateCounterModelMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** メタデータ */
     private String metadata;
-
-    /**
-     * メタデータを取得
-     *
-     * @return カウンターの種類マスターを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata カウンターの種類マスターを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * メタデータを設定
-     *
-     * @param metadata カウンターの種類マスターを新規作成
-     * @return this
-     */
-    public CreateCounterModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** カウンターの種類マスターの説明 */
     private String description;
-
-    /**
-     * カウンターの種類マスターの説明を取得
-     *
-     * @return カウンターの種類マスターを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * カウンターの種類マスターの説明を設定
-     *
-     * @param description カウンターの種類マスターを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * カウンターの種類マスターの説明を設定
-     *
-     * @param description カウンターの種類マスターを新規作成
-     * @return this
-     */
-    public CreateCounterModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** カウンターのリセットタイミング */
     private List<CounterScopeModel> scopes;
-
-    /**
-     * カウンターのリセットタイミングを取得
-     *
-     * @return カウンターの種類マスターを新規作成
-     */
-    public List<CounterScopeModel> getScopes() {
-        return scopes;
-    }
-
-    /**
-     * カウンターのリセットタイミングを設定
-     *
-     * @param scopes カウンターの種類マスターを新規作成
-     */
-    public void setScopes(List<CounterScopeModel> scopes) {
-        this.scopes = scopes;
-    }
-
-    /**
-     * カウンターのリセットタイミングを設定
-     *
-     * @param scopes カウンターの種類マスターを新規作成
-     * @return this
-     */
-    public CreateCounterModelMasterRequest withScopes(List<CounterScopeModel> scopes) {
-        setScopes(scopes);
-        return this;
-    }
-
-    /** カウントアップ可能な期間を指定するイベントマスター のGRN */
     private String challengePeriodEventId;
 
-    /**
-     * カウントアップ可能な期間を指定するイベントマスター のGRNを取得
-     *
-     * @return カウンターの種類マスターを新規作成
-     */
-    public String getChallengePeriodEventId() {
-        return challengePeriodEventId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateCounterModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateCounterModelMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateCounterModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateCounterModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public List<CounterScopeModel> getScopes() {
+		return scopes;
+	}
+
+	public void setScopes(List<CounterScopeModel> scopes) {
+		this.scopes = scopes;
+	}
+
+	public CreateCounterModelMasterRequest withScopes(List<CounterScopeModel> scopes) {
+		this.scopes = scopes;
+		return this;
+	}
+
+	public String getChallengePeriodEventId() {
+		return challengePeriodEventId;
+	}
+
+	public void setChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+	}
+
+	public CreateCounterModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+		return this;
+	}
+
+    public static CreateCounterModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateCounterModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? new ArrayList<CounterScopeModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scopes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return CounterScopeModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText());
     }
 
-    /**
-     * カウントアップ可能な期間を指定するイベントマスター のGRNを設定
-     *
-     * @param challengePeriodEventId カウンターの種類マスターを新規作成
-     */
-    public void setChallengePeriodEventId(String challengePeriodEventId) {
-        this.challengePeriodEventId = challengePeriodEventId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("description", getDescription());
+                put("scopes", getScopes() == null ? new ArrayList<CounterScopeModel>() :
+                    getScopes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("challengePeriodEventId", getChallengePeriodEventId());
+            }}
+        );
     }
-
-    /**
-     * カウントアップ可能な期間を指定するイベントマスター のGRNを設定
-     *
-     * @param challengePeriodEventId カウンターの種類マスターを新規作成
-     * @return this
-     */
-    public CreateCounterModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
-        setChallengePeriodEventId(challengePeriodEventId);
-        return this;
-    }
-
 }

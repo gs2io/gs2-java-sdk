@@ -16,285 +16,146 @@
 
 package io.gs2.deploy.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * スタック
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Stack implements IModel, Serializable, Comparable<Stack> {
-	/** スタック */
-	protected String stackId;
+	private String stackId;
+	private String name;
+	private String description;
+	private String template;
+	private String status;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * スタックを取得
-	 *
-	 * @return スタック
-	 */
 	public String getStackId() {
 		return stackId;
 	}
 
-	/**
-	 * スタックを設定
-	 *
-	 * @param stackId スタック
-	 */
 	public void setStackId(String stackId) {
 		this.stackId = stackId;
 	}
 
-	/**
-	 * スタックを設定
-	 *
-	 * @param stackId スタック
-	 * @return this
-	 */
 	public Stack withStackId(String stackId) {
 		this.stackId = stackId;
 		return this;
 	}
-	/** オーナーID */
-	protected String ownerId;
 
-	/**
-	 * オーナーIDを取得
-	 *
-	 * @return オーナーID
-	 */
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 */
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	/**
-	 * オーナーIDを設定
-	 *
-	 * @param ownerId オーナーID
-	 * @return this
-	 */
-	public Stack withOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-		return this;
-	}
-	/** スタック名 */
-	protected String name;
-
-	/**
-	 * スタック名を取得
-	 *
-	 * @return スタック名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * スタック名を設定
-	 *
-	 * @param name スタック名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * スタック名を設定
-	 *
-	 * @param name スタック名
-	 * @return this
-	 */
 	public Stack withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** スタックの説明 */
-	protected String description;
 
-	/**
-	 * スタックの説明を取得
-	 *
-	 * @return スタックの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * スタックの説明を設定
-	 *
-	 * @param description スタックの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * スタックの説明を設定
-	 *
-	 * @param description スタックの説明
-	 * @return this
-	 */
 	public Stack withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** テンプレートデータ */
-	protected String template;
 
-	/**
-	 * テンプレートデータを取得
-	 *
-	 * @return テンプレートデータ
-	 */
 	public String getTemplate() {
 		return template;
 	}
 
-	/**
-	 * テンプレートデータを設定
-	 *
-	 * @param template テンプレートデータ
-	 */
 	public void setTemplate(String template) {
 		this.template = template;
 	}
 
-	/**
-	 * テンプレートデータを設定
-	 *
-	 * @param template テンプレートデータ
-	 * @return this
-	 */
 	public Stack withTemplate(String template) {
 		this.template = template;
 		return this;
 	}
-	/** 実行状態 */
-	protected String status;
 
-	/**
-	 * 実行状態を取得
-	 *
-	 * @return 実行状態
-	 */
 	public String getStatus() {
 		return status;
 	}
 
-	/**
-	 * 実行状態を設定
-	 *
-	 * @param status 実行状態
-	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	/**
-	 * 実行状態を設定
-	 *
-	 * @param status 実行状態
-	 * @return this
-	 */
 	public Stack withStatus(String status) {
 		this.status = status;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Stack withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public Stack withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("stackId", this.getStackId())
-            .put("ownerId", this.getOwnerId())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("template", this.getTemplate())
-            .put("status", this.getStatus())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static Stack fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new Stack()
+            .withStackId(data.get("stackId") == null || data.get("stackId").isNull() ? null : data.get("stackId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTemplate(data.get("template") == null || data.get("template").isNull() ? null : data.get("template").asText())
+            .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("stackId", getStackId());
+                put("name", getName());
+                put("description", getDescription());
+                put("template", getTemplate());
+                put("status", getStatus());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Stack o) {
 		return stackId.compareTo(o.stackId);
@@ -305,7 +166,6 @@ public class Stack implements IModel, Serializable, Comparable<Stack> {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.stackId == null) ? 0 : this.stackId.hashCode());
-        result = prime * result + ((this.ownerId == null) ? 0 : this.ownerId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.template == null) ? 0 : this.template.hashCode());
@@ -327,11 +187,6 @@ public class Stack implements IModel, Serializable, Comparable<Stack> {
 		if (stackId == null) {
 			return other.stackId == null;
 		} else if (!stackId.equals(other.stackId)) {
-			return false;
-		}
-		if (ownerId == null) {
-			return other.ownerId == null;
-		} else if (!ownerId.equals(other.ownerId)) {
 			return false;
 		}
 		if (name == null) {

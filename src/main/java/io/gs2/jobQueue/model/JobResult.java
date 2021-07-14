@@ -16,221 +16,130 @@
 
 package io.gs2.jobQueue.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * ジョブ実行結果
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class JobResult implements IModel, Serializable, Comparable<JobResult> {
-	/** ジョブ実行結果 */
-	protected String jobResultId;
+	private String jobResultId;
+	private String jobId;
+	private Integer tryNumber;
+	private Integer statusCode;
+	private String result;
+	private Long tryAt;
 
-	/**
-	 * ジョブ実行結果を取得
-	 *
-	 * @return ジョブ実行結果
-	 */
 	public String getJobResultId() {
 		return jobResultId;
 	}
 
-	/**
-	 * ジョブ実行結果を設定
-	 *
-	 * @param jobResultId ジョブ実行結果
-	 */
 	public void setJobResultId(String jobResultId) {
 		this.jobResultId = jobResultId;
 	}
 
-	/**
-	 * ジョブ実行結果を設定
-	 *
-	 * @param jobResultId ジョブ実行結果
-	 * @return this
-	 */
 	public JobResult withJobResultId(String jobResultId) {
 		this.jobResultId = jobResultId;
 		return this;
 	}
-	/** ジョブ */
-	protected String jobId;
 
-	/**
-	 * ジョブを取得
-	 *
-	 * @return ジョブ
-	 */
 	public String getJobId() {
 		return jobId;
 	}
 
-	/**
-	 * ジョブを設定
-	 *
-	 * @param jobId ジョブ
-	 */
 	public void setJobId(String jobId) {
 		this.jobId = jobId;
 	}
 
-	/**
-	 * ジョブを設定
-	 *
-	 * @param jobId ジョブ
-	 * @return this
-	 */
 	public JobResult withJobId(String jobId) {
 		this.jobId = jobId;
 		return this;
 	}
-	/** None */
-	protected Integer tryNumber;
 
-	/**
-	 * Noneを取得
-	 *
-	 * @return None
-	 */
 	public Integer getTryNumber() {
 		return tryNumber;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param tryNumber None
-	 */
 	public void setTryNumber(Integer tryNumber) {
 		this.tryNumber = tryNumber;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param tryNumber None
-	 * @return this
-	 */
 	public JobResult withTryNumber(Integer tryNumber) {
 		this.tryNumber = tryNumber;
 		return this;
 	}
-	/** None */
-	protected Integer statusCode;
 
-	/**
-	 * Noneを取得
-	 *
-	 * @return None
-	 */
 	public Integer getStatusCode() {
 		return statusCode;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param statusCode None
-	 */
 	public void setStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 	}
 
-	/**
-	 * Noneを設定
-	 *
-	 * @param statusCode None
-	 * @return this
-	 */
 	public JobResult withStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 		return this;
 	}
-	/** レスポンスの内容 */
-	protected String result;
 
-	/**
-	 * レスポンスの内容を取得
-	 *
-	 * @return レスポンスの内容
-	 */
 	public String getResult() {
 		return result;
 	}
 
-	/**
-	 * レスポンスの内容を設定
-	 *
-	 * @param result レスポンスの内容
-	 */
 	public void setResult(String result) {
 		this.result = result;
 	}
 
-	/**
-	 * レスポンスの内容を設定
-	 *
-	 * @param result レスポンスの内容
-	 * @return this
-	 */
 	public JobResult withResult(String result) {
 		this.result = result;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long tryAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getTryAt() {
 		return tryAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param tryAt 作成日時
-	 */
 	public void setTryAt(Long tryAt) {
 		this.tryAt = tryAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param tryAt 作成日時
-	 * @return this
-	 */
 	public JobResult withTryAt(Long tryAt) {
 		this.tryAt = tryAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("jobResultId", this.getJobResultId())
-            .put("jobId", this.getJobId())
-            .put("tryNumber", this.getTryNumber())
-            .put("statusCode", this.getStatusCode())
-            .put("result", this.getResult())
-            .put("tryAt", this.getTryAt());
-        return body_;
+    public static JobResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new JobResult()
+            .withJobResultId(data.get("jobResultId") == null || data.get("jobResultId").isNull() ? null : data.get("jobResultId").asText())
+            .withJobId(data.get("jobId") == null || data.get("jobId").isNull() ? null : data.get("jobId").asText())
+            .withTryNumber(data.get("tryNumber") == null || data.get("tryNumber").isNull() ? null : data.get("tryNumber").intValue())
+            .withStatusCode(data.get("statusCode") == null || data.get("statusCode").isNull() ? null : data.get("statusCode").intValue())
+            .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText())
+            .withTryAt(data.get("tryAt") == null || data.get("tryAt").isNull() ? null : data.get("tryAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("jobResultId", getJobResultId());
+                put("jobId", getJobId());
+                put("tryNumber", getTryNumber());
+                put("statusCode", getStatusCode());
+                put("result", getResult());
+                put("tryAt", getTryAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(JobResult o) {
 		return jobResultId.compareTo(o.jobResultId);

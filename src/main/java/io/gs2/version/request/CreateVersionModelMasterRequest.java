@@ -16,338 +16,191 @@
 
 package io.gs2.version.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.version.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.version.model.Version;
 
-/**
- * バージョンマスターを新規作成 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateVersionModelMasterRequest extends Gs2BasicRequest<CreateVersionModelMasterRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName バージョンマスターを新規作成
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** バージョン名 */
     private String name;
-
-    /**
-     * バージョン名を取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * バージョン名を設定
-     *
-     * @param name バージョンマスターを新規作成
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * バージョン名を設定
-     *
-     * @param name バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withName(String name) {
-        setName(name);
-        return this;
-    }
-
-    /** バージョンマスターの説明 */
     private String description;
-
-    /**
-     * バージョンマスターの説明を取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * バージョンマスターの説明を設定
-     *
-     * @param description バージョンマスターを新規作成
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * バージョンマスターの説明を設定
-     *
-     * @param description バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withDescription(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    /** バージョンのメタデータ */
     private String metadata;
-
-    /**
-     * バージョンのメタデータを取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public String getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * バージョンのメタデータを設定
-     *
-     * @param metadata バージョンマスターを新規作成
-     */
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * バージョンのメタデータを設定
-     *
-     * @param metadata バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withMetadata(String metadata) {
-        setMetadata(metadata);
-        return this;
-    }
-
-    /** バージョンアップを促すバージョン */
     private Version warningVersion;
-
-    /**
-     * バージョンアップを促すバージョンを取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public Version getWarningVersion() {
-        return warningVersion;
-    }
-
-    /**
-     * バージョンアップを促すバージョンを設定
-     *
-     * @param warningVersion バージョンマスターを新規作成
-     */
-    public void setWarningVersion(Version warningVersion) {
-        this.warningVersion = warningVersion;
-    }
-
-    /**
-     * バージョンアップを促すバージョンを設定
-     *
-     * @param warningVersion バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withWarningVersion(Version warningVersion) {
-        setWarningVersion(warningVersion);
-        return this;
-    }
-
-    /** バージョンチェックを蹴るバージョン */
     private Version errorVersion;
-
-    /**
-     * バージョンチェックを蹴るバージョンを取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public Version getErrorVersion() {
-        return errorVersion;
-    }
-
-    /**
-     * バージョンチェックを蹴るバージョンを設定
-     *
-     * @param errorVersion バージョンマスターを新規作成
-     */
-    public void setErrorVersion(Version errorVersion) {
-        this.errorVersion = errorVersion;
-    }
-
-    /**
-     * バージョンチェックを蹴るバージョンを設定
-     *
-     * @param errorVersion バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withErrorVersion(Version errorVersion) {
-        setErrorVersion(errorVersion);
-        return this;
-    }
-
-    /** 判定に使用するバージョン値の種類 */
     private String scope;
-
-    /**
-     * 判定に使用するバージョン値の種類を取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public String getScope() {
-        return scope;
-    }
-
-    /**
-     * 判定に使用するバージョン値の種類を設定
-     *
-     * @param scope バージョンマスターを新規作成
-     */
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    /**
-     * 判定に使用するバージョン値の種類を設定
-     *
-     * @param scope バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withScope(String scope) {
-        setScope(scope);
-        return this;
-    }
-
-    /** 現在のバージョン */
     private Version currentVersion;
-
-    /**
-     * 現在のバージョンを取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public Version getCurrentVersion() {
-        return currentVersion;
-    }
-
-    /**
-     * 現在のバージョンを設定
-     *
-     * @param currentVersion バージョンマスターを新規作成
-     */
-    public void setCurrentVersion(Version currentVersion) {
-        this.currentVersion = currentVersion;
-    }
-
-    /**
-     * 現在のバージョンを設定
-     *
-     * @param currentVersion バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withCurrentVersion(Version currentVersion) {
-        setCurrentVersion(currentVersion);
-        return this;
-    }
-
-    /** 判定するバージョン値に署名検証を必要とするか */
     private Boolean needSignature;
-
-    /**
-     * 判定するバージョン値に署名検証を必要とするかを取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public Boolean getNeedSignature() {
-        return needSignature;
-    }
-
-    /**
-     * 判定するバージョン値に署名検証を必要とするかを設定
-     *
-     * @param needSignature バージョンマスターを新規作成
-     */
-    public void setNeedSignature(Boolean needSignature) {
-        this.needSignature = needSignature;
-    }
-
-    /**
-     * 判定するバージョン値に署名検証を必要とするかを設定
-     *
-     * @param needSignature バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withNeedSignature(Boolean needSignature) {
-        setNeedSignature(needSignature);
-        return this;
-    }
-
-    /** 署名検証に使用する暗号鍵 のGRN */
     private String signatureKeyId;
 
-    /**
-     * 署名検証に使用する暗号鍵 のGRNを取得
-     *
-     * @return バージョンマスターを新規作成
-     */
-    public String getSignatureKeyId() {
-        return signatureKeyId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public CreateVersionModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CreateVersionModelMasterRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CreateVersionModelMasterRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+
+	public CreateVersionModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+
+	public Version getWarningVersion() {
+		return warningVersion;
+	}
+
+	public void setWarningVersion(Version warningVersion) {
+		this.warningVersion = warningVersion;
+	}
+
+	public CreateVersionModelMasterRequest withWarningVersion(Version warningVersion) {
+		this.warningVersion = warningVersion;
+		return this;
+	}
+
+	public Version getErrorVersion() {
+		return errorVersion;
+	}
+
+	public void setErrorVersion(Version errorVersion) {
+		this.errorVersion = errorVersion;
+	}
+
+	public CreateVersionModelMasterRequest withErrorVersion(Version errorVersion) {
+		this.errorVersion = errorVersion;
+		return this;
+	}
+
+	public String getScope() {
+		return scope;
+	}
+
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
+
+	public CreateVersionModelMasterRequest withScope(String scope) {
+		this.scope = scope;
+		return this;
+	}
+
+	public Version getCurrentVersion() {
+		return currentVersion;
+	}
+
+	public void setCurrentVersion(Version currentVersion) {
+		this.currentVersion = currentVersion;
+	}
+
+	public CreateVersionModelMasterRequest withCurrentVersion(Version currentVersion) {
+		this.currentVersion = currentVersion;
+		return this;
+	}
+
+	public Boolean getNeedSignature() {
+		return needSignature;
+	}
+
+	public void setNeedSignature(Boolean needSignature) {
+		this.needSignature = needSignature;
+	}
+
+	public CreateVersionModelMasterRequest withNeedSignature(Boolean needSignature) {
+		this.needSignature = needSignature;
+		return this;
+	}
+
+	public String getSignatureKeyId() {
+		return signatureKeyId;
+	}
+
+	public void setSignatureKeyId(String signatureKeyId) {
+		this.signatureKeyId = signatureKeyId;
+	}
+
+	public CreateVersionModelMasterRequest withSignatureKeyId(String signatureKeyId) {
+		this.signatureKeyId = signatureKeyId;
+		return this;
+	}
+
+    public static CreateVersionModelMasterRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateVersionModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withWarningVersion(data.get("warningVersion") == null || data.get("warningVersion").isNull() ? null : Version.fromJson(data.get("warningVersion")))
+            .withErrorVersion(data.get("errorVersion") == null || data.get("errorVersion").isNull() ? null : Version.fromJson(data.get("errorVersion")))
+            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
+            .withCurrentVersion(data.get("currentVersion") == null || data.get("currentVersion").isNull() ? null : Version.fromJson(data.get("currentVersion")))
+            .withNeedSignature(data.get("needSignature") == null || data.get("needSignature").isNull() ? null : data.get("needSignature").booleanValue())
+            .withSignatureKeyId(data.get("signatureKeyId") == null || data.get("signatureKeyId").isNull() ? null : data.get("signatureKeyId").asText());
     }
 
-    /**
-     * 署名検証に使用する暗号鍵 のGRNを設定
-     *
-     * @param signatureKeyId バージョンマスターを新規作成
-     */
-    public void setSignatureKeyId(String signatureKeyId) {
-        this.signatureKeyId = signatureKeyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("warningVersion", getWarningVersion() != null ? getWarningVersion().toJson() : null);
+                put("errorVersion", getErrorVersion() != null ? getErrorVersion().toJson() : null);
+                put("scope", getScope());
+                put("currentVersion", getCurrentVersion() != null ? getCurrentVersion().toJson() : null);
+                put("needSignature", getNeedSignature());
+                put("signatureKeyId", getSignatureKeyId());
+            }}
+        );
     }
-
-    /**
-     * 署名検証に使用する暗号鍵 のGRNを設定
-     *
-     * @param signatureKeyId バージョンマスターを新規作成
-     * @return this
-     */
-    public CreateVersionModelMasterRequest withSignatureKeyId(String signatureKeyId) {
-        setSignatureKeyId(signatureKeyId);
-        return this;
-    }
-
 }

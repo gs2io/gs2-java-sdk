@@ -16,146 +16,78 @@
 
 package io.gs2.money.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.money.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * レシートの一覧を取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetByUserIdAndTransactionIdRequest extends Gs2BasicRequest<GetByUserIdAndTransactionIdRequest> {
-
-    /** ネームスペースの名前 */
     private String namespaceName;
-
-    /**
-     * ネームスペースの名前を取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName レシートの一覧を取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペースの名前を設定
-     *
-     * @param namespaceName レシートの一覧を取得
-     * @return this
-     */
-    public GetByUserIdAndTransactionIdRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** ユーザーID */
     private String userId;
-
-    /**
-     * ユーザーIDを取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId レシートの一覧を取得
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * ユーザーIDを設定
-     *
-     * @param userId レシートの一覧を取得
-     * @return this
-     */
-    public GetByUserIdAndTransactionIdRequest withUserId(String userId) {
-        setUserId(userId);
-        return this;
-    }
-
-    /** トランザクションID */
     private String transactionId;
 
-    /**
-     * トランザクションIDを取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public String getTransactionId() {
-        return transactionId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetByUserIdAndTransactionIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public GetByUserIdAndTransactionIdRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public GetByUserIdAndTransactionIdRequest withTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+		return this;
+	}
+
+    public static GetByUserIdAndTransactionIdRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetByUserIdAndTransactionIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText());
     }
 
-    /**
-     * トランザクションIDを設定
-     *
-     * @param transactionId レシートの一覧を取得
-     */
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("userId", getUserId());
+                put("transactionId", getTransactionId());
+            }}
+        );
     }
-
-    /**
-     * トランザクションIDを設定
-     *
-     * @param transactionId レシートの一覧を取得
-     * @return this
-     */
-    public GetByUserIdAndTransactionIdRequest withTransactionId(String transactionId) {
-        setTransactionId(transactionId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return レシートの一覧を取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider レシートの一覧を取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider レシートの一覧を取得
-     * @return this
-     */
-    public GetByUserIdAndTransactionIdRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
 }

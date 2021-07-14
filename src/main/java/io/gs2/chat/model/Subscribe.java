@@ -16,195 +16,124 @@
 
 package io.gs2.chat.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 購読
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
-	/** 購読 */
-	protected String subscribeId;
+	private String subscribeId;
+	private String userId;
+	private String roomName;
+	private List<NotificationType> notificationTypes;
+	private Long createdAt;
 
-	/**
-	 * 購読を取得
-	 *
-	 * @return 購読
-	 */
 	public String getSubscribeId() {
 		return subscribeId;
 	}
 
-	/**
-	 * 購読を設定
-	 *
-	 * @param subscribeId 購読
-	 */
 	public void setSubscribeId(String subscribeId) {
 		this.subscribeId = subscribeId;
 	}
 
-	/**
-	 * 購読を設定
-	 *
-	 * @param subscribeId 購読
-	 * @return this
-	 */
 	public Subscribe withSubscribeId(String subscribeId) {
 		this.subscribeId = subscribeId;
 		return this;
 	}
-	/** 購読するユーザID */
-	protected String userId;
 
-	/**
-	 * 購読するユーザIDを取得
-	 *
-	 * @return 購読するユーザID
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * 購読するユーザIDを設定
-	 *
-	 * @param userId 購読するユーザID
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * 購読するユーザIDを設定
-	 *
-	 * @param userId 購読するユーザID
-	 * @return this
-	 */
 	public Subscribe withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	/** 購読するルーム名 */
-	protected String roomName;
 
-	/**
-	 * 購読するルーム名を取得
-	 *
-	 * @return 購読するルーム名
-	 */
 	public String getRoomName() {
 		return roomName;
 	}
 
-	/**
-	 * 購読するルーム名を設定
-	 *
-	 * @param roomName 購読するルーム名
-	 */
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
 
-	/**
-	 * 購読するルーム名を設定
-	 *
-	 * @param roomName 購読するルーム名
-	 * @return this
-	 */
 	public Subscribe withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-	/** 新着メッセージ通知を受け取るカテゴリリスト */
-	protected List<NotificationType> notificationTypes;
 
-	/**
-	 * 新着メッセージ通知を受け取るカテゴリリストを取得
-	 *
-	 * @return 新着メッセージ通知を受け取るカテゴリリスト
-	 */
 	public List<NotificationType> getNotificationTypes() {
 		return notificationTypes;
 	}
 
-	/**
-	 * 新着メッセージ通知を受け取るカテゴリリストを設定
-	 *
-	 * @param notificationTypes 新着メッセージ通知を受け取るカテゴリリスト
-	 */
 	public void setNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 	}
 
-	/**
-	 * 新着メッセージ通知を受け取るカテゴリリストを設定
-	 *
-	 * @param notificationTypes 新着メッセージ通知を受け取るカテゴリリスト
-	 * @return this
-	 */
 	public Subscribe withNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public Subscribe withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-        List<JsonNode> notificationTypes = new ArrayList<>();
-        if(this.notificationTypes != null) {
-            for(NotificationType item : this.notificationTypes) {
-                notificationTypes.add(item.toJson());
-            }
+    public static Subscribe fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
         }
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("subscribeId", this.getSubscribeId())
-            .put("userId", this.getUserId())
-            .put("roomName", this.getRoomName())
-            .put("createdAt", this.getCreatedAt());
-        body_.set("notificationTypes", JsonNodeFactory.instance.arrayNode().addAll(notificationTypes));
-        return body_;
+        return new Subscribe()
+            .withSubscribeId(data.get("subscribeId") == null || data.get("subscribeId").isNull() ? null : data.get("subscribeId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
+            .withNotificationTypes(data.get("notificationTypes") == null || data.get("notificationTypes").isNull() ? new ArrayList<NotificationType>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("notificationTypes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return NotificationType.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("subscribeId", getSubscribeId());
+                put("userId", getUserId());
+                put("roomName", getRoomName());
+                put("notificationTypes", getNotificationTypes() == null ? new ArrayList<NotificationType>() :
+                    getNotificationTypes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(Subscribe o) {
 		return subscribeId.compareTo(o.subscribeId);

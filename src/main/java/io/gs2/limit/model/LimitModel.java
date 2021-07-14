@@ -16,253 +16,146 @@
 
 package io.gs2.limit.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * 回数制限の種類
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LimitModel implements IModel, Serializable, Comparable<LimitModel> {
-	/** 回数制限の種類 */
-	protected String limitModelId;
+	private String limitModelId;
+	private String name;
+	private String metadata;
+	private String resetType;
+	private Integer resetDayOfMonth;
+	private String resetDayOfWeek;
+	private Integer resetHour;
 
-	/**
-	 * 回数制限の種類を取得
-	 *
-	 * @return 回数制限の種類
-	 */
 	public String getLimitModelId() {
 		return limitModelId;
 	}
 
-	/**
-	 * 回数制限の種類を設定
-	 *
-	 * @param limitModelId 回数制限の種類
-	 */
 	public void setLimitModelId(String limitModelId) {
 		this.limitModelId = limitModelId;
 	}
 
-	/**
-	 * 回数制限の種類を設定
-	 *
-	 * @param limitModelId 回数制限の種類
-	 * @return this
-	 */
 	public LimitModel withLimitModelId(String limitModelId) {
 		this.limitModelId = limitModelId;
 		return this;
 	}
-	/** 回数制限の種類名 */
-	protected String name;
 
-	/**
-	 * 回数制限の種類名を取得
-	 *
-	 * @return 回数制限の種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 回数制限の種類名を設定
-	 *
-	 * @param name 回数制限の種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 回数制限の種類名を設定
-	 *
-	 * @param name 回数制限の種類名
-	 * @return this
-	 */
 	public LimitModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** 回数制限の種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * 回数制限の種類のメタデータを取得
-	 *
-	 * @return 回数制限の種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * 回数制限の種類のメタデータを設定
-	 *
-	 * @param metadata 回数制限の種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * 回数制限の種類のメタデータを設定
-	 *
-	 * @param metadata 回数制限の種類のメタデータ
-	 * @return this
-	 */
 	public LimitModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** リセットタイミング */
-	protected String resetType;
 
-	/**
-	 * リセットタイミングを取得
-	 *
-	 * @return リセットタイミング
-	 */
 	public String getResetType() {
 		return resetType;
 	}
 
-	/**
-	 * リセットタイミングを設定
-	 *
-	 * @param resetType リセットタイミング
-	 */
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
 
-	/**
-	 * リセットタイミングを設定
-	 *
-	 * @param resetType リセットタイミング
-	 * @return this
-	 */
 	public LimitModel withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-	/** リセットをする日にち */
-	protected Integer resetDayOfMonth;
 
-	/**
-	 * リセットをする日にちを取得
-	 *
-	 * @return リセットをする日にち
-	 */
 	public Integer getResetDayOfMonth() {
 		return resetDayOfMonth;
 	}
 
-	/**
-	 * リセットをする日にちを設定
-	 *
-	 * @param resetDayOfMonth リセットをする日にち
-	 */
 	public void setResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 	}
 
-	/**
-	 * リセットをする日にちを設定
-	 *
-	 * @param resetDayOfMonth リセットをする日にち
-	 * @return this
-	 */
 	public LimitModel withResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 		return this;
 	}
-	/** リセットする曜日 */
-	protected String resetDayOfWeek;
 
-	/**
-	 * リセットする曜日を取得
-	 *
-	 * @return リセットする曜日
-	 */
 	public String getResetDayOfWeek() {
 		return resetDayOfWeek;
 	}
 
-	/**
-	 * リセットする曜日を設定
-	 *
-	 * @param resetDayOfWeek リセットする曜日
-	 */
 	public void setResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 	}
 
-	/**
-	 * リセットする曜日を設定
-	 *
-	 * @param resetDayOfWeek リセットする曜日
-	 * @return this
-	 */
 	public LimitModel withResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 		return this;
 	}
-	/** リセット時刻 */
-	protected Integer resetHour;
 
-	/**
-	 * リセット時刻を取得
-	 *
-	 * @return リセット時刻
-	 */
 	public Integer getResetHour() {
 		return resetHour;
 	}
 
-	/**
-	 * リセット時刻を設定
-	 *
-	 * @param resetHour リセット時刻
-	 */
 	public void setResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 	}
 
-	/**
-	 * リセット時刻を設定
-	 *
-	 * @param resetHour リセット時刻
-	 * @return this
-	 */
 	public LimitModel withResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("limitModelId", this.getLimitModelId())
-            .put("name", this.getName())
-            .put("metadata", this.getMetadata())
-            .put("resetType", this.getResetType())
-            .put("resetDayOfMonth", this.getResetDayOfMonth())
-            .put("resetDayOfWeek", this.getResetDayOfWeek())
-            .put("resetHour", this.getResetHour());
-        return body_;
+    public static LimitModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new LimitModel()
+            .withLimitModelId(data.get("limitModelId") == null || data.get("limitModelId").isNull() ? null : data.get("limitModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
+            .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
+            .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
+            .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("limitModelId", getLimitModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("resetType", getResetType());
+                put("resetDayOfMonth", getResetDayOfMonth());
+                put("resetDayOfWeek", getResetDayOfWeek());
+                put("resetHour", getResetHour());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(LimitModel o) {
 		return limitModelId.compareTo(o.limitModelId);

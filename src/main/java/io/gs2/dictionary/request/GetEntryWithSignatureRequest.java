@@ -16,178 +16,94 @@
 
 package io.gs2.dictionary.request;
 
-import org.json.JSONObject;
-import java.util.List;
-import java.util.Map;
-import io.gs2.dictionary.model.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 
-/**
- * エントリーを取得 のリクエストモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GetEntryWithSignatureRequest extends Gs2BasicRequest<GetEntryWithSignatureRequest> {
-
-    /** ネームスペース名 */
     private String namespaceName;
-
-    /**
-     * ネームスペース名を取得
-     *
-     * @return エントリーを取得
-     */
-    public String getNamespaceName() {
-        return namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName エントリーを取得
-     */
-    public void setNamespaceName(String namespaceName) {
-        this.namespaceName = namespaceName;
-    }
-
-    /**
-     * ネームスペース名を設定
-     *
-     * @param namespaceName エントリーを取得
-     * @return this
-     */
-    public GetEntryWithSignatureRequest withNamespaceName(String namespaceName) {
-        setNamespaceName(namespaceName);
-        return this;
-    }
-
-    /** エントリー名 */
+    private String accessToken;
     private String entryModelName;
-
-    /**
-     * エントリー名を取得
-     *
-     * @return エントリーを取得
-     */
-    public String getEntryModelName() {
-        return entryModelName;
-    }
-
-    /**
-     * エントリー名を設定
-     *
-     * @param entryModelName エントリーを取得
-     */
-    public void setEntryModelName(String entryModelName) {
-        this.entryModelName = entryModelName;
-    }
-
-    /**
-     * エントリー名を設定
-     *
-     * @param entryModelName エントリーを取得
-     * @return this
-     */
-    public GetEntryWithSignatureRequest withEntryModelName(String entryModelName) {
-        setEntryModelName(entryModelName);
-        return this;
-    }
-
-    /** 署名の発行に使用する暗号鍵 のGRN */
     private String keyId;
 
-    /**
-     * 署名の発行に使用する暗号鍵 のGRNを取得
-     *
-     * @return エントリーを取得
-     */
-    public String getKeyId() {
-        return keyId;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+
+	public GetEntryWithSignatureRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public GetEntryWithSignatureRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getEntryModelName() {
+		return entryModelName;
+	}
+
+	public void setEntryModelName(String entryModelName) {
+		this.entryModelName = entryModelName;
+	}
+
+	public GetEntryWithSignatureRequest withEntryModelName(String entryModelName) {
+		this.entryModelName = entryModelName;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public GetEntryWithSignatureRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
+    public static GetEntryWithSignatureRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new GetEntryWithSignatureRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withEntryModelName(data.get("entryModelName") == null || data.get("entryModelName").isNull() ? null : data.get("entryModelName").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
-    /**
-     * 署名の発行に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId エントリーを取得
-     */
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("accessToken", getAccessToken());
+                put("entryModelName", getEntryModelName());
+                put("keyId", getKeyId());
+            }}
+        );
     }
-
-    /**
-     * 署名の発行に使用する暗号鍵 のGRNを設定
-     *
-     * @param keyId エントリーを取得
-     * @return this
-     */
-    public GetEntryWithSignatureRequest withKeyId(String keyId) {
-        setKeyId(keyId);
-        return this;
-    }
-
-    /** 重複実行回避機能に使用するID */
-    private String xGs2DuplicationAvoider;
-
-    /**
-     * 重複実行回避機能に使用するIDを取得
-     *
-     * @return エントリーを取得
-     */
-    public String getDuplicationAvoider() {
-        return xGs2DuplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider エントリーを取得
-     */
-    public void setDuplicationAvoider(String duplicationAvoider) {
-        this.xGs2DuplicationAvoider = duplicationAvoider;
-    }
-
-    /**
-     * 重複実行回避機能に使用するIDを設定
-     *
-     * @param duplicationAvoider エントリーを取得
-     * @return this
-     */
-    public GetEntryWithSignatureRequest withDuplicationAvoider(String duplicationAvoider) {
-        setDuplicationAvoider(duplicationAvoider);
-        return this;
-    }
-
-    /** アクセストークン */
-    private String accessToken;
-
-    /**
-     * アクセストークンを取得
-     *
-     * @return アクセストークン
-     */
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * アクセストークンを設定
-     *
-     * @param accessToken アクセストークン
-     * @return this
-     */
-    public GetEntryWithSignatureRequest withAccessToken(String accessToken) {
-        setAccessToken(accessToken);
-        return this;
-    }
-
 }

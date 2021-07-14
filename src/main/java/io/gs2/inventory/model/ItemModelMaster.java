@@ -16,349 +16,194 @@
 
 package io.gs2.inventory.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gs2.core.model.IModel;
 
-/**
- * アイテムモデルマスター
- *
- * @author Game Server Services, Inc.
- *
- */
+
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ItemModelMaster implements IModel, Serializable, Comparable<ItemModelMaster> {
-	/** アイテムモデルマスター */
-	protected String itemModelId;
+	private String itemModelId;
+	private String inventoryName;
+	private String name;
+	private String description;
+	private String metadata;
+	private Long stackingLimit;
+	private Boolean allowMultipleStacks;
+	private Integer sortValue;
+	private Long createdAt;
+	private Long updatedAt;
 
-	/**
-	 * アイテムモデルマスターを取得
-	 *
-	 * @return アイテムモデルマスター
-	 */
 	public String getItemModelId() {
 		return itemModelId;
 	}
 
-	/**
-	 * アイテムモデルマスターを設定
-	 *
-	 * @param itemModelId アイテムモデルマスター
-	 */
 	public void setItemModelId(String itemModelId) {
 		this.itemModelId = itemModelId;
 	}
 
-	/**
-	 * アイテムモデルマスターを設定
-	 *
-	 * @param itemModelId アイテムモデルマスター
-	 * @return this
-	 */
 	public ItemModelMaster withItemModelId(String itemModelId) {
 		this.itemModelId = itemModelId;
 		return this;
 	}
-	/** アイテムの種類名 */
-	protected String inventoryName;
 
-	/**
-	 * アイテムの種類名を取得
-	 *
-	 * @return アイテムの種類名
-	 */
 	public String getInventoryName() {
 		return inventoryName;
 	}
 
-	/**
-	 * アイテムの種類名を設定
-	 *
-	 * @param inventoryName アイテムの種類名
-	 */
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
 
-	/**
-	 * アイテムの種類名を設定
-	 *
-	 * @param inventoryName アイテムの種類名
-	 * @return this
-	 */
 	public ItemModelMaster withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-	/** アイテムモデルの種類名 */
-	protected String name;
 
-	/**
-	 * アイテムモデルの種類名を取得
-	 *
-	 * @return アイテムモデルの種類名
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * アイテムモデルの種類名を設定
-	 *
-	 * @param name アイテムモデルの種類名
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * アイテムモデルの種類名を設定
-	 *
-	 * @param name アイテムモデルの種類名
-	 * @return this
-	 */
 	public ItemModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-	/** アイテムモデルマスターの説明 */
-	protected String description;
 
-	/**
-	 * アイテムモデルマスターの説明を取得
-	 *
-	 * @return アイテムモデルマスターの説明
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * アイテムモデルマスターの説明を設定
-	 *
-	 * @param description アイテムモデルマスターの説明
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * アイテムモデルマスターの説明を設定
-	 *
-	 * @param description アイテムモデルマスターの説明
-	 * @return this
-	 */
 	public ItemModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-	/** アイテムモデルの種類のメタデータ */
-	protected String metadata;
 
-	/**
-	 * アイテムモデルの種類のメタデータを取得
-	 *
-	 * @return アイテムモデルの種類のメタデータ
-	 */
 	public String getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * アイテムモデルの種類のメタデータを設定
-	 *
-	 * @param metadata アイテムモデルの種類のメタデータ
-	 */
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * アイテムモデルの種類のメタデータを設定
-	 *
-	 * @param metadata アイテムモデルの種類のメタデータ
-	 * @return this
-	 */
 	public ItemModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-	/** スタック可能な最大数量 */
-	protected Long stackingLimit;
 
-	/**
-	 * スタック可能な最大数量を取得
-	 *
-	 * @return スタック可能な最大数量
-	 */
 	public Long getStackingLimit() {
 		return stackingLimit;
 	}
 
-	/**
-	 * スタック可能な最大数量を設定
-	 *
-	 * @param stackingLimit スタック可能な最大数量
-	 */
 	public void setStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 	}
 
-	/**
-	 * スタック可能な最大数量を設定
-	 *
-	 * @param stackingLimit スタック可能な最大数量
-	 * @return this
-	 */
 	public ItemModelMaster withStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 		return this;
 	}
-	/** スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか */
-	protected Boolean allowMultipleStacks;
 
-	/**
-	 * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを取得
-	 *
-	 * @return スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか
-	 */
 	public Boolean getAllowMultipleStacks() {
 		return allowMultipleStacks;
 	}
 
-	/**
-	 * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
-	 *
-	 * @param allowMultipleStacks スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか
-	 */
 	public void setAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 	}
 
-	/**
-	 * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
-	 *
-	 * @param allowMultipleStacks スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか
-	 * @return this
-	 */
 	public ItemModelMaster withAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 		return this;
 	}
-	/** 表示順番 */
-	protected Integer sortValue;
 
-	/**
-	 * 表示順番を取得
-	 *
-	 * @return 表示順番
-	 */
 	public Integer getSortValue() {
 		return sortValue;
 	}
 
-	/**
-	 * 表示順番を設定
-	 *
-	 * @param sortValue 表示順番
-	 */
 	public void setSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 	}
 
-	/**
-	 * 表示順番を設定
-	 *
-	 * @param sortValue 表示順番
-	 * @return this
-	 */
 	public ItemModelMaster withSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 		return this;
 	}
-	/** 作成日時 */
-	protected Long createdAt;
 
-	/**
-	 * 作成日時を取得
-	 *
-	 * @return 作成日時
-	 */
 	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 */
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	/**
-	 * 作成日時を設定
-	 *
-	 * @param createdAt 作成日時
-	 * @return this
-	 */
 	public ItemModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-	/** 最終更新日時 */
-	protected Long updatedAt;
 
-	/**
-	 * 最終更新日時を取得
-	 *
-	 * @return 最終更新日時
-	 */
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 */
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * 最終更新日時を設定
-	 *
-	 * @param updatedAt 最終更新日時
-	 * @return this
-	 */
 	public ItemModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
 
-    public ObjectNode toJson() {
-		ObjectNode body_ = JsonNodeFactory.instance.objectNode()
-            .put("itemModelId", this.getItemModelId())
-            .put("inventoryName", this.getInventoryName())
-            .put("name", this.getName())
-            .put("description", this.getDescription())
-            .put("metadata", this.getMetadata())
-            .put("stackingLimit", this.getStackingLimit())
-            .put("allowMultipleStacks", this.getAllowMultipleStacks())
-            .put("sortValue", this.getSortValue())
-            .put("createdAt", this.getCreatedAt())
-            .put("updatedAt", this.getUpdatedAt());
-        return body_;
+    public static ItemModelMaster fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new ItemModelMaster()
+            .withItemModelId(data.get("itemModelId") == null || data.get("itemModelId").isNull() ? null : data.get("itemModelId").asText())
+            .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withStackingLimit(data.get("stackingLimit") == null || data.get("stackingLimit").isNull() ? null : data.get("stackingLimit").longValue())
+            .withAllowMultipleStacks(data.get("allowMultipleStacks") == null || data.get("allowMultipleStacks").isNull() ? null : data.get("allowMultipleStacks").booleanValue())
+            .withSortValue(data.get("sortValue") == null || data.get("sortValue").isNull() ? null : data.get("sortValue").intValue())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("itemModelId", getItemModelId());
+                put("inventoryName", getInventoryName());
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("stackingLimit", getStackingLimit());
+                put("allowMultipleStacks", getAllowMultipleStacks());
+                put("sortValue", getSortValue());
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+            }}
+        );
+    }
+
 	@Override
 	public int compareTo(ItemModelMaster o) {
 		return itemModelId.compareTo(o.itemModelId);

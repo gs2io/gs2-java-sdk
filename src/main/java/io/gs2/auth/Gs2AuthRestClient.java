@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -17,13 +18,13 @@
 package io.gs2.auth;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.gs2.core.model.AsyncAction;
 import io.gs2.core.model.AsyncResult;
@@ -34,21 +35,8 @@ import io.gs2.core.util.EncodingUtil;
 import io.gs2.core.AbstractGs2Client;
 import io.gs2.auth.request.*;
 import io.gs2.auth.result.*;
-import io.gs2.auth.model.*;
+import io.gs2.auth.model.*;public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
 
-/**
- * GS2 Auth API クライアント
- *
- * @author Game Server Services, Inc.
- *
- */
-public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param gs2RestSession セッション
-	 */
 	public Gs2AuthRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
@@ -58,15 +46,18 @@ public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
 
         public LoginTask(
             LoginRequest request,
-            AsyncAction<AsyncResult<LoginResult>> userCallback,
-            Class<LoginResult> clazz
+            AsyncAction<AsyncResult<LoginResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public LoginResult parse(JsonNode data) {
+            return LoginResult.fromJson(data);
         }
 
         @Override
@@ -77,19 +68,13 @@ public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/login";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getUserId() != null) {
-                json.put("userId", this.request.getUserId());
-            }
-            if (this.request.getTimeOffset() != null) {
-                json.put("timeOffset", this.request.getTimeOffset());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userId", request.getUserId());
+                    put("timeOffset", request.getTimeOffset());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -100,9 +85,6 @@ public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -110,29 +92,14 @@ public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
         }
     }
 
-    /**
-     * 指定したユーザIDでGS2にログインし、アクセストークンを取得します<br>
-     *   本APIは信頼出来るゲームサーバーから呼び出されることを想定しています。<br>
-     *   ユーザIDの値の検証処理が存在しないため、クライアントから呼び出すのは不適切です。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void loginAsync(
             LoginRequest request,
             AsyncAction<AsyncResult<LoginResult>> callback
     ) {
-        LoginTask task = new LoginTask(request, callback, LoginResult.class);
+        LoginTask task = new LoginTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 指定したユーザIDでGS2にログインし、アクセストークンを取得します<br>
-     *   本APIは信頼出来るゲームサーバーから呼び出されることを想定しています。<br>
-     *   ユーザIDの値の検証処理が存在しないため、クライアントから呼び出すのは不適切です。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public LoginResult login(
             LoginRequest request
     ) {
@@ -159,15 +126,18 @@ public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
 
         public LoginBySignatureTask(
             LoginBySignatureRequest request,
-            AsyncAction<AsyncResult<LoginBySignatureResult>> userCallback,
-            Class<LoginBySignatureResult> clazz
+            AsyncAction<AsyncResult<LoginBySignatureResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
-                    userCallback,
-                    clazz
+                    userCallback
             );
             this.request = request;
+        }
+
+        @Override
+        public LoginBySignatureResult parse(JsonNode data) {
+            return LoginBySignatureResult.fromJson(data);
         }
 
         @Override
@@ -178,25 +148,15 @@ public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
                 .replace("{region}", session.getRegion().getName())
                 + "/login/signed";
 
-            ObjectMapper mapper = new ObjectMapper();
-            JSONObject json = new JSONObject();
-            if (this.request.getUserId() != null) {
-                json.put("userId", this.request.getUserId());
-            }
-            if (this.request.getKeyId() != null) {
-                json.put("keyId", this.request.getKeyId());
-            }
-            if (this.request.getBody() != null) {
-                json.put("body", this.request.getBody());
-            }
-            if (this.request.getSignature() != null) {
-                json.put("signature", this.request.getSignature());
-            }
-            if (this.request.getContextStack() != null) {
-                json.put("contextStack", this.request.getContextStack());
-            }
-
-            builder.setBody(json.toString().getBytes());
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userId", request.getUserId());
+                    put("keyId", request.getKeyId());
+                    put("body", request.getBody());
+                    put("signature", request.getSignature());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
                 .setMethod(HttpTask.Method.POST)
@@ -207,9 +167,6 @@ public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -217,27 +174,14 @@ public class Gs2AuthRestClient extends AbstractGs2Client<Gs2AuthRestClient> {
         }
     }
 
-    /**
-     * 指定したユーザIDでGS2にログインし、アクセストークンを取得します<br>
-     *   ユーザIDの署名検証を実施することで、本APIはクライアントから呼び出しても安全です。<br>
-     *
-     * @param callback コールバック
-     * @param request リクエストパラメータ
-     */
     public void loginBySignatureAsync(
             LoginBySignatureRequest request,
             AsyncAction<AsyncResult<LoginBySignatureResult>> callback
     ) {
-        LoginBySignatureTask task = new LoginBySignatureTask(request, callback, LoginBySignatureResult.class);
+        LoginBySignatureTask task = new LoginBySignatureTask(request, callback);
         session.execute(task);
     }
 
-    /**
-     * 指定したユーザIDでGS2にログインし、アクセストークンを取得します<br>
-     *   ユーザIDの署名検証を実施することで、本APIはクライアントから呼び出しても安全です。<br>
-     *
-     * @param request リクエストパラメータ
-     */
     public LoginBySignatureResult loginBySignature(
             LoginBySignatureRequest request
     ) {

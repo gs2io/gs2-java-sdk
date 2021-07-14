@@ -16,39 +16,47 @@
 
 package io.gs2.key.result;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import java.io.Serializable;
-import org.json.JSONObject;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.key.model.*;
 
-/**
- * データを暗号化します のレスポンスモデル
- *
- * @author Game Server Services, Inc.
- */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EncryptResult implements IResult, Serializable {
-	/** 暗号化済みデータ */
-	private String data;
+    private String data;
 
-	/**
-	 * 暗号化済みデータを取得
-	 *
-	 * @return データを暗号化します
-	 */
 	public String getData() {
 		return data;
 	}
 
-	/**
-	 * 暗号化済みデータを設定
-	 *
-	 * @param data データを暗号化します
-	 */
 	public void setData(String data) {
 		this.data = data;
 	}
+
+	public EncryptResult withData(String data) {
+		this.data = data;
+		return this;
+	}
+
+    public static EncryptResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new EncryptResult()
+            .withData(data.get("data") == null || data.get("data").isNull() ? null : data.get("data").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("data", getData());
+            }}
+        );
+    }
 }
