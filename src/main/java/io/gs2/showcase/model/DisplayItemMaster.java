@@ -28,7 +28,7 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DisplayItemMaster implements IModel, Serializable, Comparable<DisplayItemMaster> {
+public class DisplayItemMaster implements IModel, Serializable {
 	private String displayItemId;
 	private String type;
 	private String salesItemName;
@@ -123,11 +123,6 @@ public class DisplayItemMaster implements IModel, Serializable, Comparable<Displ
             }}
         );
     }
-
-	@Override
-	public int compareTo(DisplayItemMaster o) {
-		return displayItemId.compareTo(o.displayItemId);
-	}
 
 	@Override
 	public int hashCode() {

@@ -34,7 +34,6 @@ public class DataObject implements IModel, Serializable, Comparable<DataObject> 
 	private String userId;
 	private String scope;
 	private List<String> allowUserIds;
-	private String platform;
 	private String status;
 	private String generation;
 	private String previousGeneration;
@@ -103,19 +102,6 @@ public class DataObject implements IModel, Serializable, Comparable<DataObject> 
 
 	public DataObject withAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
-		return this;
-	}
-
-	public String getPlatform() {
-		return platform;
-	}
-
-	public void setPlatform(String platform) {
-		this.platform = platform;
-	}
-
-	public DataObject withPlatform(String platform) {
-		this.platform = platform;
 		return this;
 	}
 
@@ -198,7 +184,6 @@ public class DataObject implements IModel, Serializable, Comparable<DataObject> 
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withPlatform(data.get("platform") == null || data.get("platform").isNull() ? null : data.get("platform").asText())
             .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText())
             .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText())
             .withPreviousGeneration(data.get("previousGeneration") == null || data.get("previousGeneration").isNull() ? null : data.get("previousGeneration").asText())
@@ -218,7 +203,6 @@ public class DataObject implements IModel, Serializable, Comparable<DataObject> 
                         return item;
                     }
                 ).collect(Collectors.toList()));
-                put("platform", getPlatform());
                 put("status", getStatus());
                 put("generation", getGeneration());
                 put("previousGeneration", getPreviousGeneration());
@@ -242,7 +226,6 @@ public class DataObject implements IModel, Serializable, Comparable<DataObject> 
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.scope == null) ? 0 : this.scope.hashCode());
         result = prime * result + ((this.allowUserIds == null) ? 0 : this.allowUserIds.hashCode());
-        result = prime * result + ((this.platform == null) ? 0 : this.platform.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.generation == null) ? 0 : this.generation.hashCode());
         result = prime * result + ((this.previousGeneration == null) ? 0 : this.previousGeneration.hashCode());
@@ -283,11 +266,6 @@ public class DataObject implements IModel, Serializable, Comparable<DataObject> 
 		if (allowUserIds == null) {
 			return other.allowUserIds == null;
 		} else if (!allowUserIds.equals(other.allowUserIds)) {
-			return false;
-		}
-		if (platform == null) {
-			return other.platform == null;
-		} else if (!platform.equals(other.platform)) {
 			return false;
 		}
 		if (status == null) {

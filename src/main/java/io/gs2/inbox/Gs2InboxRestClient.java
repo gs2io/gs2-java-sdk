@@ -1650,6 +1650,86 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
         return resultAsyncResult[0].getResult();
     }
 
+    class SendByStampSheetTask extends Gs2RestSessionTask<SendByStampSheetResult> {
+        private SendByStampSheetRequest request;
+
+        public SendByStampSheetTask(
+            SendByStampSheetRequest request,
+            AsyncAction<AsyncResult<SendByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SendByStampSheetResult parse(JsonNode data) {
+            return SendByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inbox")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/send";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void sendByStampSheetAsync(
+            SendByStampSheetRequest request,
+            AsyncAction<AsyncResult<SendByStampSheetResult>> callback
+    ) {
+        SendByStampSheetTask task = new SendByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public SendByStampSheetResult sendByStampSheet(
+            SendByStampSheetRequest request
+    ) {
+        final AsyncResult<SendByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        sendByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class OpenByStampTaskTask extends Gs2RestSessionTask<OpenByStampTaskResult> {
         private OpenByStampTaskRequest request;
 

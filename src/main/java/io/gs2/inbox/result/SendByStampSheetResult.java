@@ -12,11 +12,9 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 
-package io.gs2.identifier.request;
+package io.gs2.inbox.result;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,54 +23,41 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.core.model.*;
+import io.gs2.inbox.model.*;
+import io.gs2.inbox.model.AcquireAction;
+import io.gs2.inbox.model.Message;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LoginRequest extends Gs2BasicRequest<LoginRequest> {
-    private String clientId;
-    private String clientSecret;
+public class SendByStampSheetResult implements IResult, Serializable {
+    private Message item;
 
-	public String getClientId() {
-		return clientId;
+	public Message getItem() {
+		return item;
 	}
 
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
+	public void setItem(Message item) {
+		this.item = item;
 	}
 
-	public LoginRequest withClientId(String clientId) {
-		this.clientId = clientId;
+	public SendByStampSheetResult withItem(Message item) {
+		this.item = item;
 		return this;
 	}
 
-	public String getClientSecret() {
-		return clientSecret;
-	}
-
-	public void setClientSecret(String clientSecret) {
-		this.clientSecret = clientSecret;
-	}
-
-	public LoginRequest withClientSecret(String clientSecret) {
-		this.clientSecret = clientSecret;
-		return this;
-	}
-
-    public static LoginRequest fromJson(JsonNode data) {
+    public static SendByStampSheetResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new LoginRequest()
-            .withClientId(data.get("client_id") == null || data.get("client_id").isNull() ? null : data.get("client_id").asText())
-            .withClientSecret(data.get("client_secret") == null || data.get("client_secret").isNull() ? null : data.get("client_secret").asText());
+        return new SendByStampSheetResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Message.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("client_id", getClientId());
-                put("client_secret", getClientSecret());
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

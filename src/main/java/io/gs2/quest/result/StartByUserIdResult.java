@@ -25,28 +25,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.quest.model.*;
-import io.gs2.quest.model.Reward;
-import io.gs2.quest.model.Progress;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class StartByUserIdResult implements IResult, Serializable {
-    private Progress item;
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
-
-	public Progress getItem() {
-		return item;
-	}
-
-	public void setItem(Progress item) {
-		this.item = item;
-	}
-
-	public StartByUserIdResult withItem(Progress item) {
-		this.item = item;
-		return this;
-	}
 
 	public String getStampSheet() {
 		return stampSheet;
@@ -79,7 +63,6 @@ public class StartByUserIdResult implements IResult, Serializable {
             return null;
         }
         return new StartByUserIdResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Progress.fromJson(data.get("item")))
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
             .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
     }
@@ -87,7 +70,6 @@ public class StartByUserIdResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
             }}

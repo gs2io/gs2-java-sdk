@@ -1181,6 +1181,89 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
+    class DoMatchmakingByUserIdTask extends Gs2RestSessionTask<DoMatchmakingByUserIdResult> {
+        private DoMatchmakingByUserIdRequest request;
+
+        public DoMatchmakingByUserIdTask(
+            DoMatchmakingByUserIdRequest request,
+            AsyncAction<AsyncResult<DoMatchmakingByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DoMatchmakingByUserIdResult parse(JsonNode data) {
+            return DoMatchmakingByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/gathering/do";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("player", request.getPlayer() != null ? request.getPlayer().toJson() : null);
+                    put("matchmakingContextToken", request.getMatchmakingContextToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void doMatchmakingByUserIdAsync(
+            DoMatchmakingByUserIdRequest request,
+            AsyncAction<AsyncResult<DoMatchmakingByUserIdResult>> callback
+    ) {
+        DoMatchmakingByUserIdTask task = new DoMatchmakingByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DoMatchmakingByUserIdResult doMatchmakingByUserId(
+            DoMatchmakingByUserIdRequest request
+    ) {
+        final AsyncResult<DoMatchmakingByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        doMatchmakingByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetGatheringTask extends Gs2RestSessionTask<GetGatheringResult> {
         private GetGatheringRequest request;
 

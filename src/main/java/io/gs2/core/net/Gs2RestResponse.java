@@ -23,11 +23,16 @@ public class Gs2RestResponse extends Gs2Response {
         }
 
         switch (statusCode) {
+            case 200:
+                break;
             case 400:
                 exception = new BadRequestException(errorMessage);
                 break;
             case 502:
                 exception = new BadGatewayException(errorMessage);
+                break;
+            case 401:
+                exception = new UnauthorizedException(errorMessage);
                 break;
             case 409:
                 exception = new ConflictException(errorMessage);
@@ -46,6 +51,10 @@ public class Gs2RestResponse extends Gs2Response {
                 break;
             case 503:
                 exception = new ServiceUnavailableException(errorMessage);
+                break;
+            default:
+                System.out.println(statusCode);
+                exception = new UnknownException(errorMessage != null ? errorMessage : "");
                 break;
         }
     }

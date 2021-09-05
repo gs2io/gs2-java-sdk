@@ -1,0 +1,83 @@
+/*
+ * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
+ * Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+package io.gs2.matchmaking.result;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.gs2.core.model.*;
+import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.AttributeRange;
+import io.gs2.matchmaking.model.Attribute;
+import io.gs2.matchmaking.model.Player;
+import io.gs2.matchmaking.model.CapacityOfRole;
+import io.gs2.matchmaking.model.Gathering;
+
+@SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class DoMatchmakingByUserIdResult implements IResult, Serializable {
+    private Gathering item;
+    private String matchmakingContextToken;
+
+	public Gathering getItem() {
+		return item;
+	}
+
+	public void setItem(Gathering item) {
+		this.item = item;
+	}
+
+	public DoMatchmakingByUserIdResult withItem(Gathering item) {
+		this.item = item;
+		return this;
+	}
+
+	public String getMatchmakingContextToken() {
+		return matchmakingContextToken;
+	}
+
+	public void setMatchmakingContextToken(String matchmakingContextToken) {
+		this.matchmakingContextToken = matchmakingContextToken;
+	}
+
+	public DoMatchmakingByUserIdResult withMatchmakingContextToken(String matchmakingContextToken) {
+		this.matchmakingContextToken = matchmakingContextToken;
+		return this;
+	}
+
+    public static DoMatchmakingByUserIdResult fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new DoMatchmakingByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Gathering.fromJson(data.get("item")))
+            .withMatchmakingContextToken(data.get("matchmakingContextToken") == null || data.get("matchmakingContextToken").isNull() ? null : data.get("matchmakingContextToken").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
+                put("matchmakingContextToken", getMatchmakingContextToken());
+            }}
+        );
+    }
+}

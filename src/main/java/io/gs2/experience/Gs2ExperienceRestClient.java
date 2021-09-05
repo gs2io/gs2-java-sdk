@@ -2305,6 +2305,92 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
         return resultAsyncResult[0].getResult();
     }
 
+    class GetStatusWithSignatureByUserIdTask extends Gs2RestSessionTask<GetStatusWithSignatureByUserIdResult> {
+        private GetStatusWithSignatureByUserIdRequest request;
+
+        public GetStatusWithSignatureByUserIdTask(
+            GetStatusWithSignatureByUserIdRequest request,
+            AsyncAction<AsyncResult<GetStatusWithSignatureByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetStatusWithSignatureByUserIdResult parse(JsonNode data) {
+            return GetStatusWithSignatureByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}/signature";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getKeyId() != null) {
+                queryStrings.add("keyId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getKeyId()))));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getStatusWithSignatureByUserIdAsync(
+            GetStatusWithSignatureByUserIdRequest request,
+            AsyncAction<AsyncResult<GetStatusWithSignatureByUserIdResult>> callback
+    ) {
+        GetStatusWithSignatureByUserIdTask task = new GetStatusWithSignatureByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetStatusWithSignatureByUserIdResult getStatusWithSignatureByUserId(
+            GetStatusWithSignatureByUserIdRequest request
+    ) {
+        final AsyncResult<GetStatusWithSignatureByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getStatusWithSignatureByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class AddExperienceByUserIdTask extends Gs2RestSessionTask<AddExperienceByUserIdResult> {
         private AddExperienceByUserIdRequest request;
 

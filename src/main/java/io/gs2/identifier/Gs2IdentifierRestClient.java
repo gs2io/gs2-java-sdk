@@ -13,6 +13,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 
 package io.gs2.identifier;
@@ -1863,9 +1865,8 @@ import io.gs2.identifier.model.*;public class Gs2IdentifierRestClient extends Ab
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("clientId", request.getClientId());
-                    put("clientSecret", request.getClientSecret());
-                    put("contextStack", request.getContextStack());
+                    put("client_id", request.getClientId());
+                    put("client_secret", request.getClientSecret());
                 }}
             ).toString().getBytes());
 

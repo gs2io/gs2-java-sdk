@@ -36,7 +36,6 @@ public class Job implements IModel, Serializable, Comparable<Job> {
 	private String args;
 	private Integer currentRetryCount;
 	private Integer maxTryCount;
-	private Double index;
 	private Long createdAt;
 	private Long updatedAt;
 
@@ -131,19 +130,6 @@ public class Job implements IModel, Serializable, Comparable<Job> {
 		return this;
 	}
 
-	public Double getIndex() {
-		return index;
-	}
-
-	public void setIndex(Double index) {
-		this.index = index;
-	}
-
-	public Job withIndex(Double index) {
-		this.index = index;
-		return this;
-	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -182,7 +168,6 @@ public class Job implements IModel, Serializable, Comparable<Job> {
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
             .withCurrentRetryCount(data.get("currentRetryCount") == null || data.get("currentRetryCount").isNull() ? null : data.get("currentRetryCount").intValue())
             .withMaxTryCount(data.get("maxTryCount") == null || data.get("maxTryCount").isNull() ? null : data.get("maxTryCount").intValue())
-            .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").doubleValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
@@ -197,7 +182,6 @@ public class Job implements IModel, Serializable, Comparable<Job> {
                 put("args", getArgs());
                 put("currentRetryCount", getCurrentRetryCount());
                 put("maxTryCount", getMaxTryCount());
-                put("index", getIndex());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
             }}
@@ -220,7 +204,6 @@ public class Job implements IModel, Serializable, Comparable<Job> {
         result = prime * result + ((this.args == null) ? 0 : this.args.hashCode());
         result = prime * result + ((this.currentRetryCount == null) ? 0 : this.currentRetryCount.hashCode());
         result = prime * result + ((this.maxTryCount == null) ? 0 : this.maxTryCount.hashCode());
-        result = prime * result + ((this.index == null) ? 0 : this.index.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
@@ -268,11 +251,6 @@ public class Job implements IModel, Serializable, Comparable<Job> {
 		if (maxTryCount == null) {
 			return other.maxTryCount == null;
 		} else if (!maxTryCount.equals(other.maxTryCount)) {
-			return false;
-		}
-		if (index == null) {
-			return other.index == null;
-		} else if (!index.equals(other.index)) {
 			return false;
 		}
 		if (createdAt == null) {

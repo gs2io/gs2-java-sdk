@@ -1411,11 +1411,11 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
                 + "/{namespaceName}/user/{userId}/acceptVersion";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("versionName", request.getVersionName());
-                    put("userId", request.getUserId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
