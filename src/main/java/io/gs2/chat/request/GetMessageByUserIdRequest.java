@@ -27,12 +27,12 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
+public class GetMessageByUserIdRequest extends Gs2BasicRequest<GetMessageByUserIdRequest> {
     private String namespaceName;
     private String roomName;
     private String messageName;
     private String password;
-    private String accessToken;
+    private String userId;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -42,7 +42,7 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.namespaceName = namespaceName;
 	}
 
-	public GetMessageRequest withNamespaceName(String namespaceName) {
+	public GetMessageByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -55,7 +55,7 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.roomName = roomName;
 	}
 
-	public GetMessageRequest withRoomName(String roomName) {
+	public GetMessageByUserIdRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
@@ -68,7 +68,7 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.messageName = messageName;
 	}
 
-	public GetMessageRequest withMessageName(String messageName) {
+	public GetMessageByUserIdRequest withMessageName(String messageName) {
 		this.messageName = messageName;
 		return this;
 	}
@@ -81,34 +81,34 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.password = password;
 	}
 
-	public GetMessageRequest withPassword(String password) {
+	public GetMessageByUserIdRequest withPassword(String password) {
 		this.password = password;
 		return this;
 	}
 
-	public String getAccessToken() {
-		return accessToken;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public GetMessageRequest withAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public GetMessageByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
 		return this;
 	}
 
-    public static GetMessageRequest fromJson(JsonNode data) {
+    public static GetMessageByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetMessageRequest()
+        return new GetMessageByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
             .withMessageName(data.get("messageName") == null || data.get("messageName").isNull() ? null : data.get("messageName").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
     }
 
     public JsonNode toJson() {
@@ -118,7 +118,7 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
                 put("roomName", getRoomName());
                 put("messageName", getMessageName());
                 put("password", getPassword());
-                put("accessToken", getAccessToken());
+                put("userId", getUserId());
             }}
         );
     }

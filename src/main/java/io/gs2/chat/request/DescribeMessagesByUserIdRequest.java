@@ -27,12 +27,13 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
+public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMessagesByUserIdRequest> {
     private String namespaceName;
     private String roomName;
-    private String messageName;
     private String password;
-    private String accessToken;
+    private String userId;
+    private Long startAt;
+    private Integer limit;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -42,7 +43,7 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.namespaceName = namespaceName;
 	}
 
-	public GetMessageRequest withNamespaceName(String namespaceName) {
+	public DescribeMessagesByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -55,21 +56,8 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.roomName = roomName;
 	}
 
-	public GetMessageRequest withRoomName(String roomName) {
+	public DescribeMessagesByUserIdRequest withRoomName(String roomName) {
 		this.roomName = roomName;
-		return this;
-	}
-
-	public String getMessageName() {
-		return messageName;
-	}
-
-	public void setMessageName(String messageName) {
-		this.messageName = messageName;
-	}
-
-	public GetMessageRequest withMessageName(String messageName) {
-		this.messageName = messageName;
 		return this;
 	}
 
@@ -81,34 +69,61 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.password = password;
 	}
 
-	public GetMessageRequest withPassword(String password) {
+	public DescribeMessagesByUserIdRequest withPassword(String password) {
 		this.password = password;
 		return this;
 	}
 
-	public String getAccessToken() {
-		return accessToken;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public GetMessageRequest withAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public DescribeMessagesByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
 		return this;
 	}
 
-    public static GetMessageRequest fromJson(JsonNode data) {
+	public Long getStartAt() {
+		return startAt;
+	}
+
+	public void setStartAt(Long startAt) {
+		this.startAt = startAt;
+	}
+
+	public DescribeMessagesByUserIdRequest withStartAt(Long startAt) {
+		this.startAt = startAt;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeMessagesByUserIdRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
+    public static DescribeMessagesByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetMessageRequest()
+        return new DescribeMessagesByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
-            .withMessageName(data.get("messageName") == null || data.get("messageName").isNull() ? null : data.get("messageName").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withStartAt(data.get("startAt") == null || data.get("startAt").isNull() ? null : data.get("startAt").longValue())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
     public JsonNode toJson() {
@@ -116,9 +131,10 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("roomName", getRoomName());
-                put("messageName", getMessageName());
                 put("password", getPassword());
-                put("accessToken", getAccessToken());
+                put("userId", getUserId());
+                put("startAt", getStartAt());
+                put("limit", getLimit());
             }}
         );
     }

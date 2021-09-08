@@ -33,6 +33,7 @@ public class UpdateRoomRequest extends Gs2BasicRequest<UpdateRoomRequest> {
     private String metadata;
     private String password;
     private List<String> whiteListUserIds;
+    private String accessToken;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -99,6 +100,19 @@ public class UpdateRoomRequest extends Gs2BasicRequest<UpdateRoomRequest> {
 		return this;
 	}
 
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public UpdateRoomRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
     public static UpdateRoomRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -112,7 +126,8 @@ public class UpdateRoomRequest extends Gs2BasicRequest<UpdateRoomRequest> {
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("whiteListUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
     }
 
     public JsonNode toJson() {
@@ -127,6 +142,7 @@ public class UpdateRoomRequest extends Gs2BasicRequest<UpdateRoomRequest> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("accessToken", getAccessToken());
             }}
         );
     }

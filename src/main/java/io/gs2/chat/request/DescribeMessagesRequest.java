@@ -31,6 +31,7 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
     private String namespaceName;
     private String roomName;
     private String password;
+    private String accessToken;
     private Long startAt;
     private Integer limit;
 
@@ -73,6 +74,19 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
 		return this;
 	}
 
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public DescribeMessagesRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
+
 	public Long getStartAt() {
 		return startAt;
 	}
@@ -107,6 +121,7 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withStartAt(data.get("startAt") == null || data.get("startAt").isNull() ? null : data.get("startAt").longValue())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -117,6 +132,7 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
                 put("namespaceName", getNamespaceName());
                 put("roomName", getRoomName());
                 put("password", getPassword());
+                put("accessToken", getAccessToken());
                 put("startAt", getStartAt());
                 put("limit", getLimit());
             }}

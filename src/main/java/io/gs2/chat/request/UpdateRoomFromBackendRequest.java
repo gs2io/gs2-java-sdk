@@ -27,12 +27,13 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
+public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFromBackendRequest> {
     private String namespaceName;
     private String roomName;
-    private String messageName;
+    private String metadata;
     private String password;
-    private String accessToken;
+    private List<String> whiteListUserIds;
+    private String userId;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -42,7 +43,7 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.namespaceName = namespaceName;
 	}
 
-	public GetMessageRequest withNamespaceName(String namespaceName) {
+	public UpdateRoomFromBackendRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -55,21 +56,21 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.roomName = roomName;
 	}
 
-	public GetMessageRequest withRoomName(String roomName) {
+	public UpdateRoomFromBackendRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
 
-	public String getMessageName() {
-		return messageName;
+	public String getMetadata() {
+		return metadata;
 	}
 
-	public void setMessageName(String messageName) {
-		this.messageName = messageName;
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
 	}
 
-	public GetMessageRequest withMessageName(String messageName) {
-		this.messageName = messageName;
+	public UpdateRoomFromBackendRequest withMetadata(String metadata) {
+		this.metadata = metadata;
 		return this;
 	}
 
@@ -81,34 +82,52 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
 		this.password = password;
 	}
 
-	public GetMessageRequest withPassword(String password) {
+	public UpdateRoomFromBackendRequest withPassword(String password) {
 		this.password = password;
 		return this;
 	}
 
-	public String getAccessToken() {
-		return accessToken;
+	public List<String> getWhiteListUserIds() {
+		return whiteListUserIds;
 	}
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public void setWhiteListUserIds(List<String> whiteListUserIds) {
+		this.whiteListUserIds = whiteListUserIds;
 	}
 
-	public GetMessageRequest withAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public UpdateRoomFromBackendRequest withWhiteListUserIds(List<String> whiteListUserIds) {
+		this.whiteListUserIds = whiteListUserIds;
 		return this;
 	}
 
-    public static GetMessageRequest fromJson(JsonNode data) {
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public UpdateRoomFromBackendRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
+    public static UpdateRoomFromBackendRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetMessageRequest()
+        return new UpdateRoomFromBackendRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
-            .withMessageName(data.get("messageName") == null || data.get("messageName").isNull() ? null : data.get("messageName").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
+            .withWhiteListUserIds(data.get("whiteListUserIds") == null || data.get("whiteListUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("whiteListUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
     }
 
     public JsonNode toJson() {
@@ -116,9 +135,14 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("roomName", getRoomName());
-                put("messageName", getMessageName());
+                put("metadata", getMetadata());
                 put("password", getPassword());
-                put("accessToken", getAccessToken());
+                put("whiteListUserIds", getWhiteListUserIds() == null ? new ArrayList<String>() :
+                    getWhiteListUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("userId", getUserId());
             }}
         );
     }
