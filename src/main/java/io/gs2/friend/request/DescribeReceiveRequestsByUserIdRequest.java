@@ -30,6 +30,8 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeReceiveRequestsByUserIdRequest extends Gs2BasicRequest<DescribeReceiveRequestsByUserIdRequest> {
     private String namespaceName;
     private String userId;
+    private String pageToken;
+    private Integer limit;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -57,13 +59,41 @@ public class DescribeReceiveRequestsByUserIdRequest extends Gs2BasicRequest<Desc
 		return this;
 	}
 
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public DescribeReceiveRequestsByUserIdRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeReceiveRequestsByUserIdRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
     public static DescribeReceiveRequestsByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new DescribeReceiveRequestsByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
     public JsonNode toJson() {
@@ -71,6 +101,8 @@ public class DescribeReceiveRequestsByUserIdRequest extends Gs2BasicRequest<Desc
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
             }}
         );
     }

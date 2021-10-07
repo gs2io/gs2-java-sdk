@@ -29,10 +29,10 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CountExecuteStampTaskLogRequest extends Gs2BasicRequest<CountExecuteStampTaskLogRequest> {
     private String namespaceName;
-    private String service;
-    private String method;
-    private String userId;
-    private String action;
+    private Boolean service;
+    private Boolean method;
+    private Boolean userId;
+    private Boolean action;
     private Long begin;
     private Long end;
     private Boolean longTerm;
@@ -52,54 +52,54 @@ public class CountExecuteStampTaskLogRequest extends Gs2BasicRequest<CountExecut
 		return this;
 	}
 
-	public String getService() {
+	public Boolean getService() {
 		return service;
 	}
 
-	public void setService(String service) {
+	public void setService(Boolean service) {
 		this.service = service;
 	}
 
-	public CountExecuteStampTaskLogRequest withService(String service) {
+	public CountExecuteStampTaskLogRequest withService(Boolean service) {
 		this.service = service;
 		return this;
 	}
 
-	public String getMethod() {
+	public Boolean getMethod() {
 		return method;
 	}
 
-	public void setMethod(String method) {
+	public void setMethod(Boolean method) {
 		this.method = method;
 	}
 
-	public CountExecuteStampTaskLogRequest withMethod(String method) {
+	public CountExecuteStampTaskLogRequest withMethod(Boolean method) {
 		this.method = method;
 		return this;
 	}
 
-	public String getUserId() {
+	public Boolean getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Boolean userId) {
 		this.userId = userId;
 	}
 
-	public CountExecuteStampTaskLogRequest withUserId(String userId) {
+	public CountExecuteStampTaskLogRequest withUserId(Boolean userId) {
 		this.userId = userId;
 		return this;
 	}
 
-	public String getAction() {
+	public Boolean getAction() {
 		return action;
 	}
 
-	public void setAction(String action) {
+	public void setAction(Boolean action) {
 		this.action = action;
 	}
 
-	public CountExecuteStampTaskLogRequest withAction(String action) {
+	public CountExecuteStampTaskLogRequest withAction(Boolean action) {
 		this.action = action;
 		return this;
 	}
@@ -175,10 +175,10 @@ public class CountExecuteStampTaskLogRequest extends Gs2BasicRequest<CountExecut
         }
         return new CountExecuteStampTaskLogRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
-            .withMethod(data.get("method") == null || data.get("method").isNull() ? null : data.get("method").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withAction(data.get("action") == null || data.get("action").isNull() ? null : data.get("action").asText())
+            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").booleanValue())
+            .withMethod(data.get("method") == null || data.get("method").isNull() ? null : data.get("method").booleanValue())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").booleanValue())
+            .withAction(data.get("action") == null || data.get("action").isNull() ? null : data.get("action").booleanValue())
             .withBegin(data.get("begin") == null || data.get("begin").isNull() ? null : data.get("begin").longValue())
             .withEnd(data.get("end") == null || data.get("end").isNull() ? null : data.get("end").longValue())
             .withLongTerm(data.get("longTerm") == null || data.get("longTerm").isNull() ? null : data.get("longTerm").booleanValue())

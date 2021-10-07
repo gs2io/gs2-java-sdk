@@ -29,9 +29,9 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CountAccessLogRequest extends Gs2BasicRequest<CountAccessLogRequest> {
     private String namespaceName;
-    private String service;
-    private String method;
-    private String userId;
+    private Boolean service;
+    private Boolean method;
+    private Boolean userId;
     private Long begin;
     private Long end;
     private Boolean longTerm;
@@ -51,41 +51,41 @@ public class CountAccessLogRequest extends Gs2BasicRequest<CountAccessLogRequest
 		return this;
 	}
 
-	public String getService() {
+	public Boolean getService() {
 		return service;
 	}
 
-	public void setService(String service) {
+	public void setService(Boolean service) {
 		this.service = service;
 	}
 
-	public CountAccessLogRequest withService(String service) {
+	public CountAccessLogRequest withService(Boolean service) {
 		this.service = service;
 		return this;
 	}
 
-	public String getMethod() {
+	public Boolean getMethod() {
 		return method;
 	}
 
-	public void setMethod(String method) {
+	public void setMethod(Boolean method) {
 		this.method = method;
 	}
 
-	public CountAccessLogRequest withMethod(String method) {
+	public CountAccessLogRequest withMethod(Boolean method) {
 		this.method = method;
 		return this;
 	}
 
-	public String getUserId() {
+	public Boolean getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Boolean userId) {
 		this.userId = userId;
 	}
 
-	public CountAccessLogRequest withUserId(String userId) {
+	public CountAccessLogRequest withUserId(Boolean userId) {
 		this.userId = userId;
 		return this;
 	}
@@ -161,9 +161,9 @@ public class CountAccessLogRequest extends Gs2BasicRequest<CountAccessLogRequest
         }
         return new CountAccessLogRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
-            .withMethod(data.get("method") == null || data.get("method").isNull() ? null : data.get("method").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").booleanValue())
+            .withMethod(data.get("method") == null || data.get("method").isNull() ? null : data.get("method").booleanValue())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").booleanValue())
             .withBegin(data.get("begin") == null || data.get("begin").isNull() ? null : data.get("begin").longValue())
             .withEnd(data.get("end") == null || data.get("end").isNull() ? null : data.get("end").longValue())
             .withLongTerm(data.get("longTerm") == null || data.get("longTerm").isNull() ? null : data.get("longTerm").booleanValue())

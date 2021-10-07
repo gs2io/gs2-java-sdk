@@ -30,6 +30,8 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeSendRequestsRequest extends Gs2BasicRequest<DescribeSendRequestsRequest> {
     private String namespaceName;
     private String accessToken;
+    private String pageToken;
+    private Integer limit;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -57,13 +59,41 @@ public class DescribeSendRequestsRequest extends Gs2BasicRequest<DescribeSendReq
 		return this;
 	}
 
+	public String getPageToken() {
+		return pageToken;
+	}
+
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
+	}
+
+	public DescribeSendRequestsRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public DescribeSendRequestsRequest withLimit(Integer limit) {
+		this.limit = limit;
+		return this;
+	}
+
     public static DescribeSendRequestsRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new DescribeSendRequestsRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
     public JsonNode toJson() {
@@ -71,6 +101,8 @@ public class DescribeSendRequestsRequest extends Gs2BasicRequest<DescribeSendReq
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
             }}
         );
     }

@@ -31,6 +31,7 @@ import io.gs2.friend.model.FriendRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeSendRequestsByUserIdResult implements IResult, Serializable {
     private List<FriendRequest> items;
+    private String nextPageToken;
 
 	public List<FriendRequest> getItems() {
 		return items;
@@ -45,6 +46,19 @@ public class DescribeSendRequestsByUserIdResult implements IResult, Serializable
 		return this;
 	}
 
+	public String getNextPageToken() {
+		return nextPageToken;
+	}
+
+	public void setNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+	}
+
+	public DescribeSendRequestsByUserIdResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
     public static DescribeSendRequestsByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -55,7 +69,8 @@ public class DescribeSendRequestsByUserIdResult implements IResult, Serializable
                     //noinspection Convert2MethodRef
                     return FriendRequest.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
     }
 
     public JsonNode toJson() {
@@ -67,6 +82,7 @@ public class DescribeSendRequestsByUserIdResult implements IResult, Serializable
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
             }}
         );
     }

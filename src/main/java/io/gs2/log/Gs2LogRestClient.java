@@ -680,13 +680,13 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
             if (this.request.getService() != null) {
-                queryStrings.add("service=" + EncodingUtil.urlEncode((String.valueOf(this.request.getService()))));
+                queryStrings.add("service=" + String.valueOf(this.request.getService()));
             }
             if (this.request.getMethod() != null) {
-                queryStrings.add("method=" + EncodingUtil.urlEncode((String.valueOf(this.request.getMethod()))));
+                queryStrings.add("method=" + String.valueOf(this.request.getMethod()));
             }
             if (this.request.getUserId() != null) {
-                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+                queryStrings.add("userId=" + String.valueOf(this.request.getUserId()));
             }
             if (this.request.getBegin() != null) {
                 queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
@@ -891,16 +891,16 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
             if (this.request.getService() != null) {
-                queryStrings.add("service=" + EncodingUtil.urlEncode((String.valueOf(this.request.getService()))));
+                queryStrings.add("service=" + String.valueOf(this.request.getService()));
             }
             if (this.request.getMethod() != null) {
-                queryStrings.add("method=" + EncodingUtil.urlEncode((String.valueOf(this.request.getMethod()))));
+                queryStrings.add("method=" + String.valueOf(this.request.getMethod()));
             }
             if (this.request.getUserId() != null) {
-                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+                queryStrings.add("userId=" + String.valueOf(this.request.getUserId()));
             }
             if (this.request.getAction() != null) {
-                queryStrings.add("action=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAction()))));
+                queryStrings.add("action=" + String.valueOf(this.request.getAction()));
             }
             if (this.request.getBegin() != null) {
                 queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
@@ -1105,16 +1105,16 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
             if (this.request.getService() != null) {
-                queryStrings.add("service=" + EncodingUtil.urlEncode((String.valueOf(this.request.getService()))));
+                queryStrings.add("service=" + String.valueOf(this.request.getService()));
             }
             if (this.request.getMethod() != null) {
-                queryStrings.add("method=" + EncodingUtil.urlEncode((String.valueOf(this.request.getMethod()))));
+                queryStrings.add("method=" + String.valueOf(this.request.getMethod()));
             }
             if (this.request.getUserId() != null) {
-                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+                queryStrings.add("userId=" + String.valueOf(this.request.getUserId()));
             }
             if (this.request.getAction() != null) {
-                queryStrings.add("action=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAction()))));
+                queryStrings.add("action=" + String.valueOf(this.request.getAction()));
             }
             if (this.request.getBegin() != null) {
                 queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
@@ -1319,16 +1319,16 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
             if (this.request.getService() != null) {
-                queryStrings.add("service=" + EncodingUtil.urlEncode((String.valueOf(this.request.getService()))));
+                queryStrings.add("service=" + String.valueOf(this.request.getService()));
             }
             if (this.request.getMethod() != null) {
-                queryStrings.add("method=" + EncodingUtil.urlEncode((String.valueOf(this.request.getMethod()))));
+                queryStrings.add("method=" + String.valueOf(this.request.getMethod()));
             }
             if (this.request.getUserId() != null) {
-                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+                queryStrings.add("userId=" + String.valueOf(this.request.getUserId()));
             }
             if (this.request.getAction() != null) {
-                queryStrings.add("action=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAction()))));
+                queryStrings.add("action=" + String.valueOf(this.request.getAction()));
             }
             if (this.request.getBegin() != null) {
                 queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
@@ -1376,6 +1376,87 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
     ) {
         final AsyncResult<CountExecuteStampTaskLogResult>[] resultAsyncResult = new AsyncResult[]{null};
         countExecuteStampTaskLogAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class PutLogTask extends Gs2RestSessionTask<PutLogResult> {
+        private PutLogRequest request;
+
+        public PutLogTask(
+            PutLogRequest request,
+            AsyncAction<AsyncResult<PutLogResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PutLogResult parse(JsonNode data) {
+            return PutLogResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/log/put";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("loggingNamespaceId", request.getLoggingNamespaceId());
+                    put("logCategory", request.getLogCategory());
+                    put("payload", request.getPayload());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void putLogAsync(
+            PutLogRequest request,
+            AsyncAction<AsyncResult<PutLogResult>> callback
+    ) {
+        PutLogTask task = new PutLogTask(request, callback);
+        session.execute(task);
+    }
+
+    public PutLogResult putLog(
+            PutLogRequest request
+    ) {
+        final AsyncResult<PutLogResult>[] resultAsyncResult = new AsyncResult[]{null};
+        putLogAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
