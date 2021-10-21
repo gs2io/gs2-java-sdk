@@ -35,6 +35,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private Boolean enableDirectEnhance;
 	private String queueNamespaceId;
 	private String keyId;
+	private ScriptSetting enhanceScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -117,6 +118,19 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		return this;
 	}
 
+	public ScriptSetting getEnhanceScript() {
+		return enhanceScript;
+	}
+
+	public void setEnhanceScript(ScriptSetting enhanceScript) {
+		this.enhanceScript = enhanceScript;
+	}
+
+	public Namespace withEnhanceScript(ScriptSetting enhanceScript) {
+		this.enhanceScript = enhanceScript;
+		return this;
+	}
+
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -167,6 +181,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withEnableDirectEnhance(data.get("enableDirectEnhance") == null || data.get("enableDirectEnhance").isNull() ? null : data.get("enableDirectEnhance").booleanValue())
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withEnhanceScript(data.get("enhanceScript") == null || data.get("enhanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("enhanceScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
@@ -181,6 +196,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("enableDirectEnhance", getEnableDirectEnhance());
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());
+                put("enhanceScript", getEnhanceScript() != null ? getEnhanceScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -203,6 +219,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.enableDirectEnhance == null) ? 0 : this.enableDirectEnhance.hashCode());
         result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
         result = prime * result + ((this.keyId == null) ? 0 : this.keyId.hashCode());
+        result = prime * result + ((this.enhanceScript == null) ? 0 : this.enhanceScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -246,6 +263,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (keyId == null) {
 			return other.keyId == null;
 		} else if (!keyId.equals(other.keyId)) {
+			return false;
+		}
+		if (enhanceScript == null) {
+			return other.enhanceScript == null;
+		} else if (!enhanceScript.equals(other.enhanceScript)) {
 			return false;
 		}
 		if (logSetting == null) {

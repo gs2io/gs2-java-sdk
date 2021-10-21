@@ -159,6 +159,7 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
                     put("enableDirectEnhance", request.getEnableDirectEnhance());
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());
+                    put("enhanceScript", request.getEnhanceScript() != null ? request.getEnhanceScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -404,6 +405,7 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
                     put("enableDirectEnhance", request.getEnableDirectEnhance());
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());
+                    put("enhanceScript", request.getEnhanceScript() != null ? request.getEnhanceScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

@@ -2753,6 +2753,87 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class CalcRankingTask extends Gs2RestSessionTask<CalcRankingResult> {
+        private CalcRankingRequest request;
+
+        public CalcRankingTask(
+            CalcRankingRequest request,
+            AsyncAction<AsyncResult<CalcRankingResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CalcRankingResult parse(JsonNode data) {
+            return CalcRankingResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/category/{categoryName}/calc/ranking";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void calcRankingAsync(
+            CalcRankingRequest request,
+            AsyncAction<AsyncResult<CalcRankingResult>> callback
+    ) {
+        CalcRankingTask task = new CalcRankingTask(request, callback);
+        session.execute(task);
+    }
+
+    public CalcRankingResult calcRanking(
+            CalcRankingRequest request
+    ) {
+        final AsyncResult<CalcRankingResult>[] resultAsyncResult = new AsyncResult[]{null};
+        calcRankingAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
         private ExportMasterRequest request;
 

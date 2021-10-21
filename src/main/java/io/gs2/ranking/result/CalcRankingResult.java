@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.enhance.result;
+package io.gs2.ranking.result;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,41 +24,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
-import io.gs2.enhance.model.*;
-import io.gs2.enhance.model.ScriptSetting;
-import io.gs2.enhance.model.LogSetting;
-import io.gs2.enhance.model.Namespace;
+import io.gs2.ranking.model.*;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateNamespaceResult implements IResult, Serializable {
-    private Namespace item;
+public class CalcRankingResult implements IResult, Serializable {
 
-	public Namespace getItem() {
-		return item;
-	}
-
-	public void setItem(Namespace item) {
-		this.item = item;
-	}
-
-	public UpdateNamespaceResult withItem(Namespace item) {
-		this.item = item;
-		return this;
-	}
-
-    public static UpdateNamespaceResult fromJson(JsonNode data) {
+    public static CalcRankingResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new UpdateNamespaceResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Namespace.fromJson(data.get("item")));
+        return new CalcRankingResult();
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

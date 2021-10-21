@@ -33,6 +33,7 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
 	private String categoryName;
 	private String userId;
 	private List<String> targetUserIds;
+	private List<String> subscribedUserIds;
 	private Long createdAt;
 
 	public String getSubscribeId() {
@@ -87,6 +88,19 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
 		return this;
 	}
 
+	public List<String> getSubscribedUserIds() {
+		return subscribedUserIds;
+	}
+
+	public void setSubscribedUserIds(List<String> subscribedUserIds) {
+		this.subscribedUserIds = subscribedUserIds;
+	}
+
+	public Subscribe withSubscribedUserIds(List<String> subscribedUserIds) {
+		this.subscribedUserIds = subscribedUserIds;
+		return this;
+	}
+
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -113,6 +127,11 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
+            .withSubscribedUserIds(data.get("subscribedUserIds") == null || data.get("subscribedUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("subscribedUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
 
@@ -124,6 +143,11 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
                 put("userId", getUserId());
                 put("targetUserIds", getTargetUserIds() == null ? new ArrayList<String>() :
                     getTargetUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("subscribedUserIds", getSubscribedUserIds() == null ? new ArrayList<String>() :
+                    getSubscribedUserIds().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
@@ -145,6 +169,7 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
         result = prime * result + ((this.categoryName == null) ? 0 : this.categoryName.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.targetUserIds == null) ? 0 : this.targetUserIds.hashCode());
+        result = prime * result + ((this.subscribedUserIds == null) ? 0 : this.subscribedUserIds.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
 		return result;
 	}
@@ -176,6 +201,11 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
 		if (targetUserIds == null) {
 			return other.targetUserIds == null;
 		} else if (!targetUserIds.equals(other.targetUserIds)) {
+			return false;
+		}
+		if (subscribedUserIds == null) {
+			return other.subscribedUserIds == null;
+		} else if (!subscribedUserIds.equals(other.subscribedUserIds)) {
 			return false;
 		}
 		if (createdAt == null) {

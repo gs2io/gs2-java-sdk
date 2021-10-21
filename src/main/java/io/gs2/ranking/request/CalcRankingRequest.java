@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.project.request;
+package io.gs2.ranking.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,34 +27,50 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DeleteAccountRequest extends Gs2BasicRequest<DeleteAccountRequest> {
-    private String accountToken;
+public class CalcRankingRequest extends Gs2BasicRequest<CalcRankingRequest> {
+    private String namespaceName;
+    private String categoryName;
 
-	public String getAccountToken() {
-		return accountToken;
+	public String getNamespaceName() {
+		return namespaceName;
 	}
 
-	public void setAccountToken(String accountToken) {
-		this.accountToken = accountToken;
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
 	}
 
-	public DeleteAccountRequest withAccountToken(String accountToken) {
-		this.accountToken = accountToken;
+	public CalcRankingRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
 		return this;
 	}
 
-    public static DeleteAccountRequest fromJson(JsonNode data) {
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public CalcRankingRequest withCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+		return this;
+	}
+
+    public static CalcRankingRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DeleteAccountRequest()
-            .withAccountToken(data.get("accountToken") == null || data.get("accountToken").isNull() ? null : data.get("accountToken").asText());
+        return new CalcRankingRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("accountToken", getAccountToken());
+                put("namespaceName", getNamespaceName());
+                put("categoryName", getCategoryName());
             }}
         );
     }
