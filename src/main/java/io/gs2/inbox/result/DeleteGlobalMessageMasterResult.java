@@ -25,21 +25,40 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inbox.model.*;
+import io.gs2.inbox.model.AcquireAction;
+import io.gs2.inbox.model.TimeSpan;
+import io.gs2.inbox.model.GlobalMessageMaster;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteGlobalMessageMasterResult implements IResult, Serializable {
+    private GlobalMessageMaster item;
+
+	public GlobalMessageMaster getItem() {
+		return item;
+	}
+
+	public void setItem(GlobalMessageMaster item) {
+		this.item = item;
+	}
+
+	public DeleteGlobalMessageMasterResult withItem(GlobalMessageMaster item) {
+		this.item = item;
+		return this;
+	}
 
     public static DeleteGlobalMessageMasterResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DeleteGlobalMessageMasterResult();
+        return new DeleteGlobalMessageMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : GlobalMessageMaster.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

@@ -34,6 +34,7 @@ public class Complete implements IModel, Serializable, Comparable<Complete> {
 	private String missionGroupName;
 	private List<String> completedMissionTaskNames;
 	private List<String> receivedMissionTaskNames;
+	private Long nextResetAt;
 	private Long createdAt;
 	private Long updatedAt;
 
@@ -102,6 +103,19 @@ public class Complete implements IModel, Serializable, Comparable<Complete> {
 		return this;
 	}
 
+	public Long getNextResetAt() {
+		return nextResetAt;
+	}
+
+	public void setNextResetAt(Long nextResetAt) {
+		this.nextResetAt = nextResetAt;
+	}
+
+	public Complete withNextResetAt(Long nextResetAt) {
+		this.nextResetAt = nextResetAt;
+		return this;
+	}
+
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -146,6 +160,7 @@ public class Complete implements IModel, Serializable, Comparable<Complete> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
+            .withNextResetAt(data.get("nextResetAt") == null || data.get("nextResetAt").isNull() ? null : data.get("nextResetAt").longValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
@@ -166,6 +181,7 @@ public class Complete implements IModel, Serializable, Comparable<Complete> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("nextResetAt", getNextResetAt());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
             }}
@@ -186,6 +202,7 @@ public class Complete implements IModel, Serializable, Comparable<Complete> {
         result = prime * result + ((this.missionGroupName == null) ? 0 : this.missionGroupName.hashCode());
         result = prime * result + ((this.completedMissionTaskNames == null) ? 0 : this.completedMissionTaskNames.hashCode());
         result = prime * result + ((this.receivedMissionTaskNames == null) ? 0 : this.receivedMissionTaskNames.hashCode());
+        result = prime * result + ((this.nextResetAt == null) ? 0 : this.nextResetAt.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
@@ -223,6 +240,11 @@ public class Complete implements IModel, Serializable, Comparable<Complete> {
 		if (receivedMissionTaskNames == null) {
 			return other.receivedMissionTaskNames == null;
 		} else if (!receivedMissionTaskNames.equals(other.receivedMissionTaskNames)) {
+			return false;
+		}
+		if (nextResetAt == null) {
+			return other.nextResetAt == null;
+		} else if (!nextResetAt.equals(other.nextResetAt)) {
 			return false;
 		}
 		if (createdAt == null) {

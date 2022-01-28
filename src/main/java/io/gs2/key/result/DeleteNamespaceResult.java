@@ -25,21 +25,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.key.model.*;
+import io.gs2.key.model.LogSetting;
+import io.gs2.key.model.Namespace;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteNamespaceResult implements IResult, Serializable {
+    private Namespace item;
+
+	public Namespace getItem() {
+		return item;
+	}
+
+	public void setItem(Namespace item) {
+		this.item = item;
+	}
+
+	public DeleteNamespaceResult withItem(Namespace item) {
+		this.item = item;
+		return this;
+	}
 
     public static DeleteNamespaceResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DeleteNamespaceResult();
+        return new DeleteNamespaceResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Namespace.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

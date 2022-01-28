@@ -1125,172 +1125,6 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeSubscribesByCategoryNameTask extends Gs2RestSessionTask<DescribeSubscribesByCategoryNameResult> {
-        private DescribeSubscribesByCategoryNameRequest request;
-
-        public DescribeSubscribesByCategoryNameTask(
-            DescribeSubscribesByCategoryNameRequest request,
-            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeSubscribesByCategoryNameResult parse(JsonNode data) {
-            return DescribeSubscribesByCategoryNameResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "ranking")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/subscribe/category/{categoryName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeSubscribesByCategoryNameAsync(
-            DescribeSubscribesByCategoryNameRequest request,
-            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameResult>> callback
-    ) {
-        DescribeSubscribesByCategoryNameTask task = new DescribeSubscribesByCategoryNameTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeSubscribesByCategoryNameResult describeSubscribesByCategoryName(
-            DescribeSubscribesByCategoryNameRequest request
-    ) {
-        final AsyncResult<DescribeSubscribesByCategoryNameResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeSubscribesByCategoryNameAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeSubscribesByCategoryNameAndUserIdTask extends Gs2RestSessionTask<DescribeSubscribesByCategoryNameAndUserIdResult> {
-        private DescribeSubscribesByCategoryNameAndUserIdRequest request;
-
-        public DescribeSubscribesByCategoryNameAndUserIdTask(
-            DescribeSubscribesByCategoryNameAndUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameAndUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeSubscribesByCategoryNameAndUserIdResult parse(JsonNode data) {
-            return DescribeSubscribesByCategoryNameAndUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "ranking")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeSubscribesByCategoryNameAndUserIdAsync(
-            DescribeSubscribesByCategoryNameAndUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameAndUserIdResult>> callback
-    ) {
-        DescribeSubscribesByCategoryNameAndUserIdTask task = new DescribeSubscribesByCategoryNameAndUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeSubscribesByCategoryNameAndUserIdResult describeSubscribesByCategoryNameAndUserId(
-            DescribeSubscribesByCategoryNameAndUserIdRequest request
-    ) {
-        final AsyncResult<DescribeSubscribesByCategoryNameAndUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeSubscribesByCategoryNameAndUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
     class SubscribeTask extends Gs2RestSessionTask<SubscribeResult> {
         private SubscribeRequest request;
 
@@ -1443,342 +1277,6 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
     ) {
         final AsyncResult<SubscribeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         subscribeByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetSubscribeTask extends Gs2RestSessionTask<GetSubscribeResult> {
-        private GetSubscribeRequest request;
-
-        public GetSubscribeTask(
-            GetSubscribeRequest request,
-            AsyncAction<AsyncResult<GetSubscribeResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetSubscribeResult parse(JsonNode data) {
-            return GetSubscribeResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "ranking")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/subscribe/category/{categoryName}/target/{targetUserId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void getSubscribeAsync(
-            GetSubscribeRequest request,
-            AsyncAction<AsyncResult<GetSubscribeResult>> callback
-    ) {
-        GetSubscribeTask task = new GetSubscribeTask(request, callback);
-        session.execute(task);
-    }
-
-    public GetSubscribeResult getSubscribe(
-            GetSubscribeRequest request
-    ) {
-        final AsyncResult<GetSubscribeResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getSubscribeAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetSubscribeByUserIdTask extends Gs2RestSessionTask<GetSubscribeByUserIdResult> {
-        private GetSubscribeByUserIdRequest request;
-
-        public GetSubscribeByUserIdTask(
-            GetSubscribeByUserIdRequest request,
-            AsyncAction<AsyncResult<GetSubscribeByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetSubscribeByUserIdResult parse(JsonNode data) {
-            return GetSubscribeByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "ranking")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}/target/{targetUserId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void getSubscribeByUserIdAsync(
-            GetSubscribeByUserIdRequest request,
-            AsyncAction<AsyncResult<GetSubscribeByUserIdResult>> callback
-    ) {
-        GetSubscribeByUserIdTask task = new GetSubscribeByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public GetSubscribeByUserIdResult getSubscribeByUserId(
-            GetSubscribeByUserIdRequest request
-    ) {
-        final AsyncResult<GetSubscribeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getSubscribeByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class UnsubscribeTask extends Gs2RestSessionTask<UnsubscribeResult> {
-        private UnsubscribeRequest request;
-
-        public UnsubscribeTask(
-            UnsubscribeRequest request,
-            AsyncAction<AsyncResult<UnsubscribeResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public UnsubscribeResult parse(JsonNode data) {
-            return UnsubscribeResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "ranking")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/subscribe/category/{categoryName}/target/{targetUserId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void unsubscribeAsync(
-            UnsubscribeRequest request,
-            AsyncAction<AsyncResult<UnsubscribeResult>> callback
-    ) {
-        UnsubscribeTask task = new UnsubscribeTask(request, callback);
-        session.execute(task);
-    }
-
-    public UnsubscribeResult unsubscribe(
-            UnsubscribeRequest request
-    ) {
-        final AsyncResult<UnsubscribeResult>[] resultAsyncResult = new AsyncResult[]{null};
-        unsubscribeAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class UnsubscribeByUserIdTask extends Gs2RestSessionTask<UnsubscribeByUserIdResult> {
-        private UnsubscribeByUserIdRequest request;
-
-        public UnsubscribeByUserIdTask(
-            UnsubscribeByUserIdRequest request,
-            AsyncAction<AsyncResult<UnsubscribeByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public UnsubscribeByUserIdResult parse(JsonNode data) {
-            return UnsubscribeByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "ranking")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}/target/{targetUserId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void unsubscribeByUserIdAsync(
-            UnsubscribeByUserIdRequest request,
-            AsyncAction<AsyncResult<UnsubscribeByUserIdResult>> callback
-    ) {
-        UnsubscribeByUserIdTask task = new UnsubscribeByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public UnsubscribeByUserIdResult unsubscribeByUserId(
-            UnsubscribeByUserIdRequest request
-    ) {
-        final AsyncResult<UnsubscribeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        unsubscribeByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -3140,6 +2638,508 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
     ) {
         final AsyncResult<UpdateCurrentRankingMasterFromGitHubResult>[] resultAsyncResult = new AsyncResult[]{null};
         updateCurrentRankingMasterFromGitHubAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSubscribeTask extends Gs2RestSessionTask<GetSubscribeResult> {
+        private GetSubscribeRequest request;
+
+        public GetSubscribeTask(
+            GetSubscribeRequest request,
+            AsyncAction<AsyncResult<GetSubscribeResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSubscribeResult parse(JsonNode data) {
+            return GetSubscribeResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/subscribe/category/{categoryName}/target/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSubscribeAsync(
+            GetSubscribeRequest request,
+            AsyncAction<AsyncResult<GetSubscribeResult>> callback
+    ) {
+        GetSubscribeTask task = new GetSubscribeTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSubscribeResult getSubscribe(
+            GetSubscribeRequest request
+    ) {
+        final AsyncResult<GetSubscribeResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSubscribeAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSubscribeByUserIdTask extends Gs2RestSessionTask<GetSubscribeByUserIdResult> {
+        private GetSubscribeByUserIdRequest request;
+
+        public GetSubscribeByUserIdTask(
+            GetSubscribeByUserIdRequest request,
+            AsyncAction<AsyncResult<GetSubscribeByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSubscribeByUserIdResult parse(JsonNode data) {
+            return GetSubscribeByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}/target/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSubscribeByUserIdAsync(
+            GetSubscribeByUserIdRequest request,
+            AsyncAction<AsyncResult<GetSubscribeByUserIdResult>> callback
+    ) {
+        GetSubscribeByUserIdTask task = new GetSubscribeByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSubscribeByUserIdResult getSubscribeByUserId(
+            GetSubscribeByUserIdRequest request
+    ) {
+        final AsyncResult<GetSubscribeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSubscribeByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnsubscribeTask extends Gs2RestSessionTask<UnsubscribeResult> {
+        private UnsubscribeRequest request;
+
+        public UnsubscribeTask(
+            UnsubscribeRequest request,
+            AsyncAction<AsyncResult<UnsubscribeResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnsubscribeResult parse(JsonNode data) {
+            return UnsubscribeResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/subscribe/category/{categoryName}/target/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unsubscribeAsync(
+            UnsubscribeRequest request,
+            AsyncAction<AsyncResult<UnsubscribeResult>> callback
+    ) {
+        UnsubscribeTask task = new UnsubscribeTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnsubscribeResult unsubscribe(
+            UnsubscribeRequest request
+    ) {
+        final AsyncResult<UnsubscribeResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unsubscribeAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnsubscribeByUserIdTask extends Gs2RestSessionTask<UnsubscribeByUserIdResult> {
+        private UnsubscribeByUserIdRequest request;
+
+        public UnsubscribeByUserIdTask(
+            UnsubscribeByUserIdRequest request,
+            AsyncAction<AsyncResult<UnsubscribeByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnsubscribeByUserIdResult parse(JsonNode data) {
+            return UnsubscribeByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}/target/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unsubscribeByUserIdAsync(
+            UnsubscribeByUserIdRequest request,
+            AsyncAction<AsyncResult<UnsubscribeByUserIdResult>> callback
+    ) {
+        UnsubscribeByUserIdTask task = new UnsubscribeByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnsubscribeByUserIdResult unsubscribeByUserId(
+            UnsubscribeByUserIdRequest request
+    ) {
+        final AsyncResult<UnsubscribeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unsubscribeByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSubscribesByCategoryNameTask extends Gs2RestSessionTask<DescribeSubscribesByCategoryNameResult> {
+        private DescribeSubscribesByCategoryNameRequest request;
+
+        public DescribeSubscribesByCategoryNameTask(
+            DescribeSubscribesByCategoryNameRequest request,
+            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSubscribesByCategoryNameResult parse(JsonNode data) {
+            return DescribeSubscribesByCategoryNameResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/subscribe/category/{categoryName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSubscribesByCategoryNameAsync(
+            DescribeSubscribesByCategoryNameRequest request,
+            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameResult>> callback
+    ) {
+        DescribeSubscribesByCategoryNameTask task = new DescribeSubscribesByCategoryNameTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSubscribesByCategoryNameResult describeSubscribesByCategoryName(
+            DescribeSubscribesByCategoryNameRequest request
+    ) {
+        final AsyncResult<DescribeSubscribesByCategoryNameResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSubscribesByCategoryNameAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSubscribesByCategoryNameAndUserIdTask extends Gs2RestSessionTask<DescribeSubscribesByCategoryNameAndUserIdResult> {
+        private DescribeSubscribesByCategoryNameAndUserIdRequest request;
+
+        public DescribeSubscribesByCategoryNameAndUserIdTask(
+            DescribeSubscribesByCategoryNameAndUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameAndUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSubscribesByCategoryNameAndUserIdResult parse(JsonNode data) {
+            return DescribeSubscribesByCategoryNameAndUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "ranking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/subscribe/category/{categoryName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSubscribesByCategoryNameAndUserIdAsync(
+            DescribeSubscribesByCategoryNameAndUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeSubscribesByCategoryNameAndUserIdResult>> callback
+    ) {
+        DescribeSubscribesByCategoryNameAndUserIdTask task = new DescribeSubscribesByCategoryNameAndUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSubscribesByCategoryNameAndUserIdResult describeSubscribesByCategoryNameAndUserId(
+            DescribeSubscribesByCategoryNameAndUserIdRequest request
+    ) {
+        final AsyncResult<DescribeSubscribesByCategoryNameAndUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSubscribesByCategoryNameAndUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

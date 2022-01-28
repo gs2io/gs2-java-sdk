@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.account.model.*;
+import io.gs2.account.model.Account;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteAccountResult implements IResult, Serializable {
+    private Account item;
+
+	public Account getItem() {
+		return item;
+	}
+
+	public void setItem(Account item) {
+		this.item = item;
+	}
+
+	public DeleteAccountResult withItem(Account item) {
+		this.item = item;
+		return this;
+	}
 
     public static DeleteAccountResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DeleteAccountResult();
+        return new DeleteAccountResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Account.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

@@ -30,6 +30,7 @@ import io.gs2.friend.model.*;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeBlackListByUserIdResult implements IResult, Serializable {
     private List<String> items;
+    private String nextPageToken;
 
 	public List<String> getItems() {
 		return items;
@@ -44,6 +45,19 @@ public class DescribeBlackListByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
+	public String getNextPageToken() {
+		return nextPageToken;
+	}
+
+	public void setNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+	}
+
+	public DescribeBlackListByUserIdResult withNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+		return this;
+	}
+
     public static DescribeBlackListByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -53,7 +67,8 @@ public class DescribeBlackListByUserIdResult implements IResult, Serializable {
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
     }
 
     public JsonNode toJson() {
@@ -64,6 +79,7 @@ public class DescribeBlackListByUserIdResult implements IResult, Serializable {
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("nextPageToken", getNextPageToken());
             }}
         );
     }

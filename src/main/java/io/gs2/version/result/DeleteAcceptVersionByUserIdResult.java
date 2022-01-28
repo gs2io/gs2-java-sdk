@@ -25,21 +25,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.version.model.*;
+import io.gs2.version.model.Version;
+import io.gs2.version.model.AcceptVersion;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteAcceptVersionByUserIdResult implements IResult, Serializable {
+    private AcceptVersion item;
+
+	public AcceptVersion getItem() {
+		return item;
+	}
+
+	public void setItem(AcceptVersion item) {
+		this.item = item;
+	}
+
+	public DeleteAcceptVersionByUserIdResult withItem(AcceptVersion item) {
+		this.item = item;
+		return this;
+	}
 
     public static DeleteAcceptVersionByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DeleteAcceptVersionByUserIdResult();
+        return new DeleteAcceptVersionByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : AcceptVersion.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.identifier.model.*;
+import io.gs2.identifier.model.User;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteUserResult implements IResult, Serializable {
+    private User item;
+
+	public User getItem() {
+		return item;
+	}
+
+	public void setItem(User item) {
+		this.item = item;
+	}
+
+	public DeleteUserResult withItem(User item) {
+		this.item = item;
+		return this;
+	}
 
     public static DeleteUserResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DeleteUserResult();
+        return new DeleteUserResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : User.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

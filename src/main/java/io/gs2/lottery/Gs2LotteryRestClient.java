@@ -2385,6 +2385,86 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class DrawByStampSheetTask extends Gs2RestSessionTask<DrawByStampSheetResult> {
+        private DrawByStampSheetRequest request;
+
+        public DrawByStampSheetTask(
+            DrawByStampSheetRequest request,
+            AsyncAction<AsyncResult<DrawByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DrawByStampSheetResult parse(JsonNode data) {
+            return DrawByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/draw";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void drawByStampSheetAsync(
+            DrawByStampSheetRequest request,
+            AsyncAction<AsyncResult<DrawByStampSheetResult>> callback
+    ) {
+        DrawByStampSheetTask task = new DrawByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public DrawByStampSheetResult drawByStampSheet(
+            DrawByStampSheetRequest request
+    ) {
+        final AsyncResult<DrawByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        drawByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeProbabilitiesTask extends Gs2RestSessionTask<DescribeProbabilitiesResult> {
         private DescribeProbabilitiesRequest request;
 
@@ -2535,86 +2615,6 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
     ) {
         final AsyncResult<DescribeProbabilitiesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         describeProbabilitiesByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DrawByStampSheetTask extends Gs2RestSessionTask<DrawByStampSheetResult> {
-        private DrawByStampSheetRequest request;
-
-        public DrawByStampSheetTask(
-            DrawByStampSheetRequest request,
-            AsyncAction<AsyncResult<DrawByStampSheetResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DrawByStampSheetResult parse(JsonNode data) {
-            return DrawByStampSheetResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "lottery")
-                .replace("{region}", session.getRegion().getName())
-                + "/stamp/draw";
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("stampSheet", request.getStampSheet());
-                    put("keyId", request.getKeyId());
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.POST)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void drawByStampSheetAsync(
-            DrawByStampSheetRequest request,
-            AsyncAction<AsyncResult<DrawByStampSheetResult>> callback
-    ) {
-        DrawByStampSheetTask task = new DrawByStampSheetTask(request, callback);
-        session.execute(task);
-    }
-
-    public DrawByStampSheetResult drawByStampSheet(
-            DrawByStampSheetRequest request
-    ) {
-        final AsyncResult<DrawByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
-        drawByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

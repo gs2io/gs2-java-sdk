@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inbox.model.*;
+import io.gs2.inbox.model.Received;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateReceivedByUserIdResult implements IResult, Serializable {
+    private Received item;
+
+	public Received getItem() {
+		return item;
+	}
+
+	public void setItem(Received item) {
+		this.item = item;
+	}
+
+	public UpdateReceivedByUserIdResult withItem(Received item) {
+		this.item = item;
+		return this;
+	}
 
     public static UpdateReceivedByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new UpdateReceivedByUserIdResult();
+        return new UpdateReceivedByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Received.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

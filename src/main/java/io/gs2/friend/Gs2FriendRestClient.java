@@ -965,12 +965,12 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
-    class GetPublicProfileTask extends Gs2RestSessionTask<GetPublicProfileResult> {
-        private GetPublicProfileRequest request;
+    class DescribeFriendsTask extends Gs2RestSessionTask<DescribeFriendsResult> {
+        private DescribeFriendsRequest request;
 
-        public GetPublicProfileTask(
-            GetPublicProfileRequest request,
-            AsyncAction<AsyncResult<GetPublicProfileResult>> userCallback
+        public DescribeFriendsTask(
+            DescribeFriendsRequest request,
+            AsyncAction<AsyncResult<DescribeFriendsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -980,8 +980,8 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
         }
 
         @Override
-        public GetPublicProfileResult parse(JsonNode data) {
-            return GetPublicProfileResult.fromJson(data);
+        public DescribeFriendsResult parse(JsonNode data) {
+            return DescribeFriendsResult.fromJson(data);
         }
 
         @Override
@@ -990,7 +990,99 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "friend")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/profile/public";
+                + "/{namespaceName}/user/me/friend";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeFriendsAsync(
+            DescribeFriendsRequest request,
+            AsyncAction<AsyncResult<DescribeFriendsResult>> callback
+    ) {
+        DescribeFriendsTask task = new DescribeFriendsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeFriendsResult describeFriends(
+            DescribeFriendsRequest request
+    ) {
+        final AsyncResult<DescribeFriendsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeFriendsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeFriendsByUserIdTask extends Gs2RestSessionTask<DescribeFriendsByUserIdResult> {
+        private DescribeFriendsByUserIdRequest request;
+
+        public DescribeFriendsByUserIdTask(
+            DescribeFriendsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeFriendsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeFriendsByUserIdResult parse(JsonNode data) {
+            return DescribeFriendsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/friend";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
@@ -998,6 +1090,15 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getWithProfile() != null) {
+                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
             }
             url += "?" + String.join("&", queryStrings);
 
@@ -1017,19 +1118,527 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
         }
     }
 
-    public void getPublicProfileAsync(
-            GetPublicProfileRequest request,
-            AsyncAction<AsyncResult<GetPublicProfileResult>> callback
+    public void describeFriendsByUserIdAsync(
+            DescribeFriendsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeFriendsByUserIdResult>> callback
     ) {
-        GetPublicProfileTask task = new GetPublicProfileTask(request, callback);
+        DescribeFriendsByUserIdTask task = new DescribeFriendsByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    public GetPublicProfileResult getPublicProfile(
-            GetPublicProfileRequest request
+    public DescribeFriendsByUserIdResult describeFriendsByUserId(
+            DescribeFriendsByUserIdRequest request
     ) {
-        final AsyncResult<GetPublicProfileResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getPublicProfileAsync(
+        final AsyncResult<DescribeFriendsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeFriendsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeBlackListTask extends Gs2RestSessionTask<DescribeBlackListResult> {
+        private DescribeBlackListRequest request;
+
+        public DescribeBlackListTask(
+            DescribeBlackListRequest request,
+            AsyncAction<AsyncResult<DescribeBlackListResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeBlackListResult parse(JsonNode data) {
+            return DescribeBlackListResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/blackList";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeBlackListAsync(
+            DescribeBlackListRequest request,
+            AsyncAction<AsyncResult<DescribeBlackListResult>> callback
+    ) {
+        DescribeBlackListTask task = new DescribeBlackListTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeBlackListResult describeBlackList(
+            DescribeBlackListRequest request
+    ) {
+        final AsyncResult<DescribeBlackListResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeBlackListAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeBlackListByUserIdTask extends Gs2RestSessionTask<DescribeBlackListByUserIdResult> {
+        private DescribeBlackListByUserIdRequest request;
+
+        public DescribeBlackListByUserIdTask(
+            DescribeBlackListByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeBlackListByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeBlackListByUserIdResult parse(JsonNode data) {
+            return DescribeBlackListByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/blackList";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeBlackListByUserIdAsync(
+            DescribeBlackListByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeBlackListByUserIdResult>> callback
+    ) {
+        DescribeBlackListByUserIdTask task = new DescribeBlackListByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeBlackListByUserIdResult describeBlackListByUserId(
+            DescribeBlackListByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeBlackListByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeBlackListByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RegisterBlackListTask extends Gs2RestSessionTask<RegisterBlackListResult> {
+        private RegisterBlackListRequest request;
+
+        public RegisterBlackListTask(
+            RegisterBlackListRequest request,
+            AsyncAction<AsyncResult<RegisterBlackListResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RegisterBlackListResult parse(JsonNode data) {
+            return RegisterBlackListResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/blackList/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void registerBlackListAsync(
+            RegisterBlackListRequest request,
+            AsyncAction<AsyncResult<RegisterBlackListResult>> callback
+    ) {
+        RegisterBlackListTask task = new RegisterBlackListTask(request, callback);
+        session.execute(task);
+    }
+
+    public RegisterBlackListResult registerBlackList(
+            RegisterBlackListRequest request
+    ) {
+        final AsyncResult<RegisterBlackListResult>[] resultAsyncResult = new AsyncResult[]{null};
+        registerBlackListAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RegisterBlackListByUserIdTask extends Gs2RestSessionTask<RegisterBlackListByUserIdResult> {
+        private RegisterBlackListByUserIdRequest request;
+
+        public RegisterBlackListByUserIdTask(
+            RegisterBlackListByUserIdRequest request,
+            AsyncAction<AsyncResult<RegisterBlackListByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RegisterBlackListByUserIdResult parse(JsonNode data) {
+            return RegisterBlackListByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/blackList/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void registerBlackListByUserIdAsync(
+            RegisterBlackListByUserIdRequest request,
+            AsyncAction<AsyncResult<RegisterBlackListByUserIdResult>> callback
+    ) {
+        RegisterBlackListByUserIdTask task = new RegisterBlackListByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public RegisterBlackListByUserIdResult registerBlackListByUserId(
+            RegisterBlackListByUserIdRequest request
+    ) {
+        final AsyncResult<RegisterBlackListByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        registerBlackListByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnregisterBlackListTask extends Gs2RestSessionTask<UnregisterBlackListResult> {
+        private UnregisterBlackListRequest request;
+
+        public UnregisterBlackListTask(
+            UnregisterBlackListRequest request,
+            AsyncAction<AsyncResult<UnregisterBlackListResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnregisterBlackListResult parse(JsonNode data) {
+            return UnregisterBlackListResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/blackList/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unregisterBlackListAsync(
+            UnregisterBlackListRequest request,
+            AsyncAction<AsyncResult<UnregisterBlackListResult>> callback
+    ) {
+        UnregisterBlackListTask task = new UnregisterBlackListTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnregisterBlackListResult unregisterBlackList(
+            UnregisterBlackListRequest request
+    ) {
+        final AsyncResult<UnregisterBlackListResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unregisterBlackListAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnregisterBlackListByUserIdTask extends Gs2RestSessionTask<UnregisterBlackListByUserIdResult> {
+        private UnregisterBlackListByUserIdRequest request;
+
+        public UnregisterBlackListByUserIdTask(
+            UnregisterBlackListByUserIdRequest request,
+            AsyncAction<AsyncResult<UnregisterBlackListByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnregisterBlackListByUserIdResult parse(JsonNode data) {
+            return UnregisterBlackListByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/blackList/{targetUserId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unregisterBlackListByUserIdAsync(
+            UnregisterBlackListByUserIdRequest request,
+            AsyncAction<AsyncResult<UnregisterBlackListByUserIdResult>> callback
+    ) {
+        UnregisterBlackListByUserIdTask task = new UnregisterBlackListByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnregisterBlackListByUserIdResult unregisterBlackListByUserId(
+            UnregisterBlackListByUserIdRequest request
+    ) {
+        final AsyncResult<UnregisterBlackListByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unregisterBlackListByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -1716,188 +2325,6 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
     ) {
         final AsyncResult<UnfollowByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         unfollowByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeFriendsTask extends Gs2RestSessionTask<DescribeFriendsResult> {
-        private DescribeFriendsRequest request;
-
-        public DescribeFriendsTask(
-            DescribeFriendsRequest request,
-            AsyncAction<AsyncResult<DescribeFriendsResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeFriendsResult parse(JsonNode data) {
-            return DescribeFriendsResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "friend")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/friend";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getWithProfile() != null) {
-                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
-            }
-            if (this.request.getPageToken() != null) {
-                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
-            }
-            if (this.request.getLimit() != null) {
-                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeFriendsAsync(
-            DescribeFriendsRequest request,
-            AsyncAction<AsyncResult<DescribeFriendsResult>> callback
-    ) {
-        DescribeFriendsTask task = new DescribeFriendsTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeFriendsResult describeFriends(
-            DescribeFriendsRequest request
-    ) {
-        final AsyncResult<DescribeFriendsResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeFriendsAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeFriendsByUserIdTask extends Gs2RestSessionTask<DescribeFriendsByUserIdResult> {
-        private DescribeFriendsByUserIdRequest request;
-
-        public DescribeFriendsByUserIdTask(
-            DescribeFriendsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeFriendsByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeFriendsByUserIdResult parse(JsonNode data) {
-            return DescribeFriendsByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "friend")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/friend";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getWithProfile() != null) {
-                queryStrings.add("withProfile=" + String.valueOf(this.request.getWithProfile()));
-            }
-            if (this.request.getPageToken() != null) {
-                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
-            }
-            if (this.request.getLimit() != null) {
-                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeFriendsByUserIdAsync(
-            DescribeFriendsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeFriendsByUserIdResult>> callback
-    ) {
-        DescribeFriendsByUserIdTask task = new DescribeFriendsByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeFriendsByUserIdResult describeFriendsByUserId(
-            DescribeFriendsByUserIdRequest request
-    ) {
-        final AsyncResult<DescribeFriendsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeFriendsByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -3600,12 +4027,12 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeBlackListTask extends Gs2RestSessionTask<DescribeBlackListResult> {
-        private DescribeBlackListRequest request;
+    class GetPublicProfileTask extends Gs2RestSessionTask<GetPublicProfileResult> {
+        private GetPublicProfileRequest request;
 
-        public DescribeBlackListTask(
-            DescribeBlackListRequest request,
-            AsyncAction<AsyncResult<DescribeBlackListResult>> userCallback
+        public GetPublicProfileTask(
+            GetPublicProfileRequest request,
+            AsyncAction<AsyncResult<GetPublicProfileResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3615,8 +4042,8 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
         }
 
         @Override
-        public DescribeBlackListResult parse(JsonNode data) {
-            return DescribeBlackListResult.fromJson(data);
+        public GetPublicProfileResult parse(JsonNode data) {
+            return GetPublicProfileResult.fromJson(data);
         }
 
         @Override
@@ -3625,90 +4052,7 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "friend")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/blackList";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeBlackListAsync(
-            DescribeBlackListRequest request,
-            AsyncAction<AsyncResult<DescribeBlackListResult>> callback
-    ) {
-        DescribeBlackListTask task = new DescribeBlackListTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeBlackListResult describeBlackList(
-            DescribeBlackListRequest request
-    ) {
-        final AsyncResult<DescribeBlackListResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeBlackListAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeBlackListByUserIdTask extends Gs2RestSessionTask<DescribeBlackListByUserIdResult> {
-        private DescribeBlackListByUserIdRequest request;
-
-        public DescribeBlackListByUserIdTask(
-            DescribeBlackListByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeBlackListByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeBlackListByUserIdResult parse(JsonNode data) {
-            return DescribeBlackListByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "friend")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/blackList";
+                + "/{namespaceName}/user/{userId}/profile/public";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
@@ -3735,351 +4079,19 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
         }
     }
 
-    public void describeBlackListByUserIdAsync(
-            DescribeBlackListByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeBlackListByUserIdResult>> callback
+    public void getPublicProfileAsync(
+            GetPublicProfileRequest request,
+            AsyncAction<AsyncResult<GetPublicProfileResult>> callback
     ) {
-        DescribeBlackListByUserIdTask task = new DescribeBlackListByUserIdTask(request, callback);
+        GetPublicProfileTask task = new GetPublicProfileTask(request, callback);
         session.execute(task);
     }
 
-    public DescribeBlackListByUserIdResult describeBlackListByUserId(
-            DescribeBlackListByUserIdRequest request
+    public GetPublicProfileResult getPublicProfile(
+            GetPublicProfileRequest request
     ) {
-        final AsyncResult<DescribeBlackListByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeBlackListByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class RegisterBlackListTask extends Gs2RestSessionTask<RegisterBlackListResult> {
-        private RegisterBlackListRequest request;
-
-        public RegisterBlackListTask(
-            RegisterBlackListRequest request,
-            AsyncAction<AsyncResult<RegisterBlackListResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public RegisterBlackListResult parse(JsonNode data) {
-            return RegisterBlackListResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "friend")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/blackList/{targetUserId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.POST)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void registerBlackListAsync(
-            RegisterBlackListRequest request,
-            AsyncAction<AsyncResult<RegisterBlackListResult>> callback
-    ) {
-        RegisterBlackListTask task = new RegisterBlackListTask(request, callback);
-        session.execute(task);
-    }
-
-    public RegisterBlackListResult registerBlackList(
-            RegisterBlackListRequest request
-    ) {
-        final AsyncResult<RegisterBlackListResult>[] resultAsyncResult = new AsyncResult[]{null};
-        registerBlackListAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class RegisterBlackListByUserIdTask extends Gs2RestSessionTask<RegisterBlackListByUserIdResult> {
-        private RegisterBlackListByUserIdRequest request;
-
-        public RegisterBlackListByUserIdTask(
-            RegisterBlackListByUserIdRequest request,
-            AsyncAction<AsyncResult<RegisterBlackListByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public RegisterBlackListByUserIdResult parse(JsonNode data) {
-            return RegisterBlackListByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "friend")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/blackList/{targetUserId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.POST)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void registerBlackListByUserIdAsync(
-            RegisterBlackListByUserIdRequest request,
-            AsyncAction<AsyncResult<RegisterBlackListByUserIdResult>> callback
-    ) {
-        RegisterBlackListByUserIdTask task = new RegisterBlackListByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public RegisterBlackListByUserIdResult registerBlackListByUserId(
-            RegisterBlackListByUserIdRequest request
-    ) {
-        final AsyncResult<RegisterBlackListByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        registerBlackListByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class UnregisterBlackListTask extends Gs2RestSessionTask<UnregisterBlackListResult> {
-        private UnregisterBlackListRequest request;
-
-        public UnregisterBlackListTask(
-            UnregisterBlackListRequest request,
-            AsyncAction<AsyncResult<UnregisterBlackListResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public UnregisterBlackListResult parse(JsonNode data) {
-            return UnregisterBlackListResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "friend")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/blackList/{targetUserId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void unregisterBlackListAsync(
-            UnregisterBlackListRequest request,
-            AsyncAction<AsyncResult<UnregisterBlackListResult>> callback
-    ) {
-        UnregisterBlackListTask task = new UnregisterBlackListTask(request, callback);
-        session.execute(task);
-    }
-
-    public UnregisterBlackListResult unregisterBlackList(
-            UnregisterBlackListRequest request
-    ) {
-        final AsyncResult<UnregisterBlackListResult>[] resultAsyncResult = new AsyncResult[]{null};
-        unregisterBlackListAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class UnregisterBlackListByUserIdTask extends Gs2RestSessionTask<UnregisterBlackListByUserIdResult> {
-        private UnregisterBlackListByUserIdRequest request;
-
-        public UnregisterBlackListByUserIdTask(
-            UnregisterBlackListByUserIdRequest request,
-            AsyncAction<AsyncResult<UnregisterBlackListByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public UnregisterBlackListByUserIdResult parse(JsonNode data) {
-            return UnregisterBlackListByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "friend")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/blackList/{targetUserId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{targetUserId}", this.request.getTargetUserId() == null || this.request.getTargetUserId().length() == 0 ? "null" : String.valueOf(this.request.getTargetUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void unregisterBlackListByUserIdAsync(
-            UnregisterBlackListByUserIdRequest request,
-            AsyncAction<AsyncResult<UnregisterBlackListByUserIdResult>> callback
-    ) {
-        UnregisterBlackListByUserIdTask task = new UnregisterBlackListByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public UnregisterBlackListByUserIdResult unregisterBlackListByUserId(
-            UnregisterBlackListByUserIdRequest request
-    ) {
-        final AsyncResult<UnregisterBlackListByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        unregisterBlackListByUserIdAsync(
+        final AsyncResult<GetPublicProfileResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPublicProfileAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

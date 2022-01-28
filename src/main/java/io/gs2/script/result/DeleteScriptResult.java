@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.script.model.*;
+import io.gs2.script.model.Script;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteScriptResult implements IResult, Serializable {
+    private Script item;
+
+	public Script getItem() {
+		return item;
+	}
+
+	public void setItem(Script item) {
+		this.item = item;
+	}
+
+	public DeleteScriptResult withItem(Script item) {
+		this.item = item;
+		return this;
+	}
 
     public static DeleteScriptResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DeleteScriptResult();
+        return new DeleteScriptResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Script.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

@@ -1806,6 +1806,9 @@ import io.gs2.chat.model.*;public class Gs2ChatRestClient extends AbstractGs2Cli
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getUserId() != null) {
+                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+            }
             url += "?" + String.join("&", queryStrings);
 
             builder

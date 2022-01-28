@@ -3566,6 +3566,252 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class DeleteItemSetByUserIdTask extends Gs2RestSessionTask<DeleteItemSetByUserIdResult> {
+        private DeleteItemSetByUserIdRequest request;
+
+        public DeleteItemSetByUserIdTask(
+            DeleteItemSetByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteItemSetByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteItemSetByUserIdResult parse(JsonNode data) {
+            return DeleteItemSetByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getItemSetName() != null) {
+                queryStrings.add("itemSetName=" + EncodingUtil.urlEncode((String.valueOf(this.request.getItemSetName()))));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteItemSetByUserIdAsync(
+            DeleteItemSetByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteItemSetByUserIdResult>> callback
+    ) {
+        DeleteItemSetByUserIdTask task = new DeleteItemSetByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteItemSetByUserIdResult deleteItemSetByUserId(
+            DeleteItemSetByUserIdRequest request
+    ) {
+        final AsyncResult<DeleteItemSetByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteItemSetByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AcquireItemSetByStampSheetTask extends Gs2RestSessionTask<AcquireItemSetByStampSheetResult> {
+        private AcquireItemSetByStampSheetRequest request;
+
+        public AcquireItemSetByStampSheetTask(
+            AcquireItemSetByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireItemSetByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AcquireItemSetByStampSheetResult parse(JsonNode data) {
+            return AcquireItemSetByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/item/acquire";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void acquireItemSetByStampSheetAsync(
+            AcquireItemSetByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireItemSetByStampSheetResult>> callback
+    ) {
+        AcquireItemSetByStampSheetTask task = new AcquireItemSetByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public AcquireItemSetByStampSheetResult acquireItemSetByStampSheet(
+            AcquireItemSetByStampSheetRequest request
+    ) {
+        final AsyncResult<AcquireItemSetByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        acquireItemSetByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ConsumeItemSetByStampTaskTask extends Gs2RestSessionTask<ConsumeItemSetByStampTaskResult> {
+        private ConsumeItemSetByStampTaskRequest request;
+
+        public ConsumeItemSetByStampTaskTask(
+            ConsumeItemSetByStampTaskRequest request,
+            AsyncAction<AsyncResult<ConsumeItemSetByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ConsumeItemSetByStampTaskResult parse(JsonNode data) {
+            return ConsumeItemSetByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/item/consume";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void consumeItemSetByStampTaskAsync(
+            ConsumeItemSetByStampTaskRequest request,
+            AsyncAction<AsyncResult<ConsumeItemSetByStampTaskResult>> callback
+    ) {
+        ConsumeItemSetByStampTaskTask task = new ConsumeItemSetByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public ConsumeItemSetByStampTaskResult consumeItemSetByStampTask(
+            ConsumeItemSetByStampTaskRequest request
+    ) {
+        final AsyncResult<ConsumeItemSetByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        consumeItemSetByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeReferenceOfTask extends Gs2RestSessionTask<DescribeReferenceOfResult> {
         private DescribeReferenceOfRequest request;
 
@@ -4426,172 +4672,6 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
-    class DeleteItemSetByUserIdTask extends Gs2RestSessionTask<DeleteItemSetByUserIdResult> {
-        private DeleteItemSetByUserIdRequest request;
-
-        public DeleteItemSetByUserIdTask(
-            DeleteItemSetByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteItemSetByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DeleteItemSetByUserIdResult parse(JsonNode data) {
-            return DeleteItemSetByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "inventory")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getItemSetName() != null) {
-                queryStrings.add("itemSetName=" + EncodingUtil.urlEncode((String.valueOf(this.request.getItemSetName()))));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void deleteItemSetByUserIdAsync(
-            DeleteItemSetByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteItemSetByUserIdResult>> callback
-    ) {
-        DeleteItemSetByUserIdTask task = new DeleteItemSetByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public DeleteItemSetByUserIdResult deleteItemSetByUserId(
-            DeleteItemSetByUserIdRequest request
-    ) {
-        final AsyncResult<DeleteItemSetByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        deleteItemSetByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class AcquireItemSetByStampSheetTask extends Gs2RestSessionTask<AcquireItemSetByStampSheetResult> {
-        private AcquireItemSetByStampSheetRequest request;
-
-        public AcquireItemSetByStampSheetTask(
-            AcquireItemSetByStampSheetRequest request,
-            AsyncAction<AsyncResult<AcquireItemSetByStampSheetResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public AcquireItemSetByStampSheetResult parse(JsonNode data) {
-            return AcquireItemSetByStampSheetResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "inventory")
-                .replace("{region}", session.getRegion().getName())
-                + "/stamp/item/acquire";
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("stampSheet", request.getStampSheet());
-                    put("keyId", request.getKeyId());
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.POST)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void acquireItemSetByStampSheetAsync(
-            AcquireItemSetByStampSheetRequest request,
-            AsyncAction<AsyncResult<AcquireItemSetByStampSheetResult>> callback
-    ) {
-        AcquireItemSetByStampSheetTask task = new AcquireItemSetByStampSheetTask(request, callback);
-        session.execute(task);
-    }
-
-    public AcquireItemSetByStampSheetResult acquireItemSetByStampSheet(
-            AcquireItemSetByStampSheetRequest request
-    ) {
-        final AsyncResult<AcquireItemSetByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
-        acquireItemSetByStampSheetAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
     class AddReferenceOfItemSetByStampSheetTask extends Gs2RestSessionTask<AddReferenceOfItemSetByStampSheetResult> {
         private AddReferenceOfItemSetByStampSheetRequest request;
 
@@ -4736,86 +4816,6 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
     ) {
         final AsyncResult<DeleteReferenceOfItemSetByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteReferenceOfItemSetByStampSheetAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class ConsumeItemSetByStampTaskTask extends Gs2RestSessionTask<ConsumeItemSetByStampTaskResult> {
-        private ConsumeItemSetByStampTaskRequest request;
-
-        public ConsumeItemSetByStampTaskTask(
-            ConsumeItemSetByStampTaskRequest request,
-            AsyncAction<AsyncResult<ConsumeItemSetByStampTaskResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public ConsumeItemSetByStampTaskResult parse(JsonNode data) {
-            return ConsumeItemSetByStampTaskResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "inventory")
-                .replace("{region}", session.getRegion().getName())
-                + "/stamp/item/consume";
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("stampTask", request.getStampTask());
-                    put("keyId", request.getKeyId());
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.POST)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void consumeItemSetByStampTaskAsync(
-            ConsumeItemSetByStampTaskRequest request,
-            AsyncAction<AsyncResult<ConsumeItemSetByStampTaskResult>> callback
-    ) {
-        ConsumeItemSetByStampTaskTask task = new ConsumeItemSetByStampTaskTask(request, callback);
-        session.execute(task);
-    }
-
-    public ConsumeItemSetByStampTaskResult consumeItemSetByStampTask(
-            ConsumeItemSetByStampTaskRequest request
-    ) {
-        final AsyncResult<ConsumeItemSetByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
-        consumeItemSetByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class ScopedValue implements IModel, Serializable {
 	private String resetType;
 	private Long value;
+	private Long nextResetAt;
 	private Long updatedAt;
 
 	public String getResetType() {
@@ -59,6 +60,19 @@ public class ScopedValue implements IModel, Serializable {
 		return this;
 	}
 
+	public Long getNextResetAt() {
+		return nextResetAt;
+	}
+
+	public void setNextResetAt(Long nextResetAt) {
+		this.nextResetAt = nextResetAt;
+	}
+
+	public ScopedValue withNextResetAt(Long nextResetAt) {
+		this.nextResetAt = nextResetAt;
+		return this;
+	}
+
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
@@ -79,6 +93,7 @@ public class ScopedValue implements IModel, Serializable {
         return new ScopedValue()
             .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
             .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").longValue())
+            .withNextResetAt(data.get("nextResetAt") == null || data.get("nextResetAt").isNull() ? null : data.get("nextResetAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
 
@@ -87,6 +102,7 @@ public class ScopedValue implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("resetType", getResetType());
                 put("value", getValue());
+                put("nextResetAt", getNextResetAt());
                 put("updatedAt", getUpdatedAt());
             }}
         );
@@ -98,6 +114,7 @@ public class ScopedValue implements IModel, Serializable {
         int result = 1;
         result = prime * result + ((this.resetType == null) ? 0 : this.resetType.hashCode());
         result = prime * result + ((this.value == null) ? 0 : this.value.hashCode());
+        result = prime * result + ((this.nextResetAt == null) ? 0 : this.nextResetAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
 	}
@@ -119,6 +136,11 @@ public class ScopedValue implements IModel, Serializable {
 		if (value == null) {
 			return other.value == null;
 		} else if (!value.equals(other.value)) {
+			return false;
+		}
+		if (nextResetAt == null) {
+			return other.nextResetAt == null;
+		} else if (!nextResetAt.equals(other.nextResetAt)) {
 			return false;
 		}
 		if (updatedAt == null) {

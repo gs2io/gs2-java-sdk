@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.account.model.*;
+import io.gs2.account.model.TakeOver;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteTakeOverResult implements IResult, Serializable {
+    private TakeOver item;
+
+	public TakeOver getItem() {
+		return item;
+	}
+
+	public void setItem(TakeOver item) {
+		this.item = item;
+	}
+
+	public DeleteTakeOverResult withItem(TakeOver item) {
+		this.item = item;
+		return this;
+	}
 
     public static DeleteTakeOverResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DeleteTakeOverResult();
+        return new DeleteTakeOverResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : TakeOver.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

@@ -28,6 +28,7 @@ import io.gs2.matchmaking.model.Attribute;
 import io.gs2.matchmaking.model.Player;
 import io.gs2.matchmaking.model.AttributeRange;
 import io.gs2.matchmaking.model.CapacityOfRole;
+import io.gs2.matchmaking.model.TimeSpan;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -39,6 +40,7 @@ public class CreateGatheringRequest extends Gs2BasicRequest<CreateGatheringReque
     private List<CapacityOfRole> capacityOfRoles;
     private List<String> allowUserIds;
     private Long expiresAt;
+    private TimeSpan expiresAtTimeSpan;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -131,6 +133,19 @@ public class CreateGatheringRequest extends Gs2BasicRequest<CreateGatheringReque
 		return this;
 	}
 
+	public TimeSpan getExpiresAtTimeSpan() {
+		return expiresAtTimeSpan;
+	}
+
+	public void setExpiresAtTimeSpan(TimeSpan expiresAtTimeSpan) {
+		this.expiresAtTimeSpan = expiresAtTimeSpan;
+	}
+
+	public CreateGatheringRequest withExpiresAtTimeSpan(TimeSpan expiresAtTimeSpan) {
+		this.expiresAtTimeSpan = expiresAtTimeSpan;
+		return this;
+	}
+
     public static CreateGatheringRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -156,7 +171,8 @@ public class CreateGatheringRequest extends Gs2BasicRequest<CreateGatheringReque
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withExpiresAtTimeSpan(data.get("expiresAtTimeSpan") == null || data.get("expiresAtTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresAtTimeSpan")));
     }
 
     public JsonNode toJson() {
@@ -183,6 +199,7 @@ public class CreateGatheringRequest extends Gs2BasicRequest<CreateGatheringReque
                     }
                 ).collect(Collectors.toList()));
                 put("expiresAt", getExpiresAt());
+                put("expiresAtTimeSpan", getExpiresAtTimeSpan() != null ? getExpiresAtTimeSpan().toJson() : null);
             }}
         );
     }

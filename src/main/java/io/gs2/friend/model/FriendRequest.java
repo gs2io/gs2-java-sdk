@@ -28,7 +28,7 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FriendRequest implements IModel, Serializable {
+public class FriendRequest implements IModel, Serializable, Comparable<FriendRequest> {
 	private String userId;
 	private String targetUserId;
 
@@ -75,6 +75,11 @@ public class FriendRequest implements IModel, Serializable {
             }}
         );
     }
+
+	@Override
+	public int compareTo(FriendRequest o) {
+		return userId.compareTo(o.userId);
+	}
 
 	@Override
 	public int hashCode() {

@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteMessageRequest extends Gs2BasicRequest<DeleteMessageRequest> {
     private String namespaceName;
     private String roomName;
+    private String userId;
     private String messageName;
 
 	public String getNamespaceName() {
@@ -58,6 +59,19 @@ public class DeleteMessageRequest extends Gs2BasicRequest<DeleteMessageRequest> 
 		return this;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public DeleteMessageRequest withUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
+
 	public String getMessageName() {
 		return messageName;
 	}
@@ -78,6 +92,7 @@ public class DeleteMessageRequest extends Gs2BasicRequest<DeleteMessageRequest> 
         return new DeleteMessageRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withMessageName(data.get("messageName") == null || data.get("messageName").isNull() ? null : data.get("messageName").asText());
     }
 
@@ -86,6 +101,7 @@ public class DeleteMessageRequest extends Gs2BasicRequest<DeleteMessageRequest> 
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("roomName", getRoomName());
+                put("userId", getUserId());
                 put("messageName", getMessageName());
             }}
         );

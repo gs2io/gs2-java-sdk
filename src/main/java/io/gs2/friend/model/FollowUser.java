@@ -28,7 +28,7 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FollowUser implements IModel, Serializable {
+public class FollowUser implements IModel, Serializable, Comparable<FollowUser> {
 	private String userId;
 	private String publicProfile;
 	private String followerProfile;
@@ -91,6 +91,11 @@ public class FollowUser implements IModel, Serializable {
             }}
         );
     }
+
+	@Override
+	public int compareTo(FollowUser o) {
+		return userId.compareTo(o.userId);
+	}
 
 	@Override
 	public int hashCode() {

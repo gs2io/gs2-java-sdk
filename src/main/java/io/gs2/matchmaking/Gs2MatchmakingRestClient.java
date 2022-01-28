@@ -684,6 +684,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                         }
                     ).collect(Collectors.toList()));
                     put("expiresAt", request.getExpiresAt());
+                    put("expiresAtTimeSpan", request.getExpiresAtTimeSpan() != null ? request.getExpiresAtTimeSpan().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -787,6 +788,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                         }
                     ).collect(Collectors.toList()));
                     put("expiresAt", request.getExpiresAt());
+                    put("expiresAtTimeSpan", request.getExpiresAtTimeSpan() != null ? request.getExpiresAtTimeSpan().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
