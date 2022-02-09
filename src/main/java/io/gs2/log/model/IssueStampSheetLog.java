@@ -36,7 +36,7 @@ public class IssueStampSheetLog implements IModel, Serializable {
 	private String userId;
 	private String action;
 	private String args;
-	private String tasks;
+	private List<String> tasks;
 
 	public Long getTimestamp() {
 		return timestamp;
@@ -129,15 +129,15 @@ public class IssueStampSheetLog implements IModel, Serializable {
 		return this;
 	}
 
-	public String getTasks() {
+	public List<String> getTasks() {
 		return tasks;
 	}
 
-	public void setTasks(String tasks) {
+	public void setTasks(List<String> tasks) {
 		this.tasks = tasks;
 	}
 
-	public IssueStampSheetLog withTasks(String tasks) {
+	public IssueStampSheetLog withTasks(List<String> tasks) {
 		this.tasks = tasks;
 		return this;
 	}
@@ -154,7 +154,11 @@ public class IssueStampSheetLog implements IModel, Serializable {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withAction(data.get("action") == null || data.get("action").isNull() ? null : data.get("action").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
-            .withTasks(data.get("tasks") == null || data.get("tasks").isNull() ? null : data.get("tasks").asText());
+            .withTasks(data.get("tasks") == null || data.get("tasks").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("tasks").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -167,7 +171,11 @@ public class IssueStampSheetLog implements IModel, Serializable {
                 put("userId", getUserId());
                 put("action", getAction());
                 put("args", getArgs());
-                put("tasks", getTasks());
+                put("tasks", getTasks() == null ? new ArrayList<String>() :
+                    getTasks().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
