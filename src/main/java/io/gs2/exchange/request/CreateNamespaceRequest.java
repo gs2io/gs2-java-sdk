@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.exchange.model.ScriptSetting;
 import io.gs2.exchange.model.LogSetting;
 
 @SuppressWarnings("serial")
@@ -35,6 +36,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private Boolean enableDirectExchange;
     private String queueNamespaceId;
     private String keyId;
+    private ScriptSetting exchangeScript;
     private LogSetting logSetting;
 
 	public String getName() {
@@ -115,6 +117,19 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		return this;
 	}
 
+	public ScriptSetting getExchangeScript() {
+		return exchangeScript;
+	}
+
+	public void setExchangeScript(ScriptSetting exchangeScript) {
+		this.exchangeScript = exchangeScript;
+	}
+
+	public CreateNamespaceRequest withExchangeScript(ScriptSetting exchangeScript) {
+		this.exchangeScript = exchangeScript;
+		return this;
+	}
+
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -139,6 +154,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withEnableDirectExchange(data.get("enableDirectExchange") == null || data.get("enableDirectExchange").isNull() ? null : data.get("enableDirectExchange").booleanValue())
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withExchangeScript(data.get("exchangeScript") == null || data.get("exchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("exchangeScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -151,6 +167,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("enableDirectExchange", getEnableDirectExchange());
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());
+                put("exchangeScript", getExchangeScript() != null ? getExchangeScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

@@ -160,6 +160,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("enableDirectExchange", request.getEnableDirectExchange());
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());
+                    put("exchangeScript", request.getExchangeScript() != null ? request.getExchangeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -406,6 +407,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("enableDirectExchange", request.getEnableDirectExchange());
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());
+                    put("exchangeScript", request.getExchangeScript() != null ? request.getExchangeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
