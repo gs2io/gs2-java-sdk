@@ -32,6 +32,7 @@ public class CreateAccountRequest extends Gs2BasicRequest<CreateAccountRequest> 
     private String fullName;
     private String companyName;
     private String password;
+    private String lang;
 
 	public String getEmail() {
 		return email;
@@ -85,6 +86,19 @@ public class CreateAccountRequest extends Gs2BasicRequest<CreateAccountRequest> 
 		return this;
 	}
 
+	public String getLang() {
+		return lang;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+
+	public CreateAccountRequest withLang(String lang) {
+		this.lang = lang;
+		return this;
+	}
+
     public static CreateAccountRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -93,7 +107,8 @@ public class CreateAccountRequest extends Gs2BasicRequest<CreateAccountRequest> 
             .withEmail(data.get("email") == null || data.get("email").isNull() ? null : data.get("email").asText())
             .withFullName(data.get("fullName") == null || data.get("fullName").isNull() ? null : data.get("fullName").asText())
             .withCompanyName(data.get("companyName") == null || data.get("companyName").isNull() ? null : data.get("companyName").asText())
-            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withLang(data.get("lang") == null || data.get("lang").isNull() ? null : data.get("lang").asText());
     }
 
     public JsonNode toJson() {
@@ -103,6 +118,7 @@ public class CreateAccountRequest extends Gs2BasicRequest<CreateAccountRequest> 
                 put("fullName", getFullName());
                 put("companyName", getCompanyName());
                 put("password", getPassword());
+                put("lang", getLang());
             }}
         );
     }

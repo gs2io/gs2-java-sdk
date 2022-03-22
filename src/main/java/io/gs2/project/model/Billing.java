@@ -36,7 +36,7 @@ public class Billing implements IModel, Serializable, Comparable<Billing> {
 	private String region;
 	private String service;
 	private String activityType;
-	private Long unit;
+	private Double unit;
 	private String unitName;
 	private Long price;
 	private String currency;
@@ -134,15 +134,15 @@ public class Billing implements IModel, Serializable, Comparable<Billing> {
 		return this;
 	}
 
-	public Long getUnit() {
+	public Double getUnit() {
 		return unit;
 	}
 
-	public void setUnit(Long unit) {
+	public void setUnit(Double unit) {
 		this.unit = unit;
 	}
 
-	public Billing withUnit(Long unit) {
+	public Billing withUnit(Double unit) {
 		this.unit = unit;
 		return this;
 	}
@@ -224,7 +224,7 @@ public class Billing implements IModel, Serializable, Comparable<Billing> {
             .withRegion(data.get("region") == null || data.get("region").isNull() ? null : data.get("region").asText())
             .withService(data.get("service") == null || data.get("service").isNull() ? null : data.get("service").asText())
             .withActivityType(data.get("activityType") == null || data.get("activityType").isNull() ? null : data.get("activityType").asText())
-            .withUnit(data.get("unit") == null || data.get("unit").isNull() ? null : data.get("unit").longValue())
+            .withUnit(data.get("unit") == null || data.get("unit").isNull() ? null : data.get("unit").doubleValue())
             .withUnitName(data.get("unitName") == null || data.get("unitName").isNull() ? null : data.get("unitName").asText())
             .withPrice(data.get("price") == null || data.get("price").isNull() ? null : data.get("price").longValue())
             .withCurrency(data.get("currency") == null || data.get("currency").isNull() ? null : data.get("currency").asText())

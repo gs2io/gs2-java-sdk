@@ -28,7 +28,7 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DisplayItem implements IModel, Serializable {
+public class DisplayItem implements IModel, Serializable, Comparable<DisplayItem> {
 	private String displayItemId;
 	private String type;
 	private SalesItem salesItem;
@@ -123,6 +123,11 @@ public class DisplayItem implements IModel, Serializable {
             }}
         );
     }
+
+	@Override
+	public int compareTo(DisplayItem o) {
+		return displayItemId.compareTo(o.displayItemId);
+	}
 
 	@Override
 	public int hashCode() {

@@ -29,6 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ForgetRequest extends Gs2BasicRequest<ForgetRequest> {
     private String email;
+    private String lang;
 
 	public String getEmail() {
 		return email;
@@ -43,18 +44,33 @@ public class ForgetRequest extends Gs2BasicRequest<ForgetRequest> {
 		return this;
 	}
 
+	public String getLang() {
+		return lang;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+
+	public ForgetRequest withLang(String lang) {
+		this.lang = lang;
+		return this;
+	}
+
     public static ForgetRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new ForgetRequest()
-            .withEmail(data.get("email") == null || data.get("email").isNull() ? null : data.get("email").asText());
+            .withEmail(data.get("email") == null || data.get("email").isNull() ? null : data.get("email").asText())
+            .withLang(data.get("lang") == null || data.get("lang").isNull() ? null : data.get("lang").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("email", getEmail());
+                put("lang", getLang());
             }}
         );
     }

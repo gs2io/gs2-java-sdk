@@ -74,6 +74,7 @@ import io.gs2.project.model.*;public class Gs2ProjectRestClient extends Abstract
                     put("fullName", request.getFullName());
                     put("companyName", request.getCompanyName());
                     put("password", request.getPassword());
+                    put("lang", request.getLang());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -391,6 +392,7 @@ import io.gs2.project.model.*;public class Gs2ProjectRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("email", request.getEmail());
+                    put("lang", request.getLang());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
