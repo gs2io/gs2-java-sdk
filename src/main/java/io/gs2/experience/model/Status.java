@@ -36,6 +36,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 	private Long experienceValue;
 	private Long rankValue;
 	private Long rankCapValue;
+	private Long nextRankUpExperienceValue;
 	private Long createdAt;
 	private Long updatedAt;
 
@@ -130,6 +131,19 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 		return this;
 	}
 
+	public Long getNextRankUpExperienceValue() {
+		return nextRankUpExperienceValue;
+	}
+
+	public void setNextRankUpExperienceValue(Long nextRankUpExperienceValue) {
+		this.nextRankUpExperienceValue = nextRankUpExperienceValue;
+	}
+
+	public Status withNextRankUpExperienceValue(Long nextRankUpExperienceValue) {
+		this.nextRankUpExperienceValue = nextRankUpExperienceValue;
+		return this;
+	}
+
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -168,6 +182,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
             .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").longValue())
             .withRankValue(data.get("rankValue") == null || data.get("rankValue").isNull() ? null : data.get("rankValue").longValue())
             .withRankCapValue(data.get("rankCapValue") == null || data.get("rankCapValue").isNull() ? null : data.get("rankCapValue").longValue())
+            .withNextRankUpExperienceValue(data.get("nextRankUpExperienceValue") == null || data.get("nextRankUpExperienceValue").isNull() ? null : data.get("nextRankUpExperienceValue").longValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
@@ -182,6 +197,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
                 put("experienceValue", getExperienceValue());
                 put("rankValue", getRankValue());
                 put("rankCapValue", getRankCapValue());
+                put("nextRankUpExperienceValue", getNextRankUpExperienceValue());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
             }}
@@ -204,6 +220,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
         result = prime * result + ((this.experienceValue == null) ? 0 : this.experienceValue.hashCode());
         result = prime * result + ((this.rankValue == null) ? 0 : this.rankValue.hashCode());
         result = prime * result + ((this.rankCapValue == null) ? 0 : this.rankCapValue.hashCode());
+        result = prime * result + ((this.nextRankUpExperienceValue == null) ? 0 : this.nextRankUpExperienceValue.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
@@ -251,6 +268,11 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 		if (rankCapValue == null) {
 			return other.rankCapValue == null;
 		} else if (!rankCapValue.equals(other.rankCapValue)) {
+			return false;
+		}
+		if (nextRankUpExperienceValue == null) {
+			return other.nextRankUpExperienceValue == null;
+		} else if (!nextRankUpExperienceValue.equals(other.nextRankUpExperienceValue)) {
 			return false;
 		}
 		if (createdAt == null) {
