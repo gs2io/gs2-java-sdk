@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class Receipt implements IModel, Serializable, Comparable<Receipt> {
 	private String receiptId;
 	private String transactionId;
+	private String purchaseToken;
 	private String userId;
 	private String type;
 	private Integer slot;
@@ -64,6 +65,19 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
 
 	public Receipt withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
+		return this;
+	}
+
+	public String getPurchaseToken() {
+		return purchaseToken;
+	}
+
+	public void setPurchaseToken(String purchaseToken) {
+		this.purchaseToken = purchaseToken;
+	}
+
+	public Receipt withPurchaseToken(String purchaseToken) {
+		this.purchaseToken = purchaseToken;
 		return this;
 	}
 
@@ -191,6 +205,7 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
         return new Receipt()
             .withReceiptId(data.get("receiptId") == null || data.get("receiptId").isNull() ? null : data.get("receiptId").asText())
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
+            .withPurchaseToken(data.get("purchaseToken") == null || data.get("purchaseToken").isNull() ? null : data.get("purchaseToken").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").asText())
             .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
@@ -207,6 +222,7 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
             new HashMap<String, Object>() {{
                 put("receiptId", getReceiptId());
                 put("transactionId", getTransactionId());
+                put("purchaseToken", getPurchaseToken());
                 put("userId", getUserId());
                 put("type", getType());
                 put("slot", getSlot());
@@ -231,6 +247,7 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
         int result = 1;
         result = prime * result + ((this.receiptId == null) ? 0 : this.receiptId.hashCode());
         result = prime * result + ((this.transactionId == null) ? 0 : this.transactionId.hashCode());
+        result = prime * result + ((this.purchaseToken == null) ? 0 : this.purchaseToken.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
         result = prime * result + ((this.slot == null) ? 0 : this.slot.hashCode());
@@ -260,6 +277,11 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
 		if (transactionId == null) {
 			return other.transactionId == null;
 		} else if (!transactionId.equals(other.transactionId)) {
+			return false;
+		}
+		if (purchaseToken == null) {
+			return other.purchaseToken == null;
+		} else if (!purchaseToken.equals(other.purchaseToken)) {
 			return false;
 		}
 		if (userId == null) {
