@@ -32,6 +32,7 @@ public class ConsumeStaminaByUserIdRequest extends Gs2BasicRequest<ConsumeStamin
     private String staminaName;
     private String userId;
     private Integer consumeValue;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class ConsumeStaminaByUserIdRequest extends Gs2BasicRequest<ConsumeStamin
 
 	public ConsumeStaminaByUserIdRequest withConsumeValue(Integer consumeValue) {
 		this.consumeValue = consumeValue;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public ConsumeStaminaByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

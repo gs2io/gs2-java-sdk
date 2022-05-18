@@ -33,6 +33,7 @@ public class SubscribeByUserIdRequest extends Gs2BasicRequest<SubscribeByUserIdR
     private String roomName;
     private String userId;
     private List<NotificationType> notificationTypes;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -83,6 +84,19 @@ public class SubscribeByUserIdRequest extends Gs2BasicRequest<SubscribeByUserIdR
 
 	public SubscribeByUserIdRequest withNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SubscribeByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

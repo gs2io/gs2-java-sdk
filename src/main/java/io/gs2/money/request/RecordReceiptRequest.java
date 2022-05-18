@@ -32,6 +32,7 @@ public class RecordReceiptRequest extends Gs2BasicRequest<RecordReceiptRequest> 
     private String userId;
     private String contentsId;
     private String receipt;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class RecordReceiptRequest extends Gs2BasicRequest<RecordReceiptRequest> 
 
 	public RecordReceiptRequest withReceipt(String receipt) {
 		this.receipt = receipt;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public RecordReceiptRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -34,6 +34,7 @@ public class SetFormByUserIdRequest extends Gs2BasicRequest<SetFormByUserIdReque
     private String moldName;
     private Integer index;
     private List<Slot> slots;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -97,6 +98,19 @@ public class SetFormByUserIdRequest extends Gs2BasicRequest<SetFormByUserIdReque
 
 	public SetFormByUserIdRequest withSlots(List<Slot> slots) {
 		this.slots = slots;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetFormByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

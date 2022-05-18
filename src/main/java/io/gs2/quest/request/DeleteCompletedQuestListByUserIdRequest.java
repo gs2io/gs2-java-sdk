@@ -31,6 +31,7 @@ public class DeleteCompletedQuestListByUserIdRequest extends Gs2BasicRequest<Del
     private String namespaceName;
     private String questGroupName;
     private String userId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteCompletedQuestListByUserIdRequest extends Gs2BasicRequest<Del
 
 	public DeleteCompletedQuestListByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteCompletedQuestListByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

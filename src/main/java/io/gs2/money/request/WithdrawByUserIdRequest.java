@@ -33,6 +33,7 @@ public class WithdrawByUserIdRequest extends Gs2BasicRequest<WithdrawByUserIdReq
     private Integer slot;
     private Integer count;
     private Boolean paidOnly;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class WithdrawByUserIdRequest extends Gs2BasicRequest<WithdrawByUserIdReq
 
 	public WithdrawByUserIdRequest withPaidOnly(Boolean paidOnly) {
 		this.paidOnly = paidOnly;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public WithdrawByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -32,6 +32,7 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
     private String namespaceName;
     private String userId;
     private List<Config> config;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -69,6 +70,19 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
 
 	public EndByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public EndByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

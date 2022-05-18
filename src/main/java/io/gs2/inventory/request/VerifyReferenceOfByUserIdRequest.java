@@ -35,6 +35,7 @@ public class VerifyReferenceOfByUserIdRequest extends Gs2BasicRequest<VerifyRefe
     private String itemSetName;
     private String referenceOf;
     private String verifyType;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -124,6 +125,19 @@ public class VerifyReferenceOfByUserIdRequest extends Gs2BasicRequest<VerifyRefe
 
 	public VerifyReferenceOfByUserIdRequest withVerifyType(String verifyType) {
 		this.verifyType = verifyType;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public VerifyReferenceOfByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

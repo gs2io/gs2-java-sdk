@@ -32,6 +32,7 @@ public class SubscribeByUserIdRequest extends Gs2BasicRequest<SubscribeByUserIdR
     private String categoryName;
     private String userId;
     private String targetUserId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class SubscribeByUserIdRequest extends Gs2BasicRequest<SubscribeByUserIdR
 
 	public SubscribeByUserIdRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SubscribeByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

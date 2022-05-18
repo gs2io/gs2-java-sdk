@@ -41,6 +41,7 @@ public class CreateGatheringByUserIdRequest extends Gs2BasicRequest<CreateGather
     private List<String> allowUserIds;
     private Long expiresAt;
     private TimeSpan expiresAtTimeSpan;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -143,6 +144,19 @@ public class CreateGatheringByUserIdRequest extends Gs2BasicRequest<CreateGather
 
 	public CreateGatheringByUserIdRequest withExpiresAtTimeSpan(TimeSpan expiresAtTimeSpan) {
 		this.expiresAtTimeSpan = expiresAtTimeSpan;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CreateGatheringByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

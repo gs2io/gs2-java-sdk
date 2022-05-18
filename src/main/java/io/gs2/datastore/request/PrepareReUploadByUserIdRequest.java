@@ -32,6 +32,7 @@ public class PrepareReUploadByUserIdRequest extends Gs2BasicRequest<PrepareReUpl
     private String dataObjectName;
     private String userId;
     private String contentType;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class PrepareReUploadByUserIdRequest extends Gs2BasicRequest<PrepareReUpl
 
 	public PrepareReUploadByUserIdRequest withContentType(String contentType) {
 		this.contentType = contentType;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PrepareReUploadByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -25,21 +25,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.friend.model.*;
+import io.gs2.friend.model.Profile;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteProfileByUserIdResult implements IResult, Serializable {
+    private Profile item;
+
+	public Profile getItem() {
+		return item;
+	}
+
+	public void setItem(Profile item) {
+		this.item = item;
+	}
+
+	public DeleteProfileByUserIdResult withItem(Profile item) {
+		this.item = item;
+		return this;
+	}
 
     public static DeleteProfileByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DeleteProfileByUserIdResult();
+        return new DeleteProfileByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Profile.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

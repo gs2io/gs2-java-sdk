@@ -31,6 +31,7 @@ public class CancelMatchmakingByUserIdRequest extends Gs2BasicRequest<CancelMatc
     private String namespaceName;
     private String gatheringName;
     private String userId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class CancelMatchmakingByUserIdRequest extends Gs2BasicRequest<CancelMatc
 
 	public CancelMatchmakingByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CancelMatchmakingByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

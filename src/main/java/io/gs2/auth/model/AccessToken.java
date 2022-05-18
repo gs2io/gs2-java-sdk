@@ -28,10 +28,11 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AccessToken implements IModel, Serializable, Comparable<AccessToken> {
+public class AccessToken implements IModel, Serializable {
 	private String token;
 	private String userId;
 	private Long expire;
+	private Integer timeOffset;
 
 	public String getToken() {
 		return token;
@@ -72,6 +73,19 @@ public class AccessToken implements IModel, Serializable, Comparable<AccessToken
 		return this;
 	}
 
+	public Integer getTimeOffset() {
+		return timeOffset;
+	}
+
+	public void setTimeOffset(Integer timeOffset) {
+		this.timeOffset = timeOffset;
+	}
+
+	public AccessToken withTimeOffset(Integer timeOffset) {
+		this.timeOffset = timeOffset;
+		return this;
+	}
+
     public static AccessToken fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -79,7 +93,8 @@ public class AccessToken implements IModel, Serializable, Comparable<AccessToken
         return new AccessToken()
             .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withExpire(data.get("expire") == null || data.get("expire").isNull() ? null : data.get("expire").longValue());
+            .withExpire(data.get("expire") == null || data.get("expire").isNull() ? null : data.get("expire").longValue())
+            .withTimeOffset(data.get("timeOffset") == null || data.get("timeOffset").isNull() ? null : data.get("timeOffset").intValue());
     }
 
     public JsonNode toJson() {
@@ -88,14 +103,10 @@ public class AccessToken implements IModel, Serializable, Comparable<AccessToken
                 put("token", getToken());
                 put("userId", getUserId());
                 put("expire", getExpire());
+                put("timeOffset", getTimeOffset());
             }}
         );
     }
-
-	@Override
-	public int compareTo(AccessToken o) {
-		return token.compareTo(o.token);
-	}
 
 	@Override
 	public int hashCode() {
@@ -104,6 +115,7 @@ public class AccessToken implements IModel, Serializable, Comparable<AccessToken
         result = prime * result + ((this.token == null) ? 0 : this.token.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.expire == null) ? 0 : this.expire.hashCode());
+        result = prime * result + ((this.timeOffset == null) ? 0 : this.timeOffset.hashCode());
 		return result;
 	}
 
@@ -129,6 +141,11 @@ public class AccessToken implements IModel, Serializable, Comparable<AccessToken
 		if (expire == null) {
 			return other.expire == null;
 		} else if (!expire.equals(other.expire)) {
+			return false;
+		}
+		if (timeOffset == null) {
+			return other.timeOffset == null;
+		} else if (!timeOffset.equals(other.timeOffset)) {
 			return false;
 		}
 		return true;

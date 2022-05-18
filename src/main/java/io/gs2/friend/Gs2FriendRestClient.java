@@ -848,6 +848,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()
@@ -928,6 +931,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -1453,6 +1459,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()
@@ -1618,6 +1627,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -2139,6 +2151,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()
@@ -2304,6 +2319,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -2642,6 +2660,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -3151,6 +3172,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()
@@ -3316,6 +3340,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -3825,6 +3852,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()
@@ -3990,6 +4020,9 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder

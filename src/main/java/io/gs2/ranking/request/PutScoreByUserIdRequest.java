@@ -33,6 +33,7 @@ public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdReq
     private String userId;
     private Long score;
     private String metadata;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdReq
 
 	public PutScoreByUserIdRequest withMetadata(String metadata) {
 		this.metadata = metadata;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PutScoreByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

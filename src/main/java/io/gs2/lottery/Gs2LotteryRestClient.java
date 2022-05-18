@@ -1726,88 +1726,6 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class GetRawBoxByUserIdTask extends Gs2RestSessionTask<GetRawBoxByUserIdResult> {
-        private GetRawBoxByUserIdRequest request;
-
-        public GetRawBoxByUserIdTask(
-            GetRawBoxByUserIdRequest request,
-            AsyncAction<AsyncResult<GetRawBoxByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetRawBoxByUserIdResult parse(JsonNode data) {
-            return GetRawBoxByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "lottery")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/box/{prizeTableName}/raw";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void getRawBoxByUserIdAsync(
-            GetRawBoxByUserIdRequest request,
-            AsyncAction<AsyncResult<GetRawBoxByUserIdResult>> callback
-    ) {
-        GetRawBoxByUserIdTask task = new GetRawBoxByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public GetRawBoxByUserIdResult getRawBoxByUserId(
-            GetRawBoxByUserIdRequest request
-    ) {
-        final AsyncResult<GetRawBoxByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getRawBoxByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
     class ResetBoxTask extends Gs2RestSessionTask<ResetBoxResult> {
         private ResetBoxRequest request;
 
@@ -1937,6 +1855,9 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -2348,6 +2269,9 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder

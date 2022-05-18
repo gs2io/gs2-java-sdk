@@ -33,6 +33,7 @@ public class CheckVersionByUserIdRequest extends Gs2BasicRequest<CheckVersionByU
     private String namespaceName;
     private String userId;
     private List<TargetVersion> targetVersions;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -70,6 +71,19 @@ public class CheckVersionByUserIdRequest extends Gs2BasicRequest<CheckVersionByU
 
 	public CheckVersionByUserIdRequest withTargetVersions(List<TargetVersion> targetVersions) {
 		this.targetVersions = targetVersions;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CheckVersionByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

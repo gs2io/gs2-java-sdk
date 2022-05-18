@@ -31,6 +31,7 @@ public class DeleteJobByUserIdRequest extends Gs2BasicRequest<DeleteJobByUserIdR
     private String namespaceName;
     private String userId;
     private String jobName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteJobByUserIdRequest extends Gs2BasicRequest<DeleteJobByUserIdR
 
 	public DeleteJobByUserIdRequest withJobName(String jobName) {
 		this.jobName = jobName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteJobByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -31,6 +31,7 @@ public class DeleteMutexByUserIdRequest extends Gs2BasicRequest<DeleteMutexByUse
     private String namespaceName;
     private String userId;
     private String propertyId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteMutexByUserIdRequest extends Gs2BasicRequest<DeleteMutexByUse
 
 	public DeleteMutexByUserIdRequest withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteMutexByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

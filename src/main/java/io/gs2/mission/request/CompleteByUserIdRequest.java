@@ -34,6 +34,7 @@ public class CompleteByUserIdRequest extends Gs2BasicRequest<CompleteByUserIdReq
     private String missionTaskName;
     private String userId;
     private List<Config> config;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -97,6 +98,19 @@ public class CompleteByUserIdRequest extends Gs2BasicRequest<CompleteByUserIdReq
 
 	public CompleteByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CompleteByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

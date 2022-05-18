@@ -37,6 +37,7 @@ public class StartByUserIdRequest extends Gs2BasicRequest<StartByUserIdRequest> 
     private String userId;
     private Boolean force;
     private List<Config> config;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -126,6 +127,19 @@ public class StartByUserIdRequest extends Gs2BasicRequest<StartByUserIdRequest> 
 
 	public StartByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public StartByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

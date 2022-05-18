@@ -33,6 +33,7 @@ public class AddRankCapByUserIdRequest extends Gs2BasicRequest<AddRankCapByUserI
     private String experienceName;
     private String propertyId;
     private Long rankCapValue;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class AddRankCapByUserIdRequest extends Gs2BasicRequest<AddRankCapByUserI
 
 	public AddRankCapByUserIdRequest withRankCapValue(Long rankCapValue) {
 		this.rankCapValue = rankCapValue;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public AddRankCapByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

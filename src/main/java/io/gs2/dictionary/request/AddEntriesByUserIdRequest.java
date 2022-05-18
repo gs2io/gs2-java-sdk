@@ -31,6 +31,7 @@ public class AddEntriesByUserIdRequest extends Gs2BasicRequest<AddEntriesByUserI
     private String namespaceName;
     private String userId;
     private List<String> entryModelNames;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class AddEntriesByUserIdRequest extends Gs2BasicRequest<AddEntriesByUserI
 
 	public AddEntriesByUserIdRequest withEntryModelNames(List<String> entryModelNames) {
 		this.entryModelNames = entryModelNames;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public AddEntriesByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

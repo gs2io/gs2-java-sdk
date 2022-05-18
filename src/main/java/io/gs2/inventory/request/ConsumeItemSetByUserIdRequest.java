@@ -34,6 +34,7 @@ public class ConsumeItemSetByUserIdRequest extends Gs2BasicRequest<ConsumeItemSe
     private String itemName;
     private Long consumeCount;
     private String itemSetName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -110,6 +111,19 @@ public class ConsumeItemSetByUserIdRequest extends Gs2BasicRequest<ConsumeItemSe
 
 	public ConsumeItemSetByUserIdRequest withItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public ConsumeItemSetByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

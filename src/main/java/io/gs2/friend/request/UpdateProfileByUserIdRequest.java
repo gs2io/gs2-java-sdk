@@ -33,6 +33,7 @@ public class UpdateProfileByUserIdRequest extends Gs2BasicRequest<UpdateProfileB
     private String publicProfile;
     private String followerProfile;
     private String friendProfile;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class UpdateProfileByUserIdRequest extends Gs2BasicRequest<UpdateProfileB
 
 	public UpdateProfileByUserIdRequest withFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UpdateProfileByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

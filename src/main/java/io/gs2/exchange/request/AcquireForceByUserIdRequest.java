@@ -34,6 +34,7 @@ public class AcquireForceByUserIdRequest extends Gs2BasicRequest<AcquireForceByU
     private String rateName;
     private String awaitName;
     private List<Config> config;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -97,6 +98,19 @@ public class AcquireForceByUserIdRequest extends Gs2BasicRequest<AcquireForceByU
 
 	public AcquireForceByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public AcquireForceByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

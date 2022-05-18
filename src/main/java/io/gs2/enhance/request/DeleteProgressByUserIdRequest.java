@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteProgressByUserIdRequest extends Gs2BasicRequest<DeleteProgressByUserIdRequest> {
     private String namespaceName;
     private String userId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -54,6 +55,19 @@ public class DeleteProgressByUserIdRequest extends Gs2BasicRequest<DeleteProgres
 
 	public DeleteProgressByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteProgressByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

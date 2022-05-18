@@ -39,6 +39,7 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
     private String queueNamespaceId;
     private String keyId;
     private List<AcquireActionConfig> config;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -141,6 +142,19 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
 
 	public AcquireActionsToFormPropertiesRequest withConfig(List<AcquireActionConfig> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public AcquireActionsToFormPropertiesRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

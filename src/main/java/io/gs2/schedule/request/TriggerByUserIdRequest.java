@@ -33,6 +33,7 @@ public class TriggerByUserIdRequest extends Gs2BasicRequest<TriggerByUserIdReque
     private String userId;
     private String triggerStrategy;
     private Integer ttl;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class TriggerByUserIdRequest extends Gs2BasicRequest<TriggerByUserIdReque
 
 	public TriggerByUserIdRequest withTtl(Integer ttl) {
 		this.ttl = ttl;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public TriggerByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

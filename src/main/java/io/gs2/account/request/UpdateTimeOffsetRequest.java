@@ -31,6 +31,7 @@ public class UpdateTimeOffsetRequest extends Gs2BasicRequest<UpdateTimeOffsetReq
     private String namespaceName;
     private String userId;
     private Integer timeOffset;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class UpdateTimeOffsetRequest extends Gs2BasicRequest<UpdateTimeOffsetReq
 
 	public UpdateTimeOffsetRequest withTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UpdateTimeOffsetRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

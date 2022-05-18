@@ -35,6 +35,7 @@ public class UpdateStaminaByUserIdRequest extends Gs2BasicRequest<UpdateStaminaB
     private Integer maxValue;
     private Integer recoverIntervalMinutes;
     private Integer recoverValue;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -124,6 +125,19 @@ public class UpdateStaminaByUserIdRequest extends Gs2BasicRequest<UpdateStaminaB
 
 	public UpdateStaminaByUserIdRequest withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UpdateStaminaByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

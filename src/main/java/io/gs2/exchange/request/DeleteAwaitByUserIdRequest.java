@@ -32,6 +32,7 @@ public class DeleteAwaitByUserIdRequest extends Gs2BasicRequest<DeleteAwaitByUse
     private String userId;
     private String rateName;
     private String awaitName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class DeleteAwaitByUserIdRequest extends Gs2BasicRequest<DeleteAwaitByUse
 
 	public DeleteAwaitByUserIdRequest withAwaitName(String awaitName) {
 		this.awaitName = awaitName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteAwaitByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

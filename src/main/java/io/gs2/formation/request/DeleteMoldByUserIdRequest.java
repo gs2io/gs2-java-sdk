@@ -31,6 +31,7 @@ public class DeleteMoldByUserIdRequest extends Gs2BasicRequest<DeleteMoldByUserI
     private String namespaceName;
     private String userId;
     private String moldName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteMoldByUserIdRequest extends Gs2BasicRequest<DeleteMoldByUserI
 
 	public DeleteMoldByUserIdRequest withMoldName(String moldName) {
 		this.moldName = moldName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteMoldByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

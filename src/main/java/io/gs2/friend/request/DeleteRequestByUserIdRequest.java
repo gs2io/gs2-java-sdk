@@ -31,6 +31,7 @@ public class DeleteRequestByUserIdRequest extends Gs2BasicRequest<DeleteRequestB
     private String namespaceName;
     private String userId;
     private String targetUserId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteRequestByUserIdRequest extends Gs2BasicRequest<DeleteRequestB
 
 	public DeleteRequestByUserIdRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteRequestByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

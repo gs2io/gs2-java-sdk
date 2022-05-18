@@ -32,6 +32,7 @@ public class PushByUserIdRequest extends Gs2BasicRequest<PushByUserIdRequest> {
     private String namespaceName;
     private String userId;
     private List<JobEntry> jobs;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -69,6 +70,19 @@ public class PushByUserIdRequest extends Gs2BasicRequest<PushByUserIdRequest> {
 
 	public PushByUserIdRequest withJobs(List<JobEntry> jobs) {
 		this.jobs = jobs;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PushByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

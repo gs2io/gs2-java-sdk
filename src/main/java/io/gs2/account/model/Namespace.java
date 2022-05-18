@@ -33,6 +33,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String name;
 	private String description;
 	private Boolean changePasswordIfTakeOver;
+	private Boolean differentUserIdForLoginAndDataRetention;
 	private ScriptSetting createAccountScript;
 	private ScriptSetting authenticationScript;
 	private ScriptSetting createTakeOverScript;
@@ -90,6 +91,19 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 
 	public Namespace withChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
 		this.changePasswordIfTakeOver = changePasswordIfTakeOver;
+		return this;
+	}
+
+	public Boolean getDifferentUserIdForLoginAndDataRetention() {
+		return differentUserIdForLoginAndDataRetention;
+	}
+
+	public void setDifferentUserIdForLoginAndDataRetention(Boolean differentUserIdForLoginAndDataRetention) {
+		this.differentUserIdForLoginAndDataRetention = differentUserIdForLoginAndDataRetention;
+	}
+
+	public Namespace withDifferentUserIdForLoginAndDataRetention(Boolean differentUserIdForLoginAndDataRetention) {
+		this.differentUserIdForLoginAndDataRetention = differentUserIdForLoginAndDataRetention;
 		return this;
 	}
 
@@ -193,6 +207,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withChangePasswordIfTakeOver(data.get("changePasswordIfTakeOver") == null || data.get("changePasswordIfTakeOver").isNull() ? null : data.get("changePasswordIfTakeOver").booleanValue())
+            .withDifferentUserIdForLoginAndDataRetention(data.get("differentUserIdForLoginAndDataRetention") == null || data.get("differentUserIdForLoginAndDataRetention").isNull() ? null : data.get("differentUserIdForLoginAndDataRetention").booleanValue())
             .withCreateAccountScript(data.get("createAccountScript") == null || data.get("createAccountScript").isNull() ? null : ScriptSetting.fromJson(data.get("createAccountScript")))
             .withAuthenticationScript(data.get("authenticationScript") == null || data.get("authenticationScript").isNull() ? null : ScriptSetting.fromJson(data.get("authenticationScript")))
             .withCreateTakeOverScript(data.get("createTakeOverScript") == null || data.get("createTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("createTakeOverScript")))
@@ -209,6 +224,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("name", getName());
                 put("description", getDescription());
                 put("changePasswordIfTakeOver", getChangePasswordIfTakeOver());
+                put("differentUserIdForLoginAndDataRetention", getDifferentUserIdForLoginAndDataRetention());
                 put("createAccountScript", getCreateAccountScript() != null ? getCreateAccountScript().toJson() : null);
                 put("authenticationScript", getAuthenticationScript() != null ? getAuthenticationScript().toJson() : null);
                 put("createTakeOverScript", getCreateTakeOverScript() != null ? getCreateTakeOverScript().toJson() : null);
@@ -233,6 +249,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.changePasswordIfTakeOver == null) ? 0 : this.changePasswordIfTakeOver.hashCode());
+        result = prime * result + ((this.differentUserIdForLoginAndDataRetention == null) ? 0 : this.differentUserIdForLoginAndDataRetention.hashCode());
         result = prime * result + ((this.createAccountScript == null) ? 0 : this.createAccountScript.hashCode());
         result = prime * result + ((this.authenticationScript == null) ? 0 : this.authenticationScript.hashCode());
         result = prime * result + ((this.createTakeOverScript == null) ? 0 : this.createTakeOverScript.hashCode());
@@ -270,6 +287,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (changePasswordIfTakeOver == null) {
 			return other.changePasswordIfTakeOver == null;
 		} else if (!changePasswordIfTakeOver.equals(other.changePasswordIfTakeOver)) {
+			return false;
+		}
+		if (differentUserIdForLoginAndDataRetention == null) {
+			return other.differentUserIdForLoginAndDataRetention == null;
+		} else if (!differentUserIdForLoginAndDataRetention.equals(other.differentUserIdForLoginAndDataRetention)) {
 			return false;
 		}
 		if (createAccountScript == null) {

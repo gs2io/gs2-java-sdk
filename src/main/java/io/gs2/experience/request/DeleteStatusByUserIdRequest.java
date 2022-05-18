@@ -32,6 +32,7 @@ public class DeleteStatusByUserIdRequest extends Gs2BasicRequest<DeleteStatusByU
     private String userId;
     private String experienceName;
     private String propertyId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class DeleteStatusByUserIdRequest extends Gs2BasicRequest<DeleteStatusByU
 
 	public DeleteStatusByUserIdRequest withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteStatusByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

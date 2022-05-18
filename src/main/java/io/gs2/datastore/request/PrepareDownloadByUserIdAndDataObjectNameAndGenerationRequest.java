@@ -32,6 +32,7 @@ public class PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest extend
     private String userId;
     private String dataObjectName;
     private String generation;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest extend
 
 	public PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest withGeneration(String generation) {
 		this.generation = generation;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

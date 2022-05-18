@@ -36,6 +36,7 @@ public class SendMessageByUserIdRequest extends Gs2BasicRequest<SendMessageByUse
     private List<AcquireAction> readAcquireActions;
     private Long expiresAt;
     private TimeSpan expiresTimeSpan;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -112,6 +113,19 @@ public class SendMessageByUserIdRequest extends Gs2BasicRequest<SendMessageByUse
 
 	public SendMessageByUserIdRequest withExpiresTimeSpan(TimeSpan expiresTimeSpan) {
 		this.expiresTimeSpan = expiresTimeSpan;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SendMessageByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

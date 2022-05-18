@@ -31,6 +31,7 @@ public class UnregisterBlackListByUserIdRequest extends Gs2BasicRequest<Unregist
     private String namespaceName;
     private String userId;
     private String targetUserId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class UnregisterBlackListByUserIdRequest extends Gs2BasicRequest<Unregist
 
 	public UnregisterBlackListByUserIdRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UnregisterBlackListByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

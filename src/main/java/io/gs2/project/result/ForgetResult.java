@@ -29,33 +29,17 @@ import io.gs2.project.model.*;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ForgetResult implements IResult, Serializable {
-    private String issuePasswordToken;
-
-	public String getIssuePasswordToken() {
-		return issuePasswordToken;
-	}
-
-	public void setIssuePasswordToken(String issuePasswordToken) {
-		this.issuePasswordToken = issuePasswordToken;
-	}
-
-	public ForgetResult withIssuePasswordToken(String issuePasswordToken) {
-		this.issuePasswordToken = issuePasswordToken;
-		return this;
-	}
 
     public static ForgetResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new ForgetResult()
-            .withIssuePasswordToken(data.get("issuePasswordToken") == null || data.get("issuePasswordToken").isNull() ? null : data.get("issuePasswordToken").asText());
+        return new ForgetResult();
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("issuePasswordToken", getIssuePasswordToken());
             }}
         );
     }

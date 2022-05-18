@@ -33,6 +33,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String name;
     private String description;
     private Boolean changePasswordIfTakeOver;
+    private Boolean differentUserIdForLoginAndDataRetention;
     private ScriptSetting createAccountScript;
     private ScriptSetting authenticationScript;
     private ScriptSetting createTakeOverScript;
@@ -75,6 +76,19 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 
 	public CreateNamespaceRequest withChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
 		this.changePasswordIfTakeOver = changePasswordIfTakeOver;
+		return this;
+	}
+
+	public Boolean getDifferentUserIdForLoginAndDataRetention() {
+		return differentUserIdForLoginAndDataRetention;
+	}
+
+	public void setDifferentUserIdForLoginAndDataRetention(Boolean differentUserIdForLoginAndDataRetention) {
+		this.differentUserIdForLoginAndDataRetention = differentUserIdForLoginAndDataRetention;
+	}
+
+	public CreateNamespaceRequest withDifferentUserIdForLoginAndDataRetention(Boolean differentUserIdForLoginAndDataRetention) {
+		this.differentUserIdForLoginAndDataRetention = differentUserIdForLoginAndDataRetention;
 		return this;
 	}
 
@@ -151,6 +165,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withChangePasswordIfTakeOver(data.get("changePasswordIfTakeOver") == null || data.get("changePasswordIfTakeOver").isNull() ? null : data.get("changePasswordIfTakeOver").booleanValue())
+            .withDifferentUserIdForLoginAndDataRetention(data.get("differentUserIdForLoginAndDataRetention") == null || data.get("differentUserIdForLoginAndDataRetention").isNull() ? null : data.get("differentUserIdForLoginAndDataRetention").booleanValue())
             .withCreateAccountScript(data.get("createAccountScript") == null || data.get("createAccountScript").isNull() ? null : ScriptSetting.fromJson(data.get("createAccountScript")))
             .withAuthenticationScript(data.get("authenticationScript") == null || data.get("authenticationScript").isNull() ? null : ScriptSetting.fromJson(data.get("authenticationScript")))
             .withCreateTakeOverScript(data.get("createTakeOverScript") == null || data.get("createTakeOverScript").isNull() ? null : ScriptSetting.fromJson(data.get("createTakeOverScript")))
@@ -164,6 +179,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("name", getName());
                 put("description", getDescription());
                 put("changePasswordIfTakeOver", getChangePasswordIfTakeOver());
+                put("differentUserIdForLoginAndDataRetention", getDifferentUserIdForLoginAndDataRetention());
                 put("createAccountScript", getCreateAccountScript() != null ? getCreateAccountScript().toJson() : null);
                 put("authenticationScript", getAuthenticationScript() != null ? getAuthenticationScript().toJson() : null);
                 put("createTakeOverScript", getCreateTakeOverScript() != null ? getCreateTakeOverScript().toJson() : null);

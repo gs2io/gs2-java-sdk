@@ -31,6 +31,7 @@ public class ResetBoxByUserIdRequest extends Gs2BasicRequest<ResetBoxByUserIdReq
     private String namespaceName;
     private String prizeTableName;
     private String userId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class ResetBoxByUserIdRequest extends Gs2BasicRequest<ResetBoxByUserIdReq
 
 	public ResetBoxByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public ResetBoxByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

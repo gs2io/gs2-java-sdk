@@ -33,6 +33,7 @@ public class SetExperienceByUserIdRequest extends Gs2BasicRequest<SetExperienceB
     private String experienceName;
     private String propertyId;
     private Long experienceValue;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class SetExperienceByUserIdRequest extends Gs2BasicRequest<SetExperienceB
 
 	public SetExperienceByUserIdRequest withExperienceValue(Long experienceValue) {
 		this.experienceValue = experienceValue;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetExperienceByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

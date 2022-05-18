@@ -36,6 +36,7 @@ public class DirectEnhanceByUserIdRequest extends Gs2BasicRequest<DirectEnhanceB
     private String targetItemSetId;
     private List<Material> materials;
     private List<Config> config;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -112,6 +113,19 @@ public class DirectEnhanceByUserIdRequest extends Gs2BasicRequest<DirectEnhanceB
 
 	public DirectEnhanceByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DirectEnhanceByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

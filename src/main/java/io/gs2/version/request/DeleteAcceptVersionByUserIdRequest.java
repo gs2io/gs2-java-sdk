@@ -31,6 +31,7 @@ public class DeleteAcceptVersionByUserIdRequest extends Gs2BasicRequest<DeleteAc
     private String namespaceName;
     private String userId;
     private String versionName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteAcceptVersionByUserIdRequest extends Gs2BasicRequest<DeleteAc
 
 	public DeleteAcceptVersionByUserIdRequest withVersionName(String versionName) {
 		this.versionName = versionName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteAcceptVersionByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

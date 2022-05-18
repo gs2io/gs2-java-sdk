@@ -31,6 +31,7 @@ public class DoneUploadByUserIdRequest extends Gs2BasicRequest<DoneUploadByUserI
     private String namespaceName;
     private String dataObjectName;
     private String userId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DoneUploadByUserIdRequest extends Gs2BasicRequest<DoneUploadByUserI
 
 	public DoneUploadByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DoneUploadByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -34,6 +34,7 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
     private String questModelId;
     private Boolean force;
     private List<Config> config;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -97,6 +98,19 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
 
 	public CreateProgressByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CreateProgressByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

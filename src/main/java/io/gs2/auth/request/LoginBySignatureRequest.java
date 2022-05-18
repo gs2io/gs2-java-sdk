@@ -28,23 +28,9 @@ import io.gs2.core.control.Gs2BasicRequest;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LoginBySignatureRequest extends Gs2BasicRequest<LoginBySignatureRequest> {
-    private String userId;
     private String keyId;
     private String body;
     private String signature;
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public LoginBySignatureRequest withUserId(String userId) {
-		this.userId = userId;
-		return this;
-	}
 
 	public String getKeyId() {
 		return keyId;
@@ -90,7 +76,6 @@ public class LoginBySignatureRequest extends Gs2BasicRequest<LoginBySignatureReq
             return null;
         }
         return new LoginBySignatureRequest()
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
             .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
             .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText());
@@ -99,7 +84,6 @@ public class LoginBySignatureRequest extends Gs2BasicRequest<LoginBySignatureReq
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("userId", getUserId());
                 put("keyId", getKeyId());
                 put("body", getBody());
                 put("signature", getSignature());

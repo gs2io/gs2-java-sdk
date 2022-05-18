@@ -32,6 +32,7 @@ public class SetMaxValueByUserIdRequest extends Gs2BasicRequest<SetMaxValueByUse
     private String staminaName;
     private String userId;
     private Integer maxValue;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class SetMaxValueByUserIdRequest extends Gs2BasicRequest<SetMaxValueByUse
 
 	public SetMaxValueByUserIdRequest withMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetMaxValueByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

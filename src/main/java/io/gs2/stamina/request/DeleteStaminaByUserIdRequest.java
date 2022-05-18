@@ -31,6 +31,7 @@ public class DeleteStaminaByUserIdRequest extends Gs2BasicRequest<DeleteStaminaB
     private String namespaceName;
     private String staminaName;
     private String userId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteStaminaByUserIdRequest extends Gs2BasicRequest<DeleteStaminaB
 
 	public DeleteStaminaByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteStaminaByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

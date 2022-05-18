@@ -36,6 +36,7 @@ public class AcquireItemSetByUserIdRequest extends Gs2BasicRequest<AcquireItemSe
     private Long expiresAt;
     private Boolean createNewItemSet;
     private String itemSetName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -138,6 +139,19 @@ public class AcquireItemSetByUserIdRequest extends Gs2BasicRequest<AcquireItemSe
 
 	public AcquireItemSetByUserIdRequest withItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public AcquireItemSetByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -32,6 +32,7 @@ public class ReceiveByUserIdRequest extends Gs2BasicRequest<ReceiveByUserIdReque
     private String missionGroupName;
     private String missionTaskName;
     private String userId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class ReceiveByUserIdRequest extends Gs2BasicRequest<ReceiveByUserIdReque
 
 	public ReceiveByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public ReceiveByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -31,6 +31,7 @@ public class UpdateReceivedByUserIdRequest extends Gs2BasicRequest<UpdateReceive
     private String namespaceName;
     private String userId;
     private List<String> receivedGlobalMessageNames;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class UpdateReceivedByUserIdRequest extends Gs2BasicRequest<UpdateReceive
 
 	public UpdateReceivedByUserIdRequest withReceivedGlobalMessageNames(List<String> receivedGlobalMessageNames) {
 		this.receivedGlobalMessageNames = receivedGlobalMessageNames;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UpdateReceivedByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -35,6 +35,7 @@ public class PrepareUploadByUserIdRequest extends Gs2BasicRequest<PrepareUploadB
     private String scope;
     private List<String> allowUserIds;
     private Boolean updateIfExists;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -124,6 +125,19 @@ public class PrepareUploadByUserIdRequest extends Gs2BasicRequest<PrepareUploadB
 
 	public PrepareUploadByUserIdRequest withUpdateIfExists(Boolean updateIfExists) {
 		this.updateIfExists = updateIfExists;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PrepareUploadByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

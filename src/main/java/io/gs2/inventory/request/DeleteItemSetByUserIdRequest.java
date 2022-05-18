@@ -33,6 +33,7 @@ public class DeleteItemSetByUserIdRequest extends Gs2BasicRequest<DeleteItemSetB
     private String userId;
     private String itemName;
     private String itemSetName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class DeleteItemSetByUserIdRequest extends Gs2BasicRequest<DeleteItemSetB
 
 	public DeleteItemSetByUserIdRequest withItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteItemSetByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

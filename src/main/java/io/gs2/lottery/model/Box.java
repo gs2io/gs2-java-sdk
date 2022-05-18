@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class Box implements IModel, Serializable, Comparable<Box> {
 	private String boxId;
 	private String prizeTableName;
+	private Integer index;
 	private String userId;
 	private List<Integer> drawnIndexes;
 	private Long createdAt;
@@ -59,6 +60,19 @@ public class Box implements IModel, Serializable, Comparable<Box> {
 
 	public Box withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
+		return this;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+
+	public Box withIndex(Integer index) {
+		this.index = index;
 		return this;
 	}
 
@@ -121,6 +135,7 @@ public class Box implements IModel, Serializable, Comparable<Box> {
         return new Box()
             .withBoxId(data.get("boxId") == null || data.get("boxId").isNull() ? null : data.get("boxId").asText())
             .withPrizeTableName(data.get("prizeTableName") == null || data.get("prizeTableName").isNull() ? null : data.get("prizeTableName").asText())
+            .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withDrawnIndexes(data.get("drawnIndexes") == null || data.get("drawnIndexes").isNull() ? new ArrayList<Integer>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("drawnIndexes").elements(), Spliterator.NONNULL), false).map(item -> {
@@ -136,6 +151,7 @@ public class Box implements IModel, Serializable, Comparable<Box> {
             new HashMap<String, Object>() {{
                 put("boxId", getBoxId());
                 put("prizeTableName", getPrizeTableName());
+                put("index", getIndex());
                 put("userId", getUserId());
                 put("drawnIndexes", getDrawnIndexes() == null ? new ArrayList<Integer>() :
                     getDrawnIndexes().stream().map(item -> {
@@ -159,6 +175,7 @@ public class Box implements IModel, Serializable, Comparable<Box> {
         int result = 1;
         result = prime * result + ((this.boxId == null) ? 0 : this.boxId.hashCode());
         result = prime * result + ((this.prizeTableName == null) ? 0 : this.prizeTableName.hashCode());
+        result = prime * result + ((this.index == null) ? 0 : this.index.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.drawnIndexes == null) ? 0 : this.drawnIndexes.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -183,6 +200,11 @@ public class Box implements IModel, Serializable, Comparable<Box> {
 		if (prizeTableName == null) {
 			return other.prizeTableName == null;
 		} else if (!prizeTableName.equals(other.prizeTableName)) {
+			return false;
+		}
+		if (index == null) {
+			return other.index == null;
+		} else if (!index.equals(other.index)) {
 			return false;
 		}
 		if (userId == null) {

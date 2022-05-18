@@ -32,6 +32,7 @@ public class SetCapacityByUserIdRequest extends Gs2BasicRequest<SetCapacityByUse
     private String inventoryName;
     private String userId;
     private Integer newCapacityValue;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class SetCapacityByUserIdRequest extends Gs2BasicRequest<SetCapacityByUse
 
 	public SetCapacityByUserIdRequest withNewCapacityValue(Integer newCapacityValue) {
 		this.newCapacityValue = newCapacityValue;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetCapacityByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

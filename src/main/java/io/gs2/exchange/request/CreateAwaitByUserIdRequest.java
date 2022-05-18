@@ -32,6 +32,7 @@ public class CreateAwaitByUserIdRequest extends Gs2BasicRequest<CreateAwaitByUse
     private String userId;
     private String rateName;
     private Integer count;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class CreateAwaitByUserIdRequest extends Gs2BasicRequest<CreateAwaitByUse
 
 	public CreateAwaitByUserIdRequest withCount(Integer count) {
 		this.count = count;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CreateAwaitByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -33,6 +33,7 @@ public class LockByUserIdRequest extends Gs2BasicRequest<LockByUserIdRequest> {
     private String userId;
     private String transactionId;
     private Long ttl;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class LockByUserIdRequest extends Gs2BasicRequest<LockByUserIdRequest> {
 
 	public LockByUserIdRequest withTtl(Long ttl) {
 		this.ttl = ttl;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public LockByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

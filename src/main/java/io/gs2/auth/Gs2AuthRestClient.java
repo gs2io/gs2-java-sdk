@@ -150,7 +150,6 @@ import io.gs2.auth.model.*;public class Gs2AuthRestClient extends AbstractGs2Cli
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("userId", request.getUserId());
                     put("keyId", request.getKeyId());
                     put("body", request.getBody());
                     put("signature", request.getSignature());

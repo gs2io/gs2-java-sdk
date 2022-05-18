@@ -29,17 +29,33 @@ import io.gs2.ranking.model.*;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CalcRankingResult implements IResult, Serializable {
+    private Boolean processing;
+
+	public Boolean getProcessing() {
+		return processing;
+	}
+
+	public void setProcessing(Boolean processing) {
+		this.processing = processing;
+	}
+
+	public CalcRankingResult withProcessing(Boolean processing) {
+		this.processing = processing;
+		return this;
+	}
 
     public static CalcRankingResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new CalcRankingResult();
+        return new CalcRankingResult()
+            .withProcessing(data.get("processing") == null || data.get("processing").isNull() ? null : data.get("processing").booleanValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("processing", getProcessing());
             }}
         );
     }

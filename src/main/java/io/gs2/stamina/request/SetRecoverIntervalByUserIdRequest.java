@@ -32,6 +32,7 @@ public class SetRecoverIntervalByUserIdRequest extends Gs2BasicRequest<SetRecove
     private String staminaName;
     private String userId;
     private Integer recoverIntervalMinutes;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class SetRecoverIntervalByUserIdRequest extends Gs2BasicRequest<SetRecove
 
 	public SetRecoverIntervalByUserIdRequest withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetRecoverIntervalByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

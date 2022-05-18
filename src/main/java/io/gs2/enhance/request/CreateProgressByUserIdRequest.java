@@ -35,6 +35,7 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
     private String targetItemSetId;
     private List<Material> materials;
     private Boolean force;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -111,6 +112,19 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
 
 	public CreateProgressByUserIdRequest withForce(Boolean force) {
 		this.force = force;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CreateProgressByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -33,6 +33,7 @@ public class UpdateTakeOverByUserIdRequest extends Gs2BasicRequest<UpdateTakeOve
     private Integer type;
     private String oldPassword;
     private String password;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class UpdateTakeOverByUserIdRequest extends Gs2BasicRequest<UpdateTakeOve
 
 	public UpdateTakeOverByUserIdRequest withPassword(String password) {
 		this.password = password;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UpdateTakeOverByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

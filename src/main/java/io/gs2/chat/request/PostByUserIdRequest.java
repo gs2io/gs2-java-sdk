@@ -34,6 +34,7 @@ public class PostByUserIdRequest extends Gs2BasicRequest<PostByUserIdRequest> {
     private Integer category;
     private String metadata;
     private String password;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -110,6 +111,19 @@ public class PostByUserIdRequest extends Gs2BasicRequest<PostByUserIdRequest> {
 
 	public PostByUserIdRequest withPassword(String password) {
 		this.password = password;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PostByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

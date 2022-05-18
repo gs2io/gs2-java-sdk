@@ -31,6 +31,7 @@ public class DeleteRatingRequest extends Gs2BasicRequest<DeleteRatingRequest> {
     private String namespaceName;
     private String userId;
     private String ratingName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteRatingRequest extends Gs2BasicRequest<DeleteRatingRequest> {
 
 	public DeleteRatingRequest withRatingName(String ratingName) {
 		this.ratingName = ratingName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteRatingRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

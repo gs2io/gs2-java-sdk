@@ -32,6 +32,7 @@ public class IncreaseCounterByUserIdRequest extends Gs2BasicRequest<IncreaseCoun
     private String counterName;
     private String userId;
     private Long value;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class IncreaseCounterByUserIdRequest extends Gs2BasicRequest<IncreaseCoun
 
 	public IncreaseCounterByUserIdRequest withValue(Long value) {
 		this.value = value;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public IncreaseCounterByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

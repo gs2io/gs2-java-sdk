@@ -31,6 +31,7 @@ public class DeleteMessageByUserIdRequest extends Gs2BasicRequest<DeleteMessageB
     private String namespaceName;
     private String userId;
     private String messageName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteMessageByUserIdRequest extends Gs2BasicRequest<DeleteMessageB
 
 	public DeleteMessageByUserIdRequest withMessageName(String messageName) {
 		this.messageName = messageName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteMessageByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -34,6 +34,7 @@ public class SendNotificationRequest extends Gs2BasicRequest<SendNotificationReq
     private String payload;
     private Boolean enableTransferMobileNotification;
     private String sound;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -110,6 +111,19 @@ public class SendNotificationRequest extends Gs2BasicRequest<SendNotificationReq
 
 	public SendNotificationRequest withSound(String sound) {
 		this.sound = sound;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SendNotificationRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

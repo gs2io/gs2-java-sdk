@@ -32,6 +32,7 @@ public class DeleteFormByUserIdRequest extends Gs2BasicRequest<DeleteFormByUserI
     private String userId;
     private String moldName;
     private Integer index;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class DeleteFormByUserIdRequest extends Gs2BasicRequest<DeleteFormByUserI
 
 	public DeleteFormByUserIdRequest withIndex(Integer index) {
 		this.index = index;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteFormByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -31,6 +31,7 @@ public class DeleteInventoryByUserIdRequest extends Gs2BasicRequest<DeleteInvent
     private String namespaceName;
     private String inventoryName;
     private String userId;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteInventoryByUserIdRequest extends Gs2BasicRequest<DeleteInvent
 
 	public DeleteInventoryByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteInventoryByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -32,6 +32,7 @@ public class SetRecoverValueByUserIdRequest extends Gs2BasicRequest<SetRecoverVa
     private String staminaName;
     private String userId;
     private Integer recoverValue;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -82,6 +83,19 @@ public class SetRecoverValueByUserIdRequest extends Gs2BasicRequest<SetRecoverVa
 
 	public SetRecoverValueByUserIdRequest withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetRecoverValueByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -34,6 +34,7 @@ public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
     private String userId;
     private Integer count;
     private List<Config> config;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -97,6 +98,19 @@ public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
 
 	public DrawByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DrawByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

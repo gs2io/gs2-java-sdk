@@ -31,6 +31,7 @@ public class DeleteDeadLetterJobByUserIdRequest extends Gs2BasicRequest<DeleteDe
     private String namespaceName;
     private String userId;
     private String deadLetterJobName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteDeadLetterJobByUserIdRequest extends Gs2BasicRequest<DeleteDe
 
 	public DeleteDeadLetterJobByUserIdRequest withDeadLetterJobName(String deadLetterJobName) {
 		this.deadLetterJobName = deadLetterJobName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteDeadLetterJobByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -31,6 +31,7 @@ public class DeleteCompleteByUserIdRequest extends Gs2BasicRequest<DeleteComplet
     private String namespaceName;
     private String userId;
     private String missionGroupName;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -68,6 +69,19 @@ public class DeleteCompleteByUserIdRequest extends Gs2BasicRequest<DeleteComplet
 
 	public DeleteCompleteByUserIdRequest withMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteCompleteByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

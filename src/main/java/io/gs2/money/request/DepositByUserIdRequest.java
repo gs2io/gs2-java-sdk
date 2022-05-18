@@ -33,6 +33,7 @@ public class DepositByUserIdRequest extends Gs2BasicRequest<DepositByUserIdReque
     private Integer slot;
     private Float price;
     private Integer count;
+    private String duplicationAvoider;
 
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,19 @@ public class DepositByUserIdRequest extends Gs2BasicRequest<DepositByUserIdReque
 
 	public DepositByUserIdRequest withCount(Integer count) {
 		this.count = count;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DepositByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
