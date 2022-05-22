@@ -220,6 +220,7 @@
 /root/project/java/src/main/java/io/gs2/version/result/ExportMasterResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/DescribeNamespacesRequest.java
 /root/project/java/src/main/java/io/gs2/chat/result/CreateNamespaceResult.java
+/root/project/java/src/main/java/io/gs2/gateway/request/DisconnectByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/GetRatingRequest.java
 /root/project/java/src/main/java/io/gs2/jobQueue/result/GetNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/version/model/ScriptSetting.java
@@ -436,6 +437,7 @@
 /root/project/java/src/main/java/io/gs2/jobQueue/result/DeleteDeadLetterJobByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/model/CurrentRatingModelMaster.java
 /root/project/java/src/main/java/io/gs2/realtime/request/GetRoomRequest.java
+/root/project/java/src/main/java/io/gs2/gateway/result/DisconnectByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/enhance/model/RateModelMaster.java
 /root/project/java/src/main/java/io/gs2/lottery/request/DeleteNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/request/EndRequest.java
@@ -901,6 +903,7 @@
 /root/project/java/src/main/java/io/gs2/inbox/model/ResponseCache.java
 /root/project/java/src/main/java/io/gs2/quest/request/GetQuestModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/showcase/result/CreateShowcaseMasterResult.java
+/root/project/java/src/main/java/io/gs2/gateway/result/DisconnectAllResult.java
 /root/project/java/src/main/java/io/gs2/mission/result/ReceiveByStampTaskResult.java
 /root/project/java/src/main/java/io/gs2/inbox/result/GetReceivedByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/chat/request/GetSubscribeByUserIdRequest.java
@@ -1570,6 +1573,7 @@
 /root/project/java/src/main/java/io/gs2/deploy/model/Resource.java
 /root/project/java/src/main/java/io/gs2/schedule/result/GetNamespaceStatusResult.java
 /root/project/java/src/main/java/io/gs2/distributor/result/UpdateNamespaceResult.java
+/root/project/java/src/main/java/io/gs2/gateway/request/DisconnectAllRequest.java
 /root/project/java/src/main/java/io/gs2/friend/result/GetSendRequestResult.java
 /root/project/java/src/main/java/io/gs2/inventory/result/GetItemWithSignatureByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/mission/result/DescribeCompletesResult.java

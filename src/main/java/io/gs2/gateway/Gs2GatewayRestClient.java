@@ -963,6 +963,170 @@ import io.gs2.gateway.model.*;public class Gs2GatewayRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class DisconnectByUserIdTask extends Gs2RestSessionTask<DisconnectByUserIdResult> {
+        private DisconnectByUserIdRequest request;
+
+        public DisconnectByUserIdTask(
+            DisconnectByUserIdRequest request,
+            AsyncAction<AsyncResult<DisconnectByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DisconnectByUserIdResult parse(JsonNode data) {
+            return DisconnectByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "gateway")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/session/user/{userId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void disconnectByUserIdAsync(
+            DisconnectByUserIdRequest request,
+            AsyncAction<AsyncResult<DisconnectByUserIdResult>> callback
+    ) {
+        DisconnectByUserIdTask task = new DisconnectByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DisconnectByUserIdResult disconnectByUserId(
+            DisconnectByUserIdRequest request
+    ) {
+        final AsyncResult<DisconnectByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        disconnectByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DisconnectAllTask extends Gs2RestSessionTask<DisconnectAllResult> {
+        private DisconnectAllRequest request;
+
+        public DisconnectAllTask(
+            DisconnectAllRequest request,
+            AsyncAction<AsyncResult<DisconnectAllResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DisconnectAllResult parse(JsonNode data) {
+            return DisconnectAllResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "gateway")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/session";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void disconnectAllAsync(
+            DisconnectAllRequest request,
+            AsyncAction<AsyncResult<DisconnectAllResult>> callback
+    ) {
+        DisconnectAllTask task = new DisconnectAllTask(request, callback);
+        session.execute(task);
+    }
+
+    public DisconnectAllResult disconnectAll(
+            DisconnectAllRequest request
+    ) {
+        final AsyncResult<DisconnectAllResult>[] resultAsyncResult = new AsyncResult[]{null};
+        disconnectAllAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class SetFirebaseTokenTask extends Gs2RestSessionTask<SetFirebaseTokenResult> {
         private SetFirebaseTokenRequest request;
 
