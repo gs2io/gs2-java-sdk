@@ -33,6 +33,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 	private String userId;
 	private String password;
 	private Integer timeOffset;
+	private Boolean banned;
 	private Long createdAt;
 
 	public String getAccountId() {
@@ -87,6 +88,19 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		return this;
 	}
 
+	public Boolean getBanned() {
+		return banned;
+	}
+
+	public void setBanned(Boolean banned) {
+		this.banned = banned;
+	}
+
+	public Account withBanned(Boolean banned) {
+		this.banned = banned;
+		return this;
+	}
+
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -109,6 +123,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
             .withTimeOffset(data.get("timeOffset") == null || data.get("timeOffset").isNull() ? null : data.get("timeOffset").intValue())
+            .withBanned(data.get("banned") == null || data.get("banned").isNull() ? null : data.get("banned").booleanValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
 
@@ -119,6 +134,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
                 put("userId", getUserId());
                 put("password", getPassword());
                 put("timeOffset", getTimeOffset());
+                put("banned", getBanned());
                 put("createdAt", getCreatedAt());
             }}
         );
@@ -137,6 +153,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
         result = prime * result + ((this.timeOffset == null) ? 0 : this.timeOffset.hashCode());
+        result = prime * result + ((this.banned == null) ? 0 : this.banned.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
 		return result;
 	}
@@ -168,6 +185,11 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		if (timeOffset == null) {
 			return other.timeOffset == null;
 		} else if (!timeOffset.equals(other.timeOffset)) {
+			return false;
+		}
+		if (banned == null) {
+			return other.banned == null;
+		} else if (!banned.equals(other.banned)) {
 			return false;
 		}
 		if (createdAt == null) {

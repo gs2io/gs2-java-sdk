@@ -791,6 +791,91 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class UpdateBannedTask extends Gs2RestSessionTask<UpdateBannedResult> {
+        private UpdateBannedRequest request;
+
+        public UpdateBannedTask(
+            UpdateBannedRequest request,
+            AsyncAction<AsyncResult<UpdateBannedResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateBannedResult parse(JsonNode data) {
+            return UpdateBannedResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/banned";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("banned", request.getBanned());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateBannedAsync(
+            UpdateBannedRequest request,
+            AsyncAction<AsyncResult<UpdateBannedResult>> callback
+    ) {
+        UpdateBannedTask task = new UpdateBannedTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateBannedResult updateBanned(
+            UpdateBannedRequest request
+    ) {
+        final AsyncResult<UpdateBannedResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateBannedAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetAccountTask extends Gs2RestSessionTask<GetAccountResult> {
         private GetAccountRequest request;
 

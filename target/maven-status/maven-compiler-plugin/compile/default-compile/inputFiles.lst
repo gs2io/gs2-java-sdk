@@ -1924,6 +1924,7 @@
 /root/project/java/src/main/java/io/gs2/quest/request/DeleteProgressByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/result/DirectEnhanceResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/model/Gathering.java
+/root/project/java/src/main/java/io/gs2/account/request/UpdateBannedRequest.java
 /root/project/java/src/main/java/io/gs2/gateway/model/Session.java
 /root/project/java/src/main/java/io/gs2/core/util/EncodingUtil.java
 /root/project/java/src/main/java/io/gs2/quest/request/GetQuestModelRequest.java
@@ -2362,6 +2363,7 @@
 /root/project/java/src/main/java/io/gs2/formation/result/CreateMoldModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/dictionary/result/GetNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/schedule/request/TriggerByUserIdRequest.java
+/root/project/java/src/main/java/io/gs2/account/result/UpdateBannedResult.java
 /root/project/java/src/main/java/io/gs2/friend/result/AcceptRequestByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/inbox/request/ExportMasterRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/result/DescribeInventoryModelsResult.java
