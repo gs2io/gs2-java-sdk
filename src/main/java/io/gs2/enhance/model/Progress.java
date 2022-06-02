@@ -32,6 +32,7 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 	private String progressId;
 	private String userId;
 	private String rateName;
+	private String name;
 	private String propertyId;
 	private Integer experienceValue;
 	private Float rate;
@@ -74,6 +75,19 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 
 	public Progress withRateName(String rateName) {
 		this.rateName = rateName;
+		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Progress withName(String name) {
+		this.name = name;
 		return this;
 	}
 
@@ -150,6 +164,7 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
             .withProgressId(data.get("progressId") == null || data.get("progressId").isNull() ? null : data.get("progressId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").intValue())
             .withRate(data.get("rate") == null || data.get("rate").isNull() ? null : data.get("rate").floatValue())
@@ -163,6 +178,7 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
                 put("progressId", getProgressId());
                 put("userId", getUserId());
                 put("rateName", getRateName());
+                put("name", getName());
                 put("propertyId", getPropertyId());
                 put("experienceValue", getExperienceValue());
                 put("rate", getRate());
@@ -184,6 +200,7 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
         result = prime * result + ((this.progressId == null) ? 0 : this.progressId.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.rateName == null) ? 0 : this.rateName.hashCode());
+        result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.propertyId == null) ? 0 : this.propertyId.hashCode());
         result = prime * result + ((this.experienceValue == null) ? 0 : this.experienceValue.hashCode());
         result = prime * result + ((this.rate == null) ? 0 : this.rate.hashCode());
@@ -214,6 +231,11 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 		if (rateName == null) {
 			return other.rateName == null;
 		} else if (!rateName.equals(other.rateName)) {
+			return false;
+		}
+		if (name == null) {
+			return other.name == null;
+		} else if (!name.equals(other.name)) {
 			return false;
 		}
 		if (propertyId == null) {

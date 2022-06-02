@@ -31,6 +31,8 @@ import io.gs2.enhance.model.Config;
 public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
     private String namespaceName;
     private String userId;
+    private String rateName;
+    private String progressName;
     private List<Config> config;
     private String duplicationAvoider;
 
@@ -57,6 +59,32 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
 
 	public EndByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getRateName() {
+		return rateName;
+	}
+
+	public void setRateName(String rateName) {
+		this.rateName = rateName;
+	}
+
+	public EndByUserIdRequest withRateName(String rateName) {
+		this.rateName = rateName;
+		return this;
+	}
+
+	public String getProgressName() {
+		return progressName;
+	}
+
+	public void setProgressName(String progressName) {
+		this.progressName = progressName;
+	}
+
+	public EndByUserIdRequest withProgressName(String progressName) {
+		this.progressName = progressName;
 		return this;
 	}
 
@@ -93,6 +121,8 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
         return new EndByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
+            .withProgressName(data.get("progressName") == null || data.get("progressName").isNull() ? null : data.get("progressName").asText())
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -106,6 +136,8 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("rateName", getRateName());
+                put("progressName", getProgressName());
                 put("config", getConfig() == null ? new ArrayList<Config>() :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef

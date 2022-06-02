@@ -1623,9 +1623,11 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/progress";
+                + "/{namespaceName}/user/me/progress/{rateName}/progress/{progressName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1706,10 +1708,12 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/progress";
+                + "/{namespaceName}/user/{userId}/progress/{rateName}/progress/{progressName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1984,9 +1988,11 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/progress/end";
+                + "/{namespaceName}/user/me/progress/rate/{rateName}/progress/{progressName}/end";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2073,10 +2079,12 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/progress/end";
+                + "/{namespaceName}/user/{userId}/progress/rate/{rateName}/progress/{progressName}/end";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2163,9 +2171,11 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/progress";
+                + "/{namespaceName}/user/me/progress/rate/{rateName}/progress/{progressName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2246,10 +2256,12 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/progress";
+                + "/{namespaceName}/user/{userId}/progress/rate/{rateName}/progress/{progressName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
