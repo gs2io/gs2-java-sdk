@@ -31,12 +31,13 @@ import io.gs2.core.model.IModel;
 public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String namespaceId;
 	private String name;
-	private String queueNamespaceId;
-	private String keyId;
 	private String description;
+	private TransactionSetting transactionSetting;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
+	private String queueNamespaceId;
+	private String keyId;
 
 	public String getNamespaceId() {
 		return namespaceId;
@@ -64,32 +65,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		return this;
 	}
 
-	public String getQueueNamespaceId() {
-		return queueNamespaceId;
-	}
-
-	public void setQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
-	}
-
-	public Namespace withQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
-		return this;
-	}
-
-	public String getKeyId() {
-		return keyId;
-	}
-
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
-	}
-
-	public Namespace withKeyId(String keyId) {
-		this.keyId = keyId;
-		return this;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -100,6 +75,19 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 
 	public Namespace withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+
+	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 
@@ -142,6 +130,32 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		return this;
 	}
 
+	public String getQueueNamespaceId() {
+		return queueNamespaceId;
+	}
+
+	public void setQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+	}
+
+	public Namespace withQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public Namespace withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
     public static Namespace fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -149,12 +163,13 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         return new Namespace()
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
     public JsonNode toJson() {
@@ -162,12 +177,13 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             new HashMap<String, Object>() {{
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
-                put("queueNamespaceId", getQueueNamespaceId());
-                put("keyId", getKeyId());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("queueNamespaceId", getQueueNamespaceId());
+                put("keyId", getKeyId());
             }}
         );
     }
@@ -183,12 +199,13 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         int result = 1;
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-        result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
-        result = prime * result + ((this.keyId == null) ? 0 : this.keyId.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
+        result = prime * result + ((this.keyId == null) ? 0 : this.keyId.hashCode());
 		return result;
 	}
 
@@ -211,19 +228,14 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
-		if (queueNamespaceId == null) {
-			return other.queueNamespaceId == null;
-		} else if (!queueNamespaceId.equals(other.queueNamespaceId)) {
-			return false;
-		}
-		if (keyId == null) {
-			return other.keyId == null;
-		} else if (!keyId.equals(other.keyId)) {
-			return false;
-		}
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (transactionSetting == null) {
+			return other.transactionSetting == null;
+		} else if (!transactionSetting.equals(other.transactionSetting)) {
 			return false;
 		}
 		if (logSetting == null) {
@@ -239,6 +251,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (queueNamespaceId == null) {
+			return other.queueNamespaceId == null;
+		} else if (!queueNamespaceId.equals(other.queueNamespaceId)) {
+			return false;
+		}
+		if (keyId == null) {
+			return other.keyId == null;
+		} else if (!keyId.equals(other.keyId)) {
 			return false;
 		}
 		return true;

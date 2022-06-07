@@ -156,11 +156,12 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("lotteryTriggerScriptId", request.getLotteryTriggerScriptId());
                     put("choicePrizeTableScriptId", request.getChoicePrizeTableScriptId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -402,11 +403,12 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("lotteryTriggerScriptId", request.getLotteryTriggerScriptId());
                     put("choicePrizeTableScriptId", request.getChoicePrizeTableScriptId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

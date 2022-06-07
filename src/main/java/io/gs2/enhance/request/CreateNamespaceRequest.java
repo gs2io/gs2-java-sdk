@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.enhance.model.TransactionSetting;
 import io.gs2.enhance.model.ScriptSetting;
 import io.gs2.enhance.model.LogSetting;
 
@@ -33,10 +34,11 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String name;
     private String description;
     private Boolean enableDirectEnhance;
-    private String queueNamespaceId;
-    private String keyId;
+    private TransactionSetting transactionSetting;
     private ScriptSetting enhanceScript;
     private LogSetting logSetting;
+    private String queueNamespaceId;
+    private String keyId;
 
 	public String getName() {
 		return name;
@@ -77,29 +79,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		return this;
 	}
 
-	public String getQueueNamespaceId() {
-		return queueNamespaceId;
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
 	}
 
-	public void setQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 	}
 
-	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
-		return this;
-	}
-
-	public String getKeyId() {
-		return keyId;
-	}
-
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
-	}
-
-	public CreateNamespaceRequest withKeyId(String keyId) {
-		this.keyId = keyId;
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 
@@ -129,6 +118,32 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		return this;
 	}
 
+	public String getQueueNamespaceId() {
+		return queueNamespaceId;
+	}
+
+	public void setQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+	}
+
+	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public CreateNamespaceRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
     public static CreateNamespaceRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -137,10 +152,11 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withEnableDirectEnhance(data.get("enableDirectEnhance") == null || data.get("enableDirectEnhance").isNull() ? null : data.get("enableDirectEnhance").booleanValue())
-            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withEnhanceScript(data.get("enhanceScript") == null || data.get("enhanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("enhanceScript")))
-            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
     public JsonNode toJson() {
@@ -149,10 +165,11 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("name", getName());
                 put("description", getDescription());
                 put("enableDirectEnhance", getEnableDirectEnhance());
-                put("queueNamespaceId", getQueueNamespaceId());
-                put("keyId", getKeyId());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("enhanceScript", getEnhanceScript() != null ? getEnhanceScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("queueNamespaceId", getQueueNamespaceId());
+                put("keyId", getKeyId());
             }}
         );
     }

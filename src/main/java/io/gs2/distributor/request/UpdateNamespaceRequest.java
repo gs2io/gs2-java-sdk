@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.distributor.model.NotificationSetting;
 import io.gs2.distributor.model.LogSetting;
 
 @SuppressWarnings("serial")
@@ -32,6 +33,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String namespaceName;
     private String description;
     private String assumeUserId;
+    private NotificationSetting autoRunStampSheetNotification;
     private LogSetting logSetting;
 
 	public String getNamespaceName() {
@@ -73,6 +75,19 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		return this;
 	}
 
+	public NotificationSetting getAutoRunStampSheetNotification() {
+		return autoRunStampSheetNotification;
+	}
+
+	public void setAutoRunStampSheetNotification(NotificationSetting autoRunStampSheetNotification) {
+		this.autoRunStampSheetNotification = autoRunStampSheetNotification;
+	}
+
+	public UpdateNamespaceRequest withAutoRunStampSheetNotification(NotificationSetting autoRunStampSheetNotification) {
+		this.autoRunStampSheetNotification = autoRunStampSheetNotification;
+		return this;
+	}
+
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -94,6 +109,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withAssumeUserId(data.get("assumeUserId") == null || data.get("assumeUserId").isNull() ? null : data.get("assumeUserId").asText())
+            .withAutoRunStampSheetNotification(data.get("autoRunStampSheetNotification") == null || data.get("autoRunStampSheetNotification").isNull() ? null : NotificationSetting.fromJson(data.get("autoRunStampSheetNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -103,6 +119,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
                 put("assumeUserId", getAssumeUserId());
+                put("autoRunStampSheetNotification", getAutoRunStampSheetNotification() != null ? getAutoRunStampSheetNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

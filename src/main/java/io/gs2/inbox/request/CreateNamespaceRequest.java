@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.inbox.model.TransactionSetting;
 import io.gs2.inbox.model.ScriptSetting;
 import io.gs2.inbox.model.NotificationSetting;
 import io.gs2.inbox.model.LogSetting;
@@ -34,13 +35,14 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String name;
     private String description;
     private Boolean isAutomaticDeletingEnabled;
+    private TransactionSetting transactionSetting;
     private ScriptSetting receiveMessageScript;
     private ScriptSetting readMessageScript;
     private ScriptSetting deleteMessageScript;
-    private String queueNamespaceId;
-    private String keyId;
     private NotificationSetting receiveNotification;
     private LogSetting logSetting;
+    private String queueNamespaceId;
+    private String keyId;
 
 	public String getName() {
 		return name;
@@ -78,6 +80,19 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 
 	public CreateNamespaceRequest withIsAutomaticDeletingEnabled(Boolean isAutomaticDeletingEnabled) {
 		this.isAutomaticDeletingEnabled = isAutomaticDeletingEnabled;
+		return this;
+	}
+
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 
@@ -120,32 +135,6 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		return this;
 	}
 
-	public String getQueueNamespaceId() {
-		return queueNamespaceId;
-	}
-
-	public void setQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
-	}
-
-	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
-		return this;
-	}
-
-	public String getKeyId() {
-		return keyId;
-	}
-
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
-	}
-
-	public CreateNamespaceRequest withKeyId(String keyId) {
-		this.keyId = keyId;
-		return this;
-	}
-
 	public NotificationSetting getReceiveNotification() {
 		return receiveNotification;
 	}
@@ -172,6 +161,32 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		return this;
 	}
 
+	public String getQueueNamespaceId() {
+		return queueNamespaceId;
+	}
+
+	public void setQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+	}
+
+	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public CreateNamespaceRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
     public static CreateNamespaceRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -180,13 +195,14 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withIsAutomaticDeletingEnabled(data.get("isAutomaticDeletingEnabled") == null || data.get("isAutomaticDeletingEnabled").isNull() ? null : data.get("isAutomaticDeletingEnabled").booleanValue())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withReceiveMessageScript(data.get("receiveMessageScript") == null || data.get("receiveMessageScript").isNull() ? null : ScriptSetting.fromJson(data.get("receiveMessageScript")))
             .withReadMessageScript(data.get("readMessageScript") == null || data.get("readMessageScript").isNull() ? null : ScriptSetting.fromJson(data.get("readMessageScript")))
             .withDeleteMessageScript(data.get("deleteMessageScript") == null || data.get("deleteMessageScript").isNull() ? null : ScriptSetting.fromJson(data.get("deleteMessageScript")))
-            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
             .withReceiveNotification(data.get("receiveNotification") == null || data.get("receiveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("receiveNotification")))
-            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
     public JsonNode toJson() {
@@ -195,13 +211,14 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("name", getName());
                 put("description", getDescription());
                 put("isAutomaticDeletingEnabled", getIsAutomaticDeletingEnabled());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("receiveMessageScript", getReceiveMessageScript() != null ? getReceiveMessageScript().toJson() : null);
                 put("readMessageScript", getReadMessageScript() != null ? getReadMessageScript().toJson() : null);
                 put("deleteMessageScript", getDeleteMessageScript() != null ? getDeleteMessageScript().toJson() : null);
-                put("queueNamespaceId", getQueueNamespaceId());
-                put("keyId", getKeyId());
                 put("receiveNotification", getReceiveNotification() != null ? getReceiveNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("queueNamespaceId", getQueueNamespaceId());
+                put("keyId", getKeyId());
             }}
         );
     }

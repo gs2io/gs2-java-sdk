@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.quest.model.TransactionSetting;
 import io.gs2.quest.model.ScriptSetting;
 import io.gs2.quest.model.LogSetting;
 
@@ -32,12 +33,13 @@ import io.gs2.quest.model.LogSetting;
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
     private String name;
     private String description;
+    private TransactionSetting transactionSetting;
     private ScriptSetting startQuestScript;
     private ScriptSetting completeQuestScript;
     private ScriptSetting failedQuestScript;
+    private LogSetting logSetting;
     private String queueNamespaceId;
     private String keyId;
-    private LogSetting logSetting;
 
 	public String getName() {
 		return name;
@@ -62,6 +64,19 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 
@@ -104,6 +119,19 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		return this;
 	}
 
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+
+	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
@@ -130,19 +158,6 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		return this;
 	}
 
-	public LogSetting getLogSetting() {
-		return logSetting;
-	}
-
-	public void setLogSetting(LogSetting logSetting) {
-		this.logSetting = logSetting;
-	}
-
-	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
-		this.logSetting = logSetting;
-		return this;
-	}
-
     public static CreateNamespaceRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -150,12 +165,13 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         return new CreateNamespaceRequest()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withStartQuestScript(data.get("startQuestScript") == null || data.get("startQuestScript").isNull() ? null : ScriptSetting.fromJson(data.get("startQuestScript")))
             .withCompleteQuestScript(data.get("completeQuestScript") == null || data.get("completeQuestScript").isNull() ? null : ScriptSetting.fromJson(data.get("completeQuestScript")))
             .withFailedQuestScript(data.get("failedQuestScript") == null || data.get("failedQuestScript").isNull() ? null : ScriptSetting.fromJson(data.get("failedQuestScript")))
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
-            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
     public JsonNode toJson() {
@@ -163,12 +179,13 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("startQuestScript", getStartQuestScript() != null ? getStartQuestScript().toJson() : null);
                 put("completeQuestScript", getCompleteQuestScript() != null ? getCompleteQuestScript().toJson() : null);
                 put("failedQuestScript", getFailedQuestScript() != null ? getFailedQuestScript().toJson() : null);
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());
-                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );
     }

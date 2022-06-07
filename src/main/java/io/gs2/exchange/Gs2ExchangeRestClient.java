@@ -158,10 +158,11 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("description", request.getDescription());
                     put("enableAwaitExchange", request.getEnableAwaitExchange());
                     put("enableDirectExchange", request.getEnableDirectExchange());
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("exchangeScript", request.getExchangeScript() != null ? request.getExchangeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -405,10 +406,11 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("description", request.getDescription());
                     put("enableAwaitExchange", request.getEnableAwaitExchange());
                     put("enableDirectExchange", request.getEnableDirectExchange());
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("exchangeScript", request.getExchangeScript() != null ? request.getExchangeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

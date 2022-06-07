@@ -156,12 +156,13 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("startQuestScript", request.getStartQuestScript() != null ? request.getStartQuestScript().toJson() : null);
                     put("completeQuestScript", request.getCompleteQuestScript() != null ? request.getCompleteQuestScript().toJson() : null);
                     put("failedQuestScript", request.getFailedQuestScript() != null ? request.getFailedQuestScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());
-                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -403,12 +404,13 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("startQuestScript", request.getStartQuestScript() != null ? request.getStartQuestScript().toJson() : null);
                     put("completeQuestScript", request.getCompleteQuestScript() != null ? request.getCompleteQuestScript().toJson() : null);
                     put("failedQuestScript", request.getFailedQuestScript() != null ? request.getFailedQuestScript().toJson() : null);
+                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());
-                    put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

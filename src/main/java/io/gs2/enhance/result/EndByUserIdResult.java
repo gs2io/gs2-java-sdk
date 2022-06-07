@@ -31,8 +31,10 @@ import io.gs2.enhance.model.Progress;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EndByUserIdResult implements IResult, Serializable {
     private Progress item;
+    private String transactionId;
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
+    private Boolean autoRunStampSheet;
     private Long acquireExperience;
     private Float bonusRate;
 
@@ -46,6 +48,19 @@ public class EndByUserIdResult implements IResult, Serializable {
 
 	public EndByUserIdResult withItem(Progress item) {
 		this.item = item;
+		return this;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public EndByUserIdResult withTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 		return this;
 	}
 
@@ -72,6 +87,19 @@ public class EndByUserIdResult implements IResult, Serializable {
 
 	public EndByUserIdResult withStampSheetEncryptionKeyId(String stampSheetEncryptionKeyId) {
 		this.stampSheetEncryptionKeyId = stampSheetEncryptionKeyId;
+		return this;
+	}
+
+	public Boolean getAutoRunStampSheet() {
+		return autoRunStampSheet;
+	}
+
+	public void setAutoRunStampSheet(Boolean autoRunStampSheet) {
+		this.autoRunStampSheet = autoRunStampSheet;
+	}
+
+	public EndByUserIdResult withAutoRunStampSheet(Boolean autoRunStampSheet) {
+		this.autoRunStampSheet = autoRunStampSheet;
 		return this;
 	}
 
@@ -107,8 +135,10 @@ public class EndByUserIdResult implements IResult, Serializable {
         }
         return new EndByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Progress.fromJson(data.get("item")))
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
             .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
+            .withAutoRunStampSheet(data.get("autoRunStampSheet") == null || data.get("autoRunStampSheet").isNull() ? null : data.get("autoRunStampSheet").booleanValue())
             .withAcquireExperience(data.get("acquireExperience") == null || data.get("acquireExperience").isNull() ? null : data.get("acquireExperience").longValue())
             .withBonusRate(data.get("bonusRate") == null || data.get("bonusRate").isNull() ? null : data.get("bonusRate").floatValue());
     }
@@ -117,8 +147,10 @@ public class EndByUserIdResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("transactionId", getTransactionId());
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+                put("autoRunStampSheet", getAutoRunStampSheet());
                 put("acquireExperience", getAcquireExperience());
                 put("bonusRate", getBonusRate());
             }}

@@ -32,8 +32,10 @@ import io.gs2.lottery.model.DrawnPrize;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DrawByStampSheetResult implements IResult, Serializable {
     private List<DrawnPrize> items;
+    private String transactionId;
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
+    private Boolean autoRunStampSheet;
 
 	public List<DrawnPrize> getItems() {
 		return items;
@@ -45,6 +47,19 @@ public class DrawByStampSheetResult implements IResult, Serializable {
 
 	public DrawByStampSheetResult withItems(List<DrawnPrize> items) {
 		this.items = items;
+		return this;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public DrawByStampSheetResult withTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 		return this;
 	}
 
@@ -74,6 +89,19 @@ public class DrawByStampSheetResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Boolean getAutoRunStampSheet() {
+		return autoRunStampSheet;
+	}
+
+	public void setAutoRunStampSheet(Boolean autoRunStampSheet) {
+		this.autoRunStampSheet = autoRunStampSheet;
+	}
+
+	public DrawByStampSheetResult withAutoRunStampSheet(Boolean autoRunStampSheet) {
+		this.autoRunStampSheet = autoRunStampSheet;
+		return this;
+	}
+
     public static DrawByStampSheetResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -85,8 +113,10 @@ public class DrawByStampSheetResult implements IResult, Serializable {
                     return DrawnPrize.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
-            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
+            .withAutoRunStampSheet(data.get("autoRunStampSheet") == null || data.get("autoRunStampSheet").isNull() ? null : data.get("autoRunStampSheet").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -98,8 +128,10 @@ public class DrawByStampSheetResult implements IResult, Serializable {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("transactionId", getTransactionId());
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+                put("autoRunStampSheet", getAutoRunStampSheet());
             }}
         );
     }

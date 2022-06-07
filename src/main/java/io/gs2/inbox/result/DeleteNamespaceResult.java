@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.inbox.model.*;
+import io.gs2.inbox.model.TransactionSetting;
 import io.gs2.inbox.model.ScriptSetting;
 import io.gs2.inbox.model.NotificationSetting;
 import io.gs2.inbox.model.LogSetting;

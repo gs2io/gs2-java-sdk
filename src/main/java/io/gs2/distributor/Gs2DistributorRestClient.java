@@ -157,6 +157,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("assumeUserId", request.getAssumeUserId());
+                    put("autoRunStampSheetNotification", request.getAutoRunStampSheetNotification() != null ? request.getAutoRunStampSheetNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -400,6 +401,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("assumeUserId", request.getAssumeUserId());
+                    put("autoRunStampSheetNotification", request.getAutoRunStampSheetNotification() != null ? request.getAutoRunStampSheetNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -2072,6 +2074,172 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
     ) {
         final AsyncResult<RunStampSheetExpressWithoutNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
         runStampSheetExpressWithoutNamespaceAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetStampSheetResultTask extends Gs2RestSessionTask<GetStampSheetResultResult> {
+        private GetStampSheetResultRequest request;
+
+        public GetStampSheetResultTask(
+            GetStampSheetResultRequest request,
+            AsyncAction<AsyncResult<GetStampSheetResultResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetStampSheetResultResult parse(JsonNode data) {
+            return GetStampSheetResultResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/stampSheet/{transactionId}/result";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{transactionId}", this.request.getTransactionId() == null || this.request.getTransactionId().length() == 0 ? "null" : String.valueOf(this.request.getTransactionId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getStampSheetResultAsync(
+            GetStampSheetResultRequest request,
+            AsyncAction<AsyncResult<GetStampSheetResultResult>> callback
+    ) {
+        GetStampSheetResultTask task = new GetStampSheetResultTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetStampSheetResultResult getStampSheetResult(
+            GetStampSheetResultRequest request
+    ) {
+        final AsyncResult<GetStampSheetResultResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getStampSheetResultAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetStampSheetResultByUserIdTask extends Gs2RestSessionTask<GetStampSheetResultByUserIdResult> {
+        private GetStampSheetResultByUserIdRequest request;
+
+        public GetStampSheetResultByUserIdTask(
+            GetStampSheetResultByUserIdRequest request,
+            AsyncAction<AsyncResult<GetStampSheetResultByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetStampSheetResultByUserIdResult parse(JsonNode data) {
+            return GetStampSheetResultByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/stampSheet/{transactionId}/result";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{transactionId}", this.request.getTransactionId() == null || this.request.getTransactionId().length() == 0 ? "null" : String.valueOf(this.request.getTransactionId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getStampSheetResultByUserIdAsync(
+            GetStampSheetResultByUserIdRequest request,
+            AsyncAction<AsyncResult<GetStampSheetResultByUserIdResult>> callback
+    ) {
+        GetStampSheetResultByUserIdTask task = new GetStampSheetResultByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetStampSheetResultByUserIdResult getStampSheetResultByUserId(
+            GetStampSheetResultByUserIdRequest request
+    ) {
+        final AsyncResult<GetStampSheetResultByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getStampSheetResultByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

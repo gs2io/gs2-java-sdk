@@ -1784,13 +1784,14 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("missionCompleteScript", request.getMissionCompleteScript() != null ? request.getMissionCompleteScript().toJson() : null);
                     put("counterIncrementScript", request.getCounterIncrementScript() != null ? request.getCounterIncrementScript().toJson() : null);
                     put("receiveRewardsScript", request.getReceiveRewardsScript() != null ? request.getReceiveRewardsScript().toJson() : null);
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
                     put("completeNotification", request.getCompleteNotification() != null ? request.getCompleteNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2032,13 +2033,14 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("missionCompleteScript", request.getMissionCompleteScript() != null ? request.getMissionCompleteScript().toJson() : null);
                     put("counterIncrementScript", request.getCounterIncrementScript() != null ? request.getCounterIncrementScript().toJson() : null);
                     put("receiveRewardsScript", request.getReceiveRewardsScript() != null ? request.getReceiveRewardsScript().toJson() : null);
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
                     put("completeNotification", request.getCompleteNotification() != null ? request.getCompleteNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

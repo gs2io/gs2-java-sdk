@@ -157,13 +157,14 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("isAutomaticDeletingEnabled", request.getIsAutomaticDeletingEnabled());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("receiveMessageScript", request.getReceiveMessageScript() != null ? request.getReceiveMessageScript().toJson() : null);
                     put("readMessageScript", request.getReadMessageScript() != null ? request.getReadMessageScript().toJson() : null);
                     put("deleteMessageScript", request.getDeleteMessageScript() != null ? request.getDeleteMessageScript().toJson() : null);
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
                     put("receiveNotification", request.getReceiveNotification() != null ? request.getReceiveNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -406,13 +407,14 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("isAutomaticDeletingEnabled", request.getIsAutomaticDeletingEnabled());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("receiveMessageScript", request.getReceiveMessageScript() != null ? request.getReceiveMessageScript().toJson() : null);
                     put("readMessageScript", request.getReadMessageScript() != null ? request.getReadMessageScript().toJson() : null);
                     put("deleteMessageScript", request.getDeleteMessageScript() != null ? request.getDeleteMessageScript().toJson() : null);
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
                     put("receiveNotification", request.getReceiveNotification() != null ? request.getReceiveNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

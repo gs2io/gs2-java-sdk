@@ -29,8 +29,23 @@ import io.gs2.quest.model.*;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class StartResult implements IResult, Serializable {
+    private String transactionId;
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
+    private Boolean autoRunStampSheet;
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public StartResult withTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+		return this;
+	}
 
 	public String getStampSheet() {
 		return stampSheet;
@@ -58,20 +73,37 @@ public class StartResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Boolean getAutoRunStampSheet() {
+		return autoRunStampSheet;
+	}
+
+	public void setAutoRunStampSheet(Boolean autoRunStampSheet) {
+		this.autoRunStampSheet = autoRunStampSheet;
+	}
+
+	public StartResult withAutoRunStampSheet(Boolean autoRunStampSheet) {
+		this.autoRunStampSheet = autoRunStampSheet;
+		return this;
+	}
+
     public static StartResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new StartResult()
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
-            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
+            .withAutoRunStampSheet(data.get("autoRunStampSheet") == null || data.get("autoRunStampSheet").isNull() ? null : data.get("autoRunStampSheet").booleanValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("transactionId", getTransactionId());
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+                put("autoRunStampSheet", getAutoRunStampSheet());
             }}
         );
     }

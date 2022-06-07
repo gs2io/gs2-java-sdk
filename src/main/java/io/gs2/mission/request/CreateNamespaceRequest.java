@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.mission.model.TransactionSetting;
 import io.gs2.mission.model.ScriptSetting;
 import io.gs2.mission.model.NotificationSetting;
 import io.gs2.mission.model.LogSetting;
@@ -33,13 +34,14 @@ import io.gs2.mission.model.LogSetting;
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
     private String name;
     private String description;
+    private TransactionSetting transactionSetting;
     private ScriptSetting missionCompleteScript;
     private ScriptSetting counterIncrementScript;
     private ScriptSetting receiveRewardsScript;
-    private String queueNamespaceId;
-    private String keyId;
     private NotificationSetting completeNotification;
     private LogSetting logSetting;
+    private String queueNamespaceId;
+    private String keyId;
 
 	public String getName() {
 		return name;
@@ -64,6 +66,19 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 
@@ -106,32 +121,6 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		return this;
 	}
 
-	public String getQueueNamespaceId() {
-		return queueNamespaceId;
-	}
-
-	public void setQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
-	}
-
-	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
-		return this;
-	}
-
-	public String getKeyId() {
-		return keyId;
-	}
-
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
-	}
-
-	public CreateNamespaceRequest withKeyId(String keyId) {
-		this.keyId = keyId;
-		return this;
-	}
-
 	public NotificationSetting getCompleteNotification() {
 		return completeNotification;
 	}
@@ -158,6 +147,32 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		return this;
 	}
 
+	public String getQueueNamespaceId() {
+		return queueNamespaceId;
+	}
+
+	public void setQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+	}
+
+	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
+		this.queueNamespaceId = queueNamespaceId;
+		return this;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public CreateNamespaceRequest withKeyId(String keyId) {
+		this.keyId = keyId;
+		return this;
+	}
+
     public static CreateNamespaceRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -165,13 +180,14 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         return new CreateNamespaceRequest()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withMissionCompleteScript(data.get("missionCompleteScript") == null || data.get("missionCompleteScript").isNull() ? null : ScriptSetting.fromJson(data.get("missionCompleteScript")))
             .withCounterIncrementScript(data.get("counterIncrementScript") == null || data.get("counterIncrementScript").isNull() ? null : ScriptSetting.fromJson(data.get("counterIncrementScript")))
             .withReceiveRewardsScript(data.get("receiveRewardsScript") == null || data.get("receiveRewardsScript").isNull() ? null : ScriptSetting.fromJson(data.get("receiveRewardsScript")))
-            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
             .withCompleteNotification(data.get("completeNotification") == null || data.get("completeNotification").isNull() ? null : NotificationSetting.fromJson(data.get("completeNotification")))
-            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
     public JsonNode toJson() {
@@ -179,13 +195,14 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("missionCompleteScript", getMissionCompleteScript() != null ? getMissionCompleteScript().toJson() : null);
                 put("counterIncrementScript", getCounterIncrementScript() != null ? getCounterIncrementScript().toJson() : null);
                 put("receiveRewardsScript", getReceiveRewardsScript() != null ? getReceiveRewardsScript().toJson() : null);
-                put("queueNamespaceId", getQueueNamespaceId());
-                put("keyId", getKeyId());
                 put("completeNotification", getCompleteNotification() != null ? getCompleteNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("queueNamespaceId", getQueueNamespaceId());
+                put("keyId", getKeyId());
             }}
         );
     }

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.enhance.model.*;
+import io.gs2.enhance.model.TransactionSetting;
 import io.gs2.enhance.model.ScriptSetting;
 import io.gs2.enhance.model.LogSetting;
 import io.gs2.enhance.model.Namespace;

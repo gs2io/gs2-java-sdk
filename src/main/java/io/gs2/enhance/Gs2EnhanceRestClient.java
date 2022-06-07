@@ -157,10 +157,11 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("enableDirectEnhance", request.getEnableDirectEnhance());
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("enhanceScript", request.getEnhanceScript() != null ? request.getEnhanceScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -403,10 +404,11 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("enableDirectEnhance", request.getEnableDirectEnhance());
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("enhanceScript", request.getEnhanceScript() != null ? request.getEnhanceScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
+                    put("queueNamespaceId", request.getQueueNamespaceId());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

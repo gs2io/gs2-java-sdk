@@ -36,8 +36,6 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
     private String moldName;
     private Integer index;
     private AcquireAction acquireAction;
-    private String queueNamespaceId;
-    private String keyId;
     private List<AcquireActionConfig> config;
     private String duplicationAvoider;
 
@@ -106,32 +104,6 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
 		return this;
 	}
 
-	public String getQueueNamespaceId() {
-		return queueNamespaceId;
-	}
-
-	public void setQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
-	}
-
-	public AcquireActionsToFormPropertiesRequest withQueueNamespaceId(String queueNamespaceId) {
-		this.queueNamespaceId = queueNamespaceId;
-		return this;
-	}
-
-	public String getKeyId() {
-		return keyId;
-	}
-
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
-	}
-
-	public AcquireActionsToFormPropertiesRequest withKeyId(String keyId) {
-		this.keyId = keyId;
-		return this;
-	}
-
 	public List<AcquireActionConfig> getConfig() {
 		return config;
 	}
@@ -168,8 +140,6 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
             .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
             .withAcquireAction(data.get("acquireAction") == null || data.get("acquireAction").isNull() ? null : AcquireAction.fromJson(data.get("acquireAction")))
-            .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<AcquireActionConfig>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -186,8 +156,6 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
                 put("moldName", getMoldName());
                 put("index", getIndex());
                 put("acquireAction", getAcquireAction() != null ? getAcquireAction().toJson() : null);
-                put("queueNamespaceId", getQueueNamespaceId());
-                put("keyId", getKeyId());
                 put("config", getConfig() == null ? new ArrayList<AcquireActionConfig>() :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef

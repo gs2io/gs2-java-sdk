@@ -156,6 +156,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("updateMoldScript", request.getUpdateMoldScript() != null ? request.getUpdateMoldScript().toJson() : null);
                     put("updateFormScript", request.getUpdateFormScript() != null ? request.getUpdateFormScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
@@ -400,6 +401,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("updateMoldScript", request.getUpdateMoldScript() != null ? request.getUpdateMoldScript().toJson() : null);
                     put("updateFormScript", request.getUpdateFormScript() != null ? request.getUpdateFormScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
@@ -3443,8 +3445,6 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("acquireAction", request.getAcquireAction() != null ? request.getAcquireAction().toJson() : null);
-                    put("queueNamespaceId", request.getQueueNamespaceId());
-                    put("keyId", request.getKeyId());
                     put("config", request.getConfig() == null ? new ArrayList<AcquireActionConfig>() :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef

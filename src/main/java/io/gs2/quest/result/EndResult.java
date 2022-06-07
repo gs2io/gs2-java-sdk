@@ -32,8 +32,10 @@ import io.gs2.quest.model.Progress;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EndResult implements IResult, Serializable {
     private Progress item;
+    private String transactionId;
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
+    private Boolean autoRunStampSheet;
 
 	public Progress getItem() {
 		return item;
@@ -45,6 +47,19 @@ public class EndResult implements IResult, Serializable {
 
 	public EndResult withItem(Progress item) {
 		this.item = item;
+		return this;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public EndResult withTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 		return this;
 	}
 
@@ -74,22 +89,39 @@ public class EndResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Boolean getAutoRunStampSheet() {
+		return autoRunStampSheet;
+	}
+
+	public void setAutoRunStampSheet(Boolean autoRunStampSheet) {
+		this.autoRunStampSheet = autoRunStampSheet;
+	}
+
+	public EndResult withAutoRunStampSheet(Boolean autoRunStampSheet) {
+		this.autoRunStampSheet = autoRunStampSheet;
+		return this;
+	}
+
     public static EndResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new EndResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Progress.fromJson(data.get("item")))
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
-            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText());
+            .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
+            .withAutoRunStampSheet(data.get("autoRunStampSheet") == null || data.get("autoRunStampSheet").isNull() ? null : data.get("autoRunStampSheet").booleanValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("transactionId", getTransactionId());
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
+                put("autoRunStampSheet", getAutoRunStampSheet());
             }}
         );
     }
