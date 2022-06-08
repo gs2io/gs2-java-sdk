@@ -34,67 +34,52 @@ public class Showcase implements IModel, Serializable, Comparable<Showcase> {
 	private String metadata;
 	private String salesPeriodEventId;
 	private List<DisplayItem> displayItems;
-
 	public String getShowcaseId() {
 		return showcaseId;
 	}
-
 	public void setShowcaseId(String showcaseId) {
 		this.showcaseId = showcaseId;
 	}
-
 	public Showcase withShowcaseId(String showcaseId) {
 		this.showcaseId = showcaseId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Showcase withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Showcase withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getSalesPeriodEventId() {
 		return salesPeriodEventId;
 	}
-
 	public void setSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 	}
-
 	public Showcase withSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 		return this;
 	}
-
 	public List<DisplayItem> getDisplayItems() {
 		return displayItems;
 	}
-
 	public void setDisplayItems(List<DisplayItem> displayItems) {
 		this.displayItems = displayItems;
 	}
-
 	public Showcase withDisplayItems(List<DisplayItem> displayItems) {
 		this.displayItems = displayItems;
 		return this;

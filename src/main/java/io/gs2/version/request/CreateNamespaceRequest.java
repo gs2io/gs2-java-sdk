@@ -36,80 +36,62 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting acceptVersionScript;
     private String checkVersionTriggerScriptId;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getAssumeUserId() {
 		return assumeUserId;
 	}
-
 	public void setAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 	}
-
 	public CreateNamespaceRequest withAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 		return this;
 	}
-
 	public ScriptSetting getAcceptVersionScript() {
 		return acceptVersionScript;
 	}
-
 	public void setAcceptVersionScript(ScriptSetting acceptVersionScript) {
 		this.acceptVersionScript = acceptVersionScript;
 	}
-
 	public CreateNamespaceRequest withAcceptVersionScript(ScriptSetting acceptVersionScript) {
 		this.acceptVersionScript = acceptVersionScript;
 		return this;
 	}
-
 	public String getCheckVersionTriggerScriptId() {
 		return checkVersionTriggerScriptId;
 	}
-
 	public void setCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
 		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
 	}
-
 	public CreateNamespaceRequest withCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
 		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

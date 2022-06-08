@@ -35,80 +35,62 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
 	private List<String> targetUserIds;
 	private List<String> subscribedUserIds;
 	private Long createdAt;
-
 	public String getSubscribeId() {
 		return subscribeId;
 	}
-
 	public void setSubscribeId(String subscribeId) {
 		this.subscribeId = subscribeId;
 	}
-
 	public Subscribe withSubscribeId(String subscribeId) {
 		this.subscribeId = subscribeId;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public Subscribe withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Subscribe withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getTargetUserIds() {
 		return targetUserIds;
 	}
-
 	public void setTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 	}
-
 	public Subscribe withTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 		return this;
 	}
-
 	public List<String> getSubscribedUserIds() {
 		return subscribedUserIds;
 	}
-
 	public void setSubscribedUserIds(List<String> subscribedUserIds) {
 		this.subscribedUserIds = subscribedUserIds;
 	}
-
 	public Subscribe withSubscribedUserIds(List<String> subscribedUserIds) {
 		this.subscribedUserIds = subscribedUserIds;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Subscribe withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

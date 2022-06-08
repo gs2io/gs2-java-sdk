@@ -35,93 +35,72 @@ public class CreateInventoryModelMasterRequest extends Gs2BasicRequest<CreateInv
     private Integer initialCapacity;
     private Integer maxCapacity;
     private Boolean protectReferencedItem;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateInventoryModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateInventoryModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateInventoryModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateInventoryModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Integer getInitialCapacity() {
 		return initialCapacity;
 	}
-
 	public void setInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 	}
-
 	public CreateInventoryModelMasterRequest withInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public CreateInventoryModelMasterRequest withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-
 	public Boolean getProtectReferencedItem() {
 		return protectReferencedItem;
 	}
-
 	public void setProtectReferencedItem(Boolean protectReferencedItem) {
 		this.protectReferencedItem = protectReferencedItem;
 	}
-
 	public CreateInventoryModelMasterRequest withProtectReferencedItem(Boolean protectReferencedItem) {
 		this.protectReferencedItem = protectReferencedItem;
 		return this;

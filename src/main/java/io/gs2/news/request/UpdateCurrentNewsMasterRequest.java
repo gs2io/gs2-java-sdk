@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class UpdateCurrentNewsMasterRequest extends Gs2BasicRequest<UpdateCurrentNewsMasterRequest> {
     private String namespaceName;
     private String uploadToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateCurrentNewsMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUploadToken() {
 		return uploadToken;
 	}
-
 	public void setUploadToken(String uploadToken) {
 		this.uploadToken = uploadToken;
 	}
-
 	public UpdateCurrentNewsMasterRequest withUploadToken(String uploadToken) {
 		this.uploadToken = uploadToken;
 		return this;

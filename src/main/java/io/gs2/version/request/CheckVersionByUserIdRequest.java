@@ -34,41 +34,32 @@ public class CheckVersionByUserIdRequest extends Gs2BasicRequest<CheckVersionByU
     private String userId;
     private List<TargetVersion> targetVersions;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CheckVersionByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public CheckVersionByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<TargetVersion> getTargetVersions() {
 		return targetVersions;
 	}
-
 	public void setTargetVersions(List<TargetVersion> targetVersions) {
 		this.targetVersions = targetVersions;
 	}
-
 	public CheckVersionByUserIdRequest withTargetVersions(List<TargetVersion> targetVersions) {
 		this.targetVersions = targetVersions;
 		return this;

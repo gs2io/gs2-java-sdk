@@ -32,54 +32,42 @@ public class DescribeWalletsRequest extends Gs2BasicRequest<DescribeWalletsReque
     private String accessToken;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeWalletsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DescribeWalletsRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeWalletsRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeWalletsRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

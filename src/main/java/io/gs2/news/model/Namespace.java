@@ -36,93 +36,72 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getVersion() {
 		return version;
 	}
-
 	public void setVersion(String version) {
 		this.version = version;
 	}
-
 	public Namespace withVersion(String version) {
 		this.version = version;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

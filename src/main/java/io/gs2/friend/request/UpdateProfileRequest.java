@@ -33,67 +33,52 @@ public class UpdateProfileRequest extends Gs2BasicRequest<UpdateProfileRequest> 
     private String publicProfile;
     private String followerProfile;
     private String friendProfile;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateProfileRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public UpdateProfileRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getPublicProfile() {
 		return publicProfile;
 	}
-
 	public void setPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 	}
-
 	public UpdateProfileRequest withPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 		return this;
 	}
-
 	public String getFollowerProfile() {
 		return followerProfile;
 	}
-
 	public void setFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 	}
-
 	public UpdateProfileRequest withFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 		return this;
 	}
-
 	public String getFriendProfile() {
 		return friendProfile;
 	}
-
 	public void setFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 	}
-
 	public UpdateProfileRequest withFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 		return this;

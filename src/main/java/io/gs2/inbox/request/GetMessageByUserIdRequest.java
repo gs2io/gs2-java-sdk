@@ -31,41 +31,32 @@ public class GetMessageByUserIdRequest extends Gs2BasicRequest<GetMessageByUserI
     private String namespaceName;
     private String userId;
     private String messageName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetMessageByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetMessageByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMessageName() {
 		return messageName;
 	}
-
 	public void setMessageName(String messageName) {
 		this.messageName = messageName;
 	}
-
 	public GetMessageByUserIdRequest withMessageName(String messageName) {
 		this.messageName = messageName;
 		return this;

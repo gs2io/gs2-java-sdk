@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetOutputRequest extends Gs2BasicRequest<GetOutputRequest> {
     private String stackName;
     private String outputName;
-
 	public String getStackName() {
 		return stackName;
 	}
-
 	public void setStackName(String stackName) {
 		this.stackName = stackName;
 	}
-
 	public GetOutputRequest withStackName(String stackName) {
 		this.stackName = stackName;
 		return this;
 	}
-
 	public String getOutputName() {
 		return outputName;
 	}
-
 	public void setOutputName(String outputName) {
 		this.outputName = outputName;
 	}
-
 	public GetOutputRequest withOutputName(String outputName) {
 		this.outputName = outputName;
 		return this;

@@ -34,80 +34,62 @@ public class GetReferenceOfRequest extends Gs2BasicRequest<GetReferenceOfRequest
     private String itemName;
     private String itemSetName;
     private String referenceOf;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetReferenceOfRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public GetReferenceOfRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetReferenceOfRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getItemName() {
 		return itemName;
 	}
-
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-
 	public GetReferenceOfRequest withItemName(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
-
 	public String getItemSetName() {
 		return itemSetName;
 	}
-
 	public void setItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 	}
-
 	public GetReferenceOfRequest withItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 		return this;
 	}
-
 	public String getReferenceOf() {
 		return referenceOf;
 	}
-
 	public void setReferenceOf(String referenceOf) {
 		this.referenceOf = referenceOf;
 	}
-
 	public GetReferenceOfRequest withReferenceOf(String referenceOf) {
 		this.referenceOf = referenceOf;
 		return this;

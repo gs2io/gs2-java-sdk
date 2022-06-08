@@ -33,54 +33,42 @@ public class SetRecoverValueByUserIdRequest extends Gs2BasicRequest<SetRecoverVa
     private String userId;
     private Integer recoverValue;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetRecoverValueByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public SetRecoverValueByUserIdRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SetRecoverValueByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getRecoverValue() {
 		return recoverValue;
 	}
-
 	public void setRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 	}
-
 	public SetRecoverValueByUserIdRequest withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 		return this;

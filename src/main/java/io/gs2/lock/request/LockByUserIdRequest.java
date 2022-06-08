@@ -34,67 +34,52 @@ public class LockByUserIdRequest extends Gs2BasicRequest<LockByUserIdRequest> {
     private String transactionId;
     private Long ttl;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public LockByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getPropertyId() {
 		return propertyId;
 	}
-
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
-
 	public LockByUserIdRequest withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public LockByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public LockByUserIdRequest withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-
 	public Long getTtl() {
 		return ttl;
 	}
-
 	public void setTtl(Long ttl) {
 		this.ttl = ttl;
 	}
-
 	public LockByUserIdRequest withTtl(Long ttl) {
 		this.ttl = ttl;
 		return this;

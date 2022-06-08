@@ -46,223 +46,172 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public ScriptSetting getFollowScript() {
 		return followScript;
 	}
-
 	public void setFollowScript(ScriptSetting followScript) {
 		this.followScript = followScript;
 	}
-
 	public Namespace withFollowScript(ScriptSetting followScript) {
 		this.followScript = followScript;
 		return this;
 	}
-
 	public ScriptSetting getUnfollowScript() {
 		return unfollowScript;
 	}
-
 	public void setUnfollowScript(ScriptSetting unfollowScript) {
 		this.unfollowScript = unfollowScript;
 	}
-
 	public Namespace withUnfollowScript(ScriptSetting unfollowScript) {
 		this.unfollowScript = unfollowScript;
 		return this;
 	}
-
 	public ScriptSetting getSendRequestScript() {
 		return sendRequestScript;
 	}
-
 	public void setSendRequestScript(ScriptSetting sendRequestScript) {
 		this.sendRequestScript = sendRequestScript;
 	}
-
 	public Namespace withSendRequestScript(ScriptSetting sendRequestScript) {
 		this.sendRequestScript = sendRequestScript;
 		return this;
 	}
-
 	public ScriptSetting getCancelRequestScript() {
 		return cancelRequestScript;
 	}
-
 	public void setCancelRequestScript(ScriptSetting cancelRequestScript) {
 		this.cancelRequestScript = cancelRequestScript;
 	}
-
 	public Namespace withCancelRequestScript(ScriptSetting cancelRequestScript) {
 		this.cancelRequestScript = cancelRequestScript;
 		return this;
 	}
-
 	public ScriptSetting getAcceptRequestScript() {
 		return acceptRequestScript;
 	}
-
 	public void setAcceptRequestScript(ScriptSetting acceptRequestScript) {
 		this.acceptRequestScript = acceptRequestScript;
 	}
-
 	public Namespace withAcceptRequestScript(ScriptSetting acceptRequestScript) {
 		this.acceptRequestScript = acceptRequestScript;
 		return this;
 	}
-
 	public ScriptSetting getRejectRequestScript() {
 		return rejectRequestScript;
 	}
-
 	public void setRejectRequestScript(ScriptSetting rejectRequestScript) {
 		this.rejectRequestScript = rejectRequestScript;
 	}
-
 	public Namespace withRejectRequestScript(ScriptSetting rejectRequestScript) {
 		this.rejectRequestScript = rejectRequestScript;
 		return this;
 	}
-
 	public ScriptSetting getDeleteFriendScript() {
 		return deleteFriendScript;
 	}
-
 	public void setDeleteFriendScript(ScriptSetting deleteFriendScript) {
 		this.deleteFriendScript = deleteFriendScript;
 	}
-
 	public Namespace withDeleteFriendScript(ScriptSetting deleteFriendScript) {
 		this.deleteFriendScript = deleteFriendScript;
 		return this;
 	}
-
 	public ScriptSetting getUpdateProfileScript() {
 		return updateProfileScript;
 	}
-
 	public void setUpdateProfileScript(ScriptSetting updateProfileScript) {
 		this.updateProfileScript = updateProfileScript;
 	}
-
 	public Namespace withUpdateProfileScript(ScriptSetting updateProfileScript) {
 		this.updateProfileScript = updateProfileScript;
 		return this;
 	}
-
 	public NotificationSetting getFollowNotification() {
 		return followNotification;
 	}
-
 	public void setFollowNotification(NotificationSetting followNotification) {
 		this.followNotification = followNotification;
 	}
-
 	public Namespace withFollowNotification(NotificationSetting followNotification) {
 		this.followNotification = followNotification;
 		return this;
 	}
-
 	public NotificationSetting getReceiveRequestNotification() {
 		return receiveRequestNotification;
 	}
-
 	public void setReceiveRequestNotification(NotificationSetting receiveRequestNotification) {
 		this.receiveRequestNotification = receiveRequestNotification;
 	}
-
 	public Namespace withReceiveRequestNotification(NotificationSetting receiveRequestNotification) {
 		this.receiveRequestNotification = receiveRequestNotification;
 		return this;
 	}
-
 	public NotificationSetting getAcceptRequestNotification() {
 		return acceptRequestNotification;
 	}
-
 	public void setAcceptRequestNotification(NotificationSetting acceptRequestNotification) {
 		this.acceptRequestNotification = acceptRequestNotification;
 	}
-
 	public Namespace withAcceptRequestNotification(NotificationSetting acceptRequestNotification) {
 		this.acceptRequestNotification = acceptRequestNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

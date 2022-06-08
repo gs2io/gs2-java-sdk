@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
     private String script;
     private String args;
-
 	public String getScript() {
 		return script;
 	}
-
 	public void setScript(String script) {
 		this.script = script;
 	}
-
 	public DebugInvokeRequest withScript(String script) {
 		this.script = script;
 		return this;
 	}
-
 	public String getArgs() {
 		return args;
 	}
-
 	public void setArgs(String args) {
 		this.args = args;
 	}
-
 	public DebugInvokeRequest withArgs(String args) {
 		this.args = args;
 		return this;

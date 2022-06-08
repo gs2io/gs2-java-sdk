@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteGatheringRequest extends Gs2BasicRequest<DeleteGatheringRequest> {
     private String namespaceName;
     private String gatheringName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteGatheringRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getGatheringName() {
 		return gatheringName;
 	}
-
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
-
 	public DeleteGatheringRequest withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;

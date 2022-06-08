@@ -34,80 +34,62 @@ public class DescribeRankingsRequest extends Gs2BasicRequest<DescribeRankingsReq
     private Long startIndex;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeRankingsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public DescribeRankingsRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DescribeRankingsRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Long getStartIndex() {
 		return startIndex;
 	}
-
 	public void setStartIndex(Long startIndex) {
 		this.startIndex = startIndex;
 	}
-
 	public DescribeRankingsRequest withStartIndex(Long startIndex) {
 		this.startIndex = startIndex;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeRankingsRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeRankingsRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

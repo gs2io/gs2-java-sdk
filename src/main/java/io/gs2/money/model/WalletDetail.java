@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class WalletDetail implements IModel, Serializable {
 	private Float price;
 	private Integer count;
-
 	public Float getPrice() {
 		return price;
 	}
-
 	public void setPrice(Float price) {
 		this.price = price;
 	}
-
 	public WalletDetail withPrice(Float price) {
 		this.price = price;
 		return this;
 	}
-
 	public Integer getCount() {
 		return count;
 	}
-
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-
 	public WalletDetail withCount(Integer count) {
 		this.count = count;
 		return this;

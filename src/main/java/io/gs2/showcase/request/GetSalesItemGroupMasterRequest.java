@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetSalesItemGroupMasterRequest extends Gs2BasicRequest<GetSalesItemGroupMasterRequest> {
     private String namespaceName;
     private String salesItemGroupName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetSalesItemGroupMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getSalesItemGroupName() {
 		return salesItemGroupName;
 	}
-
 	public void setSalesItemGroupName(String salesItemGroupName) {
 		this.salesItemGroupName = salesItemGroupName;
 	}
-
 	public GetSalesItemGroupMasterRequest withSalesItemGroupName(String salesItemGroupName) {
 		this.salesItemGroupName = salesItemGroupName;
 		return this;

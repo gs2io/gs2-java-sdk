@@ -34,67 +34,52 @@ public class FirebaseToken implements IModel, Serializable, Comparable<FirebaseT
 	private String token;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getFirebaseTokenId() {
 		return firebaseTokenId;
 	}
-
 	public void setFirebaseTokenId(String firebaseTokenId) {
 		this.firebaseTokenId = firebaseTokenId;
 	}
-
 	public FirebaseToken withFirebaseTokenId(String firebaseTokenId) {
 		this.firebaseTokenId = firebaseTokenId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public FirebaseToken withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getToken() {
 		return token;
 	}
-
 	public void setToken(String token) {
 		this.token = token;
 	}
-
 	public FirebaseToken withToken(String token) {
 		this.token = token;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public FirebaseToken withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public FirebaseToken withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

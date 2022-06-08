@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class ConsumeItemSetByStampTaskRequest extends Gs2BasicRequest<ConsumeItemSetByStampTaskRequest> {
     private String stampTask;
     private String keyId;
-
 	public String getStampTask() {
 		return stampTask;
 	}
-
 	public void setStampTask(String stampTask) {
 		this.stampTask = stampTask;
 	}
-
 	public ConsumeItemSetByStampTaskRequest withStampTask(String stampTask) {
 		this.stampTask = stampTask;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public ConsumeItemSetByStampTaskRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

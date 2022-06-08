@@ -41,158 +41,122 @@ public class Stamina implements IModel, Serializable, Comparable<Stamina> {
 	private Long lastRecoveredAt;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getStaminaId() {
 		return staminaId;
 	}
-
 	public void setStaminaId(String staminaId) {
 		this.staminaId = staminaId;
 	}
-
 	public Stamina withStaminaId(String staminaId) {
 		this.staminaId = staminaId;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public Stamina withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Stamina withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getValue() {
 		return value;
 	}
-
 	public void setValue(Integer value) {
 		this.value = value;
 	}
-
 	public Stamina withValue(Integer value) {
 		this.value = value;
 		return this;
 	}
-
 	public Integer getMaxValue() {
 		return maxValue;
 	}
-
 	public void setMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 	}
-
 	public Stamina withMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 		return this;
 	}
-
 	public Integer getRecoverIntervalMinutes() {
 		return recoverIntervalMinutes;
 	}
-
 	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 	}
-
 	public Stamina withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;
 	}
-
 	public Integer getRecoverValue() {
 		return recoverValue;
 	}
-
 	public void setRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 	}
-
 	public Stamina withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 		return this;
 	}
-
 	public Integer getOverflowValue() {
 		return overflowValue;
 	}
-
 	public void setOverflowValue(Integer overflowValue) {
 		this.overflowValue = overflowValue;
 	}
-
 	public Stamina withOverflowValue(Integer overflowValue) {
 		this.overflowValue = overflowValue;
 		return this;
 	}
-
 	public Long getNextRecoverAt() {
 		return nextRecoverAt;
 	}
-
 	public void setNextRecoverAt(Long nextRecoverAt) {
 		this.nextRecoverAt = nextRecoverAt;
 	}
-
 	public Stamina withNextRecoverAt(Long nextRecoverAt) {
 		this.nextRecoverAt = nextRecoverAt;
 		return this;
 	}
-
 	public Long getLastRecoveredAt() {
 		return lastRecoveredAt;
 	}
-
 	public void setLastRecoveredAt(Long lastRecoveredAt) {
 		this.lastRecoveredAt = lastRecoveredAt;
 	}
-
 	public Stamina withLastRecoveredAt(Long lastRecoveredAt) {
 		this.lastRecoveredAt = lastRecoveredAt;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Stamina withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Stamina withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

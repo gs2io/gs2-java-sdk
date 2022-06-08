@@ -32,41 +32,32 @@ public class UpdateStackFromGitHubRequest extends Gs2BasicRequest<UpdateStackFro
     private String stackName;
     private String description;
     private GitHubCheckoutSetting checkoutSetting;
-
 	public String getStackName() {
 		return stackName;
 	}
-
 	public void setStackName(String stackName) {
 		this.stackName = stackName;
 	}
-
 	public UpdateStackFromGitHubRequest withStackName(String stackName) {
 		this.stackName = stackName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateStackFromGitHubRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public GitHubCheckoutSetting getCheckoutSetting() {
 		return checkoutSetting;
 	}
-
 	public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 	}
-
 	public UpdateStackFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 		return this;

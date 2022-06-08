@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetRateModelMasterRequest extends Gs2BasicRequest<GetRateModelMasterRequest> {
     private String namespaceName;
     private String rateName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetRateModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public GetRateModelMasterRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;

@@ -33,67 +33,52 @@ public class GetMessageByUserIdRequest extends Gs2BasicRequest<GetMessageByUserI
     private String messageName;
     private String password;
     private String userId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetMessageByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public GetMessageByUserIdRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getMessageName() {
 		return messageName;
 	}
-
 	public void setMessageName(String messageName) {
 		this.messageName = messageName;
 	}
-
 	public GetMessageByUserIdRequest withMessageName(String messageName) {
 		this.messageName = messageName;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public GetMessageByUserIdRequest withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetMessageByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

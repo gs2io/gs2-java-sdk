@@ -31,41 +31,32 @@ public class DoneUploadRequest extends Gs2BasicRequest<DoneUploadRequest> {
     private String namespaceName;
     private String dataObjectName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DoneUploadRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDataObjectName() {
 		return dataObjectName;
 	}
-
 	public void setDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 	}
-
 	public DoneUploadRequest withDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DoneUploadRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

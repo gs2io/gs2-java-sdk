@@ -36,106 +36,82 @@ public class CreateLotteryModelMasterRequest extends Gs2BasicRequest<CreateLotte
     private String method;
     private String prizeTableName;
     private String choicePrizeTableScriptId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateLotteryModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateLotteryModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateLotteryModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateLotteryModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getMode() {
 		return mode;
 	}
-
 	public void setMode(String mode) {
 		this.mode = mode;
 	}
-
 	public CreateLotteryModelMasterRequest withMode(String mode) {
 		this.mode = mode;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public CreateLotteryModelMasterRequest withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public CreateLotteryModelMasterRequest withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-
 	public String getChoicePrizeTableScriptId() {
 		return choicePrizeTableScriptId;
 	}
-
 	public void setChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 	}
-
 	public CreateLotteryModelMasterRequest withChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 		return this;

@@ -33,54 +33,42 @@ public class SetRecoverIntervalByUserIdRequest extends Gs2BasicRequest<SetRecove
     private String userId;
     private Integer recoverIntervalMinutes;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetRecoverIntervalByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public SetRecoverIntervalByUserIdRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SetRecoverIntervalByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getRecoverIntervalMinutes() {
 		return recoverIntervalMinutes;
 	}
-
 	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 	}
-
 	public SetRecoverIntervalByUserIdRequest withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;

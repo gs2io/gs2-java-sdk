@@ -37,106 +37,82 @@ public class DistributorModelMaster implements IModel, Serializable, Comparable<
 	private List<String> whiteListTargetIds;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getDistributorModelId() {
 		return distributorModelId;
 	}
-
 	public void setDistributorModelId(String distributorModelId) {
 		this.distributorModelId = distributorModelId;
 	}
-
 	public DistributorModelMaster withDistributorModelId(String distributorModelId) {
 		this.distributorModelId = distributorModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public DistributorModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public DistributorModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public DistributorModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getInboxNamespaceId() {
 		return inboxNamespaceId;
 	}
-
 	public void setInboxNamespaceId(String inboxNamespaceId) {
 		this.inboxNamespaceId = inboxNamespaceId;
 	}
-
 	public DistributorModelMaster withInboxNamespaceId(String inboxNamespaceId) {
 		this.inboxNamespaceId = inboxNamespaceId;
 		return this;
 	}
-
 	public List<String> getWhiteListTargetIds() {
 		return whiteListTargetIds;
 	}
-
 	public void setWhiteListTargetIds(List<String> whiteListTargetIds) {
 		this.whiteListTargetIds = whiteListTargetIds;
 	}
-
 	public DistributorModelMaster withWhiteListTargetIds(List<String> whiteListTargetIds) {
 		this.whiteListTargetIds = whiteListTargetIds;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public DistributorModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public DistributorModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

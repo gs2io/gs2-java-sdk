@@ -34,80 +34,62 @@ public class GetBallotByUserIdRequest extends Gs2BasicRequest<GetBallotByUserIdR
     private String userId;
     private Integer numberOfPlayer;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetBallotByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public GetBallotByUserIdRequest withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;
 	}
-
 	public String getGatheringName() {
 		return gatheringName;
 	}
-
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
-
 	public GetBallotByUserIdRequest withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetBallotByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getNumberOfPlayer() {
 		return numberOfPlayer;
 	}
-
 	public void setNumberOfPlayer(Integer numberOfPlayer) {
 		this.numberOfPlayer = numberOfPlayer;
 	}
-
 	public GetBallotByUserIdRequest withNumberOfPlayer(Integer numberOfPlayer) {
 		this.numberOfPlayer = numberOfPlayer;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public GetBallotByUserIdRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

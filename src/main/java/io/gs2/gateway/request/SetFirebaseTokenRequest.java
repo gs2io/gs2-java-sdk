@@ -31,41 +31,32 @@ public class SetFirebaseTokenRequest extends Gs2BasicRequest<SetFirebaseTokenReq
     private String namespaceName;
     private String accessToken;
     private String token;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetFirebaseTokenRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public SetFirebaseTokenRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getToken() {
 		return token;
 	}
-
 	public void setToken(String token) {
 		this.token = token;
 	}
-
 	public SetFirebaseTokenRequest withToken(String token) {
 		this.token = token;
 		return this;

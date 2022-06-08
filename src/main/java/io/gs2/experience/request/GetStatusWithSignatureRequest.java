@@ -33,67 +33,52 @@ public class GetStatusWithSignatureRequest extends Gs2BasicRequest<GetStatusWith
     private String experienceName;
     private String propertyId;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetStatusWithSignatureRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetStatusWithSignatureRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getExperienceName() {
 		return experienceName;
 	}
-
 	public void setExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 	}
-
 	public GetStatusWithSignatureRequest withExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 		return this;
 	}
-
 	public String getPropertyId() {
 		return propertyId;
 	}
-
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
-
 	public GetStatusWithSignatureRequest withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public GetStatusWithSignatureRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

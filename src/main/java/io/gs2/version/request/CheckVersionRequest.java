@@ -33,41 +33,32 @@ public class CheckVersionRequest extends Gs2BasicRequest<CheckVersionRequest> {
     private String namespaceName;
     private String accessToken;
     private List<TargetVersion> targetVersions;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CheckVersionRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public CheckVersionRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public List<TargetVersion> getTargetVersions() {
 		return targetVersions;
 	}
-
 	public void setTargetVersions(List<TargetVersion> targetVersions) {
 		this.targetVersions = targetVersions;
 	}
-
 	public CheckVersionRequest withTargetVersions(List<TargetVersion> targetVersions) {
 		this.targetVersions = targetVersions;
 		return this;

@@ -31,41 +31,32 @@ public class LoginBySignatureRequest extends Gs2BasicRequest<LoginBySignatureReq
     private String keyId;
     private String body;
     private String signature;
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public LoginBySignatureRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
-
 	public String getBody() {
 		return body;
 	}
-
 	public void setBody(String body) {
 		this.body = body;
 	}
-
 	public LoginBySignatureRequest withBody(String body) {
 		this.body = body;
 		return this;
 	}
-
 	public String getSignature() {
 		return signature;
 	}
-
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-
 	public LoginBySignatureRequest withSignature(String signature) {
 		this.signature = signature;
 		return this;

@@ -41,158 +41,122 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
 	private List<BonusRate> bonusRates;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getRateModelId() {
 		return rateModelId;
 	}
-
 	public void setRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 	}
-
 	public RateModelMaster withRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public RateModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public RateModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public RateModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getTargetInventoryModelId() {
 		return targetInventoryModelId;
 	}
-
 	public void setTargetInventoryModelId(String targetInventoryModelId) {
 		this.targetInventoryModelId = targetInventoryModelId;
 	}
-
 	public RateModelMaster withTargetInventoryModelId(String targetInventoryModelId) {
 		this.targetInventoryModelId = targetInventoryModelId;
 		return this;
 	}
-
 	public String getAcquireExperienceSuffix() {
 		return acquireExperienceSuffix;
 	}
-
 	public void setAcquireExperienceSuffix(String acquireExperienceSuffix) {
 		this.acquireExperienceSuffix = acquireExperienceSuffix;
 	}
-
 	public RateModelMaster withAcquireExperienceSuffix(String acquireExperienceSuffix) {
 		this.acquireExperienceSuffix = acquireExperienceSuffix;
 		return this;
 	}
-
 	public String getMaterialInventoryModelId() {
 		return materialInventoryModelId;
 	}
-
 	public void setMaterialInventoryModelId(String materialInventoryModelId) {
 		this.materialInventoryModelId = materialInventoryModelId;
 	}
-
 	public RateModelMaster withMaterialInventoryModelId(String materialInventoryModelId) {
 		this.materialInventoryModelId = materialInventoryModelId;
 		return this;
 	}
-
 	public List<String> getAcquireExperienceHierarchy() {
 		return acquireExperienceHierarchy;
 	}
-
 	public void setAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
 		this.acquireExperienceHierarchy = acquireExperienceHierarchy;
 	}
-
 	public RateModelMaster withAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
 		this.acquireExperienceHierarchy = acquireExperienceHierarchy;
 		return this;
 	}
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public RateModelMaster withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public List<BonusRate> getBonusRates() {
 		return bonusRates;
 	}
-
 	public void setBonusRates(List<BonusRate> bonusRates) {
 		this.bonusRates = bonusRates;
 	}
-
 	public RateModelMaster withBonusRates(List<BonusRate> bonusRates) {
 		this.bonusRates = bonusRates;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public RateModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public RateModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

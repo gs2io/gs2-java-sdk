@@ -32,41 +32,32 @@ public class RejectRequestByUserIdRequest extends Gs2BasicRequest<RejectRequestB
     private String userId;
     private String fromUserId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public RejectRequestByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public RejectRequestByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getFromUserId() {
 		return fromUserId;
 	}
-
 	public void setFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
 	}
-
 	public RejectRequestByUserIdRequest withFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
 		return this;

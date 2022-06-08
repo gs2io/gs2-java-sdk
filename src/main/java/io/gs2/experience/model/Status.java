@@ -39,132 +39,102 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 	private Long nextRankUpExperienceValue;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getStatusId() {
 		return statusId;
 	}
-
 	public void setStatusId(String statusId) {
 		this.statusId = statusId;
 	}
-
 	public Status withStatusId(String statusId) {
 		this.statusId = statusId;
 		return this;
 	}
-
 	public String getExperienceName() {
 		return experienceName;
 	}
-
 	public void setExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 	}
-
 	public Status withExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Status withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getPropertyId() {
 		return propertyId;
 	}
-
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
-
 	public Status withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;
 	}
-
 	public Long getExperienceValue() {
 		return experienceValue;
 	}
-
 	public void setExperienceValue(Long experienceValue) {
 		this.experienceValue = experienceValue;
 	}
-
 	public Status withExperienceValue(Long experienceValue) {
 		this.experienceValue = experienceValue;
 		return this;
 	}
-
 	public Long getRankValue() {
 		return rankValue;
 	}
-
 	public void setRankValue(Long rankValue) {
 		this.rankValue = rankValue;
 	}
-
 	public Status withRankValue(Long rankValue) {
 		this.rankValue = rankValue;
 		return this;
 	}
-
 	public Long getRankCapValue() {
 		return rankCapValue;
 	}
-
 	public void setRankCapValue(Long rankCapValue) {
 		this.rankCapValue = rankCapValue;
 	}
-
 	public Status withRankCapValue(Long rankCapValue) {
 		this.rankCapValue = rankCapValue;
 		return this;
 	}
-
 	public Long getNextRankUpExperienceValue() {
 		return nextRankUpExperienceValue;
 	}
-
 	public void setNextRankUpExperienceValue(Long nextRankUpExperienceValue) {
 		this.nextRankUpExperienceValue = nextRankUpExperienceValue;
 	}
-
 	public Status withNextRankUpExperienceValue(Long nextRankUpExperienceValue) {
 		this.nextRankUpExperienceValue = nextRankUpExperienceValue;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Status withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Status withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

@@ -35,67 +35,52 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
     private String progressName;
     private List<Config> config;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public EndByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public EndByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public EndByUserIdRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getProgressName() {
 		return progressName;
 	}
-
 	public void setProgressName(String progressName) {
 		this.progressName = progressName;
 	}
-
 	public EndByUserIdRequest withProgressName(String progressName) {
 		this.progressName = progressName;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public EndByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

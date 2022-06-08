@@ -32,41 +32,32 @@ public class AttributeRange implements IModel, Serializable {
 	private String name;
 	private Integer min;
 	private Integer max;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public AttributeRange withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public Integer getMin() {
 		return min;
 	}
-
 	public void setMin(Integer min) {
 		this.min = min;
 	}
-
 	public AttributeRange withMin(Integer min) {
 		this.min = min;
 		return this;
 	}
-
 	public Integer getMax() {
 		return max;
 	}
-
 	public void setMax(Integer max) {
 		this.max = max;
 	}
-
 	public AttributeRange withMax(Integer max) {
 		this.max = max;
 		return this;

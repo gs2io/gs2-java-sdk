@@ -35,67 +35,52 @@ public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
     private Integer count;
     private List<Config> config;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DrawByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getLotteryName() {
 		return lotteryName;
 	}
-
 	public void setLotteryName(String lotteryName) {
 		this.lotteryName = lotteryName;
 	}
-
 	public DrawByUserIdRequest withLotteryName(String lotteryName) {
 		this.lotteryName = lotteryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DrawByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getCount() {
 		return count;
 	}
-
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-
 	public DrawByUserIdRequest withCount(Integer count) {
 		this.count = count;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public DrawByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

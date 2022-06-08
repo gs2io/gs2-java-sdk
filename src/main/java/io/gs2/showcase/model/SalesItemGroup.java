@@ -32,41 +32,32 @@ public class SalesItemGroup implements IModel, Serializable {
 	private String name;
 	private String metadata;
 	private List<SalesItem> salesItems;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public SalesItemGroup withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public SalesItemGroup withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<SalesItem> getSalesItems() {
 		return salesItems;
 	}
-
 	public void setSalesItems(List<SalesItem> salesItems) {
 		this.salesItems = salesItems;
 	}
-
 	public SalesItemGroup withSalesItems(List<SalesItem> salesItems) {
 		this.salesItems = salesItems;
 		return this;

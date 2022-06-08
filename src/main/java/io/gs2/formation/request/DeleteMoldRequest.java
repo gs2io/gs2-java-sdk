@@ -31,41 +31,32 @@ public class DeleteMoldRequest extends Gs2BasicRequest<DeleteMoldRequest> {
     private String namespaceName;
     private String accessToken;
     private String moldName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteMoldRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DeleteMoldRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getMoldName() {
 		return moldName;
 	}
-
 	public void setMoldName(String moldName) {
 		this.moldName = moldName;
 	}
-
 	public DeleteMoldRequest withMoldName(String moldName) {
 		this.moldName = moldName;
 		return this;

@@ -36,93 +36,72 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
 	private Integer volatility;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getRatingModelId() {
 		return ratingModelId;
 	}
-
 	public void setRatingModelId(String ratingModelId) {
 		this.ratingModelId = ratingModelId;
 	}
-
 	public RatingModelMaster withRatingModelId(String ratingModelId) {
 		this.ratingModelId = ratingModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public RatingModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public RatingModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public RatingModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Integer getVolatility() {
 		return volatility;
 	}
-
 	public void setVolatility(Integer volatility) {
 		this.volatility = volatility;
 	}
-
 	public RatingModelMaster withVolatility(Integer volatility) {
 		this.volatility = volatility;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public RatingModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public RatingModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

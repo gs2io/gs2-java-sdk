@@ -40,158 +40,122 @@ public class CreateStaminaModelMasterRequest extends Gs2BasicRequest<CreateStami
     private String maxStaminaTableName;
     private String recoverIntervalTableName;
     private String recoverValueTableName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateStaminaModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateStaminaModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateStaminaModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateStaminaModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Integer getRecoverIntervalMinutes() {
 		return recoverIntervalMinutes;
 	}
-
 	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 	}
-
 	public CreateStaminaModelMasterRequest withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;
 	}
-
 	public Integer getRecoverValue() {
 		return recoverValue;
 	}
-
 	public void setRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 	}
-
 	public CreateStaminaModelMasterRequest withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 		return this;
 	}
-
 	public Integer getInitialCapacity() {
 		return initialCapacity;
 	}
-
 	public void setInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 	}
-
 	public CreateStaminaModelMasterRequest withInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 		return this;
 	}
-
 	public Boolean getIsOverflow() {
 		return isOverflow;
 	}
-
 	public void setIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 	}
-
 	public CreateStaminaModelMasterRequest withIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public CreateStaminaModelMasterRequest withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-
 	public String getMaxStaminaTableName() {
 		return maxStaminaTableName;
 	}
-
 	public void setMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 	}
-
 	public CreateStaminaModelMasterRequest withMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 		return this;
 	}
-
 	public String getRecoverIntervalTableName() {
 		return recoverIntervalTableName;
 	}
-
 	public void setRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 	}
-
 	public CreateStaminaModelMasterRequest withRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 		return this;
 	}
-
 	public String getRecoverValueTableName() {
 		return recoverValueTableName;
 	}
-
 	public void setRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 	}
-
 	public CreateStaminaModelMasterRequest withRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 		return this;

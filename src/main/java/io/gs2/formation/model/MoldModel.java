@@ -35,80 +35,62 @@ public class MoldModel implements IModel, Serializable, Comparable<MoldModel> {
 	private Integer initialMaxCapacity;
 	private Integer maxCapacity;
 	private FormModel formModel;
-
 	public String getMoldModelId() {
 		return moldModelId;
 	}
-
 	public void setMoldModelId(String moldModelId) {
 		this.moldModelId = moldModelId;
 	}
-
 	public MoldModel withMoldModelId(String moldModelId) {
 		this.moldModelId = moldModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public MoldModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public MoldModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Integer getInitialMaxCapacity() {
 		return initialMaxCapacity;
 	}
-
 	public void setInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 	}
-
 	public MoldModel withInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public MoldModel withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-
 	public FormModel getFormModel() {
 		return formModel;
 	}
-
 	public void setFormModel(FormModel formModel) {
 		this.formModel = formModel;
 	}
-
 	public MoldModel withFormModel(FormModel formModel) {
 		this.formModel = formModel;
 		return this;

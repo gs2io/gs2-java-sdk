@@ -37,80 +37,62 @@ public class DirectEnhanceByUserIdRequest extends Gs2BasicRequest<DirectEnhanceB
     private List<Material> materials;
     private List<Config> config;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DirectEnhanceByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public DirectEnhanceByUserIdRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DirectEnhanceByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTargetItemSetId() {
 		return targetItemSetId;
 	}
-
 	public void setTargetItemSetId(String targetItemSetId) {
 		this.targetItemSetId = targetItemSetId;
 	}
-
 	public DirectEnhanceByUserIdRequest withTargetItemSetId(String targetItemSetId) {
 		this.targetItemSetId = targetItemSetId;
 		return this;
 	}
-
 	public List<Material> getMaterials() {
 		return materials;
 	}
-
 	public void setMaterials(List<Material> materials) {
 		this.materials = materials;
 	}
-
 	public DirectEnhanceByUserIdRequest withMaterials(List<Material> materials) {
 		this.materials = materials;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public DirectEnhanceByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

@@ -31,41 +31,32 @@ public class PrepareDownloadOwnDataRequest extends Gs2BasicRequest<PrepareDownlo
     private String namespaceName;
     private String accessToken;
     private String dataObjectName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PrepareDownloadOwnDataRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public PrepareDownloadOwnDataRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getDataObjectName() {
 		return dataObjectName;
 	}
-
 	public void setDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 	}
-
 	public PrepareDownloadOwnDataRequest withDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 		return this;

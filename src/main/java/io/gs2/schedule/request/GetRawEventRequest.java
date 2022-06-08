@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetRawEventRequest extends Gs2BasicRequest<GetRawEventRequest> {
     private String namespaceName;
     private String eventName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetRawEventRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getEventName() {
 		return eventName;
 	}
-
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
-
 	public GetRawEventRequest withEventName(String eventName) {
 		this.eventName = eventName;
 		return this;

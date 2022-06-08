@@ -34,80 +34,62 @@ public class SetRecoverIntervalByStatusRequest extends Gs2BasicRequest<SetRecove
     private String keyId;
     private String signedStatusBody;
     private String signedStatusSignature;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetRecoverIntervalByStatusRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public SetRecoverIntervalByStatusRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public SetRecoverIntervalByStatusRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public SetRecoverIntervalByStatusRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
-
 	public String getSignedStatusBody() {
 		return signedStatusBody;
 	}
-
 	public void setSignedStatusBody(String signedStatusBody) {
 		this.signedStatusBody = signedStatusBody;
 	}
-
 	public SetRecoverIntervalByStatusRequest withSignedStatusBody(String signedStatusBody) {
 		this.signedStatusBody = signedStatusBody;
 		return this;
 	}
-
 	public String getSignedStatusSignature() {
 		return signedStatusSignature;
 	}
-
 	public void setSignedStatusSignature(String signedStatusSignature) {
 		this.signedStatusSignature = signedStatusSignature;
 	}
-
 	public SetRecoverIntervalByStatusRequest withSignedStatusSignature(String signedStatusSignature) {
 		this.signedStatusSignature = signedStatusSignature;
 		return this;

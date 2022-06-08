@@ -35,80 +35,62 @@ public class AcceptVersion implements IModel, Serializable, Comparable<AcceptVer
 	private Version version;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getAcceptVersionId() {
 		return acceptVersionId;
 	}
-
 	public void setAcceptVersionId(String acceptVersionId) {
 		this.acceptVersionId = acceptVersionId;
 	}
-
 	public AcceptVersion withAcceptVersionId(String acceptVersionId) {
 		this.acceptVersionId = acceptVersionId;
 		return this;
 	}
-
 	public String getVersionName() {
 		return versionName;
 	}
-
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
-
 	public AcceptVersion withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AcceptVersion withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Version getVersion() {
 		return version;
 	}
-
 	public void setVersion(Version version) {
 		this.version = version;
 	}
-
 	public AcceptVersion withVersion(Version version) {
 		this.version = version;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public AcceptVersion withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public AcceptVersion withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

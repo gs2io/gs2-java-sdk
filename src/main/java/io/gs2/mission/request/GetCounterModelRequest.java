@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetCounterModelRequest extends Gs2BasicRequest<GetCounterModelRequest> {
     private String namespaceName;
     private String counterName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetCounterModelRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCounterName() {
 		return counterName;
 	}
-
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
-
 	public GetCounterModelRequest withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;

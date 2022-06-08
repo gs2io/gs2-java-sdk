@@ -33,67 +33,52 @@ public class DescribeAwaitsRequest extends Gs2BasicRequest<DescribeAwaitsRequest
     private String rateName;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeAwaitsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DescribeAwaitsRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public DescribeAwaitsRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeAwaitsRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeAwaitsRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

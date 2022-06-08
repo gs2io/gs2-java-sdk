@@ -40,132 +40,102 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
     private List<ConsumeAction> skipConsumeActions;
     private List<AcquireAction> acquireActions;
     private List<ConsumeAction> consumeActions;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateRateModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateRateModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateRateModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateRateModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getTimingType() {
 		return timingType;
 	}
-
 	public void setTimingType(String timingType) {
 		this.timingType = timingType;
 	}
-
 	public CreateRateModelMasterRequest withTimingType(String timingType) {
 		this.timingType = timingType;
 		return this;
 	}
-
 	public Integer getLockTime() {
 		return lockTime;
 	}
-
 	public void setLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 	}
-
 	public CreateRateModelMasterRequest withLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 		return this;
 	}
-
 	public Boolean getEnableSkip() {
 		return enableSkip;
 	}
-
 	public void setEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 	}
-
 	public CreateRateModelMasterRequest withEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 		return this;
 	}
-
 	public List<ConsumeAction> getSkipConsumeActions() {
 		return skipConsumeActions;
 	}
-
 	public void setSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 	}
-
 	public CreateRateModelMasterRequest withSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 		return this;
 	}
-
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
-
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
-
 	public CreateRateModelMasterRequest withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
-
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
-
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
-
 	public CreateRateModelMasterRequest withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;

@@ -34,67 +34,52 @@ public class VoteRequest extends Gs2BasicRequest<VoteRequest> {
     private String ballotSignature;
     private List<GameResult> gameResults;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public VoteRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getBallotBody() {
 		return ballotBody;
 	}
-
 	public void setBallotBody(String ballotBody) {
 		this.ballotBody = ballotBody;
 	}
-
 	public VoteRequest withBallotBody(String ballotBody) {
 		this.ballotBody = ballotBody;
 		return this;
 	}
-
 	public String getBallotSignature() {
 		return ballotSignature;
 	}
-
 	public void setBallotSignature(String ballotSignature) {
 		this.ballotSignature = ballotSignature;
 	}
-
 	public VoteRequest withBallotSignature(String ballotSignature) {
 		this.ballotSignature = ballotSignature;
 		return this;
 	}
-
 	public List<GameResult> getGameResults() {
 		return gameResults;
 	}
-
 	public void setGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 	}
-
 	public VoteRequest withGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public VoteRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

@@ -31,41 +31,32 @@ public class UnfollowRequest extends Gs2BasicRequest<UnfollowRequest> {
     private String namespaceName;
     private String accessToken;
     private String targetUserId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UnfollowRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public UnfollowRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getTargetUserId() {
 		return targetUserId;
 	}
-
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
-
 	public UnfollowRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;

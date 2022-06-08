@@ -30,15 +30,12 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LogSetting implements IModel, Serializable {
 	private String loggingNamespaceId;
-
 	public String getLoggingNamespaceId() {
 		return loggingNamespaceId;
 	}
-
 	public void setLoggingNamespaceId(String loggingNamespaceId) {
 		this.loggingNamespaceId = loggingNamespaceId;
 	}
-
 	public LogSetting withLoggingNamespaceId(String loggingNamespaceId) {
 		this.loggingNamespaceId = loggingNamespaceId;
 		return this;

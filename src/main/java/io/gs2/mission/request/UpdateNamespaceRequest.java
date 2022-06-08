@@ -42,132 +42,108 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private LogSetting logSetting;
     private String queueNamespaceId;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
-
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
-
 	public UpdateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-
 	public ScriptSetting getMissionCompleteScript() {
 		return missionCompleteScript;
 	}
-
 	public void setMissionCompleteScript(ScriptSetting missionCompleteScript) {
 		this.missionCompleteScript = missionCompleteScript;
 	}
-
 	public UpdateNamespaceRequest withMissionCompleteScript(ScriptSetting missionCompleteScript) {
 		this.missionCompleteScript = missionCompleteScript;
 		return this;
 	}
-
 	public ScriptSetting getCounterIncrementScript() {
 		return counterIncrementScript;
 	}
-
 	public void setCounterIncrementScript(ScriptSetting counterIncrementScript) {
 		this.counterIncrementScript = counterIncrementScript;
 	}
-
 	public UpdateNamespaceRequest withCounterIncrementScript(ScriptSetting counterIncrementScript) {
 		this.counterIncrementScript = counterIncrementScript;
 		return this;
 	}
-
 	public ScriptSetting getReceiveRewardsScript() {
 		return receiveRewardsScript;
 	}
-
 	public void setReceiveRewardsScript(ScriptSetting receiveRewardsScript) {
 		this.receiveRewardsScript = receiveRewardsScript;
 	}
-
 	public UpdateNamespaceRequest withReceiveRewardsScript(ScriptSetting receiveRewardsScript) {
 		this.receiveRewardsScript = receiveRewardsScript;
 		return this;
 	}
-
 	public NotificationSetting getCompleteNotification() {
 		return completeNotification;
 	}
-
 	public void setCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 	}
-
 	public UpdateNamespaceRequest withCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
+    @Deprecated
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
-
+    @Deprecated
 	public void setQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 	}
-
+    @Deprecated
 	public UpdateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 		return this;
 	}
-
+    @Deprecated
 	public String getKeyId() {
 		return keyId;
 	}
-
+    @Deprecated
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
+    @Deprecated
 	public UpdateNamespaceRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

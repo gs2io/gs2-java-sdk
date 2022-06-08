@@ -34,54 +34,42 @@ public class UpdateNotificationTypeByUserIdRequest extends Gs2BasicRequest<Updat
     private String userId;
     private List<NotificationType> notificationTypes;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNotificationTypeByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public UpdateNotificationTypeByUserIdRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public UpdateNotificationTypeByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<NotificationType> getNotificationTypes() {
 		return notificationTypes;
 	}
-
 	public void setNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 	}
-
 	public UpdateNotificationTypeByUserIdRequest withNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 		return this;

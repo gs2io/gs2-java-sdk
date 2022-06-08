@@ -36,93 +36,72 @@ public class LimitModel implements IModel, Serializable, Comparable<LimitModel> 
 	private Integer resetDayOfMonth;
 	private String resetDayOfWeek;
 	private Integer resetHour;
-
 	public String getLimitModelId() {
 		return limitModelId;
 	}
-
 	public void setLimitModelId(String limitModelId) {
 		this.limitModelId = limitModelId;
 	}
-
 	public LimitModel withLimitModelId(String limitModelId) {
 		this.limitModelId = limitModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public LimitModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public LimitModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getResetType() {
 		return resetType;
 	}
-
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
-
 	public LimitModel withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-
 	public Integer getResetDayOfMonth() {
 		return resetDayOfMonth;
 	}
-
 	public void setResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 	}
-
 	public LimitModel withResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 		return this;
 	}
-
 	public String getResetDayOfWeek() {
 		return resetDayOfWeek;
 	}
-
 	public void setResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 	}
-
 	public LimitModel withResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 		return this;
 	}
-
 	public Integer getResetHour() {
 		return resetHour;
 	}
-
 	public void setResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 	}
-
 	public LimitModel withResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 		return this;

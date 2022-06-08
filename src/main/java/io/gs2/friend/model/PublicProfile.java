@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class PublicProfile implements IModel, Serializable, Comparable<PublicProfile> {
 	private String userId;
 	private String publicProfile;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public PublicProfile withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getPublicProfile() {
 		return publicProfile;
 	}
-
 	public void setPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 	}
-
 	public PublicProfile withPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 		return this;

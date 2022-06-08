@@ -33,54 +33,42 @@ public class ScopedValue implements IModel, Serializable {
 	private Long value;
 	private Long nextResetAt;
 	private Long updatedAt;
-
 	public String getResetType() {
 		return resetType;
 	}
-
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
-
 	public ScopedValue withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-
 	public Long getValue() {
 		return value;
 	}
-
 	public void setValue(Long value) {
 		this.value = value;
 	}
-
 	public ScopedValue withValue(Long value) {
 		this.value = value;
 		return this;
 	}
-
 	public Long getNextResetAt() {
 		return nextResetAt;
 	}
-
 	public void setNextResetAt(Long nextResetAt) {
 		this.nextResetAt = nextResetAt;
 	}
-
 	public ScopedValue withNextResetAt(Long nextResetAt) {
 		this.nextResetAt = nextResetAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public ScopedValue withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

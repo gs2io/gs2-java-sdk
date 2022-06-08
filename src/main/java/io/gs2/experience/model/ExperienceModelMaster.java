@@ -39,132 +39,102 @@ public class ExperienceModelMaster implements IModel, Serializable, Comparable<E
 	private String rankThresholdName;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public ExperienceModelMaster withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public ExperienceModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public ExperienceModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public ExperienceModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getDefaultExperience() {
 		return defaultExperience;
 	}
-
 	public void setDefaultExperience(Long defaultExperience) {
 		this.defaultExperience = defaultExperience;
 	}
-
 	public ExperienceModelMaster withDefaultExperience(Long defaultExperience) {
 		this.defaultExperience = defaultExperience;
 		return this;
 	}
-
 	public Long getDefaultRankCap() {
 		return defaultRankCap;
 	}
-
 	public void setDefaultRankCap(Long defaultRankCap) {
 		this.defaultRankCap = defaultRankCap;
 	}
-
 	public ExperienceModelMaster withDefaultRankCap(Long defaultRankCap) {
 		this.defaultRankCap = defaultRankCap;
 		return this;
 	}
-
 	public Long getMaxRankCap() {
 		return maxRankCap;
 	}
-
 	public void setMaxRankCap(Long maxRankCap) {
 		this.maxRankCap = maxRankCap;
 	}
-
 	public ExperienceModelMaster withMaxRankCap(Long maxRankCap) {
 		this.maxRankCap = maxRankCap;
 		return this;
 	}
-
 	public String getRankThresholdName() {
 		return rankThresholdName;
 	}
-
 	public void setRankThresholdName(String rankThresholdName) {
 		this.rankThresholdName = rankThresholdName;
 	}
-
 	public ExperienceModelMaster withRankThresholdName(String rankThresholdName) {
 		this.rankThresholdName = rankThresholdName;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public ExperienceModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public ExperienceModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

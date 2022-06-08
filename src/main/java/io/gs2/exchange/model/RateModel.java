@@ -38,119 +38,92 @@ public class RateModel implements IModel, Serializable, Comparable<RateModel> {
 	private Boolean enableSkip;
 	private List<ConsumeAction> skipConsumeActions;
 	private List<AcquireAction> acquireActions;
-
 	public String getRateModelId() {
 		return rateModelId;
 	}
-
 	public void setRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 	}
-
 	public RateModel withRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public RateModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public RateModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
-
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
-
 	public RateModel withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;
 	}
-
 	public String getTimingType() {
 		return timingType;
 	}
-
 	public void setTimingType(String timingType) {
 		this.timingType = timingType;
 	}
-
 	public RateModel withTimingType(String timingType) {
 		this.timingType = timingType;
 		return this;
 	}
-
 	public Integer getLockTime() {
 		return lockTime;
 	}
-
 	public void setLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 	}
-
 	public RateModel withLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 		return this;
 	}
-
 	public Boolean getEnableSkip() {
 		return enableSkip;
 	}
-
 	public void setEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 	}
-
 	public RateModel withEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 		return this;
 	}
-
 	public List<ConsumeAction> getSkipConsumeActions() {
 		return skipConsumeActions;
 	}
-
 	public void setSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 	}
-
 	public RateModel withSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 		return this;
 	}
-
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
-
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
-
 	public RateModel withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;

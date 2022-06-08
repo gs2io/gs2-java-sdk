@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeQuestModelsRequest extends Gs2BasicRequest<DescribeQuestModelsRequest> {
     private String namespaceName;
     private String questGroupName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeQuestModelsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
-
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
-
 	public DescribeQuestModelsRequest withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;

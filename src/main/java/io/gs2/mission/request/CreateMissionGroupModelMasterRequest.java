@@ -37,119 +37,92 @@ public class CreateMissionGroupModelMasterRequest extends Gs2BasicRequest<Create
     private String resetDayOfWeek;
     private Integer resetHour;
     private String completeNotificationNamespaceId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateMissionGroupModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateMissionGroupModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateMissionGroupModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateMissionGroupModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getResetType() {
 		return resetType;
 	}
-
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
-
 	public CreateMissionGroupModelMasterRequest withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-
 	public Integer getResetDayOfMonth() {
 		return resetDayOfMonth;
 	}
-
 	public void setResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 	}
-
 	public CreateMissionGroupModelMasterRequest withResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 		return this;
 	}
-
 	public String getResetDayOfWeek() {
 		return resetDayOfWeek;
 	}
-
 	public void setResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 	}
-
 	public CreateMissionGroupModelMasterRequest withResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 		return this;
 	}
-
 	public Integer getResetHour() {
 		return resetHour;
 	}
-
 	public void setResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 	}
-
 	public CreateMissionGroupModelMasterRequest withResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 		return this;
 	}
-
 	public String getCompleteNotificationNamespaceId() {
 		return completeNotificationNamespaceId;
 	}
-
 	public void setCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
 		this.completeNotificationNamespaceId = completeNotificationNamespaceId;
 	}
-
 	public CreateMissionGroupModelMasterRequest withCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
 		this.completeNotificationNamespaceId = completeNotificationNamespaceId;
 		return this;

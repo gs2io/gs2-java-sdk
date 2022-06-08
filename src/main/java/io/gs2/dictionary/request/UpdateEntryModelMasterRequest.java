@@ -32,54 +32,42 @@ public class UpdateEntryModelMasterRequest extends Gs2BasicRequest<UpdateEntryMo
     private String entryName;
     private String description;
     private String metadata;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateEntryModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getEntryName() {
 		return entryName;
 	}
-
 	public void setEntryName(String entryName) {
 		this.entryName = entryName;
 	}
-
 	public UpdateEntryModelMasterRequest withEntryName(String entryName) {
 		this.entryName = entryName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateEntryModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateEntryModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;

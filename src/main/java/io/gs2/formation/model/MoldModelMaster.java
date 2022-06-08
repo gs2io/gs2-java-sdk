@@ -38,119 +38,92 @@ public class MoldModelMaster implements IModel, Serializable, Comparable<MoldMod
 	private String formModelName;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getMoldModelId() {
 		return moldModelId;
 	}
-
 	public void setMoldModelId(String moldModelId) {
 		this.moldModelId = moldModelId;
 	}
-
 	public MoldModelMaster withMoldModelId(String moldModelId) {
 		this.moldModelId = moldModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public MoldModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public MoldModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public MoldModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Integer getInitialMaxCapacity() {
 		return initialMaxCapacity;
 	}
-
 	public void setInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 	}
-
 	public MoldModelMaster withInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public MoldModelMaster withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-
 	public String getFormModelName() {
 		return formModelName;
 	}
-
 	public void setFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 	}
-
 	public MoldModelMaster withFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public MoldModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public MoldModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

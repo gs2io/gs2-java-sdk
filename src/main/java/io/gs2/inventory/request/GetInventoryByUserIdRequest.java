@@ -31,41 +31,32 @@ public class GetInventoryByUserIdRequest extends Gs2BasicRequest<GetInventoryByU
     private String namespaceName;
     private String inventoryName;
     private String userId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetInventoryByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public GetInventoryByUserIdRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetInventoryByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

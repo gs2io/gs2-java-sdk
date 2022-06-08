@@ -32,41 +32,32 @@ public class JobEntry implements IModel, Serializable {
 	private String scriptId;
 	private String args;
 	private Integer maxTryCount;
-
 	public String getScriptId() {
 		return scriptId;
 	}
-
 	public void setScriptId(String scriptId) {
 		this.scriptId = scriptId;
 	}
-
 	public JobEntry withScriptId(String scriptId) {
 		this.scriptId = scriptId;
 		return this;
 	}
-
 	public String getArgs() {
 		return args;
 	}
-
 	public void setArgs(String args) {
 		this.args = args;
 	}
-
 	public JobEntry withArgs(String args) {
 		this.args = args;
 		return this;
 	}
-
 	public Integer getMaxTryCount() {
 		return maxTryCount;
 	}
-
 	public void setMaxTryCount(Integer maxTryCount) {
 		this.maxTryCount = maxTryCount;
 	}
-
 	public JobEntry withMaxTryCount(Integer maxTryCount) {
 		this.maxTryCount = maxTryCount;
 		return this;

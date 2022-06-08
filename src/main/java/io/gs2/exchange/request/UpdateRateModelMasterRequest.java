@@ -40,132 +40,102 @@ public class UpdateRateModelMasterRequest extends Gs2BasicRequest<UpdateRateMode
     private List<ConsumeAction> skipConsumeActions;
     private List<AcquireAction> acquireActions;
     private List<ConsumeAction> consumeActions;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateRateModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public UpdateRateModelMasterRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateRateModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateRateModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getTimingType() {
 		return timingType;
 	}
-
 	public void setTimingType(String timingType) {
 		this.timingType = timingType;
 	}
-
 	public UpdateRateModelMasterRequest withTimingType(String timingType) {
 		this.timingType = timingType;
 		return this;
 	}
-
 	public Integer getLockTime() {
 		return lockTime;
 	}
-
 	public void setLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 	}
-
 	public UpdateRateModelMasterRequest withLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 		return this;
 	}
-
 	public Boolean getEnableSkip() {
 		return enableSkip;
 	}
-
 	public void setEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 	}
-
 	public UpdateRateModelMasterRequest withEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 		return this;
 	}
-
 	public List<ConsumeAction> getSkipConsumeActions() {
 		return skipConsumeActions;
 	}
-
 	public void setSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 	}
-
 	public UpdateRateModelMasterRequest withSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 		return this;
 	}
-
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
-
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
-
 	public UpdateRateModelMasterRequest withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
-
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
-
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
-
 	public UpdateRateModelMasterRequest withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;

@@ -35,80 +35,62 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
 	private String userIdentifier;
 	private String password;
 	private Long createdAt;
-
 	public String getTakeOverId() {
 		return takeOverId;
 	}
-
 	public void setTakeOverId(String takeOverId) {
 		this.takeOverId = takeOverId;
 	}
-
 	public TakeOver withTakeOverId(String takeOverId) {
 		this.takeOverId = takeOverId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public TakeOver withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getType() {
 		return type;
 	}
-
 	public void setType(Integer type) {
 		this.type = type;
 	}
-
 	public TakeOver withType(Integer type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getUserIdentifier() {
 		return userIdentifier;
 	}
-
 	public void setUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 	}
-
 	public TakeOver withUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public TakeOver withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public TakeOver withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DetachSecurityPolicyRequest extends Gs2BasicRequest<DetachSecurityPolicyRequest> {
     private String userName;
     private String securityPolicyId;
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
 	public DetachSecurityPolicyRequest withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-
 	public String getSecurityPolicyId() {
 		return securityPolicyId;
 	}
-
 	public void setSecurityPolicyId(String securityPolicyId) {
 		this.securityPolicyId = securityPolicyId;
 	}
-
 	public DetachSecurityPolicyRequest withSecurityPolicyId(String securityPolicyId) {
 		this.securityPolicyId = securityPolicyId;
 		return this;

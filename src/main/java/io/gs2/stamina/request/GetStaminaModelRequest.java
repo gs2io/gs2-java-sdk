@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetStaminaModelRequest extends Gs2BasicRequest<GetStaminaModelRequest> {
     private String namespaceName;
     private String staminaName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetStaminaModelRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public GetStaminaModelRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;

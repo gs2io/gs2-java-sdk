@@ -34,67 +34,52 @@ public class SendMobileNotificationByUserIdRequest extends Gs2BasicRequest<SendM
     private String payload;
     private String sound;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SendMobileNotificationByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SendMobileNotificationByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getSubject() {
 		return subject;
 	}
-
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
 	public SendMobileNotificationByUserIdRequest withSubject(String subject) {
 		this.subject = subject;
 		return this;
 	}
-
 	public String getPayload() {
 		return payload;
 	}
-
 	public void setPayload(String payload) {
 		this.payload = payload;
 	}
-
 	public SendMobileNotificationByUserIdRequest withPayload(String payload) {
 		this.payload = payload;
 		return this;
 	}
-
 	public String getSound() {
 		return sound;
 	}
-
 	public void setSound(String sound) {
 		this.sound = sound;
 	}
-
 	public SendMobileNotificationByUserIdRequest withSound(String sound) {
 		this.sound = sound;
 		return this;

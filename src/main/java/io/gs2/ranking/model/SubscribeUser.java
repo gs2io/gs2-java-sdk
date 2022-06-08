@@ -32,41 +32,32 @@ public class SubscribeUser implements IModel, Serializable {
 	private String categoryName;
 	private String userId;
 	private String targetUserId;
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public SubscribeUser withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SubscribeUser withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTargetUserId() {
 		return targetUserId;
 	}
-
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
-
 	public SubscribeUser withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;

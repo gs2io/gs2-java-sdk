@@ -34,80 +34,62 @@ public class ConsumeItemSetRequest extends Gs2BasicRequest<ConsumeItemSetRequest
     private String itemName;
     private Long consumeCount;
     private String itemSetName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public ConsumeItemSetRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public ConsumeItemSetRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public ConsumeItemSetRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getItemName() {
 		return itemName;
 	}
-
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-
 	public ConsumeItemSetRequest withItemName(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
-
 	public Long getConsumeCount() {
 		return consumeCount;
 	}
-
 	public void setConsumeCount(Long consumeCount) {
 		this.consumeCount = consumeCount;
 	}
-
 	public ConsumeItemSetRequest withConsumeCount(Long consumeCount) {
 		this.consumeCount = consumeCount;
 		return this;
 	}
-
 	public String getItemSetName() {
 		return itemSetName;
 	}
-
 	public void setItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 	}
-
 	public ConsumeItemSetRequest withItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 		return this;

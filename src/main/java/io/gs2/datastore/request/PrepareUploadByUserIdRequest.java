@@ -36,93 +36,72 @@ public class PrepareUploadByUserIdRequest extends Gs2BasicRequest<PrepareUploadB
     private List<String> allowUserIds;
     private Boolean updateIfExists;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PrepareUploadByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public PrepareUploadByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public PrepareUploadByUserIdRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getContentType() {
 		return contentType;
 	}
-
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
-
 	public PrepareUploadByUserIdRequest withContentType(String contentType) {
 		this.contentType = contentType;
 		return this;
 	}
-
 	public String getScope() {
 		return scope;
 	}
-
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
-
 	public PrepareUploadByUserIdRequest withScope(String scope) {
 		this.scope = scope;
 		return this;
 	}
-
 	public List<String> getAllowUserIds() {
 		return allowUserIds;
 	}
-
 	public void setAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 	}
-
 	public PrepareUploadByUserIdRequest withAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 		return this;
 	}
-
 	public Boolean getUpdateIfExists() {
 		return updateIfExists;
 	}
-
 	public void setUpdateIfExists(Boolean updateIfExists) {
 		this.updateIfExists = updateIfExists;
 	}
-
 	public PrepareUploadByUserIdRequest withUpdateIfExists(Boolean updateIfExists) {
 		this.updateIfExists = updateIfExists;
 		return this;

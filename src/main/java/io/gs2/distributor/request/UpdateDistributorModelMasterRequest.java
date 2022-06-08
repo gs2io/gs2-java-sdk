@@ -34,80 +34,62 @@ public class UpdateDistributorModelMasterRequest extends Gs2BasicRequest<UpdateD
     private String metadata;
     private String inboxNamespaceId;
     private List<String> whiteListTargetIds;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateDistributorModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDistributorName() {
 		return distributorName;
 	}
-
 	public void setDistributorName(String distributorName) {
 		this.distributorName = distributorName;
 	}
-
 	public UpdateDistributorModelMasterRequest withDistributorName(String distributorName) {
 		this.distributorName = distributorName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateDistributorModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateDistributorModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getInboxNamespaceId() {
 		return inboxNamespaceId;
 	}
-
 	public void setInboxNamespaceId(String inboxNamespaceId) {
 		this.inboxNamespaceId = inboxNamespaceId;
 	}
-
 	public UpdateDistributorModelMasterRequest withInboxNamespaceId(String inboxNamespaceId) {
 		this.inboxNamespaceId = inboxNamespaceId;
 		return this;
 	}
-
 	public List<String> getWhiteListTargetIds() {
 		return whiteListTargetIds;
 	}
-
 	public void setWhiteListTargetIds(List<String> whiteListTargetIds) {
 		this.whiteListTargetIds = whiteListTargetIds;
 	}
-
 	public UpdateDistributorModelMasterRequest withWhiteListTargetIds(List<String> whiteListTargetIds) {
 		this.whiteListTargetIds = whiteListTargetIds;
 		return this;

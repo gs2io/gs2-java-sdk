@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class Material implements IModel, Serializable {
 	private String materialItemSetId;
 	private Integer count;
-
 	public String getMaterialItemSetId() {
 		return materialItemSetId;
 	}
-
 	public void setMaterialItemSetId(String materialItemSetId) {
 		this.materialItemSetId = materialItemSetId;
 	}
-
 	public Material withMaterialItemSetId(String materialItemSetId) {
 		this.materialItemSetId = materialItemSetId;
 		return this;
 	}
-
 	public Integer getCount() {
 		return count;
 	}
-
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-
 	public Material withCount(Integer count) {
 		this.count = count;
 		return this;

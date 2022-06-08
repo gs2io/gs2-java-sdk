@@ -31,28 +31,22 @@ import io.gs2.lottery.model.GitHubCheckoutSetting;
 public class UpdateCurrentLotteryMasterFromGitHubRequest extends Gs2BasicRequest<UpdateCurrentLotteryMasterFromGitHubRequest> {
     private String namespaceName;
     private GitHubCheckoutSetting checkoutSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateCurrentLotteryMasterFromGitHubRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public GitHubCheckoutSetting getCheckoutSetting() {
 		return checkoutSetting;
 	}
-
 	public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 	}
-
 	public UpdateCurrentLotteryMasterFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 		return this;

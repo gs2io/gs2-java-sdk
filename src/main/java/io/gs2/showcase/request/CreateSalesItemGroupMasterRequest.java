@@ -33,67 +33,52 @@ public class CreateSalesItemGroupMasterRequest extends Gs2BasicRequest<CreateSal
     private String description;
     private String metadata;
     private List<String> salesItemNames;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateSalesItemGroupMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateSalesItemGroupMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateSalesItemGroupMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateSalesItemGroupMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<String> getSalesItemNames() {
 		return salesItemNames;
 	}
-
 	public void setSalesItemNames(List<String> salesItemNames) {
 		this.salesItemNames = salesItemNames;
 	}
-
 	public CreateSalesItemGroupMasterRequest withSalesItemNames(List<String> salesItemNames) {
 		this.salesItemNames = salesItemNames;
 		return this;

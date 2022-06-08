@@ -33,54 +33,42 @@ public class ScriptSetting implements IModel, Serializable {
 	private String doneTriggerTargetType;
 	private String doneTriggerScriptId;
 	private String doneTriggerQueueNamespaceId;
-
 	public String getTriggerScriptId() {
 		return triggerScriptId;
 	}
-
 	public void setTriggerScriptId(String triggerScriptId) {
 		this.triggerScriptId = triggerScriptId;
 	}
-
 	public ScriptSetting withTriggerScriptId(String triggerScriptId) {
 		this.triggerScriptId = triggerScriptId;
 		return this;
 	}
-
 	public String getDoneTriggerTargetType() {
 		return doneTriggerTargetType;
 	}
-
 	public void setDoneTriggerTargetType(String doneTriggerTargetType) {
 		this.doneTriggerTargetType = doneTriggerTargetType;
 	}
-
 	public ScriptSetting withDoneTriggerTargetType(String doneTriggerTargetType) {
 		this.doneTriggerTargetType = doneTriggerTargetType;
 		return this;
 	}
-
 	public String getDoneTriggerScriptId() {
 		return doneTriggerScriptId;
 	}
-
 	public void setDoneTriggerScriptId(String doneTriggerScriptId) {
 		this.doneTriggerScriptId = doneTriggerScriptId;
 	}
-
 	public ScriptSetting withDoneTriggerScriptId(String doneTriggerScriptId) {
 		this.doneTriggerScriptId = doneTriggerScriptId;
 		return this;
 	}
-
 	public String getDoneTriggerQueueNamespaceId() {
 		return doneTriggerQueueNamespaceId;
 	}
-
 	public void setDoneTriggerQueueNamespaceId(String doneTriggerQueueNamespaceId) {
 		this.doneTriggerQueueNamespaceId = doneTriggerQueueNamespaceId;
 	}
-
 	public ScriptSetting withDoneTriggerQueueNamespaceId(String doneTriggerQueueNamespaceId) {
 		this.doneTriggerQueueNamespaceId = doneTriggerQueueNamespaceId;
 		return this;

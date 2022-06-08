@@ -35,67 +35,52 @@ public class SetFormByUserIdRequest extends Gs2BasicRequest<SetFormByUserIdReque
     private Integer index;
     private List<Slot> slots;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetFormByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SetFormByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMoldName() {
 		return moldName;
 	}
-
 	public void setMoldName(String moldName) {
 		this.moldName = moldName;
 	}
-
 	public SetFormByUserIdRequest withMoldName(String moldName) {
 		this.moldName = moldName;
 		return this;
 	}
-
 	public Integer getIndex() {
 		return index;
 	}
-
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
-
 	public SetFormByUserIdRequest withIndex(Integer index) {
 		this.index = index;
 		return this;
 	}
-
 	public List<Slot> getSlots() {
 		return slots;
 	}
-
 	public void setSlots(List<Slot> slots) {
 		this.slots = slots;
 	}
-
 	public SetFormByUserIdRequest withSlots(List<Slot> slots) {
 		this.slots = slots;
 		return this;

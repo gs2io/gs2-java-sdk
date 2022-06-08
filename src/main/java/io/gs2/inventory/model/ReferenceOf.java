@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class ReferenceOf implements IModel, Serializable, Comparable<ReferenceOf> {
 	private String referenceOfId;
 	private String name;
-
 	public String getReferenceOfId() {
 		return referenceOfId;
 	}
-
 	public void setReferenceOfId(String referenceOfId) {
 		this.referenceOfId = referenceOfId;
 	}
-
 	public ReferenceOf withReferenceOfId(String referenceOfId) {
 		this.referenceOfId = referenceOfId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public ReferenceOf withName(String name) {
 		this.name = name;
 		return this;

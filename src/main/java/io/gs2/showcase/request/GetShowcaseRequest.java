@@ -31,41 +31,32 @@ public class GetShowcaseRequest extends Gs2BasicRequest<GetShowcaseRequest> {
     private String namespaceName;
     private String showcaseName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetShowcaseRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getShowcaseName() {
 		return showcaseName;
 	}
-
 	public void setShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 	}
-
 	public GetShowcaseRequest withShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetShowcaseRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

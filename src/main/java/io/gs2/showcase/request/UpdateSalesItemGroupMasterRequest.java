@@ -33,67 +33,52 @@ public class UpdateSalesItemGroupMasterRequest extends Gs2BasicRequest<UpdateSal
     private String description;
     private String metadata;
     private List<String> salesItemNames;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateSalesItemGroupMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getSalesItemGroupName() {
 		return salesItemGroupName;
 	}
-
 	public void setSalesItemGroupName(String salesItemGroupName) {
 		this.salesItemGroupName = salesItemGroupName;
 	}
-
 	public UpdateSalesItemGroupMasterRequest withSalesItemGroupName(String salesItemGroupName) {
 		this.salesItemGroupName = salesItemGroupName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateSalesItemGroupMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateSalesItemGroupMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<String> getSalesItemNames() {
 		return salesItemNames;
 	}
-
 	public void setSalesItemNames(List<String> salesItemNames) {
 		this.salesItemNames = salesItemNames;
 	}
-
 	public UpdateSalesItemGroupMasterRequest withSalesItemNames(List<String> salesItemNames) {
 		this.salesItemNames = salesItemNames;
 		return this;

@@ -34,80 +34,62 @@ public class UpdateMaxStaminaTableMasterRequest extends Gs2BasicRequest<UpdateMa
     private String metadata;
     private String experienceModelId;
     private List<Integer> values;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateMaxStaminaTableMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMaxStaminaTableName() {
 		return maxStaminaTableName;
 	}
-
 	public void setMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 	}
-
 	public UpdateMaxStaminaTableMasterRequest withMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateMaxStaminaTableMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateMaxStaminaTableMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public UpdateMaxStaminaTableMasterRequest withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public List<Integer> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
-
 	public UpdateMaxStaminaTableMasterRequest withValues(List<Integer> values) {
 		this.values = values;
 		return this;

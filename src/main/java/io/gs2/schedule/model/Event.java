@@ -44,197 +44,152 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 	private Integer repeatEndHour;
 	private String relativeTriggerName;
 	private Integer relativeDuration;
-
 	public String getEventId() {
 		return eventId;
 	}
-
 	public void setEventId(String eventId) {
 		this.eventId = eventId;
 	}
-
 	public Event withEventId(String eventId) {
 		this.eventId = eventId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Event withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Event withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getScheduleType() {
 		return scheduleType;
 	}
-
 	public void setScheduleType(String scheduleType) {
 		this.scheduleType = scheduleType;
 	}
-
 	public Event withScheduleType(String scheduleType) {
 		this.scheduleType = scheduleType;
 		return this;
 	}
-
 	public String getRepeatType() {
 		return repeatType;
 	}
-
 	public void setRepeatType(String repeatType) {
 		this.repeatType = repeatType;
 	}
-
 	public Event withRepeatType(String repeatType) {
 		this.repeatType = repeatType;
 		return this;
 	}
-
 	public Long getAbsoluteBegin() {
 		return absoluteBegin;
 	}
-
 	public void setAbsoluteBegin(Long absoluteBegin) {
 		this.absoluteBegin = absoluteBegin;
 	}
-
 	public Event withAbsoluteBegin(Long absoluteBegin) {
 		this.absoluteBegin = absoluteBegin;
 		return this;
 	}
-
 	public Long getAbsoluteEnd() {
 		return absoluteEnd;
 	}
-
 	public void setAbsoluteEnd(Long absoluteEnd) {
 		this.absoluteEnd = absoluteEnd;
 	}
-
 	public Event withAbsoluteEnd(Long absoluteEnd) {
 		this.absoluteEnd = absoluteEnd;
 		return this;
 	}
-
 	public Integer getRepeatBeginDayOfMonth() {
 		return repeatBeginDayOfMonth;
 	}
-
 	public void setRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
 		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
 	}
-
 	public Event withRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
 		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
 		return this;
 	}
-
 	public Integer getRepeatEndDayOfMonth() {
 		return repeatEndDayOfMonth;
 	}
-
 	public void setRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
 		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
 	}
-
 	public Event withRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
 		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
 		return this;
 	}
-
 	public String getRepeatBeginDayOfWeek() {
 		return repeatBeginDayOfWeek;
 	}
-
 	public void setRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
 		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
 	}
-
 	public Event withRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
 		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
 		return this;
 	}
-
 	public String getRepeatEndDayOfWeek() {
 		return repeatEndDayOfWeek;
 	}
-
 	public void setRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
 		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
 	}
-
 	public Event withRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
 		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
 		return this;
 	}
-
 	public Integer getRepeatBeginHour() {
 		return repeatBeginHour;
 	}
-
 	public void setRepeatBeginHour(Integer repeatBeginHour) {
 		this.repeatBeginHour = repeatBeginHour;
 	}
-
 	public Event withRepeatBeginHour(Integer repeatBeginHour) {
 		this.repeatBeginHour = repeatBeginHour;
 		return this;
 	}
-
 	public Integer getRepeatEndHour() {
 		return repeatEndHour;
 	}
-
 	public void setRepeatEndHour(Integer repeatEndHour) {
 		this.repeatEndHour = repeatEndHour;
 	}
-
 	public Event withRepeatEndHour(Integer repeatEndHour) {
 		this.repeatEndHour = repeatEndHour;
 		return this;
 	}
-
 	public String getRelativeTriggerName() {
 		return relativeTriggerName;
 	}
-
 	public void setRelativeTriggerName(String relativeTriggerName) {
 		this.relativeTriggerName = relativeTriggerName;
 	}
-
 	public Event withRelativeTriggerName(String relativeTriggerName) {
 		this.relativeTriggerName = relativeTriggerName;
 		return this;
 	}
-
 	public Integer getRelativeDuration() {
 		return relativeDuration;
 	}
-
 	public void setRelativeDuration(Integer relativeDuration) {
 		this.relativeDuration = relativeDuration;
 	}
-
 	public Event withRelativeDuration(Integer relativeDuration) {
 		this.relativeDuration = relativeDuration;
 		return this;

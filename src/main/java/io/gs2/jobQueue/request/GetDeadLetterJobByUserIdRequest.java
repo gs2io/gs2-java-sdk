@@ -31,41 +31,32 @@ public class GetDeadLetterJobByUserIdRequest extends Gs2BasicRequest<GetDeadLett
     private String namespaceName;
     private String userId;
     private String deadLetterJobName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetDeadLetterJobByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetDeadLetterJobByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getDeadLetterJobName() {
 		return deadLetterJobName;
 	}
-
 	public void setDeadLetterJobName(String deadLetterJobName) {
 		this.deadLetterJobName = deadLetterJobName;
 	}
-
 	public GetDeadLetterJobByUserIdRequest withDeadLetterJobName(String deadLetterJobName) {
 		this.deadLetterJobName = deadLetterJobName;
 		return this;

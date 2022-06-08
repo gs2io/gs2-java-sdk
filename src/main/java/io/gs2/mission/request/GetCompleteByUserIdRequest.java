@@ -31,41 +31,32 @@ public class GetCompleteByUserIdRequest extends Gs2BasicRequest<GetCompleteByUse
     private String namespaceName;
     private String missionGroupName;
     private String userId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetCompleteByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMissionGroupName() {
 		return missionGroupName;
 	}
-
 	public void setMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 	}
-
 	public GetCompleteByUserIdRequest withMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetCompleteByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

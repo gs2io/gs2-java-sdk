@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class NotificationType implements IModel, Serializable {
 	private Integer category;
 	private Boolean enableTransferMobilePushNotification;
-
 	public Integer getCategory() {
 		return category;
 	}
-
 	public void setCategory(Integer category) {
 		this.category = category;
 	}
-
 	public NotificationType withCategory(Integer category) {
 		this.category = category;
 		return this;
 	}
-
 	public Boolean getEnableTransferMobilePushNotification() {
 		return enableTransferMobilePushNotification;
 	}
-
 	public void setEnableTransferMobilePushNotification(Boolean enableTransferMobilePushNotification) {
 		this.enableTransferMobilePushNotification = enableTransferMobilePushNotification;
 	}
-
 	public NotificationType withEnableTransferMobilePushNotification(Boolean enableTransferMobilePushNotification) {
 		this.enableTransferMobilePushNotification = enableTransferMobilePushNotification;
 		return this;

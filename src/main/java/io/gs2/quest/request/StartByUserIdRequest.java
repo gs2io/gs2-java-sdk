@@ -36,80 +36,62 @@ public class StartByUserIdRequest extends Gs2BasicRequest<StartByUserIdRequest> 
     private Boolean force;
     private List<Config> config;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public StartByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
-
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
-
 	public StartByUserIdRequest withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;
 	}
-
 	public String getQuestName() {
 		return questName;
 	}
-
 	public void setQuestName(String questName) {
 		this.questName = questName;
 	}
-
 	public StartByUserIdRequest withQuestName(String questName) {
 		this.questName = questName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public StartByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Boolean getForce() {
 		return force;
 	}
-
 	public void setForce(Boolean force) {
 		this.force = force;
 	}
-
 	public StartByUserIdRequest withForce(Boolean force) {
 		this.force = force;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public StartByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

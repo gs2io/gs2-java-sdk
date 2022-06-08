@@ -33,54 +33,42 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String description;
     private String firebaseSecret;
     private LogSetting logSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getFirebaseSecret() {
 		return firebaseSecret;
 	}
-
 	public void setFirebaseSecret(String firebaseSecret) {
 		this.firebaseSecret = firebaseSecret;
 	}
-
 	public UpdateNamespaceRequest withFirebaseSecret(String firebaseSecret) {
 		this.firebaseSecret = firebaseSecret;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

@@ -37,106 +37,82 @@ public class Room implements IModel, Serializable, Comparable<Room> {
 	private List<String> whiteListUserIds;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getRoomId() {
 		return roomId;
 	}
-
 	public void setRoomId(String roomId) {
 		this.roomId = roomId;
 	}
-
 	public Room withRoomId(String roomId) {
 		this.roomId = roomId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Room withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Room withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Room withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public Room withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-
 	public List<String> getWhiteListUserIds() {
 		return whiteListUserIds;
 	}
-
 	public void setWhiteListUserIds(List<String> whiteListUserIds) {
 		this.whiteListUserIds = whiteListUserIds;
 	}
-
 	public Room withWhiteListUserIds(List<String> whiteListUserIds) {
 		this.whiteListUserIds = whiteListUserIds;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Room withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Room withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

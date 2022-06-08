@@ -31,28 +31,22 @@ import io.gs2.matchmaking.model.GitHubCheckoutSetting;
 public class UpdateCurrentRatingModelMasterFromGitHubRequest extends Gs2BasicRequest<UpdateCurrentRatingModelMasterFromGitHubRequest> {
     private String namespaceName;
     private GitHubCheckoutSetting checkoutSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateCurrentRatingModelMasterFromGitHubRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public GitHubCheckoutSetting getCheckoutSetting() {
 		return checkoutSetting;
 	}
-
 	public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 	}
-
 	public UpdateCurrentRatingModelMasterFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 		return this;

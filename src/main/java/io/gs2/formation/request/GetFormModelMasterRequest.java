@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetFormModelMasterRequest extends Gs2BasicRequest<GetFormModelMasterRequest> {
     private String namespaceName;
     private String formModelName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetFormModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getFormModelName() {
 		return formModelName;
 	}
-
 	public void setFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 	}
-
 	public GetFormModelMasterRequest withFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 		return this;

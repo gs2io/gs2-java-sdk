@@ -31,41 +31,32 @@ public class DescribeNearRankingsRequest extends Gs2BasicRequest<DescribeNearRan
     private String namespaceName;
     private String categoryName;
     private Long score;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeNearRankingsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public DescribeNearRankingsRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public Long getScore() {
 		return score;
 	}
-
 	public void setScore(Long score) {
 		this.score = score;
 	}
-
 	public DescribeNearRankingsRequest withScore(Long score) {
 		this.score = score;
 		return this;

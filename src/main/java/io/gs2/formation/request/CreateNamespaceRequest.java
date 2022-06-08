@@ -37,80 +37,62 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting updateMoldScript;
     private ScriptSetting updateFormScript;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
-
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
-
 	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-
 	public ScriptSetting getUpdateMoldScript() {
 		return updateMoldScript;
 	}
-
 	public void setUpdateMoldScript(ScriptSetting updateMoldScript) {
 		this.updateMoldScript = updateMoldScript;
 	}
-
 	public CreateNamespaceRequest withUpdateMoldScript(ScriptSetting updateMoldScript) {
 		this.updateMoldScript = updateMoldScript;
 		return this;
 	}
-
 	public ScriptSetting getUpdateFormScript() {
 		return updateFormScript;
 	}
-
 	public void setUpdateFormScript(ScriptSetting updateFormScript) {
 		this.updateFormScript = updateFormScript;
 	}
-
 	public CreateNamespaceRequest withUpdateFormScript(ScriptSetting updateFormScript) {
 		this.updateFormScript = updateFormScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

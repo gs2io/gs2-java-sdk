@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteShowcaseMasterRequest extends Gs2BasicRequest<DeleteShowcaseMasterRequest> {
     private String namespaceName;
     private String showcaseName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteShowcaseMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getShowcaseName() {
 		return showcaseName;
 	}
-
 	public void setShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 	}
-
 	public DeleteShowcaseMasterRequest withShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 		return this;

@@ -33,54 +33,42 @@ public class SignTargetVersion implements IModel, Serializable {
 	private String namespaceName;
 	private String versionName;
 	private Version version;
-
 	public String getRegion() {
 		return region;
 	}
-
 	public void setRegion(String region) {
 		this.region = region;
 	}
-
 	public SignTargetVersion withRegion(String region) {
 		this.region = region;
 		return this;
 	}
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SignTargetVersion withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getVersionName() {
 		return versionName;
 	}
-
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
-
 	public SignTargetVersion withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;
 	}
-
 	public Version getVersion() {
 		return version;
 	}
-
 	public void setVersion(Version version) {
 		this.version = version;
 	}
-
 	public SignTargetVersion withVersion(Version version) {
 		this.version = version;
 		return this;

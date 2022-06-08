@@ -31,41 +31,32 @@ public class DescribeSubscribesByCategoryNameRequest extends Gs2BasicRequest<Des
     private String namespaceName;
     private String categoryName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeSubscribesByCategoryNameRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public DescribeSubscribesByCategoryNameRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DescribeSubscribesByCategoryNameRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

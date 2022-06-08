@@ -34,80 +34,62 @@ public class CreateRoomRequest extends Gs2BasicRequest<CreateRoomRequest> {
     private String metadata;
     private String password;
     private List<String> whiteListUserIds;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateRoomRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public CreateRoomRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateRoomRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateRoomRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public CreateRoomRequest withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-
 	public List<String> getWhiteListUserIds() {
 		return whiteListUserIds;
 	}
-
 	public void setWhiteListUserIds(List<String> whiteListUserIds) {
 		this.whiteListUserIds = whiteListUserIds;
 	}
-
 	public CreateRoomRequest withWhiteListUserIds(List<String> whiteListUserIds) {
 		this.whiteListUserIds = whiteListUserIds;
 		return this;

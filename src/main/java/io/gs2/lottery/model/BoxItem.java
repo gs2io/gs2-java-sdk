@@ -32,41 +32,32 @@ public class BoxItem implements IModel, Serializable {
 	private List<AcquireAction> acquireActions;
 	private Integer remaining;
 	private Integer initial;
-
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
-
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
-
 	public BoxItem withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
-
 	public Integer getRemaining() {
 		return remaining;
 	}
-
 	public void setRemaining(Integer remaining) {
 		this.remaining = remaining;
 	}
-
 	public BoxItem withRemaining(Integer remaining) {
 		this.remaining = remaining;
 		return this;
 	}
-
 	public Integer getInitial() {
 		return initial;
 	}
-
 	public void setInitial(Integer initial) {
 		this.initial = initial;
 	}
-
 	public BoxItem withInitial(Integer initial) {
 		this.initial = initial;
 		return this;

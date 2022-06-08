@@ -32,41 +32,32 @@ public class UpdateTimeOffsetRequest extends Gs2BasicRequest<UpdateTimeOffsetReq
     private String userId;
     private Integer timeOffset;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateTimeOffsetRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public UpdateTimeOffsetRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getTimeOffset() {
 		return timeOffset;
 	}
-
 	public void setTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 	}
-
 	public UpdateTimeOffsetRequest withTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 		return this;

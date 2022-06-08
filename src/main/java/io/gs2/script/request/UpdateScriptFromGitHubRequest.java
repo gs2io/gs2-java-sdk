@@ -33,54 +33,42 @@ public class UpdateScriptFromGitHubRequest extends Gs2BasicRequest<UpdateScriptF
     private String scriptName;
     private String description;
     private GitHubCheckoutSetting checkoutSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateScriptFromGitHubRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getScriptName() {
 		return scriptName;
 	}
-
 	public void setScriptName(String scriptName) {
 		this.scriptName = scriptName;
 	}
-
 	public UpdateScriptFromGitHubRequest withScriptName(String scriptName) {
 		this.scriptName = scriptName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateScriptFromGitHubRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public GitHubCheckoutSetting getCheckoutSetting() {
 		return checkoutSetting;
 	}
-
 	public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 	}
-
 	public UpdateScriptFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 		return this;

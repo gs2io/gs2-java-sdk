@@ -34,67 +34,52 @@ public class DisplayItem implements IModel, Serializable, Comparable<DisplayItem
 	private SalesItem salesItem;
 	private SalesItemGroup salesItemGroup;
 	private String salesPeriodEventId;
-
 	public String getDisplayItemId() {
 		return displayItemId;
 	}
-
 	public void setDisplayItemId(String displayItemId) {
 		this.displayItemId = displayItemId;
 	}
-
 	public DisplayItem withDisplayItemId(String displayItemId) {
 		this.displayItemId = displayItemId;
 		return this;
 	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	public DisplayItem withType(String type) {
 		this.type = type;
 		return this;
 	}
-
 	public SalesItem getSalesItem() {
 		return salesItem;
 	}
-
 	public void setSalesItem(SalesItem salesItem) {
 		this.salesItem = salesItem;
 	}
-
 	public DisplayItem withSalesItem(SalesItem salesItem) {
 		this.salesItem = salesItem;
 		return this;
 	}
-
 	public SalesItemGroup getSalesItemGroup() {
 		return salesItemGroup;
 	}
-
 	public void setSalesItemGroup(SalesItemGroup salesItemGroup) {
 		this.salesItemGroup = salesItemGroup;
 	}
-
 	public DisplayItem withSalesItemGroup(SalesItemGroup salesItemGroup) {
 		this.salesItemGroup = salesItemGroup;
 		return this;
 	}
-
 	public String getSalesPeriodEventId() {
 		return salesPeriodEventId;
 	}
-
 	public void setSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 	}
-
 	public DisplayItem withSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 		return this;

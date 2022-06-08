@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class SignedBallot implements IModel, Serializable {
 	private String body;
 	private String signature;
-
 	public String getBody() {
 		return body;
 	}
-
 	public void setBody(String body) {
 		this.body = body;
 	}
-
 	public SignedBallot withBody(String body) {
 		this.body = body;
 		return this;
 	}
-
 	public String getSignature() {
 		return signature;
 	}
-
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-
 	public SignedBallot withSignature(String signature) {
 		this.signature = signature;
 		return this;

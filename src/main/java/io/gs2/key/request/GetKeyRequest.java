@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetKeyRequest extends Gs2BasicRequest<GetKeyRequest> {
     private String namespaceName;
     private String keyName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetKeyRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getKeyName() {
 		return keyName;
 	}
-
 	public void setKeyName(String keyName) {
 		this.keyName = keyName;
 	}
-
 	public GetKeyRequest withKeyName(String keyName) {
 		this.keyName = keyName;
 		return this;

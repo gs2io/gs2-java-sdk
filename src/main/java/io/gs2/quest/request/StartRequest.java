@@ -35,80 +35,62 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
     private String accessToken;
     private Boolean force;
     private List<Config> config;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public StartRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
-
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
-
 	public StartRequest withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;
 	}
-
 	public String getQuestName() {
 		return questName;
 	}
-
 	public void setQuestName(String questName) {
 		this.questName = questName;
 	}
-
 	public StartRequest withQuestName(String questName) {
 		this.questName = questName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public StartRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Boolean getForce() {
 		return force;
 	}
-
 	public void setForce(Boolean force) {
 		this.force = force;
 	}
-
 	public StartRequest withForce(Boolean force) {
 		this.force = force;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public StartRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

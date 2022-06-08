@@ -31,41 +31,32 @@ public class DeleteMissionTaskModelMasterRequest extends Gs2BasicRequest<DeleteM
     private String namespaceName;
     private String missionGroupName;
     private String missionTaskName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteMissionTaskModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMissionGroupName() {
 		return missionGroupName;
 	}
-
 	public void setMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 	}
-
 	public DeleteMissionTaskModelMasterRequest withMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 		return this;
 	}
-
 	public String getMissionTaskName() {
 		return missionTaskName;
 	}
-
 	public void setMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 	}
-
 	public DeleteMissionTaskModelMasterRequest withMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 		return this;

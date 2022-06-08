@@ -32,54 +32,42 @@ public class GetDataObjectHistoryByUserIdRequest extends Gs2BasicRequest<GetData
     private String userId;
     private String dataObjectName;
     private String generation;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetDataObjectHistoryByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetDataObjectHistoryByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getDataObjectName() {
 		return dataObjectName;
 	}
-
 	public void setDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 	}
-
 	public GetDataObjectHistoryByUserIdRequest withDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 		return this;
 	}
-
 	public String getGeneration() {
 		return generation;
 	}
-
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
-
 	public GetDataObjectHistoryByUserIdRequest withGeneration(String generation) {
 		this.generation = generation;
 		return this;

@@ -37,106 +37,82 @@ public class RecoverIntervalTableMaster implements IModel, Serializable, Compara
 	private List<Integer> values;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getRecoverIntervalTableId() {
 		return recoverIntervalTableId;
 	}
-
 	public void setRecoverIntervalTableId(String recoverIntervalTableId) {
 		this.recoverIntervalTableId = recoverIntervalTableId;
 	}
-
 	public RecoverIntervalTableMaster withRecoverIntervalTableId(String recoverIntervalTableId) {
 		this.recoverIntervalTableId = recoverIntervalTableId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public RecoverIntervalTableMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public RecoverIntervalTableMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public RecoverIntervalTableMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public RecoverIntervalTableMaster withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public List<Integer> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
-
 	public RecoverIntervalTableMaster withValues(List<Integer> values) {
 		this.values = values;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public RecoverIntervalTableMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public RecoverIntervalTableMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetEntryModelRequest extends Gs2BasicRequest<GetEntryModelRequest> {
     private String namespaceName;
     private String entryName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetEntryModelRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getEntryName() {
 		return entryName;
 	}
-
 	public void setEntryName(String entryName) {
 		this.entryName = entryName;
 	}
-
 	public GetEntryModelRequest withEntryName(String entryName) {
 		this.entryName = entryName;
 		return this;

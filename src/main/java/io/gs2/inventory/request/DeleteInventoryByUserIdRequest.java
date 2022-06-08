@@ -32,41 +32,32 @@ public class DeleteInventoryByUserIdRequest extends Gs2BasicRequest<DeleteInvent
     private String inventoryName;
     private String userId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteInventoryByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public DeleteInventoryByUserIdRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteInventoryByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

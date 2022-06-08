@@ -33,54 +33,42 @@ public class SetMaxValueByUserIdRequest extends Gs2BasicRequest<SetMaxValueByUse
     private String userId;
     private Integer maxValue;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetMaxValueByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public SetMaxValueByUserIdRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SetMaxValueByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getMaxValue() {
 		return maxValue;
 	}
-
 	public void setMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 	}
-
 	public SetMaxValueByUserIdRequest withMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 		return this;

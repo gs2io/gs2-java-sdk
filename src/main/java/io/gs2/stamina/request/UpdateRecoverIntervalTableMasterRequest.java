@@ -34,80 +34,62 @@ public class UpdateRecoverIntervalTableMasterRequest extends Gs2BasicRequest<Upd
     private String metadata;
     private String experienceModelId;
     private List<Integer> values;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateRecoverIntervalTableMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRecoverIntervalTableName() {
 		return recoverIntervalTableName;
 	}
-
 	public void setRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 	}
-
 	public UpdateRecoverIntervalTableMasterRequest withRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateRecoverIntervalTableMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateRecoverIntervalTableMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public UpdateRecoverIntervalTableMasterRequest withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public List<Integer> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
-
 	public UpdateRecoverIntervalTableMasterRequest withValues(List<Integer> values) {
 		this.values = values;
 		return this;

@@ -31,41 +31,32 @@ public class GetAcceptVersionByUserIdRequest extends Gs2BasicRequest<GetAcceptVe
     private String namespaceName;
     private String userId;
     private String versionName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetAcceptVersionByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetAcceptVersionByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getVersionName() {
 		return versionName;
 	}
-
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
-
 	public GetAcceptVersionByUserIdRequest withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;

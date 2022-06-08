@@ -31,41 +31,32 @@ public class GetMoldByUserIdRequest extends Gs2BasicRequest<GetMoldByUserIdReque
     private String namespaceName;
     private String userId;
     private String moldName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetMoldByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetMoldByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMoldName() {
 		return moldName;
 	}
-
 	public void setMoldName(String moldName) {
 		this.moldName = moldName;
 	}
-
 	public GetMoldByUserIdRequest withMoldName(String moldName) {
 		this.moldName = moldName;
 		return this;

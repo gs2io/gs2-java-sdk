@@ -32,54 +32,42 @@ public class GetDataObjectHistoryRequest extends Gs2BasicRequest<GetDataObjectHi
     private String accessToken;
     private String dataObjectName;
     private String generation;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetDataObjectHistoryRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetDataObjectHistoryRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getDataObjectName() {
 		return dataObjectName;
 	}
-
 	public void setDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 	}
-
 	public GetDataObjectHistoryRequest withDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 		return this;
 	}
-
 	public String getGeneration() {
 		return generation;
 	}
-
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
-
 	public GetDataObjectHistoryRequest withGeneration(String generation) {
 		this.generation = generation;
 		return this;

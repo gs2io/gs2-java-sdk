@@ -31,41 +31,32 @@ public class CreateSecurityPolicyRequest extends Gs2BasicRequest<CreateSecurityP
     private String name;
     private String description;
     private String policy;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateSecurityPolicyRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateSecurityPolicyRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getPolicy() {
 		return policy;
 	}
-
 	public void setPolicy(String policy) {
 		this.policy = policy;
 	}
-
 	public CreateSecurityPolicyRequest withPolicy(String policy) {
 		this.policy = policy;
 		return this;

@@ -31,28 +31,22 @@ public class ReceiveGlobalMessageByUserIdRequest extends Gs2BasicRequest<Receive
     private String namespaceName;
     private String userId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public ReceiveGlobalMessageByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public ReceiveGlobalMessageByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

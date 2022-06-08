@@ -31,28 +31,22 @@ import io.gs2.schedule.model.GitHubCheckoutSetting;
 public class UpdateCurrentEventMasterFromGitHubRequest extends Gs2BasicRequest<UpdateCurrentEventMasterFromGitHubRequest> {
     private String namespaceName;
     private GitHubCheckoutSetting checkoutSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateCurrentEventMasterFromGitHubRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public GitHubCheckoutSetting getCheckoutSetting() {
 		return checkoutSetting;
 	}
-
 	public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 	}
-
 	public UpdateCurrentEventMasterFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 		return this;

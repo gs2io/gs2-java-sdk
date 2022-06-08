@@ -35,80 +35,62 @@ public class Vote implements IModel, Serializable, Comparable<Vote> {
 	private List<WrittenBallot> writtenBallots;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getVoteId() {
 		return voteId;
 	}
-
 	public void setVoteId(String voteId) {
 		this.voteId = voteId;
 	}
-
 	public Vote withVoteId(String voteId) {
 		this.voteId = voteId;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public Vote withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;
 	}
-
 	public String getGatheringName() {
 		return gatheringName;
 	}
-
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
-
 	public Vote withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;
 	}
-
 	public List<WrittenBallot> getWrittenBallots() {
 		return writtenBallots;
 	}
-
 	public void setWrittenBallots(List<WrittenBallot> writtenBallots) {
 		this.writtenBallots = writtenBallots;
 	}
-
 	public Vote withWrittenBallots(List<WrittenBallot> writtenBallots) {
 		this.writtenBallots = writtenBallots;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Vote withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Vote withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

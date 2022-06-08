@@ -31,41 +31,32 @@ public class DeleteRoomFromBackendRequest extends Gs2BasicRequest<DeleteRoomFrom
     private String namespaceName;
     private String roomName;
     private String userId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteRoomFromBackendRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public DeleteRoomFromBackendRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteRoomFromBackendRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

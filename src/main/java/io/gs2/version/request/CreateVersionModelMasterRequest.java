@@ -39,132 +39,102 @@ public class CreateVersionModelMasterRequest extends Gs2BasicRequest<CreateVersi
     private Version currentVersion;
     private Boolean needSignature;
     private String signatureKeyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateVersionModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateVersionModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateVersionModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateVersionModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Version getWarningVersion() {
 		return warningVersion;
 	}
-
 	public void setWarningVersion(Version warningVersion) {
 		this.warningVersion = warningVersion;
 	}
-
 	public CreateVersionModelMasterRequest withWarningVersion(Version warningVersion) {
 		this.warningVersion = warningVersion;
 		return this;
 	}
-
 	public Version getErrorVersion() {
 		return errorVersion;
 	}
-
 	public void setErrorVersion(Version errorVersion) {
 		this.errorVersion = errorVersion;
 	}
-
 	public CreateVersionModelMasterRequest withErrorVersion(Version errorVersion) {
 		this.errorVersion = errorVersion;
 		return this;
 	}
-
 	public String getScope() {
 		return scope;
 	}
-
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
-
 	public CreateVersionModelMasterRequest withScope(String scope) {
 		this.scope = scope;
 		return this;
 	}
-
 	public Version getCurrentVersion() {
 		return currentVersion;
 	}
-
 	public void setCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 	}
-
 	public CreateVersionModelMasterRequest withCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 		return this;
 	}
-
 	public Boolean getNeedSignature() {
 		return needSignature;
 	}
-
 	public void setNeedSignature(Boolean needSignature) {
 		this.needSignature = needSignature;
 	}
-
 	public CreateVersionModelMasterRequest withNeedSignature(Boolean needSignature) {
 		this.needSignature = needSignature;
 		return this;
 	}
-
 	public String getSignatureKeyId() {
 		return signatureKeyId;
 	}
-
 	public void setSignatureKeyId(String signatureKeyId) {
 		this.signatureKeyId = signatureKeyId;
 	}
-
 	public CreateVersionModelMasterRequest withSignatureKeyId(String signatureKeyId) {
 		this.signatureKeyId = signatureKeyId;
 		return this;

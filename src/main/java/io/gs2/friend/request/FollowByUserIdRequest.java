@@ -32,41 +32,32 @@ public class FollowByUserIdRequest extends Gs2BasicRequest<FollowByUserIdRequest
     private String userId;
     private String targetUserId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public FollowByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public FollowByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTargetUserId() {
 		return targetUserId;
 	}
-
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
-
 	public FollowByUserIdRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;

@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class WrittenBallot implements IModel, Serializable {
 	private Ballot ballot;
 	private List<GameResult> gameResults;
-
 	public Ballot getBallot() {
 		return ballot;
 	}
-
 	public void setBallot(Ballot ballot) {
 		this.ballot = ballot;
 	}
-
 	public WrittenBallot withBallot(Ballot ballot) {
 		this.ballot = ballot;
 		return this;
 	}
-
 	public List<GameResult> getGameResults() {
 		return gameResults;
 	}
-
 	public void setGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 	}
-
 	public WrittenBallot withGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 		return this;

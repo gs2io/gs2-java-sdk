@@ -32,54 +32,42 @@ public class GetSubscribeByUserIdRequest extends Gs2BasicRequest<GetSubscribeByU
     private String categoryName;
     private String userId;
     private String targetUserId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetSubscribeByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public GetSubscribeByUserIdRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetSubscribeByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTargetUserId() {
 		return targetUserId;
 	}
-
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
-
 	public GetSubscribeByUserIdRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;

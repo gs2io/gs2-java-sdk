@@ -31,28 +31,22 @@ import io.gs2.inventory.model.GitHubCheckoutSetting;
 public class UpdateCurrentItemModelMasterFromGitHubRequest extends Gs2BasicRequest<UpdateCurrentItemModelMasterFromGitHubRequest> {
     private String namespaceName;
     private GitHubCheckoutSetting checkoutSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateCurrentItemModelMasterFromGitHubRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public GitHubCheckoutSetting getCheckoutSetting() {
 		return checkoutSetting;
 	}
-
 	public void setCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 	}
-
 	public UpdateCurrentItemModelMasterFromGitHubRequest withCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
 		this.checkoutSetting = checkoutSetting;
 		return this;

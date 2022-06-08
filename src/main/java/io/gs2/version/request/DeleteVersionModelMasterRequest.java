@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteVersionModelMasterRequest extends Gs2BasicRequest<DeleteVersionModelMasterRequest> {
     private String namespaceName;
     private String versionName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteVersionModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getVersionName() {
 		return versionName;
 	}
-
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
-
 	public DeleteVersionModelMasterRequest withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;

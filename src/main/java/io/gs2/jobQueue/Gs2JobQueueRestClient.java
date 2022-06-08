@@ -156,7 +156,9 @@ import io.gs2.jobQueue.model.*;public class Gs2JobQueueRestClient extends Abstra
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("enableAutoRun", request.getEnableAutoRun());
                     put("pushNotification", request.getPushNotification() != null ? request.getPushNotification().toJson() : null);
+                    put("runNotification", request.getRunNotification() != null ? request.getRunNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -399,7 +401,9 @@ import io.gs2.jobQueue.model.*;public class Gs2JobQueueRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("enableAutoRun", request.getEnableAutoRun());
                     put("pushNotification", request.getPushNotification() != null ? request.getPushNotification().toJson() : null);
+                    put("runNotification", request.getRunNotification() != null ? request.getRunNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -1105,6 +1109,172 @@ import io.gs2.jobQueue.model.*;public class Gs2JobQueueRestClient extends Abstra
     ) {
         final AsyncResult<PushByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         pushByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetJobResultTask extends Gs2RestSessionTask<GetJobResultResult> {
+        private GetJobResultRequest request;
+
+        public GetJobResultTask(
+            GetJobResultRequest request,
+            AsyncAction<AsyncResult<GetJobResultResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetJobResultResult parse(JsonNode data) {
+            return GetJobResultResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "job-queue")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/job/{jobName}/result";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{jobName}", this.request.getJobName() == null || this.request.getJobName().length() == 0 ? "null" : String.valueOf(this.request.getJobName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getJobResultAsync(
+            GetJobResultRequest request,
+            AsyncAction<AsyncResult<GetJobResultResult>> callback
+    ) {
+        GetJobResultTask task = new GetJobResultTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetJobResultResult getJobResult(
+            GetJobResultRequest request
+    ) {
+        final AsyncResult<GetJobResultResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getJobResultAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetJobResultByUserIdTask extends Gs2RestSessionTask<GetJobResultByUserIdResult> {
+        private GetJobResultByUserIdRequest request;
+
+        public GetJobResultByUserIdTask(
+            GetJobResultByUserIdRequest request,
+            AsyncAction<AsyncResult<GetJobResultByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetJobResultByUserIdResult parse(JsonNode data) {
+            return GetJobResultByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "job-queue")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/job/{jobName}/result";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{jobName}", this.request.getJobName() == null || this.request.getJobName().length() == 0 ? "null" : String.valueOf(this.request.getJobName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getJobResultByUserIdAsync(
+            GetJobResultByUserIdRequest request,
+            AsyncAction<AsyncResult<GetJobResultByUserIdResult>> callback
+    ) {
+        GetJobResultByUserIdTask task = new GetJobResultByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetJobResultByUserIdResult getJobResultByUserId(
+            GetJobResultByUserIdRequest request
+    ) {
+        final AsyncResult<GetJobResultByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getJobResultByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

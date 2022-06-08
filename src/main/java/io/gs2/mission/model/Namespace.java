@@ -42,171 +42,138 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private Long updatedAt;
 	private String queueNamespaceId;
 	private String keyId;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
-
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
-
 	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-
 	public ScriptSetting getMissionCompleteScript() {
 		return missionCompleteScript;
 	}
-
 	public void setMissionCompleteScript(ScriptSetting missionCompleteScript) {
 		this.missionCompleteScript = missionCompleteScript;
 	}
-
 	public Namespace withMissionCompleteScript(ScriptSetting missionCompleteScript) {
 		this.missionCompleteScript = missionCompleteScript;
 		return this;
 	}
-
 	public ScriptSetting getCounterIncrementScript() {
 		return counterIncrementScript;
 	}
-
 	public void setCounterIncrementScript(ScriptSetting counterIncrementScript) {
 		this.counterIncrementScript = counterIncrementScript;
 	}
-
 	public Namespace withCounterIncrementScript(ScriptSetting counterIncrementScript) {
 		this.counterIncrementScript = counterIncrementScript;
 		return this;
 	}
-
 	public ScriptSetting getReceiveRewardsScript() {
 		return receiveRewardsScript;
 	}
-
 	public void setReceiveRewardsScript(ScriptSetting receiveRewardsScript) {
 		this.receiveRewardsScript = receiveRewardsScript;
 	}
-
 	public Namespace withReceiveRewardsScript(ScriptSetting receiveRewardsScript) {
 		this.receiveRewardsScript = receiveRewardsScript;
 		return this;
 	}
-
 	public NotificationSetting getCompleteNotification() {
 		return completeNotification;
 	}
-
 	public void setCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 	}
-
 	public Namespace withCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
-
+    @Deprecated
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
-
+    @Deprecated
 	public void setQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 	}
-
+    @Deprecated
 	public Namespace withQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 		return this;
 	}
-
+    @Deprecated
 	public String getKeyId() {
 		return keyId;
 	}
-
+    @Deprecated
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
+    @Deprecated
 	public Namespace withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

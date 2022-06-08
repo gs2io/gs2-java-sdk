@@ -32,54 +32,42 @@ public class PrepareReUploadRequest extends Gs2BasicRequest<PrepareReUploadReque
     private String dataObjectName;
     private String accessToken;
     private String contentType;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PrepareReUploadRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDataObjectName() {
 		return dataObjectName;
 	}
-
 	public void setDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 	}
-
 	public PrepareReUploadRequest withDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public PrepareReUploadRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getContentType() {
 		return contentType;
 	}
-
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
-
 	public PrepareReUploadRequest withContentType(String contentType) {
 		this.contentType = contentType;
 		return this;

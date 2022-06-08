@@ -34,80 +34,62 @@ public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMes
     private String userId;
     private Long startAt;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeMessagesByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public DescribeMessagesByUserIdRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public DescribeMessagesByUserIdRequest withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DescribeMessagesByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getStartAt() {
 		return startAt;
 	}
-
 	public void setStartAt(Long startAt) {
 		this.startAt = startAt;
 	}
-
 	public DescribeMessagesByUserIdRequest withStartAt(Long startAt) {
 		this.startAt = startAt;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeMessagesByUserIdRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

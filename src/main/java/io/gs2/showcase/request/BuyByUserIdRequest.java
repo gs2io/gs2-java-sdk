@@ -34,67 +34,52 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
     private String displayItemId;
     private String userId;
     private List<Config> config;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public BuyByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getShowcaseName() {
 		return showcaseName;
 	}
-
 	public void setShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 	}
-
 	public BuyByUserIdRequest withShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 		return this;
 	}
-
 	public String getDisplayItemId() {
 		return displayItemId;
 	}
-
 	public void setDisplayItemId(String displayItemId) {
 		this.displayItemId = displayItemId;
 	}
-
 	public BuyByUserIdRequest withDisplayItemId(String displayItemId) {
 		this.displayItemId = displayItemId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public BuyByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public BuyByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

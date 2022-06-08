@@ -33,67 +33,52 @@ public class GetFormWithSignatureByUserIdRequest extends Gs2BasicRequest<GetForm
     private String moldName;
     private Integer index;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetFormWithSignatureByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetFormWithSignatureByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMoldName() {
 		return moldName;
 	}
-
 	public void setMoldName(String moldName) {
 		this.moldName = moldName;
 	}
-
 	public GetFormWithSignatureByUserIdRequest withMoldName(String moldName) {
 		this.moldName = moldName;
 		return this;
 	}
-
 	public Integer getIndex() {
 		return index;
 	}
-
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
-
 	public GetFormWithSignatureByUserIdRequest withIndex(Integer index) {
 		this.index = index;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public GetFormWithSignatureByUserIdRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

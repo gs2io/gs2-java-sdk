@@ -32,54 +32,42 @@ public class GetAwaitRequest extends Gs2BasicRequest<GetAwaitRequest> {
     private String accessToken;
     private String rateName;
     private String awaitName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetAwaitRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetAwaitRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public GetAwaitRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getAwaitName() {
 		return awaitName;
 	}
-
 	public void setAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 	}
-
 	public GetAwaitRequest withAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 		return this;

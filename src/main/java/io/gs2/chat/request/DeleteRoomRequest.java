@@ -31,41 +31,32 @@ public class DeleteRoomRequest extends Gs2BasicRequest<DeleteRoomRequest> {
     private String namespaceName;
     private String roomName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteRoomRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public DeleteRoomRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DeleteRoomRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

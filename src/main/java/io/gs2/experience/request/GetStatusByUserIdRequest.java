@@ -32,54 +32,42 @@ public class GetStatusByUserIdRequest extends Gs2BasicRequest<GetStatusByUserIdR
     private String userId;
     private String experienceName;
     private String propertyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetStatusByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetStatusByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getExperienceName() {
 		return experienceName;
 	}
-
 	public void setExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 	}
-
 	public GetStatusByUserIdRequest withExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 		return this;
 	}
-
 	public String getPropertyId() {
 		return propertyId;
 	}
-
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
-
 	public GetStatusByUserIdRequest withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;

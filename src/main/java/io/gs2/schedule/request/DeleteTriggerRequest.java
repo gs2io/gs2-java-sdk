@@ -31,41 +31,32 @@ public class DeleteTriggerRequest extends Gs2BasicRequest<DeleteTriggerRequest> 
     private String namespaceName;
     private String accessToken;
     private String triggerName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteTriggerRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DeleteTriggerRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getTriggerName() {
 		return triggerName;
 	}
-
 	public void setTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 	}
-
 	public DeleteTriggerRequest withTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 		return this;

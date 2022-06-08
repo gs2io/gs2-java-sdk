@@ -34,67 +34,52 @@ public class DistributorModel implements IModel, Serializable, Comparable<Distri
 	private String metadata;
 	private String inboxNamespaceId;
 	private List<String> whiteListTargetIds;
-
 	public String getDistributorModelId() {
 		return distributorModelId;
 	}
-
 	public void setDistributorModelId(String distributorModelId) {
 		this.distributorModelId = distributorModelId;
 	}
-
 	public DistributorModel withDistributorModelId(String distributorModelId) {
 		this.distributorModelId = distributorModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public DistributorModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public DistributorModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getInboxNamespaceId() {
 		return inboxNamespaceId;
 	}
-
 	public void setInboxNamespaceId(String inboxNamespaceId) {
 		this.inboxNamespaceId = inboxNamespaceId;
 	}
-
 	public DistributorModel withInboxNamespaceId(String inboxNamespaceId) {
 		this.inboxNamespaceId = inboxNamespaceId;
 		return this;
 	}
-
 	public List<String> getWhiteListTargetIds() {
 		return whiteListTargetIds;
 	}
-
 	public void setWhiteListTargetIds(List<String> whiteListTargetIds) {
 		this.whiteListTargetIds = whiteListTargetIds;
 	}
-
 	public DistributorModel withWhiteListTargetIds(List<String> whiteListTargetIds) {
 		this.whiteListTargetIds = whiteListTargetIds;
 		return this;

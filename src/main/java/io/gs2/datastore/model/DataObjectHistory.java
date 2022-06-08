@@ -34,67 +34,52 @@ public class DataObjectHistory implements IModel, Serializable, Comparable<DataO
 	private String generation;
 	private Long contentLength;
 	private Long createdAt;
-
 	public String getDataObjectHistoryId() {
 		return dataObjectHistoryId;
 	}
-
 	public void setDataObjectHistoryId(String dataObjectHistoryId) {
 		this.dataObjectHistoryId = dataObjectHistoryId;
 	}
-
 	public DataObjectHistory withDataObjectHistoryId(String dataObjectHistoryId) {
 		this.dataObjectHistoryId = dataObjectHistoryId;
 		return this;
 	}
-
 	public String getDataObjectName() {
 		return dataObjectName;
 	}
-
 	public void setDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 	}
-
 	public DataObjectHistory withDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 		return this;
 	}
-
 	public String getGeneration() {
 		return generation;
 	}
-
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
-
 	public DataObjectHistory withGeneration(String generation) {
 		this.generation = generation;
 		return this;
 	}
-
 	public Long getContentLength() {
 		return contentLength;
 	}
-
 	public void setContentLength(Long contentLength) {
 		this.contentLength = contentLength;
 	}
-
 	public DataObjectHistory withContentLength(Long contentLength) {
 		this.contentLength = contentLength;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public DataObjectHistory withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

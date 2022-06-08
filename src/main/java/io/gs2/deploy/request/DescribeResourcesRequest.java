@@ -31,41 +31,32 @@ public class DescribeResourcesRequest extends Gs2BasicRequest<DescribeResourcesR
     private String stackName;
     private String pageToken;
     private Integer limit;
-
 	public String getStackName() {
 		return stackName;
 	}
-
 	public void setStackName(String stackName) {
 		this.stackName = stackName;
 	}
-
 	public DescribeResourcesRequest withStackName(String stackName) {
 		this.stackName = stackName;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeResourcesRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeResourcesRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

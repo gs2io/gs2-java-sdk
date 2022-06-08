@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetScriptRequest extends Gs2BasicRequest<GetScriptRequest> {
     private String namespaceName;
     private String scriptName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetScriptRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getScriptName() {
 		return scriptName;
 	}
-
 	public void setScriptName(String scriptName) {
 		this.scriptName = scriptName;
 	}
-
 	public GetScriptRequest withScriptName(String scriptName) {
 		this.scriptName = scriptName;
 		return this;

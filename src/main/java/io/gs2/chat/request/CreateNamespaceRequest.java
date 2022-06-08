@@ -41,132 +41,102 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting unsubscribeRoomScript;
     private NotificationSetting postNotification;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Boolean getAllowCreateRoom() {
 		return allowCreateRoom;
 	}
-
 	public void setAllowCreateRoom(Boolean allowCreateRoom) {
 		this.allowCreateRoom = allowCreateRoom;
 	}
-
 	public CreateNamespaceRequest withAllowCreateRoom(Boolean allowCreateRoom) {
 		this.allowCreateRoom = allowCreateRoom;
 		return this;
 	}
-
 	public ScriptSetting getPostMessageScript() {
 		return postMessageScript;
 	}
-
 	public void setPostMessageScript(ScriptSetting postMessageScript) {
 		this.postMessageScript = postMessageScript;
 	}
-
 	public CreateNamespaceRequest withPostMessageScript(ScriptSetting postMessageScript) {
 		this.postMessageScript = postMessageScript;
 		return this;
 	}
-
 	public ScriptSetting getCreateRoomScript() {
 		return createRoomScript;
 	}
-
 	public void setCreateRoomScript(ScriptSetting createRoomScript) {
 		this.createRoomScript = createRoomScript;
 	}
-
 	public CreateNamespaceRequest withCreateRoomScript(ScriptSetting createRoomScript) {
 		this.createRoomScript = createRoomScript;
 		return this;
 	}
-
 	public ScriptSetting getDeleteRoomScript() {
 		return deleteRoomScript;
 	}
-
 	public void setDeleteRoomScript(ScriptSetting deleteRoomScript) {
 		this.deleteRoomScript = deleteRoomScript;
 	}
-
 	public CreateNamespaceRequest withDeleteRoomScript(ScriptSetting deleteRoomScript) {
 		this.deleteRoomScript = deleteRoomScript;
 		return this;
 	}
-
 	public ScriptSetting getSubscribeRoomScript() {
 		return subscribeRoomScript;
 	}
-
 	public void setSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
 		this.subscribeRoomScript = subscribeRoomScript;
 	}
-
 	public CreateNamespaceRequest withSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
 		this.subscribeRoomScript = subscribeRoomScript;
 		return this;
 	}
-
 	public ScriptSetting getUnsubscribeRoomScript() {
 		return unsubscribeRoomScript;
 	}
-
 	public void setUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
 		this.unsubscribeRoomScript = unsubscribeRoomScript;
 	}
-
 	public CreateNamespaceRequest withUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
 		this.unsubscribeRoomScript = unsubscribeRoomScript;
 		return this;
 	}
-
 	public NotificationSetting getPostNotification() {
 		return postNotification;
 	}
-
 	public void setPostNotification(NotificationSetting postNotification) {
 		this.postNotification = postNotification;
 	}
-
 	public CreateNamespaceRequest withPostNotification(NotificationSetting postNotification) {
 		this.postNotification = postNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

@@ -41,158 +41,122 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
 	private List<AcquireAction> acquireActions;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getRateModelId() {
 		return rateModelId;
 	}
-
 	public void setRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 	}
-
 	public RateModelMaster withRateModelId(String rateModelId) {
 		this.rateModelId = rateModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public RateModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public RateModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public RateModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
-
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
-
 	public RateModelMaster withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;
 	}
-
 	public String getTimingType() {
 		return timingType;
 	}
-
 	public void setTimingType(String timingType) {
 		this.timingType = timingType;
 	}
-
 	public RateModelMaster withTimingType(String timingType) {
 		this.timingType = timingType;
 		return this;
 	}
-
 	public Integer getLockTime() {
 		return lockTime;
 	}
-
 	public void setLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 	}
-
 	public RateModelMaster withLockTime(Integer lockTime) {
 		this.lockTime = lockTime;
 		return this;
 	}
-
 	public Boolean getEnableSkip() {
 		return enableSkip;
 	}
-
 	public void setEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 	}
-
 	public RateModelMaster withEnableSkip(Boolean enableSkip) {
 		this.enableSkip = enableSkip;
 		return this;
 	}
-
 	public List<ConsumeAction> getSkipConsumeActions() {
 		return skipConsumeActions;
 	}
-
 	public void setSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 	}
-
 	public RateModelMaster withSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
 		this.skipConsumeActions = skipConsumeActions;
 		return this;
 	}
-
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
-
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
-
 	public RateModelMaster withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public RateModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public RateModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

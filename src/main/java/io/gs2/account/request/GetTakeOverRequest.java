@@ -31,41 +31,32 @@ public class GetTakeOverRequest extends Gs2BasicRequest<GetTakeOverRequest> {
     private String namespaceName;
     private String accessToken;
     private Integer type;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetTakeOverRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetTakeOverRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Integer getType() {
 		return type;
 	}
-
 	public void setType(Integer type) {
 		this.type = type;
 	}
-
 	public GetTakeOverRequest withType(Integer type) {
 		this.type = type;
 		return this;

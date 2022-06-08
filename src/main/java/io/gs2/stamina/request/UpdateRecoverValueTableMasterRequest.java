@@ -34,80 +34,62 @@ public class UpdateRecoverValueTableMasterRequest extends Gs2BasicRequest<Update
     private String metadata;
     private String experienceModelId;
     private List<Integer> values;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateRecoverValueTableMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRecoverValueTableName() {
 		return recoverValueTableName;
 	}
-
 	public void setRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 	}
-
 	public UpdateRecoverValueTableMasterRequest withRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateRecoverValueTableMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateRecoverValueTableMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public UpdateRecoverValueTableMasterRequest withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public List<Integer> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
-
 	public UpdateRecoverValueTableMasterRequest withValues(List<Integer> values) {
 		this.values = values;
 		return this;

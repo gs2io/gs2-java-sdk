@@ -31,41 +31,32 @@ public class GetInventoryRequest extends Gs2BasicRequest<GetInventoryRequest> {
     private String namespaceName;
     private String inventoryName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetInventoryRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public GetInventoryRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetInventoryRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

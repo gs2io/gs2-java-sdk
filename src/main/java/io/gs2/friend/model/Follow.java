@@ -34,67 +34,52 @@ public class Follow implements IModel, Serializable, Comparable<Follow> {
 	private List<String> targetUserIds;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getFollowId() {
 		return followId;
 	}
-
 	public void setFollowId(String followId) {
 		this.followId = followId;
 	}
-
 	public Follow withFollowId(String followId) {
 		this.followId = followId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Follow withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getTargetUserIds() {
 		return targetUserIds;
 	}
-
 	public void setTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 	}
-
 	public Follow withTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Follow withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Follow withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

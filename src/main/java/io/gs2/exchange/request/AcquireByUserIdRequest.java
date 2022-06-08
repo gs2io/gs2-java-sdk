@@ -35,67 +35,52 @@ public class AcquireByUserIdRequest extends Gs2BasicRequest<AcquireByUserIdReque
     private String awaitName;
     private List<Config> config;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AcquireByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AcquireByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public AcquireByUserIdRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getAwaitName() {
 		return awaitName;
 	}
-
 	public void setAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 	}
-
 	public AcquireByUserIdRequest withAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public AcquireByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

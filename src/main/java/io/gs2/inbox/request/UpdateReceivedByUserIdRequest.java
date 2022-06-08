@@ -32,41 +32,32 @@ public class UpdateReceivedByUserIdRequest extends Gs2BasicRequest<UpdateReceive
     private String userId;
     private List<String> receivedGlobalMessageNames;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateReceivedByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public UpdateReceivedByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getReceivedGlobalMessageNames() {
 		return receivedGlobalMessageNames;
 	}
-
 	public void setReceivedGlobalMessageNames(List<String> receivedGlobalMessageNames) {
 		this.receivedGlobalMessageNames = receivedGlobalMessageNames;
 	}
-
 	public UpdateReceivedByUserIdRequest withReceivedGlobalMessageNames(List<String> receivedGlobalMessageNames) {
 		this.receivedGlobalMessageNames = receivedGlobalMessageNames;
 		return this;

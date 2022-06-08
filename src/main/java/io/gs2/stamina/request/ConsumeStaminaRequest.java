@@ -32,54 +32,42 @@ public class ConsumeStaminaRequest extends Gs2BasicRequest<ConsumeStaminaRequest
     private String staminaName;
     private String accessToken;
     private Integer consumeValue;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public ConsumeStaminaRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public ConsumeStaminaRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public ConsumeStaminaRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Integer getConsumeValue() {
 		return consumeValue;
 	}
-
 	public void setConsumeValue(Integer consumeValue) {
 		this.consumeValue = consumeValue;
 	}
-
 	public ConsumeStaminaRequest withConsumeValue(Integer consumeValue) {
 		this.consumeValue = consumeValue;
 		return this;

@@ -32,41 +32,32 @@ public class SetUserIdByUserIdRequest extends Gs2BasicRequest<SetUserIdByUserIdR
     private String userId;
     private Boolean allowConcurrentAccess;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetUserIdByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SetUserIdByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Boolean getAllowConcurrentAccess() {
 		return allowConcurrentAccess;
 	}
-
 	public void setAllowConcurrentAccess(Boolean allowConcurrentAccess) {
 		this.allowConcurrentAccess = allowConcurrentAccess;
 	}
-
 	public SetUserIdByUserIdRequest withAllowConcurrentAccess(Boolean allowConcurrentAccess) {
 		this.allowConcurrentAccess = allowConcurrentAccess;
 		return this;

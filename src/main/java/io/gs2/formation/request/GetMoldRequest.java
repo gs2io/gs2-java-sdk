@@ -31,41 +31,32 @@ public class GetMoldRequest extends Gs2BasicRequest<GetMoldRequest> {
     private String namespaceName;
     private String accessToken;
     private String moldName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetMoldRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetMoldRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getMoldName() {
 		return moldName;
 	}
-
 	public void setMoldName(String moldName) {
 		this.moldName = moldName;
 	}
-
 	public GetMoldRequest withMoldName(String moldName) {
 		this.moldName = moldName;
 		return this;

@@ -38,119 +38,92 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 	private Float rate;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getProgressId() {
 		return progressId;
 	}
-
 	public void setProgressId(String progressId) {
 		this.progressId = progressId;
 	}
-
 	public Progress withProgressId(String progressId) {
 		this.progressId = progressId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Progress withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public Progress withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Progress withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getPropertyId() {
 		return propertyId;
 	}
-
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
-
 	public Progress withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;
 	}
-
 	public Integer getExperienceValue() {
 		return experienceValue;
 	}
-
 	public void setExperienceValue(Integer experienceValue) {
 		this.experienceValue = experienceValue;
 	}
-
 	public Progress withExperienceValue(Integer experienceValue) {
 		this.experienceValue = experienceValue;
 		return this;
 	}
-
 	public Float getRate() {
 		return rate;
 	}
-
 	public void setRate(Float rate) {
 		this.rate = rate;
 	}
-
 	public Progress withRate(Float rate) {
 		this.rate = rate;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Progress withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Progress withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

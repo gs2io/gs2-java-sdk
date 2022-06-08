@@ -37,93 +37,72 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
     private String accessToken;
     private Boolean force;
     private List<Config> config;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public StartRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public StartRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getTargetItemSetId() {
 		return targetItemSetId;
 	}
-
 	public void setTargetItemSetId(String targetItemSetId) {
 		this.targetItemSetId = targetItemSetId;
 	}
-
 	public StartRequest withTargetItemSetId(String targetItemSetId) {
 		this.targetItemSetId = targetItemSetId;
 		return this;
 	}
-
 	public List<Material> getMaterials() {
 		return materials;
 	}
-
 	public void setMaterials(List<Material> materials) {
 		this.materials = materials;
 	}
-
 	public StartRequest withMaterials(List<Material> materials) {
 		this.materials = materials;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public StartRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Boolean getForce() {
 		return force;
 	}
-
 	public void setForce(Boolean force) {
 		this.force = force;
 	}
-
 	public StartRequest withForce(Boolean force) {
 		this.force = force;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public StartRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

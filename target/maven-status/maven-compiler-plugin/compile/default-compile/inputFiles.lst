@@ -1538,6 +1538,7 @@
 /root/project/java/src/main/java/io/gs2/enhance/request/StartByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/friend/result/RegisterBlackListResult.java
 /root/project/java/src/main/java/io/gs2/enhance/request/DescribeProgressesByUserIdRequest.java
+/root/project/java/src/main/java/io/gs2/jobQueue/result/GetJobResultResult.java
 /root/project/java/src/main/java/io/gs2/deploy/result/ValidateResult.java
 /root/project/java/src/main/java/io/gs2/mission/request/CompleteByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/request/GetInventoryModelMasterRequest.java
@@ -1838,6 +1839,7 @@
 /root/project/java/src/main/java/io/gs2/gateway/result/SetUserIdResult.java
 /root/project/java/src/main/java/io/gs2/schedule/result/ExportMasterResult.java
 /root/project/java/src/main/java/io/gs2/quest/request/GetCurrentQuestMasterRequest.java
+/root/project/java/src/main/java/io/gs2/jobQueue/result/GetJobResultByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/ranking/Gs2RankingRestClient.java
 /root/project/java/src/main/java/io/gs2/inventory/request/ExportMasterRequest.java
 /root/project/java/src/main/java/io/gs2/news/request/GetNamespaceRequest.java
@@ -1898,6 +1900,7 @@
 /root/project/java/src/main/java/io/gs2/project/request/CreateProjectRequest.java
 /root/project/java/src/main/java/io/gs2/lottery/result/DescribeLotteryModelMastersResult.java
 /root/project/java/src/main/java/io/gs2/gateway/request/DescribeNamespacesRequest.java
+/root/project/java/src/main/java/io/gs2/jobQueue/request/GetJobResultRequest.java
 /root/project/java/src/main/java/io/gs2/ranking/request/GetScoreRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/request/GetNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/DoMatchmakingByUserIdRequest.java
@@ -1945,6 +1948,7 @@
 /root/project/java/src/main/java/io/gs2/identifier/result/UpdateSecurityPolicyResult.java
 /root/project/java/src/main/java/io/gs2/experience/result/GetExperienceModelResult.java
 /root/project/java/src/main/java/io/gs2/jobQueue/model/JobResultBody.java
+/root/project/java/src/main/java/io/gs2/jobQueue/request/GetJobResultByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/formation/result/GetMoldResult.java
 /root/project/java/src/main/java/io/gs2/ranking/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/request/DirectEnhanceRequest.java

@@ -34,67 +34,52 @@ public class CompleteRequest extends Gs2BasicRequest<CompleteRequest> {
     private String missionTaskName;
     private String accessToken;
     private List<Config> config;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CompleteRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMissionGroupName() {
 		return missionGroupName;
 	}
-
 	public void setMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 	}
-
 	public CompleteRequest withMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 		return this;
 	}
-
 	public String getMissionTaskName() {
 		return missionTaskName;
 	}
-
 	public void setMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 	}
-
 	public CompleteRequest withMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public CompleteRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public CompleteRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

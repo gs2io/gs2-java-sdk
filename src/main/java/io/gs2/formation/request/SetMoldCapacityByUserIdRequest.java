@@ -33,54 +33,42 @@ public class SetMoldCapacityByUserIdRequest extends Gs2BasicRequest<SetMoldCapac
     private String moldName;
     private Integer capacity;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetMoldCapacityByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SetMoldCapacityByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMoldName() {
 		return moldName;
 	}
-
 	public void setMoldName(String moldName) {
 		this.moldName = moldName;
 	}
-
 	public SetMoldCapacityByUserIdRequest withMoldName(String moldName) {
 		this.moldName = moldName;
 		return this;
 	}
-
 	public Integer getCapacity() {
 		return capacity;
 	}
-
 	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
-
 	public SetMoldCapacityByUserIdRequest withCapacity(Integer capacity) {
 		this.capacity = capacity;
 		return this;

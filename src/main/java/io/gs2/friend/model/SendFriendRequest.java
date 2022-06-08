@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class SendFriendRequest implements IModel, Serializable, Comparable<SendFriendRequest> {
 	private String userId;
 	private String targetUserId;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SendFriendRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTargetUserId() {
 		return targetUserId;
 	}
-
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
-
 	public SendFriendRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;

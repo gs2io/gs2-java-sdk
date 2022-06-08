@@ -31,41 +31,32 @@ public class DescribeProbabilitiesByUserIdRequest extends Gs2BasicRequest<Descri
     private String namespaceName;
     private String lotteryName;
     private String userId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeProbabilitiesByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getLotteryName() {
 		return lotteryName;
 	}
-
 	public void setLotteryName(String lotteryName) {
 		this.lotteryName = lotteryName;
 	}
-
 	public DescribeProbabilitiesByUserIdRequest withLotteryName(String lotteryName) {
 		this.lotteryName = lotteryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DescribeProbabilitiesByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

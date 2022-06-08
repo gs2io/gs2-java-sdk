@@ -35,80 +35,62 @@ public class Form implements IModel, Serializable, Comparable<Form> {
 	private List<Slot> slots;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getFormId() {
 		return formId;
 	}
-
 	public void setFormId(String formId) {
 		this.formId = formId;
 	}
-
 	public Form withFormId(String formId) {
 		this.formId = formId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Form withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public Integer getIndex() {
 		return index;
 	}
-
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
-
 	public Form withIndex(Integer index) {
 		this.index = index;
 		return this;
 	}
-
 	public List<Slot> getSlots() {
 		return slots;
 	}
-
 	public void setSlots(List<Slot> slots) {
 		this.slots = slots;
 	}
-
 	public Form withSlots(List<Slot> slots) {
 		this.slots = slots;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Form withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Form withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

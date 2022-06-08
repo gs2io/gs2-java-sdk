@@ -35,80 +35,62 @@ public class SecurityPolicy implements IModel, Serializable, Comparable<Security
 	private String policy;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getSecurityPolicyId() {
 		return securityPolicyId;
 	}
-
 	public void setSecurityPolicyId(String securityPolicyId) {
 		this.securityPolicyId = securityPolicyId;
 	}
-
 	public SecurityPolicy withSecurityPolicyId(String securityPolicyId) {
 		this.securityPolicyId = securityPolicyId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public SecurityPolicy withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public SecurityPolicy withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getPolicy() {
 		return policy;
 	}
-
 	public void setPolicy(String policy) {
 		this.policy = policy;
 	}
-
 	public SecurityPolicy withPolicy(String policy) {
 		this.policy = policy;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public SecurityPolicy withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public SecurityPolicy withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

@@ -33,54 +33,42 @@ public class Entry implements IModel, Serializable, Comparable<Entry> {
 	private String userId;
 	private String name;
 	private Long acquiredAt;
-
 	public String getEntryId() {
 		return entryId;
 	}
-
 	public void setEntryId(String entryId) {
 		this.entryId = entryId;
 	}
-
 	public Entry withEntryId(String entryId) {
 		this.entryId = entryId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Entry withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Entry withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public Long getAcquiredAt() {
 		return acquiredAt;
 	}
-
 	public void setAcquiredAt(Long acquiredAt) {
 		this.acquiredAt = acquiredAt;
 	}
-
 	public Entry withAcquiredAt(Long acquiredAt) {
 		this.acquiredAt = acquiredAt;
 		return this;

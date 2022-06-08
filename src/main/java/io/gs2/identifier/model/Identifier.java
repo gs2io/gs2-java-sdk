@@ -33,54 +33,42 @@ public class Identifier implements IModel, Serializable, Comparable<Identifier> 
 	private String userName;
 	private String clientSecret;
 	private Long createdAt;
-
 	public String getClientId() {
 		return clientId;
 	}
-
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
-
 	public Identifier withClientId(String clientId) {
 		this.clientId = clientId;
 		return this;
 	}
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
 	public Identifier withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-
 	public String getClientSecret() {
 		return clientSecret;
 	}
-
 	public void setClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
 	}
-
 	public Identifier withClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Identifier withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

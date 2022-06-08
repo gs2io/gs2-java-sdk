@@ -32,54 +32,42 @@ public class DeleteTakeOverRequest extends Gs2BasicRequest<DeleteTakeOverRequest
     private String accessToken;
     private Integer type;
     private String userIdentifier;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteTakeOverRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DeleteTakeOverRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Integer getType() {
 		return type;
 	}
-
 	public void setType(Integer type) {
 		this.type = type;
 	}
-
 	public DeleteTakeOverRequest withType(Integer type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getUserIdentifier() {
 		return userIdentifier;
 	}
-
 	public void setUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 	}
-
 	public DeleteTakeOverRequest withUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 		return this;

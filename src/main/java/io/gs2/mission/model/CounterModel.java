@@ -34,67 +34,52 @@ public class CounterModel implements IModel, Serializable, Comparable<CounterMod
 	private String metadata;
 	private List<CounterScopeModel> scopes;
 	private String challengePeriodEventId;
-
 	public String getCounterId() {
 		return counterId;
 	}
-
 	public void setCounterId(String counterId) {
 		this.counterId = counterId;
 	}
-
 	public CounterModel withCounterId(String counterId) {
 		this.counterId = counterId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CounterModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CounterModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<CounterScopeModel> getScopes() {
 		return scopes;
 	}
-
 	public void setScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 	}
-
 	public CounterModel withScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public CounterModel withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;

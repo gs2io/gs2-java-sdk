@@ -38,119 +38,92 @@ public class VersionModel implements IModel, Serializable, Comparable<VersionMod
 	private Version currentVersion;
 	private Boolean needSignature;
 	private String signatureKeyId;
-
 	public String getVersionModelId() {
 		return versionModelId;
 	}
-
 	public void setVersionModelId(String versionModelId) {
 		this.versionModelId = versionModelId;
 	}
-
 	public VersionModel withVersionModelId(String versionModelId) {
 		this.versionModelId = versionModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public VersionModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public VersionModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Version getWarningVersion() {
 		return warningVersion;
 	}
-
 	public void setWarningVersion(Version warningVersion) {
 		this.warningVersion = warningVersion;
 	}
-
 	public VersionModel withWarningVersion(Version warningVersion) {
 		this.warningVersion = warningVersion;
 		return this;
 	}
-
 	public Version getErrorVersion() {
 		return errorVersion;
 	}
-
 	public void setErrorVersion(Version errorVersion) {
 		this.errorVersion = errorVersion;
 	}
-
 	public VersionModel withErrorVersion(Version errorVersion) {
 		this.errorVersion = errorVersion;
 		return this;
 	}
-
 	public String getScope() {
 		return scope;
 	}
-
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
-
 	public VersionModel withScope(String scope) {
 		this.scope = scope;
 		return this;
 	}
-
 	public Version getCurrentVersion() {
 		return currentVersion;
 	}
-
 	public void setCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 	}
-
 	public VersionModel withCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 		return this;
 	}
-
 	public Boolean getNeedSignature() {
 		return needSignature;
 	}
-
 	public void setNeedSignature(Boolean needSignature) {
 		this.needSignature = needSignature;
 	}
-
 	public VersionModel withNeedSignature(Boolean needSignature) {
 		this.needSignature = needSignature;
 		return this;
 	}
-
 	public String getSignatureKeyId() {
 		return signatureKeyId;
 	}
-
 	public void setSignatureKeyId(String signatureKeyId) {
 		this.signatureKeyId = signatureKeyId;
 	}
-
 	public VersionModel withSignatureKeyId(String signatureKeyId) {
 		this.signatureKeyId = signatureKeyId;
 		return this;

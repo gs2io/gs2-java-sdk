@@ -38,80 +38,62 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
     private AcquireAction acquireAction;
     private List<AcquireActionConfig> config;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AcquireActionsToFormPropertiesRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AcquireActionsToFormPropertiesRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMoldName() {
 		return moldName;
 	}
-
 	public void setMoldName(String moldName) {
 		this.moldName = moldName;
 	}
-
 	public AcquireActionsToFormPropertiesRequest withMoldName(String moldName) {
 		this.moldName = moldName;
 		return this;
 	}
-
 	public Integer getIndex() {
 		return index;
 	}
-
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
-
 	public AcquireActionsToFormPropertiesRequest withIndex(Integer index) {
 		this.index = index;
 		return this;
 	}
-
 	public AcquireAction getAcquireAction() {
 		return acquireAction;
 	}
-
 	public void setAcquireAction(AcquireAction acquireAction) {
 		this.acquireAction = acquireAction;
 	}
-
 	public AcquireActionsToFormPropertiesRequest withAcquireAction(AcquireAction acquireAction) {
 		this.acquireAction = acquireAction;
 		return this;
 	}
-
 	public List<AcquireActionConfig> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<AcquireActionConfig> config) {
 		this.config = config;
 	}
-
 	public AcquireActionsToFormPropertiesRequest withConfig(List<AcquireActionConfig> config) {
 		this.config = config;
 		return this;

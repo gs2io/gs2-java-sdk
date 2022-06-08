@@ -37,80 +37,62 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
     private Boolean isComplete;
     private List<Config> config;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public EndByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public EndByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public EndByUserIdRequest withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-
 	public List<Reward> getRewards() {
 		return rewards;
 	}
-
 	public void setRewards(List<Reward> rewards) {
 		this.rewards = rewards;
 	}
-
 	public EndByUserIdRequest withRewards(List<Reward> rewards) {
 		this.rewards = rewards;
 		return this;
 	}
-
 	public Boolean getIsComplete() {
 		return isComplete;
 	}
-
 	public void setIsComplete(Boolean isComplete) {
 		this.isComplete = isComplete;
 	}
-
 	public EndByUserIdRequest withIsComplete(Boolean isComplete) {
 		this.isComplete = isComplete;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public EndByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

@@ -33,67 +33,52 @@ public class GetMessageRequest extends Gs2BasicRequest<GetMessageRequest> {
     private String messageName;
     private String password;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetMessageRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public GetMessageRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getMessageName() {
 		return messageName;
 	}
-
 	public void setMessageName(String messageName) {
 		this.messageName = messageName;
 	}
-
 	public GetMessageRequest withMessageName(String messageName) {
 		this.messageName = messageName;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public GetMessageRequest withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetMessageRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

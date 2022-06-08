@@ -38,119 +38,92 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getAssumeUserId() {
 		return assumeUserId;
 	}
-
 	public void setAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 	}
-
 	public Namespace withAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 		return this;
 	}
-
 	public ScriptSetting getAcceptVersionScript() {
 		return acceptVersionScript;
 	}
-
 	public void setAcceptVersionScript(ScriptSetting acceptVersionScript) {
 		this.acceptVersionScript = acceptVersionScript;
 	}
-
 	public Namespace withAcceptVersionScript(ScriptSetting acceptVersionScript) {
 		this.acceptVersionScript = acceptVersionScript;
 		return this;
 	}
-
 	public String getCheckVersionTriggerScriptId() {
 		return checkVersionTriggerScriptId;
 	}
-
 	public void setCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
 		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
 	}
-
 	public Namespace withCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
 		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

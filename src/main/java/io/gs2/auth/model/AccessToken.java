@@ -33,54 +33,42 @@ public class AccessToken implements IModel, Serializable {
 	private String userId;
 	private Long expire;
 	private Integer timeOffset;
-
 	public String getToken() {
 		return token;
 	}
-
 	public void setToken(String token) {
 		this.token = token;
 	}
-
 	public AccessToken withToken(String token) {
 		this.token = token;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AccessToken withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getExpire() {
 		return expire;
 	}
-
 	public void setExpire(Long expire) {
 		this.expire = expire;
 	}
-
 	public AccessToken withExpire(Long expire) {
 		this.expire = expire;
 		return this;
 	}
-
 	public Integer getTimeOffset() {
 		return timeOffset;
 	}
-
 	public void setTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 	}
-
 	public AccessToken withTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 		return this;

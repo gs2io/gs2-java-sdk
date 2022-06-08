@@ -33,54 +33,42 @@ public class PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest extend
     private String dataObjectName;
     private String generation;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getDataObjectName() {
 		return dataObjectName;
 	}
-
 	public void setDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 	}
-
 	public PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest withDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
 		return this;
 	}
-
 	public String getGeneration() {
 		return generation;
 	}
-
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
-
 	public PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest withGeneration(String generation) {
 		this.generation = generation;
 		return this;

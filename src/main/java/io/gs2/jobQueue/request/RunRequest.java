@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class RunRequest extends Gs2BasicRequest<RunRequest> {
     private String namespaceName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public RunRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public RunRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

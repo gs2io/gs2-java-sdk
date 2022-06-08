@@ -40,145 +40,112 @@ public class StaminaModel implements IModel, Serializable, Comparable<StaminaMod
 	private MaxStaminaTable maxStaminaTable;
 	private RecoverIntervalTable recoverIntervalTable;
 	private RecoverValueTable recoverValueTable;
-
 	public String getStaminaModelId() {
 		return staminaModelId;
 	}
-
 	public void setStaminaModelId(String staminaModelId) {
 		this.staminaModelId = staminaModelId;
 	}
-
 	public StaminaModel withStaminaModelId(String staminaModelId) {
 		this.staminaModelId = staminaModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public StaminaModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public StaminaModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Integer getRecoverIntervalMinutes() {
 		return recoverIntervalMinutes;
 	}
-
 	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 	}
-
 	public StaminaModel withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;
 	}
-
 	public Integer getRecoverValue() {
 		return recoverValue;
 	}
-
 	public void setRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 	}
-
 	public StaminaModel withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 		return this;
 	}
-
 	public Integer getInitialCapacity() {
 		return initialCapacity;
 	}
-
 	public void setInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 	}
-
 	public StaminaModel withInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 		return this;
 	}
-
 	public Boolean getIsOverflow() {
 		return isOverflow;
 	}
-
 	public void setIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 	}
-
 	public StaminaModel withIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public StaminaModel withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-
 	public MaxStaminaTable getMaxStaminaTable() {
 		return maxStaminaTable;
 	}
-
 	public void setMaxStaminaTable(MaxStaminaTable maxStaminaTable) {
 		this.maxStaminaTable = maxStaminaTable;
 	}
-
 	public StaminaModel withMaxStaminaTable(MaxStaminaTable maxStaminaTable) {
 		this.maxStaminaTable = maxStaminaTable;
 		return this;
 	}
-
 	public RecoverIntervalTable getRecoverIntervalTable() {
 		return recoverIntervalTable;
 	}
-
 	public void setRecoverIntervalTable(RecoverIntervalTable recoverIntervalTable) {
 		this.recoverIntervalTable = recoverIntervalTable;
 	}
-
 	public StaminaModel withRecoverIntervalTable(RecoverIntervalTable recoverIntervalTable) {
 		this.recoverIntervalTable = recoverIntervalTable;
 		return this;
 	}
-
 	public RecoverValueTable getRecoverValueTable() {
 		return recoverValueTable;
 	}
-
 	public void setRecoverValueTable(RecoverValueTable recoverValueTable) {
 		this.recoverValueTable = recoverValueTable;
 	}
-
 	public StaminaModel withRecoverValueTable(RecoverValueTable recoverValueTable) {
 		this.recoverValueTable = recoverValueTable;
 		return this;

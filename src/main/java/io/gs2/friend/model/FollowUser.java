@@ -32,41 +32,32 @@ public class FollowUser implements IModel, Serializable, Comparable<FollowUser> 
 	private String userId;
 	private String publicProfile;
 	private String followerProfile;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public FollowUser withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getPublicProfile() {
 		return publicProfile;
 	}
-
 	public void setPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 	}
-
 	public FollowUser withPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 		return this;
 	}
-
 	public String getFollowerProfile() {
 		return followerProfile;
 	}
-
 	public void setFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 	}
-
 	public FollowUser withFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 		return this;

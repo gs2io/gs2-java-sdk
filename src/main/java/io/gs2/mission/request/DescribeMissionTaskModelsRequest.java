@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeMissionTaskModelsRequest extends Gs2BasicRequest<DescribeMissionTaskModelsRequest> {
     private String namespaceName;
     private String missionGroupName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeMissionTaskModelsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMissionGroupName() {
 		return missionGroupName;
 	}
-
 	public void setMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 	}
-
 	public DescribeMissionTaskModelsRequest withMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 		return this;

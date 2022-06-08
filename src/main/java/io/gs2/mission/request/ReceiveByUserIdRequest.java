@@ -33,54 +33,42 @@ public class ReceiveByUserIdRequest extends Gs2BasicRequest<ReceiveByUserIdReque
     private String missionTaskName;
     private String userId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public ReceiveByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMissionGroupName() {
 		return missionGroupName;
 	}
-
 	public void setMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 	}
-
 	public ReceiveByUserIdRequest withMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 		return this;
 	}
-
 	public String getMissionTaskName() {
 		return missionTaskName;
 	}
-
 	public void setMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 	}
-
 	public ReceiveByUserIdRequest withMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public ReceiveByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

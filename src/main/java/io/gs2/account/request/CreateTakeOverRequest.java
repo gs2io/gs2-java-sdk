@@ -33,67 +33,52 @@ public class CreateTakeOverRequest extends Gs2BasicRequest<CreateTakeOverRequest
     private Integer type;
     private String userIdentifier;
     private String password;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateTakeOverRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public CreateTakeOverRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Integer getType() {
 		return type;
 	}
-
 	public void setType(Integer type) {
 		this.type = type;
 	}
-
 	public CreateTakeOverRequest withType(Integer type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getUserIdentifier() {
 		return userIdentifier;
 	}
-
 	public void setUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 	}
-
 	public CreateTakeOverRequest withUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public CreateTakeOverRequest withPassword(String password) {
 		this.password = password;
 		return this;

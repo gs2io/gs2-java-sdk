@@ -34,67 +34,52 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
 	private String roomName;
 	private List<NotificationType> notificationTypes;
 	private Long createdAt;
-
 	public String getSubscribeId() {
 		return subscribeId;
 	}
-
 	public void setSubscribeId(String subscribeId) {
 		this.subscribeId = subscribeId;
 	}
-
 	public Subscribe withSubscribeId(String subscribeId) {
 		this.subscribeId = subscribeId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Subscribe withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public Subscribe withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public List<NotificationType> getNotificationTypes() {
 		return notificationTypes;
 	}
-
 	public void setNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 	}
-
 	public Subscribe withNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Subscribe withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

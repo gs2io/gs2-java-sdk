@@ -31,41 +31,32 @@ public class WantRoomRequest extends Gs2BasicRequest<WantRoomRequest> {
     private String namespaceName;
     private String name;
     private List<String> notificationUserIds;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public WantRoomRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public WantRoomRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public List<String> getNotificationUserIds() {
 		return notificationUserIds;
 	}
-
 	public void setNotificationUserIds(List<String> notificationUserIds) {
 		this.notificationUserIds = notificationUserIds;
 	}
-
 	public WantRoomRequest withNotificationUserIds(List<String> notificationUserIds) {
 		this.notificationUserIds = notificationUserIds;
 		return this;

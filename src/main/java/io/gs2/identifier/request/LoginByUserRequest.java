@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class LoginByUserRequest extends Gs2BasicRequest<LoginByUserRequest> {
     private String userName;
     private String password;
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
 	public LoginByUserRequest withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public LoginByUserRequest withPassword(String password) {
 		this.password = password;
 		return this;

@@ -34,67 +34,52 @@ public class UpdateFormModelMasterRequest extends Gs2BasicRequest<UpdateFormMode
     private String description;
     private String metadata;
     private List<SlotModel> slots;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateFormModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getFormModelName() {
 		return formModelName;
 	}
-
 	public void setFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 	}
-
 	public UpdateFormModelMasterRequest withFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateFormModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateFormModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<SlotModel> getSlots() {
 		return slots;
 	}
-
 	public void setSlots(List<SlotModel> slots) {
 		this.slots = slots;
 	}
-
 	public UpdateFormModelMasterRequest withSlots(List<SlotModel> slots) {
 		this.slots = slots;
 		return this;

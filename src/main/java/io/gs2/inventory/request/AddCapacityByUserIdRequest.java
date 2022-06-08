@@ -33,54 +33,42 @@ public class AddCapacityByUserIdRequest extends Gs2BasicRequest<AddCapacityByUse
     private String userId;
     private Integer addCapacityValue;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AddCapacityByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public AddCapacityByUserIdRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AddCapacityByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getAddCapacityValue() {
 		return addCapacityValue;
 	}
-
 	public void setAddCapacityValue(Integer addCapacityValue) {
 		this.addCapacityValue = addCapacityValue;
 	}
-
 	public AddCapacityByUserIdRequest withAddCapacityValue(Integer addCapacityValue) {
 		this.addCapacityValue = addCapacityValue;
 		return this;

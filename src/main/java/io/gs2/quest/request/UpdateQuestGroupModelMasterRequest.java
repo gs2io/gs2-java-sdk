@@ -33,67 +33,52 @@ public class UpdateQuestGroupModelMasterRequest extends Gs2BasicRequest<UpdateQu
     private String description;
     private String metadata;
     private String challengePeriodEventId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateQuestGroupModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
-
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
-
 	public UpdateQuestGroupModelMasterRequest withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateQuestGroupModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateQuestGroupModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public UpdateQuestGroupModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;

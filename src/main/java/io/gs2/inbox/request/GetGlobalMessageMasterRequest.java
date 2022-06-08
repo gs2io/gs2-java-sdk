@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetGlobalMessageMasterRequest extends Gs2BasicRequest<GetGlobalMessageMasterRequest> {
     private String namespaceName;
     private String globalMessageName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetGlobalMessageMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getGlobalMessageName() {
 		return globalMessageName;
 	}
-
 	public void setGlobalMessageName(String globalMessageName) {
 		this.globalMessageName = globalMessageName;
 	}
-
 	public GetGlobalMessageMasterRequest withGlobalMessageName(String globalMessageName) {
 		this.globalMessageName = globalMessageName;
 		return this;

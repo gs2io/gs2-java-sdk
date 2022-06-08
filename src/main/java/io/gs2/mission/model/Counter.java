@@ -35,80 +35,62 @@ public class Counter implements IModel, Serializable, Comparable<Counter> {
 	private List<ScopedValue> values;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getCounterId() {
 		return counterId;
 	}
-
 	public void setCounterId(String counterId) {
 		this.counterId = counterId;
 	}
-
 	public Counter withCounterId(String counterId) {
 		this.counterId = counterId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Counter withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Counter withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public List<ScopedValue> getValues() {
 		return values;
 	}
-
 	public void setValues(List<ScopedValue> values) {
 		this.values = values;
 	}
-
 	public Counter withValues(List<ScopedValue> values) {
 		this.values = values;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Counter withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Counter withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

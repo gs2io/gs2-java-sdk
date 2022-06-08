@@ -35,93 +35,72 @@ public class UpdateMoldModelMasterRequest extends Gs2BasicRequest<UpdateMoldMode
     private String formModelName;
     private Integer initialMaxCapacity;
     private Integer maxCapacity;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateMoldModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMoldName() {
 		return moldName;
 	}
-
 	public void setMoldName(String moldName) {
 		this.moldName = moldName;
 	}
-
 	public UpdateMoldModelMasterRequest withMoldName(String moldName) {
 		this.moldName = moldName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateMoldModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateMoldModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getFormModelName() {
 		return formModelName;
 	}
-
 	public void setFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 	}
-
 	public UpdateMoldModelMasterRequest withFormModelName(String formModelName) {
 		this.formModelName = formModelName;
 		return this;
 	}
-
 	public Integer getInitialMaxCapacity() {
 		return initialMaxCapacity;
 	}
-
 	public void setInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 	}
-
 	public UpdateMoldModelMasterRequest withInitialMaxCapacity(Integer initialMaxCapacity) {
 		this.initialMaxCapacity = initialMaxCapacity;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public UpdateMoldModelMasterRequest withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;

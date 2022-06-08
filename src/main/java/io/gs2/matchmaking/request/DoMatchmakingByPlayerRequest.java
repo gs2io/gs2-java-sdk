@@ -33,41 +33,32 @@ public class DoMatchmakingByPlayerRequest extends Gs2BasicRequest<DoMatchmakingB
     private String namespaceName;
     private Player player;
     private String matchmakingContextToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DoMatchmakingByPlayerRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public Player getPlayer() {
 		return player;
 	}
-
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-
 	public DoMatchmakingByPlayerRequest withPlayer(Player player) {
 		this.player = player;
 		return this;
 	}
-
 	public String getMatchmakingContextToken() {
 		return matchmakingContextToken;
 	}
-
 	public void setMatchmakingContextToken(String matchmakingContextToken) {
 		this.matchmakingContextToken = matchmakingContextToken;
 	}
-
 	public DoMatchmakingByPlayerRequest withMatchmakingContextToken(String matchmakingContextToken) {
 		this.matchmakingContextToken = matchmakingContextToken;
 		return this;

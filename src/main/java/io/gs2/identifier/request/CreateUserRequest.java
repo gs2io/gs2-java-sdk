@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class CreateUserRequest extends Gs2BasicRequest<CreateUserRequest> {
     private String name;
     private String description;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateUserRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateUserRequest withDescription(String description) {
 		this.description = description;
 		return this;

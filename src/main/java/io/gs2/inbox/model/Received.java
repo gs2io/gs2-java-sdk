@@ -34,67 +34,52 @@ public class Received implements IModel, Serializable, Comparable<Received> {
 	private List<String> receivedGlobalMessageNames;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getReceivedId() {
 		return receivedId;
 	}
-
 	public void setReceivedId(String receivedId) {
 		this.receivedId = receivedId;
 	}
-
 	public Received withReceivedId(String receivedId) {
 		this.receivedId = receivedId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Received withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getReceivedGlobalMessageNames() {
 		return receivedGlobalMessageNames;
 	}
-
 	public void setReceivedGlobalMessageNames(List<String> receivedGlobalMessageNames) {
 		this.receivedGlobalMessageNames = receivedGlobalMessageNames;
 	}
-
 	public Received withReceivedGlobalMessageNames(List<String> receivedGlobalMessageNames) {
 		this.receivedGlobalMessageNames = receivedGlobalMessageNames;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Received withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Received withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

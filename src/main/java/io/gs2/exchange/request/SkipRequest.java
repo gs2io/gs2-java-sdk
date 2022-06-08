@@ -34,67 +34,52 @@ public class SkipRequest extends Gs2BasicRequest<SkipRequest> {
     private String rateName;
     private String awaitName;
     private List<Config> config;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SkipRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public SkipRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public SkipRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getAwaitName() {
 		return awaitName;
 	}
-
 	public void setAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 	}
-
 	public SkipRequest withAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public SkipRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

@@ -39,106 +39,88 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private LogSetting logSetting;
     private String queueNamespaceId;
     private String keyId;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Boolean getEnableDirectEnhance() {
 		return enableDirectEnhance;
 	}
-
 	public void setEnableDirectEnhance(Boolean enableDirectEnhance) {
 		this.enableDirectEnhance = enableDirectEnhance;
 	}
-
 	public CreateNamespaceRequest withEnableDirectEnhance(Boolean enableDirectEnhance) {
 		this.enableDirectEnhance = enableDirectEnhance;
 		return this;
 	}
-
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
-
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
-
 	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-
 	public ScriptSetting getEnhanceScript() {
 		return enhanceScript;
 	}
-
 	public void setEnhanceScript(ScriptSetting enhanceScript) {
 		this.enhanceScript = enhanceScript;
 	}
-
 	public CreateNamespaceRequest withEnhanceScript(ScriptSetting enhanceScript) {
 		this.enhanceScript = enhanceScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
+    @Deprecated
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
-
+    @Deprecated
 	public void setQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 	}
-
+    @Deprecated
 	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 		return this;
 	}
-
+    @Deprecated
 	public String getKeyId() {
 		return keyId;
 	}
-
+    @Deprecated
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
+    @Deprecated
 	public CreateNamespaceRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

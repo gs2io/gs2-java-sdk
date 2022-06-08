@@ -33,54 +33,42 @@ public class Output implements IModel, Serializable, Comparable<Output> {
 	private String name;
 	private String value;
 	private Long createdAt;
-
 	public String getOutputId() {
 		return outputId;
 	}
-
 	public void setOutputId(String outputId) {
 		this.outputId = outputId;
 	}
-
 	public Output withOutputId(String outputId) {
 		this.outputId = outputId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Output withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getValue() {
 		return value;
 	}
-
 	public void setValue(String value) {
 		this.value = value;
 	}
-
 	public Output withValue(String value) {
 		this.value = value;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Output withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

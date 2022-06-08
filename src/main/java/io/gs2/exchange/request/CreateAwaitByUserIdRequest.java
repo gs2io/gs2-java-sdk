@@ -33,54 +33,42 @@ public class CreateAwaitByUserIdRequest extends Gs2BasicRequest<CreateAwaitByUse
     private String rateName;
     private Integer count;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateAwaitByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public CreateAwaitByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public CreateAwaitByUserIdRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public Integer getCount() {
 		return count;
 	}
-
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-
 	public CreateAwaitByUserIdRequest withCount(Integer count) {
 		this.count = count;
 		return this;

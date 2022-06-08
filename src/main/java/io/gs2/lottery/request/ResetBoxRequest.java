@@ -31,41 +31,32 @@ public class ResetBoxRequest extends Gs2BasicRequest<ResetBoxRequest> {
     private String namespaceName;
     private String prizeTableName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public ResetBoxRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public ResetBoxRequest withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public ResetBoxRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

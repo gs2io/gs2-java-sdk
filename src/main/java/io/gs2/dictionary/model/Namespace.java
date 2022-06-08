@@ -37,106 +37,82 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public ScriptSetting getEntryScript() {
 		return entryScript;
 	}
-
 	public void setEntryScript(ScriptSetting entryScript) {
 		this.entryScript = entryScript;
 	}
-
 	public Namespace withEntryScript(ScriptSetting entryScript) {
 		this.entryScript = entryScript;
 		return this;
 	}
-
 	public ScriptSetting getDuplicateEntryScript() {
 		return duplicateEntryScript;
 	}
-
 	public void setDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 	}
-
 	public Namespace withDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

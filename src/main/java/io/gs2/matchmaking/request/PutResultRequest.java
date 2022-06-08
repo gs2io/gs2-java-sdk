@@ -32,41 +32,32 @@ public class PutResultRequest extends Gs2BasicRequest<PutResultRequest> {
     private String namespaceName;
     private String ratingName;
     private List<GameResult> gameResults;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PutResultRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public PutResultRequest withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;
 	}
-
 	public List<GameResult> getGameResults() {
 		return gameResults;
 	}
-
 	public void setGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 	}
-
 	public PutResultRequest withGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 		return this;

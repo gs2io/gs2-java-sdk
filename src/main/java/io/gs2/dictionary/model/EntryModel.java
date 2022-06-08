@@ -32,41 +32,32 @@ public class EntryModel implements IModel, Serializable, Comparable<EntryModel> 
 	private String entryModelId;
 	private String name;
 	private String metadata;
-
 	public String getEntryModelId() {
 		return entryModelId;
 	}
-
 	public void setEntryModelId(String entryModelId) {
 		this.entryModelId = entryModelId;
 	}
-
 	public EntryModel withEntryModelId(String entryModelId) {
 		this.entryModelId = entryModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public EntryModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public EntryModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;

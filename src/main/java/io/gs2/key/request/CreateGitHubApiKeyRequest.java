@@ -33,67 +33,52 @@ public class CreateGitHubApiKeyRequest extends Gs2BasicRequest<CreateGitHubApiKe
     private String description;
     private String apiKey;
     private String encryptionKeyName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateGitHubApiKeyRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateGitHubApiKeyRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateGitHubApiKeyRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getApiKey() {
 		return apiKey;
 	}
-
 	public void setApiKey(String apiKey) {
 		this.apiKey = apiKey;
 	}
-
 	public CreateGitHubApiKeyRequest withApiKey(String apiKey) {
 		this.apiKey = apiKey;
 		return this;
 	}
-
 	public String getEncryptionKeyName() {
 		return encryptionKeyName;
 	}
-
 	public void setEncryptionKeyName(String encryptionKeyName) {
 		this.encryptionKeyName = encryptionKeyName;
 	}
-
 	public CreateGitHubApiKeyRequest withEncryptionKeyName(String encryptionKeyName) {
 		this.encryptionKeyName = encryptionKeyName;
 		return this;

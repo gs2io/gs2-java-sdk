@@ -31,41 +31,32 @@ public class GetTakeOverByUserIdRequest extends Gs2BasicRequest<GetTakeOverByUse
     private String namespaceName;
     private String userId;
     private Integer type;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetTakeOverByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetTakeOverByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getType() {
 		return type;
 	}
-
 	public void setType(Integer type) {
 		this.type = type;
 	}
-
 	public GetTakeOverByUserIdRequest withType(Integer type) {
 		this.type = type;
 		return this;

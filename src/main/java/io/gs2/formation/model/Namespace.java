@@ -38,119 +38,92 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
-
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
-
 	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-
 	public ScriptSetting getUpdateMoldScript() {
 		return updateMoldScript;
 	}
-
 	public void setUpdateMoldScript(ScriptSetting updateMoldScript) {
 		this.updateMoldScript = updateMoldScript;
 	}
-
 	public Namespace withUpdateMoldScript(ScriptSetting updateMoldScript) {
 		this.updateMoldScript = updateMoldScript;
 		return this;
 	}
-
 	public ScriptSetting getUpdateFormScript() {
 		return updateFormScript;
 	}
-
 	public void setUpdateFormScript(ScriptSetting updateFormScript) {
 		this.updateFormScript = updateFormScript;
 	}
-
 	public Namespace withUpdateFormScript(ScriptSetting updateFormScript) {
 		this.updateFormScript = updateFormScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

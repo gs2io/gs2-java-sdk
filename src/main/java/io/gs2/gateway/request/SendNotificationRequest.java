@@ -35,80 +35,62 @@ public class SendNotificationRequest extends Gs2BasicRequest<SendNotificationReq
     private Boolean enableTransferMobileNotification;
     private String sound;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SendNotificationRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SendNotificationRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getSubject() {
 		return subject;
 	}
-
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
 	public SendNotificationRequest withSubject(String subject) {
 		this.subject = subject;
 		return this;
 	}
-
 	public String getPayload() {
 		return payload;
 	}
-
 	public void setPayload(String payload) {
 		this.payload = payload;
 	}
-
 	public SendNotificationRequest withPayload(String payload) {
 		this.payload = payload;
 		return this;
 	}
-
 	public Boolean getEnableTransferMobileNotification() {
 		return enableTransferMobileNotification;
 	}
-
 	public void setEnableTransferMobileNotification(Boolean enableTransferMobileNotification) {
 		this.enableTransferMobileNotification = enableTransferMobileNotification;
 	}
-
 	public SendNotificationRequest withEnableTransferMobileNotification(Boolean enableTransferMobileNotification) {
 		this.enableTransferMobileNotification = enableTransferMobileNotification;
 		return this;
 	}
-
 	public String getSound() {
 		return sound;
 	}
-
 	public void setSound(String sound) {
 		this.sound = sound;
 	}
-
 	public SendNotificationRequest withSound(String sound) {
 		this.sound = sound;
 		return this;

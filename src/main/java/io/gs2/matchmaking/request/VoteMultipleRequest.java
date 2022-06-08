@@ -34,54 +34,42 @@ public class VoteMultipleRequest extends Gs2BasicRequest<VoteMultipleRequest> {
     private List<SignedBallot> signedBallots;
     private List<GameResult> gameResults;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public VoteMultipleRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public List<SignedBallot> getSignedBallots() {
 		return signedBallots;
 	}
-
 	public void setSignedBallots(List<SignedBallot> signedBallots) {
 		this.signedBallots = signedBallots;
 	}
-
 	public VoteMultipleRequest withSignedBallots(List<SignedBallot> signedBallots) {
 		this.signedBallots = signedBallots;
 		return this;
 	}
-
 	public List<GameResult> getGameResults() {
 		return gameResults;
 	}
-
 	public void setGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 	}
-
 	public VoteMultipleRequest withGameResults(List<GameResult> gameResults) {
 		this.gameResults = gameResults;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public VoteMultipleRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

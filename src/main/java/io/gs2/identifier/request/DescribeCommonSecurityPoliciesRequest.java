@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeCommonSecurityPoliciesRequest extends Gs2BasicRequest<DescribeCommonSecurityPoliciesRequest> {
     private String pageToken;
     private Integer limit;
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeCommonSecurityPoliciesRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeCommonSecurityPoliciesRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

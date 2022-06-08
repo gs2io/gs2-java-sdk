@@ -31,41 +31,32 @@ public class DescribeOutputsRequest extends Gs2BasicRequest<DescribeOutputsReque
     private String stackName;
     private String pageToken;
     private Integer limit;
-
 	public String getStackName() {
 		return stackName;
 	}
-
 	public void setStackName(String stackName) {
 		this.stackName = stackName;
 	}
-
 	public DescribeOutputsRequest withStackName(String stackName) {
 		this.stackName = stackName;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeOutputsRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeOutputsRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

@@ -33,54 +33,42 @@ public class SubscribeRequest extends Gs2BasicRequest<SubscribeRequest> {
     private String roomName;
     private String accessToken;
     private List<NotificationType> notificationTypes;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SubscribeRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public SubscribeRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public SubscribeRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public List<NotificationType> getNotificationTypes() {
 		return notificationTypes;
 	}
-
 	public void setNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 	}
-
 	public SubscribeRequest withNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 		return this;

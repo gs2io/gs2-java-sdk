@@ -32,56 +32,66 @@ import io.gs2.jobQueue.model.LogSetting;
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
     private String namespaceName;
     private String description;
+    private Boolean enableAutoRun;
     private NotificationSetting pushNotification;
+    private NotificationSetting runNotification;
     private LogSetting logSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
+	public Boolean getEnableAutoRun() {
+		return enableAutoRun;
+	}
+	public void setEnableAutoRun(Boolean enableAutoRun) {
+		this.enableAutoRun = enableAutoRun;
+	}
+	public UpdateNamespaceRequest withEnableAutoRun(Boolean enableAutoRun) {
+		this.enableAutoRun = enableAutoRun;
+		return this;
+	}
 	public NotificationSetting getPushNotification() {
 		return pushNotification;
 	}
-
 	public void setPushNotification(NotificationSetting pushNotification) {
 		this.pushNotification = pushNotification;
 	}
-
 	public UpdateNamespaceRequest withPushNotification(NotificationSetting pushNotification) {
 		this.pushNotification = pushNotification;
 		return this;
 	}
-
+	public NotificationSetting getRunNotification() {
+		return runNotification;
+	}
+	public void setRunNotification(NotificationSetting runNotification) {
+		this.runNotification = runNotification;
+	}
+	public UpdateNamespaceRequest withRunNotification(NotificationSetting runNotification) {
+		this.runNotification = runNotification;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
@@ -94,7 +104,9 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
         return new UpdateNamespaceRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withEnableAutoRun(data.get("enableAutoRun") == null || data.get("enableAutoRun").isNull() ? null : data.get("enableAutoRun").booleanValue())
             .withPushNotification(data.get("pushNotification") == null || data.get("pushNotification").isNull() ? null : NotificationSetting.fromJson(data.get("pushNotification")))
+            .withRunNotification(data.get("runNotification") == null || data.get("runNotification").isNull() ? null : NotificationSetting.fromJson(data.get("runNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -103,7 +115,9 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
+                put("enableAutoRun", getEnableAutoRun());
                 put("pushNotification", getPushNotification() != null ? getPushNotification().toJson() : null);
+                put("runNotification", getRunNotification() != null ? getRunNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

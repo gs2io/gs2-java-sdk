@@ -32,41 +32,32 @@ public class AddEntriesByUserIdRequest extends Gs2BasicRequest<AddEntriesByUserI
     private String userId;
     private List<String> entryModelNames;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AddEntriesByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AddEntriesByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getEntryModelNames() {
 		return entryModelNames;
 	}
-
 	public void setEntryModelNames(List<String> entryModelNames) {
 		this.entryModelNames = entryModelNames;
 	}
-
 	public AddEntriesByUserIdRequest withEntryModelNames(List<String> entryModelNames) {
 		this.entryModelNames = entryModelNames;
 		return this;

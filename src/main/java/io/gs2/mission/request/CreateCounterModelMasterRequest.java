@@ -35,80 +35,62 @@ public class CreateCounterModelMasterRequest extends Gs2BasicRequest<CreateCount
     private String description;
     private List<CounterScopeModel> scopes;
     private String challengePeriodEventId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateCounterModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateCounterModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateCounterModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateCounterModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public List<CounterScopeModel> getScopes() {
 		return scopes;
 	}
-
 	public void setScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 	}
-
 	public CreateCounterModelMasterRequest withScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public CreateCounterModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;

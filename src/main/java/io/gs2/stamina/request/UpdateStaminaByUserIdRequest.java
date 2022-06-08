@@ -36,93 +36,72 @@ public class UpdateStaminaByUserIdRequest extends Gs2BasicRequest<UpdateStaminaB
     private Integer recoverIntervalMinutes;
     private Integer recoverValue;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateStaminaByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public UpdateStaminaByUserIdRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public UpdateStaminaByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getValue() {
 		return value;
 	}
-
 	public void setValue(Integer value) {
 		this.value = value;
 	}
-
 	public UpdateStaminaByUserIdRequest withValue(Integer value) {
 		this.value = value;
 		return this;
 	}
-
 	public Integer getMaxValue() {
 		return maxValue;
 	}
-
 	public void setMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 	}
-
 	public UpdateStaminaByUserIdRequest withMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 		return this;
 	}
-
 	public Integer getRecoverIntervalMinutes() {
 		return recoverIntervalMinutes;
 	}
-
 	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 	}
-
 	public UpdateStaminaByUserIdRequest withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;
 	}
-
 	public Integer getRecoverValue() {
 		return recoverValue;
 	}
-
 	public void setRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 	}
-
 	public UpdateStaminaByUserIdRequest withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 		return this;

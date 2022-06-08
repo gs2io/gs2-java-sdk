@@ -41,158 +41,122 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
 	private Integer total;
 	private String contentsId;
 	private Long createdAt;
-
 	public String getReceiptId() {
 		return receiptId;
 	}
-
 	public void setReceiptId(String receiptId) {
 		this.receiptId = receiptId;
 	}
-
 	public Receipt withReceiptId(String receiptId) {
 		this.receiptId = receiptId;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public Receipt withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-
 	public String getPurchaseToken() {
 		return purchaseToken;
 	}
-
 	public void setPurchaseToken(String purchaseToken) {
 		this.purchaseToken = purchaseToken;
 	}
-
 	public Receipt withPurchaseToken(String purchaseToken) {
 		this.purchaseToken = purchaseToken;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Receipt withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	public Receipt withType(String type) {
 		this.type = type;
 		return this;
 	}
-
 	public Integer getSlot() {
 		return slot;
 	}
-
 	public void setSlot(Integer slot) {
 		this.slot = slot;
 	}
-
 	public Receipt withSlot(Integer slot) {
 		this.slot = slot;
 		return this;
 	}
-
 	public Float getPrice() {
 		return price;
 	}
-
 	public void setPrice(Float price) {
 		this.price = price;
 	}
-
 	public Receipt withPrice(Float price) {
 		this.price = price;
 		return this;
 	}
-
 	public Integer getPaid() {
 		return paid;
 	}
-
 	public void setPaid(Integer paid) {
 		this.paid = paid;
 	}
-
 	public Receipt withPaid(Integer paid) {
 		this.paid = paid;
 		return this;
 	}
-
 	public Integer getFree() {
 		return free;
 	}
-
 	public void setFree(Integer free) {
 		this.free = free;
 	}
-
 	public Receipt withFree(Integer free) {
 		this.free = free;
 		return this;
 	}
-
 	public Integer getTotal() {
 		return total;
 	}
-
 	public void setTotal(Integer total) {
 		this.total = total;
 	}
-
 	public Receipt withTotal(Integer total) {
 		this.total = total;
 		return this;
 	}
-
 	public String getContentsId() {
 		return contentsId;
 	}
-
 	public void setContentsId(String contentsId) {
 		this.contentsId = contentsId;
 	}
-
 	public Receipt withContentsId(String contentsId) {
 		this.contentsId = contentsId;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Receipt withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteRatingModelMasterRequest extends Gs2BasicRequest<DeleteRatingModelMasterRequest> {
     private String namespaceName;
     private String ratingName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteRatingModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public DeleteRatingModelMasterRequest withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;

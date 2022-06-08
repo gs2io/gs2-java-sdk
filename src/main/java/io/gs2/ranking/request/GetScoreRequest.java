@@ -33,67 +33,52 @@ public class GetScoreRequest extends Gs2BasicRequest<GetScoreRequest> {
     private String accessToken;
     private String scorerUserId;
     private String uniqueId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetScoreRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public GetScoreRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetScoreRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getScorerUserId() {
 		return scorerUserId;
 	}
-
 	public void setScorerUserId(String scorerUserId) {
 		this.scorerUserId = scorerUserId;
 	}
-
 	public GetScoreRequest withScorerUserId(String scorerUserId) {
 		this.scorerUserId = scorerUserId;
 		return this;
 	}
-
 	public String getUniqueId() {
 		return uniqueId;
 	}
-
 	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
-
 	public GetScoreRequest withUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 		return this;

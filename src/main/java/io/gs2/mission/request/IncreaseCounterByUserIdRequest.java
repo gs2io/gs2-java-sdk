@@ -33,54 +33,42 @@ public class IncreaseCounterByUserIdRequest extends Gs2BasicRequest<IncreaseCoun
     private String userId;
     private Long value;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public IncreaseCounterByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCounterName() {
 		return counterName;
 	}
-
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
-
 	public IncreaseCounterByUserIdRequest withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public IncreaseCounterByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getValue() {
 		return value;
 	}
-
 	public void setValue(Long value) {
 		this.value = value;
 	}
-
 	public IncreaseCounterByUserIdRequest withValue(Long value) {
 		this.value = value;
 		return this;

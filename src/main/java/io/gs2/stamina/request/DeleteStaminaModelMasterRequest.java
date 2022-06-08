@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteStaminaModelMasterRequest extends Gs2BasicRequest<DeleteStaminaModelMasterRequest> {
     private String namespaceName;
     private String staminaName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteStaminaModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public DeleteStaminaModelMasterRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;

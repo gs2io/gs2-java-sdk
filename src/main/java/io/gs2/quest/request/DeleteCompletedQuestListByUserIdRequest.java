@@ -32,41 +32,32 @@ public class DeleteCompletedQuestListByUserIdRequest extends Gs2BasicRequest<Del
     private String questGroupName;
     private String userId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteCompletedQuestListByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
-
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
-
 	public DeleteCompletedQuestListByUserIdRequest withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteCompletedQuestListByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

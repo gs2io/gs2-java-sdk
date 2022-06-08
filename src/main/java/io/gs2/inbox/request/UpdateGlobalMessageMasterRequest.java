@@ -36,80 +36,62 @@ public class UpdateGlobalMessageMasterRequest extends Gs2BasicRequest<UpdateGlob
     private List<AcquireAction> readAcquireActions;
     private TimeSpan expiresTimeSpan;
     private Long expiresAt;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateGlobalMessageMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getGlobalMessageName() {
 		return globalMessageName;
 	}
-
 	public void setGlobalMessageName(String globalMessageName) {
 		this.globalMessageName = globalMessageName;
 	}
-
 	public UpdateGlobalMessageMasterRequest withGlobalMessageName(String globalMessageName) {
 		this.globalMessageName = globalMessageName;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateGlobalMessageMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<AcquireAction> getReadAcquireActions() {
 		return readAcquireActions;
 	}
-
 	public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 	}
-
 	public UpdateGlobalMessageMasterRequest withReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 		return this;
 	}
-
 	public TimeSpan getExpiresTimeSpan() {
 		return expiresTimeSpan;
 	}
-
 	public void setExpiresTimeSpan(TimeSpan expiresTimeSpan) {
 		this.expiresTimeSpan = expiresTimeSpan;
 	}
-
 	public UpdateGlobalMessageMasterRequest withExpiresTimeSpan(TimeSpan expiresTimeSpan) {
 		this.expiresTimeSpan = expiresTimeSpan;
 		return this;
 	}
-
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
-
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
 	public UpdateGlobalMessageMasterRequest withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;

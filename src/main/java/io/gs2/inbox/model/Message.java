@@ -38,119 +38,92 @@ public class Message implements IModel, Serializable, Comparable<Message> {
 	private Long receivedAt;
 	private Long readAt;
 	private Long expiresAt;
-
 	public String getMessageId() {
 		return messageId;
 	}
-
 	public void setMessageId(String messageId) {
 		this.messageId = messageId;
 	}
-
 	public Message withMessageId(String messageId) {
 		this.messageId = messageId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Message withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Message withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Message withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Boolean getIsRead() {
 		return isRead;
 	}
-
 	public void setIsRead(Boolean isRead) {
 		this.isRead = isRead;
 	}
-
 	public Message withIsRead(Boolean isRead) {
 		this.isRead = isRead;
 		return this;
 	}
-
 	public List<AcquireAction> getReadAcquireActions() {
 		return readAcquireActions;
 	}
-
 	public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 	}
-
 	public Message withReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 		return this;
 	}
-
 	public Long getReceivedAt() {
 		return receivedAt;
 	}
-
 	public void setReceivedAt(Long receivedAt) {
 		this.receivedAt = receivedAt;
 	}
-
 	public Message withReceivedAt(Long receivedAt) {
 		this.receivedAt = receivedAt;
 		return this;
 	}
-
 	public Long getReadAt() {
 		return readAt;
 	}
-
 	public void setReadAt(Long readAt) {
 		this.readAt = readAt;
 	}
-
 	public Message withReadAt(Long readAt) {
 		this.readAt = readAt;
 		return this;
 	}
-
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
-
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
 	public Message withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;

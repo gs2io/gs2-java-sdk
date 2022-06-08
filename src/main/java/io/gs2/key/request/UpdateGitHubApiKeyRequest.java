@@ -33,67 +33,52 @@ public class UpdateGitHubApiKeyRequest extends Gs2BasicRequest<UpdateGitHubApiKe
     private String description;
     private String apiKey;
     private String encryptionKeyName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateGitHubApiKeyRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getApiKeyName() {
 		return apiKeyName;
 	}
-
 	public void setApiKeyName(String apiKeyName) {
 		this.apiKeyName = apiKeyName;
 	}
-
 	public UpdateGitHubApiKeyRequest withApiKeyName(String apiKeyName) {
 		this.apiKeyName = apiKeyName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateGitHubApiKeyRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getApiKey() {
 		return apiKey;
 	}
-
 	public void setApiKey(String apiKey) {
 		this.apiKey = apiKey;
 	}
-
 	public UpdateGitHubApiKeyRequest withApiKey(String apiKey) {
 		this.apiKey = apiKey;
 		return this;
 	}
-
 	public String getEncryptionKeyName() {
 		return encryptionKeyName;
 	}
-
 	public void setEncryptionKeyName(String encryptionKeyName) {
 		this.encryptionKeyName = encryptionKeyName;
 	}
-
 	public UpdateGitHubApiKeyRequest withEncryptionKeyName(String encryptionKeyName) {
 		this.encryptionKeyName = encryptionKeyName;
 		return this;

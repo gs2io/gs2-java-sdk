@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteGitHubApiKeyRequest extends Gs2BasicRequest<DeleteGitHubApiKeyRequest> {
     private String namespaceName;
     private String apiKeyName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteGitHubApiKeyRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getApiKeyName() {
 		return apiKeyName;
 	}
-
 	public void setApiKeyName(String apiKeyName) {
 		this.apiKeyName = apiKeyName;
 	}
-
 	public DeleteGitHubApiKeyRequest withApiKeyName(String apiKeyName) {
 		this.apiKeyName = apiKeyName;
 		return this;

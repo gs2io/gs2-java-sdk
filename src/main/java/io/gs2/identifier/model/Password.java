@@ -32,41 +32,32 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 	private String userId;
 	private String userName;
 	private Long createdAt;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Password withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
 	public Password withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Password withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

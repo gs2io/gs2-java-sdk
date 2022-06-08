@@ -31,41 +31,32 @@ public class DeleteItemModelMasterRequest extends Gs2BasicRequest<DeleteItemMode
     private String namespaceName;
     private String inventoryName;
     private String itemName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteItemModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public DeleteItemModelMasterRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getItemName() {
 		return itemName;
 	}
-
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-
 	public DeleteItemModelMasterRequest withItemName(String itemName) {
 		this.itemName = itemName;
 		return this;

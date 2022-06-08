@@ -36,93 +36,72 @@ public class LotteryModel implements IModel, Serializable, Comparable<LotteryMod
 	private String method;
 	private String prizeTableName;
 	private String choicePrizeTableScriptId;
-
 	public String getLotteryModelId() {
 		return lotteryModelId;
 	}
-
 	public void setLotteryModelId(String lotteryModelId) {
 		this.lotteryModelId = lotteryModelId;
 	}
-
 	public LotteryModel withLotteryModelId(String lotteryModelId) {
 		this.lotteryModelId = lotteryModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public LotteryModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public LotteryModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getMode() {
 		return mode;
 	}
-
 	public void setMode(String mode) {
 		this.mode = mode;
 	}
-
 	public LotteryModel withMode(String mode) {
 		this.mode = mode;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public LotteryModel withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public LotteryModel withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-
 	public String getChoicePrizeTableScriptId() {
 		return choicePrizeTableScriptId;
 	}
-
 	public void setChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 	}
-
 	public LotteryModel withChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 		return this;

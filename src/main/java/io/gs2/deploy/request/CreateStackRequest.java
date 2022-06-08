@@ -31,41 +31,32 @@ public class CreateStackRequest extends Gs2BasicRequest<CreateStackRequest> {
     private String name;
     private String description;
     private String template;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateStackRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateStackRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getTemplate() {
 		return template;
 	}
-
 	public void setTemplate(String template) {
 		this.template = template;
 	}
-
 	public CreateStackRequest withTemplate(String template) {
 		this.template = template;
 		return this;

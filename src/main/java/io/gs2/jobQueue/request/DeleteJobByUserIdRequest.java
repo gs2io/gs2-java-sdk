@@ -32,41 +32,32 @@ public class DeleteJobByUserIdRequest extends Gs2BasicRequest<DeleteJobByUserIdR
     private String userId;
     private String jobName;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteJobByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteJobByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getJobName() {
 		return jobName;
 	}
-
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
 	}
-
 	public DeleteJobByUserIdRequest withJobName(String jobName) {
 		this.jobName = jobName;
 		return this;

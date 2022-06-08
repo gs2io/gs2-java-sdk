@@ -33,67 +33,52 @@ public class UpdateRatingModelMasterRequest extends Gs2BasicRequest<UpdateRating
     private String description;
     private String metadata;
     private Integer volatility;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateRatingModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public UpdateRatingModelMasterRequest withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateRatingModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateRatingModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Integer getVolatility() {
 		return volatility;
 	}
-
 	public void setVolatility(Integer volatility) {
 		this.volatility = volatility;
 	}
-
 	public UpdateRatingModelMasterRequest withVolatility(Integer volatility) {
 		this.volatility = volatility;
 		return this;

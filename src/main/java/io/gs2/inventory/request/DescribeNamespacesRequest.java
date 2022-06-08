@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeNamespacesRequest extends Gs2BasicRequest<DescribeNamespacesRequest> {
     private String pageToken;
     private Integer limit;
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeNamespacesRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeNamespacesRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

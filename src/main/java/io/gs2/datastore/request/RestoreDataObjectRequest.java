@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class RestoreDataObjectRequest extends Gs2BasicRequest<RestoreDataObjectRequest> {
     private String namespaceName;
     private String dataObjectId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public RestoreDataObjectRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDataObjectId() {
 		return dataObjectId;
 	}
-
 	public void setDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 	}
-
 	public RestoreDataObjectRequest withDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 		return this;

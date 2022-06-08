@@ -34,67 +34,52 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
 	private String userId;
 	private Long createdAt;
 	private Long expiresAt;
-
 	public String getTriggerId() {
 		return triggerId;
 	}
-
 	public void setTriggerId(String triggerId) {
 		this.triggerId = triggerId;
 	}
-
 	public Trigger withTriggerId(String triggerId) {
 		this.triggerId = triggerId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Trigger withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Trigger withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Trigger withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
-
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
 	public Trigger withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;

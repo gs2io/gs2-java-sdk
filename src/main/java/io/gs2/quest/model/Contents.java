@@ -32,41 +32,32 @@ public class Contents implements IModel, Serializable {
 	private String metadata;
 	private List<AcquireAction> completeAcquireActions;
 	private Integer weight;
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Contents withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<AcquireAction> getCompleteAcquireActions() {
 		return completeAcquireActions;
 	}
-
 	public void setCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 	}
-
 	public Contents withCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 		return this;
 	}
-
 	public Integer getWeight() {
 		return weight;
 	}
-
 	public void setWeight(Integer weight) {
 		this.weight = weight;
 	}
-
 	public Contents withWeight(Integer weight) {
 		this.weight = weight;
 		return this;

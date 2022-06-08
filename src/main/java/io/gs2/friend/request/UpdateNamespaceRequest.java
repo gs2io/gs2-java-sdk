@@ -45,184 +45,142 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private NotificationSetting receiveRequestNotification;
     private NotificationSetting acceptRequestNotification;
     private LogSetting logSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public ScriptSetting getFollowScript() {
 		return followScript;
 	}
-
 	public void setFollowScript(ScriptSetting followScript) {
 		this.followScript = followScript;
 	}
-
 	public UpdateNamespaceRequest withFollowScript(ScriptSetting followScript) {
 		this.followScript = followScript;
 		return this;
 	}
-
 	public ScriptSetting getUnfollowScript() {
 		return unfollowScript;
 	}
-
 	public void setUnfollowScript(ScriptSetting unfollowScript) {
 		this.unfollowScript = unfollowScript;
 	}
-
 	public UpdateNamespaceRequest withUnfollowScript(ScriptSetting unfollowScript) {
 		this.unfollowScript = unfollowScript;
 		return this;
 	}
-
 	public ScriptSetting getSendRequestScript() {
 		return sendRequestScript;
 	}
-
 	public void setSendRequestScript(ScriptSetting sendRequestScript) {
 		this.sendRequestScript = sendRequestScript;
 	}
-
 	public UpdateNamespaceRequest withSendRequestScript(ScriptSetting sendRequestScript) {
 		this.sendRequestScript = sendRequestScript;
 		return this;
 	}
-
 	public ScriptSetting getCancelRequestScript() {
 		return cancelRequestScript;
 	}
-
 	public void setCancelRequestScript(ScriptSetting cancelRequestScript) {
 		this.cancelRequestScript = cancelRequestScript;
 	}
-
 	public UpdateNamespaceRequest withCancelRequestScript(ScriptSetting cancelRequestScript) {
 		this.cancelRequestScript = cancelRequestScript;
 		return this;
 	}
-
 	public ScriptSetting getAcceptRequestScript() {
 		return acceptRequestScript;
 	}
-
 	public void setAcceptRequestScript(ScriptSetting acceptRequestScript) {
 		this.acceptRequestScript = acceptRequestScript;
 	}
-
 	public UpdateNamespaceRequest withAcceptRequestScript(ScriptSetting acceptRequestScript) {
 		this.acceptRequestScript = acceptRequestScript;
 		return this;
 	}
-
 	public ScriptSetting getRejectRequestScript() {
 		return rejectRequestScript;
 	}
-
 	public void setRejectRequestScript(ScriptSetting rejectRequestScript) {
 		this.rejectRequestScript = rejectRequestScript;
 	}
-
 	public UpdateNamespaceRequest withRejectRequestScript(ScriptSetting rejectRequestScript) {
 		this.rejectRequestScript = rejectRequestScript;
 		return this;
 	}
-
 	public ScriptSetting getDeleteFriendScript() {
 		return deleteFriendScript;
 	}
-
 	public void setDeleteFriendScript(ScriptSetting deleteFriendScript) {
 		this.deleteFriendScript = deleteFriendScript;
 	}
-
 	public UpdateNamespaceRequest withDeleteFriendScript(ScriptSetting deleteFriendScript) {
 		this.deleteFriendScript = deleteFriendScript;
 		return this;
 	}
-
 	public ScriptSetting getUpdateProfileScript() {
 		return updateProfileScript;
 	}
-
 	public void setUpdateProfileScript(ScriptSetting updateProfileScript) {
 		this.updateProfileScript = updateProfileScript;
 	}
-
 	public UpdateNamespaceRequest withUpdateProfileScript(ScriptSetting updateProfileScript) {
 		this.updateProfileScript = updateProfileScript;
 		return this;
 	}
-
 	public NotificationSetting getFollowNotification() {
 		return followNotification;
 	}
-
 	public void setFollowNotification(NotificationSetting followNotification) {
 		this.followNotification = followNotification;
 	}
-
 	public UpdateNamespaceRequest withFollowNotification(NotificationSetting followNotification) {
 		this.followNotification = followNotification;
 		return this;
 	}
-
 	public NotificationSetting getReceiveRequestNotification() {
 		return receiveRequestNotification;
 	}
-
 	public void setReceiveRequestNotification(NotificationSetting receiveRequestNotification) {
 		this.receiveRequestNotification = receiveRequestNotification;
 	}
-
 	public UpdateNamespaceRequest withReceiveRequestNotification(NotificationSetting receiveRequestNotification) {
 		this.receiveRequestNotification = receiveRequestNotification;
 		return this;
 	}
-
 	public NotificationSetting getAcceptRequestNotification() {
 		return acceptRequestNotification;
 	}
-
 	public void setAcceptRequestNotification(NotificationSetting acceptRequestNotification) {
 		this.acceptRequestNotification = acceptRequestNotification;
 	}
-
 	public UpdateNamespaceRequest withAcceptRequestNotification(NotificationSetting acceptRequestNotification) {
 		this.acceptRequestNotification = acceptRequestNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

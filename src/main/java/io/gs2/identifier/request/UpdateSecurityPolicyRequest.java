@@ -31,41 +31,32 @@ public class UpdateSecurityPolicyRequest extends Gs2BasicRequest<UpdateSecurityP
     private String securityPolicyName;
     private String description;
     private String policy;
-
 	public String getSecurityPolicyName() {
 		return securityPolicyName;
 	}
-
 	public void setSecurityPolicyName(String securityPolicyName) {
 		this.securityPolicyName = securityPolicyName;
 	}
-
 	public UpdateSecurityPolicyRequest withSecurityPolicyName(String securityPolicyName) {
 		this.securityPolicyName = securityPolicyName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateSecurityPolicyRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getPolicy() {
 		return policy;
 	}
-
 	public void setPolicy(String policy) {
 		this.policy = policy;
 	}
-
 	public UpdateSecurityPolicyRequest withPolicy(String policy) {
 		this.policy = policy;
 		return this;

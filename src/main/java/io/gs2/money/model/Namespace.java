@@ -45,210 +45,162 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getPriority() {
 		return priority;
 	}
-
 	public void setPriority(String priority) {
 		this.priority = priority;
 	}
-
 	public Namespace withPriority(String priority) {
 		this.priority = priority;
 		return this;
 	}
-
 	public Boolean getShareFree() {
 		return shareFree;
 	}
-
 	public void setShareFree(Boolean shareFree) {
 		this.shareFree = shareFree;
 	}
-
 	public Namespace withShareFree(Boolean shareFree) {
 		this.shareFree = shareFree;
 		return this;
 	}
-
 	public String getCurrency() {
 		return currency;
 	}
-
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
-
 	public Namespace withCurrency(String currency) {
 		this.currency = currency;
 		return this;
 	}
-
 	public String getAppleKey() {
 		return appleKey;
 	}
-
 	public void setAppleKey(String appleKey) {
 		this.appleKey = appleKey;
 	}
-
 	public Namespace withAppleKey(String appleKey) {
 		this.appleKey = appleKey;
 		return this;
 	}
-
 	public String getGoogleKey() {
 		return googleKey;
 	}
-
 	public void setGoogleKey(String googleKey) {
 		this.googleKey = googleKey;
 	}
-
 	public Namespace withGoogleKey(String googleKey) {
 		this.googleKey = googleKey;
 		return this;
 	}
-
 	public Boolean getEnableFakeReceipt() {
 		return enableFakeReceipt;
 	}
-
 	public void setEnableFakeReceipt(Boolean enableFakeReceipt) {
 		this.enableFakeReceipt = enableFakeReceipt;
 	}
-
 	public Namespace withEnableFakeReceipt(Boolean enableFakeReceipt) {
 		this.enableFakeReceipt = enableFakeReceipt;
 		return this;
 	}
-
 	public ScriptSetting getCreateWalletScript() {
 		return createWalletScript;
 	}
-
 	public void setCreateWalletScript(ScriptSetting createWalletScript) {
 		this.createWalletScript = createWalletScript;
 	}
-
 	public Namespace withCreateWalletScript(ScriptSetting createWalletScript) {
 		this.createWalletScript = createWalletScript;
 		return this;
 	}
-
 	public ScriptSetting getDepositScript() {
 		return depositScript;
 	}
-
 	public void setDepositScript(ScriptSetting depositScript) {
 		this.depositScript = depositScript;
 	}
-
 	public Namespace withDepositScript(ScriptSetting depositScript) {
 		this.depositScript = depositScript;
 		return this;
 	}
-
 	public ScriptSetting getWithdrawScript() {
 		return withdrawScript;
 	}
-
 	public void setWithdrawScript(ScriptSetting withdrawScript) {
 		this.withdrawScript = withdrawScript;
 	}
-
 	public Namespace withWithdrawScript(ScriptSetting withdrawScript) {
 		this.withdrawScript = withdrawScript;
 		return this;
 	}
-
 	public Double getBalance() {
 		return balance;
 	}
-
 	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
-
 	public Namespace withBalance(Double balance) {
 		this.balance = balance;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

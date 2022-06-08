@@ -31,41 +31,32 @@ public class GetRatingByUserIdRequest extends Gs2BasicRequest<GetRatingByUserIdR
     private String namespaceName;
     private String userId;
     private String ratingName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetRatingByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetRatingByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public GetRatingByUserIdRequest withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;

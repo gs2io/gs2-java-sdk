@@ -32,54 +32,42 @@ public class DoTakeOverRequest extends Gs2BasicRequest<DoTakeOverRequest> {
     private Integer type;
     private String userIdentifier;
     private String password;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DoTakeOverRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public Integer getType() {
 		return type;
 	}
-
 	public void setType(Integer type) {
 		this.type = type;
 	}
-
 	public DoTakeOverRequest withType(Integer type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getUserIdentifier() {
 		return userIdentifier;
 	}
-
 	public void setUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 	}
-
 	public DoTakeOverRequest withUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public DoTakeOverRequest withPassword(String password) {
 		this.password = password;
 		return this;

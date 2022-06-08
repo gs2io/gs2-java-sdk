@@ -31,41 +31,32 @@ public class GetWalletRequest extends Gs2BasicRequest<GetWalletRequest> {
     private String namespaceName;
     private String accessToken;
     private Integer slot;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetWalletRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetWalletRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Integer getSlot() {
 		return slot;
 	}
-
 	public void setSlot(Integer slot) {
 		this.slot = slot;
 	}
-
 	public GetWalletRequest withSlot(Integer slot) {
 		this.slot = slot;
 		return this;

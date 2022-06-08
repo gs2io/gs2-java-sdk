@@ -36,93 +36,72 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
 	private TimeSpan expiresTimeSpan;
 	private Long createdAt;
 	private Long expiresAt;
-
 	public String getGlobalMessageId() {
 		return globalMessageId;
 	}
-
 	public void setGlobalMessageId(String globalMessageId) {
 		this.globalMessageId = globalMessageId;
 	}
-
 	public GlobalMessageMaster withGlobalMessageId(String globalMessageId) {
 		this.globalMessageId = globalMessageId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public GlobalMessageMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public GlobalMessageMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<AcquireAction> getReadAcquireActions() {
 		return readAcquireActions;
 	}
-
 	public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 	}
-
 	public GlobalMessageMaster withReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 		return this;
 	}
-
 	public TimeSpan getExpiresTimeSpan() {
 		return expiresTimeSpan;
 	}
-
 	public void setExpiresTimeSpan(TimeSpan expiresTimeSpan) {
 		this.expiresTimeSpan = expiresTimeSpan;
 	}
-
 	public GlobalMessageMaster withExpiresTimeSpan(TimeSpan expiresTimeSpan) {
 		this.expiresTimeSpan = expiresTimeSpan;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public GlobalMessageMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
-
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
 	public GlobalMessageMaster withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;

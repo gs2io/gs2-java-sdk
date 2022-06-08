@@ -33,54 +33,42 @@ public class DeleteCounterByUserIdRequest extends Gs2BasicRequest<DeleteCounterB
     private String userId;
     private String counterName;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteCounterByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getLimitName() {
 		return limitName;
 	}
-
 	public void setLimitName(String limitName) {
 		this.limitName = limitName;
 	}
-
 	public DeleteCounterByUserIdRequest withLimitName(String limitName) {
 		this.limitName = limitName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteCounterByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getCounterName() {
 		return counterName;
 	}
-
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
-
 	public DeleteCounterByUserIdRequest withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;

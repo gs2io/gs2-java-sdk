@@ -31,41 +31,32 @@ public class GetTriggerByUserIdRequest extends Gs2BasicRequest<GetTriggerByUserI
     private String namespaceName;
     private String userId;
     private String triggerName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetTriggerByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetTriggerByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTriggerName() {
 		return triggerName;
 	}
-
 	public void setTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 	}
-
 	public GetTriggerByUserIdRequest withTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 		return this;

@@ -30,15 +30,12 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectToken implements IModel, Serializable {
 	private String token;
-
 	public String getToken() {
 		return token;
 	}
-
 	public void setToken(String token) {
 		this.token = token;
 	}
-
 	public ProjectToken withToken(String token) {
 		this.token = token;
 		return this;

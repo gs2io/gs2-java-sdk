@@ -34,67 +34,52 @@ public class UpdateTakeOverByUserIdRequest extends Gs2BasicRequest<UpdateTakeOve
     private String oldPassword;
     private String password;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateTakeOverByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public UpdateTakeOverByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getType() {
 		return type;
 	}
-
 	public void setType(Integer type) {
 		this.type = type;
 	}
-
 	public UpdateTakeOverByUserIdRequest withType(Integer type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getOldPassword() {
 		return oldPassword;
 	}
-
 	public void setOldPassword(String oldPassword) {
 		this.oldPassword = oldPassword;
 	}
-
 	public UpdateTakeOverByUserIdRequest withOldPassword(String oldPassword) {
 		this.oldPassword = oldPassword;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public UpdateTakeOverByUserIdRequest withPassword(String password) {
 		this.password = password;
 		return this;

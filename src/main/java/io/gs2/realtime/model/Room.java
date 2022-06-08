@@ -37,106 +37,82 @@ public class Room implements IModel, Serializable, Comparable<Room> {
 	private List<String> notificationUserIds;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getRoomId() {
 		return roomId;
 	}
-
 	public void setRoomId(String roomId) {
 		this.roomId = roomId;
 	}
-
 	public Room withRoomId(String roomId) {
 		this.roomId = roomId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Room withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getIpAddress() {
 		return ipAddress;
 	}
-
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
-
 	public Room withIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 		return this;
 	}
-
 	public Integer getPort() {
 		return port;
 	}
-
 	public void setPort(Integer port) {
 		this.port = port;
 	}
-
 	public Room withPort(Integer port) {
 		this.port = port;
 		return this;
 	}
-
 	public String getEncryptionKey() {
 		return encryptionKey;
 	}
-
 	public void setEncryptionKey(String encryptionKey) {
 		this.encryptionKey = encryptionKey;
 	}
-
 	public Room withEncryptionKey(String encryptionKey) {
 		this.encryptionKey = encryptionKey;
 		return this;
 	}
-
 	public List<String> getNotificationUserIds() {
 		return notificationUserIds;
 	}
-
 	public void setNotificationUserIds(List<String> notificationUserIds) {
 		this.notificationUserIds = notificationUserIds;
 	}
-
 	public Room withNotificationUserIds(List<String> notificationUserIds) {
 		this.notificationUserIds = notificationUserIds;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Room withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Room withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

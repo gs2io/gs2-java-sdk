@@ -35,67 +35,52 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String assumeUserId;
     private NotificationSetting autoRunStampSheetNotification;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getAssumeUserId() {
 		return assumeUserId;
 	}
-
 	public void setAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 	}
-
 	public CreateNamespaceRequest withAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 		return this;
 	}
-
 	public NotificationSetting getAutoRunStampSheetNotification() {
 		return autoRunStampSheetNotification;
 	}
-
 	public void setAutoRunStampSheetNotification(NotificationSetting autoRunStampSheetNotification) {
 		this.autoRunStampSheetNotification = autoRunStampSheetNotification;
 	}
-
 	public CreateNamespaceRequest withAutoRunStampSheetNotification(NotificationSetting autoRunStampSheetNotification) {
 		this.autoRunStampSheetNotification = autoRunStampSheetNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

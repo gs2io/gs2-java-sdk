@@ -34,80 +34,62 @@ public class SetRecoverValueByStatusRequest extends Gs2BasicRequest<SetRecoverVa
     private String keyId;
     private String signedStatusBody;
     private String signedStatusSignature;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetRecoverValueByStatusRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public SetRecoverValueByStatusRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public SetRecoverValueByStatusRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public SetRecoverValueByStatusRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
-
 	public String getSignedStatusBody() {
 		return signedStatusBody;
 	}
-
 	public void setSignedStatusBody(String signedStatusBody) {
 		this.signedStatusBody = signedStatusBody;
 	}
-
 	public SetRecoverValueByStatusRequest withSignedStatusBody(String signedStatusBody) {
 		this.signedStatusBody = signedStatusBody;
 		return this;
 	}
-
 	public String getSignedStatusSignature() {
 		return signedStatusSignature;
 	}
-
 	public void setSignedStatusSignature(String signedStatusSignature) {
 		this.signedStatusSignature = signedStatusSignature;
 	}
-
 	public SetRecoverValueByStatusRequest withSignedStatusSignature(String signedStatusSignature) {
 		this.signedStatusSignature = signedStatusSignature;
 		return this;

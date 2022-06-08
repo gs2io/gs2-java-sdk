@@ -32,41 +32,32 @@ public class OpenMessageByUserIdRequest extends Gs2BasicRequest<OpenMessageByUse
     private String userId;
     private String messageName;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public OpenMessageByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public OpenMessageByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMessageName() {
 		return messageName;
 	}
-
 	public void setMessageName(String messageName) {
 		this.messageName = messageName;
 	}
-
 	public OpenMessageByUserIdRequest withMessageName(String messageName) {
 		this.messageName = messageName;
 		return this;

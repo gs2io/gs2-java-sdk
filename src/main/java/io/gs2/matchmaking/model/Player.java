@@ -33,54 +33,42 @@ public class Player implements IModel, Serializable {
 	private List<Attribute> attributes;
 	private String roleName;
 	private List<String> denyUserIds;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Player withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<Attribute> getAttributes() {
 		return attributes;
 	}
-
 	public void setAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
 	}
-
 	public Player withAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
 		return this;
 	}
-
 	public String getRoleName() {
 		return roleName;
 	}
-
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-
 	public Player withRoleName(String roleName) {
 		this.roleName = roleName;
 		return this;
 	}
-
 	public List<String> getDenyUserIds() {
 		return denyUserIds;
 	}
-
 	public void setDenyUserIds(List<String> denyUserIds) {
 		this.denyUserIds = denyUserIds;
 	}
-
 	public Player withDenyUserIds(List<String> denyUserIds) {
 		this.denyUserIds = denyUserIds;
 		return this;

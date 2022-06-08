@@ -32,54 +32,42 @@ public class DeleteMessageRequest extends Gs2BasicRequest<DeleteMessageRequest> 
     private String roomName;
     private String userId;
     private String messageName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteMessageRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public DeleteMessageRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteMessageRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMessageName() {
 		return messageName;
 	}
-
 	public void setMessageName(String messageName) {
 		this.messageName = messageName;
 	}
-
 	public DeleteMessageRequest withMessageName(String messageName) {
 		this.messageName = messageName;
 		return this;

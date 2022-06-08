@@ -36,80 +36,62 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
     private List<Material> materials;
     private Boolean force;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateProgressByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public CreateProgressByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public CreateProgressByUserIdRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getTargetItemSetId() {
 		return targetItemSetId;
 	}
-
 	public void setTargetItemSetId(String targetItemSetId) {
 		this.targetItemSetId = targetItemSetId;
 	}
-
 	public CreateProgressByUserIdRequest withTargetItemSetId(String targetItemSetId) {
 		this.targetItemSetId = targetItemSetId;
 		return this;
 	}
-
 	public List<Material> getMaterials() {
 		return materials;
 	}
-
 	public void setMaterials(List<Material> materials) {
 		this.materials = materials;
 	}
-
 	public CreateProgressByUserIdRequest withMaterials(List<Material> materials) {
 		this.materials = materials;
 		return this;
 	}
-
 	public Boolean getForce() {
 		return force;
 	}
-
 	public void setForce(Boolean force) {
 		this.force = force;
 	}
-
 	public CreateProgressByUserIdRequest withForce(Boolean force) {
 		this.force = force;
 		return this;

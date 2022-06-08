@@ -35,80 +35,62 @@ public class Script implements IModel, Serializable, Comparable<Script> {
 	private String script;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getScriptId() {
 		return scriptId;
 	}
-
 	public void setScriptId(String scriptId) {
 		this.scriptId = scriptId;
 	}
-
 	public Script withScriptId(String scriptId) {
 		this.scriptId = scriptId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Script withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Script withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getScript() {
 		return script;
 	}
-
 	public void setScript(String script) {
 		this.script = script;
 	}
-
 	public Script withScript(String script) {
 		this.script = script;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Script withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Script withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

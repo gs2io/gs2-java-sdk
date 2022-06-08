@@ -34,67 +34,52 @@ public class CreateTakeOverByUserIdRequest extends Gs2BasicRequest<CreateTakeOve
     private String userIdentifier;
     private String password;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateTakeOverByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public CreateTakeOverByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getType() {
 		return type;
 	}
-
 	public void setType(Integer type) {
 		this.type = type;
 	}
-
 	public CreateTakeOverByUserIdRequest withType(Integer type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getUserIdentifier() {
 		return userIdentifier;
 	}
-
 	public void setUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 	}
-
 	public CreateTakeOverByUserIdRequest withUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public CreateTakeOverByUserIdRequest withPassword(String password) {
 		this.password = password;
 		return this;

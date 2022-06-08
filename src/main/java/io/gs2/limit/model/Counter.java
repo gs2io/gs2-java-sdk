@@ -37,106 +37,82 @@ public class Counter implements IModel, Serializable, Comparable<Counter> {
 	private Long nextResetAt;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getCounterId() {
 		return counterId;
 	}
-
 	public void setCounterId(String counterId) {
 		this.counterId = counterId;
 	}
-
 	public Counter withCounterId(String counterId) {
 		this.counterId = counterId;
 		return this;
 	}
-
 	public String getLimitName() {
 		return limitName;
 	}
-
 	public void setLimitName(String limitName) {
 		this.limitName = limitName;
 	}
-
 	public Counter withLimitName(String limitName) {
 		this.limitName = limitName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Counter withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Counter withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getCount() {
 		return count;
 	}
-
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-
 	public Counter withCount(Integer count) {
 		this.count = count;
 		return this;
 	}
-
 	public Long getNextResetAt() {
 		return nextResetAt;
 	}
-
 	public void setNextResetAt(Long nextResetAt) {
 		this.nextResetAt = nextResetAt;
 	}
-
 	public Counter withNextResetAt(Long nextResetAt) {
 		this.nextResetAt = nextResetAt;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Counter withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Counter withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

@@ -35,80 +35,62 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 	private Integer timeOffset;
 	private Boolean banned;
 	private Long createdAt;
-
 	public String getAccountId() {
 		return accountId;
 	}
-
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
-
 	public Account withAccountId(String accountId) {
 		this.accountId = accountId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Account withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public Account withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-
 	public Integer getTimeOffset() {
 		return timeOffset;
 	}
-
 	public void setTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 	}
-
 	public Account withTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 		return this;
 	}
-
 	public Boolean getBanned() {
 		return banned;
 	}
-
 	public void setBanned(Boolean banned) {
 		this.banned = banned;
 	}
-
 	public Account withBanned(Boolean banned) {
 		this.banned = banned;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Account withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

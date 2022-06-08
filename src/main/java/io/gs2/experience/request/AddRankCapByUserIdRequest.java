@@ -34,67 +34,52 @@ public class AddRankCapByUserIdRequest extends Gs2BasicRequest<AddRankCapByUserI
     private String propertyId;
     private Long rankCapValue;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AddRankCapByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AddRankCapByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getExperienceName() {
 		return experienceName;
 	}
-
 	public void setExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 	}
-
 	public AddRankCapByUserIdRequest withExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 		return this;
 	}
-
 	public String getPropertyId() {
 		return propertyId;
 	}
-
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
-
 	public AddRankCapByUserIdRequest withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;
 	}
-
 	public Long getRankCapValue() {
 		return rankCapValue;
 	}
-
 	public void setRankCapValue(Long rankCapValue) {
 		this.rankCapValue = rankCapValue;
 	}
-
 	public AddRankCapByUserIdRequest withRankCapValue(Long rankCapValue) {
 		this.rankCapValue = rankCapValue;
 		return this;

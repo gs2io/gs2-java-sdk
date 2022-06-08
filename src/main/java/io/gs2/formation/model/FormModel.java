@@ -33,54 +33,42 @@ public class FormModel implements IModel, Serializable, Comparable<FormModel> {
 	private String name;
 	private String metadata;
 	private List<SlotModel> slots;
-
 	public String getFormModelId() {
 		return formModelId;
 	}
-
 	public void setFormModelId(String formModelId) {
 		this.formModelId = formModelId;
 	}
-
 	public FormModel withFormModelId(String formModelId) {
 		this.formModelId = formModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public FormModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public FormModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<SlotModel> getSlots() {
 		return slots;
 	}
-
 	public void setSlots(List<SlotModel> slots) {
 		this.slots = slots;
 	}
-
 	public FormModel withSlots(List<SlotModel> slots) {
 		this.slots = slots;
 		return this;

@@ -35,80 +35,62 @@ public class ItemModel implements IModel, Serializable, Comparable<ItemModel> {
 	private Long stackingLimit;
 	private Boolean allowMultipleStacks;
 	private Integer sortValue;
-
 	public String getItemModelId() {
 		return itemModelId;
 	}
-
 	public void setItemModelId(String itemModelId) {
 		this.itemModelId = itemModelId;
 	}
-
 	public ItemModel withItemModelId(String itemModelId) {
 		this.itemModelId = itemModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public ItemModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public ItemModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getStackingLimit() {
 		return stackingLimit;
 	}
-
 	public void setStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 	}
-
 	public ItemModel withStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 		return this;
 	}
-
 	public Boolean getAllowMultipleStacks() {
 		return allowMultipleStacks;
 	}
-
 	public void setAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 	}
-
 	public ItemModel withAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 		return this;
 	}
-
 	public Integer getSortValue() {
 		return sortValue;
 	}
-
 	public void setSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 	}
-
 	public ItemModel withSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 		return this;

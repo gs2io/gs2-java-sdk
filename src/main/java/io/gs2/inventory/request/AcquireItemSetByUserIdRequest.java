@@ -37,106 +37,82 @@ public class AcquireItemSetByUserIdRequest extends Gs2BasicRequest<AcquireItemSe
     private Boolean createNewItemSet;
     private String itemSetName;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AcquireItemSetByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public AcquireItemSetByUserIdRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getItemName() {
 		return itemName;
 	}
-
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-
 	public AcquireItemSetByUserIdRequest withItemName(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AcquireItemSetByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getAcquireCount() {
 		return acquireCount;
 	}
-
 	public void setAcquireCount(Long acquireCount) {
 		this.acquireCount = acquireCount;
 	}
-
 	public AcquireItemSetByUserIdRequest withAcquireCount(Long acquireCount) {
 		this.acquireCount = acquireCount;
 		return this;
 	}
-
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
-
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
 	public AcquireItemSetByUserIdRequest withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
 	}
-
 	public Boolean getCreateNewItemSet() {
 		return createNewItemSet;
 	}
-
 	public void setCreateNewItemSet(Boolean createNewItemSet) {
 		this.createNewItemSet = createNewItemSet;
 	}
-
 	public AcquireItemSetByUserIdRequest withCreateNewItemSet(Boolean createNewItemSet) {
 		this.createNewItemSet = createNewItemSet;
 		return this;
 	}
-
 	public String getItemSetName() {
 		return itemSetName;
 	}
-
 	public void setItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 	}
-
 	public AcquireItemSetByUserIdRequest withItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 		return this;

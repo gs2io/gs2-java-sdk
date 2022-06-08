@@ -31,28 +31,22 @@ import io.gs2.distributor.model.DistributeResource;
 public class DistributeWithoutOverflowProcessRequest extends Gs2BasicRequest<DistributeWithoutOverflowProcessRequest> {
     private String userId;
     private DistributeResource distributeResource;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DistributeWithoutOverflowProcessRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public DistributeResource getDistributeResource() {
 		return distributeResource;
 	}
-
 	public void setDistributeResource(DistributeResource distributeResource) {
 		this.distributeResource = distributeResource;
 	}
-
 	public DistributeWithoutOverflowProcessRequest withDistributeResource(DistributeResource distributeResource) {
 		this.distributeResource = distributeResource;
 		return this;

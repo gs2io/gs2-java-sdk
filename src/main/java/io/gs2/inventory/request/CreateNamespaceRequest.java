@@ -36,80 +36,62 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting overflowScript;
     private ScriptSetting consumeScript;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public ScriptSetting getAcquireScript() {
 		return acquireScript;
 	}
-
 	public void setAcquireScript(ScriptSetting acquireScript) {
 		this.acquireScript = acquireScript;
 	}
-
 	public CreateNamespaceRequest withAcquireScript(ScriptSetting acquireScript) {
 		this.acquireScript = acquireScript;
 		return this;
 	}
-
 	public ScriptSetting getOverflowScript() {
 		return overflowScript;
 	}
-
 	public void setOverflowScript(ScriptSetting overflowScript) {
 		this.overflowScript = overflowScript;
 	}
-
 	public CreateNamespaceRequest withOverflowScript(ScriptSetting overflowScript) {
 		this.overflowScript = overflowScript;
 		return this;
 	}
-
 	public ScriptSetting getConsumeScript() {
 		return consumeScript;
 	}
-
 	public void setConsumeScript(ScriptSetting consumeScript) {
 		this.consumeScript = consumeScript;
 	}
-
 	public CreateNamespaceRequest withConsumeScript(ScriptSetting consumeScript) {
 		this.consumeScript = consumeScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

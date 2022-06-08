@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class DistributeResource implements IModel, Serializable {
 	private String action;
 	private String request;
-
 	public String getAction() {
 		return action;
 	}
-
 	public void setAction(String action) {
 		this.action = action;
 	}
-
 	public DistributeResource withAction(String action) {
 		this.action = action;
 		return this;
 	}
-
 	public String getRequest() {
 		return request;
 	}
-
 	public void setRequest(String request) {
 		this.request = request;
 	}
-
 	public DistributeResource withRequest(String request) {
 		this.request = request;
 		return this;

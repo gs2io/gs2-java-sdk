@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class BonusRate implements IModel, Serializable {
 	private Float rate;
 	private Integer weight;
-
 	public Float getRate() {
 		return rate;
 	}
-
 	public void setRate(Float rate) {
 		this.rate = rate;
 	}
-
 	public BonusRate withRate(Float rate) {
 		this.rate = rate;
 		return this;
 	}
-
 	public Integer getWeight() {
 		return weight;
 	}
-
 	public void setWeight(Integer weight) {
 		this.weight = weight;
 	}
-
 	public BonusRate withWeight(Integer weight) {
 		this.weight = weight;
 		return this;

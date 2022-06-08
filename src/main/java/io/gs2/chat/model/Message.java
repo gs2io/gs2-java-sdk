@@ -36,93 +36,72 @@ public class Message implements IModel, Serializable, Comparable<Message> {
 	private Integer category;
 	private String metadata;
 	private Long createdAt;
-
 	public String getMessageId() {
 		return messageId;
 	}
-
 	public void setMessageId(String messageId) {
 		this.messageId = messageId;
 	}
-
 	public Message withMessageId(String messageId) {
 		this.messageId = messageId;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public Message withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Message withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Message withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getCategory() {
 		return category;
 	}
-
 	public void setCategory(Integer category) {
 		this.category = category;
 	}
-
 	public Message withCategory(Integer category) {
 		this.category = category;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Message withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Message withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class GameResult implements IModel, Serializable {
 	private Integer rank;
 	private String userId;
-
 	public Integer getRank() {
 		return rank;
 	}
-
 	public void setRank(Integer rank) {
 		this.rank = rank;
 	}
-
 	public GameResult withRank(Integer rank) {
 		this.rank = rank;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GameResult withUserId(String userId) {
 		this.userId = userId;
 		return this;

@@ -32,54 +32,42 @@ public class AuthenticationRequest extends Gs2BasicRequest<AuthenticationRequest
     private String userId;
     private String keyId;
     private String password;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AuthenticationRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AuthenticationRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public AuthenticationRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public AuthenticationRequest withPassword(String password) {
 		this.password = password;
 		return this;

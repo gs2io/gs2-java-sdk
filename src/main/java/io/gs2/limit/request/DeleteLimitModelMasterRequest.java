@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteLimitModelMasterRequest extends Gs2BasicRequest<DeleteLimitModelMasterRequest> {
     private String namespaceName;
     private String limitName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteLimitModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getLimitName() {
 		return limitName;
 	}
-
 	public void setLimitName(String limitName) {
 		this.limitName = limitName;
 	}
-
 	public DeleteLimitModelMasterRequest withLimitName(String limitName) {
 		this.limitName = limitName;
 		return this;

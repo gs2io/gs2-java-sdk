@@ -37,106 +37,82 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
 	private List<AcquireAction> completeAcquireActions;
 	private String challengePeriodEventId;
 	private String premiseMissionTaskName;
-
 	public String getMissionTaskId() {
 		return missionTaskId;
 	}
-
 	public void setMissionTaskId(String missionTaskId) {
 		this.missionTaskId = missionTaskId;
 	}
-
 	public MissionTaskModel withMissionTaskId(String missionTaskId) {
 		this.missionTaskId = missionTaskId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public MissionTaskModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public MissionTaskModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getCounterName() {
 		return counterName;
 	}
-
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
-
 	public MissionTaskModel withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;
 	}
-
 	public Long getTargetValue() {
 		return targetValue;
 	}
-
 	public void setTargetValue(Long targetValue) {
 		this.targetValue = targetValue;
 	}
-
 	public MissionTaskModel withTargetValue(Long targetValue) {
 		this.targetValue = targetValue;
 		return this;
 	}
-
 	public List<AcquireAction> getCompleteAcquireActions() {
 		return completeAcquireActions;
 	}
-
 	public void setCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 	}
-
 	public MissionTaskModel withCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public MissionTaskModel withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-
 	public String getPremiseMissionTaskName() {
 		return premiseMissionTaskName;
 	}
-
 	public void setPremiseMissionTaskName(String premiseMissionTaskName) {
 		this.premiseMissionTaskName = premiseMissionTaskName;
 	}
-
 	public MissionTaskModel withPremiseMissionTaskName(String premiseMissionTaskName) {
 		this.premiseMissionTaskName = premiseMissionTaskName;
 		return this;

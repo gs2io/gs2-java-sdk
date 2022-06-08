@@ -35,67 +35,52 @@ public class UpdatePrizeTableMasterRequest extends Gs2BasicRequest<UpdatePrizeTa
     private String description;
     private String metadata;
     private List<Prize> prizes;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdatePrizeTableMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public UpdatePrizeTableMasterRequest withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdatePrizeTableMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdatePrizeTableMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<Prize> getPrizes() {
 		return prizes;
 	}
-
 	public void setPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 	}
-
 	public UpdatePrizeTableMasterRequest withPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 		return this;

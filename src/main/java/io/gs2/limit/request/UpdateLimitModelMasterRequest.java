@@ -36,106 +36,82 @@ public class UpdateLimitModelMasterRequest extends Gs2BasicRequest<UpdateLimitMo
     private Integer resetDayOfMonth;
     private String resetDayOfWeek;
     private Integer resetHour;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateLimitModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getLimitName() {
 		return limitName;
 	}
-
 	public void setLimitName(String limitName) {
 		this.limitName = limitName;
 	}
-
 	public UpdateLimitModelMasterRequest withLimitName(String limitName) {
 		this.limitName = limitName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateLimitModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateLimitModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getResetType() {
 		return resetType;
 	}
-
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
-
 	public UpdateLimitModelMasterRequest withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-
 	public Integer getResetDayOfMonth() {
 		return resetDayOfMonth;
 	}
-
 	public void setResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 	}
-
 	public UpdateLimitModelMasterRequest withResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 		return this;
 	}
-
 	public String getResetDayOfWeek() {
 		return resetDayOfWeek;
 	}
-
 	public void setResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 	}
-
 	public UpdateLimitModelMasterRequest withResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 		return this;
 	}
-
 	public Integer getResetHour() {
 		return resetHour;
 	}
-
 	public void setResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 	}
-
 	public UpdateLimitModelMasterRequest withResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 		return this;

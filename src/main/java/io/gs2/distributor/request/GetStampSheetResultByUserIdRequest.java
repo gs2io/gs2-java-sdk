@@ -31,41 +31,32 @@ public class GetStampSheetResultByUserIdRequest extends Gs2BasicRequest<GetStamp
     private String namespaceName;
     private String userId;
     private String transactionId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetStampSheetResultByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetStampSheetResultByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public GetStampSheetResultByUserIdRequest withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;

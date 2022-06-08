@@ -33,54 +33,42 @@ public class UpdateGatheringRequest extends Gs2BasicRequest<UpdateGatheringReque
     private String gatheringName;
     private String accessToken;
     private List<AttributeRange> attributeRanges;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateGatheringRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getGatheringName() {
 		return gatheringName;
 	}
-
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
-
 	public UpdateGatheringRequest withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public UpdateGatheringRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public List<AttributeRange> getAttributeRanges() {
 		return attributeRanges;
 	}
-
 	public void setAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 	}
-
 	public UpdateGatheringRequest withAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 		return this;

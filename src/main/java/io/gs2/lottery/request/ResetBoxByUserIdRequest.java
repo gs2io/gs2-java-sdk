@@ -32,41 +32,32 @@ public class ResetBoxByUserIdRequest extends Gs2BasicRequest<ResetBoxByUserIdReq
     private String prizeTableName;
     private String userId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public ResetBoxByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public ResetBoxByUserIdRequest withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public ResetBoxByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

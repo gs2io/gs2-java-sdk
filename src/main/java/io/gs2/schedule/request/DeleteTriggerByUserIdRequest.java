@@ -32,41 +32,32 @@ public class DeleteTriggerByUserIdRequest extends Gs2BasicRequest<DeleteTriggerB
     private String userId;
     private String triggerName;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteTriggerByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteTriggerByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTriggerName() {
 		return triggerName;
 	}
-
 	public void setTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 	}
-
 	public DeleteTriggerByUserIdRequest withTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 		return this;

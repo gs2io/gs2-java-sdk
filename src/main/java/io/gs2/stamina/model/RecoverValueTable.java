@@ -34,67 +34,52 @@ public class RecoverValueTable implements IModel, Serializable, Comparable<Recov
 	private String metadata;
 	private String experienceModelId;
 	private List<Integer> values;
-
 	public String getRecoverValueTableId() {
 		return recoverValueTableId;
 	}
-
 	public void setRecoverValueTableId(String recoverValueTableId) {
 		this.recoverValueTableId = recoverValueTableId;
 	}
-
 	public RecoverValueTable withRecoverValueTableId(String recoverValueTableId) {
 		this.recoverValueTableId = recoverValueTableId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public RecoverValueTable withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public RecoverValueTable withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public RecoverValueTable withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public List<Integer> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
-
 	public RecoverValueTable withValues(List<Integer> values) {
 		this.values = values;
 		return this;

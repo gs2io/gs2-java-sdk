@@ -37,106 +37,82 @@ public class Complete implements IModel, Serializable, Comparable<Complete> {
 	private Long nextResetAt;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getCompleteId() {
 		return completeId;
 	}
-
 	public void setCompleteId(String completeId) {
 		this.completeId = completeId;
 	}
-
 	public Complete withCompleteId(String completeId) {
 		this.completeId = completeId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Complete withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getMissionGroupName() {
 		return missionGroupName;
 	}
-
 	public void setMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 	}
-
 	public Complete withMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 		return this;
 	}
-
 	public List<String> getCompletedMissionTaskNames() {
 		return completedMissionTaskNames;
 	}
-
 	public void setCompletedMissionTaskNames(List<String> completedMissionTaskNames) {
 		this.completedMissionTaskNames = completedMissionTaskNames;
 	}
-
 	public Complete withCompletedMissionTaskNames(List<String> completedMissionTaskNames) {
 		this.completedMissionTaskNames = completedMissionTaskNames;
 		return this;
 	}
-
 	public List<String> getReceivedMissionTaskNames() {
 		return receivedMissionTaskNames;
 	}
-
 	public void setReceivedMissionTaskNames(List<String> receivedMissionTaskNames) {
 		this.receivedMissionTaskNames = receivedMissionTaskNames;
 	}
-
 	public Complete withReceivedMissionTaskNames(List<String> receivedMissionTaskNames) {
 		this.receivedMissionTaskNames = receivedMissionTaskNames;
 		return this;
 	}
-
 	public Long getNextResetAt() {
 		return nextResetAt;
 	}
-
 	public void setNextResetAt(Long nextResetAt) {
 		this.nextResetAt = nextResetAt;
 	}
-
 	public Complete withNextResetAt(Long nextResetAt) {
 		this.nextResetAt = nextResetAt;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Complete withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Complete withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

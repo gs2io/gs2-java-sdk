@@ -35,80 +35,62 @@ public class AddReferenceOfByUserIdRequest extends Gs2BasicRequest<AddReferenceO
     private String itemSetName;
     private String referenceOf;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AddReferenceOfByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public AddReferenceOfByUserIdRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AddReferenceOfByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getItemName() {
 		return itemName;
 	}
-
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-
 	public AddReferenceOfByUserIdRequest withItemName(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
-
 	public String getItemSetName() {
 		return itemSetName;
 	}
-
 	public void setItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 	}
-
 	public AddReferenceOfByUserIdRequest withItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 		return this;
 	}
-
 	public String getReferenceOf() {
 		return referenceOf;
 	}
-
 	public void setReferenceOf(String referenceOf) {
 		this.referenceOf = referenceOf;
 	}
-
 	public AddReferenceOfByUserIdRequest withReferenceOf(String referenceOf) {
 		this.referenceOf = referenceOf;
 		return this;

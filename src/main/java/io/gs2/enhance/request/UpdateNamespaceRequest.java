@@ -39,106 +39,88 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private LogSetting logSetting;
     private String queueNamespaceId;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Boolean getEnableDirectEnhance() {
 		return enableDirectEnhance;
 	}
-
 	public void setEnableDirectEnhance(Boolean enableDirectEnhance) {
 		this.enableDirectEnhance = enableDirectEnhance;
 	}
-
 	public UpdateNamespaceRequest withEnableDirectEnhance(Boolean enableDirectEnhance) {
 		this.enableDirectEnhance = enableDirectEnhance;
 		return this;
 	}
-
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
-
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
-
 	public UpdateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-
 	public ScriptSetting getEnhanceScript() {
 		return enhanceScript;
 	}
-
 	public void setEnhanceScript(ScriptSetting enhanceScript) {
 		this.enhanceScript = enhanceScript;
 	}
-
 	public UpdateNamespaceRequest withEnhanceScript(ScriptSetting enhanceScript) {
 		this.enhanceScript = enhanceScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
+    @Deprecated
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
-
+    @Deprecated
 	public void setQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 	}
-
+    @Deprecated
 	public UpdateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 		return this;
 	}
-
+    @Deprecated
 	public String getKeyId() {
 		return keyId;
 	}
-
+    @Deprecated
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
+    @Deprecated
 	public UpdateNamespaceRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

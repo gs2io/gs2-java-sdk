@@ -38,106 +38,82 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting changeRankCapScript;
     private ScriptSetting overflowExperienceScript;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getExperienceCapScriptId() {
 		return experienceCapScriptId;
 	}
-
 	public void setExperienceCapScriptId(String experienceCapScriptId) {
 		this.experienceCapScriptId = experienceCapScriptId;
 	}
-
 	public CreateNamespaceRequest withExperienceCapScriptId(String experienceCapScriptId) {
 		this.experienceCapScriptId = experienceCapScriptId;
 		return this;
 	}
-
 	public ScriptSetting getChangeExperienceScript() {
 		return changeExperienceScript;
 	}
-
 	public void setChangeExperienceScript(ScriptSetting changeExperienceScript) {
 		this.changeExperienceScript = changeExperienceScript;
 	}
-
 	public CreateNamespaceRequest withChangeExperienceScript(ScriptSetting changeExperienceScript) {
 		this.changeExperienceScript = changeExperienceScript;
 		return this;
 	}
-
 	public ScriptSetting getChangeRankScript() {
 		return changeRankScript;
 	}
-
 	public void setChangeRankScript(ScriptSetting changeRankScript) {
 		this.changeRankScript = changeRankScript;
 	}
-
 	public CreateNamespaceRequest withChangeRankScript(ScriptSetting changeRankScript) {
 		this.changeRankScript = changeRankScript;
 		return this;
 	}
-
 	public ScriptSetting getChangeRankCapScript() {
 		return changeRankCapScript;
 	}
-
 	public void setChangeRankCapScript(ScriptSetting changeRankCapScript) {
 		this.changeRankCapScript = changeRankCapScript;
 	}
-
 	public CreateNamespaceRequest withChangeRankCapScript(ScriptSetting changeRankCapScript) {
 		this.changeRankCapScript = changeRankCapScript;
 		return this;
 	}
-
 	public ScriptSetting getOverflowExperienceScript() {
 		return overflowExperienceScript;
 	}
-
 	public void setOverflowExperienceScript(ScriptSetting overflowExperienceScript) {
 		this.overflowExperienceScript = overflowExperienceScript;
 	}
-
 	public CreateNamespaceRequest withOverflowExperienceScript(ScriptSetting overflowExperienceScript) {
 		this.overflowExperienceScript = overflowExperienceScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

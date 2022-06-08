@@ -33,54 +33,42 @@ public class CapacityOfRole implements IModel, Serializable {
 	private List<String> roleAliases;
 	private Integer capacity;
 	private List<Player> participants;
-
 	public String getRoleName() {
 		return roleName;
 	}
-
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-
 	public CapacityOfRole withRoleName(String roleName) {
 		this.roleName = roleName;
 		return this;
 	}
-
 	public List<String> getRoleAliases() {
 		return roleAliases;
 	}
-
 	public void setRoleAliases(List<String> roleAliases) {
 		this.roleAliases = roleAliases;
 	}
-
 	public CapacityOfRole withRoleAliases(List<String> roleAliases) {
 		this.roleAliases = roleAliases;
 		return this;
 	}
-
 	public Integer getCapacity() {
 		return capacity;
 	}
-
 	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
-
 	public CapacityOfRole withCapacity(Integer capacity) {
 		this.capacity = capacity;
 		return this;
 	}
-
 	public List<Player> getParticipants() {
 		return participants;
 	}
-
 	public void setParticipants(List<Player> participants) {
 		this.participants = participants;
 	}
-
 	public CapacityOfRole withParticipants(List<Player> participants) {
 		this.participants = participants;
 		return this;

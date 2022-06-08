@@ -35,80 +35,62 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 	private String type;
 	private String message;
 	private Long eventAt;
-
 	public String getEventId() {
 		return eventId;
 	}
-
 	public void setEventId(String eventId) {
 		this.eventId = eventId;
 	}
-
 	public Event withEventId(String eventId) {
 		this.eventId = eventId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Event withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getResourceName() {
 		return resourceName;
 	}
-
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
 	}
-
 	public Event withResourceName(String resourceName) {
 		this.resourceName = resourceName;
 		return this;
 	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	public Event withType(String type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getMessage() {
 		return message;
 	}
-
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
 	public Event withMessage(String message) {
 		this.message = message;
 		return this;
 	}
-
 	public Long getEventAt() {
 		return eventAt;
 	}
-
 	public void setEventAt(Long eventAt) {
 		this.eventAt = eventAt;
 	}
-
 	public Event withEventAt(Long eventAt) {
 		this.eventAt = eventAt;
 		return this;

@@ -36,93 +36,72 @@ public class Stack implements IModel, Serializable, Comparable<Stack> {
 	private String status;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getStackId() {
 		return stackId;
 	}
-
 	public void setStackId(String stackId) {
 		this.stackId = stackId;
 	}
-
 	public Stack withStackId(String stackId) {
 		this.stackId = stackId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Stack withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Stack withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getTemplate() {
 		return template;
 	}
-
 	public void setTemplate(String template) {
 		this.template = template;
 	}
-
 	public Stack withTemplate(String template) {
 		this.template = template;
 		return this;
 	}
-
 	public String getStatus() {
 		return status;
 	}
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 	public Stack withStatus(String status) {
 		this.status = status;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Stack withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Stack withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

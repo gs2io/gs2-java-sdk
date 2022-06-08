@@ -31,41 +31,32 @@ public class DescribeSubscribesByCategoryNameAndUserIdRequest extends Gs2BasicRe
     private String namespaceName;
     private String categoryName;
     private String userId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeSubscribesByCategoryNameAndUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public DescribeSubscribesByCategoryNameAndUserIdRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DescribeSubscribesByCategoryNameAndUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

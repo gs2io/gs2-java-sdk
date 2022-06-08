@@ -36,93 +36,72 @@ public class Profile implements IModel, Serializable, Comparable<Profile> {
 	private String friendProfile;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getProfileId() {
 		return profileId;
 	}
-
 	public void setProfileId(String profileId) {
 		this.profileId = profileId;
 	}
-
 	public Profile withProfileId(String profileId) {
 		this.profileId = profileId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Profile withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getPublicProfile() {
 		return publicProfile;
 	}
-
 	public void setPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 	}
-
 	public Profile withPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 		return this;
 	}
-
 	public String getFollowerProfile() {
 		return followerProfile;
 	}
-
 	public void setFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 	}
-
 	public Profile withFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 		return this;
 	}
-
 	public String getFriendProfile() {
 		return friendProfile;
 	}
-
 	public void setFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 	}
-
 	public Profile withFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Profile withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Profile withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

@@ -32,41 +32,32 @@ public class AttachSecurityPolicy implements IModel, Serializable, Comparable<At
 	private String userId;
 	private List<String> securityPolicyIds;
 	private Long attachedAt;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AttachSecurityPolicy withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getSecurityPolicyIds() {
 		return securityPolicyIds;
 	}
-
 	public void setSecurityPolicyIds(List<String> securityPolicyIds) {
 		this.securityPolicyIds = securityPolicyIds;
 	}
-
 	public AttachSecurityPolicy withSecurityPolicyIds(List<String> securityPolicyIds) {
 		this.securityPolicyIds = securityPolicyIds;
 		return this;
 	}
-
 	public Long getAttachedAt() {
 		return attachedAt;
 	}
-
 	public void setAttachedAt(Long attachedAt) {
 		this.attachedAt = attachedAt;
 	}
-
 	public AttachSecurityPolicy withAttachedAt(Long attachedAt) {
 		this.attachedAt = attachedAt;
 		return this;

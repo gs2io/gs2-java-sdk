@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class CalculatedAt implements IModel, Serializable {
 	private String categoryName;
 	private Long calculatedAt;
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public CalculatedAt withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public Long getCalculatedAt() {
 		return calculatedAt;
 	}
-
 	public void setCalculatedAt(Long calculatedAt) {
 		this.calculatedAt = calculatedAt;
 	}
-
 	public CalculatedAt withCalculatedAt(Long calculatedAt) {
 		this.calculatedAt = calculatedAt;
 		return this;

@@ -40,145 +40,112 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
 	private String premiseMissionTaskName;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getMissionTaskId() {
 		return missionTaskId;
 	}
-
 	public void setMissionTaskId(String missionTaskId) {
 		this.missionTaskId = missionTaskId;
 	}
-
 	public MissionTaskModelMaster withMissionTaskId(String missionTaskId) {
 		this.missionTaskId = missionTaskId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public MissionTaskModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public MissionTaskModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public MissionTaskModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getCounterName() {
 		return counterName;
 	}
-
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
-
 	public MissionTaskModelMaster withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;
 	}
-
 	public Long getTargetValue() {
 		return targetValue;
 	}
-
 	public void setTargetValue(Long targetValue) {
 		this.targetValue = targetValue;
 	}
-
 	public MissionTaskModelMaster withTargetValue(Long targetValue) {
 		this.targetValue = targetValue;
 		return this;
 	}
-
 	public List<AcquireAction> getCompleteAcquireActions() {
 		return completeAcquireActions;
 	}
-
 	public void setCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 	}
-
 	public MissionTaskModelMaster withCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public MissionTaskModelMaster withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-
 	public String getPremiseMissionTaskName() {
 		return premiseMissionTaskName;
 	}
-
 	public void setPremiseMissionTaskName(String premiseMissionTaskName) {
 		this.premiseMissionTaskName = premiseMissionTaskName;
 	}
-
 	public MissionTaskModelMaster withPremiseMissionTaskName(String premiseMissionTaskName) {
 		this.premiseMissionTaskName = premiseMissionTaskName;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public MissionTaskModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public MissionTaskModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

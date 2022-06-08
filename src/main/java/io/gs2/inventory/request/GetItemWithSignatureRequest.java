@@ -34,80 +34,62 @@ public class GetItemWithSignatureRequest extends Gs2BasicRequest<GetItemWithSign
     private String itemName;
     private String itemSetName;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetItemWithSignatureRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public GetItemWithSignatureRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetItemWithSignatureRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getItemName() {
 		return itemName;
 	}
-
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-
 	public GetItemWithSignatureRequest withItemName(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
-
 	public String getItemSetName() {
 		return itemSetName;
 	}
-
 	public void setItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 	}
-
 	public GetItemWithSignatureRequest withItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public GetItemWithSignatureRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

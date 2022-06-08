@@ -31,28 +31,22 @@ public class DeleteReceivedByUserIdRequest extends Gs2BasicRequest<DeleteReceive
     private String namespaceName;
     private String userId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteReceivedByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteReceivedByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

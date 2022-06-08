@@ -33,54 +33,42 @@ public class DistributeRequest extends Gs2BasicRequest<DistributeRequest> {
     private String distributorName;
     private String userId;
     private DistributeResource distributeResource;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DistributeRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDistributorName() {
 		return distributorName;
 	}
-
 	public void setDistributorName(String distributorName) {
 		this.distributorName = distributorName;
 	}
-
 	public DistributeRequest withDistributorName(String distributorName) {
 		this.distributorName = distributorName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DistributeRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public DistributeResource getDistributeResource() {
 		return distributeResource;
 	}
-
 	public void setDistributeResource(DistributeResource distributeResource) {
 		this.distributeResource = distributeResource;
 	}
-
 	public DistributeRequest withDistributeResource(DistributeResource distributeResource) {
 		this.distributeResource = distributeResource;
 		return this;

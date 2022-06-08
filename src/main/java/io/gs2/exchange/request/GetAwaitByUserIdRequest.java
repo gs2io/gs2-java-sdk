@@ -32,54 +32,42 @@ public class GetAwaitByUserIdRequest extends Gs2BasicRequest<GetAwaitByUserIdReq
     private String userId;
     private String rateName;
     private String awaitName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetAwaitByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetAwaitByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public GetAwaitByUserIdRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getAwaitName() {
 		return awaitName;
 	}
-
 	public void setAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 	}
-
 	public GetAwaitByUserIdRequest withAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 		return this;

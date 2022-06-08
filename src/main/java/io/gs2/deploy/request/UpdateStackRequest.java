@@ -31,41 +31,32 @@ public class UpdateStackRequest extends Gs2BasicRequest<UpdateStackRequest> {
     private String stackName;
     private String description;
     private String template;
-
 	public String getStackName() {
 		return stackName;
 	}
-
 	public void setStackName(String stackName) {
 		this.stackName = stackName;
 	}
-
 	public UpdateStackRequest withStackName(String stackName) {
 		this.stackName = stackName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateStackRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getTemplate() {
 		return template;
 	}
-
 	public void setTemplate(String template) {
 		this.template = template;
 	}
-
 	public UpdateStackRequest withTemplate(String template) {
 		this.template = template;
 		return this;

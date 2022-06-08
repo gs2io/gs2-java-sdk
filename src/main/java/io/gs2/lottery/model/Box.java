@@ -36,93 +36,72 @@ public class Box implements IModel, Serializable, Comparable<Box> {
 	private List<Integer> drawnIndexes;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getBoxId() {
 		return boxId;
 	}
-
 	public void setBoxId(String boxId) {
 		this.boxId = boxId;
 	}
-
 	public Box withBoxId(String boxId) {
 		this.boxId = boxId;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public Box withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-
 	public Integer getIndex() {
 		return index;
 	}
-
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
-
 	public Box withIndex(Integer index) {
 		this.index = index;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Box withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<Integer> getDrawnIndexes() {
 		return drawnIndexes;
 	}
-
 	public void setDrawnIndexes(List<Integer> drawnIndexes) {
 		this.drawnIndexes = drawnIndexes;
 	}
-
 	public Box withDrawnIndexes(List<Integer> drawnIndexes) {
 		this.drawnIndexes = drawnIndexes;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Box withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Box withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

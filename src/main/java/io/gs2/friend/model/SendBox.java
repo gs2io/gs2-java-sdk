@@ -34,67 +34,52 @@ public class SendBox implements IModel, Serializable, Comparable<SendBox> {
 	private List<String> targetUserIds;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getSendBoxId() {
 		return sendBoxId;
 	}
-
 	public void setSendBoxId(String sendBoxId) {
 		this.sendBoxId = sendBoxId;
 	}
-
 	public SendBox withSendBoxId(String sendBoxId) {
 		this.sendBoxId = sendBoxId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SendBox withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getTargetUserIds() {
 		return targetUserIds;
 	}
-
 	public void setTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 	}
-
 	public SendBox withTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public SendBox withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public SendBox withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

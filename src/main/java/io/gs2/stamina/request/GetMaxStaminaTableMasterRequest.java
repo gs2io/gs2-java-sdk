@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetMaxStaminaTableMasterRequest extends Gs2BasicRequest<GetMaxStaminaTableMasterRequest> {
     private String namespaceName;
     private String maxStaminaTableName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetMaxStaminaTableMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMaxStaminaTableName() {
 		return maxStaminaTableName;
 	}
-
 	public void setMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 	}
-
 	public GetMaxStaminaTableMasterRequest withMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 		return this;

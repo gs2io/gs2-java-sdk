@@ -36,93 +36,72 @@ public class Inventory implements IModel, Serializable, Comparable<Inventory> {
 	private Integer currentInventoryMaxCapacity;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getInventoryId() {
 		return inventoryId;
 	}
-
 	public void setInventoryId(String inventoryId) {
 		this.inventoryId = inventoryId;
 	}
-
 	public Inventory withInventoryId(String inventoryId) {
 		this.inventoryId = inventoryId;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public Inventory withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Inventory withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getCurrentInventoryCapacityUsage() {
 		return currentInventoryCapacityUsage;
 	}
-
 	public void setCurrentInventoryCapacityUsage(Integer currentInventoryCapacityUsage) {
 		this.currentInventoryCapacityUsage = currentInventoryCapacityUsage;
 	}
-
 	public Inventory withCurrentInventoryCapacityUsage(Integer currentInventoryCapacityUsage) {
 		this.currentInventoryCapacityUsage = currentInventoryCapacityUsage;
 		return this;
 	}
-
 	public Integer getCurrentInventoryMaxCapacity() {
 		return currentInventoryMaxCapacity;
 	}
-
 	public void setCurrentInventoryMaxCapacity(Integer currentInventoryMaxCapacity) {
 		this.currentInventoryMaxCapacity = currentInventoryMaxCapacity;
 	}
-
 	public Inventory withCurrentInventoryMaxCapacity(Integer currentInventoryMaxCapacity) {
 		this.currentInventoryMaxCapacity = currentInventoryMaxCapacity;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Inventory withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Inventory withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

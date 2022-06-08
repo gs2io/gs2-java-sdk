@@ -34,67 +34,52 @@ public class BuyRequest extends Gs2BasicRequest<BuyRequest> {
     private String displayItemId;
     private String accessToken;
     private List<Config> config;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public BuyRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getShowcaseName() {
 		return showcaseName;
 	}
-
 	public void setShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 	}
-
 	public BuyRequest withShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 		return this;
 	}
-
 	public String getDisplayItemId() {
 		return displayItemId;
 	}
-
 	public void setDisplayItemId(String displayItemId) {
 		this.displayItemId = displayItemId;
 	}
-
 	public BuyRequest withDisplayItemId(String displayItemId) {
 		this.displayItemId = displayItemId;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public BuyRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public BuyRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

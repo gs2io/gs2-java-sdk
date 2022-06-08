@@ -32,41 +32,32 @@ public class NotificationSetting implements IModel, Serializable {
 	private String gatewayNamespaceId;
 	private Boolean enableTransferMobileNotification;
 	private String sound;
-
 	public String getGatewayNamespaceId() {
 		return gatewayNamespaceId;
 	}
-
 	public void setGatewayNamespaceId(String gatewayNamespaceId) {
 		this.gatewayNamespaceId = gatewayNamespaceId;
 	}
-
 	public NotificationSetting withGatewayNamespaceId(String gatewayNamespaceId) {
 		this.gatewayNamespaceId = gatewayNamespaceId;
 		return this;
 	}
-
 	public Boolean getEnableTransferMobileNotification() {
 		return enableTransferMobileNotification;
 	}
-
 	public void setEnableTransferMobileNotification(Boolean enableTransferMobileNotification) {
 		this.enableTransferMobileNotification = enableTransferMobileNotification;
 	}
-
 	public NotificationSetting withEnableTransferMobileNotification(Boolean enableTransferMobileNotification) {
 		this.enableTransferMobileNotification = enableTransferMobileNotification;
 		return this;
 	}
-
 	public String getSound() {
 		return sound;
 	}
-
 	public void setSound(String sound) {
 		this.sound = sound;
 	}
-
 	public NotificationSetting withSound(String sound) {
 		this.sound = sound;
 		return this;

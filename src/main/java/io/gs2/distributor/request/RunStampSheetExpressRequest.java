@@ -31,41 +31,32 @@ public class RunStampSheetExpressRequest extends Gs2BasicRequest<RunStampSheetEx
     private String namespaceName;
     private String stampSheet;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public RunStampSheetExpressRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStampSheet() {
 		return stampSheet;
 	}
-
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
-
 	public RunStampSheetExpressRequest withStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public RunStampSheetExpressRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

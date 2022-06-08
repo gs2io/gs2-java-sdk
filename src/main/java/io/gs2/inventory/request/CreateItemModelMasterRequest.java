@@ -36,106 +36,82 @@ public class CreateItemModelMasterRequest extends Gs2BasicRequest<CreateItemMode
     private Long stackingLimit;
     private Boolean allowMultipleStacks;
     private Integer sortValue;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateItemModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public CreateItemModelMasterRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateItemModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateItemModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateItemModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getStackingLimit() {
 		return stackingLimit;
 	}
-
 	public void setStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 	}
-
 	public CreateItemModelMasterRequest withStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 		return this;
 	}
-
 	public Boolean getAllowMultipleStacks() {
 		return allowMultipleStacks;
 	}
-
 	public void setAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 	}
-
 	public CreateItemModelMasterRequest withAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 		return this;
 	}
-
 	public Integer getSortValue() {
 		return sortValue;
 	}
-
 	public void setSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 	}
-
 	public CreateItemModelMasterRequest withSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 		return this;

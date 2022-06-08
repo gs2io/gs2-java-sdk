@@ -37,106 +37,82 @@ public class RecoverValueTableMaster implements IModel, Serializable, Comparable
 	private List<Integer> values;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getRecoverValueTableId() {
 		return recoverValueTableId;
 	}
-
 	public void setRecoverValueTableId(String recoverValueTableId) {
 		this.recoverValueTableId = recoverValueTableId;
 	}
-
 	public RecoverValueTableMaster withRecoverValueTableId(String recoverValueTableId) {
 		this.recoverValueTableId = recoverValueTableId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public RecoverValueTableMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public RecoverValueTableMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public RecoverValueTableMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public RecoverValueTableMaster withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public List<Integer> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
-
 	public RecoverValueTableMaster withValues(List<Integer> values) {
 		this.values = values;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public RecoverValueTableMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public RecoverValueTableMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

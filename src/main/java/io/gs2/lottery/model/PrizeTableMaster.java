@@ -36,93 +36,72 @@ public class PrizeTableMaster implements IModel, Serializable, Comparable<PrizeT
 	private List<Prize> prizes;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getPrizeTableId() {
 		return prizeTableId;
 	}
-
 	public void setPrizeTableId(String prizeTableId) {
 		this.prizeTableId = prizeTableId;
 	}
-
 	public PrizeTableMaster withPrizeTableId(String prizeTableId) {
 		this.prizeTableId = prizeTableId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public PrizeTableMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public PrizeTableMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public PrizeTableMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public List<Prize> getPrizes() {
 		return prizes;
 	}
-
 	public void setPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 	}
-
 	public PrizeTableMaster withPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public PrizeTableMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public PrizeTableMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

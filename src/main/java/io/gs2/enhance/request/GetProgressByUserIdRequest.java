@@ -32,54 +32,42 @@ public class GetProgressByUserIdRequest extends Gs2BasicRequest<GetProgressByUse
     private String userId;
     private String rateName;
     private String progressName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetProgressByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetProgressByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public GetProgressByUserIdRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getProgressName() {
 		return progressName;
 	}
-
 	public void setProgressName(String progressName) {
 		this.progressName = progressName;
 	}
-
 	public GetProgressByUserIdRequest withProgressName(String progressName) {
 		this.progressName = progressName;
 		return this;

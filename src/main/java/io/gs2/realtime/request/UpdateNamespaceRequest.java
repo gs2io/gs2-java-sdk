@@ -36,80 +36,62 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String serverSpec;
     private NotificationSetting createNotification;
     private LogSetting logSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getServerType() {
 		return serverType;
 	}
-
 	public void setServerType(String serverType) {
 		this.serverType = serverType;
 	}
-
 	public UpdateNamespaceRequest withServerType(String serverType) {
 		this.serverType = serverType;
 		return this;
 	}
-
 	public String getServerSpec() {
 		return serverSpec;
 	}
-
 	public void setServerSpec(String serverSpec) {
 		this.serverSpec = serverSpec;
 	}
-
 	public UpdateNamespaceRequest withServerSpec(String serverSpec) {
 		this.serverSpec = serverSpec;
 		return this;
 	}
-
 	public NotificationSetting getCreateNotification() {
 		return createNotification;
 	}
-
 	public void setCreateNotification(NotificationSetting createNotification) {
 		this.createNotification = createNotification;
 	}
-
 	public UpdateNamespaceRequest withCreateNotification(NotificationSetting createNotification) {
 		this.createNotification = createNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

@@ -34,80 +34,62 @@ public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFrom
     private String password;
     private List<String> whiteListUserIds;
     private String userId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateRoomFromBackendRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public UpdateRoomFromBackendRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateRoomFromBackendRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public UpdateRoomFromBackendRequest withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-
 	public List<String> getWhiteListUserIds() {
 		return whiteListUserIds;
 	}
-
 	public void setWhiteListUserIds(List<String> whiteListUserIds) {
 		this.whiteListUserIds = whiteListUserIds;
 	}
-
 	public UpdateRoomFromBackendRequest withWhiteListUserIds(List<String> whiteListUserIds) {
 		this.whiteListUserIds = whiteListUserIds;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public UpdateRoomFromBackendRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

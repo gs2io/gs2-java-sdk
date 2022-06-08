@@ -31,41 +31,32 @@ public class CancelMatchmakingRequest extends Gs2BasicRequest<CancelMatchmakingR
     private String namespaceName;
     private String gatheringName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CancelMatchmakingRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getGatheringName() {
 		return gatheringName;
 	}
-
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
-
 	public CancelMatchmakingRequest withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public CancelMatchmakingRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

@@ -31,41 +31,32 @@ public class GetQuestModelMasterRequest extends Gs2BasicRequest<GetQuestModelMas
     private String namespaceName;
     private String questGroupName;
     private String questName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetQuestModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
-
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
-
 	public GetQuestModelMasterRequest withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;
 	}
-
 	public String getQuestName() {
 		return questName;
 	}
-
 	public void setQuestName(String questName) {
 		this.questName = questName;
 	}
-
 	public GetQuestModelMasterRequest withQuestName(String questName) {
 		this.questName = questName;
 		return this;

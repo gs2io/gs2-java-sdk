@@ -35,80 +35,62 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 	private String name;
 	private Integer count;
 	private Long exchangedAt;
-
 	public String getAwaitId() {
 		return awaitId;
 	}
-
 	public void setAwaitId(String awaitId) {
 		this.awaitId = awaitId;
 	}
-
 	public Await withAwaitId(String awaitId) {
 		this.awaitId = awaitId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Await withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public Await withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Await withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public Integer getCount() {
 		return count;
 	}
-
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-
 	public Await withCount(Integer count) {
 		this.count = count;
 		return this;
 	}
-
 	public Long getExchangedAt() {
 		return exchangedAt;
 	}
-
 	public void setExchangedAt(Long exchangedAt) {
 		this.exchangedAt = exchangedAt;
 	}
-
 	public Await withExchangedAt(Long exchangedAt) {
 		this.exchangedAt = exchangedAt;
 		return this;

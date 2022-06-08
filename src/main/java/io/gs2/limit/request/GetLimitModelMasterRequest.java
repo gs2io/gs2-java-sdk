@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetLimitModelMasterRequest extends Gs2BasicRequest<GetLimitModelMasterRequest> {
     private String namespaceName;
     private String limitName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetLimitModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getLimitName() {
 		return limitName;
 	}
-
 	public void setLimitName(String limitName) {
 		this.limitName = limitName;
 	}
-
 	public GetLimitModelMasterRequest withLimitName(String limitName) {
 		this.limitName = limitName;
 		return this;

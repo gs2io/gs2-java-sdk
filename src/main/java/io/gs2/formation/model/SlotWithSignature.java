@@ -34,67 +34,52 @@ public class SlotWithSignature implements IModel, Serializable {
 	private String body;
 	private String signature;
 	private String metadata;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public SlotWithSignature withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getPropertyType() {
 		return propertyType;
 	}
-
 	public void setPropertyType(String propertyType) {
 		this.propertyType = propertyType;
 	}
-
 	public SlotWithSignature withPropertyType(String propertyType) {
 		this.propertyType = propertyType;
 		return this;
 	}
-
 	public String getBody() {
 		return body;
 	}
-
 	public void setBody(String body) {
 		this.body = body;
 	}
-
 	public SlotWithSignature withBody(String body) {
 		this.body = body;
 		return this;
 	}
-
 	public String getSignature() {
 		return signature;
 	}
-
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-
 	public SlotWithSignature withSignature(String signature) {
 		this.signature = signature;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public SlotWithSignature withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;

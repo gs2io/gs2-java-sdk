@@ -37,106 +37,82 @@ public class Score implements IModel, Serializable, Comparable<Score> {
 	private Long score;
 	private String metadata;
 	private Long createdAt;
-
 	public String getScoreId() {
 		return scoreId;
 	}
-
 	public void setScoreId(String scoreId) {
 		this.scoreId = scoreId;
 	}
-
 	public Score withScoreId(String scoreId) {
 		this.scoreId = scoreId;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public Score withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Score withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getUniqueId() {
 		return uniqueId;
 	}
-
 	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
-
 	public Score withUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 		return this;
 	}
-
 	public String getScorerUserId() {
 		return scorerUserId;
 	}
-
 	public void setScorerUserId(String scorerUserId) {
 		this.scorerUserId = scorerUserId;
 	}
-
 	public Score withScorerUserId(String scorerUserId) {
 		this.scorerUserId = scorerUserId;
 		return this;
 	}
-
 	public Long getScore() {
 		return score;
 	}
-
 	public void setScore(Long score) {
 		this.score = score;
 	}
-
 	public Score withScore(Long score) {
 		this.score = score;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Score withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Score withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

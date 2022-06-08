@@ -32,41 +32,32 @@ public class TimeSpan implements IModel, Serializable {
 	private Integer days;
 	private Integer hours;
 	private Integer minutes;
-
 	public Integer getDays() {
 		return days;
 	}
-
 	public void setDays(Integer days) {
 		this.days = days;
 	}
-
 	public TimeSpan withDays(Integer days) {
 		this.days = days;
 		return this;
 	}
-
 	public Integer getHours() {
 		return hours;
 	}
-
 	public void setHours(Integer hours) {
 		this.hours = hours;
 	}
-
 	public TimeSpan withHours(Integer hours) {
 		this.hours = hours;
 		return this;
 	}
-
 	public Integer getMinutes() {
 		return minutes;
 	}
-
 	public void setMinutes(Integer minutes) {
 		this.minutes = minutes;
 	}
-
 	public TimeSpan withMinutes(Integer minutes) {
 		this.minutes = minutes;
 		return this;

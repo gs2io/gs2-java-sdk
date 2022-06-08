@@ -33,67 +33,52 @@ public class GetRankingRequest extends Gs2BasicRequest<GetRankingRequest> {
     private String accessToken;
     private String scorerUserId;
     private String uniqueId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetRankingRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public GetRankingRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetRankingRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getScorerUserId() {
 		return scorerUserId;
 	}
-
 	public void setScorerUserId(String scorerUserId) {
 		this.scorerUserId = scorerUserId;
 	}
-
 	public GetRankingRequest withScorerUserId(String scorerUserId) {
 		this.scorerUserId = scorerUserId;
 		return this;
 	}
-
 	public String getUniqueId() {
 		return uniqueId;
 	}
-
 	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
-
 	public GetRankingRequest withUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 		return this;

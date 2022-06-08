@@ -35,67 +35,52 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting entryScript;
     private ScriptSetting duplicateEntryScript;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public ScriptSetting getEntryScript() {
 		return entryScript;
 	}
-
 	public void setEntryScript(ScriptSetting entryScript) {
 		this.entryScript = entryScript;
 	}
-
 	public CreateNamespaceRequest withEntryScript(ScriptSetting entryScript) {
 		this.entryScript = entryScript;
 		return this;
 	}
-
 	public ScriptSetting getDuplicateEntryScript() {
 		return duplicateEntryScript;
 	}
-
 	public void setDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 	}
-
 	public CreateNamespaceRequest withDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

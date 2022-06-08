@@ -33,54 +33,42 @@ public class Ballot implements IModel, Serializable {
 	private String ratingName;
 	private String gatheringName;
 	private Integer numberOfPlayer;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Ballot withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public Ballot withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;
 	}
-
 	public String getGatheringName() {
 		return gatheringName;
 	}
-
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
-
 	public Ballot withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;
 	}
-
 	public Integer getNumberOfPlayer() {
 		return numberOfPlayer;
 	}
-
 	public void setNumberOfPlayer(Integer numberOfPlayer) {
 		this.numberOfPlayer = numberOfPlayer;
 	}
-
 	public Ballot withNumberOfPlayer(Integer numberOfPlayer) {
 		this.numberOfPlayer = numberOfPlayer;
 		return this;

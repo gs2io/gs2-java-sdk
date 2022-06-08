@@ -32,54 +32,42 @@ public class DeleteAwaitRequest extends Gs2BasicRequest<DeleteAwaitRequest> {
     private String accessToken;
     private String rateName;
     private String awaitName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteAwaitRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DeleteAwaitRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public DeleteAwaitRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getAwaitName() {
 		return awaitName;
 	}
-
 	public void setAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 	}
-
 	public DeleteAwaitRequest withAwaitName(String awaitName) {
 		this.awaitName = awaitName;
 		return this;

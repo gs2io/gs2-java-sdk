@@ -32,41 +32,32 @@ public class UpdateBannedRequest extends Gs2BasicRequest<UpdateBannedRequest> {
     private String userId;
     private Boolean banned;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateBannedRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public UpdateBannedRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Boolean getBanned() {
 		return banned;
 	}
-
 	public void setBanned(Boolean banned) {
 		this.banned = banned;
 	}
-
 	public UpdateBannedRequest withBanned(Boolean banned) {
 		this.banned = banned;
 		return this;

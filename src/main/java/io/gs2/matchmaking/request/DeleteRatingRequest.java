@@ -32,41 +32,32 @@ public class DeleteRatingRequest extends Gs2BasicRequest<DeleteRatingRequest> {
     private String userId;
     private String ratingName;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteRatingRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteRatingRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public DeleteRatingRequest withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;

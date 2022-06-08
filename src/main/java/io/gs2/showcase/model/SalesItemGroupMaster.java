@@ -36,93 +36,72 @@ public class SalesItemGroupMaster implements IModel, Serializable, Comparable<Sa
 	private List<String> salesItemNames;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getSalesItemGroupId() {
 		return salesItemGroupId;
 	}
-
 	public void setSalesItemGroupId(String salesItemGroupId) {
 		this.salesItemGroupId = salesItemGroupId;
 	}
-
 	public SalesItemGroupMaster withSalesItemGroupId(String salesItemGroupId) {
 		this.salesItemGroupId = salesItemGroupId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public SalesItemGroupMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public SalesItemGroupMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public SalesItemGroupMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<String> getSalesItemNames() {
 		return salesItemNames;
 	}
-
 	public void setSalesItemNames(List<String> salesItemNames) {
 		this.salesItemNames = salesItemNames;
 	}
-
 	public SalesItemGroupMaster withSalesItemNames(List<String> salesItemNames) {
 		this.salesItemNames = salesItemNames;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public SalesItemGroupMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public SalesItemGroupMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

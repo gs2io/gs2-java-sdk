@@ -34,67 +34,52 @@ public class DisplayItemMaster implements IModel, Serializable {
 	private String salesItemName;
 	private String salesItemGroupName;
 	private String salesPeriodEventId;
-
 	public String getDisplayItemId() {
 		return displayItemId;
 	}
-
 	public void setDisplayItemId(String displayItemId) {
 		this.displayItemId = displayItemId;
 	}
-
 	public DisplayItemMaster withDisplayItemId(String displayItemId) {
 		this.displayItemId = displayItemId;
 		return this;
 	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	public DisplayItemMaster withType(String type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getSalesItemName() {
 		return salesItemName;
 	}
-
 	public void setSalesItemName(String salesItemName) {
 		this.salesItemName = salesItemName;
 	}
-
 	public DisplayItemMaster withSalesItemName(String salesItemName) {
 		this.salesItemName = salesItemName;
 		return this;
 	}
-
 	public String getSalesItemGroupName() {
 		return salesItemGroupName;
 	}
-
 	public void setSalesItemGroupName(String salesItemGroupName) {
 		this.salesItemGroupName = salesItemGroupName;
 	}
-
 	public DisplayItemMaster withSalesItemGroupName(String salesItemGroupName) {
 		this.salesItemGroupName = salesItemGroupName;
 		return this;
 	}
-
 	public String getSalesPeriodEventId() {
 		return salesPeriodEventId;
 	}
-
 	public void setSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 	}
-
 	public DisplayItemMaster withSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 		return this;

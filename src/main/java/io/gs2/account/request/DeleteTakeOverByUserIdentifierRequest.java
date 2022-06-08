@@ -32,41 +32,32 @@ public class DeleteTakeOverByUserIdentifierRequest extends Gs2BasicRequest<Delet
     private Integer type;
     private String userIdentifier;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteTakeOverByUserIdentifierRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public Integer getType() {
 		return type;
 	}
-
 	public void setType(Integer type) {
 		this.type = type;
 	}
-
 	public DeleteTakeOverByUserIdentifierRequest withType(Integer type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getUserIdentifier() {
 		return userIdentifier;
 	}
-
 	public void setUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 	}
-
 	public DeleteTakeOverByUserIdentifierRequest withUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 		return this;

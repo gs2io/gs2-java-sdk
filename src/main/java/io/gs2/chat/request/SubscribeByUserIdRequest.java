@@ -34,54 +34,42 @@ public class SubscribeByUserIdRequest extends Gs2BasicRequest<SubscribeByUserIdR
     private String userId;
     private List<NotificationType> notificationTypes;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SubscribeByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public SubscribeByUserIdRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public SubscribeByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<NotificationType> getNotificationTypes() {
 		return notificationTypes;
 	}
-
 	public void setNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 	}
-
 	public SubscribeByUserIdRequest withNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
 		return this;

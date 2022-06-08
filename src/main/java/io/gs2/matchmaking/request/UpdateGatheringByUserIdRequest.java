@@ -34,54 +34,42 @@ public class UpdateGatheringByUserIdRequest extends Gs2BasicRequest<UpdateGather
     private String userId;
     private List<AttributeRange> attributeRanges;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateGatheringByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getGatheringName() {
 		return gatheringName;
 	}
-
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
-
 	public UpdateGatheringByUserIdRequest withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public UpdateGatheringByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<AttributeRange> getAttributeRanges() {
 		return attributeRanges;
 	}
-
 	public void setAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 	}
-
 	public UpdateGatheringByUserIdRequest withAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 		return this;

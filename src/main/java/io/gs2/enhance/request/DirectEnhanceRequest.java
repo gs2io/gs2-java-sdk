@@ -36,80 +36,62 @@ public class DirectEnhanceRequest extends Gs2BasicRequest<DirectEnhanceRequest> 
     private String targetItemSetId;
     private List<Material> materials;
     private List<Config> config;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DirectEnhanceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public DirectEnhanceRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DirectEnhanceRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getTargetItemSetId() {
 		return targetItemSetId;
 	}
-
 	public void setTargetItemSetId(String targetItemSetId) {
 		this.targetItemSetId = targetItemSetId;
 	}
-
 	public DirectEnhanceRequest withTargetItemSetId(String targetItemSetId) {
 		this.targetItemSetId = targetItemSetId;
 		return this;
 	}
-
 	public List<Material> getMaterials() {
 		return materials;
 	}
-
 	public void setMaterials(List<Material> materials) {
 		this.materials = materials;
 	}
-
 	public DirectEnhanceRequest withMaterials(List<Material> materials) {
 		this.materials = materials;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public DirectEnhanceRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

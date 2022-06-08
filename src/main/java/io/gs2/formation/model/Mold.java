@@ -35,80 +35,62 @@ public class Mold implements IModel, Serializable, Comparable<Mold> {
 	private Integer capacity;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getMoldId() {
 		return moldId;
 	}
-
 	public void setMoldId(String moldId) {
 		this.moldId = moldId;
 	}
-
 	public Mold withMoldId(String moldId) {
 		this.moldId = moldId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Mold withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Mold withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getCapacity() {
 		return capacity;
 	}
-
 	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
-
 	public Mold withCapacity(Integer capacity) {
 		this.capacity = capacity;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Mold withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Mold withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

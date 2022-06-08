@@ -31,41 +31,32 @@ public class GetEntryRequest extends Gs2BasicRequest<GetEntryRequest> {
     private String namespaceName;
     private String accessToken;
     private String entryModelName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetEntryRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetEntryRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getEntryModelName() {
 		return entryModelName;
 	}
-
 	public void setEntryModelName(String entryModelName) {
 		this.entryModelName = entryModelName;
 	}
-
 	public GetEntryRequest withEntryModelName(String entryModelName) {
 		this.entryModelName = entryModelName;
 		return this;

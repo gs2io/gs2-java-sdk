@@ -33,67 +33,52 @@ public class PutScoreRequest extends Gs2BasicRequest<PutScoreRequest> {
     private String accessToken;
     private Long score;
     private String metadata;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PutScoreRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public PutScoreRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public PutScoreRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Long getScore() {
 		return score;
 	}
-
 	public void setScore(Long score) {
 		this.score = score;
 	}
-
 	public PutScoreRequest withScore(Long score) {
 		this.score = score;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public PutScoreRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;

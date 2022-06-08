@@ -40,158 +40,122 @@ public class UpdateStaminaModelMasterRequest extends Gs2BasicRequest<UpdateStami
     private String maxStaminaTableName;
     private String recoverIntervalTableName;
     private String recoverValueTableName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateStaminaModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public UpdateStaminaModelMasterRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateStaminaModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateStaminaModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Integer getRecoverIntervalMinutes() {
 		return recoverIntervalMinutes;
 	}
-
 	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 	}
-
 	public UpdateStaminaModelMasterRequest withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;
 	}
-
 	public Integer getRecoverValue() {
 		return recoverValue;
 	}
-
 	public void setRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 	}
-
 	public UpdateStaminaModelMasterRequest withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 		return this;
 	}
-
 	public Integer getInitialCapacity() {
 		return initialCapacity;
 	}
-
 	public void setInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 	}
-
 	public UpdateStaminaModelMasterRequest withInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 		return this;
 	}
-
 	public Boolean getIsOverflow() {
 		return isOverflow;
 	}
-
 	public void setIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 	}
-
 	public UpdateStaminaModelMasterRequest withIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public UpdateStaminaModelMasterRequest withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-
 	public String getMaxStaminaTableName() {
 		return maxStaminaTableName;
 	}
-
 	public void setMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 	}
-
 	public UpdateStaminaModelMasterRequest withMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 		return this;
 	}
-
 	public String getRecoverIntervalTableName() {
 		return recoverIntervalTableName;
 	}
-
 	public void setRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 	}
-
 	public UpdateStaminaModelMasterRequest withRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 		return this;
 	}
-
 	public String getRecoverValueTableName() {
 		return recoverValueTableName;
 	}
-
 	public void setRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 	}
-
 	public UpdateStaminaModelMasterRequest withRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 		return this;

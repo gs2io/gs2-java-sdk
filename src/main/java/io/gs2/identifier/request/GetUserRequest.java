@@ -29,15 +29,12 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetUserRequest extends Gs2BasicRequest<GetUserRequest> {
     private String userName;
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
 	public GetUserRequest withUserName(String userName) {
 		this.userName = userName;
 		return this;

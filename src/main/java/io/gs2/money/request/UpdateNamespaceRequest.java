@@ -40,132 +40,102 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private ScriptSetting depositScript;
     private ScriptSetting withdrawScript;
     private LogSetting logSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getPriority() {
 		return priority;
 	}
-
 	public void setPriority(String priority) {
 		this.priority = priority;
 	}
-
 	public UpdateNamespaceRequest withPriority(String priority) {
 		this.priority = priority;
 		return this;
 	}
-
 	public String getAppleKey() {
 		return appleKey;
 	}
-
 	public void setAppleKey(String appleKey) {
 		this.appleKey = appleKey;
 	}
-
 	public UpdateNamespaceRequest withAppleKey(String appleKey) {
 		this.appleKey = appleKey;
 		return this;
 	}
-
 	public String getGoogleKey() {
 		return googleKey;
 	}
-
 	public void setGoogleKey(String googleKey) {
 		this.googleKey = googleKey;
 	}
-
 	public UpdateNamespaceRequest withGoogleKey(String googleKey) {
 		this.googleKey = googleKey;
 		return this;
 	}
-
 	public Boolean getEnableFakeReceipt() {
 		return enableFakeReceipt;
 	}
-
 	public void setEnableFakeReceipt(Boolean enableFakeReceipt) {
 		this.enableFakeReceipt = enableFakeReceipt;
 	}
-
 	public UpdateNamespaceRequest withEnableFakeReceipt(Boolean enableFakeReceipt) {
 		this.enableFakeReceipt = enableFakeReceipt;
 		return this;
 	}
-
 	public ScriptSetting getCreateWalletScript() {
 		return createWalletScript;
 	}
-
 	public void setCreateWalletScript(ScriptSetting createWalletScript) {
 		this.createWalletScript = createWalletScript;
 	}
-
 	public UpdateNamespaceRequest withCreateWalletScript(ScriptSetting createWalletScript) {
 		this.createWalletScript = createWalletScript;
 		return this;
 	}
-
 	public ScriptSetting getDepositScript() {
 		return depositScript;
 	}
-
 	public void setDepositScript(ScriptSetting depositScript) {
 		this.depositScript = depositScript;
 	}
-
 	public UpdateNamespaceRequest withDepositScript(ScriptSetting depositScript) {
 		this.depositScript = depositScript;
 		return this;
 	}
-
 	public ScriptSetting getWithdrawScript() {
 		return withdrawScript;
 	}
-
 	public void setWithdrawScript(ScriptSetting withdrawScript) {
 		this.withdrawScript = withdrawScript;
 	}
-
 	public UpdateNamespaceRequest withWithdrawScript(ScriptSetting withdrawScript) {
 		this.withdrawScript = withdrawScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

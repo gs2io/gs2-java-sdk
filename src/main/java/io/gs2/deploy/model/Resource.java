@@ -40,145 +40,112 @@ public class Resource implements IModel, Serializable, Comparable<Resource> {
 	private List<OutputField> outputFields;
 	private String workId;
 	private Long createdAt;
-
 	public String getResourceId() {
 		return resourceId;
 	}
-
 	public void setResourceId(String resourceId) {
 		this.resourceId = resourceId;
 	}
-
 	public Resource withResourceId(String resourceId) {
 		this.resourceId = resourceId;
 		return this;
 	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	public Resource withType(String type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Resource withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getRequest() {
 		return request;
 	}
-
 	public void setRequest(String request) {
 		this.request = request;
 	}
-
 	public Resource withRequest(String request) {
 		this.request = request;
 		return this;
 	}
-
 	public String getResponse() {
 		return response;
 	}
-
 	public void setResponse(String response) {
 		this.response = response;
 	}
-
 	public Resource withResponse(String response) {
 		this.response = response;
 		return this;
 	}
-
 	public String getRollbackContext() {
 		return rollbackContext;
 	}
-
 	public void setRollbackContext(String rollbackContext) {
 		this.rollbackContext = rollbackContext;
 	}
-
 	public Resource withRollbackContext(String rollbackContext) {
 		this.rollbackContext = rollbackContext;
 		return this;
 	}
-
 	public String getRollbackRequest() {
 		return rollbackRequest;
 	}
-
 	public void setRollbackRequest(String rollbackRequest) {
 		this.rollbackRequest = rollbackRequest;
 	}
-
 	public Resource withRollbackRequest(String rollbackRequest) {
 		this.rollbackRequest = rollbackRequest;
 		return this;
 	}
-
 	public List<String> getRollbackAfter() {
 		return rollbackAfter;
 	}
-
 	public void setRollbackAfter(List<String> rollbackAfter) {
 		this.rollbackAfter = rollbackAfter;
 	}
-
 	public Resource withRollbackAfter(List<String> rollbackAfter) {
 		this.rollbackAfter = rollbackAfter;
 		return this;
 	}
-
 	public List<OutputField> getOutputFields() {
 		return outputFields;
 	}
-
 	public void setOutputFields(List<OutputField> outputFields) {
 		this.outputFields = outputFields;
 	}
-
 	public Resource withOutputFields(List<OutputField> outputFields) {
 		this.outputFields = outputFields;
 		return this;
 	}
-
 	public String getWorkId() {
 		return workId;
 	}
-
 	public void setWorkId(String workId) {
 		this.workId = workId;
 	}
-
 	public Resource withWorkId(String workId) {
 		this.workId = workId;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Resource withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

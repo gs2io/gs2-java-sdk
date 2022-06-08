@@ -31,41 +31,32 @@ public class DescribeProbabilitiesRequest extends Gs2BasicRequest<DescribeProbab
     private String namespaceName;
     private String lotteryName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeProbabilitiesRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getLotteryName() {
 		return lotteryName;
 	}
-
 	public void setLotteryName(String lotteryName) {
 		this.lotteryName = lotteryName;
 	}
-
 	public DescribeProbabilitiesRequest withLotteryName(String lotteryName) {
 		this.lotteryName = lotteryName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DescribeProbabilitiesRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

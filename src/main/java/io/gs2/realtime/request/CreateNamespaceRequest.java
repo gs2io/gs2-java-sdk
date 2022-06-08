@@ -36,80 +36,62 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String serverSpec;
     private NotificationSetting createNotification;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getServerType() {
 		return serverType;
 	}
-
 	public void setServerType(String serverType) {
 		this.serverType = serverType;
 	}
-
 	public CreateNamespaceRequest withServerType(String serverType) {
 		this.serverType = serverType;
 		return this;
 	}
-
 	public String getServerSpec() {
 		return serverSpec;
 	}
-
 	public void setServerSpec(String serverSpec) {
 		this.serverSpec = serverSpec;
 	}
-
 	public CreateNamespaceRequest withServerSpec(String serverSpec) {
 		this.serverSpec = serverSpec;
 		return this;
 	}
-
 	public NotificationSetting getCreateNotification() {
 		return createNotification;
 	}
-
 	public void setCreateNotification(NotificationSetting createNotification) {
 		this.createNotification = createNotification;
 	}
-
 	public CreateNamespaceRequest withCreateNotification(NotificationSetting createNotification) {
 		this.createNotification = createNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

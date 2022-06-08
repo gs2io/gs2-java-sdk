@@ -33,54 +33,42 @@ public class ConsumeStaminaByUserIdRequest extends Gs2BasicRequest<ConsumeStamin
     private String userId;
     private Integer consumeValue;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public ConsumeStaminaByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public ConsumeStaminaByUserIdRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public ConsumeStaminaByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getConsumeValue() {
 		return consumeValue;
 	}
-
 	public void setConsumeValue(Integer consumeValue) {
 		this.consumeValue = consumeValue;
 	}
-
 	public ConsumeStaminaByUserIdRequest withConsumeValue(Integer consumeValue) {
 		this.consumeValue = consumeValue;
 		return this;

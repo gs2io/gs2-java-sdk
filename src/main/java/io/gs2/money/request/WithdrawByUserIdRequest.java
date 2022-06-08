@@ -34,67 +34,52 @@ public class WithdrawByUserIdRequest extends Gs2BasicRequest<WithdrawByUserIdReq
     private Integer count;
     private Boolean paidOnly;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public WithdrawByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public WithdrawByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getSlot() {
 		return slot;
 	}
-
 	public void setSlot(Integer slot) {
 		this.slot = slot;
 	}
-
 	public WithdrawByUserIdRequest withSlot(Integer slot) {
 		this.slot = slot;
 		return this;
 	}
-
 	public Integer getCount() {
 		return count;
 	}
-
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-
 	public WithdrawByUserIdRequest withCount(Integer count) {
 		this.count = count;
 		return this;
 	}
-
 	public Boolean getPaidOnly() {
 		return paidOnly;
 	}
-
 	public void setPaidOnly(Boolean paidOnly) {
 		this.paidOnly = paidOnly;
 	}
-
 	public WithdrawByUserIdRequest withPaidOnly(Boolean paidOnly) {
 		this.paidOnly = paidOnly;
 		return this;

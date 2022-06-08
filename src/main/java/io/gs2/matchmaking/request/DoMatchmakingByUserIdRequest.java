@@ -35,54 +35,42 @@ public class DoMatchmakingByUserIdRequest extends Gs2BasicRequest<DoMatchmakingB
     private Player player;
     private String matchmakingContextToken;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DoMatchmakingByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DoMatchmakingByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Player getPlayer() {
 		return player;
 	}
-
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-
 	public DoMatchmakingByUserIdRequest withPlayer(Player player) {
 		this.player = player;
 		return this;
 	}
-
 	public String getMatchmakingContextToken() {
 		return matchmakingContextToken;
 	}
-
 	public void setMatchmakingContextToken(String matchmakingContextToken) {
 		this.matchmakingContextToken = matchmakingContextToken;
 	}
-
 	public DoMatchmakingByUserIdRequest withMatchmakingContextToken(String matchmakingContextToken) {
 		this.matchmakingContextToken = matchmakingContextToken;
 		return this;

@@ -31,41 +31,32 @@ public class GetStampSheetResultRequest extends Gs2BasicRequest<GetStampSheetRes
     private String namespaceName;
     private String accessToken;
     private String transactionId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetStampSheetResultRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetStampSheetResultRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public GetStampSheetResultRequest withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;

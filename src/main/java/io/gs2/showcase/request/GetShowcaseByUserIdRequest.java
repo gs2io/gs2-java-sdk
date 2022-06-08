@@ -31,41 +31,32 @@ public class GetShowcaseByUserIdRequest extends Gs2BasicRequest<GetShowcaseByUse
     private String namespaceName;
     private String showcaseName;
     private String userId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetShowcaseByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getShowcaseName() {
 		return showcaseName;
 	}
-
 	public void setShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 	}
-
 	public GetShowcaseByUserIdRequest withShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetShowcaseByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

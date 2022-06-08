@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetThresholdMasterRequest extends Gs2BasicRequest<GetThresholdMasterRequest> {
     private String namespaceName;
     private String thresholdName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetThresholdMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getThresholdName() {
 		return thresholdName;
 	}
-
 	public void setThresholdName(String thresholdName) {
 		this.thresholdName = thresholdName;
 	}
-
 	public GetThresholdMasterRequest withThresholdName(String thresholdName) {
 		this.thresholdName = thresholdName;
 		return this;

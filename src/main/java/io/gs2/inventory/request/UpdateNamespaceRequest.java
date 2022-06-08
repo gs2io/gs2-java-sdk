@@ -36,80 +36,62 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private ScriptSetting overflowScript;
     private ScriptSetting consumeScript;
     private LogSetting logSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public ScriptSetting getAcquireScript() {
 		return acquireScript;
 	}
-
 	public void setAcquireScript(ScriptSetting acquireScript) {
 		this.acquireScript = acquireScript;
 	}
-
 	public UpdateNamespaceRequest withAcquireScript(ScriptSetting acquireScript) {
 		this.acquireScript = acquireScript;
 		return this;
 	}
-
 	public ScriptSetting getOverflowScript() {
 		return overflowScript;
 	}
-
 	public void setOverflowScript(ScriptSetting overflowScript) {
 		this.overflowScript = overflowScript;
 	}
-
 	public UpdateNamespaceRequest withOverflowScript(ScriptSetting overflowScript) {
 		this.overflowScript = overflowScript;
 		return this;
 	}
-
 	public ScriptSetting getConsumeScript() {
 		return consumeScript;
 	}
-
 	public void setConsumeScript(ScriptSetting consumeScript) {
 		this.consumeScript = consumeScript;
 	}
-
 	public UpdateNamespaceRequest withConsumeScript(ScriptSetting consumeScript) {
 		this.consumeScript = consumeScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

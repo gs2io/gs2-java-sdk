@@ -32,41 +32,32 @@ public class PrepareDownloadByUserIdRequest extends Gs2BasicRequest<PrepareDownl
     private String userId;
     private String dataObjectId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PrepareDownloadByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public PrepareDownloadByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getDataObjectId() {
 		return dataObjectId;
 	}
-
 	public void setDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 	}
-
 	public PrepareDownloadByUserIdRequest withDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 		return this;

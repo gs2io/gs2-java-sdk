@@ -31,41 +31,32 @@ public class DecryptRequest extends Gs2BasicRequest<DecryptRequest> {
     private String namespaceName;
     private String keyName;
     private String data;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DecryptRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getKeyName() {
 		return keyName;
 	}
-
 	public void setKeyName(String keyName) {
 		this.keyName = keyName;
 	}
-
 	public DecryptRequest withKeyName(String keyName) {
 		this.keyName = keyName;
 		return this;
 	}
-
 	public String getData() {
 		return data;
 	}
-
 	public void setData(String data) {
 		this.data = data;
 	}
-
 	public DecryptRequest withData(String data) {
 		this.data = data;
 		return this;

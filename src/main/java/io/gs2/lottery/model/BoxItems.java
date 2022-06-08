@@ -33,54 +33,42 @@ public class BoxItems implements IModel, Serializable {
 	private String prizeTableName;
 	private String userId;
 	private List<BoxItem> items;
-
 	public String getBoxId() {
 		return boxId;
 	}
-
 	public void setBoxId(String boxId) {
 		this.boxId = boxId;
 	}
-
 	public BoxItems withBoxId(String boxId) {
 		this.boxId = boxId;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public BoxItems withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public BoxItems withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<BoxItem> getItems() {
 		return items;
 	}
-
 	public void setItems(List<BoxItem> items) {
 		this.items = items;
 	}
-
 	public BoxItems withItems(List<BoxItem> items) {
 		this.items = items;
 		return this;

@@ -33,54 +33,42 @@ public class TargetVersion implements IModel, Serializable {
 	private Version version;
 	private String body;
 	private String signature;
-
 	public String getVersionName() {
 		return versionName;
 	}
-
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
-
 	public TargetVersion withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;
 	}
-
 	public Version getVersion() {
 		return version;
 	}
-
 	public void setVersion(Version version) {
 		this.version = version;
 	}
-
 	public TargetVersion withVersion(Version version) {
 		this.version = version;
 		return this;
 	}
-
 	public String getBody() {
 		return body;
 	}
-
 	public void setBody(String body) {
 		this.body = body;
 	}
-
 	public TargetVersion withBody(String body) {
 		this.body = body;
 		return this;
 	}
-
 	public String getSignature() {
 		return signature;
 	}
-
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-
 	public TargetVersion withSignature(String signature) {
 		this.signature = signature;
 		return this;

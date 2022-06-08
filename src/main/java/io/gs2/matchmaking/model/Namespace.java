@@ -45,210 +45,162 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Boolean getEnableRating() {
 		return enableRating;
 	}
-
 	public void setEnableRating(Boolean enableRating) {
 		this.enableRating = enableRating;
 	}
-
 	public Namespace withEnableRating(Boolean enableRating) {
 		this.enableRating = enableRating;
 		return this;
 	}
-
 	public String getCreateGatheringTriggerType() {
 		return createGatheringTriggerType;
 	}
-
 	public void setCreateGatheringTriggerType(String createGatheringTriggerType) {
 		this.createGatheringTriggerType = createGatheringTriggerType;
 	}
-
 	public Namespace withCreateGatheringTriggerType(String createGatheringTriggerType) {
 		this.createGatheringTriggerType = createGatheringTriggerType;
 		return this;
 	}
-
 	public String getCreateGatheringTriggerRealtimeNamespaceId() {
 		return createGatheringTriggerRealtimeNamespaceId;
 	}
-
 	public void setCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
 		this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
 	}
-
 	public Namespace withCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
 		this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
 		return this;
 	}
-
 	public String getCreateGatheringTriggerScriptId() {
 		return createGatheringTriggerScriptId;
 	}
-
 	public void setCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
 		this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
 	}
-
 	public Namespace withCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
 		this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
 		return this;
 	}
-
 	public String getCompleteMatchmakingTriggerType() {
 		return completeMatchmakingTriggerType;
 	}
-
 	public void setCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
 		this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
 	}
-
 	public Namespace withCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
 		this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
 		return this;
 	}
-
 	public String getCompleteMatchmakingTriggerRealtimeNamespaceId() {
 		return completeMatchmakingTriggerRealtimeNamespaceId;
 	}
-
 	public void setCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
 		this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
 	}
-
 	public Namespace withCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
 		this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
 		return this;
 	}
-
 	public String getCompleteMatchmakingTriggerScriptId() {
 		return completeMatchmakingTriggerScriptId;
 	}
-
 	public void setCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
 		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
 	}
-
 	public Namespace withCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
 		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
 		return this;
 	}
-
 	public NotificationSetting getJoinNotification() {
 		return joinNotification;
 	}
-
 	public void setJoinNotification(NotificationSetting joinNotification) {
 		this.joinNotification = joinNotification;
 	}
-
 	public Namespace withJoinNotification(NotificationSetting joinNotification) {
 		this.joinNotification = joinNotification;
 		return this;
 	}
-
 	public NotificationSetting getLeaveNotification() {
 		return leaveNotification;
 	}
-
 	public void setLeaveNotification(NotificationSetting leaveNotification) {
 		this.leaveNotification = leaveNotification;
 	}
-
 	public Namespace withLeaveNotification(NotificationSetting leaveNotification) {
 		this.leaveNotification = leaveNotification;
 		return this;
 	}
-
 	public NotificationSetting getCompleteNotification() {
 		return completeNotification;
 	}
-
 	public void setCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 	}
-
 	public Namespace withCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

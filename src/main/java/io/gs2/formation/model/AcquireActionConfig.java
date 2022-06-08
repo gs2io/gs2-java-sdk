@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class AcquireActionConfig implements IModel, Serializable {
 	private String name;
 	private List<Config> config;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public AcquireActionConfig withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public AcquireActionConfig withConfig(List<Config> config) {
 		this.config = config;
 		return this;

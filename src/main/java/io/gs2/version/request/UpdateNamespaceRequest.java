@@ -36,80 +36,62 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private ScriptSetting acceptVersionScript;
     private String checkVersionTriggerScriptId;
     private LogSetting logSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getAssumeUserId() {
 		return assumeUserId;
 	}
-
 	public void setAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 	}
-
 	public UpdateNamespaceRequest withAssumeUserId(String assumeUserId) {
 		this.assumeUserId = assumeUserId;
 		return this;
 	}
-
 	public ScriptSetting getAcceptVersionScript() {
 		return acceptVersionScript;
 	}
-
 	public void setAcceptVersionScript(ScriptSetting acceptVersionScript) {
 		this.acceptVersionScript = acceptVersionScript;
 	}
-
 	public UpdateNamespaceRequest withAcceptVersionScript(ScriptSetting acceptVersionScript) {
 		this.acceptVersionScript = acceptVersionScript;
 		return this;
 	}
-
 	public String getCheckVersionTriggerScriptId() {
 		return checkVersionTriggerScriptId;
 	}
-
 	public void setCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
 		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
 	}
-
 	public UpdateNamespaceRequest withCheckVersionTriggerScriptId(String checkVersionTriggerScriptId) {
 		this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

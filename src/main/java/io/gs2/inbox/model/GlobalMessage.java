@@ -35,80 +35,62 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
 	private List<AcquireAction> readAcquireActions;
 	private TimeSpan expiresTimeSpan;
 	private Long expiresAt;
-
 	public String getGlobalMessageId() {
 		return globalMessageId;
 	}
-
 	public void setGlobalMessageId(String globalMessageId) {
 		this.globalMessageId = globalMessageId;
 	}
-
 	public GlobalMessage withGlobalMessageId(String globalMessageId) {
 		this.globalMessageId = globalMessageId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public GlobalMessage withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public GlobalMessage withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<AcquireAction> getReadAcquireActions() {
 		return readAcquireActions;
 	}
-
 	public void setReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 	}
-
 	public GlobalMessage withReadAcquireActions(List<AcquireAction> readAcquireActions) {
 		this.readAcquireActions = readAcquireActions;
 		return this;
 	}
-
 	public TimeSpan getExpiresTimeSpan() {
 		return expiresTimeSpan;
 	}
-
 	public void setExpiresTimeSpan(TimeSpan expiresTimeSpan) {
 		this.expiresTimeSpan = expiresTimeSpan;
 	}
-
 	public GlobalMessage withExpiresTimeSpan(TimeSpan expiresTimeSpan) {
 		this.expiresTimeSpan = expiresTimeSpan;
 		return this;
 	}
-
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
-
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
 	public GlobalMessage withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;

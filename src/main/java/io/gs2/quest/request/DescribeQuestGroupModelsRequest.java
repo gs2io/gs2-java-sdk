@@ -29,15 +29,12 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeQuestGroupModelsRequest extends Gs2BasicRequest<DescribeQuestGroupModelsRequest> {
     private String namespaceName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeQuestGroupModelsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;

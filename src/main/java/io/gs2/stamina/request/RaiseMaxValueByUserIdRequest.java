@@ -33,54 +33,42 @@ public class RaiseMaxValueByUserIdRequest extends Gs2BasicRequest<RaiseMaxValueB
     private String userId;
     private Integer raiseValue;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public RaiseMaxValueByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public RaiseMaxValueByUserIdRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public RaiseMaxValueByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getRaiseValue() {
 		return raiseValue;
 	}
-
 	public void setRaiseValue(Integer raiseValue) {
 		this.raiseValue = raiseValue;
 	}
-
 	public RaiseMaxValueByUserIdRequest withRaiseValue(Integer raiseValue) {
 		this.raiseValue = raiseValue;
 		return this;

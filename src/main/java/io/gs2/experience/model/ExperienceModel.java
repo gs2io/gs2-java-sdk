@@ -36,93 +36,72 @@ public class ExperienceModel implements IModel, Serializable, Comparable<Experie
 	private Long defaultRankCap;
 	private Long maxRankCap;
 	private Threshold rankThreshold;
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public ExperienceModel withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public ExperienceModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public ExperienceModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getDefaultExperience() {
 		return defaultExperience;
 	}
-
 	public void setDefaultExperience(Long defaultExperience) {
 		this.defaultExperience = defaultExperience;
 	}
-
 	public ExperienceModel withDefaultExperience(Long defaultExperience) {
 		this.defaultExperience = defaultExperience;
 		return this;
 	}
-
 	public Long getDefaultRankCap() {
 		return defaultRankCap;
 	}
-
 	public void setDefaultRankCap(Long defaultRankCap) {
 		this.defaultRankCap = defaultRankCap;
 	}
-
 	public ExperienceModel withDefaultRankCap(Long defaultRankCap) {
 		this.defaultRankCap = defaultRankCap;
 		return this;
 	}
-
 	public Long getMaxRankCap() {
 		return maxRankCap;
 	}
-
 	public void setMaxRankCap(Long maxRankCap) {
 		this.maxRankCap = maxRankCap;
 	}
-
 	public ExperienceModel withMaxRankCap(Long maxRankCap) {
 		this.maxRankCap = maxRankCap;
 		return this;
 	}
-
 	public Threshold getRankThreshold() {
 		return rankThreshold;
 	}
-
 	public void setRankThreshold(Threshold rankThreshold) {
 		this.rankThreshold = rankThreshold;
 	}
-
 	public ExperienceModel withRankThreshold(Threshold rankThreshold) {
 		this.rankThreshold = rankThreshold;
 		return this;

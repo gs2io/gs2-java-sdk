@@ -32,54 +32,42 @@ public class GetFollowByUserIdRequest extends Gs2BasicRequest<GetFollowByUserIdR
     private String userId;
     private String targetUserId;
     private Boolean withProfile;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetFollowByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetFollowByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTargetUserId() {
 		return targetUserId;
 	}
-
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
-
 	public GetFollowByUserIdRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;
 	}
-
 	public Boolean getWithProfile() {
 		return withProfile;
 	}
-
 	public void setWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 	}
-
 	public GetFollowByUserIdRequest withWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 		return this;

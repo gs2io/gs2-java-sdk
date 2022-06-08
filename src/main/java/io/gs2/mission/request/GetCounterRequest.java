@@ -31,41 +31,32 @@ public class GetCounterRequest extends Gs2BasicRequest<GetCounterRequest> {
     private String namespaceName;
     private String counterName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetCounterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCounterName() {
 		return counterName;
 	}
-
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
-
 	public GetCounterRequest withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetCounterRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

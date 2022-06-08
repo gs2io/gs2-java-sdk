@@ -35,93 +35,72 @@ public class DescribeReceiptsRequest extends Gs2BasicRequest<DescribeReceiptsReq
     private Long end;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeReceiptsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DescribeReceiptsRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getSlot() {
 		return slot;
 	}
-
 	public void setSlot(Integer slot) {
 		this.slot = slot;
 	}
-
 	public DescribeReceiptsRequest withSlot(Integer slot) {
 		this.slot = slot;
 		return this;
 	}
-
 	public Long getBegin() {
 		return begin;
 	}
-
 	public void setBegin(Long begin) {
 		this.begin = begin;
 	}
-
 	public DescribeReceiptsRequest withBegin(Long begin) {
 		this.begin = begin;
 		return this;
 	}
-
 	public Long getEnd() {
 		return end;
 	}
-
 	public void setEnd(Long end) {
 		this.end = end;
 	}
-
 	public DescribeReceiptsRequest withEnd(Long end) {
 		this.end = end;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeReceiptsRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeReceiptsRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

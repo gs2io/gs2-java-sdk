@@ -31,41 +31,32 @@ public class GetEventByUserIdRequest extends Gs2BasicRequest<GetEventByUserIdReq
     private String namespaceName;
     private String eventName;
     private String userId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetEventByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getEventName() {
 		return eventName;
 	}
-
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
-
 	public GetEventByUserIdRequest withEventName(String eventName) {
 		this.eventName = eventName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetEventByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;

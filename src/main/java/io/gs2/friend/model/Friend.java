@@ -34,67 +34,52 @@ public class Friend implements IModel, Serializable, Comparable<Friend> {
 	private List<String> targetUserIds;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getFriendId() {
 		return friendId;
 	}
-
 	public void setFriendId(String friendId) {
 		this.friendId = friendId;
 	}
-
 	public Friend withFriendId(String friendId) {
 		this.friendId = friendId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Friend withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getTargetUserIds() {
 		return targetUserIds;
 	}
-
 	public void setTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 	}
-
 	public Friend withTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Friend withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Friend withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

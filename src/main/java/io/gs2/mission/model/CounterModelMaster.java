@@ -37,106 +37,82 @@ public class CounterModelMaster implements IModel, Serializable, Comparable<Coun
 	private String challengePeriodEventId;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getCounterId() {
 		return counterId;
 	}
-
 	public void setCounterId(String counterId) {
 		this.counterId = counterId;
 	}
-
 	public CounterModelMaster withCounterId(String counterId) {
 		this.counterId = counterId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CounterModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CounterModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CounterModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public List<CounterScopeModel> getScopes() {
 		return scopes;
 	}
-
 	public void setScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 	}
-
 	public CounterModelMaster withScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public CounterModelMaster withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public CounterModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public CounterModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

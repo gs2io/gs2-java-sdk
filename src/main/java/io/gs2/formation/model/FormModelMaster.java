@@ -36,93 +36,72 @@ public class FormModelMaster implements IModel, Serializable, Comparable<FormMod
 	private List<SlotModel> slots;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getFormModelId() {
 		return formModelId;
 	}
-
 	public void setFormModelId(String formModelId) {
 		this.formModelId = formModelId;
 	}
-
 	public FormModelMaster withFormModelId(String formModelId) {
 		this.formModelId = formModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public FormModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public FormModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public FormModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<SlotModel> getSlots() {
 		return slots;
 	}
-
 	public void setSlots(List<SlotModel> slots) {
 		this.slots = slots;
 	}
-
 	public FormModelMaster withSlots(List<SlotModel> slots) {
 		this.slots = slots;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public FormModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public FormModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

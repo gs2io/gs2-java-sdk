@@ -37,106 +37,82 @@ public class ShowcaseMaster implements IModel, Serializable, Comparable<Showcase
 	private List<DisplayItemMaster> displayItems;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getShowcaseId() {
 		return showcaseId;
 	}
-
 	public void setShowcaseId(String showcaseId) {
 		this.showcaseId = showcaseId;
 	}
-
 	public ShowcaseMaster withShowcaseId(String showcaseId) {
 		this.showcaseId = showcaseId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public ShowcaseMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public ShowcaseMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public ShowcaseMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getSalesPeriodEventId() {
 		return salesPeriodEventId;
 	}
-
 	public void setSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 	}
-
 	public ShowcaseMaster withSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 		return this;
 	}
-
 	public List<DisplayItemMaster> getDisplayItems() {
 		return displayItems;
 	}
-
 	public void setDisplayItems(List<DisplayItemMaster> displayItems) {
 		this.displayItems = displayItems;
 	}
-
 	public ShowcaseMaster withDisplayItems(List<DisplayItemMaster> displayItems) {
 		this.displayItems = displayItems;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public ShowcaseMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public ShowcaseMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

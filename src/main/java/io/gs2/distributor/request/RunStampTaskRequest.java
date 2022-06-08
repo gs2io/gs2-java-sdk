@@ -31,41 +31,32 @@ public class RunStampTaskRequest extends Gs2BasicRequest<RunStampTaskRequest> {
     private String namespaceName;
     private String stampTask;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public RunStampTaskRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStampTask() {
 		return stampTask;
 	}
-
 	public void setStampTask(String stampTask) {
 		this.stampTask = stampTask;
 	}
-
 	public RunStampTaskRequest withStampTask(String stampTask) {
 		this.stampTask = stampTask;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public RunStampTaskRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

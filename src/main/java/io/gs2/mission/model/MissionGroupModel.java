@@ -38,119 +38,92 @@ public class MissionGroupModel implements IModel, Serializable, Comparable<Missi
 	private String resetDayOfWeek;
 	private Integer resetHour;
 	private String completeNotificationNamespaceId;
-
 	public String getMissionGroupId() {
 		return missionGroupId;
 	}
-
 	public void setMissionGroupId(String missionGroupId) {
 		this.missionGroupId = missionGroupId;
 	}
-
 	public MissionGroupModel withMissionGroupId(String missionGroupId) {
 		this.missionGroupId = missionGroupId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public MissionGroupModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public MissionGroupModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<MissionTaskModel> getTasks() {
 		return tasks;
 	}
-
 	public void setTasks(List<MissionTaskModel> tasks) {
 		this.tasks = tasks;
 	}
-
 	public MissionGroupModel withTasks(List<MissionTaskModel> tasks) {
 		this.tasks = tasks;
 		return this;
 	}
-
 	public String getResetType() {
 		return resetType;
 	}
-
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
-
 	public MissionGroupModel withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-
 	public Integer getResetDayOfMonth() {
 		return resetDayOfMonth;
 	}
-
 	public void setResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 	}
-
 	public MissionGroupModel withResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 		return this;
 	}
-
 	public String getResetDayOfWeek() {
 		return resetDayOfWeek;
 	}
-
 	public void setResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 	}
-
 	public MissionGroupModel withResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 		return this;
 	}
-
 	public Integer getResetHour() {
 		return resetHour;
 	}
-
 	public void setResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 	}
-
 	public MissionGroupModel withResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 		return this;
 	}
-
 	public String getCompleteNotificationNamespaceId() {
 		return completeNotificationNamespaceId;
 	}
-
 	public void setCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
 		this.completeNotificationNamespaceId = completeNotificationNamespaceId;
 	}
-
 	public MissionGroupModel withCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
 		this.completeNotificationNamespaceId = completeNotificationNamespaceId;
 		return this;

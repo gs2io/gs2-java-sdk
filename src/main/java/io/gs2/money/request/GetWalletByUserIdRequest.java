@@ -31,41 +31,32 @@ public class GetWalletByUserIdRequest extends Gs2BasicRequest<GetWalletByUserIdR
     private String namespaceName;
     private String userId;
     private Integer slot;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetWalletByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetWalletByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getSlot() {
 		return slot;
 	}
-
 	public void setSlot(Integer slot) {
 		this.slot = slot;
 	}
-
 	public GetWalletByUserIdRequest withSlot(Integer slot) {
 		this.slot = slot;
 		return this;

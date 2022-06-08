@@ -36,80 +36,68 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String queueNamespaceId;
     private String keyId;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
-
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
-
 	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-
+    @Deprecated
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
-
+    @Deprecated
 	public void setQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 	}
-
+    @Deprecated
 	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 		return this;
 	}
-
+    @Deprecated
 	public String getKeyId() {
 		return keyId;
 	}
-
+    @Deprecated
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
+    @Deprecated
 	public CreateNamespaceRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

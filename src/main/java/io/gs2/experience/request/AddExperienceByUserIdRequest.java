@@ -34,67 +34,52 @@ public class AddExperienceByUserIdRequest extends Gs2BasicRequest<AddExperienceB
     private String propertyId;
     private Long experienceValue;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AddExperienceByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AddExperienceByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getExperienceName() {
 		return experienceName;
 	}
-
 	public void setExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 	}
-
 	public AddExperienceByUserIdRequest withExperienceName(String experienceName) {
 		this.experienceName = experienceName;
 		return this;
 	}
-
 	public String getPropertyId() {
 		return propertyId;
 	}
-
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
-
 	public AddExperienceByUserIdRequest withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;
 	}
-
 	public Long getExperienceValue() {
 		return experienceValue;
 	}
-
 	public void setExperienceValue(Long experienceValue) {
 		this.experienceValue = experienceValue;
 	}
-
 	public AddExperienceByUserIdRequest withExperienceValue(Long experienceValue) {
 		this.experienceValue = experienceValue;
 		return this;

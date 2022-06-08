@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class CurrentEntryMaster implements IModel, Serializable, Comparable<CurrentEntryMaster> {
 	private String namespaceId;
 	private String settings;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public CurrentEntryMaster withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getSettings() {
 		return settings;
 	}
-
 	public void setSettings(String settings) {
 		this.settings = settings;
 	}
-
 	public CurrentEntryMaster withSettings(String settings) {
 		this.settings = settings;
 		return this;

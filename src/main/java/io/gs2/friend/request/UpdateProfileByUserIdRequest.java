@@ -34,67 +34,52 @@ public class UpdateProfileByUserIdRequest extends Gs2BasicRequest<UpdateProfileB
     private String followerProfile;
     private String friendProfile;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateProfileByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public UpdateProfileByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getPublicProfile() {
 		return publicProfile;
 	}
-
 	public void setPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 	}
-
 	public UpdateProfileByUserIdRequest withPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 		return this;
 	}
-
 	public String getFollowerProfile() {
 		return followerProfile;
 	}
-
 	public void setFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 	}
-
 	public UpdateProfileByUserIdRequest withFollowerProfile(String followerProfile) {
 		this.followerProfile = followerProfile;
 		return this;
 	}
-
 	public String getFriendProfile() {
 		return friendProfile;
 	}
-
 	public void setFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 	}
-
 	public UpdateProfileByUserIdRequest withFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 		return this;

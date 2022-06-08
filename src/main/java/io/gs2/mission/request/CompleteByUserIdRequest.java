@@ -35,67 +35,52 @@ public class CompleteByUserIdRequest extends Gs2BasicRequest<CompleteByUserIdReq
     private String userId;
     private List<Config> config;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CompleteByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMissionGroupName() {
 		return missionGroupName;
 	}
-
 	public void setMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 	}
-
 	public CompleteByUserIdRequest withMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 		return this;
 	}
-
 	public String getMissionTaskName() {
 		return missionTaskName;
 	}
-
 	public void setMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 	}
-
 	public CompleteByUserIdRequest withMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public CompleteByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public CompleteByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

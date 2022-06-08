@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteDistributorModelMasterRequest extends Gs2BasicRequest<DeleteDistributorModelMasterRequest> {
     private String namespaceName;
     private String distributorName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteDistributorModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDistributorName() {
 		return distributorName;
 	}
-
 	public void setDistributorName(String distributorName) {
 		this.distributorName = distributorName;
 	}
-
 	public DeleteDistributorModelMasterRequest withDistributorName(String distributorName) {
 		this.distributorName = distributorName;
 		return this;

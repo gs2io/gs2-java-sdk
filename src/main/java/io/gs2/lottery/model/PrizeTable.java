@@ -33,54 +33,42 @@ public class PrizeTable implements IModel, Serializable, Comparable<PrizeTable> 
 	private String name;
 	private String metadata;
 	private List<Prize> prizes;
-
 	public String getPrizeTableId() {
 		return prizeTableId;
 	}
-
 	public void setPrizeTableId(String prizeTableId) {
 		this.prizeTableId = prizeTableId;
 	}
-
 	public PrizeTable withPrizeTableId(String prizeTableId) {
 		this.prizeTableId = prizeTableId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public PrizeTable withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public PrizeTable withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<Prize> getPrizes() {
 		return prizes;
 	}
-
 	public void setPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 	}
-
 	public PrizeTable withPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
 		return this;

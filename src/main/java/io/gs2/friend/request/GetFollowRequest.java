@@ -32,54 +32,42 @@ public class GetFollowRequest extends Gs2BasicRequest<GetFollowRequest> {
     private String accessToken;
     private String targetUserId;
     private Boolean withProfile;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetFollowRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetFollowRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getTargetUserId() {
 		return targetUserId;
 	}
-
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
-
 	public GetFollowRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;
 	}
-
 	public Boolean getWithProfile() {
 		return withProfile;
 	}
-
 	public void setWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 	}
-
 	public GetFollowRequest withWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 		return this;

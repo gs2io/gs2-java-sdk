@@ -34,67 +34,52 @@ public class BlackList implements IModel, Serializable, Comparable<BlackList> {
 	private List<String> targetUserIds;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getBlackListId() {
 		return blackListId;
 	}
-
 	public void setBlackListId(String blackListId) {
 		this.blackListId = blackListId;
 	}
-
 	public BlackList withBlackListId(String blackListId) {
 		this.blackListId = blackListId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public BlackList withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getTargetUserIds() {
 		return targetUserIds;
 	}
-
 	public void setTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 	}
-
 	public BlackList withTargetUserIds(List<String> targetUserIds) {
 		this.targetUserIds = targetUserIds;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public BlackList withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public BlackList withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

@@ -38,119 +38,92 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public ScriptSetting getAcquireScript() {
 		return acquireScript;
 	}
-
 	public void setAcquireScript(ScriptSetting acquireScript) {
 		this.acquireScript = acquireScript;
 	}
-
 	public Namespace withAcquireScript(ScriptSetting acquireScript) {
 		this.acquireScript = acquireScript;
 		return this;
 	}
-
 	public ScriptSetting getOverflowScript() {
 		return overflowScript;
 	}
-
 	public void setOverflowScript(ScriptSetting overflowScript) {
 		this.overflowScript = overflowScript;
 	}
-
 	public Namespace withOverflowScript(ScriptSetting overflowScript) {
 		this.overflowScript = overflowScript;
 		return this;
 	}
-
 	public ScriptSetting getConsumeScript() {
 		return consumeScript;
 	}
-
 	public void setConsumeScript(ScriptSetting consumeScript) {
 		this.consumeScript = consumeScript;
 	}
-
 	public Namespace withConsumeScript(ScriptSetting consumeScript) {
 		this.consumeScript = consumeScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

@@ -32,54 +32,42 @@ public class UpdateScriptRequest extends Gs2BasicRequest<UpdateScriptRequest> {
     private String scriptName;
     private String description;
     private String script;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateScriptRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getScriptName() {
 		return scriptName;
 	}
-
 	public void setScriptName(String scriptName) {
 		this.scriptName = scriptName;
 	}
-
 	public UpdateScriptRequest withScriptName(String scriptName) {
 		this.scriptName = scriptName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateScriptRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getScript() {
 		return script;
 	}
-
 	public void setScript(String script) {
 		this.script = script;
 	}
-
 	public UpdateScriptRequest withScript(String script) {
 		this.script = script;
 		return this;

@@ -32,54 +32,42 @@ public class GetEntryWithSignatureRequest extends Gs2BasicRequest<GetEntryWithSi
     private String accessToken;
     private String entryModelName;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetEntryWithSignatureRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetEntryWithSignatureRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getEntryModelName() {
 		return entryModelName;
 	}
-
 	public void setEntryModelName(String entryModelName) {
 		this.entryModelName = entryModelName;
 	}
-
 	public GetEntryWithSignatureRequest withEntryModelName(String entryModelName) {
 		this.entryModelName = entryModelName;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public GetEntryWithSignatureRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

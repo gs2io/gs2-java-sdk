@@ -42,171 +42,132 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Boolean getAllowCreateRoom() {
 		return allowCreateRoom;
 	}
-
 	public void setAllowCreateRoom(Boolean allowCreateRoom) {
 		this.allowCreateRoom = allowCreateRoom;
 	}
-
 	public Namespace withAllowCreateRoom(Boolean allowCreateRoom) {
 		this.allowCreateRoom = allowCreateRoom;
 		return this;
 	}
-
 	public ScriptSetting getPostMessageScript() {
 		return postMessageScript;
 	}
-
 	public void setPostMessageScript(ScriptSetting postMessageScript) {
 		this.postMessageScript = postMessageScript;
 	}
-
 	public Namespace withPostMessageScript(ScriptSetting postMessageScript) {
 		this.postMessageScript = postMessageScript;
 		return this;
 	}
-
 	public ScriptSetting getCreateRoomScript() {
 		return createRoomScript;
 	}
-
 	public void setCreateRoomScript(ScriptSetting createRoomScript) {
 		this.createRoomScript = createRoomScript;
 	}
-
 	public Namespace withCreateRoomScript(ScriptSetting createRoomScript) {
 		this.createRoomScript = createRoomScript;
 		return this;
 	}
-
 	public ScriptSetting getDeleteRoomScript() {
 		return deleteRoomScript;
 	}
-
 	public void setDeleteRoomScript(ScriptSetting deleteRoomScript) {
 		this.deleteRoomScript = deleteRoomScript;
 	}
-
 	public Namespace withDeleteRoomScript(ScriptSetting deleteRoomScript) {
 		this.deleteRoomScript = deleteRoomScript;
 		return this;
 	}
-
 	public ScriptSetting getSubscribeRoomScript() {
 		return subscribeRoomScript;
 	}
-
 	public void setSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
 		this.subscribeRoomScript = subscribeRoomScript;
 	}
-
 	public Namespace withSubscribeRoomScript(ScriptSetting subscribeRoomScript) {
 		this.subscribeRoomScript = subscribeRoomScript;
 		return this;
 	}
-
 	public ScriptSetting getUnsubscribeRoomScript() {
 		return unsubscribeRoomScript;
 	}
-
 	public void setUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
 		this.unsubscribeRoomScript = unsubscribeRoomScript;
 	}
-
 	public Namespace withUnsubscribeRoomScript(ScriptSetting unsubscribeRoomScript) {
 		this.unsubscribeRoomScript = unsubscribeRoomScript;
 		return this;
 	}
-
 	public NotificationSetting getPostNotification() {
 		return postNotification;
 	}
-
 	public void setPostNotification(NotificationSetting postNotification) {
 		this.postNotification = postNotification;
 	}
-
 	public Namespace withPostNotification(NotificationSetting postNotification) {
 		this.postNotification = postNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

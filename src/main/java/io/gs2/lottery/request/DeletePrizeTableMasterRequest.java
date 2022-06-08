@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeletePrizeTableMasterRequest extends Gs2BasicRequest<DeletePrizeTableMasterRequest> {
     private String namespaceName;
     private String prizeTableName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeletePrizeTableMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public DeletePrizeTableMasterRequest withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;

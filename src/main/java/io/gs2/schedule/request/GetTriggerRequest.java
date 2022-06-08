@@ -31,41 +31,32 @@ public class GetTriggerRequest extends Gs2BasicRequest<GetTriggerRequest> {
     private String namespaceName;
     private String accessToken;
     private String triggerName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetTriggerRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetTriggerRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getTriggerName() {
 		return triggerName;
 	}
-
 	public void setTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 	}
-
 	public GetTriggerRequest withTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 		return this;

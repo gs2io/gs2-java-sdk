@@ -41,132 +41,102 @@ public class UpdateQuestModelMasterRequest extends Gs2BasicRequest<UpdateQuestMo
     private List<ConsumeAction> consumeActions;
     private List<AcquireAction> failedAcquireActions;
     private List<String> premiseQuestNames;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateQuestModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
-
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
-
 	public UpdateQuestModelMasterRequest withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;
 	}
-
 	public String getQuestName() {
 		return questName;
 	}
-
 	public void setQuestName(String questName) {
 		this.questName = questName;
 	}
-
 	public UpdateQuestModelMasterRequest withQuestName(String questName) {
 		this.questName = questName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateQuestModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateQuestModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<Contents> getContents() {
 		return contents;
 	}
-
 	public void setContents(List<Contents> contents) {
 		this.contents = contents;
 	}
-
 	public UpdateQuestModelMasterRequest withContents(List<Contents> contents) {
 		this.contents = contents;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public UpdateQuestModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
-
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
-
 	public UpdateQuestModelMasterRequest withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;
 	}
-
 	public List<AcquireAction> getFailedAcquireActions() {
 		return failedAcquireActions;
 	}
-
 	public void setFailedAcquireActions(List<AcquireAction> failedAcquireActions) {
 		this.failedAcquireActions = failedAcquireActions;
 	}
-
 	public UpdateQuestModelMasterRequest withFailedAcquireActions(List<AcquireAction> failedAcquireActions) {
 		this.failedAcquireActions = failedAcquireActions;
 		return this;
 	}
-
 	public List<String> getPremiseQuestNames() {
 		return premiseQuestNames;
 	}
-
 	public void setPremiseQuestNames(List<String> premiseQuestNames) {
 		this.premiseQuestNames = premiseQuestNames;
 	}
-
 	public UpdateQuestModelMasterRequest withPremiseQuestNames(List<String> premiseQuestNames) {
 		this.premiseQuestNames = premiseQuestNames;
 		return this;

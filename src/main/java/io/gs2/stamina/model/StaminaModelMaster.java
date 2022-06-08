@@ -43,184 +43,142 @@ public class StaminaModelMaster implements IModel, Serializable, Comparable<Stam
 	private String recoverValueTableName;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getStaminaModelId() {
 		return staminaModelId;
 	}
-
 	public void setStaminaModelId(String staminaModelId) {
 		this.staminaModelId = staminaModelId;
 	}
-
 	public StaminaModelMaster withStaminaModelId(String staminaModelId) {
 		this.staminaModelId = staminaModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public StaminaModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public StaminaModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public StaminaModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Integer getRecoverIntervalMinutes() {
 		return recoverIntervalMinutes;
 	}
-
 	public void setRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 	}
-
 	public StaminaModelMaster withRecoverIntervalMinutes(Integer recoverIntervalMinutes) {
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;
 	}
-
 	public Integer getRecoverValue() {
 		return recoverValue;
 	}
-
 	public void setRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 	}
-
 	public StaminaModelMaster withRecoverValue(Integer recoverValue) {
 		this.recoverValue = recoverValue;
 		return this;
 	}
-
 	public Integer getInitialCapacity() {
 		return initialCapacity;
 	}
-
 	public void setInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 	}
-
 	public StaminaModelMaster withInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 		return this;
 	}
-
 	public Boolean getIsOverflow() {
 		return isOverflow;
 	}
-
 	public void setIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 	}
-
 	public StaminaModelMaster withIsOverflow(Boolean isOverflow) {
 		this.isOverflow = isOverflow;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public StaminaModelMaster withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-
 	public String getMaxStaminaTableName() {
 		return maxStaminaTableName;
 	}
-
 	public void setMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 	}
-
 	public StaminaModelMaster withMaxStaminaTableName(String maxStaminaTableName) {
 		this.maxStaminaTableName = maxStaminaTableName;
 		return this;
 	}
-
 	public String getRecoverIntervalTableName() {
 		return recoverIntervalTableName;
 	}
-
 	public void setRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 	}
-
 	public StaminaModelMaster withRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 		return this;
 	}
-
 	public String getRecoverValueTableName() {
 		return recoverValueTableName;
 	}
-
 	public void setRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 	}
-
 	public StaminaModelMaster withRecoverValueTableName(String recoverValueTableName) {
 		this.recoverValueTableName = recoverValueTableName;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public StaminaModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public StaminaModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

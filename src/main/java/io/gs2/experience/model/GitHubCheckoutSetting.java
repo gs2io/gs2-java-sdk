@@ -36,93 +36,72 @@ public class GitHubCheckoutSetting implements IModel, Serializable {
 	private String commitHash;
 	private String branchName;
 	private String tagName;
-
 	public String getApiKeyId() {
 		return apiKeyId;
 	}
-
 	public void setApiKeyId(String apiKeyId) {
 		this.apiKeyId = apiKeyId;
 	}
-
 	public GitHubCheckoutSetting withApiKeyId(String apiKeyId) {
 		this.apiKeyId = apiKeyId;
 		return this;
 	}
-
 	public String getRepositoryName() {
 		return repositoryName;
 	}
-
 	public void setRepositoryName(String repositoryName) {
 		this.repositoryName = repositoryName;
 	}
-
 	public GitHubCheckoutSetting withRepositoryName(String repositoryName) {
 		this.repositoryName = repositoryName;
 		return this;
 	}
-
 	public String getSourcePath() {
 		return sourcePath;
 	}
-
 	public void setSourcePath(String sourcePath) {
 		this.sourcePath = sourcePath;
 	}
-
 	public GitHubCheckoutSetting withSourcePath(String sourcePath) {
 		this.sourcePath = sourcePath;
 		return this;
 	}
-
 	public String getReferenceType() {
 		return referenceType;
 	}
-
 	public void setReferenceType(String referenceType) {
 		this.referenceType = referenceType;
 	}
-
 	public GitHubCheckoutSetting withReferenceType(String referenceType) {
 		this.referenceType = referenceType;
 		return this;
 	}
-
 	public String getCommitHash() {
 		return commitHash;
 	}
-
 	public void setCommitHash(String commitHash) {
 		this.commitHash = commitHash;
 	}
-
 	public GitHubCheckoutSetting withCommitHash(String commitHash) {
 		this.commitHash = commitHash;
 		return this;
 	}
-
 	public String getBranchName() {
 		return branchName;
 	}
-
 	public void setBranchName(String branchName) {
 		this.branchName = branchName;
 	}
-
 	public GitHubCheckoutSetting withBranchName(String branchName) {
 		this.branchName = branchName;
 		return this;
 	}
-
 	public String getTagName() {
 		return tagName;
 	}
-
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
 	}
-
 	public GitHubCheckoutSetting withTagName(String tagName) {
 		this.tagName = tagName;
 		return this;

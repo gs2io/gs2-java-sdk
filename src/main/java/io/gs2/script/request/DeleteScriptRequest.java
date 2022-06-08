@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteScriptRequest extends Gs2BasicRequest<DeleteScriptRequest> {
     private String namespaceName;
     private String scriptName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteScriptRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getScriptName() {
 		return scriptName;
 	}
-
 	public void setScriptName(String scriptName) {
 		this.scriptName = scriptName;
 	}
-
 	public DeleteScriptRequest withScriptName(String scriptName) {
 		this.scriptName = scriptName;
 		return this;

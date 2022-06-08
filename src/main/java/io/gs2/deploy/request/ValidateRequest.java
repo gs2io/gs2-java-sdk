@@ -29,15 +29,12 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidateRequest extends Gs2BasicRequest<ValidateRequest> {
     private String template;
-
 	public String getTemplate() {
 		return template;
 	}
-
 	public void setTemplate(String template) {
 		this.template = template;
 	}
-
 	public ValidateRequest withTemplate(String template) {
 		this.template = template;
 		return this;

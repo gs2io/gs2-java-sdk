@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteInventoryModelMasterRequest extends Gs2BasicRequest<DeleteInventoryModelMasterRequest> {
     private String namespaceName;
     private String inventoryName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteInventoryModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public DeleteInventoryModelMasterRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;

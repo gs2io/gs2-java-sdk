@@ -35,80 +35,62 @@ public class JobResult implements IModel, Serializable, Comparable<JobResult> {
 	private Integer statusCode;
 	private String result;
 	private Long tryAt;
-
 	public String getJobResultId() {
 		return jobResultId;
 	}
-
 	public void setJobResultId(String jobResultId) {
 		this.jobResultId = jobResultId;
 	}
-
 	public JobResult withJobResultId(String jobResultId) {
 		this.jobResultId = jobResultId;
 		return this;
 	}
-
 	public String getJobId() {
 		return jobId;
 	}
-
 	public void setJobId(String jobId) {
 		this.jobId = jobId;
 	}
-
 	public JobResult withJobId(String jobId) {
 		this.jobId = jobId;
 		return this;
 	}
-
 	public Integer getTryNumber() {
 		return tryNumber;
 	}
-
 	public void setTryNumber(Integer tryNumber) {
 		this.tryNumber = tryNumber;
 	}
-
 	public JobResult withTryNumber(Integer tryNumber) {
 		this.tryNumber = tryNumber;
 		return this;
 	}
-
 	public Integer getStatusCode() {
 		return statusCode;
 	}
-
 	public void setStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 	}
-
 	public JobResult withStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 		return this;
 	}
-
 	public String getResult() {
 		return result;
 	}
-
 	public void setResult(String result) {
 		this.result = result;
 	}
-
 	public JobResult withResult(String result) {
 		this.result = result;
 		return this;
 	}
-
 	public Long getTryAt() {
 		return tryAt;
 	}
-
 	public void setTryAt(Long tryAt) {
 		this.tryAt = tryAt;
 	}
-
 	public JobResult withTryAt(Long tryAt) {
 		this.tryAt = tryAt;
 		return this;

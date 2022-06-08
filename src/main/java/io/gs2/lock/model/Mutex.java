@@ -34,67 +34,52 @@ public class Mutex implements IModel, Serializable, Comparable<Mutex> {
 	private String propertyId;
 	private String transactionId;
 	private Long createdAt;
-
 	public String getMutexId() {
 		return mutexId;
 	}
-
 	public void setMutexId(String mutexId) {
 		this.mutexId = mutexId;
 	}
-
 	public Mutex withMutexId(String mutexId) {
 		this.mutexId = mutexId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Mutex withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getPropertyId() {
 		return propertyId;
 	}
-
 	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
-
 	public Mutex withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public Mutex withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Mutex withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

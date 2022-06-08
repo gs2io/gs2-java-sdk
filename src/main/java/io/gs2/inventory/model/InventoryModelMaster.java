@@ -38,119 +38,92 @@ public class InventoryModelMaster implements IModel, Serializable, Comparable<In
 	private Boolean protectReferencedItem;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getInventoryModelId() {
 		return inventoryModelId;
 	}
-
 	public void setInventoryModelId(String inventoryModelId) {
 		this.inventoryModelId = inventoryModelId;
 	}
-
 	public InventoryModelMaster withInventoryModelId(String inventoryModelId) {
 		this.inventoryModelId = inventoryModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public InventoryModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public InventoryModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public InventoryModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Integer getInitialCapacity() {
 		return initialCapacity;
 	}
-
 	public void setInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 	}
-
 	public InventoryModelMaster withInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public InventoryModelMaster withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-
 	public Boolean getProtectReferencedItem() {
 		return protectReferencedItem;
 	}
-
 	public void setProtectReferencedItem(Boolean protectReferencedItem) {
 		this.protectReferencedItem = protectReferencedItem;
 	}
-
 	public InventoryModelMaster withProtectReferencedItem(Boolean protectReferencedItem) {
 		this.protectReferencedItem = protectReferencedItem;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public InventoryModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public InventoryModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

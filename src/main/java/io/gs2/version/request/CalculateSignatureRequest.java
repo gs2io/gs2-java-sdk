@@ -32,41 +32,32 @@ public class CalculateSignatureRequest extends Gs2BasicRequest<CalculateSignatur
     private String namespaceName;
     private String versionName;
     private Version version;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CalculateSignatureRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getVersionName() {
 		return versionName;
 	}
-
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
-
 	public CalculateSignatureRequest withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;
 	}
-
 	public Version getVersion() {
 		return version;
 	}
-
 	public void setVersion(Version version) {
 		this.version = version;
 	}
-
 	public CalculateSignatureRequest withVersion(Version version) {
 		this.version = version;
 		return this;

@@ -34,80 +34,62 @@ public class GetBallotRequest extends Gs2BasicRequest<GetBallotRequest> {
     private String accessToken;
     private Integer numberOfPlayer;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetBallotRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public GetBallotRequest withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;
 	}
-
 	public String getGatheringName() {
 		return gatheringName;
 	}
-
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
-
 	public GetBallotRequest withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetBallotRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Integer getNumberOfPlayer() {
 		return numberOfPlayer;
 	}
-
 	public void setNumberOfPlayer(Integer numberOfPlayer) {
 		this.numberOfPlayer = numberOfPlayer;
 	}
-
 	public GetBallotRequest withNumberOfPlayer(Integer numberOfPlayer) {
 		this.numberOfPlayer = numberOfPlayer;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public GetBallotRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

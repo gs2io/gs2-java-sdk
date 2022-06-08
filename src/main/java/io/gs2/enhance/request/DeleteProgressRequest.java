@@ -32,54 +32,42 @@ public class DeleteProgressRequest extends Gs2BasicRequest<DeleteProgressRequest
     private String accessToken;
     private String rateName;
     private String progressName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteProgressRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DeleteProgressRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public DeleteProgressRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getProgressName() {
 		return progressName;
 	}
-
 	public void setProgressName(String progressName) {
 		this.progressName = progressName;
 	}
-
 	public DeleteProgressRequest withProgressName(String progressName) {
 		this.progressName = progressName;
 		return this;

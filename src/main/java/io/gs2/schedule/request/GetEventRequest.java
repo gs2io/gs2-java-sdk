@@ -31,41 +31,32 @@ public class GetEventRequest extends Gs2BasicRequest<GetEventRequest> {
     private String namespaceName;
     private String eventName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetEventRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getEventName() {
 		return eventName;
 	}
-
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
-
 	public GetEventRequest withEventName(String eventName) {
 		this.eventName = eventName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetEventRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

@@ -36,93 +36,72 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
 	private String sheetResult;
 	private String nextTransactionId;
 	private Long createdAt;
-
 	public String getStampSheetResultId() {
 		return stampSheetResultId;
 	}
-
 	public void setStampSheetResultId(String stampSheetResultId) {
 		this.stampSheetResultId = stampSheetResultId;
 	}
-
 	public StampSheetResult withStampSheetResultId(String stampSheetResultId) {
 		this.stampSheetResultId = stampSheetResultId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public StampSheetResult withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public StampSheetResult withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-
 	public List<String> getTaskResults() {
 		return taskResults;
 	}
-
 	public void setTaskResults(List<String> taskResults) {
 		this.taskResults = taskResults;
 	}
-
 	public StampSheetResult withTaskResults(List<String> taskResults) {
 		this.taskResults = taskResults;
 		return this;
 	}
-
 	public String getSheetResult() {
 		return sheetResult;
 	}
-
 	public void setSheetResult(String sheetResult) {
 		this.sheetResult = sheetResult;
 	}
-
 	public StampSheetResult withSheetResult(String sheetResult) {
 		this.sheetResult = sheetResult;
 		return this;
 	}
-
 	public String getNextTransactionId() {
 		return nextTransactionId;
 	}
-
 	public void setNextTransactionId(String nextTransactionId) {
 		this.nextTransactionId = nextTransactionId;
 	}
-
 	public StampSheetResult withNextTransactionId(String nextTransactionId) {
 		this.nextTransactionId = nextTransactionId;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public StampSheetResult withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

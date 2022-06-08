@@ -41,158 +41,122 @@ public class QuestModelMaster implements IModel, Serializable, Comparable<QuestM
 	private List<String> premiseQuestNames;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getQuestModelId() {
 		return questModelId;
 	}
-
 	public void setQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 	}
-
 	public QuestModelMaster withQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 		return this;
 	}
-
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
-
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
-
 	public QuestModelMaster withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public QuestModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public QuestModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public QuestModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<Contents> getContents() {
 		return contents;
 	}
-
 	public void setContents(List<Contents> contents) {
 		this.contents = contents;
 	}
-
 	public QuestModelMaster withContents(List<Contents> contents) {
 		this.contents = contents;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public QuestModelMaster withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
-
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
-
 	public QuestModelMaster withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;
 	}
-
 	public List<AcquireAction> getFailedAcquireActions() {
 		return failedAcquireActions;
 	}
-
 	public void setFailedAcquireActions(List<AcquireAction> failedAcquireActions) {
 		this.failedAcquireActions = failedAcquireActions;
 	}
-
 	public QuestModelMaster withFailedAcquireActions(List<AcquireAction> failedAcquireActions) {
 		this.failedAcquireActions = failedAcquireActions;
 		return this;
 	}
-
 	public List<String> getPremiseQuestNames() {
 		return premiseQuestNames;
 	}
-
 	public void setPremiseQuestNames(List<String> premiseQuestNames) {
 		this.premiseQuestNames = premiseQuestNames;
 	}
-
 	public QuestModelMaster withPremiseQuestNames(List<String> premiseQuestNames) {
 		this.premiseQuestNames = premiseQuestNames;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public QuestModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public QuestModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

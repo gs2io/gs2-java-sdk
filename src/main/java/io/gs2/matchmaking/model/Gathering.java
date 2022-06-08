@@ -38,119 +38,92 @@ public class Gathering implements IModel, Serializable, Comparable<Gathering> {
 	private Long expiresAt;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getGatheringId() {
 		return gatheringId;
 	}
-
 	public void setGatheringId(String gatheringId) {
 		this.gatheringId = gatheringId;
 	}
-
 	public Gathering withGatheringId(String gatheringId) {
 		this.gatheringId = gatheringId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Gathering withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public List<AttributeRange> getAttributeRanges() {
 		return attributeRanges;
 	}
-
 	public void setAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 	}
-
 	public Gathering withAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 		return this;
 	}
-
 	public List<CapacityOfRole> getCapacityOfRoles() {
 		return capacityOfRoles;
 	}
-
 	public void setCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
 		this.capacityOfRoles = capacityOfRoles;
 	}
-
 	public Gathering withCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
 		this.capacityOfRoles = capacityOfRoles;
 		return this;
 	}
-
 	public List<String> getAllowUserIds() {
 		return allowUserIds;
 	}
-
 	public void setAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 	}
-
 	public Gathering withAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Gathering withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
-
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
 	public Gathering withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Gathering withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Gathering withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

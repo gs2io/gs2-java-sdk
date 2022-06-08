@@ -33,54 +33,42 @@ public class JobResultBody implements IModel, Serializable {
 	private Integer statusCode;
 	private String result;
 	private Long tryAt;
-
 	public Integer getTryNumber() {
 		return tryNumber;
 	}
-
 	public void setTryNumber(Integer tryNumber) {
 		this.tryNumber = tryNumber;
 	}
-
 	public JobResultBody withTryNumber(Integer tryNumber) {
 		this.tryNumber = tryNumber;
 		return this;
 	}
-
 	public Integer getStatusCode() {
 		return statusCode;
 	}
-
 	public void setStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 	}
-
 	public JobResultBody withStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 		return this;
 	}
-
 	public String getResult() {
 		return result;
 	}
-
 	public void setResult(String result) {
 		this.result = result;
 	}
-
 	public JobResultBody withResult(String result) {
 		this.result = result;
 		return this;
 	}
-
 	public Long getTryAt() {
 		return tryAt;
 	}
-
 	public void setTryAt(Long tryAt) {
 		this.tryAt = tryAt;
 	}
-
 	public JobResultBody withTryAt(Long tryAt) {
 		this.tryAt = tryAt;
 		return this;

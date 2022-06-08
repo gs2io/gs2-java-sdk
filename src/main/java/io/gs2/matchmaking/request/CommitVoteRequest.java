@@ -31,41 +31,32 @@ public class CommitVoteRequest extends Gs2BasicRequest<CommitVoteRequest> {
     private String namespaceName;
     private String ratingName;
     private String gatheringName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CommitVoteRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRatingName() {
 		return ratingName;
 	}
-
 	public void setRatingName(String ratingName) {
 		this.ratingName = ratingName;
 	}
-
 	public CommitVoteRequest withRatingName(String ratingName) {
 		this.ratingName = ratingName;
 		return this;
 	}
-
 	public String getGatheringName() {
 		return gatheringName;
 	}
-
 	public void setGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 	}
-
 	public CommitVoteRequest withGatheringName(String gatheringName) {
 		this.gatheringName = gatheringName;
 		return this;

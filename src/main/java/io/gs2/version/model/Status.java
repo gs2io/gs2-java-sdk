@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class Status implements IModel, Serializable {
 	private VersionModel versionModel;
 	private Version currentVersion;
-
 	public VersionModel getVersionModel() {
 		return versionModel;
 	}
-
 	public void setVersionModel(VersionModel versionModel) {
 		this.versionModel = versionModel;
 	}
-
 	public Status withVersionModel(VersionModel versionModel) {
 		this.versionModel = versionModel;
 		return this;
 	}
-
 	public Version getCurrentVersion() {
 		return currentVersion;
 	}
-
 	public void setCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 	}
-
 	public Status withCurrentVersion(Version currentVersion) {
 		this.currentVersion = currentVersion;
 		return this;

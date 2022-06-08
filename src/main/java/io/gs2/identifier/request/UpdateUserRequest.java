@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class UpdateUserRequest extends Gs2BasicRequest<UpdateUserRequest> {
     private String userName;
     private String description;
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
 	public UpdateUserRequest withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateUserRequest withDescription(String description) {
 		this.description = description;
 		return this;

@@ -31,41 +31,32 @@ public class GetEntryByUserIdRequest extends Gs2BasicRequest<GetEntryByUserIdReq
     private String namespaceName;
     private String userId;
     private String entryModelName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetEntryByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public GetEntryByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getEntryModelName() {
 		return entryModelName;
 	}
-
 	public void setEntryModelName(String entryModelName) {
 		this.entryModelName = entryModelName;
 	}
-
 	public GetEntryByUserIdRequest withEntryModelName(String entryModelName) {
 		this.entryModelName = entryModelName;
 		return this;

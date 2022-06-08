@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeItemModelsRequest extends Gs2BasicRequest<DescribeItemModelsRequest> {
     private String namespaceName;
     private String inventoryName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeItemModelsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public DescribeItemModelsRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;

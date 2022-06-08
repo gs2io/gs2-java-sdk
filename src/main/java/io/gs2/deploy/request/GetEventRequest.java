@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetEventRequest extends Gs2BasicRequest<GetEventRequest> {
     private String stackName;
     private String eventName;
-
 	public String getStackName() {
 		return stackName;
 	}
-
 	public void setStackName(String stackName) {
 		this.stackName = stackName;
 	}
-
 	public GetEventRequest withStackName(String stackName) {
 		this.stackName = stackName;
 		return this;
 	}
-
 	public String getEventName() {
 		return eventName;
 	}
-
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
-
 	public GetEventRequest withEventName(String eventName) {
 		this.eventName = eventName;
 		return this;

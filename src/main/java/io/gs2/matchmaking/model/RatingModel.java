@@ -33,54 +33,42 @@ public class RatingModel implements IModel, Serializable, Comparable<RatingModel
 	private String name;
 	private String metadata;
 	private Integer volatility;
-
 	public String getRatingModelId() {
 		return ratingModelId;
 	}
-
 	public void setRatingModelId(String ratingModelId) {
 		this.ratingModelId = ratingModelId;
 	}
-
 	public RatingModel withRatingModelId(String ratingModelId) {
 		this.ratingModelId = ratingModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public RatingModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public RatingModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Integer getVolatility() {
 		return volatility;
 	}
-
 	public void setVolatility(Integer volatility) {
 		this.volatility = volatility;
 	}
-
 	public RatingModel withVolatility(Integer volatility) {
 		this.volatility = volatility;
 		return this;

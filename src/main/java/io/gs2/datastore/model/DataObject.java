@@ -39,132 +39,102 @@ public class DataObject implements IModel, Serializable, Comparable<DataObject> 
 	private String previousGeneration;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getDataObjectId() {
 		return dataObjectId;
 	}
-
 	public void setDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 	}
-
 	public DataObject withDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public DataObject withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DataObject withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getScope() {
 		return scope;
 	}
-
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
-
 	public DataObject withScope(String scope) {
 		this.scope = scope;
 		return this;
 	}
-
 	public List<String> getAllowUserIds() {
 		return allowUserIds;
 	}
-
 	public void setAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 	}
-
 	public DataObject withAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 		return this;
 	}
-
 	public String getStatus() {
 		return status;
 	}
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 	public DataObject withStatus(String status) {
 		this.status = status;
 		return this;
 	}
-
 	public String getGeneration() {
 		return generation;
 	}
-
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
-
 	public DataObject withGeneration(String generation) {
 		this.generation = generation;
 		return this;
 	}
-
 	public String getPreviousGeneration() {
 		return previousGeneration;
 	}
-
 	public void setPreviousGeneration(String previousGeneration) {
 		this.previousGeneration = previousGeneration;
 	}
-
 	public DataObject withPreviousGeneration(String previousGeneration) {
 		this.previousGeneration = previousGeneration;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public DataObject withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public DataObject withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

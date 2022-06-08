@@ -35,80 +35,62 @@ public class UpdateCounterModelMasterRequest extends Gs2BasicRequest<UpdateCount
     private String description;
     private List<CounterScopeModel> scopes;
     private String challengePeriodEventId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateCounterModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCounterName() {
 		return counterName;
 	}
-
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
-
 	public UpdateCounterModelMasterRequest withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateCounterModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateCounterModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public List<CounterScopeModel> getScopes() {
 		return scopes;
 	}
-
 	public void setScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 	}
-
 	public UpdateCounterModelMasterRequest withScopes(List<CounterScopeModel> scopes) {
 		this.scopes = scopes;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public UpdateCounterModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;

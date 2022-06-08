@@ -31,41 +31,32 @@ public class AcceptRequest extends Gs2BasicRequest<AcceptRequest> {
     private String namespaceName;
     private String versionName;
     private String accessToken;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AcceptRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getVersionName() {
 		return versionName;
 	}
-
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
-
 	public AcceptRequest withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public AcceptRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;

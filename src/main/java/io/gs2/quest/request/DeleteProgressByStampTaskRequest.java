@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteProgressByStampTaskRequest extends Gs2BasicRequest<DeleteProgressByStampTaskRequest> {
     private String stampTask;
     private String keyId;
-
 	public String getStampTask() {
 		return stampTask;
 	}
-
 	public void setStampTask(String stampTask) {
 		this.stampTask = stampTask;
 	}
-
 	public DeleteProgressByStampTaskRequest withStampTask(String stampTask) {
 		this.stampTask = stampTask;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public DeleteProgressByStampTaskRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

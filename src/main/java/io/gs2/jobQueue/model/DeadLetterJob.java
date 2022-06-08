@@ -37,106 +37,82 @@ public class DeadLetterJob implements IModel, Serializable, Comparable<DeadLette
 	private List<JobResultBody> result;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getDeadLetterJobId() {
 		return deadLetterJobId;
 	}
-
 	public void setDeadLetterJobId(String deadLetterJobId) {
 		this.deadLetterJobId = deadLetterJobId;
 	}
-
 	public DeadLetterJob withDeadLetterJobId(String deadLetterJobId) {
 		this.deadLetterJobId = deadLetterJobId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public DeadLetterJob withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeadLetterJob withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getScriptId() {
 		return scriptId;
 	}
-
 	public void setScriptId(String scriptId) {
 		this.scriptId = scriptId;
 	}
-
 	public DeadLetterJob withScriptId(String scriptId) {
 		this.scriptId = scriptId;
 		return this;
 	}
-
 	public String getArgs() {
 		return args;
 	}
-
 	public void setArgs(String args) {
 		this.args = args;
 	}
-
 	public DeadLetterJob withArgs(String args) {
 		this.args = args;
 		return this;
 	}
-
 	public List<JobResultBody> getResult() {
 		return result;
 	}
-
 	public void setResult(List<JobResultBody> result) {
 		this.result = result;
 	}
-
 	public DeadLetterJob withResult(List<JobResultBody> result) {
 		this.result = result;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public DeadLetterJob withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public DeadLetterJob withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

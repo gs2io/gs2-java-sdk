@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class OutputField implements IModel, Serializable {
 	private String name;
 	private String fieldName;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public OutputField withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getFieldName() {
 		return fieldName;
 	}
-
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
 	}
-
 	public OutputField withFieldName(String fieldName) {
 		this.fieldName = fieldName;
 		return this;

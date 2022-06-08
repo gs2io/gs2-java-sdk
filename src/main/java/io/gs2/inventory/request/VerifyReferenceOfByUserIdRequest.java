@@ -36,93 +36,72 @@ public class VerifyReferenceOfByUserIdRequest extends Gs2BasicRequest<VerifyRefe
     private String referenceOf;
     private String verifyType;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public VerifyReferenceOfByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public VerifyReferenceOfByUserIdRequest withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public VerifyReferenceOfByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getItemName() {
 		return itemName;
 	}
-
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-
 	public VerifyReferenceOfByUserIdRequest withItemName(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
-
 	public String getItemSetName() {
 		return itemSetName;
 	}
-
 	public void setItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 	}
-
 	public VerifyReferenceOfByUserIdRequest withItemSetName(String itemSetName) {
 		this.itemSetName = itemSetName;
 		return this;
 	}
-
 	public String getReferenceOf() {
 		return referenceOf;
 	}
-
 	public void setReferenceOf(String referenceOf) {
 		this.referenceOf = referenceOf;
 	}
-
 	public VerifyReferenceOfByUserIdRequest withReferenceOf(String referenceOf) {
 		this.referenceOf = referenceOf;
 		return this;
 	}
-
 	public String getVerifyType() {
 		return verifyType;
 	}
-
 	public void setVerifyType(String verifyType) {
 		this.verifyType = verifyType;
 	}
-
 	public VerifyReferenceOfByUserIdRequest withVerifyType(String verifyType) {
 		this.verifyType = verifyType;
 		return this;

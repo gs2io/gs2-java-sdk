@@ -37,106 +37,82 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
 	private List<WalletDetail> detail;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getWalletId() {
 		return walletId;
 	}
-
 	public void setWalletId(String walletId) {
 		this.walletId = walletId;
 	}
-
 	public Wallet withWalletId(String walletId) {
 		this.walletId = walletId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Wallet withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getSlot() {
 		return slot;
 	}
-
 	public void setSlot(Integer slot) {
 		this.slot = slot;
 	}
-
 	public Wallet withSlot(Integer slot) {
 		this.slot = slot;
 		return this;
 	}
-
 	public Integer getPaid() {
 		return paid;
 	}
-
 	public void setPaid(Integer paid) {
 		this.paid = paid;
 	}
-
 	public Wallet withPaid(Integer paid) {
 		this.paid = paid;
 		return this;
 	}
-
 	public Integer getFree() {
 		return free;
 	}
-
 	public void setFree(Integer free) {
 		this.free = free;
 	}
-
 	public Wallet withFree(Integer free) {
 		this.free = free;
 		return this;
 	}
-
 	public List<WalletDetail> getDetail() {
 		return detail;
 	}
-
 	public void setDetail(List<WalletDetail> detail) {
 		this.detail = detail;
 	}
-
 	public Wallet withDetail(List<WalletDetail> detail) {
 		this.detail = detail;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Wallet withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Wallet withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

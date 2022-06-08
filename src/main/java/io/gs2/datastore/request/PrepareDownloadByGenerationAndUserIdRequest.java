@@ -33,54 +33,42 @@ public class PrepareDownloadByGenerationAndUserIdRequest extends Gs2BasicRequest
     private String dataObjectId;
     private String generation;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PrepareDownloadByGenerationAndUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public PrepareDownloadByGenerationAndUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getDataObjectId() {
 		return dataObjectId;
 	}
-
 	public void setDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 	}
-
 	public PrepareDownloadByGenerationAndUserIdRequest withDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 		return this;
 	}
-
 	public String getGeneration() {
 		return generation;
 	}
-
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
-
 	public PrepareDownloadByGenerationAndUserIdRequest withGeneration(String generation) {
 		this.generation = generation;
 		return this;

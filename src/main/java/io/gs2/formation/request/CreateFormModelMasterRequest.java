@@ -34,67 +34,52 @@ public class CreateFormModelMasterRequest extends Gs2BasicRequest<CreateFormMode
     private String description;
     private String metadata;
     private List<SlotModel> slots;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateFormModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateFormModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateFormModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateFormModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<SlotModel> getSlots() {
 		return slots;
 	}
-
 	public void setSlots(List<SlotModel> slots) {
 		this.slots = slots;
 	}
-
 	public CreateFormModelMasterRequest withSlots(List<SlotModel> slots) {
 		this.slots = slots;
 		return this;

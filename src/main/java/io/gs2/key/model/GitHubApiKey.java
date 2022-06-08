@@ -35,80 +35,62 @@ public class GitHubApiKey implements IModel, Serializable, Comparable<GitHubApiK
 	private String encryptionKeyName;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getApiKeyId() {
 		return apiKeyId;
 	}
-
 	public void setApiKeyId(String apiKeyId) {
 		this.apiKeyId = apiKeyId;
 	}
-
 	public GitHubApiKey withApiKeyId(String apiKeyId) {
 		this.apiKeyId = apiKeyId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public GitHubApiKey withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public GitHubApiKey withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getEncryptionKeyName() {
 		return encryptionKeyName;
 	}
-
 	public void setEncryptionKeyName(String encryptionKeyName) {
 		this.encryptionKeyName = encryptionKeyName;
 	}
-
 	public GitHubApiKey withEncryptionKeyName(String encryptionKeyName) {
 		this.encryptionKeyName = encryptionKeyName;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public GitHubApiKey withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public GitHubApiKey withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

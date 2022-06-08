@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetGitHubApiKeyRequest extends Gs2BasicRequest<GetGitHubApiKeyRequest> {
     private String namespaceName;
     private String apiKeyName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetGitHubApiKeyRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getApiKeyName() {
 		return apiKeyName;
 	}
-
 	public void setApiKeyName(String apiKeyName) {
 		this.apiKeyName = apiKeyName;
 	}
-
 	public GetGitHubApiKeyRequest withApiKeyName(String apiKeyName) {
 		this.apiKeyName = apiKeyName;
 		return this;

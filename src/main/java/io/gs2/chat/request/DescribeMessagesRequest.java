@@ -34,80 +34,62 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
     private String accessToken;
     private Long startAt;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeMessagesRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRoomName() {
 		return roomName;
 	}
-
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
 	public DescribeMessagesRequest withRoomName(String roomName) {
 		this.roomName = roomName;
 		return this;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public DescribeMessagesRequest withPassword(String password) {
 		this.password = password;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DescribeMessagesRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Long getStartAt() {
 		return startAt;
 	}
-
 	public void setStartAt(Long startAt) {
 		this.startAt = startAt;
 	}
-
 	public DescribeMessagesRequest withStartAt(Long startAt) {
 		this.startAt = startAt;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeMessagesRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

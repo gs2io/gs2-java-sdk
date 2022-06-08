@@ -38,119 +38,92 @@ public class Job implements IModel, Serializable, Comparable<Job> {
 	private Integer maxTryCount;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getJobId() {
 		return jobId;
 	}
-
 	public void setJobId(String jobId) {
 		this.jobId = jobId;
 	}
-
 	public Job withJobId(String jobId) {
 		this.jobId = jobId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Job withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Job withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getScriptId() {
 		return scriptId;
 	}
-
 	public void setScriptId(String scriptId) {
 		this.scriptId = scriptId;
 	}
-
 	public Job withScriptId(String scriptId) {
 		this.scriptId = scriptId;
 		return this;
 	}
-
 	public String getArgs() {
 		return args;
 	}
-
 	public void setArgs(String args) {
 		this.args = args;
 	}
-
 	public Job withArgs(String args) {
 		this.args = args;
 		return this;
 	}
-
 	public Integer getCurrentRetryCount() {
 		return currentRetryCount;
 	}
-
 	public void setCurrentRetryCount(Integer currentRetryCount) {
 		this.currentRetryCount = currentRetryCount;
 	}
-
 	public Job withCurrentRetryCount(Integer currentRetryCount) {
 		this.currentRetryCount = currentRetryCount;
 		return this;
 	}
-
 	public Integer getMaxTryCount() {
 		return maxTryCount;
 	}
-
 	public void setMaxTryCount(Integer maxTryCount) {
 		this.maxTryCount = maxTryCount;
 	}
-
 	public Job withMaxTryCount(Integer maxTryCount) {
 		this.maxTryCount = maxTryCount;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Job withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Job withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

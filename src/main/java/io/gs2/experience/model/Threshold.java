@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class Threshold implements IModel, Serializable {
 	private String metadata;
 	private List<Long> values;
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Threshold withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<Long> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Long> values) {
 		this.values = values;
 	}
-
 	public Threshold withValues(List<Long> values) {
 		this.values = values;
 		return this;

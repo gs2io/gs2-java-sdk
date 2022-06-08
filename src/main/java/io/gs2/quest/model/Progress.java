@@ -38,119 +38,92 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 	private String metadata;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getProgressId() {
 		return progressId;
 	}
-
 	public void setProgressId(String progressId) {
 		this.progressId = progressId;
 	}
-
 	public Progress withProgressId(String progressId) {
 		this.progressId = progressId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Progress withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public Progress withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-
 	public String getQuestModelId() {
 		return questModelId;
 	}
-
 	public void setQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 	}
-
 	public Progress withQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 		return this;
 	}
-
 	public Long getRandomSeed() {
 		return randomSeed;
 	}
-
 	public void setRandomSeed(Long randomSeed) {
 		this.randomSeed = randomSeed;
 	}
-
 	public Progress withRandomSeed(Long randomSeed) {
 		this.randomSeed = randomSeed;
 		return this;
 	}
-
 	public List<Reward> getRewards() {
 		return rewards;
 	}
-
 	public void setRewards(List<Reward> rewards) {
 		this.rewards = rewards;
 	}
-
 	public Progress withRewards(List<Reward> rewards) {
 		this.rewards = rewards;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Progress withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Progress withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Progress withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

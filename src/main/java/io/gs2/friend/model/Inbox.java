@@ -34,67 +34,52 @@ public class Inbox implements IModel, Serializable, Comparable<Inbox> {
 	private List<String> fromUserIds;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getInboxId() {
 		return inboxId;
 	}
-
 	public void setInboxId(String inboxId) {
 		this.inboxId = inboxId;
 	}
-
 	public Inbox withInboxId(String inboxId) {
 		this.inboxId = inboxId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Inbox withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public List<String> getFromUserIds() {
 		return fromUserIds;
 	}
-
 	public void setFromUserIds(List<String> fromUserIds) {
 		this.fromUserIds = fromUserIds;
 	}
-
 	public Inbox withFromUserIds(List<String> fromUserIds) {
 		this.fromUserIds = fromUserIds;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Inbox withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Inbox withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

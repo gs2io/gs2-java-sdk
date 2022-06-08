@@ -40,145 +40,112 @@ public class MissionGroupModelMaster implements IModel, Serializable, Comparable
 	private String completeNotificationNamespaceId;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getMissionGroupId() {
 		return missionGroupId;
 	}
-
 	public void setMissionGroupId(String missionGroupId) {
 		this.missionGroupId = missionGroupId;
 	}
-
 	public MissionGroupModelMaster withMissionGroupId(String missionGroupId) {
 		this.missionGroupId = missionGroupId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public MissionGroupModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public MissionGroupModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public MissionGroupModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getResetType() {
 		return resetType;
 	}
-
 	public void setResetType(String resetType) {
 		this.resetType = resetType;
 	}
-
 	public MissionGroupModelMaster withResetType(String resetType) {
 		this.resetType = resetType;
 		return this;
 	}
-
 	public Integer getResetDayOfMonth() {
 		return resetDayOfMonth;
 	}
-
 	public void setResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 	}
-
 	public MissionGroupModelMaster withResetDayOfMonth(Integer resetDayOfMonth) {
 		this.resetDayOfMonth = resetDayOfMonth;
 		return this;
 	}
-
 	public String getResetDayOfWeek() {
 		return resetDayOfWeek;
 	}
-
 	public void setResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 	}
-
 	public MissionGroupModelMaster withResetDayOfWeek(String resetDayOfWeek) {
 		this.resetDayOfWeek = resetDayOfWeek;
 		return this;
 	}
-
 	public Integer getResetHour() {
 		return resetHour;
 	}
-
 	public void setResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 	}
-
 	public MissionGroupModelMaster withResetHour(Integer resetHour) {
 		this.resetHour = resetHour;
 		return this;
 	}
-
 	public String getCompleteNotificationNamespaceId() {
 		return completeNotificationNamespaceId;
 	}
-
 	public void setCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
 		this.completeNotificationNamespaceId = completeNotificationNamespaceId;
 	}
-
 	public MissionGroupModelMaster withCompleteNotificationNamespaceId(String completeNotificationNamespaceId) {
 		this.completeNotificationNamespaceId = completeNotificationNamespaceId;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public MissionGroupModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public MissionGroupModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

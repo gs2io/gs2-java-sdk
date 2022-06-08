@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class Attribute implements IModel, Serializable {
 	private String name;
 	private Integer value;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Attribute withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public Integer getValue() {
 		return value;
 	}
-
 	public void setValue(Integer value) {
 		this.value = value;
 	}
-
 	public Attribute withValue(Integer value) {
 		this.value = value;
 		return this;

@@ -43,171 +43,132 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private NotificationSetting leaveNotification;
     private NotificationSetting completeNotification;
     private LogSetting logSetting;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Boolean getEnableRating() {
 		return enableRating;
 	}
-
 	public void setEnableRating(Boolean enableRating) {
 		this.enableRating = enableRating;
 	}
-
 	public CreateNamespaceRequest withEnableRating(Boolean enableRating) {
 		this.enableRating = enableRating;
 		return this;
 	}
-
 	public String getCreateGatheringTriggerType() {
 		return createGatheringTriggerType;
 	}
-
 	public void setCreateGatheringTriggerType(String createGatheringTriggerType) {
 		this.createGatheringTriggerType = createGatheringTriggerType;
 	}
-
 	public CreateNamespaceRequest withCreateGatheringTriggerType(String createGatheringTriggerType) {
 		this.createGatheringTriggerType = createGatheringTriggerType;
 		return this;
 	}
-
 	public String getCreateGatheringTriggerRealtimeNamespaceId() {
 		return createGatheringTriggerRealtimeNamespaceId;
 	}
-
 	public void setCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
 		this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
 	}
-
 	public CreateNamespaceRequest withCreateGatheringTriggerRealtimeNamespaceId(String createGatheringTriggerRealtimeNamespaceId) {
 		this.createGatheringTriggerRealtimeNamespaceId = createGatheringTriggerRealtimeNamespaceId;
 		return this;
 	}
-
 	public String getCreateGatheringTriggerScriptId() {
 		return createGatheringTriggerScriptId;
 	}
-
 	public void setCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
 		this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
 	}
-
 	public CreateNamespaceRequest withCreateGatheringTriggerScriptId(String createGatheringTriggerScriptId) {
 		this.createGatheringTriggerScriptId = createGatheringTriggerScriptId;
 		return this;
 	}
-
 	public String getCompleteMatchmakingTriggerType() {
 		return completeMatchmakingTriggerType;
 	}
-
 	public void setCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
 		this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
 	}
-
 	public CreateNamespaceRequest withCompleteMatchmakingTriggerType(String completeMatchmakingTriggerType) {
 		this.completeMatchmakingTriggerType = completeMatchmakingTriggerType;
 		return this;
 	}
-
 	public String getCompleteMatchmakingTriggerRealtimeNamespaceId() {
 		return completeMatchmakingTriggerRealtimeNamespaceId;
 	}
-
 	public void setCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
 		this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
 	}
-
 	public CreateNamespaceRequest withCompleteMatchmakingTriggerRealtimeNamespaceId(String completeMatchmakingTriggerRealtimeNamespaceId) {
 		this.completeMatchmakingTriggerRealtimeNamespaceId = completeMatchmakingTriggerRealtimeNamespaceId;
 		return this;
 	}
-
 	public String getCompleteMatchmakingTriggerScriptId() {
 		return completeMatchmakingTriggerScriptId;
 	}
-
 	public void setCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
 		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
 	}
-
 	public CreateNamespaceRequest withCompleteMatchmakingTriggerScriptId(String completeMatchmakingTriggerScriptId) {
 		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
 		return this;
 	}
-
 	public NotificationSetting getJoinNotification() {
 		return joinNotification;
 	}
-
 	public void setJoinNotification(NotificationSetting joinNotification) {
 		this.joinNotification = joinNotification;
 	}
-
 	public CreateNamespaceRequest withJoinNotification(NotificationSetting joinNotification) {
 		this.joinNotification = joinNotification;
 		return this;
 	}
-
 	public NotificationSetting getLeaveNotification() {
 		return leaveNotification;
 	}
-
 	public void setLeaveNotification(NotificationSetting leaveNotification) {
 		this.leaveNotification = leaveNotification;
 	}
-
 	public CreateNamespaceRequest withLeaveNotification(NotificationSetting leaveNotification) {
 		this.leaveNotification = leaveNotification;
 		return this;
 	}
-
 	public NotificationSetting getCompleteNotification() {
 		return completeNotification;
 	}
-
 	public void setCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 	}
-
 	public CreateNamespaceRequest withCompleteNotification(NotificationSetting completeNotification) {
 		this.completeNotification = completeNotification;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

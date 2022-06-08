@@ -33,67 +33,52 @@ public class WithdrawRequest extends Gs2BasicRequest<WithdrawRequest> {
     private Integer slot;
     private Integer count;
     private Boolean paidOnly;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public WithdrawRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public WithdrawRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Integer getSlot() {
 		return slot;
 	}
-
 	public void setSlot(Integer slot) {
 		this.slot = slot;
 	}
-
 	public WithdrawRequest withSlot(Integer slot) {
 		this.slot = slot;
 		return this;
 	}
-
 	public Integer getCount() {
 		return count;
 	}
-
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-
 	public WithdrawRequest withCount(Integer count) {
 		this.count = count;
 		return this;
 	}
-
 	public Boolean getPaidOnly() {
 		return paidOnly;
 	}
-
 	public void setPaidOnly(Boolean paidOnly) {
 		this.paidOnly = paidOnly;
 	}
-
 	public WithdrawRequest withPaidOnly(Boolean paidOnly) {
 		this.paidOnly = paidOnly;
 		return this;

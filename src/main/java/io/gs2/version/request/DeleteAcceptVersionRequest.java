@@ -31,41 +31,32 @@ public class DeleteAcceptVersionRequest extends Gs2BasicRequest<DeleteAcceptVers
     private String namespaceName;
     private String accessToken;
     private String versionName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteAcceptVersionRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DeleteAcceptVersionRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getVersionName() {
 		return versionName;
 	}
-
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
 	}
-
 	public DeleteAcceptVersionRequest withVersionName(String versionName) {
 		this.versionName = versionName;
 		return this;

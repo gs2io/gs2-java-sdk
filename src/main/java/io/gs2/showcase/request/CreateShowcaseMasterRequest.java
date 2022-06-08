@@ -35,80 +35,62 @@ public class CreateShowcaseMasterRequest extends Gs2BasicRequest<CreateShowcaseM
     private String metadata;
     private List<DisplayItemMaster> displayItems;
     private String salesPeriodEventId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateShowcaseMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateShowcaseMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateShowcaseMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateShowcaseMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<DisplayItemMaster> getDisplayItems() {
 		return displayItems;
 	}
-
 	public void setDisplayItems(List<DisplayItemMaster> displayItems) {
 		this.displayItems = displayItems;
 	}
-
 	public CreateShowcaseMasterRequest withDisplayItems(List<DisplayItemMaster> displayItems) {
 		this.displayItems = displayItems;
 		return this;
 	}
-
 	public String getSalesPeriodEventId() {
 		return salesPeriodEventId;
 	}
-
 	public void setSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 	}
-
 	public CreateShowcaseMasterRequest withSalesPeriodEventId(String salesPeriodEventId) {
 		this.salesPeriodEventId = salesPeriodEventId;
 		return this;

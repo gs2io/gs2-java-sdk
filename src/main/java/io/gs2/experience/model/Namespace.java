@@ -40,145 +40,112 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getExperienceCapScriptId() {
 		return experienceCapScriptId;
 	}
-
 	public void setExperienceCapScriptId(String experienceCapScriptId) {
 		this.experienceCapScriptId = experienceCapScriptId;
 	}
-
 	public Namespace withExperienceCapScriptId(String experienceCapScriptId) {
 		this.experienceCapScriptId = experienceCapScriptId;
 		return this;
 	}
-
 	public ScriptSetting getChangeExperienceScript() {
 		return changeExperienceScript;
 	}
-
 	public void setChangeExperienceScript(ScriptSetting changeExperienceScript) {
 		this.changeExperienceScript = changeExperienceScript;
 	}
-
 	public Namespace withChangeExperienceScript(ScriptSetting changeExperienceScript) {
 		this.changeExperienceScript = changeExperienceScript;
 		return this;
 	}
-
 	public ScriptSetting getChangeRankScript() {
 		return changeRankScript;
 	}
-
 	public void setChangeRankScript(ScriptSetting changeRankScript) {
 		this.changeRankScript = changeRankScript;
 	}
-
 	public Namespace withChangeRankScript(ScriptSetting changeRankScript) {
 		this.changeRankScript = changeRankScript;
 		return this;
 	}
-
 	public ScriptSetting getChangeRankCapScript() {
 		return changeRankCapScript;
 	}
-
 	public void setChangeRankCapScript(ScriptSetting changeRankCapScript) {
 		this.changeRankCapScript = changeRankCapScript;
 	}
-
 	public Namespace withChangeRankCapScript(ScriptSetting changeRankCapScript) {
 		this.changeRankCapScript = changeRankCapScript;
 		return this;
 	}
-
 	public ScriptSetting getOverflowExperienceScript() {
 		return overflowExperienceScript;
 	}
-
 	public void setOverflowExperienceScript(ScriptSetting overflowExperienceScript) {
 		this.overflowExperienceScript = overflowExperienceScript;
 	}
-
 	public Namespace withOverflowExperienceScript(ScriptSetting overflowExperienceScript) {
 		this.overflowExperienceScript = overflowExperienceScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

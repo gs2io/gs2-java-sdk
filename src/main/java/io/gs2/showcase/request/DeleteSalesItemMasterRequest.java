@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteSalesItemMasterRequest extends Gs2BasicRequest<DeleteSalesItemMasterRequest> {
     private String namespaceName;
     private String salesItemName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteSalesItemMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getSalesItemName() {
 		return salesItemName;
 	}
-
 	public void setSalesItemName(String salesItemName) {
 		this.salesItemName = salesItemName;
 	}
-
 	public DeleteSalesItemMasterRequest withSalesItemName(String salesItemName) {
 		this.salesItemName = salesItemName;
 		return this;

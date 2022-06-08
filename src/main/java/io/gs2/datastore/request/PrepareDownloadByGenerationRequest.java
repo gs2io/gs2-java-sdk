@@ -32,54 +32,42 @@ public class PrepareDownloadByGenerationRequest extends Gs2BasicRequest<PrepareD
     private String accessToken;
     private String dataObjectId;
     private String generation;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PrepareDownloadByGenerationRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public PrepareDownloadByGenerationRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getDataObjectId() {
 		return dataObjectId;
 	}
-
 	public void setDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 	}
-
 	public PrepareDownloadByGenerationRequest withDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
 		return this;
 	}
-
 	public String getGeneration() {
 		return generation;
 	}
-
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
-
 	public PrepareDownloadByGenerationRequest withGeneration(String generation) {
 		this.generation = generation;
 		return this;

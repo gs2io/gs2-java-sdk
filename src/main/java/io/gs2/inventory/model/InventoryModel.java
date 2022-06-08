@@ -35,80 +35,62 @@ public class InventoryModel implements IModel, Serializable, Comparable<Inventor
 	private Integer initialCapacity;
 	private Integer maxCapacity;
 	private Boolean protectReferencedItem;
-
 	public String getInventoryModelId() {
 		return inventoryModelId;
 	}
-
 	public void setInventoryModelId(String inventoryModelId) {
 		this.inventoryModelId = inventoryModelId;
 	}
-
 	public InventoryModel withInventoryModelId(String inventoryModelId) {
 		this.inventoryModelId = inventoryModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public InventoryModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public InventoryModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Integer getInitialCapacity() {
 		return initialCapacity;
 	}
-
 	public void setInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 	}
-
 	public InventoryModel withInitialCapacity(Integer initialCapacity) {
 		this.initialCapacity = initialCapacity;
 		return this;
 	}
-
 	public Integer getMaxCapacity() {
 		return maxCapacity;
 	}
-
 	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
-
 	public InventoryModel withMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
 		return this;
 	}
-
 	public Boolean getProtectReferencedItem() {
 		return protectReferencedItem;
 	}
-
 	public void setProtectReferencedItem(Boolean protectReferencedItem) {
 		this.protectReferencedItem = protectReferencedItem;
 	}
-
 	public InventoryModel withProtectReferencedItem(Boolean protectReferencedItem) {
 		this.protectReferencedItem = protectReferencedItem;
 		return this;

@@ -33,67 +33,52 @@ public class DescribeFriendsRequest extends Gs2BasicRequest<DescribeFriendsReque
     private Boolean withProfile;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeFriendsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public DescribeFriendsRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Boolean getWithProfile() {
 		return withProfile;
 	}
-
 	public void setWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 	}
-
 	public DescribeFriendsRequest withWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeFriendsRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeFriendsRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

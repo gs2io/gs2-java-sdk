@@ -39,132 +39,102 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
     private List<AcquireAction> completeAcquireActions;
     private String challengePeriodEventId;
     private String premiseMissionTaskName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getMissionGroupName() {
 		return missionGroupName;
 	}
-
 	public void setMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withMissionGroupName(String missionGroupName) {
 		this.missionGroupName = missionGroupName;
 		return this;
 	}
-
 	public String getMissionTaskName() {
 		return missionTaskName;
 	}
-
 	public void setMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withMissionTaskName(String missionTaskName) {
 		this.missionTaskName = missionTaskName;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getCounterName() {
 		return counterName;
 	}
-
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;
 	}
-
 	public Long getTargetValue() {
 		return targetValue;
 	}
-
 	public void setTargetValue(Long targetValue) {
 		this.targetValue = targetValue;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withTargetValue(Long targetValue) {
 		this.targetValue = targetValue;
 		return this;
 	}
-
 	public List<AcquireAction> getCompleteAcquireActions() {
 		return completeAcquireActions;
 	}
-
 	public void setCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withCompleteAcquireActions(List<AcquireAction> completeAcquireActions) {
 		this.completeAcquireActions = completeAcquireActions;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-
 	public String getPremiseMissionTaskName() {
 		return premiseMissionTaskName;
 	}
-
 	public void setPremiseMissionTaskName(String premiseMissionTaskName) {
 		this.premiseMissionTaskName = premiseMissionTaskName;
 	}
-
 	public UpdateMissionTaskModelMasterRequest withPremiseMissionTaskName(String premiseMissionTaskName) {
 		this.premiseMissionTaskName = premiseMissionTaskName;
 		return this;

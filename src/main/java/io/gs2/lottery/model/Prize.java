@@ -34,67 +34,52 @@ public class Prize implements IModel, Serializable {
 	private List<AcquireAction> acquireActions;
 	private String prizeTableName;
 	private Integer weight;
-
 	public String getPrizeId() {
 		return prizeId;
 	}
-
 	public void setPrizeId(String prizeId) {
 		this.prizeId = prizeId;
 	}
-
 	public Prize withPrizeId(String prizeId) {
 		this.prizeId = prizeId;
 		return this;
 	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	public Prize withType(String type) {
 		this.type = type;
 		return this;
 	}
-
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
-
 	public void setAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 	}
-
 	public Prize withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public Prize withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-
 	public Integer getWeight() {
 		return weight;
 	}
-
 	public void setWeight(Integer weight) {
 		this.weight = weight;
 	}
-
 	public Prize withWeight(Integer weight) {
 		this.weight = weight;
 		return this;

@@ -39,132 +39,102 @@ public class ItemModelMaster implements IModel, Serializable, Comparable<ItemMod
 	private Integer sortValue;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getItemModelId() {
 		return itemModelId;
 	}
-
 	public void setItemModelId(String itemModelId) {
 		this.itemModelId = itemModelId;
 	}
-
 	public ItemModelMaster withItemModelId(String itemModelId) {
 		this.itemModelId = itemModelId;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public ItemModelMaster withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public ItemModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public ItemModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public ItemModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getStackingLimit() {
 		return stackingLimit;
 	}
-
 	public void setStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 	}
-
 	public ItemModelMaster withStackingLimit(Long stackingLimit) {
 		this.stackingLimit = stackingLimit;
 		return this;
 	}
-
 	public Boolean getAllowMultipleStacks() {
 		return allowMultipleStacks;
 	}
-
 	public void setAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 	}
-
 	public ItemModelMaster withAllowMultipleStacks(Boolean allowMultipleStacks) {
 		this.allowMultipleStacks = allowMultipleStacks;
 		return this;
 	}
-
 	public Integer getSortValue() {
 		return sortValue;
 	}
-
 	public void setSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 	}
-
 	public ItemModelMaster withSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public ItemModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public ItemModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

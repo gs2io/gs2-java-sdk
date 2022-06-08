@@ -34,67 +34,52 @@ public class QuestGroupModel implements IModel, Serializable, Comparable<QuestGr
 	private String metadata;
 	private List<QuestModel> quests;
 	private String challengePeriodEventId;
-
 	public String getQuestGroupModelId() {
 		return questGroupModelId;
 	}
-
 	public void setQuestGroupModelId(String questGroupModelId) {
 		this.questGroupModelId = questGroupModelId;
 	}
-
 	public QuestGroupModel withQuestGroupModelId(String questGroupModelId) {
 		this.questGroupModelId = questGroupModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public QuestGroupModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public QuestGroupModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<QuestModel> getQuests() {
 		return quests;
 	}
-
 	public void setQuests(List<QuestModel> quests) {
 		this.quests = quests;
 	}
-
 	public QuestGroupModel withQuests(List<QuestModel> quests) {
 		this.quests = quests;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public QuestGroupModel withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;

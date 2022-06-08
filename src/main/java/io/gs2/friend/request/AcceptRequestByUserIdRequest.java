@@ -32,41 +32,32 @@ public class AcceptRequestByUserIdRequest extends Gs2BasicRequest<AcceptRequestB
     private String userId;
     private String fromUserId;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public AcceptRequestByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AcceptRequestByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getFromUserId() {
 		return fromUserId;
 	}
-
 	public void setFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
 	}
-
 	public AcceptRequestByUserIdRequest withFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
 		return this;

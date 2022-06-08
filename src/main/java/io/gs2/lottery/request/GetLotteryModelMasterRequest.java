@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetLotteryModelMasterRequest extends Gs2BasicRequest<GetLotteryModelMasterRequest> {
     private String namespaceName;
     private String lotteryName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetLotteryModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getLotteryName() {
 		return lotteryName;
 	}
-
 	public void setLotteryName(String lotteryName) {
 		this.lotteryName = lotteryName;
 	}
-
 	public GetLotteryModelMasterRequest withLotteryName(String lotteryName) {
 		this.lotteryName = lotteryName;
 		return this;

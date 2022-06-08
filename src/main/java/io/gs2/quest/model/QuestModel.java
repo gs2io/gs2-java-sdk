@@ -37,106 +37,82 @@ public class QuestModel implements IModel, Serializable, Comparable<QuestModel> 
 	private List<ConsumeAction> consumeActions;
 	private List<AcquireAction> failedAcquireActions;
 	private List<String> premiseQuestNames;
-
 	public String getQuestModelId() {
 		return questModelId;
 	}
-
 	public void setQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 	}
-
 	public QuestModel withQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public QuestModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public QuestModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<Contents> getContents() {
 		return contents;
 	}
-
 	public void setContents(List<Contents> contents) {
 		this.contents = contents;
 	}
-
 	public QuestModel withContents(List<Contents> contents) {
 		this.contents = contents;
 		return this;
 	}
-
 	public String getChallengePeriodEventId() {
 		return challengePeriodEventId;
 	}
-
 	public void setChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 	}
-
 	public QuestModel withChallengePeriodEventId(String challengePeriodEventId) {
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
-
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
-
 	public void setConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 	}
-
 	public QuestModel withConsumeActions(List<ConsumeAction> consumeActions) {
 		this.consumeActions = consumeActions;
 		return this;
 	}
-
 	public List<AcquireAction> getFailedAcquireActions() {
 		return failedAcquireActions;
 	}
-
 	public void setFailedAcquireActions(List<AcquireAction> failedAcquireActions) {
 		this.failedAcquireActions = failedAcquireActions;
 	}
-
 	public QuestModel withFailedAcquireActions(List<AcquireAction> failedAcquireActions) {
 		this.failedAcquireActions = failedAcquireActions;
 		return this;
 	}
-
 	public List<String> getPremiseQuestNames() {
 		return premiseQuestNames;
 	}
-
 	public void setPremiseQuestNames(List<String> premiseQuestNames) {
 		this.premiseQuestNames = premiseQuestNames;
 	}
-
 	public QuestModel withPremiseQuestNames(List<String> premiseQuestNames) {
 		this.premiseQuestNames = premiseQuestNames;
 		return this;

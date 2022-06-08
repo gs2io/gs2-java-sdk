@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class AttachSecurityPolicyRequest extends Gs2BasicRequest<AttachSecurityPolicyRequest> {
     private String userName;
     private String securityPolicyId;
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
 	public AttachSecurityPolicyRequest withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-
 	public String getSecurityPolicyId() {
 		return securityPolicyId;
 	}
-
 	public void setSecurityPolicyId(String securityPolicyId) {
 		this.securityPolicyId = securityPolicyId;
 	}
-
 	public AttachSecurityPolicyRequest withSecurityPolicyId(String securityPolicyId) {
 		this.securityPolicyId = securityPolicyId;
 		return this;

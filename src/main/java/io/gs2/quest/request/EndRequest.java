@@ -36,80 +36,62 @@ public class EndRequest extends Gs2BasicRequest<EndRequest> {
     private List<Reward> rewards;
     private Boolean isComplete;
     private List<Config> config;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public EndRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public EndRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public EndRequest withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-
 	public List<Reward> getRewards() {
 		return rewards;
 	}
-
 	public void setRewards(List<Reward> rewards) {
 		this.rewards = rewards;
 	}
-
 	public EndRequest withRewards(List<Reward> rewards) {
 		this.rewards = rewards;
 		return this;
 	}
-
 	public Boolean getIsComplete() {
 		return isComplete;
 	}
-
 	public void setIsComplete(Boolean isComplete) {
 		this.isComplete = isComplete;
 	}
-
 	public EndRequest withIsComplete(Boolean isComplete) {
 		this.isComplete = isComplete;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public EndRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

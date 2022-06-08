@@ -35,67 +35,52 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private ScriptSetting entryScript;
     private ScriptSetting duplicateEntryScript;
     private LogSetting logSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public ScriptSetting getEntryScript() {
 		return entryScript;
 	}
-
 	public void setEntryScript(ScriptSetting entryScript) {
 		this.entryScript = entryScript;
 	}
-
 	public UpdateNamespaceRequest withEntryScript(ScriptSetting entryScript) {
 		this.entryScript = entryScript;
 		return this;
 	}
-
 	public ScriptSetting getDuplicateEntryScript() {
 		return duplicateEntryScript;
 	}
-
 	public void setDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 	}
-
 	public UpdateNamespaceRequest withDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

@@ -39,132 +39,102 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
     private List<String> acquireExperienceHierarchy;
     private String experienceModelId;
     private List<BonusRate> bonusRates;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateRateModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateRateModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateRateModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateRateModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getTargetInventoryModelId() {
 		return targetInventoryModelId;
 	}
-
 	public void setTargetInventoryModelId(String targetInventoryModelId) {
 		this.targetInventoryModelId = targetInventoryModelId;
 	}
-
 	public CreateRateModelMasterRequest withTargetInventoryModelId(String targetInventoryModelId) {
 		this.targetInventoryModelId = targetInventoryModelId;
 		return this;
 	}
-
 	public String getAcquireExperienceSuffix() {
 		return acquireExperienceSuffix;
 	}
-
 	public void setAcquireExperienceSuffix(String acquireExperienceSuffix) {
 		this.acquireExperienceSuffix = acquireExperienceSuffix;
 	}
-
 	public CreateRateModelMasterRequest withAcquireExperienceSuffix(String acquireExperienceSuffix) {
 		this.acquireExperienceSuffix = acquireExperienceSuffix;
 		return this;
 	}
-
 	public String getMaterialInventoryModelId() {
 		return materialInventoryModelId;
 	}
-
 	public void setMaterialInventoryModelId(String materialInventoryModelId) {
 		this.materialInventoryModelId = materialInventoryModelId;
 	}
-
 	public CreateRateModelMasterRequest withMaterialInventoryModelId(String materialInventoryModelId) {
 		this.materialInventoryModelId = materialInventoryModelId;
 		return this;
 	}
-
 	public List<String> getAcquireExperienceHierarchy() {
 		return acquireExperienceHierarchy;
 	}
-
 	public void setAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
 		this.acquireExperienceHierarchy = acquireExperienceHierarchy;
 	}
-
 	public CreateRateModelMasterRequest withAcquireExperienceHierarchy(List<String> acquireExperienceHierarchy) {
 		this.acquireExperienceHierarchy = acquireExperienceHierarchy;
 		return this;
 	}
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public CreateRateModelMasterRequest withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public List<BonusRate> getBonusRates() {
 		return bonusRates;
 	}
-
 	public void setBonusRates(List<BonusRate> bonusRates) {
 		this.bonusRates = bonusRates;
 	}
-
 	public CreateRateModelMasterRequest withBonusRates(List<BonusRate> bonusRates) {
 		this.bonusRates = bonusRates;
 		return this;

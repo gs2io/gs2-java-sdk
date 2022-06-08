@@ -29,15 +29,12 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetSecurityPolicyRequest extends Gs2BasicRequest<GetSecurityPolicyRequest> {
     private String securityPolicyName;
-
 	public String getSecurityPolicyName() {
 		return securityPolicyName;
 	}
-
 	public void setSecurityPolicyName(String securityPolicyName) {
 		this.securityPolicyName = securityPolicyName;
 	}
-
 	public GetSecurityPolicyRequest withSecurityPolicyName(String securityPolicyName) {
 		this.securityPolicyName = securityPolicyName;
 		return this;

@@ -29,15 +29,12 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteStackResourcesRequest extends Gs2BasicRequest<DeleteStackResourcesRequest> {
     private String stackName;
-
 	public String getStackName() {
 		return stackName;
 	}
-
 	public void setStackName(String stackName) {
 		this.stackName = stackName;
 	}
-
 	public DeleteStackResourcesRequest withStackName(String stackName) {
 		this.stackName = stackName;
 		return this;

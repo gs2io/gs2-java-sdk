@@ -32,54 +32,42 @@ public class GetFriendRequest extends Gs2BasicRequest<GetFriendRequest> {
     private String accessToken;
     private String targetUserId;
     private Boolean withProfile;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetFriendRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetFriendRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getTargetUserId() {
 		return targetUserId;
 	}
-
 	public void setTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 	}
-
 	public GetFriendRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
 		return this;
 	}
-
 	public Boolean getWithProfile() {
 		return withProfile;
 	}
-
 	public void setWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 	}
-
 	public GetFriendRequest withWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 		return this;

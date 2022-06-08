@@ -41,158 +41,128 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private Long updatedAt;
 	private String queueNamespaceId;
 	private String keyId;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
-
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
-
 	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-
 	public ScriptSetting getStartQuestScript() {
 		return startQuestScript;
 	}
-
 	public void setStartQuestScript(ScriptSetting startQuestScript) {
 		this.startQuestScript = startQuestScript;
 	}
-
 	public Namespace withStartQuestScript(ScriptSetting startQuestScript) {
 		this.startQuestScript = startQuestScript;
 		return this;
 	}
-
 	public ScriptSetting getCompleteQuestScript() {
 		return completeQuestScript;
 	}
-
 	public void setCompleteQuestScript(ScriptSetting completeQuestScript) {
 		this.completeQuestScript = completeQuestScript;
 	}
-
 	public Namespace withCompleteQuestScript(ScriptSetting completeQuestScript) {
 		this.completeQuestScript = completeQuestScript;
 		return this;
 	}
-
 	public ScriptSetting getFailedQuestScript() {
 		return failedQuestScript;
 	}
-
 	public void setFailedQuestScript(ScriptSetting failedQuestScript) {
 		this.failedQuestScript = failedQuestScript;
 	}
-
 	public Namespace withFailedQuestScript(ScriptSetting failedQuestScript) {
 		this.failedQuestScript = failedQuestScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
-
+    @Deprecated
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
-
+    @Deprecated
 	public void setQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 	}
-
+    @Deprecated
 	public Namespace withQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 		return this;
 	}
-
+    @Deprecated
 	public String getKeyId() {
 		return keyId;
 	}
-
+    @Deprecated
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
+    @Deprecated
 	public Namespace withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

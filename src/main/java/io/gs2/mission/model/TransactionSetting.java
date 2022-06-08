@@ -33,54 +33,42 @@ public class TransactionSetting implements IModel, Serializable {
 	private String distributorNamespaceId;
 	private String keyId;
 	private String queueNamespaceId;
-
 	public Boolean getEnableAutoRun() {
 		return enableAutoRun;
 	}
-
 	public void setEnableAutoRun(Boolean enableAutoRun) {
 		this.enableAutoRun = enableAutoRun;
 	}
-
 	public TransactionSetting withEnableAutoRun(Boolean enableAutoRun) {
 		this.enableAutoRun = enableAutoRun;
 		return this;
 	}
-
 	public String getDistributorNamespaceId() {
 		return distributorNamespaceId;
 	}
-
 	public void setDistributorNamespaceId(String distributorNamespaceId) {
 		this.distributorNamespaceId = distributorNamespaceId;
 	}
-
 	public TransactionSetting withDistributorNamespaceId(String distributorNamespaceId) {
 		this.distributorNamespaceId = distributorNamespaceId;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public TransactionSetting withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
-
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
-
 	public void setQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 	}
-
 	public TransactionSetting withQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 		return this;

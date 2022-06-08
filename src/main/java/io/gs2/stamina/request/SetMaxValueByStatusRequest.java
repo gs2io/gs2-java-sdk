@@ -34,80 +34,62 @@ public class SetMaxValueByStatusRequest extends Gs2BasicRequest<SetMaxValueBySta
     private String keyId;
     private String signedStatusBody;
     private String signedStatusSignature;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetMaxValueByStatusRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getStaminaName() {
 		return staminaName;
 	}
-
 	public void setStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 	}
-
 	public SetMaxValueByStatusRequest withStaminaName(String staminaName) {
 		this.staminaName = staminaName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public SetMaxValueByStatusRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public SetMaxValueByStatusRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
-
 	public String getSignedStatusBody() {
 		return signedStatusBody;
 	}
-
 	public void setSignedStatusBody(String signedStatusBody) {
 		this.signedStatusBody = signedStatusBody;
 	}
-
 	public SetMaxValueByStatusRequest withSignedStatusBody(String signedStatusBody) {
 		this.signedStatusBody = signedStatusBody;
 		return this;
 	}
-
 	public String getSignedStatusSignature() {
 		return signedStatusSignature;
 	}
-
 	public void setSignedStatusSignature(String signedStatusSignature) {
 		this.signedStatusSignature = signedStatusSignature;
 	}
-
 	public SetMaxValueByStatusRequest withSignedStatusSignature(String signedStatusSignature) {
 		this.signedStatusSignature = signedStatusSignature;
 		return this;

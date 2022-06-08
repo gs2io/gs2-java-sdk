@@ -33,54 +33,42 @@ public class RecordReceiptRequest extends Gs2BasicRequest<RecordReceiptRequest> 
     private String contentsId;
     private String receipt;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public RecordReceiptRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public RecordReceiptRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getContentsId() {
 		return contentsId;
 	}
-
 	public void setContentsId(String contentsId) {
 		this.contentsId = contentsId;
 	}
-
 	public RecordReceiptRequest withContentsId(String contentsId) {
 		this.contentsId = contentsId;
 		return this;
 	}
-
 	public String getReceipt() {
 		return receipt;
 	}
-
 	public void setReceipt(String receipt) {
 		this.receipt = receipt;
 	}
-
 	public RecordReceiptRequest withReceipt(String receipt) {
 		this.receipt = receipt;
 		return this;

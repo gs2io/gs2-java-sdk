@@ -32,41 +32,32 @@ public class FriendUser implements IModel, Serializable, Comparable<FriendUser> 
 	private String userId;
 	private String publicProfile;
 	private String friendProfile;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public FriendUser withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getPublicProfile() {
 		return publicProfile;
 	}
-
 	public void setPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 	}
-
 	public FriendUser withPublicProfile(String publicProfile) {
 		this.publicProfile = publicProfile;
 		return this;
 	}
-
 	public String getFriendProfile() {
 		return friendProfile;
 	}
-
 	public void setFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 	}
-
 	public FriendUser withFriendProfile(String friendProfile) {
 		this.friendProfile = friendProfile;
 		return this;

@@ -39,119 +39,92 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private ScriptSetting createTakeOverScript;
     private ScriptSetting doTakeOverScript;
     private LogSetting logSetting;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateNamespaceRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Boolean getChangePasswordIfTakeOver() {
 		return changePasswordIfTakeOver;
 	}
-
 	public void setChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
 		this.changePasswordIfTakeOver = changePasswordIfTakeOver;
 	}
-
 	public UpdateNamespaceRequest withChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
 		this.changePasswordIfTakeOver = changePasswordIfTakeOver;
 		return this;
 	}
-
 	public Boolean getDifferentUserIdForLoginAndDataRetention() {
 		return differentUserIdForLoginAndDataRetention;
 	}
-
 	public void setDifferentUserIdForLoginAndDataRetention(Boolean differentUserIdForLoginAndDataRetention) {
 		this.differentUserIdForLoginAndDataRetention = differentUserIdForLoginAndDataRetention;
 	}
-
 	public UpdateNamespaceRequest withDifferentUserIdForLoginAndDataRetention(Boolean differentUserIdForLoginAndDataRetention) {
 		this.differentUserIdForLoginAndDataRetention = differentUserIdForLoginAndDataRetention;
 		return this;
 	}
-
 	public ScriptSetting getCreateAccountScript() {
 		return createAccountScript;
 	}
-
 	public void setCreateAccountScript(ScriptSetting createAccountScript) {
 		this.createAccountScript = createAccountScript;
 	}
-
 	public UpdateNamespaceRequest withCreateAccountScript(ScriptSetting createAccountScript) {
 		this.createAccountScript = createAccountScript;
 		return this;
 	}
-
 	public ScriptSetting getAuthenticationScript() {
 		return authenticationScript;
 	}
-
 	public void setAuthenticationScript(ScriptSetting authenticationScript) {
 		this.authenticationScript = authenticationScript;
 	}
-
 	public UpdateNamespaceRequest withAuthenticationScript(ScriptSetting authenticationScript) {
 		this.authenticationScript = authenticationScript;
 		return this;
 	}
-
 	public ScriptSetting getCreateTakeOverScript() {
 		return createTakeOverScript;
 	}
-
 	public void setCreateTakeOverScript(ScriptSetting createTakeOverScript) {
 		this.createTakeOverScript = createTakeOverScript;
 	}
-
 	public UpdateNamespaceRequest withCreateTakeOverScript(ScriptSetting createTakeOverScript) {
 		this.createTakeOverScript = createTakeOverScript;
 		return this;
 	}
-
 	public ScriptSetting getDoTakeOverScript() {
 		return doTakeOverScript;
 	}
-
 	public void setDoTakeOverScript(ScriptSetting doTakeOverScript) {
 		this.doTakeOverScript = doTakeOverScript;
 	}
-
 	public UpdateNamespaceRequest withDoTakeOverScript(ScriptSetting doTakeOverScript) {
 		this.doTakeOverScript = doTakeOverScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;

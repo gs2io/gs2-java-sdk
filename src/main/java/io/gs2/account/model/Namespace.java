@@ -41,158 +41,122 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public Boolean getChangePasswordIfTakeOver() {
 		return changePasswordIfTakeOver;
 	}
-
 	public void setChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
 		this.changePasswordIfTakeOver = changePasswordIfTakeOver;
 	}
-
 	public Namespace withChangePasswordIfTakeOver(Boolean changePasswordIfTakeOver) {
 		this.changePasswordIfTakeOver = changePasswordIfTakeOver;
 		return this;
 	}
-
 	public Boolean getDifferentUserIdForLoginAndDataRetention() {
 		return differentUserIdForLoginAndDataRetention;
 	}
-
 	public void setDifferentUserIdForLoginAndDataRetention(Boolean differentUserIdForLoginAndDataRetention) {
 		this.differentUserIdForLoginAndDataRetention = differentUserIdForLoginAndDataRetention;
 	}
-
 	public Namespace withDifferentUserIdForLoginAndDataRetention(Boolean differentUserIdForLoginAndDataRetention) {
 		this.differentUserIdForLoginAndDataRetention = differentUserIdForLoginAndDataRetention;
 		return this;
 	}
-
 	public ScriptSetting getCreateAccountScript() {
 		return createAccountScript;
 	}
-
 	public void setCreateAccountScript(ScriptSetting createAccountScript) {
 		this.createAccountScript = createAccountScript;
 	}
-
 	public Namespace withCreateAccountScript(ScriptSetting createAccountScript) {
 		this.createAccountScript = createAccountScript;
 		return this;
 	}
-
 	public ScriptSetting getAuthenticationScript() {
 		return authenticationScript;
 	}
-
 	public void setAuthenticationScript(ScriptSetting authenticationScript) {
 		this.authenticationScript = authenticationScript;
 	}
-
 	public Namespace withAuthenticationScript(ScriptSetting authenticationScript) {
 		this.authenticationScript = authenticationScript;
 		return this;
 	}
-
 	public ScriptSetting getCreateTakeOverScript() {
 		return createTakeOverScript;
 	}
-
 	public void setCreateTakeOverScript(ScriptSetting createTakeOverScript) {
 		this.createTakeOverScript = createTakeOverScript;
 	}
-
 	public Namespace withCreateTakeOverScript(ScriptSetting createTakeOverScript) {
 		this.createTakeOverScript = createTakeOverScript;
 		return this;
 	}
-
 	public ScriptSetting getDoTakeOverScript() {
 		return doTakeOverScript;
 	}
-
 	public void setDoTakeOverScript(ScriptSetting doTakeOverScript) {
 		this.doTakeOverScript = doTakeOverScript;
 	}
-
 	public Namespace withDoTakeOverScript(ScriptSetting doTakeOverScript) {
 		this.doTakeOverScript = doTakeOverScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public Namespace withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

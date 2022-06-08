@@ -33,67 +33,52 @@ public class DescribeFollowsByUserIdRequest extends Gs2BasicRequest<DescribeFoll
     private Boolean withProfile;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DescribeFollowsByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DescribeFollowsByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Boolean getWithProfile() {
 		return withProfile;
 	}
-
 	public void setWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 	}
-
 	public DescribeFollowsByUserIdRequest withWithProfile(Boolean withProfile) {
 		this.withProfile = withProfile;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribeFollowsByUserIdRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribeFollowsByUserIdRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

@@ -33,54 +33,42 @@ public class Reward implements IModel, Serializable {
 	private String request;
 	private String itemId;
 	private Integer value;
-
 	public String getAction() {
 		return action;
 	}
-
 	public void setAction(String action) {
 		this.action = action;
 	}
-
 	public Reward withAction(String action) {
 		this.action = action;
 		return this;
 	}
-
 	public String getRequest() {
 		return request;
 	}
-
 	public void setRequest(String request) {
 		this.request = request;
 	}
-
 	public Reward withRequest(String request) {
 		this.request = request;
 		return this;
 	}
-
 	public String getItemId() {
 		return itemId;
 	}
-
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
-
 	public Reward withItemId(String itemId) {
 		this.itemId = itemId;
 		return this;
 	}
-
 	public Integer getValue() {
 		return value;
 	}
-
 	public void setValue(Integer value) {
 		this.value = value;
 	}
-
 	public Reward withValue(Integer value) {
 		this.value = value;
 		return this;

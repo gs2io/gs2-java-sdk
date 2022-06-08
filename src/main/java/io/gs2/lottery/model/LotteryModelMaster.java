@@ -39,132 +39,102 @@ public class LotteryModelMaster implements IModel, Serializable, Comparable<Lott
 	private String choicePrizeTableScriptId;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getLotteryModelId() {
 		return lotteryModelId;
 	}
-
 	public void setLotteryModelId(String lotteryModelId) {
 		this.lotteryModelId = lotteryModelId;
 	}
-
 	public LotteryModelMaster withLotteryModelId(String lotteryModelId) {
 		this.lotteryModelId = lotteryModelId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public LotteryModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public LotteryModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public LotteryModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMode() {
 		return mode;
 	}
-
 	public void setMode(String mode) {
 		this.mode = mode;
 	}
-
 	public LotteryModelMaster withMode(String mode) {
 		this.mode = mode;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public LotteryModelMaster withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getPrizeTableName() {
 		return prizeTableName;
 	}
-
 	public void setPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 	}
-
 	public LotteryModelMaster withPrizeTableName(String prizeTableName) {
 		this.prizeTableName = prizeTableName;
 		return this;
 	}
-
 	public String getChoicePrizeTableScriptId() {
 		return choicePrizeTableScriptId;
 	}
-
 	public void setChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 	}
-
 	public LotteryModelMaster withChoicePrizeTableScriptId(String choicePrizeTableScriptId) {
 		this.choicePrizeTableScriptId = choicePrizeTableScriptId;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public LotteryModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public LotteryModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

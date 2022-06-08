@@ -43,197 +43,152 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
     private String entryPeriodEventId;
     private String accessPeriodEventId;
     private String generation;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateCategoryModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public UpdateCategoryModelMasterRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateCategoryModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateCategoryModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getMinimumValue() {
 		return minimumValue;
 	}
-
 	public void setMinimumValue(Long minimumValue) {
 		this.minimumValue = minimumValue;
 	}
-
 	public UpdateCategoryModelMasterRequest withMinimumValue(Long minimumValue) {
 		this.minimumValue = minimumValue;
 		return this;
 	}
-
 	public Long getMaximumValue() {
 		return maximumValue;
 	}
-
 	public void setMaximumValue(Long maximumValue) {
 		this.maximumValue = maximumValue;
 	}
-
 	public UpdateCategoryModelMasterRequest withMaximumValue(Long maximumValue) {
 		this.maximumValue = maximumValue;
 		return this;
 	}
-
 	public String getOrderDirection() {
 		return orderDirection;
 	}
-
 	public void setOrderDirection(String orderDirection) {
 		this.orderDirection = orderDirection;
 	}
-
 	public UpdateCategoryModelMasterRequest withOrderDirection(String orderDirection) {
 		this.orderDirection = orderDirection;
 		return this;
 	}
-
 	public String getScope() {
 		return scope;
 	}
-
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
-
 	public UpdateCategoryModelMasterRequest withScope(String scope) {
 		this.scope = scope;
 		return this;
 	}
-
 	public Boolean getUniqueByUserId() {
 		return uniqueByUserId;
 	}
-
 	public void setUniqueByUserId(Boolean uniqueByUserId) {
 		this.uniqueByUserId = uniqueByUserId;
 	}
-
 	public UpdateCategoryModelMasterRequest withUniqueByUserId(Boolean uniqueByUserId) {
 		this.uniqueByUserId = uniqueByUserId;
 		return this;
 	}
-
 	public Integer getCalculateFixedTimingHour() {
 		return calculateFixedTimingHour;
 	}
-
 	public void setCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
 		this.calculateFixedTimingHour = calculateFixedTimingHour;
 	}
-
 	public UpdateCategoryModelMasterRequest withCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
 		this.calculateFixedTimingHour = calculateFixedTimingHour;
 		return this;
 	}
-
 	public Integer getCalculateFixedTimingMinute() {
 		return calculateFixedTimingMinute;
 	}
-
 	public void setCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
 		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
 	}
-
 	public UpdateCategoryModelMasterRequest withCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
 		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
 		return this;
 	}
-
 	public Integer getCalculateIntervalMinutes() {
 		return calculateIntervalMinutes;
 	}
-
 	public void setCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
 		this.calculateIntervalMinutes = calculateIntervalMinutes;
 	}
-
 	public UpdateCategoryModelMasterRequest withCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
 		this.calculateIntervalMinutes = calculateIntervalMinutes;
 		return this;
 	}
-
 	public String getEntryPeriodEventId() {
 		return entryPeriodEventId;
 	}
-
 	public void setEntryPeriodEventId(String entryPeriodEventId) {
 		this.entryPeriodEventId = entryPeriodEventId;
 	}
-
 	public UpdateCategoryModelMasterRequest withEntryPeriodEventId(String entryPeriodEventId) {
 		this.entryPeriodEventId = entryPeriodEventId;
 		return this;
 	}
-
 	public String getAccessPeriodEventId() {
 		return accessPeriodEventId;
 	}
-
 	public void setAccessPeriodEventId(String accessPeriodEventId) {
 		this.accessPeriodEventId = accessPeriodEventId;
 	}
-
 	public UpdateCategoryModelMasterRequest withAccessPeriodEventId(String accessPeriodEventId) {
 		this.accessPeriodEventId = accessPeriodEventId;
 		return this;
 	}
-
 	public String getGeneration() {
 		return generation;
 	}
-
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
-
 	public UpdateCategoryModelMasterRequest withGeneration(String generation) {
 		this.generation = generation;
 		return this;

@@ -34,67 +34,52 @@ public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdReq
     private Long score;
     private String metadata;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public PutScoreByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getCategoryName() {
 		return categoryName;
 	}
-
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-
 	public PutScoreByUserIdRequest withCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public PutScoreByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getScore() {
 		return score;
 	}
-
 	public void setScore(Long score) {
 		this.score = score;
 	}
-
 	public PutScoreByUserIdRequest withScore(Long score) {
 		this.score = score;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public PutScoreByUserIdRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;

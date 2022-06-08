@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class Probability implements IModel, Serializable {
 	private DrawnPrize prize;
 	private Float rate;
-
 	public DrawnPrize getPrize() {
 		return prize;
 	}
-
 	public void setPrize(DrawnPrize prize) {
 		this.prize = prize;
 	}
-
 	public Probability withPrize(DrawnPrize prize) {
 		this.prize = prize;
 		return this;
 	}
-
 	public Float getRate() {
 		return rate;
 	}
-
 	public void setRate(Float rate) {
 		this.rate = rate;
 	}
-
 	public Probability withRate(Float rate) {
 		this.rate = rate;
 		return this;

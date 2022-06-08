@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetIdentifierRequest extends Gs2BasicRequest<GetIdentifierRequest> {
     private String userName;
     private String clientId;
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
 	public GetIdentifierRequest withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-
 	public String getClientId() {
 		return clientId;
 	}
-
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
-
 	public GetIdentifierRequest withClientId(String clientId) {
 		this.clientId = clientId;
 		return this;

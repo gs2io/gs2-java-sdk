@@ -35,67 +35,52 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
     private Boolean force;
     private List<Config> config;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateProgressByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public CreateProgressByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getQuestModelId() {
 		return questModelId;
 	}
-
 	public void setQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 	}
-
 	public CreateProgressByUserIdRequest withQuestModelId(String questModelId) {
 		this.questModelId = questModelId;
 		return this;
 	}
-
 	public Boolean getForce() {
 		return force;
 	}
-
 	public void setForce(Boolean force) {
 		this.force = force;
 	}
-
 	public CreateProgressByUserIdRequest withForce(Boolean force) {
 		this.force = force;
 		return this;
 	}
-
 	public List<Config> getConfig() {
 		return config;
 	}
-
 	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-
 	public CreateProgressByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;

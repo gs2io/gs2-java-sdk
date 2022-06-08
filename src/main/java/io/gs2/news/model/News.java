@@ -35,80 +35,62 @@ public class News implements IModel, Serializable {
 	private String scheduleEventId;
 	private Long timestamp;
 	private String frontMatter;
-
 	public String getSection() {
 		return section;
 	}
-
 	public void setSection(String section) {
 		this.section = section;
 	}
-
 	public News withSection(String section) {
 		this.section = section;
 		return this;
 	}
-
 	public String getContent() {
 		return content;
 	}
-
 	public void setContent(String content) {
 		this.content = content;
 	}
-
 	public News withContent(String content) {
 		this.content = content;
 		return this;
 	}
-
 	public String getTitle() {
 		return title;
 	}
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 	public News withTitle(String title) {
 		this.title = title;
 		return this;
 	}
-
 	public String getScheduleEventId() {
 		return scheduleEventId;
 	}
-
 	public void setScheduleEventId(String scheduleEventId) {
 		this.scheduleEventId = scheduleEventId;
 	}
-
 	public News withScheduleEventId(String scheduleEventId) {
 		this.scheduleEventId = scheduleEventId;
 		return this;
 	}
-
 	public Long getTimestamp() {
 		return timestamp;
 	}
-
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
-
 	public News withTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
-
 	public String getFrontMatter() {
 		return frontMatter;
 	}
-
 	public void setFrontMatter(String frontMatter) {
 		this.frontMatter = frontMatter;
 	}
-
 	public News withFrontMatter(String frontMatter) {
 		this.frontMatter = frontMatter;
 		return this;

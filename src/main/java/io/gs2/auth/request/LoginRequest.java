@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class LoginRequest extends Gs2BasicRequest<LoginRequest> {
     private String userId;
     private Integer timeOffset;
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public LoginRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Integer getTimeOffset() {
 		return timeOffset;
 	}
-
 	public void setTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 	}
-
 	public LoginRequest withTimeOffset(Integer timeOffset) {
 		this.timeOffset = timeOffset;
 		return this;

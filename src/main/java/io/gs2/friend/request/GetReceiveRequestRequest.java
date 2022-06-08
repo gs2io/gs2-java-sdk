@@ -31,41 +31,32 @@ public class GetReceiveRequestRequest extends Gs2BasicRequest<GetReceiveRequestR
     private String namespaceName;
     private String accessToken;
     private String fromUserId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public GetReceiveRequestRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public GetReceiveRequestRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getFromUserId() {
 		return fromUserId;
 	}
-
 	public void setFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
 	}
-
 	public GetReceiveRequestRequest withFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
 		return this;

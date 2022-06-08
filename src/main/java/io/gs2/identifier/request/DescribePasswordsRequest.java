@@ -31,41 +31,32 @@ public class DescribePasswordsRequest extends Gs2BasicRequest<DescribePasswordsR
     private String userName;
     private String pageToken;
     private Integer limit;
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
 	public DescribePasswordsRequest withUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public DescribePasswordsRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public DescribePasswordsRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

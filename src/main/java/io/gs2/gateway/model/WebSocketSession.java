@@ -35,80 +35,62 @@ public class WebSocketSession implements IModel, Serializable, Comparable<WebSoc
 	private String userId;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getWebSocketSessionId() {
 		return webSocketSessionId;
 	}
-
 	public void setWebSocketSessionId(String webSocketSessionId) {
 		this.webSocketSessionId = webSocketSessionId;
 	}
-
 	public WebSocketSession withWebSocketSessionId(String webSocketSessionId) {
 		this.webSocketSessionId = webSocketSessionId;
 		return this;
 	}
-
 	public String getConnectionId() {
 		return connectionId;
 	}
-
 	public void setConnectionId(String connectionId) {
 		this.connectionId = connectionId;
 	}
-
 	public WebSocketSession withConnectionId(String connectionId) {
 		this.connectionId = connectionId;
 		return this;
 	}
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public WebSocketSession withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public WebSocketSession withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public WebSocketSession withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public WebSocketSession withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

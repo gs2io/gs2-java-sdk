@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class SetRankCapByStampSheetRequest extends Gs2BasicRequest<SetRankCapByStampSheetRequest> {
     private String stampSheet;
     private String keyId;
-
 	public String getStampSheet() {
 		return stampSheet;
 	}
-
 	public void setStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 	}
-
 	public SetRankCapByStampSheetRequest withStampSheet(String stampSheet) {
 		this.stampSheet = stampSheet;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public SetRankCapByStampSheetRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

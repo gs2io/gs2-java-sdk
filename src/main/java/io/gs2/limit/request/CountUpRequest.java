@@ -34,80 +34,62 @@ public class CountUpRequest extends Gs2BasicRequest<CountUpRequest> {
     private String accessToken;
     private Integer countUpValue;
     private Integer maxValue;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CountUpRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getLimitName() {
 		return limitName;
 	}
-
 	public void setLimitName(String limitName) {
 		this.limitName = limitName;
 	}
-
 	public CountUpRequest withLimitName(String limitName) {
 		this.limitName = limitName;
 		return this;
 	}
-
 	public String getCounterName() {
 		return counterName;
 	}
-
 	public void setCounterName(String counterName) {
 		this.counterName = counterName;
 	}
-
 	public CountUpRequest withCounterName(String counterName) {
 		this.counterName = counterName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public CountUpRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public Integer getCountUpValue() {
 		return countUpValue;
 	}
-
 	public void setCountUpValue(Integer countUpValue) {
 		this.countUpValue = countUpValue;
 	}
-
 	public CountUpRequest withCountUpValue(Integer countUpValue) {
 		this.countUpValue = countUpValue;
 		return this;
 	}
-
 	public Integer getMaxValue() {
 		return maxValue;
 	}
-
 	public void setMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 	}
-
 	public CountUpRequest withMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 		return this;

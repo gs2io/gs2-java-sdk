@@ -31,41 +31,32 @@ public class UpdateKeyRequest extends Gs2BasicRequest<UpdateKeyRequest> {
     private String namespaceName;
     private String keyName;
     private String description;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateKeyRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getKeyName() {
 		return keyName;
 	}
-
 	public void setKeyName(String keyName) {
 		this.keyName = keyName;
 	}
-
 	public UpdateKeyRequest withKeyName(String keyName) {
 		this.keyName = keyName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateKeyRequest withDescription(String description) {
 		this.description = description;
 		return this;

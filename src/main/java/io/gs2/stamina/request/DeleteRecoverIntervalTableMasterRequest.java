@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteRecoverIntervalTableMasterRequest extends Gs2BasicRequest<DeleteRecoverIntervalTableMasterRequest> {
     private String namespaceName;
     private String recoverIntervalTableName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteRecoverIntervalTableMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getRecoverIntervalTableName() {
 		return recoverIntervalTableName;
 	}
-
 	public void setRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 	}
-
 	public DeleteRecoverIntervalTableMasterRequest withRecoverIntervalTableName(String recoverIntervalTableName) {
 		this.recoverIntervalTableName = recoverIntervalTableName;
 		return this;

@@ -34,67 +34,52 @@ public class TriggerByUserIdRequest extends Gs2BasicRequest<TriggerByUserIdReque
     private String triggerStrategy;
     private Integer ttl;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public TriggerByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getTriggerName() {
 		return triggerName;
 	}
-
 	public void setTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 	}
-
 	public TriggerByUserIdRequest withTriggerName(String triggerName) {
 		this.triggerName = triggerName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public TriggerByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getTriggerStrategy() {
 		return triggerStrategy;
 	}
-
 	public void setTriggerStrategy(String triggerStrategy) {
 		this.triggerStrategy = triggerStrategy;
 	}
-
 	public TriggerByUserIdRequest withTriggerStrategy(String triggerStrategy) {
 		this.triggerStrategy = triggerStrategy;
 		return this;
 	}
-
 	public Integer getTtl() {
 		return ttl;
 	}
-
 	public void setTtl(Integer ttl) {
 		this.ttl = ttl;
 	}
-
 	public TriggerByUserIdRequest withTtl(Integer ttl) {
 		this.ttl = ttl;
 		return this;

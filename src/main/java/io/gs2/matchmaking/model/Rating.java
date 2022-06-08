@@ -35,80 +35,62 @@ public class Rating implements IModel, Serializable, Comparable<Rating> {
 	private Float rateValue;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getRatingId() {
 		return ratingId;
 	}
-
 	public void setRatingId(String ratingId) {
 		this.ratingId = ratingId;
 	}
-
 	public Rating withRatingId(String ratingId) {
 		this.ratingId = ratingId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Rating withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Rating withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Float getRateValue() {
 		return rateValue;
 	}
-
 	public void setRateValue(Float rateValue) {
 		this.rateValue = rateValue;
 	}
-
 	public Rating withRateValue(Float rateValue) {
 		this.rateValue = rateValue;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Rating withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Rating withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

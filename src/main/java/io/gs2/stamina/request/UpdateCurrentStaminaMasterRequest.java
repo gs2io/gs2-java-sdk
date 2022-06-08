@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class UpdateCurrentStaminaMasterRequest extends Gs2BasicRequest<UpdateCurrentStaminaMasterRequest> {
     private String namespaceName;
     private String settings;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateCurrentStaminaMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getSettings() {
 		return settings;
 	}
-
 	public void setSettings(String settings) {
 		this.settings = settings;
 	}
-
 	public UpdateCurrentStaminaMasterRequest withSettings(String settings) {
 		this.settings = settings;
 		return this;

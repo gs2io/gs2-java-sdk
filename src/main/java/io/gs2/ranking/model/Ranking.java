@@ -35,80 +35,62 @@ public class Ranking implements IModel, Serializable {
 	private Long score;
 	private String metadata;
 	private Long createdAt;
-
 	public Long getRank() {
 		return rank;
 	}
-
 	public void setRank(Long rank) {
 		this.rank = rank;
 	}
-
 	public Ranking withRank(Long rank) {
 		this.rank = rank;
 		return this;
 	}
-
 	public Long getIndex() {
 		return index;
 	}
-
 	public void setIndex(Long index) {
 		this.index = index;
 	}
-
 	public Ranking withIndex(Long index) {
 		this.index = index;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public Ranking withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getScore() {
 		return score;
 	}
-
 	public void setScore(Long score) {
 		this.score = score;
 	}
-
 	public Ranking withScore(Long score) {
 		this.score = score;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public Ranking withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Ranking withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

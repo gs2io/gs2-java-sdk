@@ -36,106 +36,82 @@ public class CreateExperienceModelMasterRequest extends Gs2BasicRequest<CreateEx
     private Long defaultRankCap;
     private Long maxRankCap;
     private String rankThresholdName;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateExperienceModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateExperienceModelMasterRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateExperienceModelMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public CreateExperienceModelMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public Long getDefaultExperience() {
 		return defaultExperience;
 	}
-
 	public void setDefaultExperience(Long defaultExperience) {
 		this.defaultExperience = defaultExperience;
 	}
-
 	public CreateExperienceModelMasterRequest withDefaultExperience(Long defaultExperience) {
 		this.defaultExperience = defaultExperience;
 		return this;
 	}
-
 	public Long getDefaultRankCap() {
 		return defaultRankCap;
 	}
-
 	public void setDefaultRankCap(Long defaultRankCap) {
 		this.defaultRankCap = defaultRankCap;
 	}
-
 	public CreateExperienceModelMasterRequest withDefaultRankCap(Long defaultRankCap) {
 		this.defaultRankCap = defaultRankCap;
 		return this;
 	}
-
 	public Long getMaxRankCap() {
 		return maxRankCap;
 	}
-
 	public void setMaxRankCap(Long maxRankCap) {
 		this.maxRankCap = maxRankCap;
 	}
-
 	public CreateExperienceModelMasterRequest withMaxRankCap(Long maxRankCap) {
 		this.maxRankCap = maxRankCap;
 		return this;
 	}
-
 	public String getRankThresholdName() {
 		return rankThresholdName;
 	}
-
 	public void setRankThresholdName(String rankThresholdName) {
 		this.rankThresholdName = rankThresholdName;
 	}
-
 	public CreateExperienceModelMasterRequest withRankThresholdName(String rankThresholdName) {
 		this.rankThresholdName = rankThresholdName;
 		return this;

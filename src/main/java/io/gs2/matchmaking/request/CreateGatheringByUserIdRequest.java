@@ -42,106 +42,82 @@ public class CreateGatheringByUserIdRequest extends Gs2BasicRequest<CreateGather
     private Long expiresAt;
     private TimeSpan expiresAtTimeSpan;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateGatheringByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public CreateGatheringByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Player getPlayer() {
 		return player;
 	}
-
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-
 	public CreateGatheringByUserIdRequest withPlayer(Player player) {
 		this.player = player;
 		return this;
 	}
-
 	public List<AttributeRange> getAttributeRanges() {
 		return attributeRanges;
 	}
-
 	public void setAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 	}
-
 	public CreateGatheringByUserIdRequest withAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
 		return this;
 	}
-
 	public List<CapacityOfRole> getCapacityOfRoles() {
 		return capacityOfRoles;
 	}
-
 	public void setCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
 		this.capacityOfRoles = capacityOfRoles;
 	}
-
 	public CreateGatheringByUserIdRequest withCapacityOfRoles(List<CapacityOfRole> capacityOfRoles) {
 		this.capacityOfRoles = capacityOfRoles;
 		return this;
 	}
-
 	public List<String> getAllowUserIds() {
 		return allowUserIds;
 	}
-
 	public void setAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 	}
-
 	public CreateGatheringByUserIdRequest withAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
 		return this;
 	}
-
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
-
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
 	public CreateGatheringByUserIdRequest withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
 	}
-
 	public TimeSpan getExpiresAtTimeSpan() {
 		return expiresAtTimeSpan;
 	}
-
 	public void setExpiresAtTimeSpan(TimeSpan expiresAtTimeSpan) {
 		this.expiresAtTimeSpan = expiresAtTimeSpan;
 	}
-
 	public CreateGatheringByUserIdRequest withExpiresAtTimeSpan(TimeSpan expiresAtTimeSpan) {
 		this.expiresAtTimeSpan = expiresAtTimeSpan;
 		return this;

@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
     private String scriptId;
     private String args;
-
 	public String getScriptId() {
 		return scriptId;
 	}
-
 	public void setScriptId(String scriptId) {
 		this.scriptId = scriptId;
 	}
-
 	public InvokeScriptRequest withScriptId(String scriptId) {
 		this.scriptId = scriptId;
 		return this;
 	}
-
 	public String getArgs() {
 		return args;
 	}
-
 	public void setArgs(String args) {
 		this.args = args;
 	}
-
 	public InvokeScriptRequest withArgs(String args) {
 		this.args = args;
 		return this;

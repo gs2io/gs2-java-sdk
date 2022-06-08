@@ -34,67 +34,52 @@ public class RecoverIntervalTable implements IModel, Serializable, Comparable<Re
 	private String metadata;
 	private String experienceModelId;
 	private List<Integer> values;
-
 	public String getRecoverIntervalTableId() {
 		return recoverIntervalTableId;
 	}
-
 	public void setRecoverIntervalTableId(String recoverIntervalTableId) {
 		this.recoverIntervalTableId = recoverIntervalTableId;
 	}
-
 	public RecoverIntervalTable withRecoverIntervalTableId(String recoverIntervalTableId) {
 		this.recoverIntervalTableId = recoverIntervalTableId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public RecoverIntervalTable withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public RecoverIntervalTable withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
-
 	public void setExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 	}
-
 	public RecoverIntervalTable withExperienceModelId(String experienceModelId) {
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
-
 	public List<Integer> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Integer> values) {
 		this.values = values;
 	}
-
 	public RecoverIntervalTable withValues(List<Integer> values) {
 		this.values = values;
 		return this;

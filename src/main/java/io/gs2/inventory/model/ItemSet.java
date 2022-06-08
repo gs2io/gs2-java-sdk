@@ -40,145 +40,112 @@ public class ItemSet implements IModel, Serializable, Comparable<ItemSet> {
 	private Long expiresAt;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getItemSetId() {
 		return itemSetId;
 	}
-
 	public void setItemSetId(String itemSetId) {
 		this.itemSetId = itemSetId;
 	}
-
 	public ItemSet withItemSetId(String itemSetId) {
 		this.itemSetId = itemSetId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public ItemSet withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getInventoryName() {
 		return inventoryName;
 	}
-
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-
 	public ItemSet withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public ItemSet withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getItemName() {
 		return itemName;
 	}
-
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-
 	public ItemSet withItemName(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
-
 	public Long getCount() {
 		return count;
 	}
-
 	public void setCount(Long count) {
 		this.count = count;
 	}
-
 	public ItemSet withCount(Long count) {
 		this.count = count;
 		return this;
 	}
-
 	public List<String> getReferenceOf() {
 		return referenceOf;
 	}
-
 	public void setReferenceOf(List<String> referenceOf) {
 		this.referenceOf = referenceOf;
 	}
-
 	public ItemSet withReferenceOf(List<String> referenceOf) {
 		this.referenceOf = referenceOf;
 		return this;
 	}
-
 	public Integer getSortValue() {
 		return sortValue;
 	}
-
 	public void setSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 	}
-
 	public ItemSet withSortValue(Integer sortValue) {
 		this.sortValue = sortValue;
 		return this;
 	}
-
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
-
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
 	public ItemSet withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public ItemSet withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public ItemSet withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

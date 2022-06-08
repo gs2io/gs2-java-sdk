@@ -32,54 +32,42 @@ public class CreateScriptRequest extends Gs2BasicRequest<CreateScriptRequest> {
     private String name;
     private String description;
     private String script;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CreateScriptRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateScriptRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateScriptRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getScript() {
 		return script;
 	}
-
 	public void setScript(String script) {
 		this.script = script;
 	}
-
 	public CreateScriptRequest withScript(String script) {
 		this.script = script;
 		return this;

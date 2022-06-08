@@ -35,80 +35,62 @@ public class SetFormWithSignatureRequest extends Gs2BasicRequest<SetFormWithSign
     private Integer index;
     private List<SlotWithSignature> slots;
     private String keyId;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public SetFormWithSignatureRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
-
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-
 	public SetFormWithSignatureRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-
 	public String getMoldName() {
 		return moldName;
 	}
-
 	public void setMoldName(String moldName) {
 		this.moldName = moldName;
 	}
-
 	public SetFormWithSignatureRequest withMoldName(String moldName) {
 		this.moldName = moldName;
 		return this;
 	}
-
 	public Integer getIndex() {
 		return index;
 	}
-
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
-
 	public SetFormWithSignatureRequest withIndex(Integer index) {
 		this.index = index;
 		return this;
 	}
-
 	public List<SlotWithSignature> getSlots() {
 		return slots;
 	}
-
 	public void setSlots(List<SlotWithSignature> slots) {
 		this.slots = slots;
 	}
-
 	public SetFormWithSignatureRequest withSlots(List<SlotWithSignature> slots) {
 		this.slots = slots;
 		return this;
 	}
-
 	public String getKeyId() {
 		return keyId;
 	}
-
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
 	public SetFormWithSignatureRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

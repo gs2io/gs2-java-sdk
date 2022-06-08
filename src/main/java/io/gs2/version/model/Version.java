@@ -32,41 +32,32 @@ public class Version implements IModel, Serializable {
 	private Integer major;
 	private Integer minor;
 	private Integer micro;
-
 	public Integer getMajor() {
 		return major;
 	}
-
 	public void setMajor(Integer major) {
 		this.major = major;
 	}
-
 	public Version withMajor(Integer major) {
 		this.major = major;
 		return this;
 	}
-
 	public Integer getMinor() {
 		return minor;
 	}
-
 	public void setMinor(Integer minor) {
 		this.minor = minor;
 	}
-
 	public Version withMinor(Integer minor) {
 		this.minor = minor;
 		return this;
 	}
-
 	public Integer getMicro() {
 		return micro;
 	}
-
 	public void setMicro(Integer micro) {
 		this.micro = micro;
 	}
-
 	public Version withMicro(Integer micro) {
 		this.micro = micro;
 		return this;

@@ -33,67 +33,52 @@ public class UpdateThresholdMasterRequest extends Gs2BasicRequest<UpdateThreshol
     private String description;
     private String metadata;
     private List<Long> values;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public UpdateThresholdMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getThresholdName() {
 		return thresholdName;
 	}
-
 	public void setThresholdName(String thresholdName) {
 		this.thresholdName = thresholdName;
 	}
-
 	public UpdateThresholdMasterRequest withThresholdName(String thresholdName) {
 		this.thresholdName = thresholdName;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public UpdateThresholdMasterRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public UpdateThresholdMasterRequest withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<Long> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Long> values) {
 		this.values = values;
 	}
-
 	public UpdateThresholdMasterRequest withValues(List<Long> values) {
 		this.values = values;
 		return this;

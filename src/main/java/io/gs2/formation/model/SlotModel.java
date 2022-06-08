@@ -32,41 +32,32 @@ public class SlotModel implements IModel, Serializable {
 	private String name;
 	private String propertyRegex;
 	private String metadata;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public SlotModel withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getPropertyRegex() {
 		return propertyRegex;
 	}
-
 	public void setPropertyRegex(String propertyRegex) {
 		this.propertyRegex = propertyRegex;
 	}
-
 	public SlotModel withPropertyRegex(String propertyRegex) {
 		this.propertyRegex = propertyRegex;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public SlotModel withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;

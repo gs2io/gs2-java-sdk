@@ -40,119 +40,98 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private LogSetting logSetting;
     private String queueNamespaceId;
     private String keyId;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public TransactionSetting getTransactionSetting() {
 		return transactionSetting;
 	}
-
 	public void setTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 	}
-
 	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-
 	public ScriptSetting getStartQuestScript() {
 		return startQuestScript;
 	}
-
 	public void setStartQuestScript(ScriptSetting startQuestScript) {
 		this.startQuestScript = startQuestScript;
 	}
-
 	public CreateNamespaceRequest withStartQuestScript(ScriptSetting startQuestScript) {
 		this.startQuestScript = startQuestScript;
 		return this;
 	}
-
 	public ScriptSetting getCompleteQuestScript() {
 		return completeQuestScript;
 	}
-
 	public void setCompleteQuestScript(ScriptSetting completeQuestScript) {
 		this.completeQuestScript = completeQuestScript;
 	}
-
 	public CreateNamespaceRequest withCompleteQuestScript(ScriptSetting completeQuestScript) {
 		this.completeQuestScript = completeQuestScript;
 		return this;
 	}
-
 	public ScriptSetting getFailedQuestScript() {
 		return failedQuestScript;
 	}
-
 	public void setFailedQuestScript(ScriptSetting failedQuestScript) {
 		this.failedQuestScript = failedQuestScript;
 	}
-
 	public CreateNamespaceRequest withFailedQuestScript(ScriptSetting failedQuestScript) {
 		this.failedQuestScript = failedQuestScript;
 		return this;
 	}
-
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
-
 	public void setLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 	}
-
 	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
 		return this;
 	}
-
+    @Deprecated
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
-
+    @Deprecated
 	public void setQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 	}
-
+    @Deprecated
 	public CreateNamespaceRequest withQueueNamespaceId(String queueNamespaceId) {
 		this.queueNamespaceId = queueNamespaceId;
 		return this;
 	}
-
+    @Deprecated
 	public String getKeyId() {
 		return keyId;
 	}
-
+    @Deprecated
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-
+    @Deprecated
 	public CreateNamespaceRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;

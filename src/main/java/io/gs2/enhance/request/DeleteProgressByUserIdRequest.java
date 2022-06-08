@@ -33,54 +33,42 @@ public class DeleteProgressByUserIdRequest extends Gs2BasicRequest<DeleteProgres
     private String rateName;
     private String progressName;
     private String duplicationAvoider;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public DeleteProgressByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DeleteProgressByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRateName() {
 		return rateName;
 	}
-
 	public void setRateName(String rateName) {
 		this.rateName = rateName;
 	}
-
 	public DeleteProgressByUserIdRequest withRateName(String rateName) {
 		this.rateName = rateName;
 		return this;
 	}
-
 	public String getProgressName() {
 		return progressName;
 	}
-
 	public void setProgressName(String progressName) {
 		this.progressName = progressName;
 	}
-
 	public DeleteProgressByUserIdRequest withProgressName(String progressName) {
 		this.progressName = progressName;
 		return this;

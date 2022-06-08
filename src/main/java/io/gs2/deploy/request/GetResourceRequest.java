@@ -30,28 +30,22 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetResourceRequest extends Gs2BasicRequest<GetResourceRequest> {
     private String stackName;
     private String resourceName;
-
 	public String getStackName() {
 		return stackName;
 	}
-
 	public void setStackName(String stackName) {
 		this.stackName = stackName;
 	}
-
 	public GetResourceRequest withStackName(String stackName) {
 		this.stackName = stackName;
 		return this;
 	}
-
 	public String getResourceName() {
 		return resourceName;
 	}
-
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
 	}
-
 	public GetResourceRequest withResourceName(String resourceName) {
 		this.resourceName = resourceName;
 		return this;

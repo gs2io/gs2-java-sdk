@@ -35,80 +35,62 @@ public class CompletedQuestList implements IModel, Serializable, Comparable<Comp
 	private List<String> completeQuestNames;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getCompletedQuestListId() {
 		return completedQuestListId;
 	}
-
 	public void setCompletedQuestListId(String completedQuestListId) {
 		this.completedQuestListId = completedQuestListId;
 	}
-
 	public CompletedQuestList withCompletedQuestListId(String completedQuestListId) {
 		this.completedQuestListId = completedQuestListId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public CompletedQuestList withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getQuestGroupName() {
 		return questGroupName;
 	}
-
 	public void setQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 	}
-
 	public CompletedQuestList withQuestGroupName(String questGroupName) {
 		this.questGroupName = questGroupName;
 		return this;
 	}
-
 	public List<String> getCompleteQuestNames() {
 		return completeQuestNames;
 	}
-
 	public void setCompleteQuestNames(List<String> completeQuestNames) {
 		this.completeQuestNames = completeQuestNames;
 	}
-
 	public CompletedQuestList withCompleteQuestNames(List<String> completeQuestNames) {
 		this.completeQuestNames = completeQuestNames;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public CompletedQuestList withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public CompletedQuestList withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

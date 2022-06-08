@@ -33,54 +33,42 @@ public class DataOwner implements IModel, Serializable, Comparable<DataOwner> {
 	private String userId;
 	private String name;
 	private Long createdAt;
-
 	public String getDataOwnerId() {
 		return dataOwnerId;
 	}
-
 	public void setDataOwnerId(String dataOwnerId) {
 		this.dataOwnerId = dataOwnerId;
 	}
-
 	public DataOwner withDataOwnerId(String dataOwnerId) {
 		this.dataOwnerId = dataOwnerId;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public DataOwner withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public DataOwner withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public DataOwner withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;

@@ -36,93 +36,72 @@ public class ThresholdMaster implements IModel, Serializable, Comparable<Thresho
 	private List<Long> values;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getThresholdId() {
 		return thresholdId;
 	}
-
 	public void setThresholdId(String thresholdId) {
 		this.thresholdId = thresholdId;
 	}
-
 	public ThresholdMaster withThresholdId(String thresholdId) {
 		this.thresholdId = thresholdId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public ThresholdMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public ThresholdMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getMetadata() {
 		return metadata;
 	}
-
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-
 	public ThresholdMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
-
 	public List<Long> getValues() {
 		return values;
 	}
-
 	public void setValues(List<Long> values) {
 		this.values = values;
 	}
-
 	public ThresholdMaster withValues(List<Long> values) {
 		this.values = values;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public ThresholdMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public ThresholdMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

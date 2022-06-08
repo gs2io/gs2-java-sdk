@@ -31,28 +31,22 @@ import io.gs2.core.model.IModel;
 public class CurrentLimitMaster implements IModel, Serializable, Comparable<CurrentLimitMaster> {
 	private String namespaceId;
 	private String settings;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public CurrentLimitMaster withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getSettings() {
 		return settings;
 	}
-
 	public void setSettings(String settings) {
 		this.settings = settings;
 	}
-
 	public CurrentLimitMaster withSettings(String settings) {
 		this.settings = settings;
 		return this;
