@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.distributor.model.*;
+import io.gs2.showcase.model.ConsumeAction;
+import io.gs2.showcase.model.AcquireAction;
 import io.gs2.distributor.model.StampSheetResult;
 
 @SuppressWarnings("serial")

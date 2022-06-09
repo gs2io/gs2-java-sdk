@@ -38,6 +38,7 @@ io/gs2/formation/model/AcquireActionConfig$1.class
 io/gs2/gateway/Gs2GatewayRestClient$DescribeWebSocketSessionsTask.class
 io/gs2/inbox/model/GitHubCheckoutSetting.class
 io/gs2/formation/result/GetCurrentFormMasterResult.class
+io/gs2/distributor/model/ConsumeAction.class
 io/gs2/friend/request/RejectRequestRequest$1.class
 io/gs2/version/request/DescribeNamespacesRequest$1.class
 io/gs2/inventory/model/Inventory$1.class
@@ -4335,6 +4336,7 @@ io/gs2/stamina/request/CreateMaxStaminaTableMasterRequest.class
 io/gs2/chat/request/DescribeSubscribesRequest$1.class
 io/gs2/matchmaking/request/DoMatchmakingByPlayerRequest$1.class
 io/gs2/limit/request/CreateLimitModelMasterRequest.class
+io/gs2/distributor/model/ConsumeAction$1.class
 io/gs2/account/request/GetNamespaceStatusRequest$1.class
 io/gs2/experience/request/UpdateNamespaceRequest$1.class
 io/gs2/matchmaking/model/Player.class
@@ -4544,6 +4546,7 @@ io/gs2/mission/result/UpdateCounterModelMasterResult.class
 io/gs2/inbox/Gs2InboxRestClient$GetMessageTask.class
 io/gs2/enhance/Gs2EnhanceRestClient.class
 io/gs2/enhance/Gs2EnhanceRestClient$CreateProgressByStampSheetTask$1.class
+io/gs2/distributor/model/AcquireAction$1.class
 io/gs2/datastore/Gs2DatastoreRestClient$DoneUploadByUserIdTask.class
 io/gs2/quest/request/DescribeQuestGroupModelMastersRequest$1.class
 io/gs2/lottery/model/BoxItems$1.class
@@ -5567,6 +5570,7 @@ io/gs2/inventory/Gs2InventoryRestClient$SetCapacityByUserIdTask$1.class
 io/gs2/schedule/request/DeleteTriggerRequest$1.class
 io/gs2/version/request/GetAcceptVersionRequest$1.class
 io/gs2/lottery/Gs2LotteryRestClient$DescribeBoxesByUserIdTask.class
+io/gs2/distributor/model/AcquireAction.class
 io/gs2/exchange/Gs2ExchangeRestClient$UpdateRateModelMasterTask$1.class
 io/gs2/lottery/model/Lottery$1.class
 io/gs2/core/net/Gs2Session.class

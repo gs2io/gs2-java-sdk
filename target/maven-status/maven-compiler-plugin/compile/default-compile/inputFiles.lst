@@ -596,6 +596,7 @@
 /root/project/java/src/main/java/io/gs2/jobQueue/model/JobEntry.java
 /root/project/java/src/main/java/io/gs2/limit/request/DeleteByStampSheetRequest.java
 /root/project/java/src/main/java/io/gs2/lottery/request/GetLotteryModelMasterRequest.java
+/root/project/java/src/main/java/io/gs2/distributor/model/ConsumeAction.java
 /root/project/java/src/main/java/io/gs2/version/result/DescribeVersionModelsResult.java
 /root/project/java/src/main/java/io/gs2/inbox/result/DeleteMessageResult.java
 /root/project/java/src/main/java/io/gs2/mission/result/GetNamespaceResult.java
@@ -1441,6 +1442,7 @@
 /root/project/java/src/main/java/io/gs2/formation/model/GitHubCheckoutSetting.java
 /root/project/java/src/main/java/io/gs2/inventory/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/lottery/model/Prize.java
+/root/project/java/src/main/java/io/gs2/distributor/model/AcquireAction.java
 /root/project/java/src/main/java/io/gs2/account/result/DeleteTakeOverByUserIdentifierResult.java
 /root/project/java/src/main/java/io/gs2/money/model/ResponseCache.java
 /root/project/java/src/main/java/io/gs2/exchange/model/GitHubCheckoutSetting.java
