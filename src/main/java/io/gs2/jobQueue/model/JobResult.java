@@ -31,6 +31,8 @@ import io.gs2.core.model.IModel;
 public class JobResult implements IModel, Serializable, Comparable<JobResult> {
 	private String jobResultId;
 	private String jobId;
+	private String scriptId;
+	private String args;
 	private Integer tryNumber;
 	private Integer statusCode;
 	private String result;
@@ -53,6 +55,26 @@ public class JobResult implements IModel, Serializable, Comparable<JobResult> {
 	}
 	public JobResult withJobId(String jobId) {
 		this.jobId = jobId;
+		return this;
+	}
+	public String getScriptId() {
+		return scriptId;
+	}
+	public void setScriptId(String scriptId) {
+		this.scriptId = scriptId;
+	}
+	public JobResult withScriptId(String scriptId) {
+		this.scriptId = scriptId;
+		return this;
+	}
+	public String getArgs() {
+		return args;
+	}
+	public void setArgs(String args) {
+		this.args = args;
+	}
+	public JobResult withArgs(String args) {
+		this.args = args;
 		return this;
 	}
 	public Integer getTryNumber() {
@@ -103,6 +125,8 @@ public class JobResult implements IModel, Serializable, Comparable<JobResult> {
         return new JobResult()
             .withJobResultId(data.get("jobResultId") == null || data.get("jobResultId").isNull() ? null : data.get("jobResultId").asText())
             .withJobId(data.get("jobId") == null || data.get("jobId").isNull() ? null : data.get("jobId").asText())
+            .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
+            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
             .withTryNumber(data.get("tryNumber") == null || data.get("tryNumber").isNull() ? null : data.get("tryNumber").intValue())
             .withStatusCode(data.get("statusCode") == null || data.get("statusCode").isNull() ? null : data.get("statusCode").intValue())
             .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText())
@@ -114,6 +138,8 @@ public class JobResult implements IModel, Serializable, Comparable<JobResult> {
             new HashMap<String, Object>() {{
                 put("jobResultId", getJobResultId());
                 put("jobId", getJobId());
+                put("scriptId", getScriptId());
+                put("args", getArgs());
                 put("tryNumber", getTryNumber());
                 put("statusCode", getStatusCode());
                 put("result", getResult());
@@ -133,6 +159,8 @@ public class JobResult implements IModel, Serializable, Comparable<JobResult> {
         int result = 1;
         result = prime * result + ((this.jobResultId == null) ? 0 : this.jobResultId.hashCode());
         result = prime * result + ((this.jobId == null) ? 0 : this.jobId.hashCode());
+        result = prime * result + ((this.scriptId == null) ? 0 : this.scriptId.hashCode());
+        result = prime * result + ((this.args == null) ? 0 : this.args.hashCode());
         result = prime * result + ((this.tryNumber == null) ? 0 : this.tryNumber.hashCode());
         result = prime * result + ((this.statusCode == null) ? 0 : this.statusCode.hashCode());
         result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());
@@ -157,6 +185,16 @@ public class JobResult implements IModel, Serializable, Comparable<JobResult> {
 		if (jobId == null) {
 			return other.jobId == null;
 		} else if (!jobId.equals(other.jobId)) {
+			return false;
+		}
+		if (scriptId == null) {
+			return other.scriptId == null;
+		} else if (!scriptId.equals(other.scriptId)) {
+			return false;
+		}
+		if (args == null) {
+			return other.args == null;
+		} else if (!args.equals(other.args)) {
 			return false;
 		}
 		if (tryNumber == null) {

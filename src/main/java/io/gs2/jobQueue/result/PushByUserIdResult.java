@@ -31,6 +31,7 @@ import io.gs2.jobQueue.model.Job;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PushByUserIdResult implements IResult, Serializable {
     private List<Job> items;
+    private Boolean autoRun;
 
 	public List<Job> getItems() {
 		return items;
@@ -45,6 +46,19 @@ public class PushByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Boolean getAutoRun() {
+		return autoRun;
+	}
+
+	public void setAutoRun(Boolean autoRun) {
+		this.autoRun = autoRun;
+	}
+
+	public PushByUserIdResult withAutoRun(Boolean autoRun) {
+		this.autoRun = autoRun;
+		return this;
+	}
+
     public static PushByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -55,7 +69,8 @@ public class PushByUserIdResult implements IResult, Serializable {
                     //noinspection Convert2MethodRef
                     return Job.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withAutoRun(data.get("autoRun") == null || data.get("autoRun").isNull() ? null : data.get("autoRun").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -67,6 +82,7 @@ public class PushByUserIdResult implements IResult, Serializable {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("autoRun", getAutoRun());
             }}
         );
     }
