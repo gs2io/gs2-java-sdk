@@ -534,6 +534,167 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeFormModelsTask extends Gs2RestSessionTask<DescribeFormModelsResult> {
+        private DescribeFormModelsRequest request;
+
+        public DescribeFormModelsTask(
+            DescribeFormModelsRequest request,
+            AsyncAction<AsyncResult<DescribeFormModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeFormModelsResult parse(JsonNode data) {
+            return DescribeFormModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/form";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeFormModelsAsync(
+            DescribeFormModelsRequest request,
+            AsyncAction<AsyncResult<DescribeFormModelsResult>> callback
+    ) {
+        DescribeFormModelsTask task = new DescribeFormModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeFormModelsResult describeFormModels(
+            DescribeFormModelsRequest request
+    ) {
+        final AsyncResult<DescribeFormModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeFormModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetFormModelTask extends Gs2RestSessionTask<GetFormModelResult> {
+        private GetFormModelRequest request;
+
+        public GetFormModelTask(
+            GetFormModelRequest request,
+            AsyncAction<AsyncResult<GetFormModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetFormModelResult parse(JsonNode data) {
+            return GetFormModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/form/{formModelName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getFormModelAsync(
+            GetFormModelRequest request,
+            AsyncAction<AsyncResult<GetFormModelResult>> callback
+    ) {
+        GetFormModelTask task = new GetFormModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetFormModelResult getFormModel(
+            GetFormModelRequest request
+    ) {
+        final AsyncResult<GetFormModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getFormModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeFormModelMastersTask extends Gs2RestSessionTask<DescribeFormModelMastersResult> {
         private DescribeFormModelMastersRequest request;
 
@@ -3738,6 +3899,1054 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
     ) {
         final AsyncResult<AcquireActionToFormPropertiesByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         acquireActionToFormPropertiesByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribePropertyFormsTask extends Gs2RestSessionTask<DescribePropertyFormsResult> {
+        private DescribePropertyFormsRequest request;
+
+        public DescribePropertyFormsTask(
+            DescribePropertyFormsRequest request,
+            AsyncAction<AsyncResult<DescribePropertyFormsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribePropertyFormsResult parse(JsonNode data) {
+            return DescribePropertyFormsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/property/{formModelName}/form";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describePropertyFormsAsync(
+            DescribePropertyFormsRequest request,
+            AsyncAction<AsyncResult<DescribePropertyFormsResult>> callback
+    ) {
+        DescribePropertyFormsTask task = new DescribePropertyFormsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribePropertyFormsResult describePropertyForms(
+            DescribePropertyFormsRequest request
+    ) {
+        final AsyncResult<DescribePropertyFormsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describePropertyFormsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribePropertyFormsByUserIdTask extends Gs2RestSessionTask<DescribePropertyFormsByUserIdResult> {
+        private DescribePropertyFormsByUserIdRequest request;
+
+        public DescribePropertyFormsByUserIdTask(
+            DescribePropertyFormsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribePropertyFormsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribePropertyFormsByUserIdResult parse(JsonNode data) {
+            return DescribePropertyFormsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/property/{formModelName}/form";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describePropertyFormsByUserIdAsync(
+            DescribePropertyFormsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribePropertyFormsByUserIdResult>> callback
+    ) {
+        DescribePropertyFormsByUserIdTask task = new DescribePropertyFormsByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribePropertyFormsByUserIdResult describePropertyFormsByUserId(
+            DescribePropertyFormsByUserIdRequest request
+    ) {
+        final AsyncResult<DescribePropertyFormsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describePropertyFormsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetPropertyFormTask extends Gs2RestSessionTask<GetPropertyFormResult> {
+        private GetPropertyFormRequest request;
+
+        public GetPropertyFormTask(
+            GetPropertyFormRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetPropertyFormResult parse(JsonNode data) {
+            return GetPropertyFormResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/property/{formModelName}/form/{propertyId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getPropertyFormAsync(
+            GetPropertyFormRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormResult>> callback
+    ) {
+        GetPropertyFormTask task = new GetPropertyFormTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetPropertyFormResult getPropertyForm(
+            GetPropertyFormRequest request
+    ) {
+        final AsyncResult<GetPropertyFormResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPropertyFormAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetPropertyFormByUserIdTask extends Gs2RestSessionTask<GetPropertyFormByUserIdResult> {
+        private GetPropertyFormByUserIdRequest request;
+
+        public GetPropertyFormByUserIdTask(
+            GetPropertyFormByUserIdRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetPropertyFormByUserIdResult parse(JsonNode data) {
+            return GetPropertyFormByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getPropertyFormByUserIdAsync(
+            GetPropertyFormByUserIdRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormByUserIdResult>> callback
+    ) {
+        GetPropertyFormByUserIdTask task = new GetPropertyFormByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetPropertyFormByUserIdResult getPropertyFormByUserId(
+            GetPropertyFormByUserIdRequest request
+    ) {
+        final AsyncResult<GetPropertyFormByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPropertyFormByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetPropertyFormWithSignatureTask extends Gs2RestSessionTask<GetPropertyFormWithSignatureResult> {
+        private GetPropertyFormWithSignatureRequest request;
+
+        public GetPropertyFormWithSignatureTask(
+            GetPropertyFormWithSignatureRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormWithSignatureResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetPropertyFormWithSignatureResult parse(JsonNode data) {
+            return GetPropertyFormWithSignatureResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/property/{formModelName}/form/{propertyId}/signature";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getKeyId() != null) {
+                queryStrings.add("keyId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getKeyId()))));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getPropertyFormWithSignatureAsync(
+            GetPropertyFormWithSignatureRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormWithSignatureResult>> callback
+    ) {
+        GetPropertyFormWithSignatureTask task = new GetPropertyFormWithSignatureTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetPropertyFormWithSignatureResult getPropertyFormWithSignature(
+            GetPropertyFormWithSignatureRequest request
+    ) {
+        final AsyncResult<GetPropertyFormWithSignatureResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPropertyFormWithSignatureAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetPropertyFormWithSignatureByUserIdTask extends Gs2RestSessionTask<GetPropertyFormWithSignatureByUserIdResult> {
+        private GetPropertyFormWithSignatureByUserIdRequest request;
+
+        public GetPropertyFormWithSignatureByUserIdTask(
+            GetPropertyFormWithSignatureByUserIdRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormWithSignatureByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetPropertyFormWithSignatureByUserIdResult parse(JsonNode data) {
+            return GetPropertyFormWithSignatureByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}/signature";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getKeyId() != null) {
+                queryStrings.add("keyId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getKeyId()))));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getPropertyFormWithSignatureByUserIdAsync(
+            GetPropertyFormWithSignatureByUserIdRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormWithSignatureByUserIdResult>> callback
+    ) {
+        GetPropertyFormWithSignatureByUserIdTask task = new GetPropertyFormWithSignatureByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetPropertyFormWithSignatureByUserIdResult getPropertyFormWithSignatureByUserId(
+            GetPropertyFormWithSignatureByUserIdRequest request
+    ) {
+        final AsyncResult<GetPropertyFormWithSignatureByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPropertyFormWithSignatureByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SetPropertyFormByUserIdTask extends Gs2RestSessionTask<SetPropertyFormByUserIdResult> {
+        private SetPropertyFormByUserIdRequest request;
+
+        public SetPropertyFormByUserIdTask(
+            SetPropertyFormByUserIdRequest request,
+            AsyncAction<AsyncResult<SetPropertyFormByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetPropertyFormByUserIdResult parse(JsonNode data) {
+            return SetPropertyFormByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("slots", request.getSlots() == null ? new ArrayList<Slot>() :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setPropertyFormByUserIdAsync(
+            SetPropertyFormByUserIdRequest request,
+            AsyncAction<AsyncResult<SetPropertyFormByUserIdResult>> callback
+    ) {
+        SetPropertyFormByUserIdTask task = new SetPropertyFormByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetPropertyFormByUserIdResult setPropertyFormByUserId(
+            SetPropertyFormByUserIdRequest request
+    ) {
+        final AsyncResult<SetPropertyFormByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setPropertyFormByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SetPropertyFormWithSignatureTask extends Gs2RestSessionTask<SetPropertyFormWithSignatureResult> {
+        private SetPropertyFormWithSignatureRequest request;
+
+        public SetPropertyFormWithSignatureTask(
+            SetPropertyFormWithSignatureRequest request,
+            AsyncAction<AsyncResult<SetPropertyFormWithSignatureResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetPropertyFormWithSignatureResult parse(JsonNode data) {
+            return SetPropertyFormWithSignatureResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/property/{formModelName}/form/{propertyId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("slots", request.getSlots() == null ? new ArrayList<SlotWithSignature>() :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setPropertyFormWithSignatureAsync(
+            SetPropertyFormWithSignatureRequest request,
+            AsyncAction<AsyncResult<SetPropertyFormWithSignatureResult>> callback
+    ) {
+        SetPropertyFormWithSignatureTask task = new SetPropertyFormWithSignatureTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetPropertyFormWithSignatureResult setPropertyFormWithSignature(
+            SetPropertyFormWithSignatureRequest request
+    ) {
+        final AsyncResult<SetPropertyFormWithSignatureResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setPropertyFormWithSignatureAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AcquireActionsToPropertyFormPropertiesTask extends Gs2RestSessionTask<AcquireActionsToPropertyFormPropertiesResult> {
+        private AcquireActionsToPropertyFormPropertiesRequest request;
+
+        public AcquireActionsToPropertyFormPropertiesTask(
+            AcquireActionsToPropertyFormPropertiesRequest request,
+            AsyncAction<AsyncResult<AcquireActionsToPropertyFormPropertiesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AcquireActionsToPropertyFormPropertiesResult parse(JsonNode data) {
+            return AcquireActionsToPropertyFormPropertiesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}/stamp/delegate";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("acquireAction", request.getAcquireAction() != null ? request.getAcquireAction().toJson() : null);
+                    put("config", request.getConfig() == null ? new ArrayList<AcquireActionConfig>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void acquireActionsToPropertyFormPropertiesAsync(
+            AcquireActionsToPropertyFormPropertiesRequest request,
+            AsyncAction<AsyncResult<AcquireActionsToPropertyFormPropertiesResult>> callback
+    ) {
+        AcquireActionsToPropertyFormPropertiesTask task = new AcquireActionsToPropertyFormPropertiesTask(request, callback);
+        session.execute(task);
+    }
+
+    public AcquireActionsToPropertyFormPropertiesResult acquireActionsToPropertyFormProperties(
+            AcquireActionsToPropertyFormPropertiesRequest request
+    ) {
+        final AsyncResult<AcquireActionsToPropertyFormPropertiesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        acquireActionsToPropertyFormPropertiesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeletePropertyFormTask extends Gs2RestSessionTask<DeletePropertyFormResult> {
+        private DeletePropertyFormRequest request;
+
+        public DeletePropertyFormTask(
+            DeletePropertyFormRequest request,
+            AsyncAction<AsyncResult<DeletePropertyFormResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeletePropertyFormResult parse(JsonNode data) {
+            return DeletePropertyFormResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/property/{formModelName}/form/{propertyId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deletePropertyFormAsync(
+            DeletePropertyFormRequest request,
+            AsyncAction<AsyncResult<DeletePropertyFormResult>> callback
+    ) {
+        DeletePropertyFormTask task = new DeletePropertyFormTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeletePropertyFormResult deletePropertyForm(
+            DeletePropertyFormRequest request
+    ) {
+        final AsyncResult<DeletePropertyFormResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deletePropertyFormAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeletePropertyFormByUserIdTask extends Gs2RestSessionTask<DeletePropertyFormByUserIdResult> {
+        private DeletePropertyFormByUserIdRequest request;
+
+        public DeletePropertyFormByUserIdTask(
+            DeletePropertyFormByUserIdRequest request,
+            AsyncAction<AsyncResult<DeletePropertyFormByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeletePropertyFormByUserIdResult parse(JsonNode data) {
+            return DeletePropertyFormByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deletePropertyFormByUserIdAsync(
+            DeletePropertyFormByUserIdRequest request,
+            AsyncAction<AsyncResult<DeletePropertyFormByUserIdResult>> callback
+    ) {
+        DeletePropertyFormByUserIdTask task = new DeletePropertyFormByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeletePropertyFormByUserIdResult deletePropertyFormByUserId(
+            DeletePropertyFormByUserIdRequest request
+    ) {
+        final AsyncResult<DeletePropertyFormByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deletePropertyFormByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AcquireActionToPropertyFormPropertiesByStampSheetTask extends Gs2RestSessionTask<AcquireActionToPropertyFormPropertiesByStampSheetResult> {
+        private AcquireActionToPropertyFormPropertiesByStampSheetRequest request;
+
+        public AcquireActionToPropertyFormPropertiesByStampSheetTask(
+            AcquireActionToPropertyFormPropertiesByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireActionToPropertyFormPropertiesByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AcquireActionToPropertyFormPropertiesByStampSheetResult parse(JsonNode data) {
+            return AcquireActionToPropertyFormPropertiesByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/property/form/acquire";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void acquireActionToPropertyFormPropertiesByStampSheetAsync(
+            AcquireActionToPropertyFormPropertiesByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireActionToPropertyFormPropertiesByStampSheetResult>> callback
+    ) {
+        AcquireActionToPropertyFormPropertiesByStampSheetTask task = new AcquireActionToPropertyFormPropertiesByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public AcquireActionToPropertyFormPropertiesByStampSheetResult acquireActionToPropertyFormPropertiesByStampSheet(
+            AcquireActionToPropertyFormPropertiesByStampSheetRequest request
+    ) {
+        final AsyncResult<AcquireActionToPropertyFormPropertiesByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        acquireActionToPropertyFormPropertiesByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
