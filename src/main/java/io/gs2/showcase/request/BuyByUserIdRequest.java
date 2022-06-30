@@ -33,6 +33,7 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
     private String showcaseName;
     private String displayItemId;
     private String userId;
+    private Integer quantity;
     private List<Config> config;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -74,6 +75,16 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
 		this.userId = userId;
 		return this;
 	}
+	public Integer getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+	public BuyByUserIdRequest withQuantity(Integer quantity) {
+		this.quantity = quantity;
+		return this;
+	}
 	public List<Config> getConfig() {
 		return config;
 	}
@@ -94,6 +105,7 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
             .withShowcaseName(data.get("showcaseName") == null || data.get("showcaseName").isNull() ? null : data.get("showcaseName").asText())
             .withDisplayItemId(data.get("displayItemId") == null || data.get("displayItemId").isNull() ? null : data.get("displayItemId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withQuantity(data.get("quantity") == null || data.get("quantity").isNull() ? null : data.get("quantity").intValue())
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -109,6 +121,7 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
                 put("showcaseName", getShowcaseName());
                 put("displayItemId", getDisplayItemId());
                 put("userId", getUserId());
+                put("quantity", getQuantity());
                 put("config", getConfig() == null ? new ArrayList<Config>() :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef

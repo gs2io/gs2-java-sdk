@@ -33,6 +33,7 @@ public class BuyRequest extends Gs2BasicRequest<BuyRequest> {
     private String showcaseName;
     private String displayItemId;
     private String accessToken;
+    private Integer quantity;
     private List<Config> config;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -74,6 +75,16 @@ public class BuyRequest extends Gs2BasicRequest<BuyRequest> {
 		this.accessToken = accessToken;
 		return this;
 	}
+	public Integer getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+	public BuyRequest withQuantity(Integer quantity) {
+		this.quantity = quantity;
+		return this;
+	}
 	public List<Config> getConfig() {
 		return config;
 	}
@@ -94,6 +105,7 @@ public class BuyRequest extends Gs2BasicRequest<BuyRequest> {
             .withShowcaseName(data.get("showcaseName") == null || data.get("showcaseName").isNull() ? null : data.get("showcaseName").asText())
             .withDisplayItemId(data.get("displayItemId") == null || data.get("displayItemId").isNull() ? null : data.get("displayItemId").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withQuantity(data.get("quantity") == null || data.get("quantity").isNull() ? null : data.get("quantity").intValue())
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -109,6 +121,7 @@ public class BuyRequest extends Gs2BasicRequest<BuyRequest> {
                 put("showcaseName", getShowcaseName());
                 put("displayItemId", getDisplayItemId());
                 put("accessToken", getAccessToken());
+                put("quantity", getQuantity());
                 put("config", getConfig() == null ? new ArrayList<Config>() :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef

@@ -2509,6 +2509,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("quantity", request.getQuantity());
                     put("config", request.getConfig() == null ? new ArrayList<Config>() :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -2601,6 +2602,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("quantity", request.getQuantity());
                     put("config", request.getConfig() == null ? new ArrayList<Config>() :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
