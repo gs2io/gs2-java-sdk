@@ -36,6 +36,7 @@ public class QuestModelMaster implements IModel, Serializable, Comparable<QuestM
 	private String metadata;
 	private List<Contents> contents;
 	private String challengePeriodEventId;
+	private List<AcquireAction> firstCompleteAcquireActions;
 	private List<ConsumeAction> consumeActions;
 	private List<AcquireAction> failedAcquireActions;
 	private List<String> premiseQuestNames;
@@ -111,6 +112,16 @@ public class QuestModelMaster implements IModel, Serializable, Comparable<QuestM
 		this.challengePeriodEventId = challengePeriodEventId;
 		return this;
 	}
+	public List<AcquireAction> getFirstCompleteAcquireActions() {
+		return firstCompleteAcquireActions;
+	}
+	public void setFirstCompleteAcquireActions(List<AcquireAction> firstCompleteAcquireActions) {
+		this.firstCompleteAcquireActions = firstCompleteAcquireActions;
+	}
+	public QuestModelMaster withFirstCompleteAcquireActions(List<AcquireAction> firstCompleteAcquireActions) {
+		this.firstCompleteAcquireActions = firstCompleteAcquireActions;
+		return this;
+	}
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
@@ -179,6 +190,12 @@ public class QuestModelMaster implements IModel, Serializable, Comparable<QuestM
                 }
             ).collect(Collectors.toList()))
             .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
+            .withFirstCompleteAcquireActions(data.get("firstCompleteAcquireActions") == null || data.get("firstCompleteAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("firstCompleteAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -215,6 +232,12 @@ public class QuestModelMaster implements IModel, Serializable, Comparable<QuestM
                     }
                 ).collect(Collectors.toList()));
                 put("challengePeriodEventId", getChallengePeriodEventId());
+                put("firstCompleteAcquireActions", getFirstCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                    getFirstCompleteAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -254,6 +277,7 @@ public class QuestModelMaster implements IModel, Serializable, Comparable<QuestM
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.contents == null) ? 0 : this.contents.hashCode());
         result = prime * result + ((this.challengePeriodEventId == null) ? 0 : this.challengePeriodEventId.hashCode());
+        result = prime * result + ((this.firstCompleteAcquireActions == null) ? 0 : this.firstCompleteAcquireActions.hashCode());
         result = prime * result + ((this.consumeActions == null) ? 0 : this.consumeActions.hashCode());
         result = prime * result + ((this.failedAcquireActions == null) ? 0 : this.failedAcquireActions.hashCode());
         result = prime * result + ((this.premiseQuestNames == null) ? 0 : this.premiseQuestNames.hashCode());
@@ -304,6 +328,11 @@ public class QuestModelMaster implements IModel, Serializable, Comparable<QuestM
 		if (challengePeriodEventId == null) {
 			return other.challengePeriodEventId == null;
 		} else if (!challengePeriodEventId.equals(other.challengePeriodEventId)) {
+			return false;
+		}
+		if (firstCompleteAcquireActions == null) {
+			return other.firstCompleteAcquireActions == null;
+		} else if (!firstCompleteAcquireActions.equals(other.firstCompleteAcquireActions)) {
 			return false;
 		}
 		if (consumeActions == null) {
