@@ -2878,4 +2878,255 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
 
         return resultAsyncResult[0].getResult();
     }
+
+    class DescribePrizeLimitsTask extends Gs2RestSessionTask<DescribePrizeLimitsResult> {
+        private DescribePrizeLimitsRequest request;
+
+        public DescribePrizeLimitsTask(
+            DescribePrizeLimitsRequest request,
+            AsyncAction<AsyncResult<DescribePrizeLimitsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribePrizeLimitsResult parse(JsonNode data) {
+            return DescribePrizeLimitsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/prizeLimit/{prizeTableName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describePrizeLimitsAsync(
+            DescribePrizeLimitsRequest request,
+            AsyncAction<AsyncResult<DescribePrizeLimitsResult>> callback
+    ) {
+        DescribePrizeLimitsTask task = new DescribePrizeLimitsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribePrizeLimitsResult describePrizeLimits(
+            DescribePrizeLimitsRequest request
+    ) {
+        final AsyncResult<DescribePrizeLimitsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describePrizeLimitsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetPrizeLimitTask extends Gs2RestSessionTask<GetPrizeLimitResult> {
+        private GetPrizeLimitRequest request;
+
+        public GetPrizeLimitTask(
+            GetPrizeLimitRequest request,
+            AsyncAction<AsyncResult<GetPrizeLimitResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetPrizeLimitResult parse(JsonNode data) {
+            return GetPrizeLimitResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/prizeLimit/{prizeTableName}/{prizeId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
+            url = url.replace("{prizeId}", this.request.getPrizeId() == null || this.request.getPrizeId().length() == 0 ? "null" : String.valueOf(this.request.getPrizeId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getPrizeLimitAsync(
+            GetPrizeLimitRequest request,
+            AsyncAction<AsyncResult<GetPrizeLimitResult>> callback
+    ) {
+        GetPrizeLimitTask task = new GetPrizeLimitTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetPrizeLimitResult getPrizeLimit(
+            GetPrizeLimitRequest request
+    ) {
+        final AsyncResult<GetPrizeLimitResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPrizeLimitAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ResetPrizeLimitTask extends Gs2RestSessionTask<ResetPrizeLimitResult> {
+        private ResetPrizeLimitRequest request;
+
+        public ResetPrizeLimitTask(
+            ResetPrizeLimitRequest request,
+            AsyncAction<AsyncResult<ResetPrizeLimitResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ResetPrizeLimitResult parse(JsonNode data) {
+            return ResetPrizeLimitResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/prizeLimit/{prizeTableName}/{prizeId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
+            url = url.replace("{prizeId}", this.request.getPrizeId() == null || this.request.getPrizeId().length() == 0 ? "null" : String.valueOf(this.request.getPrizeId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void resetPrizeLimitAsync(
+            ResetPrizeLimitRequest request,
+            AsyncAction<AsyncResult<ResetPrizeLimitResult>> callback
+    ) {
+        ResetPrizeLimitTask task = new ResetPrizeLimitTask(request, callback);
+        session.execute(task);
+    }
+
+    public ResetPrizeLimitResult resetPrizeLimit(
+            ResetPrizeLimitRequest request
+    ) {
+        final AsyncResult<ResetPrizeLimitResult>[] resultAsyncResult = new AsyncResult[]{null};
+        resetPrizeLimitAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
 }

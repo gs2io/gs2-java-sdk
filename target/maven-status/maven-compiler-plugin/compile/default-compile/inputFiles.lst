@@ -335,6 +335,7 @@
 /root/project/java/src/main/java/io/gs2/quest/result/StartResult.java
 /root/project/java/src/main/java/io/gs2/inventory/result/GetNamespaceStatusResult.java
 /root/project/java/src/main/java/io/gs2/stamina/result/RaiseMaxValueByUserIdResult.java
+/root/project/java/src/main/java/io/gs2/lottery/result/ResetPrizeLimitResult.java
 /root/project/java/src/main/java/io/gs2/mission/request/GetCounterModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/money/request/WithdrawRequest.java
 /root/project/java/src/main/java/io/gs2/version/request/DescribeVersionModelMastersRequest.java
@@ -1135,6 +1136,7 @@
 /root/project/java/src/main/java/io/gs2/formation/result/GetPropertyFormResult.java
 /root/project/java/src/main/java/io/gs2/inventory/model/ResponseCache.java
 /root/project/java/src/main/java/io/gs2/chat/model/LogSetting.java
+/root/project/java/src/main/java/io/gs2/lottery/request/ResetPrizeLimitRequest.java
 /root/project/java/src/main/java/io/gs2/formation/request/DescribeMoldModelsRequest.java
 /root/project/java/src/main/java/io/gs2/exchange/Gs2ExchangeRestClient.java
 /root/project/java/src/main/java/io/gs2/key/result/UpdateKeyResult.java
@@ -1930,6 +1932,7 @@
 /root/project/java/src/main/java/io/gs2/enhance/request/GetNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/DoMatchmakingByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/result/UpdateInventoryModelMasterResult.java
+/root/project/java/src/main/java/io/gs2/lottery/request/DescribePrizeLimitsRequest.java
 /root/project/java/src/main/java/io/gs2/exchange/request/CreateRateModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/log/request/CountIssueStampSheetLogRequest.java
 /root/project/java/src/main/java/io/gs2/distributor/request/GetDistributorModelMasterRequest.java
@@ -2311,6 +2314,7 @@
 /root/project/java/src/main/java/io/gs2/datastore/model/ResponseCache.java
 /root/project/java/src/main/java/io/gs2/limit/result/CreateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/DoMatchmakingRequest.java
+/root/project/java/src/main/java/io/gs2/lottery/result/DescribePrizeLimitsResult.java
 /root/project/java/src/main/java/io/gs2/inbox/request/GetMessageByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/inbox/request/UpdateCurrentMessageMasterFromGitHubRequest.java
 /root/project/java/src/main/java/io/gs2/showcase/request/GetSalesItemMasterRequest.java
@@ -2332,6 +2336,7 @@
 /root/project/java/src/main/java/io/gs2/inbox/result/ReceiveGlobalMessageResult.java
 /root/project/java/src/main/java/io/gs2/friend/result/GetSendRequestByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/inventory/result/VerifyReferenceOfByUserIdResult.java
+/root/project/java/src/main/java/io/gs2/lottery/model/PrizeLimit.java
 /root/project/java/src/main/java/io/gs2/stamina/model/ScriptSetting.java
 /root/project/java/src/main/java/io/gs2/jobQueue/request/GetDeadLetterJobByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/chat/result/UpdateRoomResult.java
@@ -2357,6 +2362,7 @@
 /root/project/java/src/main/java/io/gs2/schedule/result/UpdateEventMasterResult.java
 /root/project/java/src/main/java/io/gs2/mission/result/DescribeMissionGroupModelMastersResult.java
 /root/project/java/src/main/java/io/gs2/mission/request/GetCompleteByUserIdRequest.java
+/root/project/java/src/main/java/io/gs2/lottery/request/GetPrizeLimitRequest.java
 /root/project/java/src/main/java/io/gs2/money/request/DepositByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/project/request/SignInRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/result/EndResult.java
@@ -2432,6 +2438,7 @@
 /root/project/java/src/main/java/io/gs2/exchange/request/DescribeAwaitsRequest.java
 /root/project/java/src/main/java/io/gs2/datastore/result/CreateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/identifier/result/GetSecurityPolicyResult.java
+/root/project/java/src/main/java/io/gs2/lottery/result/GetPrizeLimitResult.java
 /root/project/java/src/main/java/io/gs2/quest/result/GetCompletedQuestListResult.java
 /root/project/java/src/main/java/io/gs2/distributor/request/GetDistributorModelRequest.java
 /root/project/java/src/main/java/io/gs2/lottery/model/Lottery.java

@@ -32,6 +32,8 @@ public class Prize implements IModel, Serializable {
 	private String prizeId;
 	private String type;
 	private List<AcquireAction> acquireActions;
+	private Integer drawnLimit;
+	private String limitFailOverPrizeId;
 	private String prizeTableName;
 	private Integer weight;
 	public String getPrizeId() {
@@ -62,6 +64,26 @@ public class Prize implements IModel, Serializable {
 	}
 	public Prize withAcquireActions(List<AcquireAction> acquireActions) {
 		this.acquireActions = acquireActions;
+		return this;
+	}
+	public Integer getDrawnLimit() {
+		return drawnLimit;
+	}
+	public void setDrawnLimit(Integer drawnLimit) {
+		this.drawnLimit = drawnLimit;
+	}
+	public Prize withDrawnLimit(Integer drawnLimit) {
+		this.drawnLimit = drawnLimit;
+		return this;
+	}
+	public String getLimitFailOverPrizeId() {
+		return limitFailOverPrizeId;
+	}
+	public void setLimitFailOverPrizeId(String limitFailOverPrizeId) {
+		this.limitFailOverPrizeId = limitFailOverPrizeId;
+	}
+	public Prize withLimitFailOverPrizeId(String limitFailOverPrizeId) {
+		this.limitFailOverPrizeId = limitFailOverPrizeId;
 		return this;
 	}
 	public String getPrizeTableName() {
@@ -98,6 +120,8 @@ public class Prize implements IModel, Serializable {
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withDrawnLimit(data.get("drawnLimit") == null || data.get("drawnLimit").isNull() ? null : data.get("drawnLimit").intValue())
+            .withLimitFailOverPrizeId(data.get("limitFailOverPrizeId") == null || data.get("limitFailOverPrizeId").isNull() ? null : data.get("limitFailOverPrizeId").asText())
             .withPrizeTableName(data.get("prizeTableName") == null || data.get("prizeTableName").isNull() ? null : data.get("prizeTableName").asText())
             .withWeight(data.get("weight") == null || data.get("weight").isNull() ? null : data.get("weight").intValue());
     }
@@ -113,6 +137,8 @@ public class Prize implements IModel, Serializable {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("drawnLimit", getDrawnLimit());
+                put("limitFailOverPrizeId", getLimitFailOverPrizeId());
                 put("prizeTableName", getPrizeTableName());
                 put("weight", getWeight());
             }}
@@ -126,6 +152,8 @@ public class Prize implements IModel, Serializable {
         result = prime * result + ((this.prizeId == null) ? 0 : this.prizeId.hashCode());
         result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
+        result = prime * result + ((this.drawnLimit == null) ? 0 : this.drawnLimit.hashCode());
+        result = prime * result + ((this.limitFailOverPrizeId == null) ? 0 : this.limitFailOverPrizeId.hashCode());
         result = prime * result + ((this.prizeTableName == null) ? 0 : this.prizeTableName.hashCode());
         result = prime * result + ((this.weight == null) ? 0 : this.weight.hashCode());
 		return result;
@@ -153,6 +181,16 @@ public class Prize implements IModel, Serializable {
 		if (acquireActions == null) {
 			return other.acquireActions == null;
 		} else if (!acquireActions.equals(other.acquireActions)) {
+			return false;
+		}
+		if (drawnLimit == null) {
+			return other.drawnLimit == null;
+		} else if (!drawnLimit.equals(other.drawnLimit)) {
+			return false;
+		}
+		if (limitFailOverPrizeId == null) {
+			return other.limitFailOverPrizeId == null;
+		} else if (!limitFailOverPrizeId.equals(other.limitFailOverPrizeId)) {
 			return false;
 		}
 		if (prizeTableName == null) {
