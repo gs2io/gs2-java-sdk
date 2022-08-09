@@ -33,54 +33,42 @@ public class AccessLogCount implements IModel, Serializable {
 	private String method;
 	private String userId;
 	private Long count;
-
 	public String getService() {
 		return service;
 	}
-
 	public void setService(String service) {
 		this.service = service;
 	}
-
 	public AccessLogCount withService(String service) {
 		this.service = service;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public AccessLogCount withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AccessLogCount withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getCount() {
 		return count;
 	}
-
 	public void setCount(Long count) {
 		this.count = count;
 	}
-
 	public AccessLogCount withCount(Long count) {
 		this.count = count;
 		return this;

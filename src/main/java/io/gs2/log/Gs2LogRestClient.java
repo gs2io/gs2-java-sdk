@@ -1472,4 +1472,332 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
 
         return resultAsyncResult[0].getResult();
     }
+
+    class DescribeInsightsTask extends Gs2RestSessionTask<DescribeInsightsResult> {
+        private DescribeInsightsRequest request;
+
+        public DescribeInsightsTask(
+            DescribeInsightsRequest request,
+            AsyncAction<AsyncResult<DescribeInsightsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeInsightsResult parse(JsonNode data) {
+            return DescribeInsightsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/insight";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeInsightsAsync(
+            DescribeInsightsRequest request,
+            AsyncAction<AsyncResult<DescribeInsightsResult>> callback
+    ) {
+        DescribeInsightsTask task = new DescribeInsightsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeInsightsResult describeInsights(
+            DescribeInsightsRequest request
+    ) {
+        final AsyncResult<DescribeInsightsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeInsightsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateInsightTask extends Gs2RestSessionTask<CreateInsightResult> {
+        private CreateInsightRequest request;
+
+        public CreateInsightTask(
+            CreateInsightRequest request,
+            AsyncAction<AsyncResult<CreateInsightResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateInsightResult parse(JsonNode data) {
+            return CreateInsightResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/insight/{insightName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createInsightAsync(
+            CreateInsightRequest request,
+            AsyncAction<AsyncResult<CreateInsightResult>> callback
+    ) {
+        CreateInsightTask task = new CreateInsightTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateInsightResult createInsight(
+            CreateInsightRequest request
+    ) {
+        final AsyncResult<CreateInsightResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createInsightAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetInsightTask extends Gs2RestSessionTask<GetInsightResult> {
+        private GetInsightRequest request;
+
+        public GetInsightTask(
+            GetInsightRequest request,
+            AsyncAction<AsyncResult<GetInsightResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetInsightResult parse(JsonNode data) {
+            return GetInsightResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/insight/{insightName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{insightName}", this.request.getInsightName() == null || this.request.getInsightName().length() == 0 ? "null" : String.valueOf(this.request.getInsightName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getInsightAsync(
+            GetInsightRequest request,
+            AsyncAction<AsyncResult<GetInsightResult>> callback
+    ) {
+        GetInsightTask task = new GetInsightTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetInsightResult getInsight(
+            GetInsightRequest request
+    ) {
+        final AsyncResult<GetInsightResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getInsightAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteInsightTask extends Gs2RestSessionTask<DeleteInsightResult> {
+        private DeleteInsightRequest request;
+
+        public DeleteInsightTask(
+            DeleteInsightRequest request,
+            AsyncAction<AsyncResult<DeleteInsightResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteInsightResult parse(JsonNode data) {
+            return DeleteInsightResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/insight/{insightName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{insightName}", this.request.getInsightName() == null || this.request.getInsightName().length() == 0 ? "null" : String.valueOf(this.request.getInsightName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteInsightAsync(
+            DeleteInsightRequest request,
+            AsyncAction<AsyncResult<DeleteInsightResult>> callback
+    ) {
+        DeleteInsightTask task = new DeleteInsightTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteInsightResult deleteInsight(
+            DeleteInsightRequest request
+    ) {
+        final AsyncResult<DeleteInsightResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteInsightAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
 }

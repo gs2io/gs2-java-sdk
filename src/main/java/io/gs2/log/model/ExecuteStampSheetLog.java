@@ -36,93 +36,72 @@ public class ExecuteStampSheetLog implements IModel, Serializable {
 	private String userId;
 	private String action;
 	private String args;
-
 	public Long getTimestamp() {
 		return timestamp;
 	}
-
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
-
 	public ExecuteStampSheetLog withTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public ExecuteStampSheetLog withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-
 	public String getService() {
 		return service;
 	}
-
 	public void setService(String service) {
 		this.service = service;
 	}
-
 	public ExecuteStampSheetLog withService(String service) {
 		this.service = service;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public ExecuteStampSheetLog withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public ExecuteStampSheetLog withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getAction() {
 		return action;
 	}
-
 	public void setAction(String action) {
 		this.action = action;
 	}
-
 	public ExecuteStampSheetLog withAction(String action) {
 		this.action = action;
 		return this;
 	}
-
 	public String getArgs() {
 		return args;
 	}
-
 	public void setArgs(String args) {
 		this.args = args;
 	}
-
 	public ExecuteStampSheetLog withArgs(String args) {
 		this.args = args;
 		return this;

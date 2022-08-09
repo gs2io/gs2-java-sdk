@@ -38,132 +38,102 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String awsAccessKeyId;
     private String awsSecretAccessKey;
     private String firehoseStreamName;
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public CreateNamespaceRequest withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	public CreateNamespaceRequest withType(String type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getGcpCredentialJson() {
 		return gcpCredentialJson;
 	}
-
 	public void setGcpCredentialJson(String gcpCredentialJson) {
 		this.gcpCredentialJson = gcpCredentialJson;
 	}
-
 	public CreateNamespaceRequest withGcpCredentialJson(String gcpCredentialJson) {
 		this.gcpCredentialJson = gcpCredentialJson;
 		return this;
 	}
-
 	public String getBigQueryDatasetName() {
 		return bigQueryDatasetName;
 	}
-
 	public void setBigQueryDatasetName(String bigQueryDatasetName) {
 		this.bigQueryDatasetName = bigQueryDatasetName;
 	}
-
 	public CreateNamespaceRequest withBigQueryDatasetName(String bigQueryDatasetName) {
 		this.bigQueryDatasetName = bigQueryDatasetName;
 		return this;
 	}
-
 	public Integer getLogExpireDays() {
 		return logExpireDays;
 	}
-
 	public void setLogExpireDays(Integer logExpireDays) {
 		this.logExpireDays = logExpireDays;
 	}
-
 	public CreateNamespaceRequest withLogExpireDays(Integer logExpireDays) {
 		this.logExpireDays = logExpireDays;
 		return this;
 	}
-
 	public String getAwsRegion() {
 		return awsRegion;
 	}
-
 	public void setAwsRegion(String awsRegion) {
 		this.awsRegion = awsRegion;
 	}
-
 	public CreateNamespaceRequest withAwsRegion(String awsRegion) {
 		this.awsRegion = awsRegion;
 		return this;
 	}
-
 	public String getAwsAccessKeyId() {
 		return awsAccessKeyId;
 	}
-
 	public void setAwsAccessKeyId(String awsAccessKeyId) {
 		this.awsAccessKeyId = awsAccessKeyId;
 	}
-
 	public CreateNamespaceRequest withAwsAccessKeyId(String awsAccessKeyId) {
 		this.awsAccessKeyId = awsAccessKeyId;
 		return this;
 	}
-
 	public String getAwsSecretAccessKey() {
 		return awsSecretAccessKey;
 	}
-
 	public void setAwsSecretAccessKey(String awsSecretAccessKey) {
 		this.awsSecretAccessKey = awsSecretAccessKey;
 	}
-
 	public CreateNamespaceRequest withAwsSecretAccessKey(String awsSecretAccessKey) {
 		this.awsSecretAccessKey = awsSecretAccessKey;
 		return this;
 	}
-
 	public String getFirehoseStreamName() {
 		return firehoseStreamName;
 	}
-
 	public void setFirehoseStreamName(String firehoseStreamName) {
 		this.firehoseStreamName = firehoseStreamName;
 	}
-
 	public CreateNamespaceRequest withFirehoseStreamName(String firehoseStreamName) {
 		this.firehoseStreamName = firehoseStreamName;
 		return this;

@@ -38,132 +38,102 @@ public class CountIssueStampSheetLogRequest extends Gs2BasicRequest<CountIssueSt
     private Boolean longTerm;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CountIssueStampSheetLogRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public Boolean getService() {
 		return service;
 	}
-
 	public void setService(Boolean service) {
 		this.service = service;
 	}
-
 	public CountIssueStampSheetLogRequest withService(Boolean service) {
 		this.service = service;
 		return this;
 	}
-
 	public Boolean getMethod() {
 		return method;
 	}
-
 	public void setMethod(Boolean method) {
 		this.method = method;
 	}
-
 	public CountIssueStampSheetLogRequest withMethod(Boolean method) {
 		this.method = method;
 		return this;
 	}
-
 	public Boolean getUserId() {
 		return userId;
 	}
-
 	public void setUserId(Boolean userId) {
 		this.userId = userId;
 	}
-
 	public CountIssueStampSheetLogRequest withUserId(Boolean userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Boolean getAction() {
 		return action;
 	}
-
 	public void setAction(Boolean action) {
 		this.action = action;
 	}
-
 	public CountIssueStampSheetLogRequest withAction(Boolean action) {
 		this.action = action;
 		return this;
 	}
-
 	public Long getBegin() {
 		return begin;
 	}
-
 	public void setBegin(Long begin) {
 		this.begin = begin;
 	}
-
 	public CountIssueStampSheetLogRequest withBegin(Long begin) {
 		this.begin = begin;
 		return this;
 	}
-
 	public Long getEnd() {
 		return end;
 	}
-
 	public void setEnd(Long end) {
 		this.end = end;
 	}
-
 	public CountIssueStampSheetLogRequest withEnd(Long end) {
 		this.end = end;
 		return this;
 	}
-
 	public Boolean getLongTerm() {
 		return longTerm;
 	}
-
 	public void setLongTerm(Boolean longTerm) {
 		this.longTerm = longTerm;
 	}
-
 	public CountIssueStampSheetLogRequest withLongTerm(Boolean longTerm) {
 		this.longTerm = longTerm;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public CountIssueStampSheetLogRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public CountIssueStampSheetLogRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

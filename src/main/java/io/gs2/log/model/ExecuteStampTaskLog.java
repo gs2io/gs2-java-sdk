@@ -36,93 +36,72 @@ public class ExecuteStampTaskLog implements IModel, Serializable {
 	private String userId;
 	private String action;
 	private String args;
-
 	public Long getTimestamp() {
 		return timestamp;
 	}
-
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
-
 	public ExecuteStampTaskLog withTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
-
 	public String getTaskId() {
 		return taskId;
 	}
-
 	public void setTaskId(String taskId) {
 		this.taskId = taskId;
 	}
-
 	public ExecuteStampTaskLog withTaskId(String taskId) {
 		this.taskId = taskId;
 		return this;
 	}
-
 	public String getService() {
 		return service;
 	}
-
 	public void setService(String service) {
 		this.service = service;
 	}
-
 	public ExecuteStampTaskLog withService(String service) {
 		this.service = service;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public ExecuteStampTaskLog withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public ExecuteStampTaskLog withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getAction() {
 		return action;
 	}
-
 	public void setAction(String action) {
 		this.action = action;
 	}
-
 	public ExecuteStampTaskLog withAction(String action) {
 		this.action = action;
 		return this;
 	}
-
 	public String getArgs() {
 		return args;
 	}
-
 	public void setArgs(String args) {
 		this.args = args;
 	}
-
 	public ExecuteStampTaskLog withArgs(String args) {
 		this.args = args;
 		return this;

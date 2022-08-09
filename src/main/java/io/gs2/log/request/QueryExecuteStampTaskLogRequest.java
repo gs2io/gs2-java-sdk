@@ -38,132 +38,102 @@ public class QueryExecuteStampTaskLogRequest extends Gs2BasicRequest<QueryExecut
     private Boolean longTerm;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public QueryExecuteStampTaskLogRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getService() {
 		return service;
 	}
-
 	public void setService(String service) {
 		this.service = service;
 	}
-
 	public QueryExecuteStampTaskLogRequest withService(String service) {
 		this.service = service;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public QueryExecuteStampTaskLogRequest withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public QueryExecuteStampTaskLogRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getAction() {
 		return action;
 	}
-
 	public void setAction(String action) {
 		this.action = action;
 	}
-
 	public QueryExecuteStampTaskLogRequest withAction(String action) {
 		this.action = action;
 		return this;
 	}
-
 	public Long getBegin() {
 		return begin;
 	}
-
 	public void setBegin(Long begin) {
 		this.begin = begin;
 	}
-
 	public QueryExecuteStampTaskLogRequest withBegin(Long begin) {
 		this.begin = begin;
 		return this;
 	}
-
 	public Long getEnd() {
 		return end;
 	}
-
 	public void setEnd(Long end) {
 		this.end = end;
 	}
-
 	public QueryExecuteStampTaskLogRequest withEnd(Long end) {
 		this.end = end;
 		return this;
 	}
-
 	public Boolean getLongTerm() {
 		return longTerm;
 	}
-
 	public void setLongTerm(Boolean longTerm) {
 		this.longTerm = longTerm;
 	}
-
 	public QueryExecuteStampTaskLogRequest withLongTerm(Boolean longTerm) {
 		this.longTerm = longTerm;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public QueryExecuteStampTaskLogRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public QueryExecuteStampTaskLogRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

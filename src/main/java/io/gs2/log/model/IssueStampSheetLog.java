@@ -37,106 +37,82 @@ public class IssueStampSheetLog implements IModel, Serializable {
 	private String action;
 	private String args;
 	private List<String> tasks;
-
 	public Long getTimestamp() {
 		return timestamp;
 	}
-
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
-
 	public IssueStampSheetLog withTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
-
 	public String getTransactionId() {
 		return transactionId;
 	}
-
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-
 	public IssueStampSheetLog withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 		return this;
 	}
-
 	public String getService() {
 		return service;
 	}
-
 	public void setService(String service) {
 		this.service = service;
 	}
-
 	public IssueStampSheetLog withService(String service) {
 		this.service = service;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public IssueStampSheetLog withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public IssueStampSheetLog withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getAction() {
 		return action;
 	}
-
 	public void setAction(String action) {
 		this.action = action;
 	}
-
 	public IssueStampSheetLog withAction(String action) {
 		this.action = action;
 		return this;
 	}
-
 	public String getArgs() {
 		return args;
 	}
-
 	public void setArgs(String args) {
 		this.args = args;
 	}
-
 	public IssueStampSheetLog withArgs(String args) {
 		this.args = args;
 		return this;
 	}
-
 	public List<String> getTasks() {
 		return tasks;
 	}
-
 	public void setTasks(List<String> tasks) {
 		this.tasks = tasks;
 	}
-
 	public IssueStampSheetLog withTasks(List<String> tasks) {
 		this.tasks = tasks;
 		return this;

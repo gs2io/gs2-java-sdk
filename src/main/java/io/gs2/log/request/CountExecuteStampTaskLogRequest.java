@@ -38,132 +38,102 @@ public class CountExecuteStampTaskLogRequest extends Gs2BasicRequest<CountExecut
     private Boolean longTerm;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public CountExecuteStampTaskLogRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public Boolean getService() {
 		return service;
 	}
-
 	public void setService(Boolean service) {
 		this.service = service;
 	}
-
 	public CountExecuteStampTaskLogRequest withService(Boolean service) {
 		this.service = service;
 		return this;
 	}
-
 	public Boolean getMethod() {
 		return method;
 	}
-
 	public void setMethod(Boolean method) {
 		this.method = method;
 	}
-
 	public CountExecuteStampTaskLogRequest withMethod(Boolean method) {
 		this.method = method;
 		return this;
 	}
-
 	public Boolean getUserId() {
 		return userId;
 	}
-
 	public void setUserId(Boolean userId) {
 		this.userId = userId;
 	}
-
 	public CountExecuteStampTaskLogRequest withUserId(Boolean userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Boolean getAction() {
 		return action;
 	}
-
 	public void setAction(Boolean action) {
 		this.action = action;
 	}
-
 	public CountExecuteStampTaskLogRequest withAction(Boolean action) {
 		this.action = action;
 		return this;
 	}
-
 	public Long getBegin() {
 		return begin;
 	}
-
 	public void setBegin(Long begin) {
 		this.begin = begin;
 	}
-
 	public CountExecuteStampTaskLogRequest withBegin(Long begin) {
 		this.begin = begin;
 		return this;
 	}
-
 	public Long getEnd() {
 		return end;
 	}
-
 	public void setEnd(Long end) {
 		this.end = end;
 	}
-
 	public CountExecuteStampTaskLogRequest withEnd(Long end) {
 		this.end = end;
 		return this;
 	}
-
 	public Boolean getLongTerm() {
 		return longTerm;
 	}
-
 	public void setLongTerm(Boolean longTerm) {
 		this.longTerm = longTerm;
 	}
-
 	public CountExecuteStampTaskLogRequest withLongTerm(Boolean longTerm) {
 		this.longTerm = longTerm;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public CountExecuteStampTaskLogRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public CountExecuteStampTaskLogRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

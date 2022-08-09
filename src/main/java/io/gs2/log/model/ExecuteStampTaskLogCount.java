@@ -34,67 +34,52 @@ public class ExecuteStampTaskLogCount implements IModel, Serializable {
 	private String userId;
 	private String action;
 	private Long count;
-
 	public String getService() {
 		return service;
 	}
-
 	public void setService(String service) {
 		this.service = service;
 	}
-
 	public ExecuteStampTaskLogCount withService(String service) {
 		this.service = service;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public ExecuteStampTaskLogCount withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public ExecuteStampTaskLogCount withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getAction() {
 		return action;
 	}
-
 	public void setAction(String action) {
 		this.action = action;
 	}
-
 	public ExecuteStampTaskLogCount withAction(String action) {
 		this.action = action;
 		return this;
 	}
-
 	public Long getCount() {
 		return count;
 	}
-
 	public void setCount(Long count) {
 		this.count = count;
 	}
-
 	public ExecuteStampTaskLogCount withCount(Long count) {
 		this.count = count;
 		return this;

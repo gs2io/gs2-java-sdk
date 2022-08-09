@@ -37,119 +37,92 @@ public class QueryAccessLogRequest extends Gs2BasicRequest<QueryAccessLogRequest
     private Boolean longTerm;
     private String pageToken;
     private Integer limit;
-
 	public String getNamespaceName() {
 		return namespaceName;
 	}
-
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-
 	public QueryAccessLogRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-
 	public String getService() {
 		return service;
 	}
-
 	public void setService(String service) {
 		this.service = service;
 	}
-
 	public QueryAccessLogRequest withService(String service) {
 		this.service = service;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public QueryAccessLogRequest withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public QueryAccessLogRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public Long getBegin() {
 		return begin;
 	}
-
 	public void setBegin(Long begin) {
 		this.begin = begin;
 	}
-
 	public QueryAccessLogRequest withBegin(Long begin) {
 		this.begin = begin;
 		return this;
 	}
-
 	public Long getEnd() {
 		return end;
 	}
-
 	public void setEnd(Long end) {
 		this.end = end;
 	}
-
 	public QueryAccessLogRequest withEnd(Long end) {
 		this.end = end;
 		return this;
 	}
-
 	public Boolean getLongTerm() {
 		return longTerm;
 	}
-
 	public void setLongTerm(Boolean longTerm) {
 		this.longTerm = longTerm;
 	}
-
 	public QueryAccessLogRequest withLongTerm(Boolean longTerm) {
 		this.longTerm = longTerm;
 		return this;
 	}
-
 	public String getPageToken() {
 		return pageToken;
 	}
-
 	public void setPageToken(String pageToken) {
 		this.pageToken = pageToken;
 	}
-
 	public QueryAccessLogRequest withPageToken(String pageToken) {
 		this.pageToken = pageToken;
 		return this;
 	}
-
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-
 	public QueryAccessLogRequest withLimit(Integer limit) {
 		this.limit = limit;
 		return this;

@@ -43,184 +43,142 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String status;
 	private Long createdAt;
 	private Long updatedAt;
-
 	public String getNamespaceId() {
 		return namespaceId;
 	}
-
 	public void setNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 	}
-
 	public Namespace withNamespaceId(String namespaceId) {
 		this.namespaceId = namespaceId;
 		return this;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public Namespace withName(String name) {
 		this.name = name;
 		return this;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Namespace withDescription(String description) {
 		this.description = description;
 		return this;
 	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	public Namespace withType(String type) {
 		this.type = type;
 		return this;
 	}
-
 	public String getGcpCredentialJson() {
 		return gcpCredentialJson;
 	}
-
 	public void setGcpCredentialJson(String gcpCredentialJson) {
 		this.gcpCredentialJson = gcpCredentialJson;
 	}
-
 	public Namespace withGcpCredentialJson(String gcpCredentialJson) {
 		this.gcpCredentialJson = gcpCredentialJson;
 		return this;
 	}
-
 	public String getBigQueryDatasetName() {
 		return bigQueryDatasetName;
 	}
-
 	public void setBigQueryDatasetName(String bigQueryDatasetName) {
 		this.bigQueryDatasetName = bigQueryDatasetName;
 	}
-
 	public Namespace withBigQueryDatasetName(String bigQueryDatasetName) {
 		this.bigQueryDatasetName = bigQueryDatasetName;
 		return this;
 	}
-
 	public Integer getLogExpireDays() {
 		return logExpireDays;
 	}
-
 	public void setLogExpireDays(Integer logExpireDays) {
 		this.logExpireDays = logExpireDays;
 	}
-
 	public Namespace withLogExpireDays(Integer logExpireDays) {
 		this.logExpireDays = logExpireDays;
 		return this;
 	}
-
 	public String getAwsRegion() {
 		return awsRegion;
 	}
-
 	public void setAwsRegion(String awsRegion) {
 		this.awsRegion = awsRegion;
 	}
-
 	public Namespace withAwsRegion(String awsRegion) {
 		this.awsRegion = awsRegion;
 		return this;
 	}
-
 	public String getAwsAccessKeyId() {
 		return awsAccessKeyId;
 	}
-
 	public void setAwsAccessKeyId(String awsAccessKeyId) {
 		this.awsAccessKeyId = awsAccessKeyId;
 	}
-
 	public Namespace withAwsAccessKeyId(String awsAccessKeyId) {
 		this.awsAccessKeyId = awsAccessKeyId;
 		return this;
 	}
-
 	public String getAwsSecretAccessKey() {
 		return awsSecretAccessKey;
 	}
-
 	public void setAwsSecretAccessKey(String awsSecretAccessKey) {
 		this.awsSecretAccessKey = awsSecretAccessKey;
 	}
-
 	public Namespace withAwsSecretAccessKey(String awsSecretAccessKey) {
 		this.awsSecretAccessKey = awsSecretAccessKey;
 		return this;
 	}
-
 	public String getFirehoseStreamName() {
 		return firehoseStreamName;
 	}
-
 	public void setFirehoseStreamName(String firehoseStreamName) {
 		this.firehoseStreamName = firehoseStreamName;
 	}
-
 	public Namespace withFirehoseStreamName(String firehoseStreamName) {
 		this.firehoseStreamName = firehoseStreamName;
 		return this;
 	}
-
 	public String getStatus() {
 		return status;
 	}
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 	public Namespace withStatus(String status) {
 		this.status = status;
 		return this;
 	}
-
 	public Long getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Namespace withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
-
 	public Long getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Namespace withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;

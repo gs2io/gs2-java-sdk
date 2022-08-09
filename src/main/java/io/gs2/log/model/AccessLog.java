@@ -36,93 +36,72 @@ public class AccessLog implements IModel, Serializable {
 	private String userId;
 	private String request;
 	private String result;
-
 	public Long getTimestamp() {
 		return timestamp;
 	}
-
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
-
 	public AccessLog withTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
-
 	public String getRequestId() {
 		return requestId;
 	}
-
 	public void setRequestId(String requestId) {
 		this.requestId = requestId;
 	}
-
 	public AccessLog withRequestId(String requestId) {
 		this.requestId = requestId;
 		return this;
 	}
-
 	public String getService() {
 		return service;
 	}
-
 	public void setService(String service) {
 		this.service = service;
 	}
-
 	public AccessLog withService(String service) {
 		this.service = service;
 		return this;
 	}
-
 	public String getMethod() {
 		return method;
 	}
-
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
 	public AccessLog withMethod(String method) {
 		this.method = method;
 		return this;
 	}
-
 	public String getUserId() {
 		return userId;
 	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
 	public AccessLog withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-
 	public String getRequest() {
 		return request;
 	}
-
 	public void setRequest(String request) {
 		this.request = request;
 	}
-
 	public AccessLog withRequest(String request) {
 		this.request = request;
 		return this;
 	}
-
 	public String getResult() {
 		return result;
 	}
-
 	public void setResult(String result) {
 		this.result = result;
 	}
-
 	public AccessLog withResult(String result) {
 		this.result = result;
 		return this;

@@ -31,41 +31,32 @@ public class PutLogRequest extends Gs2BasicRequest<PutLogRequest> {
     private String loggingNamespaceId;
     private String logCategory;
     private String payload;
-
 	public String getLoggingNamespaceId() {
 		return loggingNamespaceId;
 	}
-
 	public void setLoggingNamespaceId(String loggingNamespaceId) {
 		this.loggingNamespaceId = loggingNamespaceId;
 	}
-
 	public PutLogRequest withLoggingNamespaceId(String loggingNamespaceId) {
 		this.loggingNamespaceId = loggingNamespaceId;
 		return this;
 	}
-
 	public String getLogCategory() {
 		return logCategory;
 	}
-
 	public void setLogCategory(String logCategory) {
 		this.logCategory = logCategory;
 	}
-
 	public PutLogRequest withLogCategory(String logCategory) {
 		this.logCategory = logCategory;
 		return this;
 	}
-
 	public String getPayload() {
 		return payload;
 	}
-
 	public void setPayload(String payload) {
 		this.payload = payload;
 	}
-
 	public PutLogRequest withPayload(String payload) {
 		this.payload = payload;
 		return this;

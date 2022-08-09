@@ -42,6 +42,7 @@
 /root/project/java/src/main/java/io/gs2/ranking/model/ResponseCache.java
 /root/project/java/src/main/java/io/gs2/inbox/request/OpenMessageRequest.java
 /root/project/java/src/main/java/io/gs2/friend/result/DeleteNamespaceResult.java
+/root/project/java/src/main/java/io/gs2/log/result/GetInsightResult.java
 /root/project/java/src/main/java/io/gs2/lottery/model/AcquireAction.java
 /root/project/java/src/main/java/io/gs2/inbox/result/GetCurrentMessageMasterResult.java
 /root/project/java/src/main/java/io/gs2/experience/request/GetStatusWithSignatureByUserIdRequest.java
@@ -290,6 +291,7 @@
 /root/project/java/src/main/java/io/gs2/stamina/result/DeleteRecoverValueTableMasterResult.java
 /root/project/java/src/main/java/io/gs2/stamina/result/UpdateRecoverIntervalTableMasterResult.java
 /root/project/java/src/main/java/io/gs2/identifier/result/DescribeSecurityPoliciesResult.java
+/root/project/java/src/main/java/io/gs2/log/request/DeleteInsightRequest.java
 /root/project/java/src/main/java/io/gs2/version/request/DeleteAcceptVersionRequest.java
 /root/project/java/src/main/java/io/gs2/news/model/LogSetting.java
 /root/project/java/src/main/java/io/gs2/stamina/result/SetRecoverValueByStampSheetResult.java
@@ -321,6 +323,7 @@
 /root/project/java/src/main/java/io/gs2/enhance/model/TransactionSetting.java
 /root/project/java/src/main/java/io/gs2/mission/result/DeleteNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/quest/result/DescribeQuestGroupModelMastersResult.java
+/root/project/java/src/main/java/io/gs2/log/model/Insight.java
 /root/project/java/src/main/java/io/gs2/exchange/result/UpdateCurrentRateMasterFromGitHubResult.java
 /root/project/java/src/main/java/io/gs2/inbox/request/DescribeMessagesRequest.java
 /root/project/java/src/main/java/io/gs2/ranking/request/SubscribeRequest.java
@@ -652,6 +655,7 @@
 /root/project/java/src/main/java/io/gs2/friend/model/ReceiveFriendRequest.java
 /root/project/java/src/main/java/io/gs2/limit/result/DescribeLimitModelMastersResult.java
 /root/project/java/src/main/java/io/gs2/stamina/request/GetStaminaModelMasterRequest.java
+/root/project/java/src/main/java/io/gs2/log/result/DeleteInsightResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/UpdateRatingModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/request/DeleteItemSetByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/money/request/GetNamespaceRequest.java
@@ -722,6 +726,7 @@
 /root/project/java/src/main/java/io/gs2/formation/model/FormModel.java
 /root/project/java/src/main/java/io/gs2/enhance/request/DescribeNamespacesRequest.java
 /root/project/java/src/main/java/io/gs2/experience/result/SetRankCapByStampSheetResult.java
+/root/project/java/src/main/java/io/gs2/log/request/CreateInsightRequest.java
 /root/project/java/src/main/java/io/gs2/quest/result/CreateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/log/request/DeleteNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/stamina/result/GetRecoverIntervalTableMasterResult.java
@@ -1048,6 +1053,7 @@
 /root/project/java/src/main/java/io/gs2/formation/result/DeleteMoldByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/chat/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/limit/result/UpdateCurrentLimitMasterFromGitHubResult.java
+/root/project/java/src/main/java/io/gs2/log/request/DescribeInsightsRequest.java
 /root/project/java/src/main/java/io/gs2/distributor/model/NotificationSetting.java
 /root/project/java/src/main/java/io/gs2/mission/model/ScopedValue.java
 /root/project/java/src/main/java/io/gs2/showcase/model/GitHubCheckoutSetting.java
@@ -1654,6 +1660,7 @@
 /root/project/java/src/main/java/io/gs2/mission/result/IncreaseByStampSheetResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/CreateGatheringRequest.java
 /root/project/java/src/main/java/io/gs2/ranking/model/SubscribeUser.java
+/root/project/java/src/main/java/io/gs2/log/request/GetInsightRequest.java
 /root/project/java/src/main/java/io/gs2/formation/request/GetNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/formation/result/SetPropertyFormWithSignatureResult.java
 /root/project/java/src/main/java/io/gs2/chat/result/UnsubscribeResult.java
@@ -1854,6 +1861,7 @@
 /root/project/java/src/main/java/io/gs2/inventory/request/GetInventoryModelRequest.java
 /root/project/java/src/main/java/io/gs2/showcase/result/ExportMasterResult.java
 /root/project/java/src/main/java/io/gs2/datastore/request/RestoreDataObjectRequest.java
+/root/project/java/src/main/java/io/gs2/log/result/CreateInsightResult.java
 /root/project/java/src/main/java/io/gs2/key/result/CreateKeyResult.java
 /root/project/java/src/main/java/io/gs2/exchange/request/GetNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/gateway/model/WebSocketSession.java
@@ -2116,6 +2124,7 @@
 /root/project/java/src/main/java/io/gs2/datastore/result/DescribeNamespacesResult.java
 /root/project/java/src/main/java/io/gs2/schedule/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/mission/request/GetMissionTaskModelMasterRequest.java
+/root/project/java/src/main/java/io/gs2/log/result/DescribeInsightsResult.java
 /root/project/java/src/main/java/io/gs2/jobQueue/result/GetNamespaceStatusResult.java
 /root/project/java/src/main/java/io/gs2/inbox/result/OpenByStampTaskResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/ExportMasterRequest.java
