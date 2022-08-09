@@ -1584,7 +1584,7 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "log")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/insight/{insightName}";
+                + "/{namespaceName}/insight";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
