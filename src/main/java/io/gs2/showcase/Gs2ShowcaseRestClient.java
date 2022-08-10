@@ -157,6 +157,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("buyScript", request.getBuyScript() != null ? request.getBuyScript().toJson() : null);
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
@@ -402,6 +403,7 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
+                    put("buyScript", request.getBuyScript() != null ? request.getBuyScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());

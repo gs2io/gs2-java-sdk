@@ -33,6 +33,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String name;
 	private String description;
 	private TransactionSetting transactionSetting;
+	private ScriptSetting buyScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -76,6 +77,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public ScriptSetting getBuyScript() {
+		return buyScript;
+	}
+	public void setBuyScript(ScriptSetting buyScript) {
+		this.buyScript = buyScript;
+	}
+	public Namespace withBuyScript(ScriptSetting buyScript) {
+		this.buyScript = buyScript;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -144,6 +155,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withBuyScript(data.get("buyScript") == null || data.get("buyScript").isNull() ? null : ScriptSetting.fromJson(data.get("buyScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -158,6 +170,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("name", getName());
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("buyScript", getBuyScript() != null ? getBuyScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -180,6 +193,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
+        result = prime * result + ((this.buyScript == null) ? 0 : this.buyScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -215,6 +229,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (transactionSetting == null) {
 			return other.transactionSetting == null;
 		} else if (!transactionSetting.equals(other.transactionSetting)) {
+			return false;
+		}
+		if (buyScript == null) {
+			return other.buyScript == null;
+		} else if (!buyScript.equals(other.buyScript)) {
 			return false;
 		}
 		if (logSetting == null) {

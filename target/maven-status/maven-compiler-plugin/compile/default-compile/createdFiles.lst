@@ -1983,6 +1983,7 @@ io/gs2/showcase/request/CreateShowcaseMasterRequest.class
 io/gs2/experience/result/DescribeStatusesByUserIdResult$1.class
 io/gs2/stamina/result/CreateStaminaModelMasterResult.class
 io/gs2/realtime/model/LogSetting$1.class
+io/gs2/showcase/model/ScriptSetting.class
 io/gs2/key/result/DescribeGitHubApiKeysResult$1.class
 io/gs2/stamina/Gs2StaminaRestClient$ConsumeStaminaByStampTaskTask$1.class
 io/gs2/mission/model/Config$1.class
@@ -2956,6 +2957,7 @@ io/gs2/matchmaking/Gs2MatchmakingRestClient$DeleteNamespaceTask.class
 io/gs2/dictionary/result/UpdateCurrentEntryMasterFromGitHubResult$1.class
 io/gs2/inventory/result/GetCurrentItemModelMasterResult.class
 io/gs2/identifier/result/DetachSecurityPolicyResult.class
+io/gs2/showcase/model/ScriptSetting$1.class
 io/gs2/identifier/result/CreateUserResult$1.class
 io/gs2/matchmaking/Gs2MatchmakingRestClient$GetRatingModelMasterTask.class
 io/gs2/distributor/result/UpdateNamespaceResult.class

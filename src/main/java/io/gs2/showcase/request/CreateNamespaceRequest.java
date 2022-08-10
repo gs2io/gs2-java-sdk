@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.showcase.model.TransactionSetting;
+import io.gs2.showcase.model.ScriptSetting;
 import io.gs2.showcase.model.LogSetting;
 
 @SuppressWarnings("serial")
@@ -33,6 +34,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String name;
     private String description;
     private TransactionSetting transactionSetting;
+    private ScriptSetting buyScript;
     private String queueNamespaceId;
     private String keyId;
     private LogSetting logSetting;
@@ -64,6 +66,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
 		this.transactionSetting = transactionSetting;
+		return this;
+	}
+	public ScriptSetting getBuyScript() {
+		return buyScript;
+	}
+	public void setBuyScript(ScriptSetting buyScript) {
+		this.buyScript = buyScript;
+	}
+	public CreateNamespaceRequest withBuyScript(ScriptSetting buyScript) {
+		this.buyScript = buyScript;
 		return this;
 	}
     @Deprecated
@@ -111,6 +123,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
+            .withBuyScript(data.get("buyScript") == null || data.get("buyScript").isNull() ? null : ScriptSetting.fromJson(data.get("buyScript")))
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
@@ -122,6 +135,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("name", getName());
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
+                put("buyScript", getBuyScript() != null ? getBuyScript().toJson() : null);
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);

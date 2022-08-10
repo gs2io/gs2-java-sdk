@@ -2412,6 +2412,7 @@
 /root/project/java/src/main/java/io/gs2/friend/Gs2FriendRestClient.java
 /root/project/java/src/main/java/io/gs2/inventory/request/CreateInventoryModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/DescribeRatingsRequest.java
+/root/project/java/src/main/java/io/gs2/showcase/model/ScriptSetting.java
 /root/project/java/src/main/java/io/gs2/distributor/result/UpdateCurrentDistributorMasterResult.java
 /root/project/java/src/main/java/io/gs2/lock/result/GetNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/stamina/result/CreateRecoverIntervalTableMasterResult.java
