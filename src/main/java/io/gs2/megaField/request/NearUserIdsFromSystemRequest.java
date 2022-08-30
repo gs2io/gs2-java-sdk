@@ -33,7 +33,7 @@ public class NearUserIdsFromSystemRequest extends Gs2BasicRequest<NearUserIdsFro
     private String areaModelName;
     private String layerModelName;
     private Position point;
-    private Double r;
+    private Float r;
     private Integer limit;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -76,13 +76,13 @@ public class NearUserIdsFromSystemRequest extends Gs2BasicRequest<NearUserIdsFro
 		this.point = point;
 		return this;
 	}
-	public Double getR() {
+	public Float getR() {
 		return r;
 	}
-	public void setR(Double r) {
+	public void setR(Float r) {
 		this.r = r;
 	}
-	public NearUserIdsFromSystemRequest withR(Double r) {
+	public NearUserIdsFromSystemRequest withR(Float r) {
 		this.r = r;
 		return this;
 	}
@@ -119,7 +119,7 @@ public class NearUserIdsFromSystemRequest extends Gs2BasicRequest<NearUserIdsFro
             .withAreaModelName(data.get("areaModelName") == null || data.get("areaModelName").isNull() ? null : data.get("areaModelName").asText())
             .withLayerModelName(data.get("layerModelName") == null || data.get("layerModelName").isNull() ? null : data.get("layerModelName").asText())
             .withPoint(data.get("point") == null || data.get("point").isNull() ? null : Position.fromJson(data.get("point")))
-            .withR(data.get("r") == null || data.get("r").isNull() ? null : data.get("r").doubleValue())
+            .withR(data.get("r") == null || data.get("r").isNull() ? null : data.get("r").floatValue())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 

@@ -29,36 +29,36 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Vector implements IModel, Serializable {
-	private Double x;
-	private Double y;
-	private Double z;
-	public Double getX() {
+	private Float x;
+	private Float y;
+	private Float z;
+	public Float getX() {
 		return x;
 	}
-	public void setX(Double x) {
+	public void setX(Float x) {
 		this.x = x;
 	}
-	public Vector withX(Double x) {
+	public Vector withX(Float x) {
 		this.x = x;
 		return this;
 	}
-	public Double getY() {
+	public Float getY() {
 		return y;
 	}
-	public void setY(Double y) {
+	public void setY(Float y) {
 		this.y = y;
 	}
-	public Vector withY(Double y) {
+	public Vector withY(Float y) {
 		this.y = y;
 		return this;
 	}
-	public Double getZ() {
+	public Float getZ() {
 		return z;
 	}
-	public void setZ(Double z) {
+	public void setZ(Float z) {
 		this.z = z;
 	}
-	public Vector withZ(Double z) {
+	public Vector withZ(Float z) {
 		this.z = z;
 		return this;
 	}
@@ -68,9 +68,9 @@ public class Vector implements IModel, Serializable {
             return null;
         }
         return new Vector()
-            .withX(data.get("x") == null || data.get("x").isNull() ? null : data.get("x").doubleValue())
-            .withY(data.get("y") == null || data.get("y").isNull() ? null : data.get("y").doubleValue())
-            .withZ(data.get("z") == null || data.get("z").isNull() ? null : data.get("z").doubleValue());
+            .withX(data.get("x") == null || data.get("x").isNull() ? null : data.get("x").floatValue())
+            .withY(data.get("y") == null || data.get("y").isNull() ? null : data.get("y").floatValue())
+            .withZ(data.get("z") == null || data.get("z").isNull() ? null : data.get("z").floatValue());
     }
 
     public JsonNode toJson() {

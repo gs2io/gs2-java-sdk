@@ -29,15 +29,15 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Scope implements IModel, Serializable {
-	private Double r;
+	private Float r;
 	private Integer limit;
-	public Double getR() {
+	public Float getR() {
 		return r;
 	}
-	public void setR(Double r) {
+	public void setR(Float r) {
 		this.r = r;
 	}
-	public Scope withR(Double r) {
+	public Scope withR(Float r) {
 		this.r = r;
 		return this;
 	}
@@ -57,7 +57,7 @@ public class Scope implements IModel, Serializable {
             return null;
         }
         return new Scope()
-            .withR(data.get("r") == null || data.get("r").isNull() ? null : data.get("r").doubleValue())
+            .withR(data.get("r") == null || data.get("r").isNull() ? null : data.get("r").floatValue())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
