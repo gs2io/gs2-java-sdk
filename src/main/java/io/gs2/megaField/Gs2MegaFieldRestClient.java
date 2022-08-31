@@ -2565,7 +2565,7 @@ import io.gs2.megaField.model.*;public class Gs2MegaFieldRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mega-field")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/spatial/{areaModelName}/{layerModelName}";
+                + "/{namespaceName}/user/me/spatial/{areaModelName}/{layerModelName}/action";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{areaModelName}", this.request.getAreaModelName() == null || this.request.getAreaModelName().length() == 0 ? "null" : String.valueOf(this.request.getAreaModelName()));
@@ -2652,7 +2652,7 @@ import io.gs2.megaField.model.*;public class Gs2MegaFieldRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "mega-field")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/spatial/{areaModelName}/{layerModelName}";
+                + "/{namespaceName}/user/{userId}/spatial/{areaModelName}/{layerModelName}/action";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
