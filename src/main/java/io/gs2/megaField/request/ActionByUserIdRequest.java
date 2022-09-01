@@ -37,7 +37,7 @@ public class ActionByUserIdRequest extends Gs2BasicRequest<ActionByUserIdRequest
     private String areaModelName;
     private String layerModelName;
     private MyPosition position;
-    private Scope scope;
+    private List<Scope> scopes;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -89,14 +89,14 @@ public class ActionByUserIdRequest extends Gs2BasicRequest<ActionByUserIdRequest
 		this.position = position;
 		return this;
 	}
-	public Scope getScope() {
-		return scope;
+	public List<Scope> getScopes() {
+		return scopes;
 	}
-	public void setScope(Scope scope) {
-		this.scope = scope;
+	public void setScopes(List<Scope> scopes) {
+		this.scopes = scopes;
 	}
-	public ActionByUserIdRequest withScope(Scope scope) {
-		this.scope = scope;
+	public ActionByUserIdRequest withScopes(List<Scope> scopes) {
+		this.scopes = scopes;
 		return this;
 	}
 
@@ -123,7 +123,12 @@ public class ActionByUserIdRequest extends Gs2BasicRequest<ActionByUserIdRequest
             .withAreaModelName(data.get("areaModelName") == null || data.get("areaModelName").isNull() ? null : data.get("areaModelName").asText())
             .withLayerModelName(data.get("layerModelName") == null || data.get("layerModelName").isNull() ? null : data.get("layerModelName").asText())
             .withPosition(data.get("position") == null || data.get("position").isNull() ? null : MyPosition.fromJson(data.get("position")))
-            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : Scope.fromJson(data.get("scope")));
+            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? new ArrayList<Scope>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scopes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Scope.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -134,7 +139,12 @@ public class ActionByUserIdRequest extends Gs2BasicRequest<ActionByUserIdRequest
                 put("areaModelName", getAreaModelName());
                 put("layerModelName", getLayerModelName());
                 put("position", getPosition() != null ? getPosition().toJson() : null);
-                put("scope", getScope() != null ? getScope().toJson() : null);
+                put("scopes", getScopes() == null ? new ArrayList<Scope>() :
+                    getScopes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }

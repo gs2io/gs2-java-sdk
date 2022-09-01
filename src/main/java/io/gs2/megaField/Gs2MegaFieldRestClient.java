@@ -2574,7 +2574,12 @@ import io.gs2.megaField.model.*;public class Gs2MegaFieldRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("position", request.getPosition() != null ? request.getPosition().toJson() : null);
-                    put("scope", request.getScope() != null ? request.getScope().toJson() : null);
+                    put("scopes", request.getScopes() == null ? new ArrayList<Scope>() :
+                        request.getScopes().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2662,7 +2667,12 @@ import io.gs2.megaField.model.*;public class Gs2MegaFieldRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("position", request.getPosition() != null ? request.getPosition().toJson() : null);
-                    put("scope", request.getScope() != null ? request.getScope().toJson() : null);
+                    put("scopes", request.getScopes() == null ? new ArrayList<Scope>() :
+                        request.getScopes().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

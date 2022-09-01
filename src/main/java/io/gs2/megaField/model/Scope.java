@@ -29,8 +29,19 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Scope implements IModel, Serializable {
+	private String layerName;
 	private Float r;
 	private Integer limit;
+	public String getLayerName() {
+		return layerName;
+	}
+	public void setLayerName(String layerName) {
+		this.layerName = layerName;
+	}
+	public Scope withLayerName(String layerName) {
+		this.layerName = layerName;
+		return this;
+	}
 	public Float getR() {
 		return r;
 	}
@@ -57,6 +68,7 @@ public class Scope implements IModel, Serializable {
             return null;
         }
         return new Scope()
+            .withLayerName(data.get("layerName") == null || data.get("layerName").isNull() ? null : data.get("layerName").asText())
             .withR(data.get("r") == null || data.get("r").isNull() ? null : data.get("r").floatValue())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -64,6 +76,7 @@ public class Scope implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("layerName", getLayerName());
                 put("r", getR());
                 put("limit", getLimit());
             }}
@@ -74,6 +87,7 @@ public class Scope implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((this.layerName == null) ? 0 : this.layerName.hashCode());
         result = prime * result + ((this.r == null) ? 0 : this.r.hashCode());
         result = prime * result + ((this.limit == null) ? 0 : this.limit.hashCode());
 		return result;
@@ -88,6 +102,11 @@ public class Scope implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		Scope other = (Scope) o;
+		if (layerName == null) {
+			return other.layerName == null;
+		} else if (!layerName.equals(other.layerName)) {
+			return false;
+		}
 		if (r == null) {
 			return other.r == null;
 		} else if (!r.equals(other.r)) {

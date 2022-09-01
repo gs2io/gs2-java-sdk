@@ -37,7 +37,7 @@ public class ActionRequest extends Gs2BasicRequest<ActionRequest> {
     private String areaModelName;
     private String layerModelName;
     private MyPosition position;
-    private Scope scope;
+    private List<Scope> scopes;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -88,14 +88,14 @@ public class ActionRequest extends Gs2BasicRequest<ActionRequest> {
 		this.position = position;
 		return this;
 	}
-	public Scope getScope() {
-		return scope;
+	public List<Scope> getScopes() {
+		return scopes;
 	}
-	public void setScope(Scope scope) {
-		this.scope = scope;
+	public void setScopes(List<Scope> scopes) {
+		this.scopes = scopes;
 	}
-	public ActionRequest withScope(Scope scope) {
-		this.scope = scope;
+	public ActionRequest withScopes(List<Scope> scopes) {
+		this.scopes = scopes;
 		return this;
 	}
 
@@ -109,7 +109,12 @@ public class ActionRequest extends Gs2BasicRequest<ActionRequest> {
             .withAreaModelName(data.get("areaModelName") == null || data.get("areaModelName").isNull() ? null : data.get("areaModelName").asText())
             .withLayerModelName(data.get("layerModelName") == null || data.get("layerModelName").isNull() ? null : data.get("layerModelName").asText())
             .withPosition(data.get("position") == null || data.get("position").isNull() ? null : MyPosition.fromJson(data.get("position")))
-            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : Scope.fromJson(data.get("scope")));
+            .withScopes(data.get("scopes") == null || data.get("scopes").isNull() ? new ArrayList<Scope>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scopes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Scope.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -120,7 +125,12 @@ public class ActionRequest extends Gs2BasicRequest<ActionRequest> {
                 put("areaModelName", getAreaModelName());
                 put("layerModelName", getLayerModelName());
                 put("position", getPosition() != null ? getPosition().toJson() : null);
-                put("scope", getScope() != null ? getScope().toJson() : null);
+                put("scopes", getScopes() == null ? new ArrayList<Scope>() :
+                    getScopes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
