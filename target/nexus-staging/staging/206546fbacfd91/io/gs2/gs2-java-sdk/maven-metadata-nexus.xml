@@ -3,10 +3,10 @@
   <groupId>io.gs2</groupId>
   <artifactId>gs2-java-sdk</artifactId>
   <versioning>
-    <release>3.1.94</release>
+    <release>3.1.95</release>
     <versions>
-      <version>3.1.94</version>
+      <version>3.1.95</version>
     </versions>
-    <lastUpdated>20220901101822</lastUpdated>
+    <lastUpdated>20220920135253</lastUpdated>
   </versioning>
 </metadata>

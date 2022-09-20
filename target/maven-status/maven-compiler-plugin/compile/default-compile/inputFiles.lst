@@ -50,6 +50,7 @@
 /root/project/java/src/main/java/io/gs2/experience/request/GetStatusWithSignatureByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/megaField/request/DescribeAreaModelMastersRequest.java
 /root/project/java/src/main/java/io/gs2/megaField/result/GetCurrentFieldMasterResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/DescribeSerialCodesRequest.java
 /root/project/java/src/main/java/io/gs2/distributor/model/GitHubCheckoutSetting.java
 /root/project/java/src/main/java/io/gs2/stamina/result/SetMaxValueByStatusResult.java
 /root/project/java/src/main/java/io/gs2/key/result/GetNamespaceResult.java
@@ -150,6 +151,7 @@
 /root/project/java/src/main/java/io/gs2/showcase/model/TransactionSetting.java
 /root/project/java/src/main/java/io/gs2/jobQueue/request/DescribeNamespacesRequest.java
 /root/project/java/src/main/java/io/gs2/mission/request/DescribeCounterModelsRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/DeleteNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/dictionary/result/UpdateEntryModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/exchange/result/DescribeNamespacesResult.java
 /root/project/java/src/main/java/io/gs2/ranking/request/GetNamespaceRequest.java
@@ -176,12 +178,14 @@
 /root/project/java/src/main/java/io/gs2/enhance/request/DirectEnhanceByStampSheetRequest.java
 /root/project/java/src/main/java/io/gs2/watch/result/DescribeBillingActivitiesResult.java
 /root/project/java/src/main/java/io/gs2/ranking/request/GetNamespaceStatusRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/UseResult.java
 /root/project/java/src/main/java/io/gs2/jobQueue/request/GetNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/script/result/GetScriptResult.java
 /root/project/java/src/main/java/io/gs2/gateway/result/GetWebSocketSessionByConnectionIdResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/model/RatingModel.java
 /root/project/java/src/main/java/io/gs2/jobQueue/request/PushByStampSheetRequest.java
 /root/project/java/src/main/java/io/gs2/megaField/model/AreaModelMaster.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/GetIssueJobResult.java
 /root/project/java/src/main/java/io/gs2/mission/result/CreateMissionTaskModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/distributor/Gs2DistributorRestClient.java
 /root/project/java/src/main/java/io/gs2/quest/result/UpdateQuestGroupModelMasterResult.java
@@ -214,6 +218,7 @@
 /root/project/java/src/main/java/io/gs2/version/result/GetNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/experience/request/DeleteExperienceModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/showcase/result/UpdateCurrentShowcaseMasterFromGitHubResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/UseRequest.java
 /root/project/java/src/main/java/io/gs2/account/request/AuthenticationRequest.java
 /root/project/java/src/main/java/io/gs2/schedule/request/GetNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/showcase/request/DescribeNamespacesRequest.java
@@ -237,6 +242,7 @@
 /root/project/java/src/main/java/io/gs2/version/model/ScriptSetting.java
 /root/project/java/src/main/java/io/gs2/experience/model/Status.java
 /root/project/java/src/main/java/io/gs2/experience/request/DescribeStatusesByUserIdRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/DeleteCampaignModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/version/request/UpdateCurrentVersionMasterRequest.java
 /root/project/java/src/main/java/io/gs2/jobQueue/result/DescribeNamespacesResult.java
 /root/project/java/src/main/java/io/gs2/enhance/model/BonusRate.java
@@ -269,10 +275,13 @@
 /root/project/java/src/main/java/io/gs2/mission/result/DeleteCounterModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/showcase/request/UpdateSalesItemGroupMasterRequest.java
 /root/project/java/src/main/java/io/gs2/distributor/request/UpdateCurrentDistributorMasterFromGitHubRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/model/LogSetting.java
 /root/project/java/src/main/java/io/gs2/jobQueue/model/JobResult.java
 /root/project/java/src/main/java/io/gs2/project/request/ForgetRequest.java
 /root/project/java/src/main/java/io/gs2/limit/request/CountUpByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/model/ScriptSetting.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/UpdateCurrentCampaignMasterRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/GetCampaignModelResult.java
 /root/project/java/src/main/java/io/gs2/news/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/mission/request/DeleteCompleteByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/megaField/result/CreateAreaModelMasterResult.java
@@ -321,6 +330,7 @@
 /root/project/java/src/main/java/io/gs2/formation/request/SetFormWithSignatureRequest.java
 /root/project/java/src/main/java/io/gs2/formation/result/DeletePropertyFormByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/project/result/DescribeReceiptsResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/GetNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/megaField/result/GetNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/stamina/request/SetMaxValueByStampSheetRequest.java
 /root/project/java/src/main/java/io/gs2/jobQueue/model/DeadLetterJob.java
@@ -393,6 +403,7 @@
 /root/project/java/src/main/java/io/gs2/exchange/request/DeleteRateModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/result/UpdateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/money/model/Wallet.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/GetCampaignModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/stamina/request/DeleteNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/jobQueue/Gs2JobQueueRestClient.java
 /root/project/java/src/main/java/io/gs2/formation/result/DescribeMoldModelMastersResult.java
@@ -418,6 +429,7 @@
 /root/project/java/src/main/java/io/gs2/megaField/request/UpdateCurrentFieldMasterRequest.java
 /root/project/java/src/main/java/io/gs2/formation/result/AddCapacityByStampSheetResult.java
 /root/project/java/src/main/java/io/gs2/friend/model/FriendUser.java
+/root/project/java/src/main/java/io/gs2/serialKey/model/SerialKey.java
 /root/project/java/src/main/java/io/gs2/exchange/request/ExchangeByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/news/result/UpdateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/chat/request/PostRequest.java
@@ -446,6 +458,7 @@
 /root/project/java/src/main/java/io/gs2/ranking/result/DescribeCategoryModelMastersResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/model/ResponseCache.java
 /root/project/java/src/main/java/io/gs2/quest/result/DescribeQuestModelsResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/UpdateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/stamina/result/DeleteStaminaByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/core/exception/TimeoutException.java
 /root/project/java/src/main/java/io/gs2/dictionary/result/UpdateCurrentEntryMasterFromGitHubResult.java
@@ -458,6 +471,7 @@
 /root/project/java/src/main/java/io/gs2/money/request/RecordReceiptRequest.java
 /root/project/java/src/main/java/io/gs2/version/request/GetNamespaceStatusRequest.java
 /root/project/java/src/main/java/io/gs2/inbox/request/GetCurrentMessageMasterRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/CreateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/identifier/request/LoginByUserRequest.java
 /root/project/java/src/main/java/io/gs2/jobQueue/result/DeleteDeadLetterJobByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/model/CurrentRatingModelMaster.java
@@ -564,6 +578,7 @@
 /root/project/java/src/main/java/io/gs2/megaField/model/Vector.java
 /root/project/java/src/main/java/io/gs2/dictionary/result/GetEntryWithSignatureByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/jobQueue/request/DescribeJobsByUserIdRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/UseByStampTaskResult.java
 /root/project/java/src/main/java/io/gs2/account/result/DescribeNamespacesResult.java
 /root/project/java/src/main/java/io/gs2/lottery/request/UpdateCurrentLotteryMasterFromGitHubRequest.java
 /root/project/java/src/main/java/io/gs2/account/request/GetNamespaceRequest.java
@@ -580,6 +595,7 @@
 /root/project/java/src/main/java/io/gs2/quest/request/GetQuestGroupModelRequest.java
 /root/project/java/src/main/java/io/gs2/core/exception/NoInternetConnectionException.java
 /root/project/java/src/main/java/io/gs2/deploy/request/DescribeResourcesRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/model/IssueJob.java
 /root/project/java/src/main/java/io/gs2/version/request/GetVersionModelRequest.java
 /root/project/java/src/main/java/io/gs2/distributor/request/RunStampTaskRequest.java
 /root/project/java/src/main/java/io/gs2/experience/result/GetStatusWithSignatureByUserIdResult.java
@@ -678,6 +694,7 @@
 /root/project/java/src/main/java/io/gs2/ranking/request/DescribeScoresByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/friend/model/ReceiveFriendRequest.java
 /root/project/java/src/main/java/io/gs2/limit/result/DescribeLimitModelMastersResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/DescribeSerialCodesResult.java
 /root/project/java/src/main/java/io/gs2/stamina/request/GetStaminaModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/log/result/DeleteInsightResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/UpdateRatingModelMasterRequest.java
@@ -732,6 +749,7 @@
 /root/project/java/src/main/java/io/gs2/dictionary/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/log/request/QueryExecuteStampSheetLogRequest.java
 /root/project/java/src/main/java/io/gs2/news/request/DeleteNamespaceRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/DeleteCampaignModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/UpdateGatheringRequest.java
 /root/project/java/src/main/java/io/gs2/datastore/request/DeleteDataObjectByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/inbox/model/Received.java
@@ -841,10 +859,12 @@
 /root/project/java/src/main/java/io/gs2/matchmaking/request/UpdateCurrentRatingModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/dictionary/result/CreateEntryModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/identifier/result/DescribePasswordsResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/GetCampaignModelRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/request/DeleteReferenceOfItemSetByStampSheetRequest.java
 /root/project/java/src/main/java/io/gs2/formation/result/GetFormModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/news/result/PrepareUpdateCurrentNewsMasterResult.java
 /root/project/java/src/main/java/io/gs2/megaField/model/CurrentFieldMaster.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/DescribeIssueJobsRequest.java
 /root/project/java/src/main/java/io/gs2/exchange/model/ConsumeAction.java
 /root/project/java/src/main/java/io/gs2/quest/request/DeleteQuestGroupModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/showcase/request/GetNamespaceRequest.java
@@ -854,6 +874,7 @@
 /root/project/java/src/main/java/io/gs2/megaField/request/DeleteNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/experience/result/CreateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/lottery/request/ResetBoxRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/model/GitHubCheckoutSetting.java
 /root/project/java/src/main/java/io/gs2/distributor/request/GetNamespaceStatusRequest.java
 /root/project/java/src/main/java/io/gs2/gateway/model/FirebaseToken.java
 /root/project/java/src/main/java/io/gs2/inventory/request/DescribeItemModelsRequest.java
@@ -861,6 +882,7 @@
 /root/project/java/src/main/java/io/gs2/realtime/request/WantRoomRequest.java
 /root/project/java/src/main/java/io/gs2/chat/request/DeleteMessageRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/model/CurrentRateMaster.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/GetNamespaceStatusResult.java
 /root/project/java/src/main/java/io/gs2/exchange/result/GetCurrentRateMasterResult.java
 /root/project/java/src/main/java/io/gs2/formation/model/FormModelMaster.java
 /root/project/java/src/main/java/io/gs2/limit/result/GetLimitModelMasterResult.java
@@ -1040,6 +1062,7 @@
 /root/project/java/src/main/java/io/gs2/megaField/result/CreateLayerModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/quest/model/ConsumeAction.java
 /root/project/java/src/main/java/io/gs2/inventory/request/AcquireItemSetByStampSheetRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/UpdateCurrentCampaignMasterFromGitHubResult.java
 /root/project/java/src/main/java/io/gs2/stamina/request/DeleteRecoverValueTableMasterRequest.java
 /root/project/java/src/main/java/io/gs2/key/result/CreateGitHubApiKeyResult.java
 /root/project/java/src/main/java/io/gs2/formation/request/DescribeNamespacesRequest.java
@@ -1053,10 +1076,13 @@
 /root/project/java/src/main/java/io/gs2/enhance/result/GetRateModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/formation/request/GetPropertyFormWithSignatureRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/result/DescribeNamespacesResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/DescribeCampaignModelMastersResult.java
 /root/project/java/src/main/java/io/gs2/inventory/request/DescribeItemSetsByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/model/GameResult.java
 /root/project/java/src/main/java/io/gs2/ranking/result/GetCurrentRankingMasterResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/UpdateCampaignModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/money/request/DescribeWalletsRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/DescribeCampaignModelMastersRequest.java
 /root/project/java/src/main/java/io/gs2/friend/result/DescribeFollowsResult.java
 /root/project/java/src/main/java/io/gs2/project/result/UpdateAccountResult.java
 /root/project/java/src/main/java/io/gs2/ranking/result/GetRankingResult.java
@@ -1102,6 +1128,7 @@
 /root/project/java/src/main/java/io/gs2/mission/result/GetCounterByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/stamina/result/SetRecoverValueByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/key/request/DecryptRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/model/CampaignModelMaster.java
 /root/project/java/src/main/java/io/gs2/account/request/CreateTakeOverByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/friend/result/DeleteFriendResult.java
 /root/project/java/src/main/java/io/gs2/auth/result/LoginBySignatureResult.java
@@ -1118,6 +1145,8 @@
 /root/project/java/src/main/java/io/gs2/limit/result/UpdateLimitModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/news/result/CreateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/stamina/result/GetMaxStaminaTableMasterResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/GetCurrentCampaignMasterResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/UseByStampTaskRequest.java
 /root/project/java/src/main/java/io/gs2/core/net/Gs2Session.java
 /root/project/java/src/main/java/io/gs2/stamina/request/DescribeRecoverIntervalTableMastersRequest.java
 /root/project/java/src/main/java/io/gs2/stamina/request/UpdateRecoverValueTableMasterRequest.java
@@ -1128,6 +1157,7 @@
 /root/project/java/src/main/java/io/gs2/deploy/request/UpdateStackRequest.java
 /root/project/java/src/main/java/io/gs2/lottery/request/DescribeProbabilitiesByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/result/DeleteProgressResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/GetCampaignModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/formation/request/DescribePropertyFormsRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/result/VerifyReferenceOfByStampTaskResult.java
 /root/project/java/src/main/java/io/gs2/mission/request/UpdateCurrentMissionMasterRequest.java
@@ -1178,6 +1208,7 @@
 /root/project/java/src/main/java/io/gs2/megaField/result/GetLayerModelResult.java
 /root/project/java/src/main/java/io/gs2/chat/request/UpdateRoomRequest.java
 /root/project/java/src/main/java/io/gs2/datastore/result/PrepareDownloadOwnDataByGenerationResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/DeleteNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/model/AttributeRange.java
 /root/project/java/src/main/java/io/gs2/lottery/result/DeletePrizeTableMasterResult.java
 /root/project/java/src/main/java/io/gs2/version/model/LogSetting.java
@@ -1237,6 +1268,7 @@
 /root/project/java/src/main/java/io/gs2/identifier/request/DeleteUserRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/request/VerifyReferenceOfRequest.java
 /root/project/java/src/main/java/io/gs2/gateway/result/UpdateNamespaceResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/DescribeIssueJobsResult.java
 /root/project/java/src/main/java/io/gs2/inventory/request/DescribeInventoriesByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/request/GetInventoryRequest.java
 /root/project/java/src/main/java/io/gs2/money/model/Receipt.java
@@ -1249,6 +1281,7 @@
 /root/project/java/src/main/java/io/gs2/friend/result/GetFollowByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/quest/model/Contents.java
 /root/project/java/src/main/java/io/gs2/mission/request/UpdateCounterModelMasterRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/model/CurrentCampaignMaster.java
 /root/project/java/src/main/java/io/gs2/schedule/request/CreateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/identifier/result/DetachSecurityPolicyResult.java
 /root/project/java/src/main/java/io/gs2/account/request/GetDataOwnerByUserIdRequest.java
@@ -1273,6 +1306,7 @@
 /root/project/java/src/main/java/io/gs2/datastore/model/DataObjectHistory.java
 /root/project/java/src/main/java/io/gs2/schedule/request/GetEventByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/result/DescribeItemSetsResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/GetNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/identifier/request/GetHasSecurityPolicyRequest.java
 /root/project/java/src/main/java/io/gs2/mission/result/DescribeMissionTaskModelsResult.java
 /root/project/java/src/main/java/io/gs2/schedule/request/DeleteTriggerByUserIdRequest.java
@@ -1390,6 +1424,7 @@
 /root/project/java/src/main/java/io/gs2/datastore/result/PrepareDownloadByGenerationAndUserIdResult.java
 /root/project/java/src/main/java/io/gs2/friend/request/GetNamespaceStatusRequest.java
 /root/project/java/src/main/java/io/gs2/exchange/request/GetAwaitRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/GetCurrentCampaignMasterRequest.java
 /root/project/java/src/main/java/io/gs2/core/model/LoginResult.java
 /root/project/java/src/main/java/io/gs2/mission/request/CompleteRequest.java
 /root/project/java/src/main/java/io/gs2/stamina/result/UpdateNamespaceResult.java
@@ -1461,6 +1496,7 @@
 /root/project/java/src/main/java/io/gs2/distributor/request/RunStampTaskWithoutNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/experience/model/ThresholdMaster.java
 /root/project/java/src/main/java/io/gs2/core/exception/RequestTimeoutException.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/DescribeNamespacesRequest.java
 /root/project/java/src/main/java/io/gs2/stamina/result/UpdateStaminaModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/datastore/result/DescribeDataObjectHistoriesByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/lottery/result/ResetBoxResult.java
@@ -1490,6 +1526,7 @@
 /root/project/java/src/main/java/io/gs2/realtime/request/DeleteRoomRequest.java
 /root/project/java/src/main/java/io/gs2/identifier/model/SecurityPolicy.java
 /root/project/java/src/main/java/io/gs2/matchmaking/result/DoMatchmakingResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/model/Enhance.java
 /root/project/java/src/main/java/io/gs2/dictionary/model/ResponseCache.java
 /root/project/java/src/main/java/io/gs2/dictionary/result/AddEntriesByUserIdResult.java
@@ -1514,6 +1551,7 @@
 /root/project/java/src/main/java/io/gs2/lock/result/UpdateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/realtime/result/WantRoomResult.java
 /root/project/java/src/main/java/io/gs2/lottery/model/CurrentLotteryMaster.java
+/root/project/java/src/main/java/io/gs2/serialKey/model/Namespace.java
 /root/project/java/src/main/java/io/gs2/quest/model/CompletedQuestList.java
 /root/project/java/src/main/java/io/gs2/experience/result/CreateExperienceModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/formation/model/GitHubCheckoutSetting.java
@@ -1559,6 +1597,7 @@
 /root/project/java/src/main/java/io/gs2/core/control/Gs2BasicRequest.java
 /root/project/java/src/main/java/io/gs2/schedule/request/DescribeNamespacesRequest.java
 /root/project/java/src/main/java/io/gs2/deploy/model/Stack.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/IssueResult.java
 /root/project/java/src/main/java/io/gs2/account/result/GetTakeOverByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/schedule/result/CreateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/log/result/PutLogResult.java
@@ -1718,6 +1757,7 @@
 /root/project/java/src/main/java/io/gs2/mission/result/GetCompleteByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/stamina/request/CreateMaxStaminaTableMasterRequest.java
 /root/project/java/src/main/java/io/gs2/mission/result/IncreaseByStampSheetResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/UseByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/CreateGatheringRequest.java
 /root/project/java/src/main/java/io/gs2/ranking/model/SubscribeUser.java
 /root/project/java/src/main/java/io/gs2/log/request/GetInsightRequest.java
@@ -1736,6 +1776,7 @@
 /root/project/java/src/main/java/io/gs2/inventory/model/LogSetting.java
 /root/project/java/src/main/java/io/gs2/stamina/request/DeleteStaminaModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/datastore/request/GetNamespaceStatusRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/DescribeNamespacesResult.java
 /root/project/java/src/main/java/io/gs2/account/model/Account.java
 /root/project/java/src/main/java/io/gs2/account/result/GetTakeOverResult.java
 /root/project/java/src/main/java/io/gs2/formation/request/AddMoldCapacityByUserIdRequest.java
@@ -1775,6 +1816,7 @@
 /root/project/java/src/main/java/io/gs2/lottery/model/Box.java
 /root/project/java/src/main/java/io/gs2/datastore/result/DoneUploadResult.java
 /root/project/java/src/main/java/io/gs2/formation/model/CurrentFormMaster.java
+/root/project/java/src/main/java/io/gs2/serialKey/model/CampaignModel.java
 /root/project/java/src/main/java/io/gs2/stamina/result/GetRecoverValueTableMasterResult.java
 /root/project/java/src/main/java/io/gs2/identifier/request/CreateSecurityPolicyRequest.java
 /root/project/java/src/main/java/io/gs2/lottery/result/UpdateCurrentLotteryMasterResult.java
@@ -1879,6 +1921,7 @@
 /root/project/java/src/main/java/io/gs2/formation/result/CreateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/ranking/model/CurrentRankingMaster.java
 /root/project/java/src/main/java/io/gs2/datastore/request/PrepareReUploadByUserIdRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/GetIssueJobRequest.java
 /root/project/java/src/main/java/io/gs2/inbox/model/TimeSpan.java
 /root/project/java/src/main/java/io/gs2/stamina/request/UpdateCurrentStaminaMasterFromGitHubRequest.java
 /root/project/java/src/main/java/io/gs2/identifier/request/DeletePasswordRequest.java
@@ -1892,6 +1935,7 @@
 /root/project/java/src/main/java/io/gs2/formation/result/UpdateCurrentFormMasterResult.java
 /root/project/java/src/main/java/io/gs2/showcase/result/CreateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/stamina/result/RaiseMaxValueByStampSheetResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/CreateCampaignModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/limit/request/ExportMasterRequest.java
 /root/project/java/src/main/java/io/gs2/friend/request/UnfollowByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/script/request/UpdateNamespaceRequest.java
@@ -1901,6 +1945,7 @@
 /root/project/java/src/main/java/io/gs2/showcase/model/ResponseCache.java
 /root/project/java/src/main/java/io/gs2/limit/result/ExportMasterResult.java
 /root/project/java/src/main/java/io/gs2/identifier/result/CreatePasswordResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/UpdateCurrentCampaignMasterFromGitHubRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/result/GetBallotByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/exchange/model/Namespace.java
 /root/project/java/src/main/java/io/gs2/project/result/CreateProjectResult.java
@@ -1976,6 +2021,7 @@
 /root/project/java/src/main/java/io/gs2/matchmaking/request/DeleteRatingRequest.java
 /root/project/java/src/main/java/io/gs2/ranking/result/DescribeNearRankingsResult.java
 /root/project/java/src/main/java/io/gs2/lock/result/DeleteMutexByUserIdResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/ExportMasterRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/model/Config.java
 /root/project/java/src/main/java/io/gs2/experience/result/GetNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/showcase/model/CurrentShowcaseMaster.java
@@ -1986,6 +2032,7 @@
 /root/project/java/src/main/java/io/gs2/schedule/result/DescribeTriggersByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/chat/model/NotificationSetting.java
 /root/project/java/src/main/java/io/gs2/inventory/result/UpdateItemModelMasterResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/UpdateCurrentCampaignMasterResult.java
 /root/project/java/src/main/java/io/gs2/key/result/GetGitHubApiKeyResult.java
 /root/project/java/src/main/java/io/gs2/showcase/model/SalesItem.java
 /root/project/java/src/main/java/io/gs2/log/request/CountExecuteStampSheetLogRequest.java
@@ -2012,6 +2059,7 @@
 /root/project/java/src/main/java/io/gs2/exchange/request/CreateRateModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/log/request/CountIssueStampSheetLogRequest.java
 /root/project/java/src/main/java/io/gs2/megaField/result/PutPositionResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/IssueRequest.java
 /root/project/java/src/main/java/io/gs2/distributor/request/GetDistributorModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/core/exception/InternalServerErrorException.java
 /root/project/java/src/main/java/io/gs2/datastore/result/PrepareDownloadByGenerationResult.java
@@ -2102,6 +2150,7 @@
 /root/project/java/src/main/java/io/gs2/ranking/model/Score.java
 /root/project/java/src/main/java/io/gs2/datastore/request/GetDataObjectHistoryRequest.java
 /root/project/java/src/main/java/io/gs2/friend/request/SendRequestRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/DescribeCampaignModelsRequest.java
 /root/project/java/src/main/java/io/gs2/showcase/request/UpdateCurrentShowcaseMasterRequest.java
 /root/project/java/src/main/java/io/gs2/gateway/result/GetNamespaceStatusResult.java
 /root/project/java/src/main/java/io/gs2/quest/request/DeleteNamespaceRequest.java
@@ -2131,6 +2180,7 @@
 /root/project/java/src/main/java/io/gs2/deploy/request/GetResourceRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/DeleteNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/identifier/result/DeleteUserResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/Gs2SerialKeyRestClient.java
 /root/project/java/src/main/java/io/gs2/inbox/request/ReadMessageByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/inbox/model/NotificationSetting.java
 /root/project/java/src/main/java/io/gs2/friend/result/FollowResult.java
@@ -2192,6 +2242,7 @@
 /root/project/java/src/main/java/io/gs2/formation/model/Form.java
 /root/project/java/src/main/java/io/gs2/datastore/result/DescribeNamespacesResult.java
 /root/project/java/src/main/java/io/gs2/schedule/request/UpdateNamespaceRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/DescribeCampaignModelsResult.java
 /root/project/java/src/main/java/io/gs2/mission/request/GetMissionTaskModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/log/result/DescribeInsightsResult.java
 /root/project/java/src/main/java/io/gs2/jobQueue/result/GetNamespaceStatusResult.java
@@ -2257,6 +2308,7 @@
 /root/project/java/src/main/java/io/gs2/showcase/result/UpdateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/friend/request/CreateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/lottery/request/GetPrizeTableRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/GetNamespaceStatusRequest.java
 /root/project/java/src/main/java/io/gs2/mission/model/Config.java
 /root/project/java/src/main/java/io/gs2/formation/result/AcquireActionToFormPropertiesByStampSheetResult.java
 /root/project/java/src/main/java/io/gs2/lottery/result/GetNamespaceStatusResult.java
@@ -2313,6 +2365,7 @@
 /root/project/java/src/main/java/io/gs2/ranking/result/GetRankingByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/chat/model/Room.java
 /root/project/java/src/main/java/io/gs2/log/model/Namespace.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/CreateNamespaceResult.java
 /root/project/java/src/main/java/io/gs2/identifier/request/GetIdentifierRequest.java
 /root/project/java/src/main/java/io/gs2/identifier/result/GetIdentifierResult.java
 /root/project/java/src/main/java/io/gs2/stamina/request/RecoverStaminaByStampSheetRequest.java
@@ -2425,6 +2478,7 @@
 /root/project/java/src/main/java/io/gs2/inventory/request/VerifyReferenceOfByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/version/request/CalculateSignatureRequest.java
 /root/project/java/src/main/java/io/gs2/experience/result/AddExperienceByStampSheetResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/UpdateCampaignModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/chat/request/DescribeRoomsRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/CreateRatingModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/script/request/UpdateScriptFromGitHubRequest.java
@@ -2434,6 +2488,7 @@
 /root/project/java/src/main/java/io/gs2/mission/result/GetCounterResult.java
 /root/project/java/src/main/java/io/gs2/jobQueue/result/RunByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/lottery/request/CreateNamespaceRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/ExportMasterResult.java
 /root/project/java/src/main/java/io/gs2/enhance/model/GitHubCheckoutSetting.java
 /root/project/java/src/main/java/io/gs2/megaField/request/CreateAreaModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/stamina/result/ConsumeStaminaByStampTaskResult.java
@@ -2514,6 +2569,7 @@
 /root/project/java/src/main/java/io/gs2/friend/request/GetReceiveRequestByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/ranking/request/GetCategoryModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/friend/result/DescribeSendRequestsByUserIdResult.java
+/root/project/java/src/main/java/io/gs2/serialKey/request/CreateCampaignModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/log/result/CountExecuteStampTaskLogResult.java
 /root/project/java/src/main/java/io/gs2/mission/model/MissionGroupModelMaster.java
 /root/project/java/src/main/java/io/gs2/account/request/CreateAccountRequest.java
@@ -2585,6 +2641,7 @@
 /root/project/java/src/main/java/io/gs2/realtime/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/showcase/request/DeleteSalesItemGroupMasterRequest.java
 /root/project/java/src/main/java/io/gs2/quest/request/UpdateQuestModelMasterRequest.java
+/root/project/java/src/main/java/io/gs2/serialKey/result/UseByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/DeleteGatheringRequest.java
 /root/project/java/src/main/java/io/gs2/stamina/request/CreateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/account/result/GetNamespaceResult.java
