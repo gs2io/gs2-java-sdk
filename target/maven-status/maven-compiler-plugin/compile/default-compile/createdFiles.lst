@@ -1189,6 +1189,7 @@ io/gs2/jobQueue/result/DescribeJobsByUserIdResult.class
 io/gs2/matchmaking/result/GetRatingModelMasterResult.class
 io/gs2/inbox/request/DescribeGlobalMessageMastersRequest$1.class
 io/gs2/exchange/Gs2ExchangeRestClient$GetRateModelMasterTask.class
+io/gs2/serialKey/result/DescribeSerialKeysResult$1.class
 io/gs2/limit/result/DescribeCountersByUserIdResult$1.class
 io/gs2/quest/request/GetQuestModelRequest$1.class
 io/gs2/experience/Gs2ExperienceRestClient$CreateNamespaceTask$1.class
@@ -2183,7 +2184,6 @@ io/gs2/inventory/Gs2InventoryRestClient$DescribeInventoryModelMastersTask.class
 io/gs2/script/result/CreateNamespaceResult.class
 io/gs2/key/model/ResponseCache.class
 io/gs2/formation/result/AddCapacityByStampSheetResult$1.class
-io/gs2/serialKey/Gs2SerialKeyRestClient$DescribeSerialCodesTask.class
 io/gs2/formation/Gs2FormationRestClient$AcquireActionsToFormPropertiesTask$1.class
 io/gs2/enhance/request/CreateProgressByUserIdRequest$1.class
 io/gs2/key/request/DecryptRequest$1.class
@@ -2342,6 +2342,7 @@ io/gs2/news/request/UpdateCurrentNewsMasterRequest$1.class
 io/gs2/version/Gs2VersionRestClient$UpdateNamespaceTask$1.class
 io/gs2/identifier/Gs2IdentifierRestClient$DetachSecurityPolicyTask.class
 io/gs2/serialKey/request/GetIssueJobRequest.class
+io/gs2/serialKey/result/DownloadSerialCodesResult.class
 io/gs2/dictionary/result/ExportMasterResult$1.class
 io/gs2/account/result/UpdateTakeOverResult$1.class
 io/gs2/quest/result/GetNamespaceStatusResult$1.class
@@ -2547,6 +2548,7 @@ io/gs2/mission/result/ExportMasterResult.class
 io/gs2/money/Gs2MoneyRestClient$DescribeReceiptsTask.class
 io/gs2/inbox/Gs2InboxRestClient$UpdateCurrentMessageMasterTask.class
 io/gs2/gateway/request/GetWebSocketSessionByConnectionIdRequest.class
+io/gs2/serialKey/result/GetSerialKeyResult$1.class
 io/gs2/ranking/model/LogSetting$1.class
 io/gs2/inventory/Gs2InventoryRestClient$AcquireItemSetByUserIdTask$1.class
 io/gs2/lock/model/LogSetting$1.class
@@ -2590,6 +2592,7 @@ io/gs2/mission/request/UpdateCurrentMissionMasterFromGitHubRequest.class
 io/gs2/showcase/result/GetSalesItemMasterResult$1.class
 io/gs2/distributor/model/NotificationSetting.class
 io/gs2/showcase/model/ConsumeAction.class
+io/gs2/serialKey/Gs2SerialKeyRestClient$DescribeSerialKeysTask.class
 io/gs2/enhance/result/GetRateModelMasterResult$1.class
 io/gs2/serialKey/request/DeleteCampaignModelMasterRequest$1.class
 io/gs2/lottery/result/GetNamespaceStatusResult$1.class
@@ -2723,6 +2726,7 @@ io/gs2/inbox/request/OpenMessageByUserIdRequest$1.class
 io/gs2/experience/result/GetNamespaceStatusResult.class
 io/gs2/account/model/Account$1.class
 io/gs2/limit/model/CurrentLimitMaster.class
+io/gs2/serialKey/request/DownloadSerialCodesRequest.class
 io/gs2/distributor/model/DistributorModelMaster$1.class
 io/gs2/matchmaking/request/UpdateCurrentRatingModelMasterRequest$1.class
 io/gs2/mission/result/DescribeCountersByUserIdResult$1.class
@@ -2792,6 +2796,7 @@ io/gs2/lock/result/DeleteMutexByUserIdResult$1.class
 io/gs2/mission/request/GetCounterModelMasterRequest.class
 io/gs2/jobQueue/result/DescribeDeadLetterJobsByUserIdResult$1.class
 io/gs2/deploy/request/GetStackStatusRequest.class
+io/gs2/serialKey/Gs2SerialKeyRestClient$DownloadSerialCodesTask.class
 io/gs2/enhance/result/DirectEnhanceResult.class
 io/gs2/friend/result/DescribeSendRequestsByUserIdResult.class
 io/gs2/jobQueue/Gs2JobQueueRestClient$PushByUserIdTask$1.class
@@ -3014,6 +3019,7 @@ io/gs2/quest/model/LogSetting.class
 io/gs2/script/request/DescribeNamespacesRequest$1.class
 io/gs2/log/request/QueryAccessLogRequest$1.class
 io/gs2/ranking/request/DeleteNamespaceRequest.class
+io/gs2/serialKey/result/DescribeSerialKeysResult.class
 io/gs2/news/request/CreateNamespaceRequest$1.class
 io/gs2/friend/model/Follow$1.class
 io/gs2/friend/Gs2FriendRestClient$SendRequestTask$1.class
@@ -3110,6 +3116,7 @@ io/gs2/matchmaking/model/Namespace.class
 io/gs2/matchmaking/result/DescribeRatingsByUserIdResult.class
 io/gs2/serialKey/request/GetNamespaceStatusRequest$1.class
 io/gs2/money/Gs2MoneyRestClient$GetWalletByUserIdTask.class
+io/gs2/serialKey/request/DescribeSerialKeysRequest$1.class
 io/gs2/datastore/result/DescribeDataObjectHistoriesByUserIdResult$1.class
 io/gs2/exchange/Gs2ExchangeRestClient$DescribeRateModelMastersTask.class
 io/gs2/log/model/ExecuteStampTaskLogCount.class
@@ -3639,6 +3646,7 @@ io/gs2/account/Gs2AccountRestClient$DoTakeOverTask$1.class
 io/gs2/experience/result/GetExperienceModelMasterResult$1.class
 io/gs2/matchmaking/Gs2MatchmakingRestClient$ExportMasterTask.class
 io/gs2/lock/model/Namespace$1.class
+io/gs2/serialKey/result/DownloadSerialCodesResult$1.class
 io/gs2/experience/request/GetStatusWithSignatureRequest$1.class
 io/gs2/megaField/Gs2MegaFieldRestClient$CreateAreaModelMasterTask$1.class
 io/gs2/quest/model/ResponseCache$1.class
@@ -3870,7 +3878,6 @@ io/gs2/lottery/result/DescribeBoxesResult$1.class
 io/gs2/schedule/Gs2ScheduleRestClient$GetTriggerTask.class
 io/gs2/inbox/request/DeleteMessageRequest$1.class
 io/gs2/ranking/result/GetNamespaceStatusResult.class
-io/gs2/serialKey/result/DescribeSerialCodesResult.class
 io/gs2/identifier/model/AttachSecurityPolicy$1.class
 io/gs2/stamina/Gs2StaminaRestClient$RecoverStaminaByStampSheetTask.class
 io/gs2/core/util/EncodingUtil.class
@@ -4228,7 +4235,6 @@ io/gs2/mission/Gs2MissionRestClient$UpdateMissionTaskModelMasterTask$1.class
 io/gs2/deploy/Gs2DeployRestClient$DescribeResourcesTask.class
 io/gs2/project/request/DescribeBillingsRequest.class
 io/gs2/stamina/result/DescribeStaminasResult.class
-io/gs2/serialKey/request/DescribeSerialCodesRequest.class
 io/gs2/formation/Gs2FormationRestClient$DescribeFormModelsTask.class
 io/gs2/lottery/result/UpdateCurrentLotteryMasterResult$1.class
 io/gs2/mission/Gs2MissionRestClient$UpdateNamespaceTask.class
@@ -4487,6 +4493,7 @@ io/gs2/datastore/request/PrepareDownloadOwnDataRequest.class
 io/gs2/project/request/VerifyRequest.class
 io/gs2/news/request/WantGrantRequest.class
 io/gs2/mission/Gs2MissionRestClient$CreateCounterModelMasterTask.class
+io/gs2/serialKey/request/DownloadSerialCodesRequest$1.class
 io/gs2/quest/result/DeleteProgressResult.class
 io/gs2/jobQueue/Gs2JobQueueRestClient$PushByStampSheetTask.class
 io/gs2/friend/Gs2FriendRestClient$GetReceiveRequestByUserIdTask.class
@@ -5042,7 +5049,6 @@ io/gs2/stamina/request/GetStaminaByUserIdRequest$1.class
 io/gs2/exchange/model/LogSetting.class
 io/gs2/ranking/result/SubscribeByUserIdResult$1.class
 io/gs2/script/model/ResponseCache$1.class
-io/gs2/serialKey/result/DescribeSerialCodesResult$1.class
 io/gs2/version/request/UpdateCurrentVersionMasterRequest.class
 io/gs2/inventory/result/CreateInventoryModelMasterResult.class
 io/gs2/stamina/request/DeleteNamespaceRequest.class
@@ -5405,6 +5411,7 @@ io/gs2/stamina/request/GetStaminaModelRequest$1.class
 io/gs2/formation/model/Config$1.class
 io/gs2/version/request/DescribeAcceptVersionsByUserIdRequest$1.class
 io/gs2/inbox/request/UpdateCurrentMessageMasterRequest$1.class
+io/gs2/serialKey/request/DescribeSerialKeysRequest.class
 io/gs2/enhance/model/CurrentRateMaster$1.class
 io/gs2/datastore/Gs2DatastoreRestClient$UpdateDataObjectTask.class
 io/gs2/version/result/DescribeNamespacesResult$1.class
@@ -5798,7 +5805,6 @@ io/gs2/realtime/model/Room$1.class
 io/gs2/deploy/model/WorkingStack.class
 io/gs2/mission/Gs2MissionRestClient$CreateMissionTaskModelMasterTask$1.class
 io/gs2/ranking/Gs2RankingRestClient$GetCurrentRankingMasterTask.class
-io/gs2/serialKey/request/DescribeSerialCodesRequest$1.class
 io/gs2/mission/model/Namespace$1.class
 io/gs2/showcase/request/GetNamespaceRequest$1.class
 io/gs2/deploy/result/GetStackStatusResult$1.class
@@ -6066,6 +6072,7 @@ io/gs2/lottery/model/BoxItems.class
 io/gs2/stamina/result/GetMaxStaminaTableMasterResult$1.class
 io/gs2/matchmaking/request/UpdateCurrentRatingModelMasterFromGitHubRequest$1.class
 io/gs2/schedule/request/DescribeEventMastersRequest$1.class
+io/gs2/serialKey/request/GetSerialKeyRequest$1.class
 io/gs2/showcase/request/CreateNamespaceRequest$1.class
 io/gs2/showcase/result/CreateSalesItemMasterResult$1.class
 io/gs2/core/model/GeneralError.class
@@ -6142,6 +6149,7 @@ io/gs2/formation/request/GetCurrentFormMasterRequest.class
 io/gs2/enhance/result/DirectEnhanceByUserIdResult$1.class
 io/gs2/log/request/QueryExecuteStampSheetLogRequest$1.class
 io/gs2/schedule/Gs2ScheduleRestClient$GetEventTask.class
+io/gs2/serialKey/Gs2SerialKeyRestClient$GetSerialKeyTask.class
 io/gs2/distributor/request/RunStampSheetExpressRequest$1.class
 io/gs2/experience/request/GetExperienceModelMasterRequest.class
 io/gs2/chat/request/CreateRoomRequest.class
@@ -6284,6 +6292,7 @@ io/gs2/experience/model/ResponseCache.class
 io/gs2/inbox/result/UpdateNamespaceResult.class
 io/gs2/showcase/request/UpdateCurrentShowcaseMasterRequest$1.class
 io/gs2/exchange/result/GetRateModelMasterResult$1.class
+io/gs2/serialKey/result/GetSerialKeyResult.class
 io/gs2/realtime/result/CreateNamespaceResult.class
 io/gs2/project/request/DescribeReceiptsRequest.class
 io/gs2/experience/request/GetStatusRequest$1.class
@@ -6659,6 +6668,7 @@ io/gs2/lock/result/DescribeMutexesResult$1.class
 io/gs2/quest/Gs2QuestRestClient$DeleteProgressByUserIdTask.class
 io/gs2/inventory/request/GetInventoryModelMasterRequest$1.class
 io/gs2/identifier/Gs2IdentifierRestClient$UpdateUserTask$1.class
+io/gs2/serialKey/request/GetSerialKeyRequest.class
 io/gs2/auth/result/LoginBySignatureResult.class
 io/gs2/mission/request/DescribeMissionTaskModelsRequest.class
 io/gs2/script/model/GitHubCheckoutSetting$1.class

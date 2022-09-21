@@ -780,12 +780,12 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeSerialCodesTask extends Gs2RestSessionTask<DescribeSerialCodesResult> {
-        private DescribeSerialCodesRequest request;
+    class DescribeSerialKeysTask extends Gs2RestSessionTask<DescribeSerialKeysResult> {
+        private DescribeSerialKeysRequest request;
 
-        public DescribeSerialCodesTask(
-            DescribeSerialCodesRequest request,
-            AsyncAction<AsyncResult<DescribeSerialCodesResult>> userCallback
+        public DescribeSerialKeysTask(
+            DescribeSerialKeysRequest request,
+            AsyncAction<AsyncResult<DescribeSerialKeysResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -795,8 +795,8 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
         }
 
         @Override
-        public DescribeSerialCodesResult parse(JsonNode data) {
-            return DescribeSerialCodesResult.fromJson(data);
+        public DescribeSerialKeysResult parse(JsonNode data) {
+            return DescribeSerialKeysResult.fromJson(data);
         }
 
         @Override
@@ -805,7 +805,7 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "serial-key")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/campaign/{campaignModelName}/issue/{issueJobName}/serialCode";
+                + "/{namespaceName}/campaign/{campaignModelName}/issue/{issueJobName}/serialKey";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{campaignModelName}", this.request.getCampaignModelName() == null || this.request.getCampaignModelName().length() == 0 ? "null" : String.valueOf(this.request.getCampaignModelName()));
@@ -839,19 +839,182 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
         }
     }
 
-    public void describeSerialCodesAsync(
-            DescribeSerialCodesRequest request,
-            AsyncAction<AsyncResult<DescribeSerialCodesResult>> callback
+    public void describeSerialKeysAsync(
+            DescribeSerialKeysRequest request,
+            AsyncAction<AsyncResult<DescribeSerialKeysResult>> callback
     ) {
-        DescribeSerialCodesTask task = new DescribeSerialCodesTask(request, callback);
+        DescribeSerialKeysTask task = new DescribeSerialKeysTask(request, callback);
         session.execute(task);
     }
 
-    public DescribeSerialCodesResult describeSerialCodes(
-            DescribeSerialCodesRequest request
+    public DescribeSerialKeysResult describeSerialKeys(
+            DescribeSerialKeysRequest request
     ) {
-        final AsyncResult<DescribeSerialCodesResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeSerialCodesAsync(
+        final AsyncResult<DescribeSerialKeysResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSerialKeysAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DownloadSerialCodesTask extends Gs2RestSessionTask<DownloadSerialCodesResult> {
+        private DownloadSerialCodesRequest request;
+
+        public DownloadSerialCodesTask(
+            DownloadSerialCodesRequest request,
+            AsyncAction<AsyncResult<DownloadSerialCodesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DownloadSerialCodesResult parse(JsonNode data) {
+            return DownloadSerialCodesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "serial-key")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/campaign/{campaignModelName}/issue/{issueJobName}/serialCode/download";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{campaignModelName}", this.request.getCampaignModelName() == null || this.request.getCampaignModelName().length() == 0 ? "null" : String.valueOf(this.request.getCampaignModelName()));
+            url = url.replace("{issueJobName}", this.request.getIssueJobName() == null || this.request.getIssueJobName().length() == 0 ? "null" : String.valueOf(this.request.getIssueJobName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void downloadSerialCodesAsync(
+            DownloadSerialCodesRequest request,
+            AsyncAction<AsyncResult<DownloadSerialCodesResult>> callback
+    ) {
+        DownloadSerialCodesTask task = new DownloadSerialCodesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DownloadSerialCodesResult downloadSerialCodes(
+            DownloadSerialCodesRequest request
+    ) {
+        final AsyncResult<DownloadSerialCodesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        downloadSerialCodesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSerialKeyTask extends Gs2RestSessionTask<GetSerialKeyResult> {
+        private GetSerialKeyRequest request;
+
+        public GetSerialKeyTask(
+            GetSerialKeyRequest request,
+            AsyncAction<AsyncResult<GetSerialKeyResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSerialKeyResult parse(JsonNode data) {
+            return GetSerialKeyResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "serial-key")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/serialKey/{code}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{code}", this.request.getCode() == null || this.request.getCode().length() == 0 ? "null" : String.valueOf(this.request.getCode()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSerialKeyAsync(
+            GetSerialKeyRequest request,
+            AsyncAction<AsyncResult<GetSerialKeyResult>> callback
+    ) {
+        GetSerialKeyTask task = new GetSerialKeyTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSerialKeyResult getSerialKey(
+            GetSerialKeyRequest request
+    ) {
+        final AsyncResult<GetSerialKeyResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSerialKeyAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
