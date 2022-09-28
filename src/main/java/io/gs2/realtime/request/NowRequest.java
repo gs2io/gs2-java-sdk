@@ -28,17 +28,30 @@ import io.gs2.core.control.Gs2BasicRequest;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NowRequest extends Gs2BasicRequest<NowRequest> {
+    private String accessToken;
+	public String getAccessToken() {
+		return accessToken;
+	}
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+	public NowRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+		return this;
+	}
 
     public static NowRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new NowRequest();
+        return new NowRequest()
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("accessToken", getAccessToken());
             }}
         );
     }

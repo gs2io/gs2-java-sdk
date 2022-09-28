@@ -576,6 +576,9 @@ import io.gs2.realtime.model.*;public class Gs2RealtimeRestClient extends Abstra
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
 
             builder
                 .build()
