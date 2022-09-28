@@ -534,6 +534,84 @@ import io.gs2.realtime.model.*;public class Gs2RealtimeRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
+    class NowTask extends Gs2RestSessionTask<NowResult> {
+        private NowRequest request;
+
+        public NowTask(
+            NowRequest request,
+            AsyncAction<AsyncResult<NowResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public NowResult parse(JsonNode data) {
+            return NowResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "realtime")
+                .replace("{region}", session.getRegion().getName())
+                + "/now";
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void nowAsync(
+            NowRequest request,
+            AsyncAction<AsyncResult<NowResult>> callback
+    ) {
+        NowTask task = new NowTask(request, callback);
+        session.execute(task);
+    }
+
+    public NowResult now(
+            NowRequest request
+    ) {
+        final AsyncResult<NowResult>[] resultAsyncResult = new AsyncResult[]{null};
+        nowAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeRoomsTask extends Gs2RestSessionTask<DescribeRoomsResult> {
         private DescribeRoomsRequest request;
 

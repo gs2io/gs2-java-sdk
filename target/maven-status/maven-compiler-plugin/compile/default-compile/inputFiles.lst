@@ -935,6 +935,7 @@
 /root/project/java/src/main/java/io/gs2/chat/result/UnsubscribeByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/formation/request/GetMoldModelRequest.java
 /root/project/java/src/main/java/io/gs2/news/result/DescribeNamespacesResult.java
+/root/project/java/src/main/java/io/gs2/realtime/result/NowResult.java
 /root/project/java/src/main/java/io/gs2/schedule/result/DeleteEventMasterResult.java
 /root/project/java/src/main/java/io/gs2/schedule/request/DeleteEventMasterRequest.java
 /root/project/java/src/main/java/io/gs2/version/request/GetNamespaceRequest.java
@@ -1952,6 +1953,7 @@
 /root/project/java/src/main/java/io/gs2/exchange/model/Namespace.java
 /root/project/java/src/main/java/io/gs2/project/result/CreateProjectResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/result/GetRatingResult.java
+/root/project/java/src/main/java/io/gs2/realtime/request/NowRequest.java
 /root/project/java/src/main/java/io/gs2/lottery/result/GetLotteryModelResult.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/PutResultRequest.java
 /root/project/java/src/main/java/io/gs2/lottery/model/Namespace.java

@@ -554,6 +554,7 @@ io/gs2/megaField/request/NearUserIdsFromSystemRequest$1.class
 io/gs2/megaField/model/LogSetting$1.class
 io/gs2/friend/request/FollowByUserIdRequest.class
 io/gs2/datastore/Gs2DatastoreRestClient$PrepareUploadTask$1.class
+io/gs2/realtime/result/NowResult.class
 io/gs2/inbox/request/ReceiveGlobalMessageByUserIdRequest.class
 io/gs2/formation/request/GetFormByUserIdRequest$1.class
 io/gs2/inventory/result/DescribeItemSetsResult.class
@@ -675,6 +676,7 @@ io/gs2/script/Gs2ScriptRestClient$InvokeScriptTask$1.class
 io/gs2/matchmaking/model/RatingModelMaster.class
 io/gs2/schedule/result/DescribeRawEventsResult$1.class
 io/gs2/showcase/request/DescribeShowcaseMastersRequest$1.class
+io/gs2/realtime/request/NowRequest.class
 io/gs2/watch/model/BillingActivity.class
 io/gs2/exchange/request/UpdateCurrentRateMasterRequest$1.class
 io/gs2/showcase/request/DescribeSalesItemGroupMastersRequest.class
@@ -1882,6 +1884,7 @@ io/gs2/matchmaking/result/VoteMultipleResult$1.class
 io/gs2/project/Gs2ProjectRestClient$GetBillingMethodTask.class
 io/gs2/distributor/Gs2DistributorRestClient$GetDistributorModelMasterTask.class
 io/gs2/core/net/Gs2RestSessionTask.class
+io/gs2/realtime/Gs2RealtimeRestClient$NowTask.class
 io/gs2/quest/Gs2QuestRestClient$GetCompletedQuestListTask.class
 io/gs2/formation/result/DescribeNamespacesResult.class
 io/gs2/matchmaking/Gs2MatchmakingRestClient$GetGatheringTask.class
@@ -1971,6 +1974,7 @@ io/gs2/enhance/model/BonusRate.class
 io/gs2/chat/request/PostByUserIdRequest.class
 io/gs2/identifier/Gs2IdentifierRestClient$CreatePasswordTask$1.class
 io/gs2/money/request/WithdrawRequest.class
+io/gs2/realtime/result/NowResult$1.class
 io/gs2/log/model/Namespace.class
 io/gs2/inventory/request/ConsumeItemSetByUserIdRequest.class
 io/gs2/identifier/result/DeleteUserResult$1.class
@@ -3102,6 +3106,7 @@ io/gs2/stamina/model/CurrentStaminaMaster.class
 io/gs2/quest/request/UpdateCurrentQuestMasterFromGitHubRequest$1.class
 io/gs2/quest/Gs2QuestRestClient$StartByUserIdTask.class
 io/gs2/inbox/request/GetNamespaceStatusRequest.class
+io/gs2/realtime/request/NowRequest$1.class
 io/gs2/chat/Gs2ChatRestClient$SubscribeByUserIdTask.class
 io/gs2/enhance/request/GetNamespaceStatusRequest.class
 io/gs2/auth/Gs2AuthRestClient.class
