@@ -35,6 +35,7 @@ public class InventoryModel implements IModel, Serializable, Comparable<Inventor
 	private Integer initialCapacity;
 	private Integer maxCapacity;
 	private Boolean protectReferencedItem;
+	private List<ItemModel> itemModels;
 	public String getInventoryModelId() {
 		return inventoryModelId;
 	}
@@ -95,6 +96,16 @@ public class InventoryModel implements IModel, Serializable, Comparable<Inventor
 		this.protectReferencedItem = protectReferencedItem;
 		return this;
 	}
+	public List<ItemModel> getItemModels() {
+		return itemModels;
+	}
+	public void setItemModels(List<ItemModel> itemModels) {
+		this.itemModels = itemModels;
+	}
+	public InventoryModel withItemModels(List<ItemModel> itemModels) {
+		this.itemModels = itemModels;
+		return this;
+	}
 
     public static InventoryModel fromJson(JsonNode data) {
         if (data == null) {
@@ -106,7 +117,13 @@ public class InventoryModel implements IModel, Serializable, Comparable<Inventor
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withInitialCapacity(data.get("initialCapacity") == null || data.get("initialCapacity").isNull() ? null : data.get("initialCapacity").intValue())
             .withMaxCapacity(data.get("maxCapacity") == null || data.get("maxCapacity").isNull() ? null : data.get("maxCapacity").intValue())
-            .withProtectReferencedItem(data.get("protectReferencedItem") == null || data.get("protectReferencedItem").isNull() ? null : data.get("protectReferencedItem").booleanValue());
+            .withProtectReferencedItem(data.get("protectReferencedItem") == null || data.get("protectReferencedItem").isNull() ? null : data.get("protectReferencedItem").booleanValue())
+            .withItemModels(data.get("itemModels") == null || data.get("itemModels").isNull() ? new ArrayList<ItemModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("itemModels").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ItemModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -118,6 +135,12 @@ public class InventoryModel implements IModel, Serializable, Comparable<Inventor
                 put("initialCapacity", getInitialCapacity());
                 put("maxCapacity", getMaxCapacity());
                 put("protectReferencedItem", getProtectReferencedItem());
+                put("itemModels", getItemModels() == null ? new ArrayList<ItemModel>() :
+                    getItemModels().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
@@ -137,6 +160,7 @@ public class InventoryModel implements IModel, Serializable, Comparable<Inventor
         result = prime * result + ((this.initialCapacity == null) ? 0 : this.initialCapacity.hashCode());
         result = prime * result + ((this.maxCapacity == null) ? 0 : this.maxCapacity.hashCode());
         result = prime * result + ((this.protectReferencedItem == null) ? 0 : this.protectReferencedItem.hashCode());
+        result = prime * result + ((this.itemModels == null) ? 0 : this.itemModels.hashCode());
 		return result;
 	}
 
@@ -177,6 +201,11 @@ public class InventoryModel implements IModel, Serializable, Comparable<Inventor
 		if (protectReferencedItem == null) {
 			return other.protectReferencedItem == null;
 		} else if (!protectReferencedItem.equals(other.protectReferencedItem)) {
+			return false;
+		}
+		if (itemModels == null) {
+			return other.itemModels == null;
+		} else if (!itemModels.equals(other.itemModels)) {
 			return false;
 		}
 		return true;
