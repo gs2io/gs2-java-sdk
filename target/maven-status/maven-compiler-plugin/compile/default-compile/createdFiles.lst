@@ -1480,6 +1480,7 @@ io/gs2/account/result/DeleteDataOwnerByUserIdResult.class
 io/gs2/account/request/UpdateTakeOverRequest.class
 io/gs2/jobQueue/result/GetDeadLetterJobByUserIdResult.class
 io/gs2/friend/result/GetPublicProfileResult$1.class
+io/gs2/matchmaking/model/ScriptSetting$1.class
 io/gs2/mission/result/UpdateNamespaceResult$1.class
 io/gs2/chat/Gs2ChatRestClient$UpdateNamespaceTask.class
 io/gs2/formation/result/UpdateFormModelMasterResult$1.class
@@ -5174,6 +5175,7 @@ io/gs2/formation/request/DescribeFormModelMastersRequest.class
 io/gs2/megaField/result/GetNamespaceStatusResult$1.class
 io/gs2/showcase/Gs2ShowcaseRestClient$UpdateSalesItemMasterTask$1.class
 io/gs2/distributor/request/GetNamespaceStatusRequest$1.class
+io/gs2/matchmaking/model/ScriptSetting.class
 io/gs2/news/request/WantGrantByUserIdRequest$1.class
 io/gs2/project/Gs2ProjectRestClient$CreateBillingMethodTask.class
 io/gs2/mission/result/GetNamespaceStatusResult$1.class

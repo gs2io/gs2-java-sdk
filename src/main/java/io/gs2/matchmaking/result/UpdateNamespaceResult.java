@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
+import io.gs2.matchmaking.model.ScriptSetting;
 import io.gs2.matchmaking.model.NotificationSetting;
 import io.gs2.matchmaking.model.LogSetting;
 import io.gs2.matchmaking.model.Namespace;

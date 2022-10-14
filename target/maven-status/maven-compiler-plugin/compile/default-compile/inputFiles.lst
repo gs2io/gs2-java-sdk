@@ -660,6 +660,7 @@
 /root/project/java/src/main/java/io/gs2/watch/request/GetBillingActivityRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/GetCurrentRatingModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/lock/request/GetNamespaceStatusRequest.java
+/root/project/java/src/main/java/io/gs2/matchmaking/model/ScriptSetting.java
 /root/project/java/src/main/java/io/gs2/enhance/request/StartRequest.java
 /root/project/java/src/main/java/io/gs2/formation/result/CreateFormModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/limit/request/DescribeLimitModelMastersRequest.java

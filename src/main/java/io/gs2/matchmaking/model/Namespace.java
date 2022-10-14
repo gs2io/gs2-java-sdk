@@ -39,6 +39,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String completeMatchmakingTriggerType;
 	private String completeMatchmakingTriggerRealtimeNamespaceId;
 	private String completeMatchmakingTriggerScriptId;
+	private ScriptSetting changeRatingScript;
 	private NotificationSetting joinNotification;
 	private NotificationSetting leaveNotification;
 	private NotificationSetting completeNotification;
@@ -145,6 +146,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
 		return this;
 	}
+	public ScriptSetting getChangeRatingScript() {
+		return changeRatingScript;
+	}
+	public void setChangeRatingScript(ScriptSetting changeRatingScript) {
+		this.changeRatingScript = changeRatingScript;
+	}
+	public Namespace withChangeRatingScript(ScriptSetting changeRatingScript) {
+		this.changeRatingScript = changeRatingScript;
+		return this;
+	}
 	public NotificationSetting getJoinNotification() {
 		return joinNotification;
 	}
@@ -221,6 +232,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withCompleteMatchmakingTriggerType(data.get("completeMatchmakingTriggerType") == null || data.get("completeMatchmakingTriggerType").isNull() ? null : data.get("completeMatchmakingTriggerType").asText())
             .withCompleteMatchmakingTriggerRealtimeNamespaceId(data.get("completeMatchmakingTriggerRealtimeNamespaceId") == null || data.get("completeMatchmakingTriggerRealtimeNamespaceId").isNull() ? null : data.get("completeMatchmakingTriggerRealtimeNamespaceId").asText())
             .withCompleteMatchmakingTriggerScriptId(data.get("completeMatchmakingTriggerScriptId") == null || data.get("completeMatchmakingTriggerScriptId").isNull() ? null : data.get("completeMatchmakingTriggerScriptId").asText())
+            .withChangeRatingScript(data.get("changeRatingScript") == null || data.get("changeRatingScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRatingScript")))
             .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
             .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
             .withCompleteNotification(data.get("completeNotification") == null || data.get("completeNotification").isNull() ? null : NotificationSetting.fromJson(data.get("completeNotification")))
@@ -242,6 +254,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("completeMatchmakingTriggerType", getCompleteMatchmakingTriggerType());
                 put("completeMatchmakingTriggerRealtimeNamespaceId", getCompleteMatchmakingTriggerRealtimeNamespaceId());
                 put("completeMatchmakingTriggerScriptId", getCompleteMatchmakingTriggerScriptId());
+                put("changeRatingScript", getChangeRatingScript() != null ? getChangeRatingScript().toJson() : null);
                 put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
                 put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
                 put("completeNotification", getCompleteNotification() != null ? getCompleteNotification().toJson() : null);
@@ -271,6 +284,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.completeMatchmakingTriggerType == null) ? 0 : this.completeMatchmakingTriggerType.hashCode());
         result = prime * result + ((this.completeMatchmakingTriggerRealtimeNamespaceId == null) ? 0 : this.completeMatchmakingTriggerRealtimeNamespaceId.hashCode());
         result = prime * result + ((this.completeMatchmakingTriggerScriptId == null) ? 0 : this.completeMatchmakingTriggerScriptId.hashCode());
+        result = prime * result + ((this.changeRatingScript == null) ? 0 : this.changeRatingScript.hashCode());
         result = prime * result + ((this.joinNotification == null) ? 0 : this.joinNotification.hashCode());
         result = prime * result + ((this.leaveNotification == null) ? 0 : this.leaveNotification.hashCode());
         result = prime * result + ((this.completeNotification == null) ? 0 : this.completeNotification.hashCode());
@@ -337,6 +351,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (completeMatchmakingTriggerScriptId == null) {
 			return other.completeMatchmakingTriggerScriptId == null;
 		} else if (!completeMatchmakingTriggerScriptId.equals(other.completeMatchmakingTriggerScriptId)) {
+			return false;
+		}
+		if (changeRatingScript == null) {
+			return other.changeRatingScript == null;
+		} else if (!changeRatingScript.equals(other.changeRatingScript)) {
 			return false;
 		}
 		if (joinNotification == null) {
