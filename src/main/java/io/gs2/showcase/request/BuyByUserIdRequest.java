@@ -35,6 +35,7 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
     private String userId;
     private Integer quantity;
     private List<Config> config;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -93,6 +94,19 @@ public class BuyByUserIdRequest extends Gs2BasicRequest<BuyByUserIdRequest> {
 	}
 	public BuyByUserIdRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public BuyByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
