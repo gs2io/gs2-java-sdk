@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class Ranking implements IModel, Serializable {
 	private Long rank;
 	private Long index;
+	private String categoryName;
 	private String userId;
 	private Long score;
 	private String metadata;
@@ -53,6 +54,16 @@ public class Ranking implements IModel, Serializable {
 	}
 	public Ranking withIndex(Long index) {
 		this.index = index;
+		return this;
+	}
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	public Ranking withCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 		return this;
 	}
 	public String getUserId() {
@@ -103,6 +114,7 @@ public class Ranking implements IModel, Serializable {
         return new Ranking()
             .withRank(data.get("rank") == null || data.get("rank").isNull() ? null : data.get("rank").longValue())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").longValue())
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withScore(data.get("score") == null || data.get("score").isNull() ? null : data.get("score").longValue())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
@@ -114,6 +126,7 @@ public class Ranking implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("rank", getRank());
                 put("index", getIndex());
+                put("categoryName", getCategoryName());
                 put("userId", getUserId());
                 put("score", getScore());
                 put("metadata", getMetadata());
@@ -128,6 +141,7 @@ public class Ranking implements IModel, Serializable {
         int result = 1;
         result = prime * result + ((this.rank == null) ? 0 : this.rank.hashCode());
         result = prime * result + ((this.index == null) ? 0 : this.index.hashCode());
+        result = prime * result + ((this.categoryName == null) ? 0 : this.categoryName.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.score == null) ? 0 : this.score.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
@@ -152,6 +166,11 @@ public class Ranking implements IModel, Serializable {
 		if (index == null) {
 			return other.index == null;
 		} else if (!index.equals(other.index)) {
+			return false;
+		}
+		if (categoryName == null) {
+			return other.categoryName == null;
+		} else if (!categoryName.equals(other.categoryName)) {
 			return false;
 		}
 		if (userId == null) {
