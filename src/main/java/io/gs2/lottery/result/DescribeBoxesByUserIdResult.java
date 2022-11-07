@@ -25,23 +25,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
-import io.gs2.lottery.model.Box;
+import io.gs2.lottery.model.AcquireAction;
+import io.gs2.lottery.model.BoxItem;
+import io.gs2.lottery.model.BoxItems;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeBoxesByUserIdResult implements IResult, Serializable {
-    private List<Box> items;
+    private List<BoxItems> items;
     private String nextPageToken;
 
-	public List<Box> getItems() {
+	public List<BoxItems> getItems() {
 		return items;
 	}
 
-	public void setItems(List<Box> items) {
+	public void setItems(List<BoxItems> items) {
 		this.items = items;
 	}
 
-	public DescribeBoxesByUserIdResult withItems(List<Box> items) {
+	public DescribeBoxesByUserIdResult withItems(List<BoxItems> items) {
 		this.items = items;
 		return this;
 	}
@@ -64,10 +66,10 @@ public class DescribeBoxesByUserIdResult implements IResult, Serializable {
             return null;
         }
         return new DescribeBoxesByUserIdResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<Box>() :
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<BoxItems>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
-                    return Box.fromJson(item);
+                    return BoxItems.fromJson(item);
                 }
             ).collect(Collectors.toList()))
             .withNextPageToken(data.get("nextPageToken") == null || data.get("nextPageToken").isNull() ? null : data.get("nextPageToken").asText());
@@ -76,7 +78,7 @@ public class DescribeBoxesByUserIdResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<Box>() :
+                put("items", getItems() == null ? new ArrayList<BoxItems>() :
                     getItems().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
