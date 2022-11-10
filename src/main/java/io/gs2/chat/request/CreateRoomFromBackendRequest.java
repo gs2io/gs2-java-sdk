@@ -34,6 +34,7 @@ public class CreateRoomFromBackendRequest extends Gs2BasicRequest<CreateRoomFrom
     private String metadata;
     private String password;
     private List<String> whiteListUserIds;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -92,6 +93,19 @@ public class CreateRoomFromBackendRequest extends Gs2BasicRequest<CreateRoomFrom
 	}
 	public CreateRoomFromBackendRequest withWhiteListUserIds(List<String> whiteListUserIds) {
 		this.whiteListUserIds = whiteListUserIds;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CreateRoomFromBackendRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -38,6 +38,7 @@ public class QueryIssueStampSheetLogRequest extends Gs2BasicRequest<QueryIssueSt
     private Boolean longTerm;
     private String pageToken;
     private Integer limit;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -136,6 +137,19 @@ public class QueryIssueStampSheetLogRequest extends Gs2BasicRequest<QueryIssueSt
 	}
 	public QueryIssueStampSheetLogRequest withLimit(Integer limit) {
 		this.limit = limit;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public QueryIssueStampSheetLogRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

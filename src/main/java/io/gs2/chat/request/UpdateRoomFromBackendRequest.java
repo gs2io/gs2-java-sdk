@@ -34,6 +34,7 @@ public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFrom
     private String password;
     private List<String> whiteListUserIds;
     private String userId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -92,6 +93,19 @@ public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFrom
 	}
 	public UpdateRoomFromBackendRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UpdateRoomFromBackendRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

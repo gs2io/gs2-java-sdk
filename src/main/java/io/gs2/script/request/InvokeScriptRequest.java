@@ -29,6 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
     private String scriptId;
+    private String userId;
     private String args;
 	public String getScriptId() {
 		return scriptId;
@@ -38,6 +39,16 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
 	}
 	public InvokeScriptRequest withScriptId(String scriptId) {
 		this.scriptId = scriptId;
+		return this;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public InvokeScriptRequest withUserId(String userId) {
+		this.userId = userId;
 		return this;
 	}
 	public String getArgs() {
@@ -57,6 +68,7 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
         }
         return new InvokeScriptRequest()
             .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText());
     }
 
@@ -64,6 +76,7 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("scriptId", getScriptId());
+                put("userId", getUserId());
                 put("args", getArgs());
             }}
         );

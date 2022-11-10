@@ -1138,6 +1138,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("scriptId", request.getScriptId());
+                    put("userId", request.getUserId());
                     put("args", request.getArgs());
                     put("contextStack", request.getContextStack());
                 }}
