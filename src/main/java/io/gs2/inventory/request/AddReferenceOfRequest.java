@@ -34,6 +34,7 @@ public class AddReferenceOfRequest extends Gs2BasicRequest<AddReferenceOfRequest
     private String itemName;
     private String itemSetName;
     private String referenceOf;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -92,6 +93,19 @@ public class AddReferenceOfRequest extends Gs2BasicRequest<AddReferenceOfRequest
 	}
 	public AddReferenceOfRequest withReferenceOf(String referenceOf) {
 		this.referenceOf = referenceOf;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public AddReferenceOfRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

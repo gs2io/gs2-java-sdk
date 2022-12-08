@@ -31,6 +31,7 @@ public class RegisterBlackListRequest extends Gs2BasicRequest<RegisterBlackListR
     private String namespaceName;
     private String accessToken;
     private String targetUserId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class RegisterBlackListRequest extends Gs2BasicRequest<RegisterBlackListR
 	}
 	public RegisterBlackListRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public RegisterBlackListRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -31,6 +31,7 @@ public class FollowRequest extends Gs2BasicRequest<FollowRequest> {
     private String namespaceName;
     private String accessToken;
     private String targetUserId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class FollowRequest extends Gs2BasicRequest<FollowRequest> {
 	}
 	public FollowRequest withTargetUserId(String targetUserId) {
 		this.targetUserId = targetUserId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public FollowRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

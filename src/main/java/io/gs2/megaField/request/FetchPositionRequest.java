@@ -33,6 +33,7 @@ public class FetchPositionRequest extends Gs2BasicRequest<FetchPositionRequest> 
     private String areaModelName;
     private String layerModelName;
     private List<String> userIds;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -81,6 +82,19 @@ public class FetchPositionRequest extends Gs2BasicRequest<FetchPositionRequest> 
 	}
 	public FetchPositionRequest withUserIds(List<String> userIds) {
 		this.userIds = userIds;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public FetchPositionRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

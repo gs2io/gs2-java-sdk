@@ -31,6 +31,7 @@ public class DeleteRoomRequest extends Gs2BasicRequest<DeleteRoomRequest> {
     private String namespaceName;
     private String roomName;
     private String accessToken;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class DeleteRoomRequest extends Gs2BasicRequest<DeleteRoomRequest> {
 	}
 	public DeleteRoomRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteRoomRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

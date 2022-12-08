@@ -30,8 +30,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetProgressRequest extends Gs2BasicRequest<GetProgressRequest> {
     private String namespaceName;
     private String accessToken;
-    private String rateName;
-    private String progressName;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -52,26 +50,6 @@ public class GetProgressRequest extends Gs2BasicRequest<GetProgressRequest> {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getRateName() {
-		return rateName;
-	}
-	public void setRateName(String rateName) {
-		this.rateName = rateName;
-	}
-	public GetProgressRequest withRateName(String rateName) {
-		this.rateName = rateName;
-		return this;
-	}
-	public String getProgressName() {
-		return progressName;
-	}
-	public void setProgressName(String progressName) {
-		this.progressName = progressName;
-	}
-	public GetProgressRequest withProgressName(String progressName) {
-		this.progressName = progressName;
-		return this;
-	}
 
     public static GetProgressRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -79,9 +57,7 @@ public class GetProgressRequest extends Gs2BasicRequest<GetProgressRequest> {
         }
         return new GetProgressRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
-            .withProgressName(data.get("progressName") == null || data.get("progressName").isNull() ? null : data.get("progressName").asText());
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
     }
 
     public JsonNode toJson() {
@@ -89,8 +65,6 @@ public class GetProgressRequest extends Gs2BasicRequest<GetProgressRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("rateName", getRateName());
-                put("progressName", getProgressName());
             }}
         );
     }

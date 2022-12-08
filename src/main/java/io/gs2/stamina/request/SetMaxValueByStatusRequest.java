@@ -34,6 +34,7 @@ public class SetMaxValueByStatusRequest extends Gs2BasicRequest<SetMaxValueBySta
     private String keyId;
     private String signedStatusBody;
     private String signedStatusSignature;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -92,6 +93,19 @@ public class SetMaxValueByStatusRequest extends Gs2BasicRequest<SetMaxValueBySta
 	}
 	public SetMaxValueByStatusRequest withSignedStatusSignature(String signedStatusSignature) {
 		this.signedStatusSignature = signedStatusSignature;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetMaxValueByStatusRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

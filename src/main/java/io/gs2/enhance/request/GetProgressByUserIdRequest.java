@@ -30,8 +30,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetProgressByUserIdRequest extends Gs2BasicRequest<GetProgressByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String rateName;
-    private String progressName;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -52,26 +50,6 @@ public class GetProgressByUserIdRequest extends Gs2BasicRequest<GetProgressByUse
 		this.userId = userId;
 		return this;
 	}
-	public String getRateName() {
-		return rateName;
-	}
-	public void setRateName(String rateName) {
-		this.rateName = rateName;
-	}
-	public GetProgressByUserIdRequest withRateName(String rateName) {
-		this.rateName = rateName;
-		return this;
-	}
-	public String getProgressName() {
-		return progressName;
-	}
-	public void setProgressName(String progressName) {
-		this.progressName = progressName;
-	}
-	public GetProgressByUserIdRequest withProgressName(String progressName) {
-		this.progressName = progressName;
-		return this;
-	}
 
     public static GetProgressByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -79,9 +57,7 @@ public class GetProgressByUserIdRequest extends Gs2BasicRequest<GetProgressByUse
         }
         return new GetProgressByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
-            .withProgressName(data.get("progressName") == null || data.get("progressName").isNull() ? null : data.get("progressName").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
     }
 
     public JsonNode toJson() {
@@ -89,8 +65,6 @@ public class GetProgressByUserIdRequest extends Gs2BasicRequest<GetProgressByUse
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("rateName", getRateName());
-                put("progressName", getProgressName());
             }}
         );
     }

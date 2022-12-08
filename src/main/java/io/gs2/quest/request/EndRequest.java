@@ -36,6 +36,7 @@ public class EndRequest extends Gs2BasicRequest<EndRequest> {
     private List<Reward> rewards;
     private Boolean isComplete;
     private List<Config> config;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -94,6 +95,19 @@ public class EndRequest extends Gs2BasicRequest<EndRequest> {
 	}
 	public EndRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public EndRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

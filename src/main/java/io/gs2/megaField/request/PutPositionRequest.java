@@ -37,6 +37,7 @@ public class PutPositionRequest extends Gs2BasicRequest<PutPositionRequest> {
     private Position position;
     private Vector vector;
     private Float r;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -105,6 +106,19 @@ public class PutPositionRequest extends Gs2BasicRequest<PutPositionRequest> {
 	}
 	public PutPositionRequest withR(Float r) {
 		this.r = r;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PutPositionRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

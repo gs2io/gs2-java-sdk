@@ -272,6 +272,9 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()

@@ -31,6 +31,7 @@ public class DoneUploadRequest extends Gs2BasicRequest<DoneUploadRequest> {
     private String namespaceName;
     private String dataObjectName;
     private String accessToken;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class DoneUploadRequest extends Gs2BasicRequest<DoneUploadRequest> {
 	}
 	public DoneUploadRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DoneUploadRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

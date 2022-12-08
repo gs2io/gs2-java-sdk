@@ -33,6 +33,7 @@ public class PutScoreRequest extends Gs2BasicRequest<PutScoreRequest> {
     private String accessToken;
     private Long score;
     private String metadata;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -81,6 +82,19 @@ public class PutScoreRequest extends Gs2BasicRequest<PutScoreRequest> {
 	}
 	public PutScoreRequest withMetadata(String metadata) {
 		this.metadata = metadata;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PutScoreRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

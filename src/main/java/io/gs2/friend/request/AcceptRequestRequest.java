@@ -31,6 +31,7 @@ public class AcceptRequestRequest extends Gs2BasicRequest<AcceptRequestRequest> 
     private String namespaceName;
     private String accessToken;
     private String fromUserId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class AcceptRequestRequest extends Gs2BasicRequest<AcceptRequestRequest> 
 	}
 	public AcceptRequestRequest withFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public AcceptRequestRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

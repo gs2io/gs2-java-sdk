@@ -31,6 +31,7 @@ public class OpenMessageRequest extends Gs2BasicRequest<OpenMessageRequest> {
     private String namespaceName;
     private String accessToken;
     private String messageName;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class OpenMessageRequest extends Gs2BasicRequest<OpenMessageRequest> {
 	}
 	public OpenMessageRequest withMessageName(String messageName) {
 		this.messageName = messageName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public OpenMessageRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

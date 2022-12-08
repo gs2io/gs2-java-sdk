@@ -1443,6 +1443,9 @@ import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends Abstra
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()

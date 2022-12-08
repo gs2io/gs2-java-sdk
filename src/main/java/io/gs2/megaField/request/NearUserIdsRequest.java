@@ -36,6 +36,7 @@ public class NearUserIdsRequest extends Gs2BasicRequest<NearUserIdsRequest> {
     private Position point;
     private Float r;
     private Integer limit;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -104,6 +105,19 @@ public class NearUserIdsRequest extends Gs2BasicRequest<NearUserIdsRequest> {
 	}
 	public NearUserIdsRequest withLimit(Integer limit) {
 		this.limit = limit;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public NearUserIdsRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

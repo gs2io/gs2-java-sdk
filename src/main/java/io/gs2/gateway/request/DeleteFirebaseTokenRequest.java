@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteFirebaseTokenRequest extends Gs2BasicRequest<DeleteFirebaseTokenRequest> {
     private String namespaceName;
     private String accessToken;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -48,6 +49,19 @@ public class DeleteFirebaseTokenRequest extends Gs2BasicRequest<DeleteFirebaseTo
 	}
 	public DeleteFirebaseTokenRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteFirebaseTokenRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

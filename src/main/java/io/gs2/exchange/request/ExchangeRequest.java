@@ -34,6 +34,7 @@ public class ExchangeRequest extends Gs2BasicRequest<ExchangeRequest> {
     private String accessToken;
     private Integer count;
     private List<Config> config;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -82,6 +83,19 @@ public class ExchangeRequest extends Gs2BasicRequest<ExchangeRequest> {
 	}
 	public ExchangeRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public ExchangeRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -31,6 +31,7 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
     private String namespaceName;
     private String accessToken;
     private Boolean allowConcurrentAccess;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class SetUserIdRequest extends Gs2BasicRequest<SetUserIdRequest> {
 	}
 	public SetUserIdRequest withAllowConcurrentAccess(Boolean allowConcurrentAccess) {
 		this.allowConcurrentAccess = allowConcurrentAccess;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

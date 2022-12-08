@@ -36,6 +36,7 @@ public class DirectEnhanceRequest extends Gs2BasicRequest<DirectEnhanceRequest> 
     private String targetItemSetId;
     private List<Material> materials;
     private List<Config> config;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -94,6 +95,19 @@ public class DirectEnhanceRequest extends Gs2BasicRequest<DirectEnhanceRequest> 
 	}
 	public DirectEnhanceRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DirectEnhanceRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

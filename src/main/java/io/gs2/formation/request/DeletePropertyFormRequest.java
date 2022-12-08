@@ -32,6 +32,7 @@ public class DeletePropertyFormRequest extends Gs2BasicRequest<DeletePropertyFor
     private String accessToken;
     private String formModelName;
     private String propertyId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -70,6 +71,19 @@ public class DeletePropertyFormRequest extends Gs2BasicRequest<DeletePropertyFor
 	}
 	public DeletePropertyFormRequest withPropertyId(String propertyId) {
 		this.propertyId = propertyId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeletePropertyFormRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

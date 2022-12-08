@@ -31,6 +31,7 @@ public class PrepareDownloadRequest extends Gs2BasicRequest<PrepareDownloadReque
     private String namespaceName;
     private String accessToken;
     private String dataObjectId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class PrepareDownloadRequest extends Gs2BasicRequest<PrepareDownloadReque
 	}
 	public PrepareDownloadRequest withDataObjectId(String dataObjectId) {
 		this.dataObjectId = dataObjectId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PrepareDownloadRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

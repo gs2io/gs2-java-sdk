@@ -32,6 +32,7 @@ public class UnlockRequest extends Gs2BasicRequest<UnlockRequest> {
     private String propertyId;
     private String accessToken;
     private String transactionId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -70,6 +71,19 @@ public class UnlockRequest extends Gs2BasicRequest<UnlockRequest> {
 	}
 	public UnlockRequest withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UnlockRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

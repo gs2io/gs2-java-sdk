@@ -30,8 +30,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteProgressByUserIdRequest extends Gs2BasicRequest<DeleteProgressByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String rateName;
-    private String progressName;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -51,26 +49,6 @@ public class DeleteProgressByUserIdRequest extends Gs2BasicRequest<DeleteProgres
 	}
 	public DeleteProgressByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-	public String getRateName() {
-		return rateName;
-	}
-	public void setRateName(String rateName) {
-		this.rateName = rateName;
-	}
-	public DeleteProgressByUserIdRequest withRateName(String rateName) {
-		this.rateName = rateName;
-		return this;
-	}
-	public String getProgressName() {
-		return progressName;
-	}
-	public void setProgressName(String progressName) {
-		this.progressName = progressName;
-	}
-	public DeleteProgressByUserIdRequest withProgressName(String progressName) {
-		this.progressName = progressName;
 		return this;
 	}
 
@@ -93,9 +71,7 @@ public class DeleteProgressByUserIdRequest extends Gs2BasicRequest<DeleteProgres
         }
         return new DeleteProgressByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
-            .withProgressName(data.get("progressName") == null || data.get("progressName").isNull() ? null : data.get("progressName").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
     }
 
     public JsonNode toJson() {
@@ -103,8 +79,6 @@ public class DeleteProgressByUserIdRequest extends Gs2BasicRequest<DeleteProgres
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("rateName", getRateName());
-                put("progressName", getProgressName());
             }}
         );
     }

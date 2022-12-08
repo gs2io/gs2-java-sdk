@@ -34,6 +34,7 @@ public class DoMatchmakingRequest extends Gs2BasicRequest<DoMatchmakingRequest> 
     private String accessToken;
     private Player player;
     private String matchmakingContextToken;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,19 @@ public class DoMatchmakingRequest extends Gs2BasicRequest<DoMatchmakingRequest> 
 	}
 	public DoMatchmakingRequest withMatchmakingContextToken(String matchmakingContextToken) {
 		this.matchmakingContextToken = matchmakingContextToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DoMatchmakingRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

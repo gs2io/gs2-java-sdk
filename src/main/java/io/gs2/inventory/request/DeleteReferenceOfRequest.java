@@ -34,6 +34,7 @@ public class DeleteReferenceOfRequest extends Gs2BasicRequest<DeleteReferenceOfR
     private String itemName;
     private String itemSetName;
     private String referenceOf;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -92,6 +93,19 @@ public class DeleteReferenceOfRequest extends Gs2BasicRequest<DeleteReferenceOfR
 	}
 	public DeleteReferenceOfRequest withReferenceOf(String referenceOf) {
 		this.referenceOf = referenceOf;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteReferenceOfRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

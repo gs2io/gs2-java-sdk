@@ -34,6 +34,7 @@ public class SetRecoverIntervalByStatusRequest extends Gs2BasicRequest<SetRecove
     private String keyId;
     private String signedStatusBody;
     private String signedStatusSignature;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -92,6 +93,19 @@ public class SetRecoverIntervalByStatusRequest extends Gs2BasicRequest<SetRecove
 	}
 	public SetRecoverIntervalByStatusRequest withSignedStatusSignature(String signedStatusSignature) {
 		this.signedStatusSignature = signedStatusSignature;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetRecoverIntervalByStatusRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

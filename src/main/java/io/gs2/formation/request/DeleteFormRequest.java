@@ -32,6 +32,7 @@ public class DeleteFormRequest extends Gs2BasicRequest<DeleteFormRequest> {
     private String accessToken;
     private String moldName;
     private Integer index;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -70,6 +71,19 @@ public class DeleteFormRequest extends Gs2BasicRequest<DeleteFormRequest> {
 	}
 	public DeleteFormRequest withIndex(Integer index) {
 		this.index = index;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteFormRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

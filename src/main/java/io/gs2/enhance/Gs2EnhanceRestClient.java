@@ -1204,6 +1204,9 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()
@@ -1418,95 +1421,6 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeProgressesByUserIdTask extends Gs2RestSessionTask<DescribeProgressesByUserIdResult> {
-        private DescribeProgressesByUserIdRequest request;
-
-        public DescribeProgressesByUserIdTask(
-            DescribeProgressesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeProgressesByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeProgressesByUserIdResult parse(JsonNode data) {
-            return DescribeProgressesByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "enhance")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/progress";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getUserId() != null) {
-                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
-            }
-            if (this.request.getPageToken() != null) {
-                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
-            }
-            if (this.request.getLimit() != null) {
-                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeProgressesByUserIdAsync(
-            DescribeProgressesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeProgressesByUserIdResult>> callback
-    ) {
-        DescribeProgressesByUserIdTask task = new DescribeProgressesByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeProgressesByUserIdResult describeProgressesByUserId(
-            DescribeProgressesByUserIdRequest request
-    ) {
-        final AsyncResult<DescribeProgressesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeProgressesByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
     class CreateProgressByUserIdTask extends Gs2RestSessionTask<CreateProgressByUserIdResult> {
         private CreateProgressByUserIdRequest request;
 
@@ -1625,11 +1539,9 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/progress/{rateName}/progress/{progressName}";
+                + "/{namespaceName}/user/me/progress";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1710,12 +1622,10 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/progress/{rateName}/progress/{progressName}";
+                + "/{namespaceName}/user/{userId}/progress";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1829,6 +1739,9 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             }
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -1990,11 +1903,9 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/progress/rate/{rateName}/progress/{progressName}/end";
+                + "/{namespaceName}/user/me/progress/end";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2019,6 +1930,9 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             }
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -2081,12 +1995,10 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/progress/rate/{rateName}/progress/{progressName}/end";
+                + "/{namespaceName}/user/{userId}/progress/end";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2173,11 +2085,9 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/progress/rate/{rateName}/progress/{progressName}";
+                + "/{namespaceName}/user/me/progress";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2196,6 +2106,9 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             }
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -2258,12 +2171,10 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "enhance")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/progress/rate/{rateName}/progress/{progressName}";
+                + "/{namespaceName}/user/{userId}/progress";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
-            url = url.replace("{progressName}", this.request.getProgressName() == null || this.request.getProgressName().length() == 0 ? "null" : String.valueOf(this.request.getProgressName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {

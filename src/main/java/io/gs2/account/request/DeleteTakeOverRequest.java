@@ -32,6 +32,7 @@ public class DeleteTakeOverRequest extends Gs2BasicRequest<DeleteTakeOverRequest
     private String accessToken;
     private Integer type;
     private String userIdentifier;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -70,6 +71,19 @@ public class DeleteTakeOverRequest extends Gs2BasicRequest<DeleteTakeOverRequest
 	}
 	public DeleteTakeOverRequest withUserIdentifier(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteTakeOverRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

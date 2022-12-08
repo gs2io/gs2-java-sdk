@@ -33,6 +33,7 @@ public class LockRequest extends Gs2BasicRequest<LockRequest> {
     private String accessToken;
     private String transactionId;
     private Long ttl;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -81,6 +82,19 @@ public class LockRequest extends Gs2BasicRequest<LockRequest> {
 	}
 	public LockRequest withTtl(Long ttl) {
 		this.ttl = ttl;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public LockRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

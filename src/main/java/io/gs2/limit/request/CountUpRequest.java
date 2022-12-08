@@ -34,6 +34,7 @@ public class CountUpRequest extends Gs2BasicRequest<CountUpRequest> {
     private String accessToken;
     private Integer countUpValue;
     private Integer maxValue;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -92,6 +93,19 @@ public class CountUpRequest extends Gs2BasicRequest<CountUpRequest> {
 	}
 	public CountUpRequest withMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CountUpRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -31,6 +31,7 @@ public class DeleteAcceptVersionRequest extends Gs2BasicRequest<DeleteAcceptVers
     private String namespaceName;
     private String accessToken;
     private String versionName;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class DeleteAcceptVersionRequest extends Gs2BasicRequest<DeleteAcceptVers
 	}
 	public DeleteAcceptVersionRequest withVersionName(String versionName) {
 		this.versionName = versionName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteAcceptVersionRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

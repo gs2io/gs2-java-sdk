@@ -31,6 +31,7 @@ public class UnsubscribeRequest extends Gs2BasicRequest<UnsubscribeRequest> {
     private String namespaceName;
     private String roomName;
     private String accessToken;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class UnsubscribeRequest extends Gs2BasicRequest<UnsubscribeRequest> {
 	}
 	public UnsubscribeRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UnsubscribeRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

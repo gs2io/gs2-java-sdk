@@ -31,6 +31,7 @@ public class DeleteTriggerRequest extends Gs2BasicRequest<DeleteTriggerRequest> 
     private String namespaceName;
     private String accessToken;
     private String triggerName;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class DeleteTriggerRequest extends Gs2BasicRequest<DeleteTriggerRequest> 
 	}
 	public DeleteTriggerRequest withTriggerName(String triggerName) {
 		this.triggerName = triggerName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteTriggerRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

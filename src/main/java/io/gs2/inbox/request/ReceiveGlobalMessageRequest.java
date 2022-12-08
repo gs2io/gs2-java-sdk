@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class ReceiveGlobalMessageRequest extends Gs2BasicRequest<ReceiveGlobalMessageRequest> {
     private String namespaceName;
     private String accessToken;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -48,6 +49,19 @@ public class ReceiveGlobalMessageRequest extends Gs2BasicRequest<ReceiveGlobalMe
 	}
 	public ReceiveGlobalMessageRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public ReceiveGlobalMessageRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

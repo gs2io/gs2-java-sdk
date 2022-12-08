@@ -31,6 +31,7 @@ public class DeleteDataObjectRequest extends Gs2BasicRequest<DeleteDataObjectReq
     private String namespaceName;
     private String accessToken;
     private String dataObjectName;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class DeleteDataObjectRequest extends Gs2BasicRequest<DeleteDataObjectReq
 	}
 	public DeleteDataObjectRequest withDataObjectName(String dataObjectName) {
 		this.dataObjectName = dataObjectName;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteDataObjectRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

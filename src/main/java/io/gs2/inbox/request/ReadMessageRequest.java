@@ -33,6 +33,7 @@ public class ReadMessageRequest extends Gs2BasicRequest<ReadMessageRequest> {
     private String accessToken;
     private String messageName;
     private List<Config> config;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -71,6 +72,19 @@ public class ReadMessageRequest extends Gs2BasicRequest<ReadMessageRequest> {
 	}
 	public ReadMessageRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public ReadMessageRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

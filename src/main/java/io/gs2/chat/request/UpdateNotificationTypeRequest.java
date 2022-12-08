@@ -33,6 +33,7 @@ public class UpdateNotificationTypeRequest extends Gs2BasicRequest<UpdateNotific
     private String roomName;
     private String accessToken;
     private List<NotificationType> notificationTypes;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -71,6 +72,19 @@ public class UpdateNotificationTypeRequest extends Gs2BasicRequest<UpdateNotific
 	}
 	public UpdateNotificationTypeRequest withNotificationTypes(List<NotificationType> notificationTypes) {
 		this.notificationTypes = notificationTypes;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UpdateNotificationTypeRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

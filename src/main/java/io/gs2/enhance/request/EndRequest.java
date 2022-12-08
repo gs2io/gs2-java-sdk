@@ -31,9 +31,8 @@ import io.gs2.enhance.model.Config;
 public class EndRequest extends Gs2BasicRequest<EndRequest> {
     private String namespaceName;
     private String accessToken;
-    private String rateName;
-    private String progressName;
     private List<Config> config;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -54,26 +53,6 @@ public class EndRequest extends Gs2BasicRequest<EndRequest> {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getRateName() {
-		return rateName;
-	}
-	public void setRateName(String rateName) {
-		this.rateName = rateName;
-	}
-	public EndRequest withRateName(String rateName) {
-		this.rateName = rateName;
-		return this;
-	}
-	public String getProgressName() {
-		return progressName;
-	}
-	public void setProgressName(String progressName) {
-		this.progressName = progressName;
-	}
-	public EndRequest withProgressName(String progressName) {
-		this.progressName = progressName;
-		return this;
-	}
 	public List<Config> getConfig() {
 		return config;
 	}
@@ -85,6 +64,19 @@ public class EndRequest extends Gs2BasicRequest<EndRequest> {
 		return this;
 	}
 
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public EndRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+		return this;
+	}
+
     public static EndRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
@@ -92,8 +84,6 @@ public class EndRequest extends Gs2BasicRequest<EndRequest> {
         return new EndRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
-            .withProgressName(data.get("progressName") == null || data.get("progressName").isNull() ? null : data.get("progressName").asText())
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -107,8 +97,6 @@ public class EndRequest extends Gs2BasicRequest<EndRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("rateName", getRateName());
-                put("progressName", getProgressName());
                 put("config", getConfig() == null ? new ArrayList<Config>() :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef

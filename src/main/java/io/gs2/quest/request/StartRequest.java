@@ -35,6 +35,7 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
     private String accessToken;
     private Boolean force;
     private List<Config> config;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -93,6 +94,19 @@ public class StartRequest extends Gs2BasicRequest<StartRequest> {
 	}
 	public StartRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public StartRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

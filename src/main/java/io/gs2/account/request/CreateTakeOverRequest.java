@@ -33,6 +33,7 @@ public class CreateTakeOverRequest extends Gs2BasicRequest<CreateTakeOverRequest
     private Integer type;
     private String userIdentifier;
     private String password;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -81,6 +82,19 @@ public class CreateTakeOverRequest extends Gs2BasicRequest<CreateTakeOverRequest
 	}
 	public CreateTakeOverRequest withPassword(String password) {
 		this.password = password;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public CreateTakeOverRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

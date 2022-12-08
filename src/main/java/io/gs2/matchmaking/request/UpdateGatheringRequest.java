@@ -33,6 +33,7 @@ public class UpdateGatheringRequest extends Gs2BasicRequest<UpdateGatheringReque
     private String gatheringName;
     private String accessToken;
     private List<AttributeRange> attributeRanges;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -71,6 +72,19 @@ public class UpdateGatheringRequest extends Gs2BasicRequest<UpdateGatheringReque
 	}
 	public UpdateGatheringRequest withAttributeRanges(List<AttributeRange> attributeRanges) {
 		this.attributeRanges = attributeRanges;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UpdateGatheringRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

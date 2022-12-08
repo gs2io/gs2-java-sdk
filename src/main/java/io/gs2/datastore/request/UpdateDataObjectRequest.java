@@ -33,6 +33,7 @@ public class UpdateDataObjectRequest extends Gs2BasicRequest<UpdateDataObjectReq
     private String accessToken;
     private String scope;
     private List<String> allowUserIds;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -81,6 +82,19 @@ public class UpdateDataObjectRequest extends Gs2BasicRequest<UpdateDataObjectReq
 	}
 	public UpdateDataObjectRequest withAllowUserIds(List<String> allowUserIds) {
 		this.allowUserIds = allowUserIds;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public UpdateDataObjectRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

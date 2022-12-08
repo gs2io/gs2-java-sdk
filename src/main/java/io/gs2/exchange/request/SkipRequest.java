@@ -34,6 +34,7 @@ public class SkipRequest extends Gs2BasicRequest<SkipRequest> {
     private String rateName;
     private String awaitName;
     private List<Config> config;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -82,6 +83,19 @@ public class SkipRequest extends Gs2BasicRequest<SkipRequest> {
 	}
 	public SkipRequest withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SkipRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

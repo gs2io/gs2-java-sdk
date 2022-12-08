@@ -6481,7 +6481,6 @@ io/gs2/showcase/request/GetCurrentShowcaseMasterRequest$1.class
 io/gs2/showcase/request/DeleteSalesItemGroupMasterRequest$1.class
 io/gs2/mission/Gs2MissionRestClient$CreateMissionGroupModelMasterTask$1.class
 io/gs2/log/request/DeleteInsightRequest.class
-io/gs2/enhance/Gs2EnhanceRestClient$DescribeProgressesByUserIdTask.class
 io/gs2/distributor/result/RunStampSheetExpressWithoutNamespaceResult.class
 io/gs2/friend/model/FriendUser.class
 io/gs2/formation/request/SetCapacityByStampSheetRequest$1.class

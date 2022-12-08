@@ -38,6 +38,7 @@ public class ActionRequest extends Gs2BasicRequest<ActionRequest> {
     private String layerModelName;
     private MyPosition position;
     private List<Scope> scopes;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -96,6 +97,19 @@ public class ActionRequest extends Gs2BasicRequest<ActionRequest> {
 	}
 	public ActionRequest withScopes(List<Scope> scopes) {
 		this.scopes = scopes;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public ActionRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

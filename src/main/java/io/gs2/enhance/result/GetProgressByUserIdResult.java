@@ -26,14 +26,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.enhance.model.*;
 import io.gs2.enhance.model.Progress;
-import io.gs2.enhance.model.BonusRate;
-import io.gs2.enhance.model.RateModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetProgressByUserIdResult implements IResult, Serializable {
     private Progress item;
-    private RateModel rateModel;
 
 	public Progress getItem() {
 		return item;
@@ -48,33 +45,18 @@ public class GetProgressByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
-	public RateModel getRateModel() {
-		return rateModel;
-	}
-
-	public void setRateModel(RateModel rateModel) {
-		this.rateModel = rateModel;
-	}
-
-	public GetProgressByUserIdResult withRateModel(RateModel rateModel) {
-		this.rateModel = rateModel;
-		return this;
-	}
-
     public static GetProgressByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new GetProgressByUserIdResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Progress.fromJson(data.get("item")))
-            .withRateModel(data.get("rateModel") == null || data.get("rateModel").isNull() ? null : RateModel.fromJson(data.get("rateModel")));
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Progress.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("rateModel", getRateModel() != null ? getRateModel().toJson() : null);
             }}
         );
     }

@@ -30,8 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteProgressRequest extends Gs2BasicRequest<DeleteProgressRequest> {
     private String namespaceName;
     private String accessToken;
-    private String rateName;
-    private String progressName;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -52,24 +51,17 @@ public class DeleteProgressRequest extends Gs2BasicRequest<DeleteProgressRequest
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getRateName() {
-		return rateName;
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
 	}
-	public void setRateName(String rateName) {
-		this.rateName = rateName;
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 	}
-	public DeleteProgressRequest withRateName(String rateName) {
-		this.rateName = rateName;
-		return this;
-	}
-	public String getProgressName() {
-		return progressName;
-	}
-	public void setProgressName(String progressName) {
-		this.progressName = progressName;
-	}
-	public DeleteProgressRequest withProgressName(String progressName) {
-		this.progressName = progressName;
+
+	public DeleteProgressRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
@@ -79,9 +71,7 @@ public class DeleteProgressRequest extends Gs2BasicRequest<DeleteProgressRequest
         }
         return new DeleteProgressRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
-            .withProgressName(data.get("progressName") == null || data.get("progressName").isNull() ? null : data.get("progressName").asText());
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
     }
 
     public JsonNode toJson() {
@@ -89,8 +79,6 @@ public class DeleteProgressRequest extends Gs2BasicRequest<DeleteProgressRequest
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("rateName", getRateName());
-                put("progressName", getProgressName());
             }}
         );
     }

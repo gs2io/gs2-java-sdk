@@ -31,6 +31,7 @@ public class SetFirebaseTokenRequest extends Gs2BasicRequest<SetFirebaseTokenReq
     private String namespaceName;
     private String accessToken;
     private String token;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -59,6 +60,19 @@ public class SetFirebaseTokenRequest extends Gs2BasicRequest<SetFirebaseTokenReq
 	}
 	public SetFirebaseTokenRequest withToken(String token) {
 		this.token = token;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetFirebaseTokenRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

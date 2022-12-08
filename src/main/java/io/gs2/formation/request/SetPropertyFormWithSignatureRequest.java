@@ -35,6 +35,7 @@ public class SetPropertyFormWithSignatureRequest extends Gs2BasicRequest<SetProp
     private String propertyId;
     private List<SlotWithSignature> slots;
     private String keyId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -93,6 +94,19 @@ public class SetPropertyFormWithSignatureRequest extends Gs2BasicRequest<SetProp
 	}
 	public SetPropertyFormWithSignatureRequest withKeyId(String keyId) {
 		this.keyId = keyId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public SetPropertyFormWithSignatureRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
