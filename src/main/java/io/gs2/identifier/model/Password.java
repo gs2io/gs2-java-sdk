@@ -29,9 +29,20 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Password implements IModel, Serializable, Comparable<Password> {
+	private String passwordId;
 	private String userId;
 	private String userName;
 	private Long createdAt;
+	public String getPasswordId() {
+		return passwordId;
+	}
+	public void setPasswordId(String passwordId) {
+		this.passwordId = passwordId;
+	}
+	public Password withPasswordId(String passwordId) {
+		this.passwordId = passwordId;
+		return this;
+	}
 	public String getUserId() {
 		return userId;
 	}
@@ -68,6 +79,7 @@ public class Password implements IModel, Serializable, Comparable<Password> {
             return null;
         }
         return new Password()
+            .withPasswordId(data.get("passwordId") == null || data.get("passwordId").isNull() ? null : data.get("passwordId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
@@ -76,6 +88,7 @@ public class Password implements IModel, Serializable, Comparable<Password> {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("passwordId", getPasswordId());
                 put("userId", getUserId());
                 put("userName", getUserName());
                 put("createdAt", getCreatedAt());
@@ -85,13 +98,14 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 
 	@Override
 	public int compareTo(Password o) {
-		return userId.compareTo(o.userId);
+		return passwordId.compareTo(o.passwordId);
 	}
 
 	@Override
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((this.passwordId == null) ? 0 : this.passwordId.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -107,6 +121,11 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 		if (getClass() != o.getClass())
 			return false;
 		Password other = (Password) o;
+		if (passwordId == null) {
+			return other.passwordId == null;
+		} else if (!passwordId.equals(other.passwordId)) {
+			return false;
+		}
 		if (userId == null) {
 			return other.userId == null;
 		} else if (!userId.equals(other.userId)) {

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.megaField.model.*;
+import io.gs2.megaField.model.LayerModel;
 import io.gs2.megaField.model.AreaModel;
 
 @SuppressWarnings("serial")

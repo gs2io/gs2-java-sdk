@@ -32,6 +32,7 @@ public class AreaModel implements IModel, Serializable, Comparable<AreaModel> {
 	private String areaModelId;
 	private String name;
 	private String metadata;
+	private List<LayerModel> layerModels;
 	public String getAreaModelId() {
 		return areaModelId;
 	}
@@ -62,6 +63,16 @@ public class AreaModel implements IModel, Serializable, Comparable<AreaModel> {
 		this.metadata = metadata;
 		return this;
 	}
+	public List<LayerModel> getLayerModels() {
+		return layerModels;
+	}
+	public void setLayerModels(List<LayerModel> layerModels) {
+		this.layerModels = layerModels;
+	}
+	public AreaModel withLayerModels(List<LayerModel> layerModels) {
+		this.layerModels = layerModels;
+		return this;
+	}
 
     public static AreaModel fromJson(JsonNode data) {
         if (data == null) {
@@ -70,7 +81,13 @@ public class AreaModel implements IModel, Serializable, Comparable<AreaModel> {
         return new AreaModel()
             .withAreaModelId(data.get("areaModelId") == null || data.get("areaModelId").isNull() ? null : data.get("areaModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withLayerModels(data.get("layerModels") == null || data.get("layerModels").isNull() ? new ArrayList<LayerModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("layerModels").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return LayerModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -79,6 +96,12 @@ public class AreaModel implements IModel, Serializable, Comparable<AreaModel> {
                 put("areaModelId", getAreaModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
+                put("layerModels", getLayerModels() == null ? new ArrayList<LayerModel>() :
+                    getLayerModels().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
@@ -95,6 +118,7 @@ public class AreaModel implements IModel, Serializable, Comparable<AreaModel> {
         result = prime * result + ((this.areaModelId == null) ? 0 : this.areaModelId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.layerModels == null) ? 0 : this.layerModels.hashCode());
 		return result;
 	}
 
@@ -120,6 +144,11 @@ public class AreaModel implements IModel, Serializable, Comparable<AreaModel> {
 		if (metadata == null) {
 			return other.metadata == null;
 		} else if (!metadata.equals(other.metadata)) {
+			return false;
+		}
+		if (layerModels == null) {
+			return other.layerModels == null;
+		} else if (!layerModels.equals(other.layerModels)) {
 			return false;
 		}
 		return true;
