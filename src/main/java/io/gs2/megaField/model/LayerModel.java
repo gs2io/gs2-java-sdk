@@ -30,7 +30,6 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LayerModel implements IModel, Serializable, Comparable<LayerModel> {
 	private String layerModelId;
-	private String areaModelName;
 	private String name;
 	private String metadata;
 	public String getLayerModelId() {
@@ -41,16 +40,6 @@ public class LayerModel implements IModel, Serializable, Comparable<LayerModel> 
 	}
 	public LayerModel withLayerModelId(String layerModelId) {
 		this.layerModelId = layerModelId;
-		return this;
-	}
-	public String getAreaModelName() {
-		return areaModelName;
-	}
-	public void setAreaModelName(String areaModelName) {
-		this.areaModelName = areaModelName;
-	}
-	public LayerModel withAreaModelName(String areaModelName) {
-		this.areaModelName = areaModelName;
 		return this;
 	}
 	public String getName() {
@@ -80,7 +69,6 @@ public class LayerModel implements IModel, Serializable, Comparable<LayerModel> 
         }
         return new LayerModel()
             .withLayerModelId(data.get("layerModelId") == null || data.get("layerModelId").isNull() ? null : data.get("layerModelId").asText())
-            .withAreaModelName(data.get("areaModelName") == null || data.get("areaModelName").isNull() ? null : data.get("areaModelName").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText());
     }
@@ -89,7 +77,6 @@ public class LayerModel implements IModel, Serializable, Comparable<LayerModel> 
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("layerModelId", getLayerModelId());
-                put("areaModelName", getAreaModelName());
                 put("name", getName());
                 put("metadata", getMetadata());
             }}
@@ -106,7 +93,6 @@ public class LayerModel implements IModel, Serializable, Comparable<LayerModel> 
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.layerModelId == null) ? 0 : this.layerModelId.hashCode());
-        result = prime * result + ((this.areaModelName == null) ? 0 : this.areaModelName.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
 		return result;
@@ -124,11 +110,6 @@ public class LayerModel implements IModel, Serializable, Comparable<LayerModel> 
 		if (layerModelId == null) {
 			return other.layerModelId == null;
 		} else if (!layerModelId.equals(other.layerModelId)) {
-			return false;
-		}
-		if (areaModelName == null) {
-			return other.areaModelName == null;
-		} else if (!areaModelName.equals(other.areaModelName)) {
 			return false;
 		}
 		if (name == null) {
