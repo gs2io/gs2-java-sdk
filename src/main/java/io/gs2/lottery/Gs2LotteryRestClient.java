@@ -1386,520 +1386,6 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeBoxesTask extends Gs2RestSessionTask<DescribeBoxesResult> {
-        private DescribeBoxesRequest request;
-
-        public DescribeBoxesTask(
-            DescribeBoxesRequest request,
-            AsyncAction<AsyncResult<DescribeBoxesResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeBoxesResult parse(JsonNode data) {
-            return DescribeBoxesResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "lottery")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/box";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getPageToken() != null) {
-                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
-            }
-            if (this.request.getLimit() != null) {
-                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeBoxesAsync(
-            DescribeBoxesRequest request,
-            AsyncAction<AsyncResult<DescribeBoxesResult>> callback
-    ) {
-        DescribeBoxesTask task = new DescribeBoxesTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeBoxesResult describeBoxes(
-            DescribeBoxesRequest request
-    ) {
-        final AsyncResult<DescribeBoxesResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeBoxesAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeBoxesByUserIdTask extends Gs2RestSessionTask<DescribeBoxesByUserIdResult> {
-        private DescribeBoxesByUserIdRequest request;
-
-        public DescribeBoxesByUserIdTask(
-            DescribeBoxesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeBoxesByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeBoxesByUserIdResult parse(JsonNode data) {
-            return DescribeBoxesByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "lottery")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/box";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getPageToken() != null) {
-                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
-            }
-            if (this.request.getLimit() != null) {
-                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeBoxesByUserIdAsync(
-            DescribeBoxesByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeBoxesByUserIdResult>> callback
-    ) {
-        DescribeBoxesByUserIdTask task = new DescribeBoxesByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeBoxesByUserIdResult describeBoxesByUserId(
-            DescribeBoxesByUserIdRequest request
-    ) {
-        final AsyncResult<DescribeBoxesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeBoxesByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetBoxTask extends Gs2RestSessionTask<GetBoxResult> {
-        private GetBoxRequest request;
-
-        public GetBoxTask(
-            GetBoxRequest request,
-            AsyncAction<AsyncResult<GetBoxResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetBoxResult parse(JsonNode data) {
-            return GetBoxResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "lottery")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/box/{prizeTableName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void getBoxAsync(
-            GetBoxRequest request,
-            AsyncAction<AsyncResult<GetBoxResult>> callback
-    ) {
-        GetBoxTask task = new GetBoxTask(request, callback);
-        session.execute(task);
-    }
-
-    public GetBoxResult getBox(
-            GetBoxRequest request
-    ) {
-        final AsyncResult<GetBoxResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getBoxAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetBoxByUserIdTask extends Gs2RestSessionTask<GetBoxByUserIdResult> {
-        private GetBoxByUserIdRequest request;
-
-        public GetBoxByUserIdTask(
-            GetBoxByUserIdRequest request,
-            AsyncAction<AsyncResult<GetBoxByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetBoxByUserIdResult parse(JsonNode data) {
-            return GetBoxByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "lottery")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/box/{prizeTableName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void getBoxByUserIdAsync(
-            GetBoxByUserIdRequest request,
-            AsyncAction<AsyncResult<GetBoxByUserIdResult>> callback
-    ) {
-        GetBoxByUserIdTask task = new GetBoxByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public GetBoxByUserIdResult getBoxByUserId(
-            GetBoxByUserIdRequest request
-    ) {
-        final AsyncResult<GetBoxByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getBoxByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class ResetBoxTask extends Gs2RestSessionTask<ResetBoxResult> {
-        private ResetBoxRequest request;
-
-        public ResetBoxTask(
-            ResetBoxRequest request,
-            AsyncAction<AsyncResult<ResetBoxResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public ResetBoxResult parse(JsonNode data) {
-            return ResetBoxResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "lottery")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/box/{prizeTableName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void resetBoxAsync(
-            ResetBoxRequest request,
-            AsyncAction<AsyncResult<ResetBoxResult>> callback
-    ) {
-        ResetBoxTask task = new ResetBoxTask(request, callback);
-        session.execute(task);
-    }
-
-    public ResetBoxResult resetBox(
-            ResetBoxRequest request
-    ) {
-        final AsyncResult<ResetBoxResult>[] resultAsyncResult = new AsyncResult[]{null};
-        resetBoxAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class ResetBoxByUserIdTask extends Gs2RestSessionTask<ResetBoxByUserIdResult> {
-        private ResetBoxByUserIdRequest request;
-
-        public ResetBoxByUserIdTask(
-            ResetBoxByUserIdRequest request,
-            AsyncAction<AsyncResult<ResetBoxByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public ResetBoxByUserIdResult parse(JsonNode data) {
-            return ResetBoxByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "lottery")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/box/{prizeTableName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void resetBoxByUserIdAsync(
-            ResetBoxByUserIdRequest request,
-            AsyncAction<AsyncResult<ResetBoxByUserIdResult>> callback
-    ) {
-        ResetBoxByUserIdTask task = new ResetBoxByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public ResetBoxByUserIdResult resetBoxByUserId(
-            ResetBoxByUserIdRequest request
-    ) {
-        final AsyncResult<ResetBoxByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        resetBoxByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
     class DescribeLotteryModelsTask extends Gs2RestSessionTask<DescribeLotteryModelsResult> {
         private DescribeLotteryModelsRequest request;
 
@@ -3117,6 +2603,520 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
     ) {
         final AsyncResult<ResetPrizeLimitResult>[] resultAsyncResult = new AsyncResult[]{null};
         resetPrizeLimitAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeBoxesTask extends Gs2RestSessionTask<DescribeBoxesResult> {
+        private DescribeBoxesRequest request;
+
+        public DescribeBoxesTask(
+            DescribeBoxesRequest request,
+            AsyncAction<AsyncResult<DescribeBoxesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeBoxesResult parse(JsonNode data) {
+            return DescribeBoxesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/box";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeBoxesAsync(
+            DescribeBoxesRequest request,
+            AsyncAction<AsyncResult<DescribeBoxesResult>> callback
+    ) {
+        DescribeBoxesTask task = new DescribeBoxesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeBoxesResult describeBoxes(
+            DescribeBoxesRequest request
+    ) {
+        final AsyncResult<DescribeBoxesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeBoxesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeBoxesByUserIdTask extends Gs2RestSessionTask<DescribeBoxesByUserIdResult> {
+        private DescribeBoxesByUserIdRequest request;
+
+        public DescribeBoxesByUserIdTask(
+            DescribeBoxesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeBoxesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeBoxesByUserIdResult parse(JsonNode data) {
+            return DescribeBoxesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/box";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeBoxesByUserIdAsync(
+            DescribeBoxesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeBoxesByUserIdResult>> callback
+    ) {
+        DescribeBoxesByUserIdTask task = new DescribeBoxesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeBoxesByUserIdResult describeBoxesByUserId(
+            DescribeBoxesByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeBoxesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeBoxesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetBoxTask extends Gs2RestSessionTask<GetBoxResult> {
+        private GetBoxRequest request;
+
+        public GetBoxTask(
+            GetBoxRequest request,
+            AsyncAction<AsyncResult<GetBoxResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetBoxResult parse(JsonNode data) {
+            return GetBoxResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/box/{prizeTableName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getBoxAsync(
+            GetBoxRequest request,
+            AsyncAction<AsyncResult<GetBoxResult>> callback
+    ) {
+        GetBoxTask task = new GetBoxTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetBoxResult getBox(
+            GetBoxRequest request
+    ) {
+        final AsyncResult<GetBoxResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getBoxAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetBoxByUserIdTask extends Gs2RestSessionTask<GetBoxByUserIdResult> {
+        private GetBoxByUserIdRequest request;
+
+        public GetBoxByUserIdTask(
+            GetBoxByUserIdRequest request,
+            AsyncAction<AsyncResult<GetBoxByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetBoxByUserIdResult parse(JsonNode data) {
+            return GetBoxByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/box/{prizeTableName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getBoxByUserIdAsync(
+            GetBoxByUserIdRequest request,
+            AsyncAction<AsyncResult<GetBoxByUserIdResult>> callback
+    ) {
+        GetBoxByUserIdTask task = new GetBoxByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetBoxByUserIdResult getBoxByUserId(
+            GetBoxByUserIdRequest request
+    ) {
+        final AsyncResult<GetBoxByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getBoxByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ResetBoxTask extends Gs2RestSessionTask<ResetBoxResult> {
+        private ResetBoxRequest request;
+
+        public ResetBoxTask(
+            ResetBoxRequest request,
+            AsyncAction<AsyncResult<ResetBoxResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ResetBoxResult parse(JsonNode data) {
+            return ResetBoxResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/box/{prizeTableName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void resetBoxAsync(
+            ResetBoxRequest request,
+            AsyncAction<AsyncResult<ResetBoxResult>> callback
+    ) {
+        ResetBoxTask task = new ResetBoxTask(request, callback);
+        session.execute(task);
+    }
+
+    public ResetBoxResult resetBox(
+            ResetBoxRequest request
+    ) {
+        final AsyncResult<ResetBoxResult>[] resultAsyncResult = new AsyncResult[]{null};
+        resetBoxAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ResetBoxByUserIdTask extends Gs2RestSessionTask<ResetBoxByUserIdResult> {
+        private ResetBoxByUserIdRequest request;
+
+        public ResetBoxByUserIdTask(
+            ResetBoxByUserIdRequest request,
+            AsyncAction<AsyncResult<ResetBoxByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ResetBoxByUserIdResult parse(JsonNode data) {
+            return ResetBoxByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/box/{prizeTableName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{prizeTableName}", this.request.getPrizeTableName() == null || this.request.getPrizeTableName().length() == 0 ? "null" : String.valueOf(this.request.getPrizeTableName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void resetBoxByUserIdAsync(
+            ResetBoxByUserIdRequest request,
+            AsyncAction<AsyncResult<ResetBoxByUserIdResult>> callback
+    ) {
+        ResetBoxByUserIdTask task = new ResetBoxByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public ResetBoxByUserIdResult resetBoxByUserId(
+            ResetBoxByUserIdRequest request
+    ) {
+        final AsyncResult<ResetBoxByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        resetBoxByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
