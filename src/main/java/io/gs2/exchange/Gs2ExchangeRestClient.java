@@ -2038,10 +2038,9 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "exchange")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}";
+                + "/{namespaceName}/user/me/exchange/await/{awaitName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
             url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -2123,11 +2122,10 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "exchange")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}";
+                + "/{namespaceName}/user/{userId}/exchange/await/{awaitName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
             url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -2206,10 +2204,9 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "exchange")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}";
+                + "/{namespaceName}/user/me/exchange/await/{awaitName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
             url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -2300,11 +2297,10 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "exchange")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}";
+                + "/{namespaceName}/user/{userId}/exchange/await/{awaitName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
             url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -2392,11 +2388,10 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "exchange")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}/force";
+                + "/{namespaceName}/user/{userId}/exchange/await/{awaitName}/force";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
             url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -2484,10 +2479,9 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "exchange")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}/skip";
+                + "/{namespaceName}/user/me/exchange/await/{awaitName}/skip";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
             url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -2578,11 +2572,10 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "exchange")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}/skip";
+                + "/{namespaceName}/user/{userId}/exchange/await/{awaitName}/skip";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
             url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -2670,10 +2663,9 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "exchange")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}";
+                + "/{namespaceName}/user/me/exchange/await/{awaitName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
             url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -2758,11 +2750,10 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "exchange")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}";
+                + "/{namespaceName}/user/{userId}/exchange/await/{awaitName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
             url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
 
             List<String> queryStrings = new ArrayList<> ();

@@ -28,10 +28,21 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SubscribeUser implements IModel, Serializable {
+public class SubscribeUser implements IModel, Serializable, Comparable<SubscribeUser> {
+	private String subscribeUserId;
 	private String categoryName;
 	private String userId;
 	private String targetUserId;
+	public String getSubscribeUserId() {
+		return subscribeUserId;
+	}
+	public void setSubscribeUserId(String subscribeUserId) {
+		this.subscribeUserId = subscribeUserId;
+	}
+	public SubscribeUser withSubscribeUserId(String subscribeUserId) {
+		this.subscribeUserId = subscribeUserId;
+		return this;
+	}
 	public String getCategoryName() {
 		return categoryName;
 	}
@@ -68,6 +79,7 @@ public class SubscribeUser implements IModel, Serializable {
             return null;
         }
         return new SubscribeUser()
+            .withSubscribeUserId(data.get("subscribeUserId") == null || data.get("subscribeUserId").isNull() ? null : data.get("subscribeUserId").asText())
             .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText());
@@ -76,6 +88,7 @@ public class SubscribeUser implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("subscribeUserId", getSubscribeUserId());
                 put("categoryName", getCategoryName());
                 put("userId", getUserId());
                 put("targetUserId", getTargetUserId());
@@ -84,9 +97,15 @@ public class SubscribeUser implements IModel, Serializable {
     }
 
 	@Override
+	public int compareTo(SubscribeUser o) {
+		return subscribeUserId.compareTo(o.subscribeUserId);
+	}
+
+	@Override
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((this.subscribeUserId == null) ? 0 : this.subscribeUserId.hashCode());
         result = prime * result + ((this.categoryName == null) ? 0 : this.categoryName.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.targetUserId == null) ? 0 : this.targetUserId.hashCode());
@@ -102,6 +121,11 @@ public class SubscribeUser implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		SubscribeUser other = (SubscribeUser) o;
+		if (subscribeUserId == null) {
+			return other.subscribeUserId == null;
+		} else if (!subscribeUserId.equals(other.subscribeUserId)) {
+			return false;
+		}
 		if (categoryName == null) {
 			return other.categoryName == null;
 		} else if (!categoryName.equals(other.categoryName)) {

@@ -30,7 +30,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetAwaitByUserIdRequest extends Gs2BasicRequest<GetAwaitByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String rateName;
     private String awaitName;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -52,16 +51,6 @@ public class GetAwaitByUserIdRequest extends Gs2BasicRequest<GetAwaitByUserIdReq
 		this.userId = userId;
 		return this;
 	}
-	public String getRateName() {
-		return rateName;
-	}
-	public void setRateName(String rateName) {
-		this.rateName = rateName;
-	}
-	public GetAwaitByUserIdRequest withRateName(String rateName) {
-		this.rateName = rateName;
-		return this;
-	}
 	public String getAwaitName() {
 		return awaitName;
 	}
@@ -80,7 +69,6 @@ public class GetAwaitByUserIdRequest extends Gs2BasicRequest<GetAwaitByUserIdReq
         return new GetAwaitByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withAwaitName(data.get("awaitName") == null || data.get("awaitName").isNull() ? null : data.get("awaitName").asText());
     }
 
@@ -89,7 +77,6 @@ public class GetAwaitByUserIdRequest extends Gs2BasicRequest<GetAwaitByUserIdReq
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("rateName", getRateName());
                 put("awaitName", getAwaitName());
             }}
         );

@@ -30,7 +30,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteAwaitByUserIdRequest extends Gs2BasicRequest<DeleteAwaitByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String rateName;
     private String awaitName;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -51,16 +50,6 @@ public class DeleteAwaitByUserIdRequest extends Gs2BasicRequest<DeleteAwaitByUse
 	}
 	public DeleteAwaitByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-	public String getRateName() {
-		return rateName;
-	}
-	public void setRateName(String rateName) {
-		this.rateName = rateName;
-	}
-	public DeleteAwaitByUserIdRequest withRateName(String rateName) {
-		this.rateName = rateName;
 		return this;
 	}
 	public String getAwaitName() {
@@ -94,7 +83,6 @@ public class DeleteAwaitByUserIdRequest extends Gs2BasicRequest<DeleteAwaitByUse
         return new DeleteAwaitByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withAwaitName(data.get("awaitName") == null || data.get("awaitName").isNull() ? null : data.get("awaitName").asText());
     }
 
@@ -103,7 +91,6 @@ public class DeleteAwaitByUserIdRequest extends Gs2BasicRequest<DeleteAwaitByUse
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("rateName", getRateName());
                 put("awaitName", getAwaitName());
             }}
         );

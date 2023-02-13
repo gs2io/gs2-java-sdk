@@ -31,7 +31,6 @@ import io.gs2.exchange.model.Config;
 public class SkipByUserIdRequest extends Gs2BasicRequest<SkipByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String rateName;
     private String awaitName;
     private List<Config> config;
     private String duplicationAvoider;
@@ -53,16 +52,6 @@ public class SkipByUserIdRequest extends Gs2BasicRequest<SkipByUserIdRequest> {
 	}
 	public SkipByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-	public String getRateName() {
-		return rateName;
-	}
-	public void setRateName(String rateName) {
-		this.rateName = rateName;
-	}
-	public SkipByUserIdRequest withRateName(String rateName) {
-		this.rateName = rateName;
 		return this;
 	}
 	public String getAwaitName() {
@@ -106,7 +95,6 @@ public class SkipByUserIdRequest extends Gs2BasicRequest<SkipByUserIdRequest> {
         return new SkipByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withAwaitName(data.get("awaitName") == null || data.get("awaitName").isNull() ? null : data.get("awaitName").asText())
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
@@ -121,7 +109,6 @@ public class SkipByUserIdRequest extends Gs2BasicRequest<SkipByUserIdRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("rateName", getRateName());
                 put("awaitName", getAwaitName());
                 put("config", getConfig() == null ? new ArrayList<Config>() :
                     getConfig().stream().map(item -> {
