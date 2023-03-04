@@ -43,6 +43,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private NotificationSetting joinNotification;
 	private NotificationSetting leaveNotification;
 	private NotificationSetting completeNotification;
+	private NotificationSetting changeRatingNotification;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -186,6 +187,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.completeNotification = completeNotification;
 		return this;
 	}
+	public NotificationSetting getChangeRatingNotification() {
+		return changeRatingNotification;
+	}
+	public void setChangeRatingNotification(NotificationSetting changeRatingNotification) {
+		this.changeRatingNotification = changeRatingNotification;
+	}
+	public Namespace withChangeRatingNotification(NotificationSetting changeRatingNotification) {
+		this.changeRatingNotification = changeRatingNotification;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -236,6 +247,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
             .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
             .withCompleteNotification(data.get("completeNotification") == null || data.get("completeNotification").isNull() ? null : NotificationSetting.fromJson(data.get("completeNotification")))
+            .withChangeRatingNotification(data.get("changeRatingNotification") == null || data.get("changeRatingNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeRatingNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
@@ -258,6 +270,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
                 put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
                 put("completeNotification", getCompleteNotification() != null ? getCompleteNotification().toJson() : null);
+                put("changeRatingNotification", getChangeRatingNotification() != null ? getChangeRatingNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -288,6 +301,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.joinNotification == null) ? 0 : this.joinNotification.hashCode());
         result = prime * result + ((this.leaveNotification == null) ? 0 : this.leaveNotification.hashCode());
         result = prime * result + ((this.completeNotification == null) ? 0 : this.completeNotification.hashCode());
+        result = prime * result + ((this.changeRatingNotification == null) ? 0 : this.changeRatingNotification.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -371,6 +385,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (completeNotification == null) {
 			return other.completeNotification == null;
 		} else if (!completeNotification.equals(other.completeNotification)) {
+			return false;
+		}
+		if (changeRatingNotification == null) {
+			return other.changeRatingNotification == null;
+		} else if (!changeRatingNotification.equals(other.changeRatingNotification)) {
 			return false;
 		}
 		if (logSetting == null) {

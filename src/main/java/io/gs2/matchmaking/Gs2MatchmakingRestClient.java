@@ -167,6 +167,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
                     put("completeNotification", request.getCompleteNotification() != null ? request.getCompleteNotification().toJson() : null);
+                    put("changeRatingNotification", request.getChangeRatingNotification() != null ? request.getChangeRatingNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -420,6 +421,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
                     put("completeNotification", request.getCompleteNotification() != null ? request.getCompleteNotification().toJson() : null);
+                    put("changeRatingNotification", request.getChangeRatingNotification() != null ? request.getChangeRatingNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

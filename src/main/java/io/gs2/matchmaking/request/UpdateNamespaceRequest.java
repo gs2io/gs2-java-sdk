@@ -44,6 +44,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private NotificationSetting joinNotification;
     private NotificationSetting leaveNotification;
     private NotificationSetting completeNotification;
+    private NotificationSetting changeRatingNotification;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -175,6 +176,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.completeNotification = completeNotification;
 		return this;
 	}
+	public NotificationSetting getChangeRatingNotification() {
+		return changeRatingNotification;
+	}
+	public void setChangeRatingNotification(NotificationSetting changeRatingNotification) {
+		this.changeRatingNotification = changeRatingNotification;
+	}
+	public UpdateNamespaceRequest withChangeRatingNotification(NotificationSetting changeRatingNotification) {
+		this.changeRatingNotification = changeRatingNotification;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -204,6 +215,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
             .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
             .withCompleteNotification(data.get("completeNotification") == null || data.get("completeNotification").isNull() ? null : NotificationSetting.fromJson(data.get("completeNotification")))
+            .withChangeRatingNotification(data.get("changeRatingNotification") == null || data.get("changeRatingNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changeRatingNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -223,6 +235,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
                 put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
                 put("completeNotification", getCompleteNotification() != null ? getCompleteNotification().toJson() : null);
+                put("changeRatingNotification", getChangeRatingNotification() != null ? getChangeRatingNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );
