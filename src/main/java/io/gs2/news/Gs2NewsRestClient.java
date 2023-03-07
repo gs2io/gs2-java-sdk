@@ -528,6 +528,342 @@ import io.gs2.news.model.*;public class Gs2NewsRestClient extends AbstractGs2Cli
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeProgressesTask extends Gs2RestSessionTask<DescribeProgressesResult> {
+        private DescribeProgressesRequest request;
+
+        public DescribeProgressesTask(
+            DescribeProgressesRequest request,
+            AsyncAction<AsyncResult<DescribeProgressesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeProgressesResult parse(JsonNode data) {
+            return DescribeProgressesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "news")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/progress";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeProgressesAsync(
+            DescribeProgressesRequest request,
+            AsyncAction<AsyncResult<DescribeProgressesResult>> callback
+    ) {
+        DescribeProgressesTask task = new DescribeProgressesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeProgressesResult describeProgresses(
+            DescribeProgressesRequest request
+    ) {
+        final AsyncResult<DescribeProgressesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeProgressesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetProgressTask extends Gs2RestSessionTask<GetProgressResult> {
+        private GetProgressRequest request;
+
+        public GetProgressTask(
+            GetProgressRequest request,
+            AsyncAction<AsyncResult<GetProgressResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetProgressResult parse(JsonNode data) {
+            return GetProgressResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "news")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/progress/{uploadToken}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{uploadToken}", this.request.getUploadToken() == null || this.request.getUploadToken().length() == 0 ? "null" : String.valueOf(this.request.getUploadToken()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getProgressAsync(
+            GetProgressRequest request,
+            AsyncAction<AsyncResult<GetProgressResult>> callback
+    ) {
+        GetProgressTask task = new GetProgressTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetProgressResult getProgress(
+            GetProgressRequest request
+    ) {
+        final AsyncResult<GetProgressResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getProgressAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeOutputsTask extends Gs2RestSessionTask<DescribeOutputsResult> {
+        private DescribeOutputsRequest request;
+
+        public DescribeOutputsTask(
+            DescribeOutputsRequest request,
+            AsyncAction<AsyncResult<DescribeOutputsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeOutputsResult parse(JsonNode data) {
+            return DescribeOutputsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "news")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/progress/{uploadToken}/output";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{uploadToken}", this.request.getUploadToken() == null || this.request.getUploadToken().length() == 0 ? "null" : String.valueOf(this.request.getUploadToken()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeOutputsAsync(
+            DescribeOutputsRequest request,
+            AsyncAction<AsyncResult<DescribeOutputsResult>> callback
+    ) {
+        DescribeOutputsTask task = new DescribeOutputsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeOutputsResult describeOutputs(
+            DescribeOutputsRequest request
+    ) {
+        final AsyncResult<DescribeOutputsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeOutputsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetOutputTask extends Gs2RestSessionTask<GetOutputResult> {
+        private GetOutputRequest request;
+
+        public GetOutputTask(
+            GetOutputRequest request,
+            AsyncAction<AsyncResult<GetOutputResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetOutputResult parse(JsonNode data) {
+            return GetOutputResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "news")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/progress/{uploadToken}/output/{outputName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{uploadToken}", this.request.getUploadToken() == null || this.request.getUploadToken().length() == 0 ? "null" : String.valueOf(this.request.getUploadToken()));
+            url = url.replace("{outputName}", this.request.getOutputName() == null || this.request.getOutputName().length() == 0 ? "null" : String.valueOf(this.request.getOutputName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getOutputAsync(
+            GetOutputRequest request,
+            AsyncAction<AsyncResult<GetOutputResult>> callback
+    ) {
+        GetOutputTask task = new GetOutputTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetOutputResult getOutput(
+            GetOutputRequest request
+    ) {
+        final AsyncResult<GetOutputResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getOutputAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class PrepareUpdateCurrentNewsMasterTask extends Gs2RestSessionTask<PrepareUpdateCurrentNewsMasterResult> {
         private PrepareUpdateCurrentNewsMasterRequest request;
 
