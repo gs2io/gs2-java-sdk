@@ -37,6 +37,7 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 	private String orderDirection;
 	private String scope;
 	private Boolean uniqueByUserId;
+	private Boolean sum;
 	private Integer calculateFixedTimingHour;
 	private Integer calculateFixedTimingMinute;
 	private Integer calculateIntervalMinutes;
@@ -123,6 +124,16 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 		this.uniqueByUserId = uniqueByUserId;
 		return this;
 	}
+	public Boolean getSum() {
+		return sum;
+	}
+	public void setSum(Boolean sum) {
+		this.sum = sum;
+	}
+	public CategoryModel withSum(Boolean sum) {
+		this.sum = sum;
+		return this;
+	}
 	public Integer getCalculateFixedTimingHour() {
 		return calculateFixedTimingHour;
 	}
@@ -197,6 +208,7 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
             .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
             .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
             .withUniqueByUserId(data.get("uniqueByUserId") == null || data.get("uniqueByUserId").isNull() ? null : data.get("uniqueByUserId").booleanValue())
+            .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
             .withCalculateFixedTimingHour(data.get("calculateFixedTimingHour") == null || data.get("calculateFixedTimingHour").isNull() ? null : data.get("calculateFixedTimingHour").intValue())
             .withCalculateFixedTimingMinute(data.get("calculateFixedTimingMinute") == null || data.get("calculateFixedTimingMinute").isNull() ? null : data.get("calculateFixedTimingMinute").intValue())
             .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
@@ -216,6 +228,7 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
                 put("orderDirection", getOrderDirection());
                 put("scope", getScope());
                 put("uniqueByUserId", getUniqueByUserId());
+                put("sum", getSum());
                 put("calculateFixedTimingHour", getCalculateFixedTimingHour());
                 put("calculateFixedTimingMinute", getCalculateFixedTimingMinute());
                 put("calculateIntervalMinutes", getCalculateIntervalMinutes());
@@ -243,6 +256,7 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
         result = prime * result + ((this.orderDirection == null) ? 0 : this.orderDirection.hashCode());
         result = prime * result + ((this.scope == null) ? 0 : this.scope.hashCode());
         result = prime * result + ((this.uniqueByUserId == null) ? 0 : this.uniqueByUserId.hashCode());
+        result = prime * result + ((this.sum == null) ? 0 : this.sum.hashCode());
         result = prime * result + ((this.calculateFixedTimingHour == null) ? 0 : this.calculateFixedTimingHour.hashCode());
         result = prime * result + ((this.calculateFixedTimingMinute == null) ? 0 : this.calculateFixedTimingMinute.hashCode());
         result = prime * result + ((this.calculateIntervalMinutes == null) ? 0 : this.calculateIntervalMinutes.hashCode());
@@ -299,6 +313,11 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 		if (uniqueByUserId == null) {
 			return other.uniqueByUserId == null;
 		} else if (!uniqueByUserId.equals(other.uniqueByUserId)) {
+			return false;
+		}
+		if (sum == null) {
+			return other.sum == null;
+		} else if (!sum.equals(other.sum)) {
 			return false;
 		}
 		if (calculateFixedTimingHour == null) {

@@ -37,6 +37,7 @@ public class CreateCategoryModelMasterRequest extends Gs2BasicRequest<CreateCate
     private String orderDirection;
     private String scope;
     private Boolean uniqueByUserId;
+    private Boolean sum;
     private Integer calculateFixedTimingHour;
     private Integer calculateFixedTimingMinute;
     private Integer calculateIntervalMinutes;
@@ -133,6 +134,16 @@ public class CreateCategoryModelMasterRequest extends Gs2BasicRequest<CreateCate
 		this.uniqueByUserId = uniqueByUserId;
 		return this;
 	}
+	public Boolean getSum() {
+		return sum;
+	}
+	public void setSum(Boolean sum) {
+		this.sum = sum;
+	}
+	public CreateCategoryModelMasterRequest withSum(Boolean sum) {
+		this.sum = sum;
+		return this;
+	}
 	public Integer getCalculateFixedTimingHour() {
 		return calculateFixedTimingHour;
 	}
@@ -208,6 +219,7 @@ public class CreateCategoryModelMasterRequest extends Gs2BasicRequest<CreateCate
             .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
             .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
             .withUniqueByUserId(data.get("uniqueByUserId") == null || data.get("uniqueByUserId").isNull() ? null : data.get("uniqueByUserId").booleanValue())
+            .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
             .withCalculateFixedTimingHour(data.get("calculateFixedTimingHour") == null || data.get("calculateFixedTimingHour").isNull() ? null : data.get("calculateFixedTimingHour").intValue())
             .withCalculateFixedTimingMinute(data.get("calculateFixedTimingMinute") == null || data.get("calculateFixedTimingMinute").isNull() ? null : data.get("calculateFixedTimingMinute").intValue())
             .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
@@ -228,6 +240,7 @@ public class CreateCategoryModelMasterRequest extends Gs2BasicRequest<CreateCate
                 put("orderDirection", getOrderDirection());
                 put("scope", getScope());
                 put("uniqueByUserId", getUniqueByUserId());
+                put("sum", getSum());
                 put("calculateFixedTimingHour", getCalculateFixedTimingHour());
                 put("calculateFixedTimingMinute", getCalculateFixedTimingMinute());
                 put("calculateIntervalMinutes", getCalculateIntervalMinutes());

@@ -814,6 +814,7 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("orderDirection", request.getOrderDirection());
                     put("scope", request.getScope());
                     put("uniqueByUserId", request.getUniqueByUserId());
+                    put("sum", request.getSum());
                     put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
                     put("calculateFixedTimingMinute", request.getCalculateFixedTimingMinute());
                     put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
@@ -989,6 +990,7 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("orderDirection", request.getOrderDirection());
                     put("scope", request.getScope());
                     put("uniqueByUserId", request.getUniqueByUserId());
+                    put("sum", request.getSum());
                     put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
                     put("calculateFixedTimingMinute", request.getCalculateFixedTimingMinute());
                     put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
