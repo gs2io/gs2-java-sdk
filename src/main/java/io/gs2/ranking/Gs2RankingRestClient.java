@@ -820,6 +820,11 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());
+                    put("ignoreUserIds", request.getIgnoreUserIds() == null ? new ArrayList<String>() :
+                        request.getIgnoreUserIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
                     put("generation", request.getGeneration());
                     put("contextStack", request.getContextStack());
                 }}
@@ -996,6 +1001,11 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());
+                    put("ignoreUserIds", request.getIgnoreUserIds() == null ? new ArrayList<String>() :
+                        request.getIgnoreUserIds().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
                     put("generation", request.getGeneration());
                     put("contextStack", request.getContextStack());
                 }}

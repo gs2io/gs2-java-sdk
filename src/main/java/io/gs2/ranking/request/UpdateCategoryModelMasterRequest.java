@@ -43,6 +43,7 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
     private Integer calculateIntervalMinutes;
     private String entryPeriodEventId;
     private String accessPeriodEventId;
+    private List<String> ignoreUserIds;
     private String generation;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -194,6 +195,16 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
 		this.accessPeriodEventId = accessPeriodEventId;
 		return this;
 	}
+	public List<String> getIgnoreUserIds() {
+		return ignoreUserIds;
+	}
+	public void setIgnoreUserIds(List<String> ignoreUserIds) {
+		this.ignoreUserIds = ignoreUserIds;
+	}
+	public UpdateCategoryModelMasterRequest withIgnoreUserIds(List<String> ignoreUserIds) {
+		this.ignoreUserIds = ignoreUserIds;
+		return this;
+	}
 	public String getGeneration() {
 		return generation;
 	}
@@ -225,6 +236,11 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
             .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
             .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
             .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
+            .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("ignoreUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
             .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText());
     }
 
@@ -246,6 +262,11 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
                 put("calculateIntervalMinutes", getCalculateIntervalMinutes());
                 put("entryPeriodEventId", getEntryPeriodEventId());
                 put("accessPeriodEventId", getAccessPeriodEventId());
+                put("ignoreUserIds", getIgnoreUserIds() == null ? new ArrayList<String>() :
+                    getIgnoreUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
                 put("generation", getGeneration());
             }}
         );

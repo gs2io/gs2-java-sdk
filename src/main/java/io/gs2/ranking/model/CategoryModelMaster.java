@@ -44,6 +44,7 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
 	private Integer calculateIntervalMinutes;
 	private String entryPeriodEventId;
 	private String accessPeriodEventId;
+	private List<String> ignoreUserIds;
 	private String generation;
 	private Long createdAt;
 	private Long updatedAt;
@@ -197,6 +198,16 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
 		this.accessPeriodEventId = accessPeriodEventId;
 		return this;
 	}
+	public List<String> getIgnoreUserIds() {
+		return ignoreUserIds;
+	}
+	public void setIgnoreUserIds(List<String> ignoreUserIds) {
+		this.ignoreUserIds = ignoreUserIds;
+	}
+	public CategoryModelMaster withIgnoreUserIds(List<String> ignoreUserIds) {
+		this.ignoreUserIds = ignoreUserIds;
+		return this;
+	}
 	public String getGeneration() {
 		return generation;
 	}
@@ -248,6 +259,11 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
             .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
             .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
             .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
+            .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("ignoreUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
             .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
@@ -271,6 +287,11 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
                 put("calculateIntervalMinutes", getCalculateIntervalMinutes());
                 put("entryPeriodEventId", getEntryPeriodEventId());
                 put("accessPeriodEventId", getAccessPeriodEventId());
+                put("ignoreUserIds", getIgnoreUserIds() == null ? new ArrayList<String>() :
+                    getIgnoreUserIds().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
                 put("generation", getGeneration());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -302,6 +323,7 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
         result = prime * result + ((this.calculateIntervalMinutes == null) ? 0 : this.calculateIntervalMinutes.hashCode());
         result = prime * result + ((this.entryPeriodEventId == null) ? 0 : this.entryPeriodEventId.hashCode());
         result = prime * result + ((this.accessPeriodEventId == null) ? 0 : this.accessPeriodEventId.hashCode());
+        result = prime * result + ((this.ignoreUserIds == null) ? 0 : this.ignoreUserIds.hashCode());
         result = prime * result + ((this.generation == null) ? 0 : this.generation.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -390,6 +412,11 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
 		if (accessPeriodEventId == null) {
 			return other.accessPeriodEventId == null;
 		} else if (!accessPeriodEventId.equals(other.accessPeriodEventId)) {
+			return false;
+		}
+		if (ignoreUserIds == null) {
+			return other.ignoreUserIds == null;
+		} else if (!ignoreUserIds.equals(other.ignoreUserIds)) {
 			return false;
 		}
 		if (generation == null) {
