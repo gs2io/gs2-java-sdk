@@ -32,7 +32,6 @@ import io.gs2.quest.model.Config;
 public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String transactionId;
     private List<Reward> rewards;
     private Boolean isComplete;
     private List<Config> config;
@@ -55,16 +54,6 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
 	}
 	public EndByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-	public String getTransactionId() {
-		return transactionId;
-	}
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
-	}
-	public EndByUserIdRequest withTransactionId(String transactionId) {
-		this.transactionId = transactionId;
 		return this;
 	}
 	public List<Reward> getRewards() {
@@ -118,7 +107,6 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
         return new EndByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withRewards(data.get("rewards") == null || data.get("rewards").isNull() ? new ArrayList<Reward>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("rewards").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -139,7 +127,6 @@ public class EndByUserIdRequest extends Gs2BasicRequest<EndByUserIdRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("transactionId", getTransactionId());
                 put("rewards", getRewards() == null ? new ArrayList<Reward>() :
                     getRewards().stream().map(item -> {
                         //noinspection Convert2MethodRef

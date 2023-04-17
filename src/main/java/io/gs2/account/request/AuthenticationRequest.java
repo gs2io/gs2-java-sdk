@@ -32,6 +32,7 @@ public class AuthenticationRequest extends Gs2BasicRequest<AuthenticationRequest
     private String userId;
     private String keyId;
     private String password;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -70,6 +71,19 @@ public class AuthenticationRequest extends Gs2BasicRequest<AuthenticationRequest
 	}
 	public AuthenticationRequest withPassword(String password) {
 		this.password = password;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public AuthenticationRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

@@ -36,7 +36,7 @@ import io.gs2.stamina.model.StaminaModel;
 public class RecoverStaminaByUserIdResult implements IResult, Serializable {
     private Stamina item;
     private StaminaModel staminaModel;
-    private Long overflowValue;
+    private Integer overflowValue;
 
 	public Stamina getItem() {
 		return item;
@@ -64,15 +64,15 @@ public class RecoverStaminaByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
-	public Long getOverflowValue() {
+	public Integer getOverflowValue() {
 		return overflowValue;
 	}
 
-	public void setOverflowValue(Long overflowValue) {
+	public void setOverflowValue(Integer overflowValue) {
 		this.overflowValue = overflowValue;
 	}
 
-	public RecoverStaminaByUserIdResult withOverflowValue(Long overflowValue) {
+	public RecoverStaminaByUserIdResult withOverflowValue(Integer overflowValue) {
 		this.overflowValue = overflowValue;
 		return this;
 	}
@@ -84,7 +84,7 @@ public class RecoverStaminaByUserIdResult implements IResult, Serializable {
         return new RecoverStaminaByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Stamina.fromJson(data.get("item")))
             .withStaminaModel(data.get("staminaModel") == null || data.get("staminaModel").isNull() ? null : StaminaModel.fromJson(data.get("staminaModel")))
-            .withOverflowValue(data.get("overflowValue") == null || data.get("overflowValue").isNull() ? null : data.get("overflowValue").longValue());
+            .withOverflowValue(data.get("overflowValue") == null || data.get("overflowValue").isNull() ? null : data.get("overflowValue").intValue());
     }
 
     public JsonNode toJson() {

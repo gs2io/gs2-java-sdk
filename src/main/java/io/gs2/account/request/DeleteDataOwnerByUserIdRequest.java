@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteDataOwnerByUserIdRequest extends Gs2BasicRequest<DeleteDataOwnerByUserIdRequest> {
     private String namespaceName;
     private String userId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -48,6 +49,19 @@ public class DeleteDataOwnerByUserIdRequest extends Gs2BasicRequest<DeleteDataOw
 	}
 	public DeleteDataOwnerByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteDataOwnerByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

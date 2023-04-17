@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteAccountRequest extends Gs2BasicRequest<DeleteAccountRequest> {
     private String namespaceName;
     private String userId;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -48,6 +49,19 @@ public class DeleteAccountRequest extends Gs2BasicRequest<DeleteAccountRequest> 
 	}
 	public DeleteAccountRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteAccountRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

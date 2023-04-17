@@ -34,7 +34,7 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 	private String rateName;
 	private String name;
 	private String propertyId;
-	private Integer experienceValue;
+	private Long experienceValue;
 	private Float rate;
 	private Long createdAt;
 	private Long updatedAt;
@@ -88,13 +88,13 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 		this.propertyId = propertyId;
 		return this;
 	}
-	public Integer getExperienceValue() {
+	public Long getExperienceValue() {
 		return experienceValue;
 	}
-	public void setExperienceValue(Integer experienceValue) {
+	public void setExperienceValue(Long experienceValue) {
 		this.experienceValue = experienceValue;
 	}
-	public Progress withExperienceValue(Integer experienceValue) {
+	public Progress withExperienceValue(Long experienceValue) {
 		this.experienceValue = experienceValue;
 		return this;
 	}
@@ -139,7 +139,7 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").intValue())
+            .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").longValue())
             .withRate(data.get("rate") == null || data.get("rate").isNull() ? null : data.get("rate").floatValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());

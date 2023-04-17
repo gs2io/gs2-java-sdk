@@ -405,7 +405,6 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("changePasswordIfTakeOver", request.getChangePasswordIfTakeOver());
-                    put("differentUserIdForLoginAndDataRetention", request.getDifferentUserIdForLoginAndDataRetention());
                     put("createAccountScript", request.getCreateAccountScript() != null ? request.getCreateAccountScript().toJson() : null);
                     put("authenticationScript", request.getAuthenticationScript() != null ? request.getAuthenticationScript().toJson() : null);
                     put("createTakeOverScript", request.getCreateTakeOverScript() != null ? request.getCreateTakeOverScript().toJson() : null);
@@ -1002,6 +1001,9 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()
@@ -1084,6 +1086,9 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -2198,6 +2203,9 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder

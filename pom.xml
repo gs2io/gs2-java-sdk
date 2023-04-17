@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.gs2</groupId>
 	<artifactId>gs2-java-sdk</artifactId>
-	<version>3.1.119</version>
+	<version>3.1.120</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20230227</version>
+			<version>20210307</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

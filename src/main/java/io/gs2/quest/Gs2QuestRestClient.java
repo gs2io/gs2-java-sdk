@@ -2321,7 +2321,6 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("transactionId", request.getTransactionId());
                     put("rewards", request.getRewards() == null ? new ArrayList<Reward>() :
                         request.getRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -2422,7 +2421,6 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("transactionId", request.getTransactionId());
                     put("rewards", request.getRewards() == null ? new ArrayList<Reward>() :
                         request.getRewards().stream().map(item -> {
                             //noinspection Convert2MethodRef
