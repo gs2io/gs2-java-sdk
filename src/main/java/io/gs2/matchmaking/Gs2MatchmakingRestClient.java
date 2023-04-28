@@ -1742,6 +1742,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("initialValue", request.getInitialValue());
                     put("volatility", request.getVolatility());
                     put("contextStack", request.getContextStack());
                 }}
@@ -1907,6 +1908,7 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("initialValue", request.getInitialValue());
                     put("volatility", request.getVolatility());
                     put("contextStack", request.getContextStack());
                 }}

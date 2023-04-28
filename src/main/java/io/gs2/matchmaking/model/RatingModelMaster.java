@@ -33,6 +33,7 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
 	private String name;
 	private String metadata;
 	private String description;
+	private Integer initialValue;
 	private Integer volatility;
 	private Long createdAt;
 	private Long updatedAt;
@@ -76,6 +77,16 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
 		this.description = description;
 		return this;
 	}
+	public Integer getInitialValue() {
+		return initialValue;
+	}
+	public void setInitialValue(Integer initialValue) {
+		this.initialValue = initialValue;
+	}
+	public RatingModelMaster withInitialValue(Integer initialValue) {
+		this.initialValue = initialValue;
+		return this;
+	}
 	public Integer getVolatility() {
 		return volatility;
 	}
@@ -116,6 +127,7 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withInitialValue(data.get("initialValue") == null || data.get("initialValue").isNull() ? null : data.get("initialValue").intValue())
             .withVolatility(data.get("volatility") == null || data.get("volatility").isNull() ? null : data.get("volatility").intValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
@@ -128,6 +140,7 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
                 put("name", getName());
                 put("metadata", getMetadata());
                 put("description", getDescription());
+                put("initialValue", getInitialValue());
                 put("volatility", getVolatility());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -148,6 +161,7 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.initialValue == null) ? 0 : this.initialValue.hashCode());
         result = prime * result + ((this.volatility == null) ? 0 : this.volatility.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -181,6 +195,11 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (initialValue == null) {
+			return other.initialValue == null;
+		} else if (!initialValue.equals(other.initialValue)) {
 			return false;
 		}
 		if (volatility == null) {

@@ -32,6 +32,7 @@ public class UpdateRatingModelMasterRequest extends Gs2BasicRequest<UpdateRating
     private String ratingName;
     private String description;
     private String metadata;
+    private Integer initialValue;
     private Integer volatility;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class UpdateRatingModelMasterRequest extends Gs2BasicRequest<UpdateRating
 		this.metadata = metadata;
 		return this;
 	}
+	public Integer getInitialValue() {
+		return initialValue;
+	}
+	public void setInitialValue(Integer initialValue) {
+		this.initialValue = initialValue;
+	}
+	public UpdateRatingModelMasterRequest withInitialValue(Integer initialValue) {
+		this.initialValue = initialValue;
+		return this;
+	}
 	public Integer getVolatility() {
 		return volatility;
 	}
@@ -93,6 +104,7 @@ public class UpdateRatingModelMasterRequest extends Gs2BasicRequest<UpdateRating
             .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withInitialValue(data.get("initialValue") == null || data.get("initialValue").isNull() ? null : data.get("initialValue").intValue())
             .withVolatility(data.get("volatility") == null || data.get("volatility").isNull() ? null : data.get("volatility").intValue());
     }
 
@@ -103,6 +115,7 @@ public class UpdateRatingModelMasterRequest extends Gs2BasicRequest<UpdateRating
                 put("ratingName", getRatingName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
+                put("initialValue", getInitialValue());
                 put("volatility", getVolatility());
             }}
         );

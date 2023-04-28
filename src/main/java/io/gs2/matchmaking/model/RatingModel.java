@@ -32,6 +32,7 @@ public class RatingModel implements IModel, Serializable, Comparable<RatingModel
 	private String ratingModelId;
 	private String name;
 	private String metadata;
+	private Integer initialValue;
 	private Integer volatility;
 	public String getRatingModelId() {
 		return ratingModelId;
@@ -63,6 +64,16 @@ public class RatingModel implements IModel, Serializable, Comparable<RatingModel
 		this.metadata = metadata;
 		return this;
 	}
+	public Integer getInitialValue() {
+		return initialValue;
+	}
+	public void setInitialValue(Integer initialValue) {
+		this.initialValue = initialValue;
+	}
+	public RatingModel withInitialValue(Integer initialValue) {
+		this.initialValue = initialValue;
+		return this;
+	}
 	public Integer getVolatility() {
 		return volatility;
 	}
@@ -82,6 +93,7 @@ public class RatingModel implements IModel, Serializable, Comparable<RatingModel
             .withRatingModelId(data.get("ratingModelId") == null || data.get("ratingModelId").isNull() ? null : data.get("ratingModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withInitialValue(data.get("initialValue") == null || data.get("initialValue").isNull() ? null : data.get("initialValue").intValue())
             .withVolatility(data.get("volatility") == null || data.get("volatility").isNull() ? null : data.get("volatility").intValue());
     }
 
@@ -91,6 +103,7 @@ public class RatingModel implements IModel, Serializable, Comparable<RatingModel
                 put("ratingModelId", getRatingModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
+                put("initialValue", getInitialValue());
                 put("volatility", getVolatility());
             }}
         );
@@ -108,6 +121,7 @@ public class RatingModel implements IModel, Serializable, Comparable<RatingModel
         result = prime * result + ((this.ratingModelId == null) ? 0 : this.ratingModelId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.initialValue == null) ? 0 : this.initialValue.hashCode());
         result = prime * result + ((this.volatility == null) ? 0 : this.volatility.hashCode());
 		return result;
 	}
@@ -134,6 +148,11 @@ public class RatingModel implements IModel, Serializable, Comparable<RatingModel
 		if (metadata == null) {
 			return other.metadata == null;
 		} else if (!metadata.equals(other.metadata)) {
+			return false;
+		}
+		if (initialValue == null) {
+			return other.initialValue == null;
+		} else if (!initialValue.equals(other.initialValue)) {
 			return false;
 		}
 		if (volatility == null) {
