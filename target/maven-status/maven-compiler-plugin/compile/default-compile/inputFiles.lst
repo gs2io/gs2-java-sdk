@@ -541,6 +541,7 @@
 /root/project/java/src/main/java/io/gs2/key/request/CreateGitHubApiKeyRequest.java
 /root/project/java/src/main/java/io/gs2/exchange/model/AcquireAction.java
 /root/project/java/src/main/java/io/gs2/limit/request/DescribeCountersRequest.java
+/root/project/java/src/main/java/io/gs2/lottery/request/DrawWithRandomSeedByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/limit/request/DeleteLimitModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/lock/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/stamina/request/SetRecoverValueByUserIdRequest.java
@@ -1060,6 +1061,7 @@
 /root/project/java/src/main/java/io/gs2/stamina/result/DescribeNamespacesResult.java
 /root/project/java/src/main/java/io/gs2/formation/result/GetMoldModelResult.java
 /root/project/java/src/main/java/io/gs2/datastore/result/DescribeDataObjectHistoriesResult.java
+/root/project/java/src/main/java/io/gs2/lottery/request/PredictionByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/log/request/DescribeNamespacesRequest.java
 /root/project/java/src/main/java/io/gs2/ranking/request/UpdateCategoryModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/friend/result/UnfollowResult.java
@@ -1122,6 +1124,7 @@
 /root/project/java/src/main/java/io/gs2/enhance/result/GetProgressByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/stamina/result/CreateStaminaModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/formation/result/DeleteMoldByUserIdResult.java
+/root/project/java/src/main/java/io/gs2/lottery/result/PredictionByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/chat/request/UpdateNamespaceRequest.java
 /root/project/java/src/main/java/io/gs2/limit/result/UpdateCurrentLimitMasterFromGitHubResult.java
 /root/project/java/src/main/java/io/gs2/log/request/DescribeInsightsRequest.java
@@ -2050,6 +2053,7 @@
 /root/project/java/src/main/java/io/gs2/showcase/model/SalesItem.java
 /root/project/java/src/main/java/io/gs2/log/request/CountExecuteStampSheetLogRequest.java
 /root/project/java/src/main/java/io/gs2/experience/result/DeleteStatusByUserIdResult.java
+/root/project/java/src/main/java/io/gs2/lottery/result/PredictionResult.java
 /root/project/java/src/main/java/io/gs2/schedule/result/GetTriggerResult.java
 /root/project/java/src/main/java/io/gs2/version/result/DescribeVersionModelMastersResult.java
 /root/project/java/src/main/java/io/gs2/limit/request/CreateLimitModelMasterRequest.java
@@ -2284,6 +2288,7 @@
 /root/project/java/src/main/java/io/gs2/stamina/result/UpdateMaxStaminaTableMasterResult.java
 /root/project/java/src/main/java/io/gs2/lock/request/DescribeMutexesByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/auth/model/ResponseCache.java
+/root/project/java/src/main/java/io/gs2/lottery/result/DrawWithRandomSeedByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/quest/result/DeleteProgressResult.java
 /root/project/java/src/main/java/io/gs2/watch/model/Chart.java
 /root/project/java/src/main/java/io/gs2/inbox/model/ScriptSetting.java
@@ -2447,6 +2452,7 @@
 /root/project/java/src/main/java/io/gs2/mission/request/GetCounterModelRequest.java
 /root/project/java/src/main/java/io/gs2/money/request/DescribeWalletsByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/formation/request/GetMoldByUserIdRequest.java
+/root/project/java/src/main/java/io/gs2/lottery/request/PredictionRequest.java
 /root/project/java/src/main/java/io/gs2/experience/request/UpdateCurrentExperienceMasterRequest.java
 /root/project/java/src/main/java/io/gs2/formation/request/UpdateFormModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/quest/result/GetQuestGroupModelMasterResult.java

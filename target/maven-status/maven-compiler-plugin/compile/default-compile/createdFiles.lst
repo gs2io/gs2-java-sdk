@@ -326,6 +326,7 @@ io/gs2/friend/model/ReceiveFriendRequest.class
 io/gs2/exchange/result/DeleteRateModelMasterResult.class
 io/gs2/stamina/Gs2StaminaRestClient$UpdateRecoverIntervalTableMasterTask$1.class
 io/gs2/stamina/Gs2StaminaRestClient$DescribeStaminaModelMastersTask.class
+io/gs2/lottery/Gs2LotteryRestClient$PredictionByUserIdTask$1.class
 io/gs2/stamina/result/UpdateNamespaceResult$1.class
 io/gs2/limit/request/CountUpRequest.class
 io/gs2/gateway/model/WebSocketSession.class
@@ -469,6 +470,7 @@ io/gs2/version/model/VersionModelMaster.class
 io/gs2/datastore/result/UpdateNamespaceResult.class
 io/gs2/dictionary/Gs2DictionaryRestClient$GetEntryModelTask.class
 io/gs2/formation/result/DeleteMoldByUserIdResult$1.class
+io/gs2/lottery/request/DrawWithRandomSeedByUserIdRequest.class
 io/gs2/gateway/request/SendNotificationRequest$1.class
 io/gs2/identifier/Gs2IdentifierRestClient$UpdateUserTask.class
 io/gs2/project/Gs2ProjectRestClient$IssueAccountTokenTask$1.class
@@ -612,6 +614,7 @@ io/gs2/identifier/Gs2IdentifierRestClient$CreateSecurityPolicyTask.class
 io/gs2/stamina/result/DescribeRecoverIntervalTableMastersResult$1.class
 io/gs2/dictionary/Gs2DictionaryRestClient$CreateEntryModelMasterTask$1.class
 io/gs2/ranking/Gs2RankingRestClient$SubscribeTask.class
+io/gs2/lottery/Gs2LotteryRestClient$PredictionTask$1.class
 io/gs2/account/request/DeleteDataOwnerByUserIdRequest$1.class
 io/gs2/dictionary/Gs2DictionaryRestClient$AddEntriesByUserIdTask$1.class
 io/gs2/core/net/HttpTask$1.class
@@ -723,6 +726,7 @@ io/gs2/schedule/result/ExportMasterResult.class
 io/gs2/quest/result/EndByUserIdResult.class
 io/gs2/log/request/CountExecuteStampTaskLogRequest$1.class
 io/gs2/friend/request/DeleteRequestRequest$1.class
+io/gs2/lottery/result/PredictionResult$1.class
 io/gs2/chat/model/LogSetting$1.class
 io/gs2/ranking/result/GetNamespaceResult.class
 io/gs2/inventory/result/GetItemModelMasterResult$1.class
@@ -2204,6 +2208,7 @@ io/gs2/formation/Gs2FormationRestClient$AcquireActionsToFormPropertiesTask$1.cla
 io/gs2/enhance/request/CreateProgressByUserIdRequest$1.class
 io/gs2/key/request/DecryptRequest$1.class
 io/gs2/serialKey/request/GetCampaignModelMasterRequest$1.class
+io/gs2/lottery/request/PredictionByUserIdRequest$1.class
 io/gs2/stamina/result/DescribeRecoverValueTableMastersResult.class
 io/gs2/chat/result/PostResult.class
 io/gs2/account/request/UpdateTimeOffsetRequest$1.class
@@ -3614,6 +3619,7 @@ io/gs2/ranking/result/UpdateNamespaceResult.class
 io/gs2/inventory/result/ConsumeItemSetResult.class
 io/gs2/realtime/model/ResponseCache$1.class
 io/gs2/log/result/DeleteInsightResult$1.class
+io/gs2/lottery/result/PredictionByUserIdResult.class
 io/gs2/exchange/Gs2ExchangeRestClient$UpdateCurrentRateMasterTask.class
 io/gs2/key/model/GitHubApiKey.class
 io/gs2/news/model/News$1.class
@@ -3837,6 +3843,7 @@ io/gs2/limit/request/DescribeCountersByUserIdRequest.class
 io/gs2/project/Gs2ProjectRestClient$SignInTask$1.class
 io/gs2/inbox/Gs2InboxRestClient$UpdateCurrentMessageMasterFromGitHubTask.class
 io/gs2/enhance/Gs2EnhanceRestClient$EndByUserIdTask.class
+io/gs2/lottery/request/DrawWithRandomSeedByUserIdRequest$1.class
 io/gs2/formation/result/CreateNamespaceResult.class
 io/gs2/inventory/result/ConsumeItemSetByStampTaskResult.class
 io/gs2/exchange/request/CreateAwaitByStampSheetRequest$1.class
@@ -3906,6 +3913,7 @@ io/gs2/core/util/EncodingUtil.class
 io/gs2/inventory/request/DescribeItemSetsRequest$1.class
 io/gs2/version/result/CheckVersionResult.class
 io/gs2/ranking/result/DescribeScoresResult$1.class
+io/gs2/lottery/Gs2LotteryRestClient$PredictionTask.class
 io/gs2/lock/request/GetNamespaceRequest$1.class
 io/gs2/inbox/Gs2InboxRestClient$CreateNamespaceTask$1.class
 io/gs2/distributor/result/RunStampTaskWithoutNamespaceResult.class
@@ -4271,6 +4279,7 @@ io/gs2/inventory/request/AddReferenceOfItemSetByStampSheetRequest$1.class
 io/gs2/enhance/result/GetNamespaceStatusResult$1.class
 io/gs2/experience/request/UpdateThresholdMasterRequest.class
 io/gs2/megaField/Gs2MegaFieldRestClient$GetNamespaceStatusTask.class
+io/gs2/lottery/result/PredictionResult.class
 io/gs2/identifier/Gs2IdentifierRestClient$CreateIdentifierTask$1.class
 io/gs2/matchmaking/request/ExportMasterRequest$1.class
 io/gs2/friend/request/DeleteNamespaceRequest.class
@@ -4501,6 +4510,7 @@ io/gs2/datastore/result/DoneUploadByUserIdResult$1.class
 io/gs2/lock/Gs2LockRestClient$UnlockTask.class
 io/gs2/mission/Gs2MissionRestClient$DescribeCounterModelsTask.class
 io/gs2/jobQueue/request/GetJobByUserIdRequest$1.class
+io/gs2/lottery/Gs2LotteryRestClient$DrawWithRandomSeedByUserIdTask.class
 io/gs2/showcase/result/GetCurrentShowcaseMasterResult$1.class
 io/gs2/inventory/request/CreateNamespaceRequest$1.class
 io/gs2/enhance/model/Enhance.class
@@ -4603,6 +4613,7 @@ io/gs2/mission/request/GetCounterModelMasterRequest$1.class
 io/gs2/inbox/Gs2InboxRestClient$DescribeMessagesByUserIdTask.class
 io/gs2/chat/result/GetSubscribeByUserIdResult$1.class
 io/gs2/watch/result/GetBillingActivityResult$1.class
+io/gs2/lottery/request/PredictionRequest.class
 io/gs2/core/net/HttpTask.class
 io/gs2/stamina/Gs2StaminaRestClient$CreateStaminaModelMasterTask.class
 io/gs2/inbox/result/GetGlobalMessageResult.class
@@ -4629,6 +4640,7 @@ io/gs2/formation/result/GetPropertyFormResult$1.class
 io/gs2/quest/Gs2QuestRestClient$CreateQuestModelMasterTask$1.class
 io/gs2/serialKey/result/DescribeNamespacesResult$1.class
 io/gs2/schedule/request/DescribeEventsRequest.class
+io/gs2/lottery/Gs2LotteryRestClient$PredictionByUserIdTask.class
 io/gs2/account/Gs2AccountRestClient$UpdateTakeOverByUserIdTask.class
 io/gs2/stamina/result/GetStaminaByUserIdResult$1.class
 io/gs2/dictionary/request/GetEntryRequest.class
@@ -4772,6 +4784,7 @@ io/gs2/inbox/model/TransactionSetting$1.class
 io/gs2/money/request/DescribeReceiptsRequest$1.class
 io/gs2/script/model/Script.class
 io/gs2/chat/model/Room$1.class
+io/gs2/lottery/request/PredictionByUserIdRequest.class
 io/gs2/showcase/request/UpdateSalesItemGroupMasterRequest$1.class
 io/gs2/datastore/request/PrepareUploadByUserIdRequest$1.class
 io/gs2/ranking/result/GetSubscribeByUserIdResult$1.class
@@ -5310,6 +5323,7 @@ io/gs2/datastore/result/PrepareUploadByUserIdResult$1.class
 io/gs2/datastore/model/Namespace$1.class
 io/gs2/mission/model/ResponseCache$1.class
 io/gs2/enhance/Gs2EnhanceRestClient$GetRateModelMasterTask.class
+io/gs2/lottery/result/DrawWithRandomSeedByUserIdResult.class
 io/gs2/mission/request/UpdateCounterModelMasterRequest.class
 io/gs2/formation/request/GetPropertyFormByUserIdRequest.class
 io/gs2/matchmaking/result/GetRatingModelResult.class
@@ -5493,6 +5507,7 @@ io/gs2/showcase/request/GetSalesItemMasterRequest.class
 io/gs2/realtime/request/CreateNamespaceRequest$1.class
 io/gs2/datastore/result/GetDataObjectHistoryByUserIdResult$1.class
 io/gs2/realtime/result/DescribeRoomsResult.class
+io/gs2/lottery/Gs2LotteryRestClient$DrawWithRandomSeedByUserIdTask$1.class
 io/gs2/inbox/Gs2InboxRestClient$DeleteGlobalMessageMasterTask.class
 io/gs2/quest/request/CreateQuestModelMasterRequest$1.class
 io/gs2/news/request/GetProgressRequest$1.class
@@ -5636,6 +5651,7 @@ io/gs2/inventory/result/SetCapacityByUserIdResult$1.class
 io/gs2/experience/request/CreateNamespaceRequest$1.class
 io/gs2/megaField/result/DescribeAreaModelsResult.class
 io/gs2/schedule/request/CreateNamespaceRequest.class
+io/gs2/lottery/request/PredictionRequest$1.class
 io/gs2/stamina/request/UpdateCurrentStaminaMasterRequest.class
 io/gs2/quest/result/EndResult$1.class
 io/gs2/inventory/result/AddReferenceOfByUserIdResult$1.class
@@ -5683,6 +5699,7 @@ io/gs2/quest/request/DescribeCompletedQuestListsRequest.class
 io/gs2/script/result/GetNamespaceStatusResult.class
 io/gs2/serialKey/request/DeleteNamespaceRequest$1.class
 io/gs2/friend/result/DescribeFriendsByUserIdResult.class
+io/gs2/lottery/result/PredictionByUserIdResult$1.class
 io/gs2/news/model/Output.class
 io/gs2/exchange/result/GetNamespaceStatusResult.class
 io/gs2/enhance/request/DescribeRateModelMastersRequest.class
@@ -6166,6 +6183,7 @@ io/gs2/formation/request/DeleteFormByUserIdRequest.class
 io/gs2/serialKey/request/CreateCampaignModelMasterRequest$1.class
 io/gs2/friend/result/GetSendRequestByUserIdResult.class
 io/gs2/formation/result/GetFormModelMasterResult$1.class
+io/gs2/lottery/result/DrawWithRandomSeedByUserIdResult$1.class
 io/gs2/identifier/request/UpdateSecurityPolicyRequest$1.class
 io/gs2/enhance/Gs2EnhanceRestClient$EndTask.class
 io/gs2/lock/result/GetNamespaceResult$1.class

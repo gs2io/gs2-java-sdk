@@ -1800,6 +1800,273 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class PredictionTask extends Gs2RestSessionTask<PredictionResult> {
+        private PredictionRequest request;
+
+        public PredictionTask(
+            PredictionRequest request,
+            AsyncAction<AsyncResult<PredictionResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PredictionResult parse(JsonNode data) {
+            return PredictionResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/lottery/{lotteryName}/prediction";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{lotteryName}", this.request.getLotteryName() == null || this.request.getLotteryName().length() == 0 ? "null" : String.valueOf(this.request.getLotteryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("randomSeed", request.getRandomSeed());
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void predictionAsync(
+            PredictionRequest request,
+            AsyncAction<AsyncResult<PredictionResult>> callback
+    ) {
+        PredictionTask task = new PredictionTask(request, callback);
+        session.execute(task);
+    }
+
+    public PredictionResult prediction(
+            PredictionRequest request
+    ) {
+        final AsyncResult<PredictionResult>[] resultAsyncResult = new AsyncResult[]{null};
+        predictionAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class PredictionByUserIdTask extends Gs2RestSessionTask<PredictionByUserIdResult> {
+        private PredictionByUserIdRequest request;
+
+        public PredictionByUserIdTask(
+            PredictionByUserIdRequest request,
+            AsyncAction<AsyncResult<PredictionByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PredictionByUserIdResult parse(JsonNode data) {
+            return PredictionByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/lottery/{lotteryName}/prediction";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{lotteryName}", this.request.getLotteryName() == null || this.request.getLotteryName().length() == 0 ? "null" : String.valueOf(this.request.getLotteryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("randomSeed", request.getRandomSeed());
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void predictionByUserIdAsync(
+            PredictionByUserIdRequest request,
+            AsyncAction<AsyncResult<PredictionByUserIdResult>> callback
+    ) {
+        PredictionByUserIdTask task = new PredictionByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public PredictionByUserIdResult predictionByUserId(
+            PredictionByUserIdRequest request
+    ) {
+        final AsyncResult<PredictionByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        predictionByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DrawWithRandomSeedByUserIdTask extends Gs2RestSessionTask<DrawWithRandomSeedByUserIdResult> {
+        private DrawWithRandomSeedByUserIdRequest request;
+
+        public DrawWithRandomSeedByUserIdTask(
+            DrawWithRandomSeedByUserIdRequest request,
+            AsyncAction<AsyncResult<DrawWithRandomSeedByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DrawWithRandomSeedByUserIdResult parse(JsonNode data) {
+            return DrawWithRandomSeedByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "lottery")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/lottery/{lotteryName}/draw/withSeed";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{lotteryName}", this.request.getLotteryName() == null || this.request.getLotteryName().length() == 0 ? "null" : String.valueOf(this.request.getLotteryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("randomSeed", request.getRandomSeed());
+                    put("count", request.getCount());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void drawWithRandomSeedByUserIdAsync(
+            DrawWithRandomSeedByUserIdRequest request,
+            AsyncAction<AsyncResult<DrawWithRandomSeedByUserIdResult>> callback
+    ) {
+        DrawWithRandomSeedByUserIdTask task = new DrawWithRandomSeedByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DrawWithRandomSeedByUserIdResult drawWithRandomSeedByUserId(
+            DrawWithRandomSeedByUserIdRequest request
+    ) {
+        final AsyncResult<DrawWithRandomSeedByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        drawWithRandomSeedByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DrawByStampSheetTask extends Gs2RestSessionTask<DrawByStampSheetResult> {
         private DrawByStampSheetRequest request;
 
