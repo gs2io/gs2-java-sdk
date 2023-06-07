@@ -31,6 +31,7 @@ import io.gs2.schedule.model.Event;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetEventResult implements IResult, Serializable {
     private Event item;
+    private Integer repeatCount;
 
 	public Event getItem() {
 		return item;
@@ -45,18 +46,33 @@ public class GetEventResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Integer getRepeatCount() {
+		return repeatCount;
+	}
+
+	public void setRepeatCount(Integer repeatCount) {
+		this.repeatCount = repeatCount;
+	}
+
+	public GetEventResult withRepeatCount(Integer repeatCount) {
+		this.repeatCount = repeatCount;
+		return this;
+	}
+
     public static GetEventResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new GetEventResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Event.fromJson(data.get("item")));
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Event.fromJson(data.get("item")))
+            .withRepeatCount(data.get("repeatCount") == null || data.get("repeatCount").isNull() ? null : data.get("repeatCount").intValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("repeatCount", getRepeatCount());
             }}
         );
     }
