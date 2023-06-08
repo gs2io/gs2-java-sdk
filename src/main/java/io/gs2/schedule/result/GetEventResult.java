@@ -32,8 +32,9 @@ import io.gs2.schedule.model.RepeatSchedule;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetEventResult implements IResult, Serializable {
     private Event item;
-    private Integer repeatCount;
     private Boolean inSchedule;
+    private Long scheduleStartAt;
+    private Long scheduleEndAt;
     private RepeatSchedule repeatSchedule;
 
 	public Event getItem() {
@@ -49,19 +50,6 @@ public class GetEventResult implements IResult, Serializable {
 		return this;
 	}
 
-	public Integer getRepeatCount() {
-		return repeatCount;
-	}
-
-	public void setRepeatCount(Integer repeatCount) {
-		this.repeatCount = repeatCount;
-	}
-
-	public GetEventResult withRepeatCount(Integer repeatCount) {
-		this.repeatCount = repeatCount;
-		return this;
-	}
-
 	public Boolean getInSchedule() {
 		return inSchedule;
 	}
@@ -72,6 +60,32 @@ public class GetEventResult implements IResult, Serializable {
 
 	public GetEventResult withInSchedule(Boolean inSchedule) {
 		this.inSchedule = inSchedule;
+		return this;
+	}
+
+	public Long getScheduleStartAt() {
+		return scheduleStartAt;
+	}
+
+	public void setScheduleStartAt(Long scheduleStartAt) {
+		this.scheduleStartAt = scheduleStartAt;
+	}
+
+	public GetEventResult withScheduleStartAt(Long scheduleStartAt) {
+		this.scheduleStartAt = scheduleStartAt;
+		return this;
+	}
+
+	public Long getScheduleEndAt() {
+		return scheduleEndAt;
+	}
+
+	public void setScheduleEndAt(Long scheduleEndAt) {
+		this.scheduleEndAt = scheduleEndAt;
+	}
+
+	public GetEventResult withScheduleEndAt(Long scheduleEndAt) {
+		this.scheduleEndAt = scheduleEndAt;
 		return this;
 	}
 
@@ -94,8 +108,9 @@ public class GetEventResult implements IResult, Serializable {
         }
         return new GetEventResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Event.fromJson(data.get("item")))
-            .withRepeatCount(data.get("repeatCount") == null || data.get("repeatCount").isNull() ? null : data.get("repeatCount").intValue())
             .withInSchedule(data.get("inSchedule") == null || data.get("inSchedule").isNull() ? null : data.get("inSchedule").booleanValue())
+            .withScheduleStartAt(data.get("scheduleStartAt") == null || data.get("scheduleStartAt").isNull() ? null : data.get("scheduleStartAt").longValue())
+            .withScheduleEndAt(data.get("scheduleEndAt") == null || data.get("scheduleEndAt").isNull() ? null : data.get("scheduleEndAt").longValue())
             .withRepeatSchedule(data.get("repeatSchedule") == null || data.get("repeatSchedule").isNull() ? null : RepeatSchedule.fromJson(data.get("repeatSchedule")));
     }
 
@@ -103,8 +118,9 @@ public class GetEventResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("repeatCount", getRepeatCount());
                 put("inSchedule", getInSchedule());
+                put("scheduleStartAt", getScheduleStartAt());
+                put("scheduleEndAt", getScheduleEndAt());
                 put("repeatSchedule", getRepeatSchedule() != null ? getRepeatSchedule().toJson() : null);
             }}
         );
