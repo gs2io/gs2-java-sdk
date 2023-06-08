@@ -659,7 +659,6 @@ import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends Abstra
                     put("repeatBeginHour", request.getRepeatBeginHour());
                     put("repeatEndHour", request.getRepeatEndHour());
                     put("relativeTriggerName", request.getRelativeTriggerName());
-                    put("relativeDuration", request.getRelativeDuration());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -835,7 +834,6 @@ import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends Abstra
                     put("repeatBeginHour", request.getRepeatBeginHour());
                     put("repeatEndHour", request.getRepeatEndHour());
                     put("relativeTriggerName", request.getRelativeTriggerName());
-                    put("relativeDuration", request.getRelativeDuration());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

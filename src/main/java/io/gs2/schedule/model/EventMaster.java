@@ -44,7 +44,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 	private Integer repeatBeginHour;
 	private Integer repeatEndHour;
 	private String relativeTriggerName;
-	private Integer relativeDuration;
 	private Long createdAt;
 	private Long updatedAt;
 	public String getEventId() {
@@ -197,16 +196,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 		this.relativeTriggerName = relativeTriggerName;
 		return this;
 	}
-	public Integer getRelativeDuration() {
-		return relativeDuration;
-	}
-	public void setRelativeDuration(Integer relativeDuration) {
-		this.relativeDuration = relativeDuration;
-	}
-	public EventMaster withRelativeDuration(Integer relativeDuration) {
-		this.relativeDuration = relativeDuration;
-		return this;
-	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -248,7 +237,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
             .withRepeatBeginHour(data.get("repeatBeginHour") == null || data.get("repeatBeginHour").isNull() ? null : data.get("repeatBeginHour").intValue())
             .withRepeatEndHour(data.get("repeatEndHour") == null || data.get("repeatEndHour").isNull() ? null : data.get("repeatEndHour").intValue())
             .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText())
-            .withRelativeDuration(data.get("relativeDuration") == null || data.get("relativeDuration").isNull() ? null : data.get("relativeDuration").intValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
@@ -271,7 +259,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
                 put("repeatBeginHour", getRepeatBeginHour());
                 put("repeatEndHour", getRepeatEndHour());
                 put("relativeTriggerName", getRelativeTriggerName());
-                put("relativeDuration", getRelativeDuration());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
             }}
@@ -302,7 +289,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
         result = prime * result + ((this.repeatBeginHour == null) ? 0 : this.repeatBeginHour.hashCode());
         result = prime * result + ((this.repeatEndHour == null) ? 0 : this.repeatEndHour.hashCode());
         result = prime * result + ((this.relativeTriggerName == null) ? 0 : this.relativeTriggerName.hashCode());
-        result = prime * result + ((this.relativeDuration == null) ? 0 : this.relativeDuration.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
@@ -390,11 +376,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 		if (relativeTriggerName == null) {
 			return other.relativeTriggerName == null;
 		} else if (!relativeTriggerName.equals(other.relativeTriggerName)) {
-			return false;
-		}
-		if (relativeDuration == null) {
-			return other.relativeDuration == null;
-		} else if (!relativeDuration.equals(other.relativeDuration)) {
 			return false;
 		}
 		if (createdAt == null) {

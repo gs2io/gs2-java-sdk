@@ -2646,6 +2646,7 @@
 /root/project/java/src/main/java/io/gs2/limit/request/GetLimitModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/key/model/Namespace.java
 /root/project/java/src/main/java/io/gs2/account/result/DescribeTakeOversResult.java
+/root/project/java/src/main/java/io/gs2/schedule/model/RepeatSchedule.java
 /root/project/java/src/main/java/io/gs2/ranking/result/CalcRankingResult.java
 /root/project/java/src/main/java/io/gs2/inbox/result/GetNamespaceStatusResult.java
 /root/project/java/src/main/java/io/gs2/version/request/GetAcceptVersionRequest.java

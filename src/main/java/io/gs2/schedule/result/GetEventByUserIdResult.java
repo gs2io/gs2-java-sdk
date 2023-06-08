@@ -26,12 +26,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.schedule.model.*;
 import io.gs2.schedule.model.Event;
+import io.gs2.schedule.model.RepeatSchedule;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetEventByUserIdResult implements IResult, Serializable {
     private Event item;
     private Integer repeatCount;
+    private Boolean inSchedule;
+    private RepeatSchedule repeatSchedule;
 
 	public Event getItem() {
 		return item;
@@ -59,13 +62,41 @@ public class GetEventByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Boolean getInSchedule() {
+		return inSchedule;
+	}
+
+	public void setInSchedule(Boolean inSchedule) {
+		this.inSchedule = inSchedule;
+	}
+
+	public GetEventByUserIdResult withInSchedule(Boolean inSchedule) {
+		this.inSchedule = inSchedule;
+		return this;
+	}
+
+	public RepeatSchedule getRepeatSchedule() {
+		return repeatSchedule;
+	}
+
+	public void setRepeatSchedule(RepeatSchedule repeatSchedule) {
+		this.repeatSchedule = repeatSchedule;
+	}
+
+	public GetEventByUserIdResult withRepeatSchedule(RepeatSchedule repeatSchedule) {
+		this.repeatSchedule = repeatSchedule;
+		return this;
+	}
+
     public static GetEventByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new GetEventByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Event.fromJson(data.get("item")))
-            .withRepeatCount(data.get("repeatCount") == null || data.get("repeatCount").isNull() ? null : data.get("repeatCount").intValue());
+            .withRepeatCount(data.get("repeatCount") == null || data.get("repeatCount").isNull() ? null : data.get("repeatCount").intValue())
+            .withInSchedule(data.get("inSchedule") == null || data.get("inSchedule").isNull() ? null : data.get("inSchedule").booleanValue())
+            .withRepeatSchedule(data.get("repeatSchedule") == null || data.get("repeatSchedule").isNull() ? null : RepeatSchedule.fromJson(data.get("repeatSchedule")));
     }
 
     public JsonNode toJson() {
@@ -73,6 +104,8 @@ public class GetEventByUserIdResult implements IResult, Serializable {
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
                 put("repeatCount", getRepeatCount());
+                put("inSchedule", getInSchedule());
+                put("repeatSchedule", getRepeatSchedule() != null ? getRepeatSchedule().toJson() : null);
             }}
         );
     }

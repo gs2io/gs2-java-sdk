@@ -43,7 +43,6 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 	private Integer repeatBeginHour;
 	private Integer repeatEndHour;
 	private String relativeTriggerName;
-	private Integer relativeDuration;
 	public String getEventId() {
 		return eventId;
 	}
@@ -184,16 +183,6 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 		this.relativeTriggerName = relativeTriggerName;
 		return this;
 	}
-	public Integer getRelativeDuration() {
-		return relativeDuration;
-	}
-	public void setRelativeDuration(Integer relativeDuration) {
-		this.relativeDuration = relativeDuration;
-	}
-	public Event withRelativeDuration(Integer relativeDuration) {
-		this.relativeDuration = relativeDuration;
-		return this;
-	}
 
     public static Event fromJson(JsonNode data) {
         if (data == null) {
@@ -213,8 +202,7 @@ public class Event implements IModel, Serializable, Comparable<Event> {
             .withRepeatEndDayOfWeek(data.get("repeatEndDayOfWeek") == null || data.get("repeatEndDayOfWeek").isNull() ? null : data.get("repeatEndDayOfWeek").asText())
             .withRepeatBeginHour(data.get("repeatBeginHour") == null || data.get("repeatBeginHour").isNull() ? null : data.get("repeatBeginHour").intValue())
             .withRepeatEndHour(data.get("repeatEndHour") == null || data.get("repeatEndHour").isNull() ? null : data.get("repeatEndHour").intValue())
-            .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText())
-            .withRelativeDuration(data.get("relativeDuration") == null || data.get("relativeDuration").isNull() ? null : data.get("relativeDuration").intValue());
+            .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText());
     }
 
     public JsonNode toJson() {
@@ -234,7 +222,6 @@ public class Event implements IModel, Serializable, Comparable<Event> {
                 put("repeatBeginHour", getRepeatBeginHour());
                 put("repeatEndHour", getRepeatEndHour());
                 put("relativeTriggerName", getRelativeTriggerName());
-                put("relativeDuration", getRelativeDuration());
             }}
         );
     }
@@ -262,7 +249,6 @@ public class Event implements IModel, Serializable, Comparable<Event> {
         result = prime * result + ((this.repeatBeginHour == null) ? 0 : this.repeatBeginHour.hashCode());
         result = prime * result + ((this.repeatEndHour == null) ? 0 : this.repeatEndHour.hashCode());
         result = prime * result + ((this.relativeTriggerName == null) ? 0 : this.relativeTriggerName.hashCode());
-        result = prime * result + ((this.relativeDuration == null) ? 0 : this.relativeDuration.hashCode());
 		return result;
 	}
 
@@ -343,11 +329,6 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 		if (relativeTriggerName == null) {
 			return other.relativeTriggerName == null;
 		} else if (!relativeTriggerName.equals(other.relativeTriggerName)) {
-			return false;
-		}
-		if (relativeDuration == null) {
-			return other.relativeDuration == null;
-		} else if (!relativeDuration.equals(other.relativeDuration)) {
 			return false;
 		}
 		return true;

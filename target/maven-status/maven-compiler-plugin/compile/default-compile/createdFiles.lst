@@ -2532,6 +2532,7 @@ io/gs2/enhance/request/CreateNamespaceRequest.class
 io/gs2/lottery/request/GetRawBoxByUserIdRequest$1.class
 io/gs2/mission/Gs2MissionRestClient$IncreaseByStampSheetTask.class
 io/gs2/megaField/request/GetLayerModelRequest$1.class
+io/gs2/schedule/model/RepeatSchedule.class
 io/gs2/inventory/Gs2InventoryRestClient$DeleteItemSetByUserIdTask.class
 io/gs2/experience/Gs2ExperienceRestClient$DeleteExperienceModelMasterTask.class
 io/gs2/experience/Gs2ExperienceRestClient$DeleteThresholdMasterTask.class
@@ -3273,6 +3274,7 @@ io/gs2/friend/Gs2FriendRestClient$FollowByUserIdTask.class
 io/gs2/deploy/request/DeleteStackResourcesRequest.class
 io/gs2/inventory/result/DeleteItemSetByUserIdResult$1.class
 io/gs2/chat/result/GetMessageByUserIdResult$1.class
+io/gs2/schedule/model/RepeatSchedule$1.class
 io/gs2/deploy/result/GetStackStatusResult.class
 io/gs2/inbox/result/CreateGlobalMessageMasterResult$1.class
 io/gs2/mission/Gs2MissionRestClient$GetCounterModelTask.class

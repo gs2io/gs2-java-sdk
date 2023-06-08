@@ -31,6 +31,7 @@ public class GetEventByUserIdRequest extends Gs2BasicRequest<GetEventByUserIdReq
     private String namespaceName;
     private String eventName;
     private String userId;
+    private Boolean isInSchedule;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -61,6 +62,16 @@ public class GetEventByUserIdRequest extends Gs2BasicRequest<GetEventByUserIdReq
 		this.userId = userId;
 		return this;
 	}
+	public Boolean getIsInSchedule() {
+		return isInSchedule;
+	}
+	public void setIsInSchedule(Boolean isInSchedule) {
+		this.isInSchedule = isInSchedule;
+	}
+	public GetEventByUserIdRequest withIsInSchedule(Boolean isInSchedule) {
+		this.isInSchedule = isInSchedule;
+		return this;
+	}
 
     public static GetEventByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +80,8 @@ public class GetEventByUserIdRequest extends Gs2BasicRequest<GetEventByUserIdReq
         return new GetEventByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withEventName(data.get("eventName") == null || data.get("eventName").isNull() ? null : data.get("eventName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withIsInSchedule(data.get("isInSchedule") == null || data.get("isInSchedule").isNull() ? null : data.get("isInSchedule").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -78,6 +90,7 @@ public class GetEventByUserIdRequest extends Gs2BasicRequest<GetEventByUserIdReq
                 put("namespaceName", getNamespaceName());
                 put("eventName", getEventName());
                 put("userId", getUserId());
+                put("isInSchedule", getIsInSchedule());
             }}
         );
     }

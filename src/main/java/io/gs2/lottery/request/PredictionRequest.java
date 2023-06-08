@@ -30,7 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class PredictionRequest extends Gs2BasicRequest<PredictionRequest> {
     private String namespaceName;
     private String lotteryName;
-    private String userId;
+    private String accessToken;
     private Long randomSeed;
     private Integer count;
     private String duplicationAvoider;
@@ -54,14 +54,14 @@ public class PredictionRequest extends Gs2BasicRequest<PredictionRequest> {
 		this.lotteryName = lotteryName;
 		return this;
 	}
-	public String getUserId() {
-		return userId;
+	public String getAccessToken() {
+		return accessToken;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
-	public PredictionRequest withUserId(String userId) {
-		this.userId = userId;
+	public PredictionRequest withAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 		return this;
 	}
 	public Long getRandomSeed() {
@@ -105,7 +105,7 @@ public class PredictionRequest extends Gs2BasicRequest<PredictionRequest> {
         return new PredictionRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withLotteryName(data.get("lotteryName") == null || data.get("lotteryName").isNull() ? null : data.get("lotteryName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withRandomSeed(data.get("randomSeed") == null || data.get("randomSeed").isNull() ? null : data.get("randomSeed").longValue())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue());
     }
@@ -115,7 +115,7 @@ public class PredictionRequest extends Gs2BasicRequest<PredictionRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("lotteryName", getLotteryName());
-                put("userId", getUserId());
+                put("accessToken", getAccessToken());
                 put("randomSeed", getRandomSeed());
                 put("count", getCount());
             }}

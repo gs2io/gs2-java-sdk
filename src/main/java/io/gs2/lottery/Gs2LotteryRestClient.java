@@ -1829,7 +1829,6 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{lotteryName}", this.request.getLotteryName() == null || this.request.getLotteryName().length() == 0 ? "null" : String.valueOf(this.request.getLotteryName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -1847,6 +1846,9 @@ import io.gs2.lottery.model.*;public class Gs2LotteryRestClient extends Abstract
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());

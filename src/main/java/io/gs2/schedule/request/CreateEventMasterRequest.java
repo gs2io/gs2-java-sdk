@@ -43,7 +43,6 @@ public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterR
     private Integer repeatBeginHour;
     private Integer repeatEndHour;
     private String relativeTriggerName;
-    private Integer relativeDuration;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -194,16 +193,6 @@ public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterR
 		this.relativeTriggerName = relativeTriggerName;
 		return this;
 	}
-	public Integer getRelativeDuration() {
-		return relativeDuration;
-	}
-	public void setRelativeDuration(Integer relativeDuration) {
-		this.relativeDuration = relativeDuration;
-	}
-	public CreateEventMasterRequest withRelativeDuration(Integer relativeDuration) {
-		this.relativeDuration = relativeDuration;
-		return this;
-	}
 
     public static CreateEventMasterRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -224,8 +213,7 @@ public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterR
             .withRepeatEndDayOfWeek(data.get("repeatEndDayOfWeek") == null || data.get("repeatEndDayOfWeek").isNull() ? null : data.get("repeatEndDayOfWeek").asText())
             .withRepeatBeginHour(data.get("repeatBeginHour") == null || data.get("repeatBeginHour").isNull() ? null : data.get("repeatBeginHour").intValue())
             .withRepeatEndHour(data.get("repeatEndHour") == null || data.get("repeatEndHour").isNull() ? null : data.get("repeatEndHour").intValue())
-            .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText())
-            .withRelativeDuration(data.get("relativeDuration") == null || data.get("relativeDuration").isNull() ? null : data.get("relativeDuration").intValue());
+            .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText());
     }
 
     public JsonNode toJson() {
@@ -246,7 +234,6 @@ public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterR
                 put("repeatBeginHour", getRepeatBeginHour());
                 put("repeatEndHour", getRepeatEndHour());
                 put("relativeTriggerName", getRelativeTriggerName());
-                put("relativeDuration", getRelativeDuration());
             }}
         );
     }
