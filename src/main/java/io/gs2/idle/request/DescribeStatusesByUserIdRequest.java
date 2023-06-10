@@ -29,7 +29,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeStatusesByUserIdRequest extends Gs2BasicRequest<DescribeStatusesByUserIdRequest> {
     private String namespaceName;
-    private String categoryName;
     private String userId;
     private String pageToken;
     private Integer limit;
@@ -41,16 +40,6 @@ public class DescribeStatusesByUserIdRequest extends Gs2BasicRequest<DescribeSta
 	}
 	public DescribeStatusesByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
-		return this;
-	}
-	public String getCategoryName() {
-		return categoryName;
-	}
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
-	public DescribeStatusesByUserIdRequest withCategoryName(String categoryName) {
-		this.categoryName = categoryName;
 		return this;
 	}
 	public String getUserId() {
@@ -90,7 +79,6 @@ public class DescribeStatusesByUserIdRequest extends Gs2BasicRequest<DescribeSta
         }
         return new DescribeStatusesByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
@@ -100,7 +88,6 @@ public class DescribeStatusesByUserIdRequest extends Gs2BasicRequest<DescribeSta
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("categoryName", getCategoryName());
                 put("userId", getUserId());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());

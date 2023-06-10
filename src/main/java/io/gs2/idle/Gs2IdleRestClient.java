@@ -1160,9 +1160,6 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
-            if (this.request.getCategoryName() != null) {
-                queryStrings.add("categoryName=" + EncodingUtil.urlEncode((String.valueOf(this.request.getCategoryName()))));
-            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -1252,9 +1249,6 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getCategoryName() != null) {
-                queryStrings.add("categoryName=" + EncodingUtil.urlEncode((String.valueOf(this.request.getCategoryName()))));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
@@ -2077,12 +2071,12 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         return resultAsyncResult[0].getResult();
     }
 
-    class GetCurrentIdleMasterTask extends Gs2RestSessionTask<GetCurrentIdleMasterResult> {
-        private GetCurrentIdleMasterRequest request;
+    class GetCurrentCategoryMasterTask extends Gs2RestSessionTask<GetCurrentCategoryMasterResult> {
+        private GetCurrentCategoryMasterRequest request;
 
-        public GetCurrentIdleMasterTask(
-            GetCurrentIdleMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentIdleMasterResult>> userCallback
+        public GetCurrentCategoryMasterTask(
+            GetCurrentCategoryMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentCategoryMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -2092,8 +2086,8 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         }
 
         @Override
-        public GetCurrentIdleMasterResult parse(JsonNode data) {
-            return GetCurrentIdleMasterResult.fromJson(data);
+        public GetCurrentCategoryMasterResult parse(JsonNode data) {
+            return GetCurrentCategoryMasterResult.fromJson(data);
         }
 
         @Override
@@ -2128,19 +2122,19 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         }
     }
 
-    public void getCurrentIdleMasterAsync(
-            GetCurrentIdleMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentIdleMasterResult>> callback
+    public void getCurrentCategoryMasterAsync(
+            GetCurrentCategoryMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentCategoryMasterResult>> callback
     ) {
-        GetCurrentIdleMasterTask task = new GetCurrentIdleMasterTask(request, callback);
+        GetCurrentCategoryMasterTask task = new GetCurrentCategoryMasterTask(request, callback);
         session.execute(task);
     }
 
-    public GetCurrentIdleMasterResult getCurrentIdleMaster(
-            GetCurrentIdleMasterRequest request
+    public GetCurrentCategoryMasterResult getCurrentCategoryMaster(
+            GetCurrentCategoryMasterRequest request
     ) {
-        final AsyncResult<GetCurrentIdleMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getCurrentIdleMasterAsync(
+        final AsyncResult<GetCurrentCategoryMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCurrentCategoryMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2157,12 +2151,12 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         return resultAsyncResult[0].getResult();
     }
 
-    class UpdateCurrentIdleMasterTask extends Gs2RestSessionTask<UpdateCurrentIdleMasterResult> {
-        private UpdateCurrentIdleMasterRequest request;
+    class UpdateCurrentCategoryMasterTask extends Gs2RestSessionTask<UpdateCurrentCategoryMasterResult> {
+        private UpdateCurrentCategoryMasterRequest request;
 
-        public UpdateCurrentIdleMasterTask(
-            UpdateCurrentIdleMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentIdleMasterResult>> userCallback
+        public UpdateCurrentCategoryMasterTask(
+            UpdateCurrentCategoryMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentCategoryMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -2172,8 +2166,8 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         }
 
         @Override
-        public UpdateCurrentIdleMasterResult parse(JsonNode data) {
-            return UpdateCurrentIdleMasterResult.fromJson(data);
+        public UpdateCurrentCategoryMasterResult parse(JsonNode data) {
+            return UpdateCurrentCategoryMasterResult.fromJson(data);
         }
 
         @Override
@@ -2209,19 +2203,19 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         }
     }
 
-    public void updateCurrentIdleMasterAsync(
-            UpdateCurrentIdleMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentIdleMasterResult>> callback
+    public void updateCurrentCategoryMasterAsync(
+            UpdateCurrentCategoryMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentCategoryMasterResult>> callback
     ) {
-        UpdateCurrentIdleMasterTask task = new UpdateCurrentIdleMasterTask(request, callback);
+        UpdateCurrentCategoryMasterTask task = new UpdateCurrentCategoryMasterTask(request, callback);
         session.execute(task);
     }
 
-    public UpdateCurrentIdleMasterResult updateCurrentIdleMaster(
-            UpdateCurrentIdleMasterRequest request
+    public UpdateCurrentCategoryMasterResult updateCurrentCategoryMaster(
+            UpdateCurrentCategoryMasterRequest request
     ) {
-        final AsyncResult<UpdateCurrentIdleMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateCurrentIdleMasterAsync(
+        final AsyncResult<UpdateCurrentCategoryMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentCategoryMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2238,12 +2232,12 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         return resultAsyncResult[0].getResult();
     }
 
-    class UpdateCurrentIdleMasterFromGitHubTask extends Gs2RestSessionTask<UpdateCurrentIdleMasterFromGitHubResult> {
-        private UpdateCurrentIdleMasterFromGitHubRequest request;
+    class UpdateCurrentCategoryMasterFromGitHubTask extends Gs2RestSessionTask<UpdateCurrentCategoryMasterFromGitHubResult> {
+        private UpdateCurrentCategoryMasterFromGitHubRequest request;
 
-        public UpdateCurrentIdleMasterFromGitHubTask(
-            UpdateCurrentIdleMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentIdleMasterFromGitHubResult>> userCallback
+        public UpdateCurrentCategoryMasterFromGitHubTask(
+            UpdateCurrentCategoryMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentCategoryMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -2253,8 +2247,8 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         }
 
         @Override
-        public UpdateCurrentIdleMasterFromGitHubResult parse(JsonNode data) {
-            return UpdateCurrentIdleMasterFromGitHubResult.fromJson(data);
+        public UpdateCurrentCategoryMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentCategoryMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -2290,19 +2284,19 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         }
     }
 
-    public void updateCurrentIdleMasterFromGitHubAsync(
-            UpdateCurrentIdleMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentIdleMasterFromGitHubResult>> callback
+    public void updateCurrentCategoryMasterFromGitHubAsync(
+            UpdateCurrentCategoryMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentCategoryMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentIdleMasterFromGitHubTask task = new UpdateCurrentIdleMasterFromGitHubTask(request, callback);
+        UpdateCurrentCategoryMasterFromGitHubTask task = new UpdateCurrentCategoryMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    public UpdateCurrentIdleMasterFromGitHubResult updateCurrentIdleMasterFromGitHub(
-            UpdateCurrentIdleMasterFromGitHubRequest request
+    public UpdateCurrentCategoryMasterFromGitHubResult updateCurrentCategoryMasterFromGitHub(
+            UpdateCurrentCategoryMasterFromGitHubRequest request
     ) {
-        final AsyncResult<UpdateCurrentIdleMasterFromGitHubResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateCurrentIdleMasterFromGitHubAsync(
+        final AsyncResult<UpdateCurrentCategoryMasterFromGitHubResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentCategoryMasterFromGitHubAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

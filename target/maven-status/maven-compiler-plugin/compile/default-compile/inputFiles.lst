@@ -313,6 +313,7 @@
 /root/project/java/src/main/java/io/gs2/inventory/request/GetItemSetRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/result/DescribeReferenceOfByUserIdResult.java
 /root/project/java/src/main/java/io/gs2/jobQueue/model/LogSetting.java
+/root/project/java/src/main/java/io/gs2/idle/request/GetCurrentCategoryMasterRequest.java
 /root/project/java/src/main/java/io/gs2/chat/request/GetNamespaceStatusRequest.java
 /root/project/java/src/main/java/io/gs2/stamina/result/DeleteRecoverValueTableMasterResult.java
 /root/project/java/src/main/java/io/gs2/stamina/result/UpdateRecoverIntervalTableMasterResult.java
@@ -1228,6 +1229,7 @@
 /root/project/java/src/main/java/io/gs2/friend/request/UnfollowRequest.java
 /root/project/java/src/main/java/io/gs2/formation/request/DeletePropertyFormRequest.java
 /root/project/java/src/main/java/io/gs2/schedule/result/DescribeEventsResult.java
+/root/project/java/src/main/java/io/gs2/idle/result/GetCurrentCategoryMasterResult.java
 /root/project/java/src/main/java/io/gs2/megaField/request/GetNamespaceStatusRequest.java
 /root/project/java/src/main/java/io/gs2/exchange/request/AcquireRequest.java
 /root/project/java/src/main/java/io/gs2/version/result/DescribeAcceptVersionsByUserIdResult.java
@@ -1746,6 +1748,7 @@
 /root/project/java/src/main/java/io/gs2/inventory/request/DescribeItemSetsRequest.java
 /root/project/java/src/main/java/io/gs2/enhance/request/EndByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/lock/result/UnlockResult.java
+/root/project/java/src/main/java/io/gs2/idle/result/UpdateCurrentCategoryMasterFromGitHubResult.java
 /root/project/java/src/main/java/io/gs2/formation/request/GetPropertyFormByUserIdRequest.java
 /root/project/java/src/main/java/io/gs2/mission/model/ResponseCache.java
 /root/project/java/src/main/java/io/gs2/ranking/request/DescribeSubscribesByCategoryNameRequest.java
@@ -2317,6 +2320,7 @@
 /root/project/java/src/main/java/io/gs2/showcase/model/ShowcaseMaster.java
 /root/project/java/src/main/java/io/gs2/realtime/model/LogSetting.java
 /root/project/java/src/main/java/io/gs2/account/result/GetNamespaceStatusResult.java
+/root/project/java/src/main/java/io/gs2/idle/result/UpdateCurrentCategoryMasterResult.java
 /root/project/java/src/main/java/io/gs2/deploy/request/UpdateStackFromGitHubRequest.java
 /root/project/java/src/main/java/io/gs2/formation/model/Form.java
 /root/project/java/src/main/java/io/gs2/datastore/result/DescribeNamespacesResult.java
@@ -2573,6 +2577,7 @@
 /root/project/java/src/main/java/io/gs2/script/request/UpdateScriptFromGitHubRequest.java
 /root/project/java/src/main/java/io/gs2/exchange/result/CreateRateModelMasterResult.java
 /root/project/java/src/main/java/io/gs2/idle/request/ReceiveByUserIdRequest.java
+/root/project/java/src/main/java/io/gs2/idle/request/UpdateCurrentCategoryMasterRequest.java
 /root/project/java/src/main/java/io/gs2/schedule/request/GetEventRequest.java
 /root/project/java/src/main/java/io/gs2/distributor/request/RunStampSheetRequest.java
 /root/project/java/src/main/java/io/gs2/mission/result/GetCounterResult.java
@@ -2631,6 +2636,7 @@
 /root/project/java/src/main/java/io/gs2/showcase/result/DescribeSalesItemMastersResult.java
 /root/project/java/src/main/java/io/gs2/exchange/result/UpdateCurrentRateMasterResult.java
 /root/project/java/src/main/java/io/gs2/friend/Gs2FriendRestClient.java
+/root/project/java/src/main/java/io/gs2/idle/request/UpdateCurrentCategoryMasterFromGitHubRequest.java
 /root/project/java/src/main/java/io/gs2/inventory/request/CreateInventoryModelMasterRequest.java
 /root/project/java/src/main/java/io/gs2/matchmaking/request/DescribeRatingsRequest.java
 /root/project/java/src/main/java/io/gs2/showcase/model/ScriptSetting.java

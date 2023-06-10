@@ -295,7 +295,6 @@ io/gs2/inbox/request/DeleteReceivedByUserIdRequest$1.class
 io/gs2/identifier/request/DetachSecurityPolicyRequest$1.class
 io/gs2/schedule/result/GetEventMasterResult$1.class
 io/gs2/ranking/request/DescribeScoresByUserIdRequest.class
-io/gs2/idle/Gs2IdleRestClient$UpdateCurrentIdleMasterFromGitHubTask$1.class
 io/gs2/idle/result/CreateNamespaceResult$1.class
 io/gs2/account/result/DescribeTakeOversResult$1.class
 io/gs2/datastore/request/PrepareDownloadByGenerationRequest$1.class
@@ -372,7 +371,6 @@ io/gs2/formation/result/CreateFormModelMasterResult$1.class
 io/gs2/mission/request/UpdateNamespaceRequest.class
 io/gs2/account/request/DeleteAccountRequest.class
 io/gs2/gateway/Gs2GatewayWebSocketClient$GetNamespaceTask.class
-io/gs2/idle/Gs2IdleRestClient$UpdateCurrentIdleMasterFromGitHubTask.class
 io/gs2/megaField/Gs2MegaFieldRestClient$FetchPositionFromSystemTask.class
 io/gs2/money/request/RecordReceiptByStampTaskRequest.class
 io/gs2/chat/request/CreateRoomFromBackendRequest$1.class
@@ -575,7 +573,6 @@ io/gs2/log/Gs2LogRestClient$CreateNamespaceTask$1.class
 io/gs2/account/result/DoTakeOverResult$1.class
 io/gs2/chat/result/UpdateRoomFromBackendResult.class
 io/gs2/realtime/result/GetNamespaceStatusResult.class
-io/gs2/idle/Gs2IdleRestClient$UpdateCurrentIdleMasterTask$1.class
 io/gs2/mission/request/UpdateCurrentMissionMasterFromGitHubRequest$1.class
 io/gs2/lottery/request/DeleteNamespaceRequest.class
 io/gs2/megaField/request/NearUserIdsFromSystemRequest$1.class
@@ -1485,6 +1482,7 @@ io/gs2/formation/request/SetCapacityByStampSheetRequest.class
 io/gs2/experience/Gs2ExperienceRestClient$UpdateExperienceModelMasterTask$1.class
 io/gs2/distributor/Gs2DistributorRestClient$UpdateCurrentDistributorMasterFromGitHubTask$1.class
 io/gs2/schedule/request/GetNamespaceStatusRequest$1.class
+io/gs2/idle/request/GetCurrentCategoryMasterRequest$1.class
 io/gs2/quest/request/DescribeCompletedQuestListsByUserIdRequest$1.class
 io/gs2/identifier/request/GetHasSecurityPolicyRequest$1.class
 io/gs2/exchange/Gs2ExchangeRestClient$SkipByUserIdTask.class
@@ -2155,6 +2153,7 @@ io/gs2/news/model/Progress.class
 io/gs2/chat/request/UnsubscribeRequest.class
 io/gs2/distributor/request/UpdateNamespaceRequest.class
 io/gs2/mission/request/GetCounterByUserIdRequest.class
+io/gs2/idle/request/UpdateCurrentCategoryMasterRequest$1.class
 io/gs2/chat/result/DeleteRoomResult.class
 io/gs2/limit/model/Namespace$1.class
 io/gs2/ranking/request/UnsubscribeRequest$1.class
@@ -2374,6 +2373,7 @@ io/gs2/stamina/request/DeleteStaminaByUserIdRequest.class
 io/gs2/idle/Gs2IdleRestClient$CreateNamespaceTask$1.class
 io/gs2/friend/result/DeleteFriendResult$1.class
 io/gs2/enhance/result/CreateNamespaceResult$1.class
+io/gs2/idle/result/UpdateCurrentCategoryMasterFromGitHubResult$1.class
 io/gs2/mission/model/ScriptSetting.class
 io/gs2/key/request/UpdateKeyRequest$1.class
 io/gs2/mission/Gs2MissionRestClient$ReceiveByStampTaskTask$1.class
@@ -2445,6 +2445,7 @@ io/gs2/friend/request/UpdateProfileRequest$1.class
 io/gs2/megaField/result/CreateNamespaceResult$1.class
 io/gs2/account/result/GetAccountResult$1.class
 io/gs2/formation/request/DeleteMoldModelMasterRequest.class
+io/gs2/idle/result/GetCurrentCategoryMasterResult$1.class
 io/gs2/inventory/request/UpdateNamespaceRequest$1.class
 io/gs2/experience/Gs2ExperienceRestClient$DescribeExperienceModelsTask.class
 io/gs2/inbox/Gs2InboxRestClient$ReadMessageByUserIdTask$1.class
@@ -2563,6 +2564,7 @@ io/gs2/formation/request/GetMoldModelMasterRequest$1.class
 io/gs2/script/request/GetNamespaceStatusRequest$1.class
 io/gs2/project/request/IssuePasswordRequest$1.class
 io/gs2/lottery/request/ResetBoxByUserIdRequest$1.class
+io/gs2/idle/Gs2IdleRestClient$UpdateCurrentCategoryMasterFromGitHubTask$1.class
 io/gs2/megaField/result/PutPositionResult$1.class
 io/gs2/inbox/result/DeleteNamespaceResult.class
 io/gs2/mission/Gs2MissionRestClient$UpdateMissionGroupModelMasterTask.class
@@ -2893,6 +2895,7 @@ io/gs2/matchmaking/request/PutResultRequest$1.class
 io/gs2/enhance/request/CreateNamespaceRequest$1.class
 io/gs2/inventory/request/GetItemWithSignatureRequest.class
 io/gs2/experience/result/GetCurrentExperienceMasterResult.class
+io/gs2/idle/request/UpdateCurrentCategoryMasterFromGitHubRequest.class
 io/gs2/ranking/model/CategoryModel$1.class
 io/gs2/lock/result/DeleteMutexByUserIdResult$1.class
 io/gs2/mission/request/GetCounterModelMasterRequest.class
@@ -2971,6 +2974,7 @@ io/gs2/friend/Gs2FriendRestClient$UpdateProfileTask.class
 io/gs2/matchmaking/result/UpdateCurrentRatingModelMasterResult$1.class
 io/gs2/project/result/CreateProjectResult.class
 io/gs2/matchmaking/request/GetRatingModelMasterRequest.class
+io/gs2/idle/request/UpdateCurrentCategoryMasterFromGitHubRequest$1.class
 io/gs2/enhance/result/CreateRateModelMasterResult$1.class
 io/gs2/enhance/Gs2EnhanceRestClient$DeleteRateModelMasterTask.class
 io/gs2/megaField/Gs2MegaFieldRestClient$DescribeAreaModelMastersTask.class
@@ -3200,7 +3204,6 @@ io/gs2/inbox/Gs2InboxRestClient$OpenMessageByUserIdTask$1.class
 io/gs2/stamina/request/CreateStaminaModelMasterRequest$1.class
 io/gs2/quest/model/ConsumeAction.class
 io/gs2/matchmaking/result/UpdateGatheringByUserIdResult$1.class
-io/gs2/idle/Gs2IdleRestClient$UpdateCurrentIdleMasterTask.class
 io/gs2/quest/model/AcquireAction.class
 io/gs2/quest/request/CreateQuestGroupModelMasterRequest.class
 io/gs2/dictionary/Gs2DictionaryRestClient$CreateNamespaceTask.class
@@ -3583,6 +3586,7 @@ io/gs2/mission/request/DescribeMissionGroupModelMastersRequest.class
 io/gs2/inventory/Gs2InventoryRestClient$DescribeInventoriesTask.class
 io/gs2/showcase/Gs2ShowcaseRestClient.class
 io/gs2/formation/request/GetPropertyFormRequest$1.class
+io/gs2/idle/result/UpdateCurrentCategoryMasterResult$1.class
 io/gs2/friend/result/GetProfileByUserIdResult$1.class
 io/gs2/gateway/result/SetFirebaseTokenByUserIdResult$1.class
 io/gs2/idle/result/DescribeNamespacesResult.class
@@ -4043,6 +4047,7 @@ io/gs2/distributor/request/DescribeDistributorModelsRequest$1.class
 io/gs2/ranking/result/CreateCategoryModelMasterResult.class
 io/gs2/friend/result/DescribeFollowsByUserIdResult.class
 io/gs2/lottery/result/DrawByUserIdResult$1.class
+io/gs2/idle/Gs2IdleRestClient$UpdateCurrentCategoryMasterTask$1.class
 io/gs2/stamina/request/RecoverStaminaByStampSheetRequest.class
 io/gs2/inbox/result/ReceiveGlobalMessageResult.class
 io/gs2/friend/result/RegisterBlackListByUserIdResult$1.class
@@ -4254,6 +4259,7 @@ io/gs2/lock/result/GetMutexResult.class
 io/gs2/identifier/result/DescribeUsersResult.class
 io/gs2/megaField/model/Layer.class
 io/gs2/enhance/Gs2EnhanceRestClient$UpdateCurrentRateMasterTask.class
+io/gs2/idle/Gs2IdleRestClient$UpdateCurrentCategoryMasterFromGitHubTask.class
 io/gs2/formation/result/DescribeMoldModelsResult$1.class
 io/gs2/megaField/Gs2MegaFieldRestClient$UpdateLayerModelMasterTask.class
 io/gs2/experience/request/GetNamespaceStatusRequest.class
@@ -4367,6 +4373,7 @@ io/gs2/account/request/GetNamespaceStatusRequest.class
 io/gs2/ranking/request/UnsubscribeByUserIdRequest$1.class
 io/gs2/gateway/result/GetFirebaseTokenByUserIdResult$1.class
 io/gs2/inbox/request/SendMessageByUserIdRequest$1.class
+io/gs2/idle/result/UpdateCurrentCategoryMasterResult.class
 io/gs2/limit/model/GitHubCheckoutSetting$1.class
 io/gs2/exchange/Gs2ExchangeRestClient$GetNamespaceStatusTask.class
 io/gs2/mission/result/CreateMissionGroupModelMasterResult.class
@@ -4439,6 +4446,7 @@ io/gs2/stamina/model/GitHubCheckoutSetting.class
 io/gs2/enhance/Gs2EnhanceRestClient$DescribeNamespacesTask.class
 io/gs2/distributor/Gs2DistributorRestClient$GetCurrentDistributorMasterTask.class
 io/gs2/inbox/request/ReadMessageRequest$1.class
+io/gs2/idle/request/GetCurrentCategoryMasterRequest.class
 io/gs2/project/request/GetProjectRequest.class
 io/gs2/log/Gs2LogRestClient$CountIssueStampSheetLogTask.class
 io/gs2/enhance/Gs2EnhanceRestClient$GetProgressTask.class
@@ -4553,6 +4561,7 @@ io/gs2/version/model/AcceptVersion.class
 io/gs2/idle/Gs2IdleRestClient$UpdateCategoryModelMasterTask$1.class
 io/gs2/stamina/result/GetNamespaceStatusResult.class
 io/gs2/experience/request/GetThresholdMasterRequest.class
+io/gs2/idle/Gs2IdleRestClient$GetCurrentCategoryMasterTask.class
 io/gs2/formation/result/UpdateCurrentFormMasterFromGitHubResult.class
 io/gs2/project/request/IssueAccountTokenRequest.class
 io/gs2/stamina/result/UpdateCurrentStaminaMasterFromGitHubResult.class
@@ -4802,6 +4811,7 @@ io/gs2/deploy/model/OutputField.class
 io/gs2/experience/Gs2ExperienceRestClient$GetNamespaceStatusTask.class
 io/gs2/serialKey/request/IssueRequest.class
 io/gs2/megaField/result/FetchPositionFromSystemResult.class
+io/gs2/idle/result/GetCurrentCategoryMasterResult.class
 io/gs2/core/exception/NotFoundException.class
 io/gs2/inbox/request/DeleteNamespaceRequest$1.class
 io/gs2/key/result/GetKeyResult.class
@@ -6550,6 +6560,7 @@ io/gs2/deploy/request/DescribeResourcesRequest.class
 io/gs2/inventory/Gs2InventoryRestClient$GetReferenceOfTask.class
 io/gs2/quest/Gs2QuestRestClient$CreateProgressByUserIdTask.class
 io/gs2/gateway/Gs2GatewayWebSocketClient$CreateNamespaceTask$1.class
+io/gs2/idle/result/UpdateCurrentCategoryMasterFromGitHubResult.class
 io/gs2/inventory/request/GetInventoryRequest$1.class
 io/gs2/stamina/result/GetRecoverIntervalTableMasterResult$1.class
 io/gs2/jobQueue/request/GetJobResultByUserIdRequest.class
@@ -6578,6 +6589,7 @@ io/gs2/watch/result/GetBillingActivityResult.class
 io/gs2/enhance/result/GetCurrentRateMasterResult$1.class
 io/gs2/lottery/model/DrawnPrize.class
 io/gs2/exchange/result/DescribeAwaitsByUserIdResult$1.class
+io/gs2/idle/request/UpdateCurrentCategoryMasterRequest.class
 io/gs2/key/request/UpdateNamespaceRequest$1.class
 io/gs2/deploy/model/Resource.class
 io/gs2/script/Gs2ScriptRestClient$DescribeNamespacesTask.class
@@ -6615,7 +6627,6 @@ io/gs2/matchmaking/result/PutResultResult$1.class
 io/gs2/distributor/model/LogSetting.class
 io/gs2/idle/result/DescribeCategoryModelsResult.class
 io/gs2/enhance/result/UpdateRateModelMasterResult.class
-io/gs2/idle/Gs2IdleRestClient$GetCurrentIdleMasterTask.class
 io/gs2/project/request/DescribeReceiptsRequest$1.class
 io/gs2/chat/result/DescribeSubscribesResult.class
 io/gs2/distributor/Gs2DistributorRestClient$RunStampSheetWithoutNamespaceTask$1.class
@@ -6722,6 +6733,7 @@ io/gs2/stamina/result/ConsumeStaminaByStampTaskResult$1.class
 io/gs2/version/request/DeleteNamespaceRequest.class
 io/gs2/exchange/result/DeleteAwaitByStampTaskResult.class
 io/gs2/account/request/UpdateBannedRequest$1.class
+io/gs2/idle/Gs2IdleRestClient$UpdateCurrentCategoryMasterTask.class
 io/gs2/megaField/Gs2MegaFieldRestClient$NearUserIdsTask$1.class
 io/gs2/lottery/Gs2LotteryRestClient$UpdateCurrentLotteryMasterFromGitHubTask.class
 io/gs2/inbox/Gs2InboxRestClient$GetMessageByUserIdTask.class
