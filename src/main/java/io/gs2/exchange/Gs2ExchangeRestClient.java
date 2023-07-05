@@ -1157,6 +1157,605 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeIncrementalRateModelsTask extends Gs2RestSessionTask<DescribeIncrementalRateModelsResult> {
+        private DescribeIncrementalRateModelsRequest request;
+
+        public DescribeIncrementalRateModelsTask(
+            DescribeIncrementalRateModelsRequest request,
+            AsyncAction<AsyncResult<DescribeIncrementalRateModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeIncrementalRateModelsResult parse(JsonNode data) {
+            return DescribeIncrementalRateModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/incremental/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeIncrementalRateModelsAsync(
+            DescribeIncrementalRateModelsRequest request,
+            AsyncAction<AsyncResult<DescribeIncrementalRateModelsResult>> callback
+    ) {
+        DescribeIncrementalRateModelsTask task = new DescribeIncrementalRateModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeIncrementalRateModelsResult describeIncrementalRateModels(
+            DescribeIncrementalRateModelsRequest request
+    ) {
+        final AsyncResult<DescribeIncrementalRateModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeIncrementalRateModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetIncrementalRateModelTask extends Gs2RestSessionTask<GetIncrementalRateModelResult> {
+        private GetIncrementalRateModelRequest request;
+
+        public GetIncrementalRateModelTask(
+            GetIncrementalRateModelRequest request,
+            AsyncAction<AsyncResult<GetIncrementalRateModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetIncrementalRateModelResult parse(JsonNode data) {
+            return GetIncrementalRateModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/incremental/model/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getIncrementalRateModelAsync(
+            GetIncrementalRateModelRequest request,
+            AsyncAction<AsyncResult<GetIncrementalRateModelResult>> callback
+    ) {
+        GetIncrementalRateModelTask task = new GetIncrementalRateModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetIncrementalRateModelResult getIncrementalRateModel(
+            GetIncrementalRateModelRequest request
+    ) {
+        final AsyncResult<GetIncrementalRateModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getIncrementalRateModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeIncrementalRateModelMastersTask extends Gs2RestSessionTask<DescribeIncrementalRateModelMastersResult> {
+        private DescribeIncrementalRateModelMastersRequest request;
+
+        public DescribeIncrementalRateModelMastersTask(
+            DescribeIncrementalRateModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeIncrementalRateModelMastersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeIncrementalRateModelMastersResult parse(JsonNode data) {
+            return DescribeIncrementalRateModelMastersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/incremental/master/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeIncrementalRateModelMastersAsync(
+            DescribeIncrementalRateModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeIncrementalRateModelMastersResult>> callback
+    ) {
+        DescribeIncrementalRateModelMastersTask task = new DescribeIncrementalRateModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeIncrementalRateModelMastersResult describeIncrementalRateModelMasters(
+            DescribeIncrementalRateModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeIncrementalRateModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeIncrementalRateModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateIncrementalRateModelMasterTask extends Gs2RestSessionTask<CreateIncrementalRateModelMasterResult> {
+        private CreateIncrementalRateModelMasterRequest request;
+
+        public CreateIncrementalRateModelMasterTask(
+            CreateIncrementalRateModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateIncrementalRateModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateIncrementalRateModelMasterResult parse(JsonNode data) {
+            return CreateIncrementalRateModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/incremental/master/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("consumeAction", request.getConsumeAction() != null ? request.getConsumeAction().toJson() : null);
+                    put("calculateType", request.getCalculateType());
+                    put("baseValue", request.getBaseValue());
+                    put("coefficientValue", request.getCoefficientValue());
+                    put("calculateScriptId", request.getCalculateScriptId());
+                    put("exchangeCountId", request.getExchangeCountId());
+                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createIncrementalRateModelMasterAsync(
+            CreateIncrementalRateModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateIncrementalRateModelMasterResult>> callback
+    ) {
+        CreateIncrementalRateModelMasterTask task = new CreateIncrementalRateModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateIncrementalRateModelMasterResult createIncrementalRateModelMaster(
+            CreateIncrementalRateModelMasterRequest request
+    ) {
+        final AsyncResult<CreateIncrementalRateModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createIncrementalRateModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetIncrementalRateModelMasterTask extends Gs2RestSessionTask<GetIncrementalRateModelMasterResult> {
+        private GetIncrementalRateModelMasterRequest request;
+
+        public GetIncrementalRateModelMasterTask(
+            GetIncrementalRateModelMasterRequest request,
+            AsyncAction<AsyncResult<GetIncrementalRateModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetIncrementalRateModelMasterResult parse(JsonNode data) {
+            return GetIncrementalRateModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/incremental/master/model/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getIncrementalRateModelMasterAsync(
+            GetIncrementalRateModelMasterRequest request,
+            AsyncAction<AsyncResult<GetIncrementalRateModelMasterResult>> callback
+    ) {
+        GetIncrementalRateModelMasterTask task = new GetIncrementalRateModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetIncrementalRateModelMasterResult getIncrementalRateModelMaster(
+            GetIncrementalRateModelMasterRequest request
+    ) {
+        final AsyncResult<GetIncrementalRateModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getIncrementalRateModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateIncrementalRateModelMasterTask extends Gs2RestSessionTask<UpdateIncrementalRateModelMasterResult> {
+        private UpdateIncrementalRateModelMasterRequest request;
+
+        public UpdateIncrementalRateModelMasterTask(
+            UpdateIncrementalRateModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateIncrementalRateModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateIncrementalRateModelMasterResult parse(JsonNode data) {
+            return UpdateIncrementalRateModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/incremental/master/model/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("consumeAction", request.getConsumeAction() != null ? request.getConsumeAction().toJson() : null);
+                    put("calculateType", request.getCalculateType());
+                    put("baseValue", request.getBaseValue());
+                    put("coefficientValue", request.getCoefficientValue());
+                    put("calculateScriptId", request.getCalculateScriptId());
+                    put("exchangeCountId", request.getExchangeCountId());
+                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateIncrementalRateModelMasterAsync(
+            UpdateIncrementalRateModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateIncrementalRateModelMasterResult>> callback
+    ) {
+        UpdateIncrementalRateModelMasterTask task = new UpdateIncrementalRateModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateIncrementalRateModelMasterResult updateIncrementalRateModelMaster(
+            UpdateIncrementalRateModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateIncrementalRateModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateIncrementalRateModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteIncrementalRateModelMasterTask extends Gs2RestSessionTask<DeleteIncrementalRateModelMasterResult> {
+        private DeleteIncrementalRateModelMasterRequest request;
+
+        public DeleteIncrementalRateModelMasterTask(
+            DeleteIncrementalRateModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteIncrementalRateModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteIncrementalRateModelMasterResult parse(JsonNode data) {
+            return DeleteIncrementalRateModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/incremental/master/model/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteIncrementalRateModelMasterAsync(
+            DeleteIncrementalRateModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteIncrementalRateModelMasterResult>> callback
+    ) {
+        DeleteIncrementalRateModelMasterTask task = new DeleteIncrementalRateModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteIncrementalRateModelMasterResult deleteIncrementalRateModelMaster(
+            DeleteIncrementalRateModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteIncrementalRateModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteIncrementalRateModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ExchangeTask extends Gs2RestSessionTask<ExchangeResult> {
         private ExchangeRequest request;
 
@@ -1407,6 +2006,438 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
     ) {
         final AsyncResult<ExchangeByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         exchangeByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class IncrementalExchangeTask extends Gs2RestSessionTask<IncrementalExchangeResult> {
+        private IncrementalExchangeRequest request;
+
+        public IncrementalExchangeTask(
+            IncrementalExchangeRequest request,
+            AsyncAction<AsyncResult<IncrementalExchangeResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IncrementalExchangeResult parse(JsonNode data) {
+            return IncrementalExchangeResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/incremental/exchange/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void incrementalExchangeAsync(
+            IncrementalExchangeRequest request,
+            AsyncAction<AsyncResult<IncrementalExchangeResult>> callback
+    ) {
+        IncrementalExchangeTask task = new IncrementalExchangeTask(request, callback);
+        session.execute(task);
+    }
+
+    public IncrementalExchangeResult incrementalExchange(
+            IncrementalExchangeRequest request
+    ) {
+        final AsyncResult<IncrementalExchangeResult>[] resultAsyncResult = new AsyncResult[]{null};
+        incrementalExchangeAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class IncrementalExchangeByUserIdTask extends Gs2RestSessionTask<IncrementalExchangeByUserIdResult> {
+        private IncrementalExchangeByUserIdRequest request;
+
+        public IncrementalExchangeByUserIdTask(
+            IncrementalExchangeByUserIdRequest request,
+            AsyncAction<AsyncResult<IncrementalExchangeByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IncrementalExchangeByUserIdResult parse(JsonNode data) {
+            return IncrementalExchangeByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/incremental/exchange/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void incrementalExchangeByUserIdAsync(
+            IncrementalExchangeByUserIdRequest request,
+            AsyncAction<AsyncResult<IncrementalExchangeByUserIdResult>> callback
+    ) {
+        IncrementalExchangeByUserIdTask task = new IncrementalExchangeByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public IncrementalExchangeByUserIdResult incrementalExchangeByUserId(
+            IncrementalExchangeByUserIdRequest request
+    ) {
+        final AsyncResult<IncrementalExchangeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        incrementalExchangeByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class IncrementalExchangeByStampSheetTask extends Gs2RestSessionTask<IncrementalExchangeByStampSheetResult> {
+        private IncrementalExchangeByStampSheetRequest request;
+
+        public IncrementalExchangeByStampSheetTask(
+            IncrementalExchangeByStampSheetRequest request,
+            AsyncAction<AsyncResult<IncrementalExchangeByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IncrementalExchangeByStampSheetResult parse(JsonNode data) {
+            return IncrementalExchangeByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/incremental/exchange";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void incrementalExchangeByStampSheetAsync(
+            IncrementalExchangeByStampSheetRequest request,
+            AsyncAction<AsyncResult<IncrementalExchangeByStampSheetResult>> callback
+    ) {
+        IncrementalExchangeByStampSheetTask task = new IncrementalExchangeByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public IncrementalExchangeByStampSheetResult incrementalExchangeByStampSheet(
+            IncrementalExchangeByStampSheetRequest request
+    ) {
+        final AsyncResult<IncrementalExchangeByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        incrementalExchangeByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnlockIncrementalExchangeByUserIdTask extends Gs2RestSessionTask<UnlockIncrementalExchangeByUserIdResult> {
+        private UnlockIncrementalExchangeByUserIdRequest request;
+
+        public UnlockIncrementalExchangeByUserIdTask(
+            UnlockIncrementalExchangeByUserIdRequest request,
+            AsyncAction<AsyncResult<UnlockIncrementalExchangeByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnlockIncrementalExchangeByUserIdResult parse(JsonNode data) {
+            return UnlockIncrementalExchangeByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/incremental/exchange/{rateName}/unlock";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("lockTransactionId", request.getLockTransactionId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unlockIncrementalExchangeByUserIdAsync(
+            UnlockIncrementalExchangeByUserIdRequest request,
+            AsyncAction<AsyncResult<UnlockIncrementalExchangeByUserIdResult>> callback
+    ) {
+        UnlockIncrementalExchangeByUserIdTask task = new UnlockIncrementalExchangeByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnlockIncrementalExchangeByUserIdResult unlockIncrementalExchangeByUserId(
+            UnlockIncrementalExchangeByUserIdRequest request
+    ) {
+        final AsyncResult<UnlockIncrementalExchangeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unlockIncrementalExchangeByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnlockIncrementalExchangeByStampSheetTask extends Gs2RestSessionTask<UnlockIncrementalExchangeByStampSheetResult> {
+        private UnlockIncrementalExchangeByStampSheetRequest request;
+
+        public UnlockIncrementalExchangeByStampSheetTask(
+            UnlockIncrementalExchangeByStampSheetRequest request,
+            AsyncAction<AsyncResult<UnlockIncrementalExchangeByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnlockIncrementalExchangeByStampSheetResult parse(JsonNode data) {
+            return UnlockIncrementalExchangeByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/incremental/exchange/unlock";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unlockIncrementalExchangeByStampSheetAsync(
+            UnlockIncrementalExchangeByStampSheetRequest request,
+            AsyncAction<AsyncResult<UnlockIncrementalExchangeByStampSheetResult>> callback
+    ) {
+        UnlockIncrementalExchangeByStampSheetTask task = new UnlockIncrementalExchangeByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnlockIncrementalExchangeByStampSheetResult unlockIncrementalExchangeByStampSheet(
+            UnlockIncrementalExchangeByStampSheetRequest request
+    ) {
+        final AsyncResult<UnlockIncrementalExchangeByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unlockIncrementalExchangeByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
