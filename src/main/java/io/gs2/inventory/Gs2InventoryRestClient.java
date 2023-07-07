@@ -1703,6 +1703,1163 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeSimpleInventoryModelMastersTask extends Gs2RestSessionTask<DescribeSimpleInventoryModelMastersResult> {
+        private DescribeSimpleInventoryModelMastersRequest request;
+
+        public DescribeSimpleInventoryModelMastersTask(
+            DescribeSimpleInventoryModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleInventoryModelMastersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSimpleInventoryModelMastersResult parse(JsonNode data) {
+            return DescribeSimpleInventoryModelMastersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSimpleInventoryModelMastersAsync(
+            DescribeSimpleInventoryModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleInventoryModelMastersResult>> callback
+    ) {
+        DescribeSimpleInventoryModelMastersTask task = new DescribeSimpleInventoryModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSimpleInventoryModelMastersResult describeSimpleInventoryModelMasters(
+            DescribeSimpleInventoryModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeSimpleInventoryModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSimpleInventoryModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateSimpleInventoryModelMasterTask extends Gs2RestSessionTask<CreateSimpleInventoryModelMasterResult> {
+        private CreateSimpleInventoryModelMasterRequest request;
+
+        public CreateSimpleInventoryModelMasterTask(
+            CreateSimpleInventoryModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateSimpleInventoryModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateSimpleInventoryModelMasterResult parse(JsonNode data) {
+            return CreateSimpleInventoryModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createSimpleInventoryModelMasterAsync(
+            CreateSimpleInventoryModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateSimpleInventoryModelMasterResult>> callback
+    ) {
+        CreateSimpleInventoryModelMasterTask task = new CreateSimpleInventoryModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateSimpleInventoryModelMasterResult createSimpleInventoryModelMaster(
+            CreateSimpleInventoryModelMasterRequest request
+    ) {
+        final AsyncResult<CreateSimpleInventoryModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createSimpleInventoryModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSimpleInventoryModelMasterTask extends Gs2RestSessionTask<GetSimpleInventoryModelMasterResult> {
+        private GetSimpleInventoryModelMasterRequest request;
+
+        public GetSimpleInventoryModelMasterTask(
+            GetSimpleInventoryModelMasterRequest request,
+            AsyncAction<AsyncResult<GetSimpleInventoryModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSimpleInventoryModelMasterResult parse(JsonNode data) {
+            return GetSimpleInventoryModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory/{inventoryName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSimpleInventoryModelMasterAsync(
+            GetSimpleInventoryModelMasterRequest request,
+            AsyncAction<AsyncResult<GetSimpleInventoryModelMasterResult>> callback
+    ) {
+        GetSimpleInventoryModelMasterTask task = new GetSimpleInventoryModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSimpleInventoryModelMasterResult getSimpleInventoryModelMaster(
+            GetSimpleInventoryModelMasterRequest request
+    ) {
+        final AsyncResult<GetSimpleInventoryModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSimpleInventoryModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateSimpleInventoryModelMasterTask extends Gs2RestSessionTask<UpdateSimpleInventoryModelMasterResult> {
+        private UpdateSimpleInventoryModelMasterRequest request;
+
+        public UpdateSimpleInventoryModelMasterTask(
+            UpdateSimpleInventoryModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateSimpleInventoryModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateSimpleInventoryModelMasterResult parse(JsonNode data) {
+            return UpdateSimpleInventoryModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory/{inventoryName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateSimpleInventoryModelMasterAsync(
+            UpdateSimpleInventoryModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateSimpleInventoryModelMasterResult>> callback
+    ) {
+        UpdateSimpleInventoryModelMasterTask task = new UpdateSimpleInventoryModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateSimpleInventoryModelMasterResult updateSimpleInventoryModelMaster(
+            UpdateSimpleInventoryModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateSimpleInventoryModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateSimpleInventoryModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteSimpleInventoryModelMasterTask extends Gs2RestSessionTask<DeleteSimpleInventoryModelMasterResult> {
+        private DeleteSimpleInventoryModelMasterRequest request;
+
+        public DeleteSimpleInventoryModelMasterTask(
+            DeleteSimpleInventoryModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteSimpleInventoryModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteSimpleInventoryModelMasterResult parse(JsonNode data) {
+            return DeleteSimpleInventoryModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory/{inventoryName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteSimpleInventoryModelMasterAsync(
+            DeleteSimpleInventoryModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteSimpleInventoryModelMasterResult>> callback
+    ) {
+        DeleteSimpleInventoryModelMasterTask task = new DeleteSimpleInventoryModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteSimpleInventoryModelMasterResult deleteSimpleInventoryModelMaster(
+            DeleteSimpleInventoryModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteSimpleInventoryModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteSimpleInventoryModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSimpleInventoryModelsTask extends Gs2RestSessionTask<DescribeSimpleInventoryModelsResult> {
+        private DescribeSimpleInventoryModelsRequest request;
+
+        public DescribeSimpleInventoryModelsTask(
+            DescribeSimpleInventoryModelsRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleInventoryModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSimpleInventoryModelsResult parse(JsonNode data) {
+            return DescribeSimpleInventoryModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/simple/inventory";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSimpleInventoryModelsAsync(
+            DescribeSimpleInventoryModelsRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleInventoryModelsResult>> callback
+    ) {
+        DescribeSimpleInventoryModelsTask task = new DescribeSimpleInventoryModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSimpleInventoryModelsResult describeSimpleInventoryModels(
+            DescribeSimpleInventoryModelsRequest request
+    ) {
+        final AsyncResult<DescribeSimpleInventoryModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSimpleInventoryModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSimpleInventoryModelTask extends Gs2RestSessionTask<GetSimpleInventoryModelResult> {
+        private GetSimpleInventoryModelRequest request;
+
+        public GetSimpleInventoryModelTask(
+            GetSimpleInventoryModelRequest request,
+            AsyncAction<AsyncResult<GetSimpleInventoryModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSimpleInventoryModelResult parse(JsonNode data) {
+            return GetSimpleInventoryModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/simple/inventory/{inventoryName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSimpleInventoryModelAsync(
+            GetSimpleInventoryModelRequest request,
+            AsyncAction<AsyncResult<GetSimpleInventoryModelResult>> callback
+    ) {
+        GetSimpleInventoryModelTask task = new GetSimpleInventoryModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSimpleInventoryModelResult getSimpleInventoryModel(
+            GetSimpleInventoryModelRequest request
+    ) {
+        final AsyncResult<GetSimpleInventoryModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSimpleInventoryModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSimpleItemModelMastersTask extends Gs2RestSessionTask<DescribeSimpleItemModelMastersResult> {
+        private DescribeSimpleItemModelMastersRequest request;
+
+        public DescribeSimpleItemModelMastersTask(
+            DescribeSimpleItemModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleItemModelMastersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSimpleItemModelMastersResult parse(JsonNode data) {
+            return DescribeSimpleItemModelMastersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory/{inventoryName}/item";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSimpleItemModelMastersAsync(
+            DescribeSimpleItemModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleItemModelMastersResult>> callback
+    ) {
+        DescribeSimpleItemModelMastersTask task = new DescribeSimpleItemModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSimpleItemModelMastersResult describeSimpleItemModelMasters(
+            DescribeSimpleItemModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeSimpleItemModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSimpleItemModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateSimpleItemModelMasterTask extends Gs2RestSessionTask<CreateSimpleItemModelMasterResult> {
+        private CreateSimpleItemModelMasterRequest request;
+
+        public CreateSimpleItemModelMasterTask(
+            CreateSimpleItemModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateSimpleItemModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateSimpleItemModelMasterResult parse(JsonNode data) {
+            return CreateSimpleItemModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory/{inventoryName}/item";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createSimpleItemModelMasterAsync(
+            CreateSimpleItemModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateSimpleItemModelMasterResult>> callback
+    ) {
+        CreateSimpleItemModelMasterTask task = new CreateSimpleItemModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateSimpleItemModelMasterResult createSimpleItemModelMaster(
+            CreateSimpleItemModelMasterRequest request
+    ) {
+        final AsyncResult<CreateSimpleItemModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createSimpleItemModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSimpleItemModelMasterTask extends Gs2RestSessionTask<GetSimpleItemModelMasterResult> {
+        private GetSimpleItemModelMasterRequest request;
+
+        public GetSimpleItemModelMasterTask(
+            GetSimpleItemModelMasterRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSimpleItemModelMasterResult parse(JsonNode data) {
+            return GetSimpleItemModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory/{inventoryName}/item/{itemName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSimpleItemModelMasterAsync(
+            GetSimpleItemModelMasterRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemModelMasterResult>> callback
+    ) {
+        GetSimpleItemModelMasterTask task = new GetSimpleItemModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSimpleItemModelMasterResult getSimpleItemModelMaster(
+            GetSimpleItemModelMasterRequest request
+    ) {
+        final AsyncResult<GetSimpleItemModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSimpleItemModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateSimpleItemModelMasterTask extends Gs2RestSessionTask<UpdateSimpleItemModelMasterResult> {
+        private UpdateSimpleItemModelMasterRequest request;
+
+        public UpdateSimpleItemModelMasterTask(
+            UpdateSimpleItemModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateSimpleItemModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateSimpleItemModelMasterResult parse(JsonNode data) {
+            return UpdateSimpleItemModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory/{inventoryName}/item/{itemName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateSimpleItemModelMasterAsync(
+            UpdateSimpleItemModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateSimpleItemModelMasterResult>> callback
+    ) {
+        UpdateSimpleItemModelMasterTask task = new UpdateSimpleItemModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateSimpleItemModelMasterResult updateSimpleItemModelMaster(
+            UpdateSimpleItemModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateSimpleItemModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateSimpleItemModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteSimpleItemModelMasterTask extends Gs2RestSessionTask<DeleteSimpleItemModelMasterResult> {
+        private DeleteSimpleItemModelMasterRequest request;
+
+        public DeleteSimpleItemModelMasterTask(
+            DeleteSimpleItemModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteSimpleItemModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteSimpleItemModelMasterResult parse(JsonNode data) {
+            return DeleteSimpleItemModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/simple/inventory/{inventoryName}/item/{itemName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteSimpleItemModelMasterAsync(
+            DeleteSimpleItemModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteSimpleItemModelMasterResult>> callback
+    ) {
+        DeleteSimpleItemModelMasterTask task = new DeleteSimpleItemModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteSimpleItemModelMasterResult deleteSimpleItemModelMaster(
+            DeleteSimpleItemModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteSimpleItemModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteSimpleItemModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSimpleItemModelsTask extends Gs2RestSessionTask<DescribeSimpleItemModelsResult> {
+        private DescribeSimpleItemModelsRequest request;
+
+        public DescribeSimpleItemModelsTask(
+            DescribeSimpleItemModelsRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleItemModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSimpleItemModelsResult parse(JsonNode data) {
+            return DescribeSimpleItemModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/simple/inventory/{inventoryName}/item";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSimpleItemModelsAsync(
+            DescribeSimpleItemModelsRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleItemModelsResult>> callback
+    ) {
+        DescribeSimpleItemModelsTask task = new DescribeSimpleItemModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSimpleItemModelsResult describeSimpleItemModels(
+            DescribeSimpleItemModelsRequest request
+    ) {
+        final AsyncResult<DescribeSimpleItemModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSimpleItemModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSimpleItemModelTask extends Gs2RestSessionTask<GetSimpleItemModelResult> {
+        private GetSimpleItemModelRequest request;
+
+        public GetSimpleItemModelTask(
+            GetSimpleItemModelRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSimpleItemModelResult parse(JsonNode data) {
+            return GetSimpleItemModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/simple/inventory/{inventoryName}/item/{itemName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSimpleItemModelAsync(
+            GetSimpleItemModelRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemModelResult>> callback
+    ) {
+        GetSimpleItemModelTask task = new GetSimpleItemModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSimpleItemModelResult getSimpleItemModel(
+            GetSimpleItemModelRequest request
+    ) {
+        final AsyncResult<GetSimpleItemModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSimpleItemModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
         private ExportMasterRequest request;
 
@@ -4935,6 +6092,1046 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
     ) {
         final AsyncResult<VerifyReferenceOfByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         verifyReferenceOfByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSimpleItemsTask extends Gs2RestSessionTask<DescribeSimpleItemsResult> {
+        private DescribeSimpleItemsRequest request;
+
+        public DescribeSimpleItemsTask(
+            DescribeSimpleItemsRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleItemsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSimpleItemsResult parse(JsonNode data) {
+            return DescribeSimpleItemsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/simple/inventory/{inventoryName}/item";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSimpleItemsAsync(
+            DescribeSimpleItemsRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleItemsResult>> callback
+    ) {
+        DescribeSimpleItemsTask task = new DescribeSimpleItemsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSimpleItemsResult describeSimpleItems(
+            DescribeSimpleItemsRequest request
+    ) {
+        final AsyncResult<DescribeSimpleItemsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSimpleItemsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSimpleItemsByUserIdTask extends Gs2RestSessionTask<DescribeSimpleItemsByUserIdResult> {
+        private DescribeSimpleItemsByUserIdRequest request;
+
+        public DescribeSimpleItemsByUserIdTask(
+            DescribeSimpleItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleItemsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSimpleItemsByUserIdResult parse(JsonNode data) {
+            return DescribeSimpleItemsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/simple/inventory/{inventoryName}/item";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSimpleItemsByUserIdAsync(
+            DescribeSimpleItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeSimpleItemsByUserIdResult>> callback
+    ) {
+        DescribeSimpleItemsByUserIdTask task = new DescribeSimpleItemsByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSimpleItemsByUserIdResult describeSimpleItemsByUserId(
+            DescribeSimpleItemsByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeSimpleItemsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSimpleItemsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSimpleItemTask extends Gs2RestSessionTask<GetSimpleItemResult> {
+        private GetSimpleItemRequest request;
+
+        public GetSimpleItemTask(
+            GetSimpleItemRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSimpleItemResult parse(JsonNode data) {
+            return GetSimpleItemResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/simple/inventory/{inventoryName}/item/{itemName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSimpleItemAsync(
+            GetSimpleItemRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemResult>> callback
+    ) {
+        GetSimpleItemTask task = new GetSimpleItemTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSimpleItemResult getSimpleItem(
+            GetSimpleItemRequest request
+    ) {
+        final AsyncResult<GetSimpleItemResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSimpleItemAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSimpleItemByUserIdTask extends Gs2RestSessionTask<GetSimpleItemByUserIdResult> {
+        private GetSimpleItemByUserIdRequest request;
+
+        public GetSimpleItemByUserIdTask(
+            GetSimpleItemByUserIdRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSimpleItemByUserIdResult parse(JsonNode data) {
+            return GetSimpleItemByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/simple/inventory/{inventoryName}/item/{itemName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSimpleItemByUserIdAsync(
+            GetSimpleItemByUserIdRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemByUserIdResult>> callback
+    ) {
+        GetSimpleItemByUserIdTask task = new GetSimpleItemByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSimpleItemByUserIdResult getSimpleItemByUserId(
+            GetSimpleItemByUserIdRequest request
+    ) {
+        final AsyncResult<GetSimpleItemByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSimpleItemByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSimpleItemWithSignatureTask extends Gs2RestSessionTask<GetSimpleItemWithSignatureResult> {
+        private GetSimpleItemWithSignatureRequest request;
+
+        public GetSimpleItemWithSignatureTask(
+            GetSimpleItemWithSignatureRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemWithSignatureResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSimpleItemWithSignatureResult parse(JsonNode data) {
+            return GetSimpleItemWithSignatureResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/simple/inventory/{inventoryName}/item/{itemName}/signature";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getKeyId() != null) {
+                queryStrings.add("keyId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getKeyId()))));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSimpleItemWithSignatureAsync(
+            GetSimpleItemWithSignatureRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemWithSignatureResult>> callback
+    ) {
+        GetSimpleItemWithSignatureTask task = new GetSimpleItemWithSignatureTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSimpleItemWithSignatureResult getSimpleItemWithSignature(
+            GetSimpleItemWithSignatureRequest request
+    ) {
+        final AsyncResult<GetSimpleItemWithSignatureResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSimpleItemWithSignatureAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSimpleItemWithSignatureByUserIdTask extends Gs2RestSessionTask<GetSimpleItemWithSignatureByUserIdResult> {
+        private GetSimpleItemWithSignatureByUserIdRequest request;
+
+        public GetSimpleItemWithSignatureByUserIdTask(
+            GetSimpleItemWithSignatureByUserIdRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemWithSignatureByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSimpleItemWithSignatureByUserIdResult parse(JsonNode data) {
+            return GetSimpleItemWithSignatureByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/simple/inventory/{inventoryName}/item/{itemName}/signature";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getKeyId() != null) {
+                queryStrings.add("keyId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getKeyId()))));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSimpleItemWithSignatureByUserIdAsync(
+            GetSimpleItemWithSignatureByUserIdRequest request,
+            AsyncAction<AsyncResult<GetSimpleItemWithSignatureByUserIdResult>> callback
+    ) {
+        GetSimpleItemWithSignatureByUserIdTask task = new GetSimpleItemWithSignatureByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSimpleItemWithSignatureByUserIdResult getSimpleItemWithSignatureByUserId(
+            GetSimpleItemWithSignatureByUserIdRequest request
+    ) {
+        final AsyncResult<GetSimpleItemWithSignatureByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSimpleItemWithSignatureByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AcquireSimpleItemsByUserIdTask extends Gs2RestSessionTask<AcquireSimpleItemsByUserIdResult> {
+        private AcquireSimpleItemsByUserIdRequest request;
+
+        public AcquireSimpleItemsByUserIdTask(
+            AcquireSimpleItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<AcquireSimpleItemsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AcquireSimpleItemsByUserIdResult parse(JsonNode data) {
+            return AcquireSimpleItemsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/simple/inventory/{inventoryName}/acquire";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("acquireCounts", request.getAcquireCounts() == null ? new ArrayList<AcquireCount>() :
+                        request.getAcquireCounts().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void acquireSimpleItemsByUserIdAsync(
+            AcquireSimpleItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<AcquireSimpleItemsByUserIdResult>> callback
+    ) {
+        AcquireSimpleItemsByUserIdTask task = new AcquireSimpleItemsByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public AcquireSimpleItemsByUserIdResult acquireSimpleItemsByUserId(
+            AcquireSimpleItemsByUserIdRequest request
+    ) {
+        final AsyncResult<AcquireSimpleItemsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        acquireSimpleItemsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ConsumeSimpleItemsTask extends Gs2RestSessionTask<ConsumeSimpleItemsResult> {
+        private ConsumeSimpleItemsRequest request;
+
+        public ConsumeSimpleItemsTask(
+            ConsumeSimpleItemsRequest request,
+            AsyncAction<AsyncResult<ConsumeSimpleItemsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ConsumeSimpleItemsResult parse(JsonNode data) {
+            return ConsumeSimpleItemsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/simple/inventory/{inventoryName}/consume";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("consumeCounts", request.getConsumeCounts() == null ? new ArrayList<ConsumeCount>() :
+                        request.getConsumeCounts().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void consumeSimpleItemsAsync(
+            ConsumeSimpleItemsRequest request,
+            AsyncAction<AsyncResult<ConsumeSimpleItemsResult>> callback
+    ) {
+        ConsumeSimpleItemsTask task = new ConsumeSimpleItemsTask(request, callback);
+        session.execute(task);
+    }
+
+    public ConsumeSimpleItemsResult consumeSimpleItems(
+            ConsumeSimpleItemsRequest request
+    ) {
+        final AsyncResult<ConsumeSimpleItemsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        consumeSimpleItemsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ConsumeSimpleItemsByUserIdTask extends Gs2RestSessionTask<ConsumeSimpleItemsByUserIdResult> {
+        private ConsumeSimpleItemsByUserIdRequest request;
+
+        public ConsumeSimpleItemsByUserIdTask(
+            ConsumeSimpleItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<ConsumeSimpleItemsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ConsumeSimpleItemsByUserIdResult parse(JsonNode data) {
+            return ConsumeSimpleItemsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/simple/inventory/{inventoryName}/consume";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("consumeCounts", request.getConsumeCounts() == null ? new ArrayList<ConsumeCount>() :
+                        request.getConsumeCounts().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void consumeSimpleItemsByUserIdAsync(
+            ConsumeSimpleItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<ConsumeSimpleItemsByUserIdResult>> callback
+    ) {
+        ConsumeSimpleItemsByUserIdTask task = new ConsumeSimpleItemsByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public ConsumeSimpleItemsByUserIdResult consumeSimpleItemsByUserId(
+            ConsumeSimpleItemsByUserIdRequest request
+    ) {
+        final AsyncResult<ConsumeSimpleItemsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        consumeSimpleItemsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteSimpleItemsByUserIdTask extends Gs2RestSessionTask<DeleteSimpleItemsByUserIdResult> {
+        private DeleteSimpleItemsByUserIdRequest request;
+
+        public DeleteSimpleItemsByUserIdTask(
+            DeleteSimpleItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteSimpleItemsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteSimpleItemsByUserIdResult parse(JsonNode data) {
+            return DeleteSimpleItemsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/simple/inventory/{inventoryName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteSimpleItemsByUserIdAsync(
+            DeleteSimpleItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteSimpleItemsByUserIdResult>> callback
+    ) {
+        DeleteSimpleItemsByUserIdTask task = new DeleteSimpleItemsByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteSimpleItemsByUserIdResult deleteSimpleItemsByUserId(
+            DeleteSimpleItemsByUserIdRequest request
+    ) {
+        final AsyncResult<DeleteSimpleItemsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteSimpleItemsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AcquireSimpleItemsByStampSheetTask extends Gs2RestSessionTask<AcquireSimpleItemsByStampSheetResult> {
+        private AcquireSimpleItemsByStampSheetRequest request;
+
+        public AcquireSimpleItemsByStampSheetTask(
+            AcquireSimpleItemsByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireSimpleItemsByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AcquireSimpleItemsByStampSheetResult parse(JsonNode data) {
+            return AcquireSimpleItemsByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/simple/item/acquire";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void acquireSimpleItemsByStampSheetAsync(
+            AcquireSimpleItemsByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireSimpleItemsByStampSheetResult>> callback
+    ) {
+        AcquireSimpleItemsByStampSheetTask task = new AcquireSimpleItemsByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public AcquireSimpleItemsByStampSheetResult acquireSimpleItemsByStampSheet(
+            AcquireSimpleItemsByStampSheetRequest request
+    ) {
+        final AsyncResult<AcquireSimpleItemsByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        acquireSimpleItemsByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ConsumeSimpleItemsByStampTaskTask extends Gs2RestSessionTask<ConsumeSimpleItemsByStampTaskResult> {
+        private ConsumeSimpleItemsByStampTaskRequest request;
+
+        public ConsumeSimpleItemsByStampTaskTask(
+            ConsumeSimpleItemsByStampTaskRequest request,
+            AsyncAction<AsyncResult<ConsumeSimpleItemsByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ConsumeSimpleItemsByStampTaskResult parse(JsonNode data) {
+            return ConsumeSimpleItemsByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/simple/item/consume";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void consumeSimpleItemsByStampTaskAsync(
+            ConsumeSimpleItemsByStampTaskRequest request,
+            AsyncAction<AsyncResult<ConsumeSimpleItemsByStampTaskResult>> callback
+    ) {
+        ConsumeSimpleItemsByStampTaskTask task = new ConsumeSimpleItemsByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public ConsumeSimpleItemsByStampTaskResult consumeSimpleItemsByStampTask(
+            ConsumeSimpleItemsByStampTaskRequest request
+    ) {
+        final AsyncResult<ConsumeSimpleItemsByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        consumeSimpleItemsByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
