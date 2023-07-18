@@ -27,18 +27,17 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetRandomShowcaseSalesItemRequest extends Gs2BasicRequest<GetRandomShowcaseSalesItemRequest> {
+public class DescribeRandomDisplayItemsByUserIdRequest extends Gs2BasicRequest<DescribeRandomDisplayItemsByUserIdRequest> {
     private String namespaceName;
     private String showcaseName;
-    private String displayItemName;
-    private String accessToken;
+    private String userId;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public GetRandomShowcaseSalesItemRequest withNamespaceName(String namespaceName) {
+	public DescribeRandomDisplayItemsByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -48,40 +47,29 @@ public class GetRandomShowcaseSalesItemRequest extends Gs2BasicRequest<GetRandom
 	public void setShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 	}
-	public GetRandomShowcaseSalesItemRequest withShowcaseName(String showcaseName) {
+	public DescribeRandomDisplayItemsByUserIdRequest withShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 		return this;
 	}
-	public String getDisplayItemName() {
-		return displayItemName;
+	public String getUserId() {
+		return userId;
 	}
-	public void setDisplayItemName(String displayItemName) {
-		this.displayItemName = displayItemName;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public GetRandomShowcaseSalesItemRequest withDisplayItemName(String displayItemName) {
-		this.displayItemName = displayItemName;
-		return this;
-	}
-	public String getAccessToken() {
-		return accessToken;
-	}
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
-	public GetRandomShowcaseSalesItemRequest withAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public DescribeRandomDisplayItemsByUserIdRequest withUserId(String userId) {
+		this.userId = userId;
 		return this;
 	}
 
-    public static GetRandomShowcaseSalesItemRequest fromJson(JsonNode data) {
+    public static DescribeRandomDisplayItemsByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetRandomShowcaseSalesItemRequest()
+        return new DescribeRandomDisplayItemsByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withShowcaseName(data.get("showcaseName") == null || data.get("showcaseName").isNull() ? null : data.get("showcaseName").asText())
-            .withDisplayItemName(data.get("displayItemName") == null || data.get("displayItemName").isNull() ? null : data.get("displayItemName").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
     }
 
     public JsonNode toJson() {
@@ -89,8 +77,7 @@ public class GetRandomShowcaseSalesItemRequest extends Gs2BasicRequest<GetRandom
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("showcaseName", getShowcaseName());
-                put("displayItemName", getDisplayItemName());
-                put("accessToken", getAccessToken());
+                put("userId", getUserId());
             }}
         );
     }

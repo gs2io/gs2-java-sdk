@@ -27,7 +27,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DescribeRandomShowcaseSalesItemsRequest extends Gs2BasicRequest<DescribeRandomShowcaseSalesItemsRequest> {
+public class DescribeRandomDisplayItemsRequest extends Gs2BasicRequest<DescribeRandomDisplayItemsRequest> {
     private String namespaceName;
     private String showcaseName;
     private String accessToken;
@@ -37,7 +37,7 @@ public class DescribeRandomShowcaseSalesItemsRequest extends Gs2BasicRequest<Des
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public DescribeRandomShowcaseSalesItemsRequest withNamespaceName(String namespaceName) {
+	public DescribeRandomDisplayItemsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -47,7 +47,7 @@ public class DescribeRandomShowcaseSalesItemsRequest extends Gs2BasicRequest<Des
 	public void setShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 	}
-	public DescribeRandomShowcaseSalesItemsRequest withShowcaseName(String showcaseName) {
+	public DescribeRandomDisplayItemsRequest withShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 		return this;
 	}
@@ -57,16 +57,16 @@ public class DescribeRandomShowcaseSalesItemsRequest extends Gs2BasicRequest<Des
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	public DescribeRandomShowcaseSalesItemsRequest withAccessToken(String accessToken) {
+	public DescribeRandomDisplayItemsRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
 
-    public static DescribeRandomShowcaseSalesItemsRequest fromJson(JsonNode data) {
+    public static DescribeRandomDisplayItemsRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DescribeRandomShowcaseSalesItemsRequest()
+        return new DescribeRandomDisplayItemsRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withShowcaseName(data.get("showcaseName") == null || data.get("showcaseName").isNull() ? null : data.get("showcaseName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());

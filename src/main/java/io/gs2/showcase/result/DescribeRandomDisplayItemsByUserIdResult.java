@@ -31,7 +31,7 @@ import io.gs2.showcase.model.RandomDisplayItem;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DescribeRandomShowcaseSalesItemsByUserIdResult implements IResult, Serializable {
+public class DescribeRandomDisplayItemsByUserIdResult implements IResult, Serializable {
     private List<RandomDisplayItem> items;
 
 	public List<RandomDisplayItem> getItems() {
@@ -42,16 +42,16 @@ public class DescribeRandomShowcaseSalesItemsByUserIdResult implements IResult, 
 		this.items = items;
 	}
 
-	public DescribeRandomShowcaseSalesItemsByUserIdResult withItems(List<RandomDisplayItem> items) {
+	public DescribeRandomDisplayItemsByUserIdResult withItems(List<RandomDisplayItem> items) {
 		this.items = items;
 		return this;
 	}
 
-    public static DescribeRandomShowcaseSalesItemsByUserIdResult fromJson(JsonNode data) {
+    public static DescribeRandomDisplayItemsByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DescribeRandomShowcaseSalesItemsByUserIdResult()
+        return new DescribeRandomDisplayItemsByUserIdResult()
             .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RandomDisplayItem>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef

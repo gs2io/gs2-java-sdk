@@ -31,7 +31,7 @@ import io.gs2.showcase.model.RandomDisplayItem;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetRandomShowcaseSalesItemByUserIdResult implements IResult, Serializable {
+public class GetRandomDisplayItemResult implements IResult, Serializable {
     private RandomDisplayItem item;
 
 	public RandomDisplayItem getItem() {
@@ -42,16 +42,16 @@ public class GetRandomShowcaseSalesItemByUserIdResult implements IResult, Serial
 		this.item = item;
 	}
 
-	public GetRandomShowcaseSalesItemByUserIdResult withItem(RandomDisplayItem item) {
+	public GetRandomDisplayItemResult withItem(RandomDisplayItem item) {
 		this.item = item;
 		return this;
 	}
 
-    public static GetRandomShowcaseSalesItemByUserIdResult fromJson(JsonNode data) {
+    public static GetRandomDisplayItemResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetRandomShowcaseSalesItemByUserIdResult()
+        return new GetRandomDisplayItemResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : RandomDisplayItem.fromJson(data.get("item")));
     }
 

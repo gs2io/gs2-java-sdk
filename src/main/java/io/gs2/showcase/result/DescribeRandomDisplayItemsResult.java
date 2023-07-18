@@ -31,34 +31,44 @@ import io.gs2.showcase.model.RandomDisplayItem;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetRandomShowcaseSalesItemResult implements IResult, Serializable {
-    private RandomDisplayItem item;
+public class DescribeRandomDisplayItemsResult implements IResult, Serializable {
+    private List<RandomDisplayItem> items;
 
-	public RandomDisplayItem getItem() {
-		return item;
+	public List<RandomDisplayItem> getItems() {
+		return items;
 	}
 
-	public void setItem(RandomDisplayItem item) {
-		this.item = item;
+	public void setItems(List<RandomDisplayItem> items) {
+		this.items = items;
 	}
 
-	public GetRandomShowcaseSalesItemResult withItem(RandomDisplayItem item) {
-		this.item = item;
+	public DescribeRandomDisplayItemsResult withItems(List<RandomDisplayItem> items) {
+		this.items = items;
 		return this;
 	}
 
-    public static GetRandomShowcaseSalesItemResult fromJson(JsonNode data) {
+    public static DescribeRandomDisplayItemsResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetRandomShowcaseSalesItemResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RandomDisplayItem.fromJson(data.get("item")));
+        return new DescribeRandomDisplayItemsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RandomDisplayItem>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return RandomDisplayItem.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
+                put("items", getItems() == null ? new ArrayList<RandomDisplayItem>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }

@@ -27,7 +27,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetRandomShowcaseSalesItemByUserIdRequest extends Gs2BasicRequest<GetRandomShowcaseSalesItemByUserIdRequest> {
+public class GetRandomDisplayItemByUserIdRequest extends Gs2BasicRequest<GetRandomDisplayItemByUserIdRequest> {
     private String namespaceName;
     private String showcaseName;
     private String displayItemName;
@@ -38,7 +38,7 @@ public class GetRandomShowcaseSalesItemByUserIdRequest extends Gs2BasicRequest<G
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public GetRandomShowcaseSalesItemByUserIdRequest withNamespaceName(String namespaceName) {
+	public GetRandomDisplayItemByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -48,7 +48,7 @@ public class GetRandomShowcaseSalesItemByUserIdRequest extends Gs2BasicRequest<G
 	public void setShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 	}
-	public GetRandomShowcaseSalesItemByUserIdRequest withShowcaseName(String showcaseName) {
+	public GetRandomDisplayItemByUserIdRequest withShowcaseName(String showcaseName) {
 		this.showcaseName = showcaseName;
 		return this;
 	}
@@ -58,7 +58,7 @@ public class GetRandomShowcaseSalesItemByUserIdRequest extends Gs2BasicRequest<G
 	public void setDisplayItemName(String displayItemName) {
 		this.displayItemName = displayItemName;
 	}
-	public GetRandomShowcaseSalesItemByUserIdRequest withDisplayItemName(String displayItemName) {
+	public GetRandomDisplayItemByUserIdRequest withDisplayItemName(String displayItemName) {
 		this.displayItemName = displayItemName;
 		return this;
 	}
@@ -68,16 +68,16 @@ public class GetRandomShowcaseSalesItemByUserIdRequest extends Gs2BasicRequest<G
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public GetRandomShowcaseSalesItemByUserIdRequest withUserId(String userId) {
+	public GetRandomDisplayItemByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
 
-    public static GetRandomShowcaseSalesItemByUserIdRequest fromJson(JsonNode data) {
+    public static GetRandomDisplayItemByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetRandomShowcaseSalesItemByUserIdRequest()
+        return new GetRandomDisplayItemByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withShowcaseName(data.get("showcaseName") == null || data.get("showcaseName").isNull() ? null : data.get("showcaseName").asText())
             .withDisplayItemName(data.get("displayItemName") == null || data.get("displayItemName").isNull() ? null : data.get("displayItemName").asText())

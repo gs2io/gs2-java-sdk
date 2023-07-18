@@ -31,44 +31,34 @@ import io.gs2.showcase.model.RandomDisplayItem;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DescribeRandomShowcaseSalesItemsResult implements IResult, Serializable {
-    private List<RandomDisplayItem> items;
+public class GetRandomDisplayItemByUserIdResult implements IResult, Serializable {
+    private RandomDisplayItem item;
 
-	public List<RandomDisplayItem> getItems() {
-		return items;
+	public RandomDisplayItem getItem() {
+		return item;
 	}
 
-	public void setItems(List<RandomDisplayItem> items) {
-		this.items = items;
+	public void setItem(RandomDisplayItem item) {
+		this.item = item;
 	}
 
-	public DescribeRandomShowcaseSalesItemsResult withItems(List<RandomDisplayItem> items) {
-		this.items = items;
+	public GetRandomDisplayItemByUserIdResult withItem(RandomDisplayItem item) {
+		this.item = item;
 		return this;
 	}
 
-    public static DescribeRandomShowcaseSalesItemsResult fromJson(JsonNode data) {
+    public static GetRandomDisplayItemByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DescribeRandomShowcaseSalesItemsResult()
-            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<RandomDisplayItem>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
-                    //noinspection Convert2MethodRef
-                    return RandomDisplayItem.fromJson(item);
-                }
-            ).collect(Collectors.toList()));
+        return new GetRandomDisplayItemByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RandomDisplayItem.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("items", getItems() == null ? new ArrayList<RandomDisplayItem>() :
-                    getItems().stream().map(item -> {
-                        //noinspection Convert2MethodRef
-                        return item.toJson();
-                    }
-                ).collect(Collectors.toList()));
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }

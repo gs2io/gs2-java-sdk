@@ -3100,340 +3100,6 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeRandomShowcaseSalesItemsTask extends Gs2RestSessionTask<DescribeRandomShowcaseSalesItemsResult> {
-        private DescribeRandomShowcaseSalesItemsRequest request;
-
-        public DescribeRandomShowcaseSalesItemsTask(
-            DescribeRandomShowcaseSalesItemsRequest request,
-            AsyncAction<AsyncResult<DescribeRandomShowcaseSalesItemsResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeRandomShowcaseSalesItemsResult parse(JsonNode data) {
-            return DescribeRandomShowcaseSalesItemsResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "showcase")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/random/showcase/{showcaseName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeRandomShowcaseSalesItemsAsync(
-            DescribeRandomShowcaseSalesItemsRequest request,
-            AsyncAction<AsyncResult<DescribeRandomShowcaseSalesItemsResult>> callback
-    ) {
-        DescribeRandomShowcaseSalesItemsTask task = new DescribeRandomShowcaseSalesItemsTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeRandomShowcaseSalesItemsResult describeRandomShowcaseSalesItems(
-            DescribeRandomShowcaseSalesItemsRequest request
-    ) {
-        final AsyncResult<DescribeRandomShowcaseSalesItemsResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeRandomShowcaseSalesItemsAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeRandomShowcaseSalesItemsByUserIdTask extends Gs2RestSessionTask<DescribeRandomShowcaseSalesItemsByUserIdResult> {
-        private DescribeRandomShowcaseSalesItemsByUserIdRequest request;
-
-        public DescribeRandomShowcaseSalesItemsByUserIdTask(
-            DescribeRandomShowcaseSalesItemsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeRandomShowcaseSalesItemsByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeRandomShowcaseSalesItemsByUserIdResult parse(JsonNode data) {
-            return DescribeRandomShowcaseSalesItemsByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "showcase")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/random/showcase/{showcaseName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeRandomShowcaseSalesItemsByUserIdAsync(
-            DescribeRandomShowcaseSalesItemsByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeRandomShowcaseSalesItemsByUserIdResult>> callback
-    ) {
-        DescribeRandomShowcaseSalesItemsByUserIdTask task = new DescribeRandomShowcaseSalesItemsByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeRandomShowcaseSalesItemsByUserIdResult describeRandomShowcaseSalesItemsByUserId(
-            DescribeRandomShowcaseSalesItemsByUserIdRequest request
-    ) {
-        final AsyncResult<DescribeRandomShowcaseSalesItemsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeRandomShowcaseSalesItemsByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetRandomShowcaseSalesItemTask extends Gs2RestSessionTask<GetRandomShowcaseSalesItemResult> {
-        private GetRandomShowcaseSalesItemRequest request;
-
-        public GetRandomShowcaseSalesItemTask(
-            GetRandomShowcaseSalesItemRequest request,
-            AsyncAction<AsyncResult<GetRandomShowcaseSalesItemResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetRandomShowcaseSalesItemResult parse(JsonNode data) {
-            return GetRandomShowcaseSalesItemResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "showcase")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/random/showcase/{showcaseName}/displayItem/{displayItemName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
-            url = url.replace("{displayItemName}", this.request.getDisplayItemName() == null || this.request.getDisplayItemName().length() == 0 ? "null" : String.valueOf(this.request.getDisplayItemName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void getRandomShowcaseSalesItemAsync(
-            GetRandomShowcaseSalesItemRequest request,
-            AsyncAction<AsyncResult<GetRandomShowcaseSalesItemResult>> callback
-    ) {
-        GetRandomShowcaseSalesItemTask task = new GetRandomShowcaseSalesItemTask(request, callback);
-        session.execute(task);
-    }
-
-    public GetRandomShowcaseSalesItemResult getRandomShowcaseSalesItem(
-            GetRandomShowcaseSalesItemRequest request
-    ) {
-        final AsyncResult<GetRandomShowcaseSalesItemResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getRandomShowcaseSalesItemAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetRandomShowcaseSalesItemByUserIdTask extends Gs2RestSessionTask<GetRandomShowcaseSalesItemByUserIdResult> {
-        private GetRandomShowcaseSalesItemByUserIdRequest request;
-
-        public GetRandomShowcaseSalesItemByUserIdTask(
-            GetRandomShowcaseSalesItemByUserIdRequest request,
-            AsyncAction<AsyncResult<GetRandomShowcaseSalesItemByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetRandomShowcaseSalesItemByUserIdResult parse(JsonNode data) {
-            return GetRandomShowcaseSalesItemByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "showcase")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/random/showcase/{showcaseName}/displayItem/{displayItemName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
-            url = url.replace("{displayItemName}", this.request.getDisplayItemName() == null || this.request.getDisplayItemName().length() == 0 ? "null" : String.valueOf(this.request.getDisplayItemName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void getRandomShowcaseSalesItemByUserIdAsync(
-            GetRandomShowcaseSalesItemByUserIdRequest request,
-            AsyncAction<AsyncResult<GetRandomShowcaseSalesItemByUserIdResult>> callback
-    ) {
-        GetRandomShowcaseSalesItemByUserIdTask task = new GetRandomShowcaseSalesItemByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public GetRandomShowcaseSalesItemByUserIdResult getRandomShowcaseSalesItemByUserId(
-            GetRandomShowcaseSalesItemByUserIdRequest request
-    ) {
-        final AsyncResult<GetRandomShowcaseSalesItemByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getRandomShowcaseSalesItemByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
     class IncrementPurchaseCountByUserIdTask extends Gs2RestSessionTask<IncrementPurchaseCountByUserIdResult> {
         private IncrementPurchaseCountByUserIdRequest request;
 
@@ -3750,6 +3416,340 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
     ) {
         final AsyncResult<ForceReDrawByUserIdByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         forceReDrawByUserIdByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeRandomDisplayItemsTask extends Gs2RestSessionTask<DescribeRandomDisplayItemsResult> {
+        private DescribeRandomDisplayItemsRequest request;
+
+        public DescribeRandomDisplayItemsTask(
+            DescribeRandomDisplayItemsRequest request,
+            AsyncAction<AsyncResult<DescribeRandomDisplayItemsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeRandomDisplayItemsResult parse(JsonNode data) {
+            return DescribeRandomDisplayItemsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "showcase")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/random/showcase/{showcaseName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeRandomDisplayItemsAsync(
+            DescribeRandomDisplayItemsRequest request,
+            AsyncAction<AsyncResult<DescribeRandomDisplayItemsResult>> callback
+    ) {
+        DescribeRandomDisplayItemsTask task = new DescribeRandomDisplayItemsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeRandomDisplayItemsResult describeRandomDisplayItems(
+            DescribeRandomDisplayItemsRequest request
+    ) {
+        final AsyncResult<DescribeRandomDisplayItemsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeRandomDisplayItemsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeRandomDisplayItemsByUserIdTask extends Gs2RestSessionTask<DescribeRandomDisplayItemsByUserIdResult> {
+        private DescribeRandomDisplayItemsByUserIdRequest request;
+
+        public DescribeRandomDisplayItemsByUserIdTask(
+            DescribeRandomDisplayItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeRandomDisplayItemsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeRandomDisplayItemsByUserIdResult parse(JsonNode data) {
+            return DescribeRandomDisplayItemsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "showcase")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/random/showcase/{showcaseName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeRandomDisplayItemsByUserIdAsync(
+            DescribeRandomDisplayItemsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeRandomDisplayItemsByUserIdResult>> callback
+    ) {
+        DescribeRandomDisplayItemsByUserIdTask task = new DescribeRandomDisplayItemsByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeRandomDisplayItemsByUserIdResult describeRandomDisplayItemsByUserId(
+            DescribeRandomDisplayItemsByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeRandomDisplayItemsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeRandomDisplayItemsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetRandomDisplayItemTask extends Gs2RestSessionTask<GetRandomDisplayItemResult> {
+        private GetRandomDisplayItemRequest request;
+
+        public GetRandomDisplayItemTask(
+            GetRandomDisplayItemRequest request,
+            AsyncAction<AsyncResult<GetRandomDisplayItemResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetRandomDisplayItemResult parse(JsonNode data) {
+            return GetRandomDisplayItemResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "showcase")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/random/showcase/{showcaseName}/displayItem/{displayItemName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
+            url = url.replace("{displayItemName}", this.request.getDisplayItemName() == null || this.request.getDisplayItemName().length() == 0 ? "null" : String.valueOf(this.request.getDisplayItemName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getRandomDisplayItemAsync(
+            GetRandomDisplayItemRequest request,
+            AsyncAction<AsyncResult<GetRandomDisplayItemResult>> callback
+    ) {
+        GetRandomDisplayItemTask task = new GetRandomDisplayItemTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetRandomDisplayItemResult getRandomDisplayItem(
+            GetRandomDisplayItemRequest request
+    ) {
+        final AsyncResult<GetRandomDisplayItemResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getRandomDisplayItemAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetRandomDisplayItemByUserIdTask extends Gs2RestSessionTask<GetRandomDisplayItemByUserIdResult> {
+        private GetRandomDisplayItemByUserIdRequest request;
+
+        public GetRandomDisplayItemByUserIdTask(
+            GetRandomDisplayItemByUserIdRequest request,
+            AsyncAction<AsyncResult<GetRandomDisplayItemByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetRandomDisplayItemByUserIdResult parse(JsonNode data) {
+            return GetRandomDisplayItemByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "showcase")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/random/showcase/{showcaseName}/displayItem/{displayItemName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
+            url = url.replace("{displayItemName}", this.request.getDisplayItemName() == null || this.request.getDisplayItemName().length() == 0 ? "null" : String.valueOf(this.request.getDisplayItemName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getRandomDisplayItemByUserIdAsync(
+            GetRandomDisplayItemByUserIdRequest request,
+            AsyncAction<AsyncResult<GetRandomDisplayItemByUserIdResult>> callback
+    ) {
+        GetRandomDisplayItemByUserIdTask task = new GetRandomDisplayItemByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetRandomDisplayItemByUserIdResult getRandomDisplayItemByUserId(
+            GetRandomDisplayItemByUserIdRequest request
+    ) {
+        final AsyncResult<GetRandomDisplayItemByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getRandomDisplayItemByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
