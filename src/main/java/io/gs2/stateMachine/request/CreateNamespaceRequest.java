@@ -1,0 +1,138 @@
+/*
+ * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
+ * Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+package io.gs2.stateMachine.request;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.stateMachine.model.ScriptSetting;
+import io.gs2.stateMachine.model.LogSetting;
+
+@SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
+    private String name;
+    private String description;
+    private ScriptSetting startScript;
+    private ScriptSetting passScript;
+    private ScriptSetting errorScript;
+    private Long lowestStateMachineVersion;
+    private LogSetting logSetting;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public CreateNamespaceRequest withName(String name) {
+		this.name = name;
+		return this;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public CreateNamespaceRequest withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+	public ScriptSetting getStartScript() {
+		return startScript;
+	}
+	public void setStartScript(ScriptSetting startScript) {
+		this.startScript = startScript;
+	}
+	public CreateNamespaceRequest withStartScript(ScriptSetting startScript) {
+		this.startScript = startScript;
+		return this;
+	}
+	public ScriptSetting getPassScript() {
+		return passScript;
+	}
+	public void setPassScript(ScriptSetting passScript) {
+		this.passScript = passScript;
+	}
+	public CreateNamespaceRequest withPassScript(ScriptSetting passScript) {
+		this.passScript = passScript;
+		return this;
+	}
+	public ScriptSetting getErrorScript() {
+		return errorScript;
+	}
+	public void setErrorScript(ScriptSetting errorScript) {
+		this.errorScript = errorScript;
+	}
+	public CreateNamespaceRequest withErrorScript(ScriptSetting errorScript) {
+		this.errorScript = errorScript;
+		return this;
+	}
+	public Long getLowestStateMachineVersion() {
+		return lowestStateMachineVersion;
+	}
+	public void setLowestStateMachineVersion(Long lowestStateMachineVersion) {
+		this.lowestStateMachineVersion = lowestStateMachineVersion;
+	}
+	public CreateNamespaceRequest withLowestStateMachineVersion(Long lowestStateMachineVersion) {
+		this.lowestStateMachineVersion = lowestStateMachineVersion;
+		return this;
+	}
+	public LogSetting getLogSetting() {
+		return logSetting;
+	}
+	public void setLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+	}
+	public CreateNamespaceRequest withLogSetting(LogSetting logSetting) {
+		this.logSetting = logSetting;
+		return this;
+	}
+
+    public static CreateNamespaceRequest fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new CreateNamespaceRequest()
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withStartScript(data.get("startScript") == null || data.get("startScript").isNull() ? null : ScriptSetting.fromJson(data.get("startScript")))
+            .withPassScript(data.get("passScript") == null || data.get("passScript").isNull() ? null : ScriptSetting.fromJson(data.get("passScript")))
+            .withErrorScript(data.get("errorScript") == null || data.get("errorScript").isNull() ? null : ScriptSetting.fromJson(data.get("errorScript")))
+            .withLowestStateMachineVersion(data.get("lowestStateMachineVersion") == null || data.get("lowestStateMachineVersion").isNull() ? null : data.get("lowestStateMachineVersion").longValue())
+            .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("name", getName());
+                put("description", getDescription());
+                put("startScript", getStartScript() != null ? getStartScript().toJson() : null);
+                put("passScript", getPassScript() != null ? getPassScript().toJson() : null);
+                put("errorScript", getErrorScript() != null ? getErrorScript().toJson() : null);
+                put("lowestStateMachineVersion", getLowestStateMachineVersion());
+                put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+            }}
+        );
+    }
+}
