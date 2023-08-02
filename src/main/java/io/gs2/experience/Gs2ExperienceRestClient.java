@@ -156,6 +156,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("experienceCapScriptId", request.getExperienceCapScriptId());
                     put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
                     put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);
@@ -403,6 +404,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("experienceCapScriptId", request.getExperienceCapScriptId());
                     put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
                     put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);
@@ -662,6 +664,12 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                     put("defaultRankCap", request.getDefaultRankCap());
                     put("maxRankCap", request.getMaxRankCap());
                     put("rankThresholdName", request.getRankThresholdName());
+                    put("acquireActionRates", request.getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                        request.getAcquireActionRates().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -830,6 +838,12 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                     put("defaultRankCap", request.getDefaultRankCap());
                     put("maxRankCap", request.getMaxRankCap());
                     put("rankThresholdName", request.getRankThresholdName());
+                    put("acquireActionRates", request.getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                        request.getAcquireActionRates().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -3049,6 +3063,179 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
     ) {
         final AsyncResult<SetRankCapByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         setRankCapByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class MultiplyAcquireActionsByUserIdTask extends Gs2RestSessionTask<MultiplyAcquireActionsByUserIdResult> {
+        private MultiplyAcquireActionsByUserIdRequest request;
+
+        public MultiplyAcquireActionsByUserIdTask(
+            MultiplyAcquireActionsByUserIdRequest request,
+            AsyncAction<AsyncResult<MultiplyAcquireActionsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public MultiplyAcquireActionsByUserIdResult parse(JsonNode data) {
+            return MultiplyAcquireActionsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}/acquire/rate/{rateName}/multiply";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
+                        request.getAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void multiplyAcquireActionsByUserIdAsync(
+            MultiplyAcquireActionsByUserIdRequest request,
+            AsyncAction<AsyncResult<MultiplyAcquireActionsByUserIdResult>> callback
+    ) {
+        MultiplyAcquireActionsByUserIdTask task = new MultiplyAcquireActionsByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public MultiplyAcquireActionsByUserIdResult multiplyAcquireActionsByUserId(
+            MultiplyAcquireActionsByUserIdRequest request
+    ) {
+        final AsyncResult<MultiplyAcquireActionsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        multiplyAcquireActionsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class MultiplyAcquireActionsByStampSheetTask extends Gs2RestSessionTask<MultiplyAcquireActionsByStampSheetResult> {
+        private MultiplyAcquireActionsByStampSheetRequest request;
+
+        public MultiplyAcquireActionsByStampSheetTask(
+            MultiplyAcquireActionsByStampSheetRequest request,
+            AsyncAction<AsyncResult<MultiplyAcquireActionsByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public MultiplyAcquireActionsByStampSheetResult parse(JsonNode data) {
+            return MultiplyAcquireActionsByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/form/acquire";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void multiplyAcquireActionsByStampSheetAsync(
+            MultiplyAcquireActionsByStampSheetRequest request,
+            AsyncAction<AsyncResult<MultiplyAcquireActionsByStampSheetResult>> callback
+    ) {
+        MultiplyAcquireActionsByStampSheetTask task = new MultiplyAcquireActionsByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public MultiplyAcquireActionsByStampSheetResult multiplyAcquireActionsByStampSheet(
+            MultiplyAcquireActionsByStampSheetRequest request
+    ) {
+        final AsyncResult<MultiplyAcquireActionsByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        multiplyAcquireActionsByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

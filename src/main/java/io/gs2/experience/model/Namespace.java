@@ -32,6 +32,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String namespaceId;
 	private String name;
 	private String description;
+	private TransactionSetting transactionSetting;
 	private String experienceCapScriptId;
 	private ScriptSetting changeExperienceScript;
 	private ScriptSetting changeRankScript;
@@ -68,6 +69,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public Namespace withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public String getExperienceCapScriptId() {
@@ -159,6 +170,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withExperienceCapScriptId(data.get("experienceCapScriptId") == null || data.get("experienceCapScriptId").isNull() ? null : data.get("experienceCapScriptId").asText())
             .withChangeExperienceScript(data.get("changeExperienceScript") == null || data.get("changeExperienceScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeExperienceScript")))
             .withChangeRankScript(data.get("changeRankScript") == null || data.get("changeRankScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRankScript")))
@@ -175,6 +187,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("experienceCapScriptId", getExperienceCapScriptId());
                 put("changeExperienceScript", getChangeExperienceScript() != null ? getChangeExperienceScript().toJson() : null);
                 put("changeRankScript", getChangeRankScript() != null ? getChangeRankScript().toJson() : null);
@@ -199,6 +212,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.experienceCapScriptId == null) ? 0 : this.experienceCapScriptId.hashCode());
         result = prime * result + ((this.changeExperienceScript == null) ? 0 : this.changeExperienceScript.hashCode());
         result = prime * result + ((this.changeRankScript == null) ? 0 : this.changeRankScript.hashCode());
@@ -232,6 +246,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (transactionSetting == null) {
+			return other.transactionSetting == null;
+		} else if (!transactionSetting.equals(other.transactionSetting)) {
 			return false;
 		}
 		if (experienceCapScriptId == null) {

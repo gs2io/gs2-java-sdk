@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.experience.model.AcquireActionRate;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -36,6 +37,7 @@ public class CreateExperienceModelMasterRequest extends Gs2BasicRequest<CreateEx
     private Long defaultRankCap;
     private Long maxRankCap;
     private String rankThresholdName;
+    private List<AcquireActionRate> acquireActionRates;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -116,6 +118,16 @@ public class CreateExperienceModelMasterRequest extends Gs2BasicRequest<CreateEx
 		this.rankThresholdName = rankThresholdName;
 		return this;
 	}
+	public List<AcquireActionRate> getAcquireActionRates() {
+		return acquireActionRates;
+	}
+	public void setAcquireActionRates(List<AcquireActionRate> acquireActionRates) {
+		this.acquireActionRates = acquireActionRates;
+	}
+	public CreateExperienceModelMasterRequest withAcquireActionRates(List<AcquireActionRate> acquireActionRates) {
+		this.acquireActionRates = acquireActionRates;
+		return this;
+	}
 
     public static CreateExperienceModelMasterRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -129,7 +141,13 @@ public class CreateExperienceModelMasterRequest extends Gs2BasicRequest<CreateEx
             .withDefaultExperience(data.get("defaultExperience") == null || data.get("defaultExperience").isNull() ? null : data.get("defaultExperience").longValue())
             .withDefaultRankCap(data.get("defaultRankCap") == null || data.get("defaultRankCap").isNull() ? null : data.get("defaultRankCap").longValue())
             .withMaxRankCap(data.get("maxRankCap") == null || data.get("maxRankCap").isNull() ? null : data.get("maxRankCap").longValue())
-            .withRankThresholdName(data.get("rankThresholdName") == null || data.get("rankThresholdName").isNull() ? null : data.get("rankThresholdName").asText());
+            .withRankThresholdName(data.get("rankThresholdName") == null || data.get("rankThresholdName").isNull() ? null : data.get("rankThresholdName").asText())
+            .withAcquireActionRates(data.get("acquireActionRates") == null || data.get("acquireActionRates").isNull() ? new ArrayList<AcquireActionRate>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActionRates").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireActionRate.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -143,6 +161,12 @@ public class CreateExperienceModelMasterRequest extends Gs2BasicRequest<CreateEx
                 put("defaultRankCap", getDefaultRankCap());
                 put("maxRankCap", getMaxRankCap());
                 put("rankThresholdName", getRankThresholdName());
+                put("acquireActionRates", getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                    getAcquireActionRates().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }

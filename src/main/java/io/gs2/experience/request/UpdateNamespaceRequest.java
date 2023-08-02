@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.experience.model.TransactionSetting;
 import io.gs2.experience.model.ScriptSetting;
 import io.gs2.experience.model.LogSetting;
 
@@ -32,6 +33,7 @@ import io.gs2.experience.model.LogSetting;
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
     private String namespaceName;
     private String description;
+    private TransactionSetting transactionSetting;
     private String experienceCapScriptId;
     private ScriptSetting changeExperienceScript;
     private ScriptSetting changeRankScript;
@@ -56,6 +58,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public UpdateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public String getExperienceCapScriptId() {
@@ -126,6 +138,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
         return new UpdateNamespaceRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withExperienceCapScriptId(data.get("experienceCapScriptId") == null || data.get("experienceCapScriptId").isNull() ? null : data.get("experienceCapScriptId").asText())
             .withChangeExperienceScript(data.get("changeExperienceScript") == null || data.get("changeExperienceScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeExperienceScript")))
             .withChangeRankScript(data.get("changeRankScript") == null || data.get("changeRankScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRankScript")))
@@ -139,6 +152,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("experienceCapScriptId", getExperienceCapScriptId());
                 put("changeExperienceScript", getChangeExperienceScript() != null ? getChangeExperienceScript().toJson() : null);
                 put("changeRankScript", getChangeRankScript() != null ? getChangeRankScript().toJson() : null);

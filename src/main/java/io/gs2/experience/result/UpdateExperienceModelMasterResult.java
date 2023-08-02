@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.experience.model.*;
+import io.gs2.experience.model.AcquireActionRate;
 import io.gs2.experience.model.ExperienceModelMaster;
 
 @SuppressWarnings("serial")

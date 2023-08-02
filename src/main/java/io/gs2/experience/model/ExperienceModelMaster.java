@@ -37,6 +37,7 @@ public class ExperienceModelMaster implements IModel, Serializable, Comparable<E
 	private Long defaultRankCap;
 	private Long maxRankCap;
 	private String rankThresholdName;
+	private List<AcquireActionRate> acquireActionRates;
 	private Long createdAt;
 	private Long updatedAt;
 	public String getExperienceModelId() {
@@ -119,6 +120,16 @@ public class ExperienceModelMaster implements IModel, Serializable, Comparable<E
 		this.rankThresholdName = rankThresholdName;
 		return this;
 	}
+	public List<AcquireActionRate> getAcquireActionRates() {
+		return acquireActionRates;
+	}
+	public void setAcquireActionRates(List<AcquireActionRate> acquireActionRates) {
+		this.acquireActionRates = acquireActionRates;
+	}
+	public ExperienceModelMaster withAcquireActionRates(List<AcquireActionRate> acquireActionRates) {
+		this.acquireActionRates = acquireActionRates;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -153,6 +164,12 @@ public class ExperienceModelMaster implements IModel, Serializable, Comparable<E
             .withDefaultRankCap(data.get("defaultRankCap") == null || data.get("defaultRankCap").isNull() ? null : data.get("defaultRankCap").longValue())
             .withMaxRankCap(data.get("maxRankCap") == null || data.get("maxRankCap").isNull() ? null : data.get("maxRankCap").longValue())
             .withRankThresholdName(data.get("rankThresholdName") == null || data.get("rankThresholdName").isNull() ? null : data.get("rankThresholdName").asText())
+            .withAcquireActionRates(data.get("acquireActionRates") == null || data.get("acquireActionRates").isNull() ? new ArrayList<AcquireActionRate>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActionRates").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireActionRate.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
@@ -168,6 +185,12 @@ public class ExperienceModelMaster implements IModel, Serializable, Comparable<E
                 put("defaultRankCap", getDefaultRankCap());
                 put("maxRankCap", getMaxRankCap());
                 put("rankThresholdName", getRankThresholdName());
+                put("acquireActionRates", getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                    getAcquireActionRates().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
             }}
@@ -191,6 +214,7 @@ public class ExperienceModelMaster implements IModel, Serializable, Comparable<E
         result = prime * result + ((this.defaultRankCap == null) ? 0 : this.defaultRankCap.hashCode());
         result = prime * result + ((this.maxRankCap == null) ? 0 : this.maxRankCap.hashCode());
         result = prime * result + ((this.rankThresholdName == null) ? 0 : this.rankThresholdName.hashCode());
+        result = prime * result + ((this.acquireActionRates == null) ? 0 : this.acquireActionRates.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
@@ -243,6 +267,11 @@ public class ExperienceModelMaster implements IModel, Serializable, Comparable<E
 		if (rankThresholdName == null) {
 			return other.rankThresholdName == null;
 		} else if (!rankThresholdName.equals(other.rankThresholdName)) {
+			return false;
+		}
+		if (acquireActionRates == null) {
+			return other.acquireActionRates == null;
+		} else if (!acquireActionRates.equals(other.acquireActionRates)) {
 			return false;
 		}
 		if (createdAt == null) {

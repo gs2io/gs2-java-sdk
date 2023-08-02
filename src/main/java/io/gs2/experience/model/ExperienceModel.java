@@ -36,6 +36,7 @@ public class ExperienceModel implements IModel, Serializable, Comparable<Experie
 	private Long defaultRankCap;
 	private Long maxRankCap;
 	private Threshold rankThreshold;
+	private List<AcquireActionRate> acquireActionRates;
 	public String getExperienceModelId() {
 		return experienceModelId;
 	}
@@ -106,6 +107,16 @@ public class ExperienceModel implements IModel, Serializable, Comparable<Experie
 		this.rankThreshold = rankThreshold;
 		return this;
 	}
+	public List<AcquireActionRate> getAcquireActionRates() {
+		return acquireActionRates;
+	}
+	public void setAcquireActionRates(List<AcquireActionRate> acquireActionRates) {
+		this.acquireActionRates = acquireActionRates;
+	}
+	public ExperienceModel withAcquireActionRates(List<AcquireActionRate> acquireActionRates) {
+		this.acquireActionRates = acquireActionRates;
+		return this;
+	}
 
     public static ExperienceModel fromJson(JsonNode data) {
         if (data == null) {
@@ -118,7 +129,13 @@ public class ExperienceModel implements IModel, Serializable, Comparable<Experie
             .withDefaultExperience(data.get("defaultExperience") == null || data.get("defaultExperience").isNull() ? null : data.get("defaultExperience").longValue())
             .withDefaultRankCap(data.get("defaultRankCap") == null || data.get("defaultRankCap").isNull() ? null : data.get("defaultRankCap").longValue())
             .withMaxRankCap(data.get("maxRankCap") == null || data.get("maxRankCap").isNull() ? null : data.get("maxRankCap").longValue())
-            .withRankThreshold(data.get("rankThreshold") == null || data.get("rankThreshold").isNull() ? null : Threshold.fromJson(data.get("rankThreshold")));
+            .withRankThreshold(data.get("rankThreshold") == null || data.get("rankThreshold").isNull() ? null : Threshold.fromJson(data.get("rankThreshold")))
+            .withAcquireActionRates(data.get("acquireActionRates") == null || data.get("acquireActionRates").isNull() ? new ArrayList<AcquireActionRate>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActionRates").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AcquireActionRate.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -131,6 +148,12 @@ public class ExperienceModel implements IModel, Serializable, Comparable<Experie
                 put("defaultRankCap", getDefaultRankCap());
                 put("maxRankCap", getMaxRankCap());
                 put("rankThreshold", getRankThreshold() != null ? getRankThreshold().toJson() : null);
+                put("acquireActionRates", getAcquireActionRates() == null ? new ArrayList<AcquireActionRate>() :
+                    getAcquireActionRates().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
@@ -151,6 +174,7 @@ public class ExperienceModel implements IModel, Serializable, Comparable<Experie
         result = prime * result + ((this.defaultRankCap == null) ? 0 : this.defaultRankCap.hashCode());
         result = prime * result + ((this.maxRankCap == null) ? 0 : this.maxRankCap.hashCode());
         result = prime * result + ((this.rankThreshold == null) ? 0 : this.rankThreshold.hashCode());
+        result = prime * result + ((this.acquireActionRates == null) ? 0 : this.acquireActionRates.hashCode());
 		return result;
 	}
 
@@ -196,6 +220,11 @@ public class ExperienceModel implements IModel, Serializable, Comparable<Experie
 		if (rankThreshold == null) {
 			return other.rankThreshold == null;
 		} else if (!rankThreshold.equals(other.rankThreshold)) {
+			return false;
+		}
+		if (acquireActionRates == null) {
+			return other.acquireActionRates == null;
+		} else if (!acquireActionRates.equals(other.acquireActionRates)) {
 			return false;
 		}
 		return true;
