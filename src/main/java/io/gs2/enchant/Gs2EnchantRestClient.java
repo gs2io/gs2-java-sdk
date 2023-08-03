@@ -2651,6 +2651,178 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class SetBalanceParameterStatusByUserIdTask extends Gs2RestSessionTask<SetBalanceParameterStatusByUserIdResult> {
+        private SetBalanceParameterStatusByUserIdRequest request;
+
+        public SetBalanceParameterStatusByUserIdTask(
+            SetBalanceParameterStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<SetBalanceParameterStatusByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetBalanceParameterStatusByUserIdResult parse(JsonNode data) {
+            return SetBalanceParameterStatusByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enchant")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/balance/{parameterName}/{propertyId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{parameterName}", this.request.getParameterName() == null || this.request.getParameterName().length() == 0 ? "null" : String.valueOf(this.request.getParameterName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("parameterValues", request.getParameterValues() == null ? new ArrayList<BalanceParameterValue>() :
+                        request.getParameterValues().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setBalanceParameterStatusByUserIdAsync(
+            SetBalanceParameterStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<SetBalanceParameterStatusByUserIdResult>> callback
+    ) {
+        SetBalanceParameterStatusByUserIdTask task = new SetBalanceParameterStatusByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetBalanceParameterStatusByUserIdResult setBalanceParameterStatusByUserId(
+            SetBalanceParameterStatusByUserIdRequest request
+    ) {
+        final AsyncResult<SetBalanceParameterStatusByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setBalanceParameterStatusByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SetBalanceParameterStatusByStampSheetTask extends Gs2RestSessionTask<SetBalanceParameterStatusByStampSheetResult> {
+        private SetBalanceParameterStatusByStampSheetRequest request;
+
+        public SetBalanceParameterStatusByStampSheetTask(
+            SetBalanceParameterStatusByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetBalanceParameterStatusByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetBalanceParameterStatusByStampSheetResult parse(JsonNode data) {
+            return SetBalanceParameterStatusByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enchant")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/balance/set";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setBalanceParameterStatusByStampSheetAsync(
+            SetBalanceParameterStatusByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetBalanceParameterStatusByStampSheetResult>> callback
+    ) {
+        SetBalanceParameterStatusByStampSheetTask task = new SetBalanceParameterStatusByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetBalanceParameterStatusByStampSheetResult setBalanceParameterStatusByStampSheet(
+            SetBalanceParameterStatusByStampSheetRequest request
+    ) {
+        final AsyncResult<SetBalanceParameterStatusByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setBalanceParameterStatusByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeRarityParameterStatusesTask extends Gs2RestSessionTask<DescribeRarityParameterStatusesResult> {
         private DescribeRarityParameterStatusesRequest request;
 
@@ -3669,6 +3841,178 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
     ) {
         final AsyncResult<VerifyRarityParameterStatusByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         verifyRarityParameterStatusByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SetRarityParameterStatusByUserIdTask extends Gs2RestSessionTask<SetRarityParameterStatusByUserIdResult> {
+        private SetRarityParameterStatusByUserIdRequest request;
+
+        public SetRarityParameterStatusByUserIdTask(
+            SetRarityParameterStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<SetRarityParameterStatusByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetRarityParameterStatusByUserIdResult parse(JsonNode data) {
+            return SetRarityParameterStatusByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enchant")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/rarity/{parameterName}/{propertyId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{parameterName}", this.request.getParameterName() == null || this.request.getParameterName().length() == 0 ? "null" : String.valueOf(this.request.getParameterName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("parameterValues", request.getParameterValues() == null ? new ArrayList<RarityParameterValue>() :
+                        request.getParameterValues().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setRarityParameterStatusByUserIdAsync(
+            SetRarityParameterStatusByUserIdRequest request,
+            AsyncAction<AsyncResult<SetRarityParameterStatusByUserIdResult>> callback
+    ) {
+        SetRarityParameterStatusByUserIdTask task = new SetRarityParameterStatusByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetRarityParameterStatusByUserIdResult setRarityParameterStatusByUserId(
+            SetRarityParameterStatusByUserIdRequest request
+    ) {
+        final AsyncResult<SetRarityParameterStatusByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setRarityParameterStatusByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SetRarityParameterStatusByStampSheetTask extends Gs2RestSessionTask<SetRarityParameterStatusByStampSheetResult> {
+        private SetRarityParameterStatusByStampSheetRequest request;
+
+        public SetRarityParameterStatusByStampSheetTask(
+            SetRarityParameterStatusByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetRarityParameterStatusByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetRarityParameterStatusByStampSheetResult parse(JsonNode data) {
+            return SetRarityParameterStatusByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enchant")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/rarity/parameter/set";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setRarityParameterStatusByStampSheetAsync(
+            SetRarityParameterStatusByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetRarityParameterStatusByStampSheetResult>> callback
+    ) {
+        SetRarityParameterStatusByStampSheetTask task = new SetRarityParameterStatusByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetRarityParameterStatusByStampSheetResult setRarityParameterStatusByStampSheet(
+            SetRarityParameterStatusByStampSheetRequest request
+    ) {
+        final AsyncResult<SetRarityParameterStatusByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setRarityParameterStatusByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
