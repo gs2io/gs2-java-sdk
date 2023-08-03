@@ -31,6 +31,7 @@ public class DescribeRankingsRequest extends Gs2BasicRequest<DescribeRankingsReq
     private String namespaceName;
     private String categoryName;
     private String accessToken;
+    private String additionalScopeName;
     private Long startIndex;
     private String pageToken;
     private Integer limit;
@@ -62,6 +63,16 @@ public class DescribeRankingsRequest extends Gs2BasicRequest<DescribeRankingsReq
 	}
 	public DescribeRankingsRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+		return this;
+	}
+	public String getAdditionalScopeName() {
+		return additionalScopeName;
+	}
+	public void setAdditionalScopeName(String additionalScopeName) {
+		this.additionalScopeName = additionalScopeName;
+	}
+	public DescribeRankingsRequest withAdditionalScopeName(String additionalScopeName) {
+		this.additionalScopeName = additionalScopeName;
 		return this;
 	}
 	public Long getStartIndex() {
@@ -103,6 +114,7 @@ public class DescribeRankingsRequest extends Gs2BasicRequest<DescribeRankingsReq
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withAdditionalScopeName(data.get("additionalScopeName") == null || data.get("additionalScopeName").isNull() ? null : data.get("additionalScopeName").asText())
             .withStartIndex(data.get("startIndex") == null || data.get("startIndex").isNull() ? null : data.get("startIndex").longValue())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
@@ -114,6 +126,7 @@ public class DescribeRankingsRequest extends Gs2BasicRequest<DescribeRankingsReq
                 put("namespaceName", getNamespaceName());
                 put("categoryName", getCategoryName());
                 put("accessToken", getAccessToken());
+                put("additionalScopeName", getAdditionalScopeName());
                 put("startIndex", getStartIndex());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());

@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.ranking.model.Scope;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -41,6 +42,7 @@ public class CreateCategoryModelMasterRequest extends Gs2BasicRequest<CreateCate
     private Integer calculateFixedTimingHour;
     private Integer calculateFixedTimingMinute;
     private Integer calculateIntervalMinutes;
+    private List<Scope> additionalScopes;
     private String entryPeriodEventId;
     private String accessPeriodEventId;
     private List<String> ignoreUserIds;
@@ -175,6 +177,16 @@ public class CreateCategoryModelMasterRequest extends Gs2BasicRequest<CreateCate
 		this.calculateIntervalMinutes = calculateIntervalMinutes;
 		return this;
 	}
+	public List<Scope> getAdditionalScopes() {
+		return additionalScopes;
+	}
+	public void setAdditionalScopes(List<Scope> additionalScopes) {
+		this.additionalScopes = additionalScopes;
+	}
+	public CreateCategoryModelMasterRequest withAdditionalScopes(List<Scope> additionalScopes) {
+		this.additionalScopes = additionalScopes;
+		return this;
+	}
 	public String getEntryPeriodEventId() {
 		return entryPeriodEventId;
 	}
@@ -234,6 +246,12 @@ public class CreateCategoryModelMasterRequest extends Gs2BasicRequest<CreateCate
             .withCalculateFixedTimingHour(data.get("calculateFixedTimingHour") == null || data.get("calculateFixedTimingHour").isNull() ? null : data.get("calculateFixedTimingHour").intValue())
             .withCalculateFixedTimingMinute(data.get("calculateFixedTimingMinute") == null || data.get("calculateFixedTimingMinute").isNull() ? null : data.get("calculateFixedTimingMinute").intValue())
             .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
+            .withAdditionalScopes(data.get("additionalScopes") == null || data.get("additionalScopes").isNull() ? new ArrayList<Scope>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("additionalScopes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Scope.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
             .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
             .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? new ArrayList<String>() :
@@ -260,6 +278,12 @@ public class CreateCategoryModelMasterRequest extends Gs2BasicRequest<CreateCate
                 put("calculateFixedTimingHour", getCalculateFixedTimingHour());
                 put("calculateFixedTimingMinute", getCalculateFixedTimingMinute());
                 put("calculateIntervalMinutes", getCalculateIntervalMinutes());
+                put("additionalScopes", getAdditionalScopes() == null ? new ArrayList<Scope>() :
+                    getAdditionalScopes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("entryPeriodEventId", getEntryPeriodEventId());
                 put("accessPeriodEventId", getAccessPeriodEventId());
                 put("ignoreUserIds", getIgnoreUserIds() == null ? new ArrayList<String>() :

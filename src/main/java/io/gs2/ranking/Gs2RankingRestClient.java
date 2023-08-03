@@ -818,6 +818,12 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
                     put("calculateFixedTimingMinute", request.getCalculateFixedTimingMinute());
                     put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
+                    put("additionalScopes", request.getAdditionalScopes() == null ? new ArrayList<Scope>() :
+                        request.getAdditionalScopes().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("ignoreUserIds", request.getIgnoreUserIds() == null ? new ArrayList<String>() :
@@ -999,6 +1005,12 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
                     put("calculateFixedTimingMinute", request.getCalculateFixedTimingMinute());
                     put("calculateIntervalMinutes", request.getCalculateIntervalMinutes());
+                    put("additionalScopes", request.getAdditionalScopes() == null ? new ArrayList<Scope>() :
+                        request.getAdditionalScopes().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("entryPeriodEventId", request.getEntryPeriodEventId());
                     put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("ignoreUserIds", request.getIgnoreUserIds() == null ? new ArrayList<String>() :
@@ -1695,6 +1707,9 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getAdditionalScopeName() != null) {
+                queryStrings.add("additionalScopeName=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAdditionalScopeName()))));
+            }
             if (this.request.getStartIndex() != null) {
                 queryStrings.add("startIndex=" + String.valueOf(this.request.getStartIndex()));
             }
@@ -1789,6 +1804,9 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getAdditionalScopeName() != null) {
+                queryStrings.add("additionalScopeName=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAdditionalScopeName()))));
+            }
             if (this.request.getStartIndex() != null) {
                 queryStrings.add("startIndex=" + String.valueOf(this.request.getStartIndex()));
             }
@@ -1879,6 +1897,9 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getAdditionalScopeName() != null) {
+                queryStrings.add("additionalScopeName=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAdditionalScopeName()))));
+            }
             if (this.request.getScore() != null) {
                 queryStrings.add("score=" + String.valueOf(this.request.getScore()));
             }
@@ -1964,6 +1985,9 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getAdditionalScopeName() != null) {
+                queryStrings.add("additionalScopeName=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAdditionalScopeName()))));
             }
             url += "?" + String.join("&", queryStrings);
 
@@ -2051,6 +2075,9 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getAdditionalScopeName() != null) {
+                queryStrings.add("additionalScopeName=" + EncodingUtil.urlEncode((String.valueOf(this.request.getAdditionalScopeName()))));
             }
             url += "?" + String.join("&", queryStrings);
 
@@ -2307,6 +2334,7 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("additionalScopeName", request.getAdditionalScopeName());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

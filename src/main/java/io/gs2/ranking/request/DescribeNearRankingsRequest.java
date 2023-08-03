@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeNearRankingsRequest extends Gs2BasicRequest<DescribeNearRankingsRequest> {
     private String namespaceName;
     private String categoryName;
+    private String additionalScopeName;
     private Long score;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -51,6 +52,16 @@ public class DescribeNearRankingsRequest extends Gs2BasicRequest<DescribeNearRan
 		this.categoryName = categoryName;
 		return this;
 	}
+	public String getAdditionalScopeName() {
+		return additionalScopeName;
+	}
+	public void setAdditionalScopeName(String additionalScopeName) {
+		this.additionalScopeName = additionalScopeName;
+	}
+	public DescribeNearRankingsRequest withAdditionalScopeName(String additionalScopeName) {
+		this.additionalScopeName = additionalScopeName;
+		return this;
+	}
 	public Long getScore() {
 		return score;
 	}
@@ -69,6 +80,7 @@ public class DescribeNearRankingsRequest extends Gs2BasicRequest<DescribeNearRan
         return new DescribeNearRankingsRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withAdditionalScopeName(data.get("additionalScopeName") == null || data.get("additionalScopeName").isNull() ? null : data.get("additionalScopeName").asText())
             .withScore(data.get("score") == null || data.get("score").isNull() ? null : data.get("score").longValue());
     }
 
@@ -77,6 +89,7 @@ public class DescribeNearRankingsRequest extends Gs2BasicRequest<DescribeNearRan
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("categoryName", getCategoryName());
+                put("additionalScopeName", getAdditionalScopeName());
                 put("score", getScore());
             }}
         );

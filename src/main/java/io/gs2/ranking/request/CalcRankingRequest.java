@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class CalcRankingRequest extends Gs2BasicRequest<CalcRankingRequest> {
     private String namespaceName;
     private String categoryName;
+    private String additionalScopeName;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -50,6 +51,16 @@ public class CalcRankingRequest extends Gs2BasicRequest<CalcRankingRequest> {
 		this.categoryName = categoryName;
 		return this;
 	}
+	public String getAdditionalScopeName() {
+		return additionalScopeName;
+	}
+	public void setAdditionalScopeName(String additionalScopeName) {
+		this.additionalScopeName = additionalScopeName;
+	}
+	public CalcRankingRequest withAdditionalScopeName(String additionalScopeName) {
+		this.additionalScopeName = additionalScopeName;
+		return this;
+	}
 
     public static CalcRankingRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -57,7 +68,8 @@ public class CalcRankingRequest extends Gs2BasicRequest<CalcRankingRequest> {
         }
         return new CalcRankingRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText());
+            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withAdditionalScopeName(data.get("additionalScopeName") == null || data.get("additionalScopeName").isNull() ? null : data.get("additionalScopeName").asText());
     }
 
     public JsonNode toJson() {
@@ -65,6 +77,7 @@ public class CalcRankingRequest extends Gs2BasicRequest<CalcRankingRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("categoryName", getCategoryName());
+                put("additionalScopeName", getAdditionalScopeName());
             }}
         );
     }

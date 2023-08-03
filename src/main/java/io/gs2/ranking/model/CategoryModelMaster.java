@@ -42,6 +42,7 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
 	private Integer calculateFixedTimingHour;
 	private Integer calculateFixedTimingMinute;
 	private Integer calculateIntervalMinutes;
+	private List<Scope> additionalScopes;
 	private String entryPeriodEventId;
 	private String accessPeriodEventId;
 	private List<String> ignoreUserIds;
@@ -178,6 +179,16 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
 		this.calculateIntervalMinutes = calculateIntervalMinutes;
 		return this;
 	}
+	public List<Scope> getAdditionalScopes() {
+		return additionalScopes;
+	}
+	public void setAdditionalScopes(List<Scope> additionalScopes) {
+		this.additionalScopes = additionalScopes;
+	}
+	public CategoryModelMaster withAdditionalScopes(List<Scope> additionalScopes) {
+		this.additionalScopes = additionalScopes;
+		return this;
+	}
 	public String getEntryPeriodEventId() {
 		return entryPeriodEventId;
 	}
@@ -257,6 +268,12 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
             .withCalculateFixedTimingHour(data.get("calculateFixedTimingHour") == null || data.get("calculateFixedTimingHour").isNull() ? null : data.get("calculateFixedTimingHour").intValue())
             .withCalculateFixedTimingMinute(data.get("calculateFixedTimingMinute") == null || data.get("calculateFixedTimingMinute").isNull() ? null : data.get("calculateFixedTimingMinute").intValue())
             .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
+            .withAdditionalScopes(data.get("additionalScopes") == null || data.get("additionalScopes").isNull() ? new ArrayList<Scope>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("additionalScopes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Scope.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
             .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
             .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? new ArrayList<String>() :
@@ -285,6 +302,12 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
                 put("calculateFixedTimingHour", getCalculateFixedTimingHour());
                 put("calculateFixedTimingMinute", getCalculateFixedTimingMinute());
                 put("calculateIntervalMinutes", getCalculateIntervalMinutes());
+                put("additionalScopes", getAdditionalScopes() == null ? new ArrayList<Scope>() :
+                    getAdditionalScopes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("entryPeriodEventId", getEntryPeriodEventId());
                 put("accessPeriodEventId", getAccessPeriodEventId());
                 put("ignoreUserIds", getIgnoreUserIds() == null ? new ArrayList<String>() :
@@ -321,6 +344,7 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
         result = prime * result + ((this.calculateFixedTimingHour == null) ? 0 : this.calculateFixedTimingHour.hashCode());
         result = prime * result + ((this.calculateFixedTimingMinute == null) ? 0 : this.calculateFixedTimingMinute.hashCode());
         result = prime * result + ((this.calculateIntervalMinutes == null) ? 0 : this.calculateIntervalMinutes.hashCode());
+        result = prime * result + ((this.additionalScopes == null) ? 0 : this.additionalScopes.hashCode());
         result = prime * result + ((this.entryPeriodEventId == null) ? 0 : this.entryPeriodEventId.hashCode());
         result = prime * result + ((this.accessPeriodEventId == null) ? 0 : this.accessPeriodEventId.hashCode());
         result = prime * result + ((this.ignoreUserIds == null) ? 0 : this.ignoreUserIds.hashCode());
@@ -402,6 +426,11 @@ public class CategoryModelMaster implements IModel, Serializable, Comparable<Cat
 		if (calculateIntervalMinutes == null) {
 			return other.calculateIntervalMinutes == null;
 		} else if (!calculateIntervalMinutes.equals(other.calculateIntervalMinutes)) {
+			return false;
+		}
+		if (additionalScopes == null) {
+			return other.additionalScopes == null;
+		} else if (!additionalScopes.equals(other.additionalScopes)) {
 			return false;
 		}
 		if (entryPeriodEventId == null) {
