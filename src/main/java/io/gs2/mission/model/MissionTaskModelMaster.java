@@ -34,6 +34,7 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
 	private String metadata;
 	private String description;
 	private String counterName;
+	private String targetResetType;
 	private Long targetValue;
 	private List<AcquireAction> completeAcquireActions;
 	private String challengePeriodEventId;
@@ -88,6 +89,16 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
 	}
 	public MissionTaskModelMaster withCounterName(String counterName) {
 		this.counterName = counterName;
+		return this;
+	}
+	public String getTargetResetType() {
+		return targetResetType;
+	}
+	public void setTargetResetType(String targetResetType) {
+		this.targetResetType = targetResetType;
+	}
+	public MissionTaskModelMaster withTargetResetType(String targetResetType) {
+		this.targetResetType = targetResetType;
 		return this;
 	}
 	public Long getTargetValue() {
@@ -161,6 +172,7 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
+            .withTargetResetType(data.get("targetResetType") == null || data.get("targetResetType").isNull() ? null : data.get("targetResetType").asText())
             .withTargetValue(data.get("targetValue") == null || data.get("targetValue").isNull() ? null : data.get("targetValue").longValue())
             .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
@@ -182,6 +194,7 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
                 put("metadata", getMetadata());
                 put("description", getDescription());
                 put("counterName", getCounterName());
+                put("targetResetType", getTargetResetType());
                 put("targetValue", getTargetValue());
                 put("completeAcquireActions", getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getCompleteAcquireActions().stream().map(item -> {
@@ -211,6 +224,7 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.counterName == null) ? 0 : this.counterName.hashCode());
+        result = prime * result + ((this.targetResetType == null) ? 0 : this.targetResetType.hashCode());
         result = prime * result + ((this.targetValue == null) ? 0 : this.targetValue.hashCode());
         result = prime * result + ((this.completeAcquireActions == null) ? 0 : this.completeAcquireActions.hashCode());
         result = prime * result + ((this.challengePeriodEventId == null) ? 0 : this.challengePeriodEventId.hashCode());
@@ -252,6 +266,11 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
 		if (counterName == null) {
 			return other.counterName == null;
 		} else if (!counterName.equals(other.counterName)) {
+			return false;
+		}
+		if (targetResetType == null) {
+			return other.targetResetType == null;
+		} else if (!targetResetType.equals(other.targetResetType)) {
 			return false;
 		}
 		if (targetValue == null) {

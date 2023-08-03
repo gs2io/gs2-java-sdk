@@ -3696,6 +3696,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("metadata", request.getMetadata());
                     put("description", request.getDescription());
                     put("counterName", request.getCounterName());
+                    put("targetResetType", request.getTargetResetType());
                     put("targetValue", request.getTargetValue());
                     put("completeAcquireActions", request.getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getCompleteAcquireActions().stream().map(item -> {
@@ -3872,6 +3873,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("metadata", request.getMetadata());
                     put("description", request.getDescription());
                     put("counterName", request.getCounterName());
+                    put("targetResetType", request.getTargetResetType());
                     put("targetValue", request.getTargetValue());
                     put("completeAcquireActions", request.getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getCompleteAcquireActions().stream().map(item -> {

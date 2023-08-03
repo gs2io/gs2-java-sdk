@@ -35,6 +35,7 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
     private String metadata;
     private String description;
     private String counterName;
+    private String targetResetType;
     private Long targetValue;
     private List<AcquireAction> completeAcquireActions;
     private String challengePeriodEventId;
@@ -99,6 +100,16 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
 		this.counterName = counterName;
 		return this;
 	}
+	public String getTargetResetType() {
+		return targetResetType;
+	}
+	public void setTargetResetType(String targetResetType) {
+		this.targetResetType = targetResetType;
+	}
+	public UpdateMissionTaskModelMasterRequest withTargetResetType(String targetResetType) {
+		this.targetResetType = targetResetType;
+		return this;
+	}
 	public Long getTargetValue() {
 		return targetValue;
 	}
@@ -151,6 +162,7 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
+            .withTargetResetType(data.get("targetResetType") == null || data.get("targetResetType").isNull() ? null : data.get("targetResetType").asText())
             .withTargetValue(data.get("targetValue") == null || data.get("targetValue").isNull() ? null : data.get("targetValue").longValue())
             .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
@@ -171,6 +183,7 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
                 put("metadata", getMetadata());
                 put("description", getDescription());
                 put("counterName", getCounterName());
+                put("targetResetType", getTargetResetType());
                 put("targetValue", getTargetValue());
                 put("completeAcquireActions", getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getCompleteAcquireActions().stream().map(item -> {
