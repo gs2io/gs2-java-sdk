@@ -1444,6 +1444,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("coefficientValue", request.getCoefficientValue());
                     put("calculateScriptId", request.getCalculateScriptId());
                     put("exchangeCountId", request.getExchangeCountId());
+                    put("maximumExchangeCount", request.getMaximumExchangeCount());
                     put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -1620,6 +1621,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("coefficientValue", request.getCoefficientValue());
                     put("calculateScriptId", request.getCalculateScriptId());
                     put("exchangeCountId", request.getExchangeCountId());
+                    put("maximumExchangeCount", request.getMaximumExchangeCount());
                     put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef

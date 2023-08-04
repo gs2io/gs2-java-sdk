@@ -40,6 +40,7 @@ public class CreateIncrementalRateModelMasterRequest extends Gs2BasicRequest<Cre
     private Long coefficientValue;
     private String calculateScriptId;
     private String exchangeCountId;
+    private Integer maximumExchangeCount;
     private List<AcquireAction> acquireActions;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -141,6 +142,16 @@ public class CreateIncrementalRateModelMasterRequest extends Gs2BasicRequest<Cre
 		this.exchangeCountId = exchangeCountId;
 		return this;
 	}
+	public Integer getMaximumExchangeCount() {
+		return maximumExchangeCount;
+	}
+	public void setMaximumExchangeCount(Integer maximumExchangeCount) {
+		this.maximumExchangeCount = maximumExchangeCount;
+	}
+	public CreateIncrementalRateModelMasterRequest withMaximumExchangeCount(Integer maximumExchangeCount) {
+		this.maximumExchangeCount = maximumExchangeCount;
+		return this;
+	}
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
@@ -167,6 +178,7 @@ public class CreateIncrementalRateModelMasterRequest extends Gs2BasicRequest<Cre
             .withCoefficientValue(data.get("coefficientValue") == null || data.get("coefficientValue").isNull() ? null : data.get("coefficientValue").longValue())
             .withCalculateScriptId(data.get("calculateScriptId") == null || data.get("calculateScriptId").isNull() ? null : data.get("calculateScriptId").asText())
             .withExchangeCountId(data.get("exchangeCountId") == null || data.get("exchangeCountId").isNull() ? null : data.get("exchangeCountId").asText())
+            .withMaximumExchangeCount(data.get("maximumExchangeCount") == null || data.get("maximumExchangeCount").isNull() ? null : data.get("maximumExchangeCount").intValue())
             .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -188,6 +200,7 @@ public class CreateIncrementalRateModelMasterRequest extends Gs2BasicRequest<Cre
                 put("coefficientValue", getCoefficientValue());
                 put("calculateScriptId", getCalculateScriptId());
                 put("exchangeCountId", getExchangeCountId());
+                put("maximumExchangeCount", getMaximumExchangeCount());
                 put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
