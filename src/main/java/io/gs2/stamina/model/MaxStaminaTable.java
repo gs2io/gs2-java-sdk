@@ -28,22 +28,11 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MaxStaminaTable implements IModel, Serializable, Comparable<MaxStaminaTable> {
-	private String maxStaminaTableId;
+public class MaxStaminaTable implements IModel, Serializable {
 	private String name;
 	private String metadata;
 	private String experienceModelId;
 	private List<Integer> values;
-	public String getMaxStaminaTableId() {
-		return maxStaminaTableId;
-	}
-	public void setMaxStaminaTableId(String maxStaminaTableId) {
-		this.maxStaminaTableId = maxStaminaTableId;
-	}
-	public MaxStaminaTable withMaxStaminaTableId(String maxStaminaTableId) {
-		this.maxStaminaTableId = maxStaminaTableId;
-		return this;
-	}
 	public String getName() {
 		return name;
 	}
@@ -90,7 +79,6 @@ public class MaxStaminaTable implements IModel, Serializable, Comparable<MaxStam
             return null;
         }
         return new MaxStaminaTable()
-            .withMaxStaminaTableId(data.get("maxStaminaTableId") == null || data.get("maxStaminaTableId").isNull() ? null : data.get("maxStaminaTableId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
@@ -104,7 +92,6 @@ public class MaxStaminaTable implements IModel, Serializable, Comparable<MaxStam
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("maxStaminaTableId", getMaxStaminaTableId());
                 put("name", getName());
                 put("metadata", getMetadata());
                 put("experienceModelId", getExperienceModelId());
@@ -118,15 +105,9 @@ public class MaxStaminaTable implements IModel, Serializable, Comparable<MaxStam
     }
 
 	@Override
-	public int compareTo(MaxStaminaTable o) {
-		return maxStaminaTableId.compareTo(o.maxStaminaTableId);
-	}
-
-	@Override
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.maxStaminaTableId == null) ? 0 : this.maxStaminaTableId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.experienceModelId == null) ? 0 : this.experienceModelId.hashCode());
@@ -143,11 +124,6 @@ public class MaxStaminaTable implements IModel, Serializable, Comparable<MaxStam
 		if (getClass() != o.getClass())
 			return false;
 		MaxStaminaTable other = (MaxStaminaTable) o;
-		if (maxStaminaTableId == null) {
-			return other.maxStaminaTableId == null;
-		} else if (!maxStaminaTableId.equals(other.maxStaminaTableId)) {
-			return false;
-		}
 		if (name == null) {
 			return other.name == null;
 		} else if (!name.equals(other.name)) {

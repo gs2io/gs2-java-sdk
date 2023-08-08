@@ -28,22 +28,11 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RecoverValueTable implements IModel, Serializable, Comparable<RecoverValueTable> {
-	private String recoverValueTableId;
+public class RecoverValueTable implements IModel, Serializable {
 	private String name;
 	private String metadata;
 	private String experienceModelId;
 	private List<Integer> values;
-	public String getRecoverValueTableId() {
-		return recoverValueTableId;
-	}
-	public void setRecoverValueTableId(String recoverValueTableId) {
-		this.recoverValueTableId = recoverValueTableId;
-	}
-	public RecoverValueTable withRecoverValueTableId(String recoverValueTableId) {
-		this.recoverValueTableId = recoverValueTableId;
-		return this;
-	}
 	public String getName() {
 		return name;
 	}
@@ -90,7 +79,6 @@ public class RecoverValueTable implements IModel, Serializable, Comparable<Recov
             return null;
         }
         return new RecoverValueTable()
-            .withRecoverValueTableId(data.get("recoverValueTableId") == null || data.get("recoverValueTableId").isNull() ? null : data.get("recoverValueTableId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
@@ -104,7 +92,6 @@ public class RecoverValueTable implements IModel, Serializable, Comparable<Recov
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("recoverValueTableId", getRecoverValueTableId());
                 put("name", getName());
                 put("metadata", getMetadata());
                 put("experienceModelId", getExperienceModelId());
@@ -118,15 +105,9 @@ public class RecoverValueTable implements IModel, Serializable, Comparable<Recov
     }
 
 	@Override
-	public int compareTo(RecoverValueTable o) {
-		return recoverValueTableId.compareTo(o.recoverValueTableId);
-	}
-
-	@Override
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.recoverValueTableId == null) ? 0 : this.recoverValueTableId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.experienceModelId == null) ? 0 : this.experienceModelId.hashCode());
@@ -143,11 +124,6 @@ public class RecoverValueTable implements IModel, Serializable, Comparable<Recov
 		if (getClass() != o.getClass())
 			return false;
 		RecoverValueTable other = (RecoverValueTable) o;
-		if (recoverValueTableId == null) {
-			return other.recoverValueTableId == null;
-		} else if (!recoverValueTableId.equals(other.recoverValueTableId)) {
-			return false;
-		}
 		if (name == null) {
 			return other.name == null;
 		} else if (!name.equals(other.name)) {

@@ -28,22 +28,11 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RecoverIntervalTable implements IModel, Serializable, Comparable<RecoverIntervalTable> {
-	private String recoverIntervalTableId;
+public class RecoverIntervalTable implements IModel, Serializable {
 	private String name;
 	private String metadata;
 	private String experienceModelId;
 	private List<Integer> values;
-	public String getRecoverIntervalTableId() {
-		return recoverIntervalTableId;
-	}
-	public void setRecoverIntervalTableId(String recoverIntervalTableId) {
-		this.recoverIntervalTableId = recoverIntervalTableId;
-	}
-	public RecoverIntervalTable withRecoverIntervalTableId(String recoverIntervalTableId) {
-		this.recoverIntervalTableId = recoverIntervalTableId;
-		return this;
-	}
 	public String getName() {
 		return name;
 	}
@@ -90,7 +79,6 @@ public class RecoverIntervalTable implements IModel, Serializable, Comparable<Re
             return null;
         }
         return new RecoverIntervalTable()
-            .withRecoverIntervalTableId(data.get("recoverIntervalTableId") == null || data.get("recoverIntervalTableId").isNull() ? null : data.get("recoverIntervalTableId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
@@ -104,7 +92,6 @@ public class RecoverIntervalTable implements IModel, Serializable, Comparable<Re
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("recoverIntervalTableId", getRecoverIntervalTableId());
                 put("name", getName());
                 put("metadata", getMetadata());
                 put("experienceModelId", getExperienceModelId());
@@ -118,15 +105,9 @@ public class RecoverIntervalTable implements IModel, Serializable, Comparable<Re
     }
 
 	@Override
-	public int compareTo(RecoverIntervalTable o) {
-		return recoverIntervalTableId.compareTo(o.recoverIntervalTableId);
-	}
-
-	@Override
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.recoverIntervalTableId == null) ? 0 : this.recoverIntervalTableId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.experienceModelId == null) ? 0 : this.experienceModelId.hashCode());
@@ -143,11 +124,6 @@ public class RecoverIntervalTable implements IModel, Serializable, Comparable<Re
 		if (getClass() != o.getClass())
 			return false;
 		RecoverIntervalTable other = (RecoverIntervalTable) o;
-		if (recoverIntervalTableId == null) {
-			return other.recoverIntervalTableId == null;
-		} else if (!recoverIntervalTableId.equals(other.recoverIntervalTableId)) {
-			return false;
-		}
 		if (name == null) {
 			return other.name == null;
 		} else if (!name.equals(other.name)) {
