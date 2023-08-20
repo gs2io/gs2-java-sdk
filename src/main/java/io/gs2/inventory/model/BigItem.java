@@ -28,52 +28,52 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SimpleInventoryModelMaster implements IModel, Serializable, Comparable<SimpleInventoryModelMaster> {
-	private String inventoryModelId;
-	private String name;
-	private String metadata;
-	private String description;
+public class BigItem implements IModel, Serializable, Comparable<BigItem> {
+	private String itemId;
+	private String userId;
+	private String itemName;
+	private String count;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
-	public String getInventoryModelId() {
-		return inventoryModelId;
+	public String getItemId() {
+		return itemId;
 	}
-	public void setInventoryModelId(String inventoryModelId) {
-		this.inventoryModelId = inventoryModelId;
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
 	}
-	public SimpleInventoryModelMaster withInventoryModelId(String inventoryModelId) {
-		this.inventoryModelId = inventoryModelId;
+	public BigItem withItemId(String itemId) {
+		this.itemId = itemId;
 		return this;
 	}
-	public String getName() {
-		return name;
+	public String getUserId() {
+		return userId;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public SimpleInventoryModelMaster withName(String name) {
-		this.name = name;
+	public BigItem withUserId(String userId) {
+		this.userId = userId;
 		return this;
 	}
-	public String getMetadata() {
-		return metadata;
+	public String getItemName() {
+		return itemName;
 	}
-	public void setMetadata(String metadata) {
-		this.metadata = metadata;
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
-	public SimpleInventoryModelMaster withMetadata(String metadata) {
-		this.metadata = metadata;
+	public BigItem withItemName(String itemName) {
+		this.itemName = itemName;
 		return this;
 	}
-	public String getDescription() {
-		return description;
+	public String getCount() {
+		return count;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setCount(String count) {
+		this.count = count;
 	}
-	public SimpleInventoryModelMaster withDescription(String description) {
-		this.description = description;
+	public BigItem withCount(String count) {
+		this.count = count;
 		return this;
 	}
 	public Long getCreatedAt() {
@@ -82,7 +82,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-	public SimpleInventoryModelMaster withCreatedAt(Long createdAt) {
+	public BigItem withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
@@ -92,7 +92,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	public SimpleInventoryModelMaster withUpdatedAt(Long updatedAt) {
+	public BigItem withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
@@ -102,20 +102,20 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setRevision(Long revision) {
 		this.revision = revision;
 	}
-	public SimpleInventoryModelMaster withRevision(Long revision) {
+	public BigItem withRevision(Long revision) {
 		this.revision = revision;
 		return this;
 	}
 
-    public static SimpleInventoryModelMaster fromJson(JsonNode data) {
+    public static BigItem fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SimpleInventoryModelMaster()
-            .withInventoryModelId(data.get("inventoryModelId") == null || data.get("inventoryModelId").isNull() ? null : data.get("inventoryModelId").asText())
-            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+        return new BigItem()
+            .withItemId(data.get("itemId") == null || data.get("itemId").isNull() ? null : data.get("itemId").asText())
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -124,10 +124,10 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("inventoryModelId", getInventoryModelId());
-                put("name", getName());
-                put("metadata", getMetadata());
-                put("description", getDescription());
+                put("itemId", getItemId());
+                put("userId", getUserId());
+                put("itemName", getItemName());
+                put("count", getCount());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -136,18 +136,18 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
     }
 
 	@Override
-	public int compareTo(SimpleInventoryModelMaster o) {
-		return inventoryModelId.compareTo(o.inventoryModelId);
+	public int compareTo(BigItem o) {
+		return itemId.compareTo(o.itemId);
 	}
 
 	@Override
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.inventoryModelId == null) ? 0 : this.inventoryModelId.hashCode());
-        result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-        result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
-        result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.itemId == null) ? 0 : this.itemId.hashCode());
+        result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
+        result = prime * result + ((this.itemName == null) ? 0 : this.itemName.hashCode());
+        result = prime * result + ((this.count == null) ? 0 : this.count.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -162,25 +162,25 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 			return false;
 		if (getClass() != o.getClass())
 			return false;
-		SimpleInventoryModelMaster other = (SimpleInventoryModelMaster) o;
-		if (inventoryModelId == null) {
-			return other.inventoryModelId == null;
-		} else if (!inventoryModelId.equals(other.inventoryModelId)) {
+		BigItem other = (BigItem) o;
+		if (itemId == null) {
+			return other.itemId == null;
+		} else if (!itemId.equals(other.itemId)) {
 			return false;
 		}
-		if (name == null) {
-			return other.name == null;
-		} else if (!name.equals(other.name)) {
+		if (userId == null) {
+			return other.userId == null;
+		} else if (!userId.equals(other.userId)) {
 			return false;
 		}
-		if (metadata == null) {
-			return other.metadata == null;
-		} else if (!metadata.equals(other.metadata)) {
+		if (itemName == null) {
+			return other.itemName == null;
+		} else if (!itemName.equals(other.itemName)) {
 			return false;
 		}
-		if (description == null) {
-			return other.description == null;
-		} else if (!description.equals(other.description)) {
+		if (count == null) {
+			return other.count == null;
+		} else if (!count.equals(other.count)) {
 			return false;
 		}
 		if (createdAt == null) {

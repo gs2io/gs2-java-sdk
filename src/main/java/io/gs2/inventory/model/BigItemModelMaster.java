@@ -28,22 +28,22 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SimpleInventoryModelMaster implements IModel, Serializable, Comparable<SimpleInventoryModelMaster> {
-	private String inventoryModelId;
+public class BigItemModelMaster implements IModel, Serializable, Comparable<BigItemModelMaster> {
+	private String itemModelId;
 	private String name;
-	private String metadata;
 	private String description;
+	private String metadata;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
-	public String getInventoryModelId() {
-		return inventoryModelId;
+	public String getItemModelId() {
+		return itemModelId;
 	}
-	public void setInventoryModelId(String inventoryModelId) {
-		this.inventoryModelId = inventoryModelId;
+	public void setItemModelId(String itemModelId) {
+		this.itemModelId = itemModelId;
 	}
-	public SimpleInventoryModelMaster withInventoryModelId(String inventoryModelId) {
-		this.inventoryModelId = inventoryModelId;
+	public BigItemModelMaster withItemModelId(String itemModelId) {
+		this.itemModelId = itemModelId;
 		return this;
 	}
 	public String getName() {
@@ -52,18 +52,8 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setName(String name) {
 		this.name = name;
 	}
-	public SimpleInventoryModelMaster withName(String name) {
+	public BigItemModelMaster withName(String name) {
 		this.name = name;
-		return this;
-	}
-	public String getMetadata() {
-		return metadata;
-	}
-	public void setMetadata(String metadata) {
-		this.metadata = metadata;
-	}
-	public SimpleInventoryModelMaster withMetadata(String metadata) {
-		this.metadata = metadata;
 		return this;
 	}
 	public String getDescription() {
@@ -72,8 +62,18 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public SimpleInventoryModelMaster withDescription(String description) {
+	public BigItemModelMaster withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public String getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+	public BigItemModelMaster withMetadata(String metadata) {
+		this.metadata = metadata;
 		return this;
 	}
 	public Long getCreatedAt() {
@@ -82,7 +82,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-	public SimpleInventoryModelMaster withCreatedAt(Long createdAt) {
+	public BigItemModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
@@ -92,7 +92,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	public SimpleInventoryModelMaster withUpdatedAt(Long updatedAt) {
+	public BigItemModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
@@ -102,20 +102,20 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setRevision(Long revision) {
 		this.revision = revision;
 	}
-	public SimpleInventoryModelMaster withRevision(Long revision) {
+	public BigItemModelMaster withRevision(Long revision) {
 		this.revision = revision;
 		return this;
 	}
 
-    public static SimpleInventoryModelMaster fromJson(JsonNode data) {
+    public static BigItemModelMaster fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SimpleInventoryModelMaster()
-            .withInventoryModelId(data.get("inventoryModelId") == null || data.get("inventoryModelId").isNull() ? null : data.get("inventoryModelId").asText())
+        return new BigItemModelMaster()
+            .withItemModelId(data.get("itemModelId") == null || data.get("itemModelId").isNull() ? null : data.get("itemModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -124,10 +124,10 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("inventoryModelId", getInventoryModelId());
+                put("itemModelId", getItemModelId());
                 put("name", getName());
-                put("metadata", getMetadata());
                 put("description", getDescription());
+                put("metadata", getMetadata());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -136,18 +136,18 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
     }
 
 	@Override
-	public int compareTo(SimpleInventoryModelMaster o) {
-		return inventoryModelId.compareTo(o.inventoryModelId);
+	public int compareTo(BigItemModelMaster o) {
+		return itemModelId.compareTo(o.itemModelId);
 	}
 
 	@Override
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.inventoryModelId == null) ? 0 : this.inventoryModelId.hashCode());
+        result = prime * result + ((this.itemModelId == null) ? 0 : this.itemModelId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-        result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -162,10 +162,10 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 			return false;
 		if (getClass() != o.getClass())
 			return false;
-		SimpleInventoryModelMaster other = (SimpleInventoryModelMaster) o;
-		if (inventoryModelId == null) {
-			return other.inventoryModelId == null;
-		} else if (!inventoryModelId.equals(other.inventoryModelId)) {
+		BigItemModelMaster other = (BigItemModelMaster) o;
+		if (itemModelId == null) {
+			return other.itemModelId == null;
+		} else if (!itemModelId.equals(other.itemModelId)) {
 			return false;
 		}
 		if (name == null) {
@@ -173,14 +173,14 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
-		if (metadata == null) {
-			return other.metadata == null;
-		} else if (!metadata.equals(other.metadata)) {
-			return false;
-		}
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (metadata == null) {
+			return other.metadata == null;
+		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
 		if (createdAt == null) {

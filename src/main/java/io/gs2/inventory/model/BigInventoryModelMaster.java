@@ -28,7 +28,7 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SimpleInventoryModelMaster implements IModel, Serializable, Comparable<SimpleInventoryModelMaster> {
+public class BigInventoryModelMaster implements IModel, Serializable, Comparable<BigInventoryModelMaster> {
 	private String inventoryModelId;
 	private String name;
 	private String metadata;
@@ -42,7 +42,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setInventoryModelId(String inventoryModelId) {
 		this.inventoryModelId = inventoryModelId;
 	}
-	public SimpleInventoryModelMaster withInventoryModelId(String inventoryModelId) {
+	public BigInventoryModelMaster withInventoryModelId(String inventoryModelId) {
 		this.inventoryModelId = inventoryModelId;
 		return this;
 	}
@@ -52,7 +52,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setName(String name) {
 		this.name = name;
 	}
-	public SimpleInventoryModelMaster withName(String name) {
+	public BigInventoryModelMaster withName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -62,7 +62,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
 	}
-	public SimpleInventoryModelMaster withMetadata(String metadata) {
+	public BigInventoryModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
 		return this;
 	}
@@ -72,7 +72,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public SimpleInventoryModelMaster withDescription(String description) {
+	public BigInventoryModelMaster withDescription(String description) {
 		this.description = description;
 		return this;
 	}
@@ -82,7 +82,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-	public SimpleInventoryModelMaster withCreatedAt(Long createdAt) {
+	public BigInventoryModelMaster withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
@@ -92,7 +92,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	public SimpleInventoryModelMaster withUpdatedAt(Long updatedAt) {
+	public BigInventoryModelMaster withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
@@ -102,16 +102,16 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 	public void setRevision(Long revision) {
 		this.revision = revision;
 	}
-	public SimpleInventoryModelMaster withRevision(Long revision) {
+	public BigInventoryModelMaster withRevision(Long revision) {
 		this.revision = revision;
 		return this;
 	}
 
-    public static SimpleInventoryModelMaster fromJson(JsonNode data) {
+    public static BigInventoryModelMaster fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SimpleInventoryModelMaster()
+        return new BigInventoryModelMaster()
             .withInventoryModelId(data.get("inventoryModelId") == null || data.get("inventoryModelId").isNull() ? null : data.get("inventoryModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
@@ -136,7 +136,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
     }
 
 	@Override
-	public int compareTo(SimpleInventoryModelMaster o) {
+	public int compareTo(BigInventoryModelMaster o) {
 		return inventoryModelId.compareTo(o.inventoryModelId);
 	}
 
@@ -162,7 +162,7 @@ public class SimpleInventoryModelMaster implements IModel, Serializable, Compara
 			return false;
 		if (getClass() != o.getClass())
 			return false;
-		SimpleInventoryModelMaster other = (SimpleInventoryModelMaster) o;
+		BigInventoryModelMaster other = (BigInventoryModelMaster) o;
 		if (inventoryModelId == null) {
 			return other.inventoryModelId == null;
 		} else if (!inventoryModelId.equals(other.inventoryModelId)) {

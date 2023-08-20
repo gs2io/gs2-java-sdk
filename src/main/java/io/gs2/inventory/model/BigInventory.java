@@ -28,21 +28,19 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SimpleInventory implements IModel, Serializable, Comparable<SimpleInventory> {
+public class BigInventory implements IModel, Serializable, Comparable<BigInventory> {
 	private String inventoryId;
 	private String inventoryName;
 	private String userId;
-	private List<SimpleItem> simpleItems;
 	private Long createdAt;
 	private Long updatedAt;
-	private Long revision;
 	public String getInventoryId() {
 		return inventoryId;
 	}
 	public void setInventoryId(String inventoryId) {
 		this.inventoryId = inventoryId;
 	}
-	public SimpleInventory withInventoryId(String inventoryId) {
+	public BigInventory withInventoryId(String inventoryId) {
 		this.inventoryId = inventoryId;
 		return this;
 	}
@@ -52,7 +50,7 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
 	public void setInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 	}
-	public SimpleInventory withInventoryName(String inventoryName) {
+	public BigInventory withInventoryName(String inventoryName) {
 		this.inventoryName = inventoryName;
 		return this;
 	}
@@ -62,18 +60,8 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public SimpleInventory withUserId(String userId) {
+	public BigInventory withUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-	public List<SimpleItem> getSimpleItems() {
-		return simpleItems;
-	}
-	public void setSimpleItems(List<SimpleItem> simpleItems) {
-		this.simpleItems = simpleItems;
-	}
-	public SimpleInventory withSimpleItems(List<SimpleItem> simpleItems) {
-		this.simpleItems = simpleItems;
 		return this;
 	}
 	public Long getCreatedAt() {
@@ -82,7 +70,7 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 	}
-	public SimpleInventory withCreatedAt(Long createdAt) {
+	public BigInventory withCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
 		return this;
 	}
@@ -92,38 +80,21 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	public SimpleInventory withUpdatedAt(Long updatedAt) {
+	public BigInventory withUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 		return this;
 	}
-	public Long getRevision() {
-		return revision;
-	}
-	public void setRevision(Long revision) {
-		this.revision = revision;
-	}
-	public SimpleInventory withRevision(Long revision) {
-		this.revision = revision;
-		return this;
-	}
 
-    public static SimpleInventory fromJson(JsonNode data) {
+    public static BigInventory fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SimpleInventory()
+        return new BigInventory()
             .withInventoryId(data.get("inventoryId") == null || data.get("inventoryId").isNull() ? null : data.get("inventoryId").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withSimpleItems(data.get("simpleItems") == null || data.get("simpleItems").isNull() ? new ArrayList<SimpleItem>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("simpleItems").elements(), Spliterator.NONNULL), false).map(item -> {
-                    //noinspection Convert2MethodRef
-                    return SimpleItem.fromJson(item);
-                }
-            ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
-            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
 
     public JsonNode toJson() {
@@ -132,21 +103,14 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
                 put("inventoryId", getInventoryId());
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
-                put("simpleItems", getSimpleItems() == null ? new ArrayList<SimpleItem>() :
-                    getSimpleItems().stream().map(item -> {
-                        //noinspection Convert2MethodRef
-                        return item.toJson();
-                    }
-                ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
-                put("revision", getRevision());
             }}
         );
     }
 
 	@Override
-	public int compareTo(SimpleInventory o) {
+	public int compareTo(BigInventory o) {
 		return inventoryId.compareTo(o.inventoryId);
 	}
 
@@ -157,10 +121,8 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
         result = prime * result + ((this.inventoryId == null) ? 0 : this.inventoryId.hashCode());
         result = prime * result + ((this.inventoryName == null) ? 0 : this.inventoryName.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
-        result = prime * result + ((this.simpleItems == null) ? 0 : this.simpleItems.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -172,7 +134,7 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
 			return false;
 		if (getClass() != o.getClass())
 			return false;
-		SimpleInventory other = (SimpleInventory) o;
+		BigInventory other = (BigInventory) o;
 		if (inventoryId == null) {
 			return other.inventoryId == null;
 		} else if (!inventoryId.equals(other.inventoryId)) {
@@ -188,11 +150,6 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
 		} else if (!userId.equals(other.userId)) {
 			return false;
 		}
-		if (simpleItems == null) {
-			return other.simpleItems == null;
-		} else if (!simpleItems.equals(other.simpleItems)) {
-			return false;
-		}
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
@@ -201,11 +158,6 @@ public class SimpleInventory implements IModel, Serializable, Comparable<SimpleI
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
-			return false;
-		}
-		if (revision == null) {
-			return other.revision == null;
-		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;
