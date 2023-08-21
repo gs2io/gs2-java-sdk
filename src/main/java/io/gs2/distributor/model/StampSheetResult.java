@@ -38,6 +38,7 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
 	private String sheetResult;
 	private String nextTransactionId;
 	private Long createdAt;
+	private Long revision;
 	public String getStampSheetResultId() {
 		return stampSheetResultId;
 	}
@@ -128,6 +129,16 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public StampSheetResult withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static StampSheetResult fromJson(JsonNode data) {
         if (data == null) {
@@ -151,7 +162,8 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
             ).collect(Collectors.toList()))
             .withSheetResult(data.get("sheetResult") == null || data.get("sheetResult").isNull() ? null : data.get("sheetResult").asText())
             .withNextTransactionId(data.get("nextTransactionId") == null || data.get("nextTransactionId").isNull() ? null : data.get("nextTransactionId").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -175,6 +187,7 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
                 put("sheetResult", getSheetResult());
                 put("nextTransactionId", getNextTransactionId());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -197,6 +210,7 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
         result = prime * result + ((this.sheetResult == null) ? 0 : this.sheetResult.hashCode());
         result = prime * result + ((this.nextTransactionId == null) ? 0 : this.nextTransactionId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -252,6 +266,11 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

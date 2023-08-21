@@ -35,6 +35,7 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 	private String type;
 	private String message;
 	private Long eventAt;
+	private Long revision;
 	public String getEventId() {
 		return eventId;
 	}
@@ -95,6 +96,16 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 		this.eventAt = eventAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Event withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Event fromJson(JsonNode data) {
         if (data == null) {
@@ -106,7 +117,8 @@ public class Event implements IModel, Serializable, Comparable<Event> {
             .withResourceName(data.get("resourceName") == null || data.get("resourceName").isNull() ? null : data.get("resourceName").asText())
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").asText())
             .withMessage(data.get("message") == null || data.get("message").isNull() ? null : data.get("message").asText())
-            .withEventAt(data.get("eventAt") == null || data.get("eventAt").isNull() ? null : data.get("eventAt").longValue());
+            .withEventAt(data.get("eventAt") == null || data.get("eventAt").isNull() ? null : data.get("eventAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class Event implements IModel, Serializable, Comparable<Event> {
                 put("type", getType());
                 put("message", getMessage());
                 put("eventAt", getEventAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -137,6 +150,7 @@ public class Event implements IModel, Serializable, Comparable<Event> {
         result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
         result = prime * result + ((this.message == null) ? 0 : this.message.hashCode());
         result = prime * result + ((this.eventAt == null) ? 0 : this.eventAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -177,6 +191,11 @@ public class Event implements IModel, Serializable, Comparable<Event> {
 		if (eventAt == null) {
 			return other.eventAt == null;
 		} else if (!eventAt.equals(other.eventAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

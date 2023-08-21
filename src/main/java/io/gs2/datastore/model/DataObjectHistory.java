@@ -34,6 +34,7 @@ public class DataObjectHistory implements IModel, Serializable, Comparable<DataO
 	private String generation;
 	private Long contentLength;
 	private Long createdAt;
+	private Long revision;
 	public String getDataObjectHistoryId() {
 		return dataObjectHistoryId;
 	}
@@ -84,6 +85,16 @@ public class DataObjectHistory implements IModel, Serializable, Comparable<DataO
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public DataObjectHistory withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static DataObjectHistory fromJson(JsonNode data) {
         if (data == null) {
@@ -94,7 +105,8 @@ public class DataObjectHistory implements IModel, Serializable, Comparable<DataO
             .withDataObjectName(data.get("dataObjectName") == null || data.get("dataObjectName").isNull() ? null : data.get("dataObjectName").asText())
             .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText())
             .withContentLength(data.get("contentLength") == null || data.get("contentLength").isNull() ? null : data.get("contentLength").longValue())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class DataObjectHistory implements IModel, Serializable, Comparable<DataO
                 put("generation", getGeneration());
                 put("contentLength", getContentLength());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -123,6 +136,7 @@ public class DataObjectHistory implements IModel, Serializable, Comparable<DataO
         result = prime * result + ((this.generation == null) ? 0 : this.generation.hashCode());
         result = prime * result + ((this.contentLength == null) ? 0 : this.contentLength.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -158,6 +172,11 @@ public class DataObjectHistory implements IModel, Serializable, Comparable<DataO
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

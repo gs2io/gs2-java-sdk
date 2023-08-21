@@ -35,6 +35,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 	private Integer timeOffset;
 	private Boolean banned;
 	private Long createdAt;
+	private Long revision;
 	public String getAccountId() {
 		return accountId;
 	}
@@ -95,6 +96,16 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Account withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Account fromJson(JsonNode data) {
         if (data == null) {
@@ -106,7 +117,8 @@ public class Account implements IModel, Serializable, Comparable<Account> {
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
             .withTimeOffset(data.get("timeOffset") == null || data.get("timeOffset").isNull() ? null : data.get("timeOffset").intValue())
             .withBanned(data.get("banned") == null || data.get("banned").isNull() ? null : data.get("banned").booleanValue())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
                 put("timeOffset", getTimeOffset());
                 put("banned", getBanned());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -137,6 +150,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
         result = prime * result + ((this.timeOffset == null) ? 0 : this.timeOffset.hashCode());
         result = prime * result + ((this.banned == null) ? 0 : this.banned.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -177,6 +191,11 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

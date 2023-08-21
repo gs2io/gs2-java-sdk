@@ -32,6 +32,7 @@ public class AttachSecurityPolicy implements IModel, Serializable, Comparable<At
 	private String userId;
 	private List<String> securityPolicyIds;
 	private Long attachedAt;
+	private Long revision;
 	public String getUserId() {
 		return userId;
 	}
@@ -62,6 +63,16 @@ public class AttachSecurityPolicy implements IModel, Serializable, Comparable<At
 		this.attachedAt = attachedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public AttachSecurityPolicy withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static AttachSecurityPolicy fromJson(JsonNode data) {
         if (data == null) {
@@ -74,7 +85,8 @@ public class AttachSecurityPolicy implements IModel, Serializable, Comparable<At
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withAttachedAt(data.get("attachedAt") == null || data.get("attachedAt").isNull() ? null : data.get("attachedAt").longValue());
+            .withAttachedAt(data.get("attachedAt") == null || data.get("attachedAt").isNull() ? null : data.get("attachedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -87,6 +99,7 @@ public class AttachSecurityPolicy implements IModel, Serializable, Comparable<At
                     }
                 ).collect(Collectors.toList()));
                 put("attachedAt", getAttachedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -103,6 +116,7 @@ public class AttachSecurityPolicy implements IModel, Serializable, Comparable<At
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.securityPolicyIds == null) ? 0 : this.securityPolicyIds.hashCode());
         result = prime * result + ((this.attachedAt == null) ? 0 : this.attachedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -128,6 +142,11 @@ public class AttachSecurityPolicy implements IModel, Serializable, Comparable<At
 		if (attachedAt == null) {
 			return other.attachedAt == null;
 		} else if (!attachedAt.equals(other.attachedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

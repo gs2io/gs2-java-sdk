@@ -36,6 +36,7 @@ public class Insight implements IModel, Serializable, Comparable<Insight> {
 	private String password;
 	private String status;
 	private Long createdAt;
+	private Long revision;
 	public String getInsightId() {
 		return insightId;
 	}
@@ -106,6 +107,16 @@ public class Insight implements IModel, Serializable, Comparable<Insight> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Insight withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Insight fromJson(JsonNode data) {
         if (data == null) {
@@ -118,7 +129,8 @@ public class Insight implements IModel, Serializable, Comparable<Insight> {
             .withHost(data.get("host") == null || data.get("host").isNull() ? null : data.get("host").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
             .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class Insight implements IModel, Serializable, Comparable<Insight> {
                 put("password", getPassword());
                 put("status", getStatus());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -151,6 +164,7 @@ public class Insight implements IModel, Serializable, Comparable<Insight> {
         result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -196,6 +210,11 @@ public class Insight implements IModel, Serializable, Comparable<Insight> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

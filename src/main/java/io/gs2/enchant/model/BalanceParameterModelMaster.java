@@ -38,6 +38,7 @@ public class BalanceParameterModelMaster implements IModel, Serializable, Compar
 	private List<BalanceParameterValueModel> parameters;
 	private Long createdAt;
 	private Long updatedAt;
+	private Long revision;
 	public String getBalanceParameterModelId() {
 		return balanceParameterModelId;
 	}
@@ -128,6 +129,16 @@ public class BalanceParameterModelMaster implements IModel, Serializable, Compar
 		this.updatedAt = updatedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public BalanceParameterModelMaster withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static BalanceParameterModelMaster fromJson(JsonNode data) {
         if (data == null) {
@@ -147,7 +158,8 @@ public class BalanceParameterModelMaster implements IModel, Serializable, Compar
                 }
             ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -167,6 +179,7 @@ public class BalanceParameterModelMaster implements IModel, Serializable, Compar
                 ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -189,6 +202,7 @@ public class BalanceParameterModelMaster implements IModel, Serializable, Compar
         result = prime * result + ((this.parameters == null) ? 0 : this.parameters.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -244,6 +258,11 @@ public class BalanceParameterModelMaster implements IModel, Serializable, Compar
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

@@ -39,6 +39,7 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
 	private Integer resetHour;
 	private Long createdAt;
 	private Long updatedAt;
+	private Long revision;
 	public String getLimitModelId() {
 		return limitModelId;
 	}
@@ -139,6 +140,16 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
 		this.updatedAt = updatedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public LimitModelMaster withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static LimitModelMaster fromJson(JsonNode data) {
         if (data == null) {
@@ -154,7 +165,8 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
             .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
             .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -170,6 +182,7 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
                 put("resetHour", getResetHour());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -193,6 +206,7 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
         result = prime * result + ((this.resetHour == null) ? 0 : this.resetHour.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -253,6 +267,11 @@ public class LimitModelMaster implements IModel, Serializable, Comparable<LimitM
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

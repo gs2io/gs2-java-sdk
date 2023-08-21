@@ -42,6 +42,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private Long updatedAt;
 	private String queueNamespaceId;
 	private String keyId;
+	private Long revision;
 	public String getNamespaceId() {
 		return namespaceId;
 	}
@@ -178,6 +179,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.keyId = keyId;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Namespace withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Namespace fromJson(JsonNode data) {
         if (data == null) {
@@ -196,7 +207,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -215,6 +227,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("updatedAt", getUpdatedAt());
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());
+                put("revision", getRevision());
             }}
         );
     }
@@ -241,6 +254,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
         result = prime * result + ((this.keyId == null) ? 0 : this.keyId.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -316,6 +330,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (keyId == null) {
 			return other.keyId == null;
 		} else if (!keyId.equals(other.keyId)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

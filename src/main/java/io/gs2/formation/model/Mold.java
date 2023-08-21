@@ -35,6 +35,7 @@ public class Mold implements IModel, Serializable, Comparable<Mold> {
 	private Integer capacity;
 	private Long createdAt;
 	private Long updatedAt;
+	private Long revision;
 	public String getMoldId() {
 		return moldId;
 	}
@@ -95,6 +96,16 @@ public class Mold implements IModel, Serializable, Comparable<Mold> {
 		this.updatedAt = updatedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Mold withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Mold fromJson(JsonNode data) {
         if (data == null) {
@@ -106,7 +117,8 @@ public class Mold implements IModel, Serializable, Comparable<Mold> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCapacity(data.get("capacity") == null || data.get("capacity").isNull() ? null : data.get("capacity").intValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class Mold implements IModel, Serializable, Comparable<Mold> {
                 put("capacity", getCapacity());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -137,6 +150,7 @@ public class Mold implements IModel, Serializable, Comparable<Mold> {
         result = prime * result + ((this.capacity == null) ? 0 : this.capacity.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -177,6 +191,11 @@ public class Mold implements IModel, Serializable, Comparable<Mold> {
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

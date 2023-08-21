@@ -33,6 +33,7 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 	private String userId;
 	private String userName;
 	private Long createdAt;
+	private Long revision;
 	public String getPasswordId() {
 		return passwordId;
 	}
@@ -73,6 +74,16 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Password withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Password fromJson(JsonNode data) {
         if (data == null) {
@@ -82,7 +93,8 @@ public class Password implements IModel, Serializable, Comparable<Password> {
             .withPasswordId(data.get("passwordId") == null || data.get("passwordId").isNull() ? null : data.get("passwordId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class Password implements IModel, Serializable, Comparable<Password> {
                 put("userId", getUserId());
                 put("userName", getUserName());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -109,6 +122,7 @@ public class Password implements IModel, Serializable, Comparable<Password> {
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -139,6 +153,11 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

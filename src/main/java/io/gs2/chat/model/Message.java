@@ -36,6 +36,7 @@ public class Message implements IModel, Serializable, Comparable<Message> {
 	private Integer category;
 	private String metadata;
 	private Long createdAt;
+	private Long revision;
 	public String getMessageId() {
 		return messageId;
 	}
@@ -106,6 +107,16 @@ public class Message implements IModel, Serializable, Comparable<Message> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Message withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Message fromJson(JsonNode data) {
         if (data == null) {
@@ -118,7 +129,8 @@ public class Message implements IModel, Serializable, Comparable<Message> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCategory(data.get("category") == null || data.get("category").isNull() ? null : data.get("category").intValue())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class Message implements IModel, Serializable, Comparable<Message> {
                 put("category", getCategory());
                 put("metadata", getMetadata());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -151,6 +164,7 @@ public class Message implements IModel, Serializable, Comparable<Message> {
         result = prime * result + ((this.category == null) ? 0 : this.category.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -196,6 +210,11 @@ public class Message implements IModel, Serializable, Comparable<Message> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

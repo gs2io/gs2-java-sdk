@@ -36,6 +36,7 @@ public class IssueJob implements IModel, Serializable, Comparable<IssueJob> {
 	private Integer issueRequestCount;
 	private String status;
 	private Long createdAt;
+	private Long revision;
 	public String getIssueJobId() {
 		return issueJobId;
 	}
@@ -106,6 +107,16 @@ public class IssueJob implements IModel, Serializable, Comparable<IssueJob> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public IssueJob withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static IssueJob fromJson(JsonNode data) {
         if (data == null) {
@@ -118,7 +129,8 @@ public class IssueJob implements IModel, Serializable, Comparable<IssueJob> {
             .withIssuedCount(data.get("issuedCount") == null || data.get("issuedCount").isNull() ? null : data.get("issuedCount").intValue())
             .withIssueRequestCount(data.get("issueRequestCount") == null || data.get("issueRequestCount").isNull() ? null : data.get("issueRequestCount").intValue())
             .withStatus(data.get("status") == null || data.get("status").isNull() ? null : data.get("status").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class IssueJob implements IModel, Serializable, Comparable<IssueJob> {
                 put("issueRequestCount", getIssueRequestCount());
                 put("status", getStatus());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -151,6 +164,7 @@ public class IssueJob implements IModel, Serializable, Comparable<IssueJob> {
         result = prime * result + ((this.issueRequestCount == null) ? 0 : this.issueRequestCount.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -196,6 +210,11 @@ public class IssueJob implements IModel, Serializable, Comparable<IssueJob> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

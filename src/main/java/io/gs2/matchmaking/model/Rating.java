@@ -35,6 +35,7 @@ public class Rating implements IModel, Serializable, Comparable<Rating> {
 	private Float rateValue;
 	private Long createdAt;
 	private Long updatedAt;
+	private Long revision;
 	public String getRatingId() {
 		return ratingId;
 	}
@@ -95,6 +96,16 @@ public class Rating implements IModel, Serializable, Comparable<Rating> {
 		this.updatedAt = updatedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Rating withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Rating fromJson(JsonNode data) {
         if (data == null) {
@@ -106,7 +117,8 @@ public class Rating implements IModel, Serializable, Comparable<Rating> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRateValue(data.get("rateValue") == null || data.get("rateValue").isNull() ? null : data.get("rateValue").floatValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class Rating implements IModel, Serializable, Comparable<Rating> {
                 put("rateValue", getRateValue());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -137,6 +150,7 @@ public class Rating implements IModel, Serializable, Comparable<Rating> {
         result = prime * result + ((this.rateValue == null) ? 0 : this.rateValue.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -177,6 +191,11 @@ public class Rating implements IModel, Serializable, Comparable<Rating> {
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

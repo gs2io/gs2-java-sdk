@@ -43,6 +43,7 @@ public class IncrementalRateModelMaster implements IModel, Serializable, Compara
 	private List<AcquireAction> acquireActions;
 	private Long createdAt;
 	private Long updatedAt;
+	private Long revision;
 	public String getIncrementalRateModelId() {
 		return incrementalRateModelId;
 	}
@@ -183,6 +184,16 @@ public class IncrementalRateModelMaster implements IModel, Serializable, Compara
 		this.updatedAt = updatedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public IncrementalRateModelMaster withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static IncrementalRateModelMaster fromJson(JsonNode data) {
         if (data == null) {
@@ -207,7 +218,8 @@ public class IncrementalRateModelMaster implements IModel, Serializable, Compara
                 }
             ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -232,6 +244,7 @@ public class IncrementalRateModelMaster implements IModel, Serializable, Compara
                 ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -259,6 +272,7 @@ public class IncrementalRateModelMaster implements IModel, Serializable, Compara
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -339,6 +353,11 @@ public class IncrementalRateModelMaster implements IModel, Serializable, Compara
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

@@ -41,6 +41,7 @@ public class Stamina implements IModel, Serializable, Comparable<Stamina> {
 	private Long lastRecoveredAt;
 	private Long createdAt;
 	private Long updatedAt;
+	private Long revision;
 	public String getStaminaId() {
 		return staminaId;
 	}
@@ -161,6 +162,16 @@ public class Stamina implements IModel, Serializable, Comparable<Stamina> {
 		this.updatedAt = updatedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Stamina withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Stamina fromJson(JsonNode data) {
         if (data == null) {
@@ -178,7 +189,8 @@ public class Stamina implements IModel, Serializable, Comparable<Stamina> {
             .withNextRecoverAt(data.get("nextRecoverAt") == null || data.get("nextRecoverAt").isNull() ? null : data.get("nextRecoverAt").longValue())
             .withLastRecoveredAt(data.get("lastRecoveredAt") == null || data.get("lastRecoveredAt").isNull() ? null : data.get("lastRecoveredAt").longValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -196,6 +208,7 @@ public class Stamina implements IModel, Serializable, Comparable<Stamina> {
                 put("lastRecoveredAt", getLastRecoveredAt());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -221,6 +234,7 @@ public class Stamina implements IModel, Serializable, Comparable<Stamina> {
         result = prime * result + ((this.lastRecoveredAt == null) ? 0 : this.lastRecoveredAt.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -291,6 +305,11 @@ public class Stamina implements IModel, Serializable, Comparable<Stamina> {
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

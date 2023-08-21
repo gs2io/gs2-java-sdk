@@ -37,6 +37,7 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
 	private Integer volatility;
 	private Long createdAt;
 	private Long updatedAt;
+	private Long revision;
 	public String getRatingModelId() {
 		return ratingModelId;
 	}
@@ -117,6 +118,16 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
 		this.updatedAt = updatedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public RatingModelMaster withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static RatingModelMaster fromJson(JsonNode data) {
         if (data == null) {
@@ -130,7 +141,8 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
             .withInitialValue(data.get("initialValue") == null || data.get("initialValue").isNull() ? null : data.get("initialValue").intValue())
             .withVolatility(data.get("volatility") == null || data.get("volatility").isNull() ? null : data.get("volatility").intValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -144,6 +156,7 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
                 put("volatility", getVolatility());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -165,6 +178,7 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
         result = prime * result + ((this.volatility == null) ? 0 : this.volatility.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -215,6 +229,11 @@ public class RatingModelMaster implements IModel, Serializable, Comparable<Ratin
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

@@ -33,6 +33,7 @@ public class DataOwner implements IModel, Serializable, Comparable<DataOwner> {
 	private String userId;
 	private String name;
 	private Long createdAt;
+	private Long revision;
 	public String getDataOwnerId() {
 		return dataOwnerId;
 	}
@@ -73,6 +74,16 @@ public class DataOwner implements IModel, Serializable, Comparable<DataOwner> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public DataOwner withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static DataOwner fromJson(JsonNode data) {
         if (data == null) {
@@ -82,7 +93,8 @@ public class DataOwner implements IModel, Serializable, Comparable<DataOwner> {
             .withDataOwnerId(data.get("dataOwnerId") == null || data.get("dataOwnerId").isNull() ? null : data.get("dataOwnerId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class DataOwner implements IModel, Serializable, Comparable<DataOwner> {
                 put("userId", getUserId());
                 put("name", getName());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -109,6 +122,7 @@ public class DataOwner implements IModel, Serializable, Comparable<DataOwner> {
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -139,6 +153,11 @@ public class DataOwner implements IModel, Serializable, Comparable<DataOwner> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

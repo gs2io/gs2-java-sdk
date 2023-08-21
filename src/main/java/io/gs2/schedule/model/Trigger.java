@@ -34,6 +34,7 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
 	private String userId;
 	private Long createdAt;
 	private Long expiresAt;
+	private Long revision;
 	public String getTriggerId() {
 		return triggerId;
 	}
@@ -84,6 +85,16 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
 		this.expiresAt = expiresAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Trigger withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Trigger fromJson(JsonNode data) {
         if (data == null) {
@@ -94,7 +105,8 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
                 put("userId", getUserId());
                 put("createdAt", getCreatedAt());
                 put("expiresAt", getExpiresAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -123,6 +136,7 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -158,6 +172,11 @@ public class Trigger implements IModel, Serializable, Comparable<Trigger> {
 		if (expiresAt == null) {
 			return other.expiresAt == null;
 		} else if (!expiresAt.equals(other.expiresAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

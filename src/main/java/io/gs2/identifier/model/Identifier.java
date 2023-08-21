@@ -33,6 +33,7 @@ public class Identifier implements IModel, Serializable, Comparable<Identifier> 
 	private String userName;
 	private String clientSecret;
 	private Long createdAt;
+	private Long revision;
 	public String getClientId() {
 		return clientId;
 	}
@@ -73,6 +74,16 @@ public class Identifier implements IModel, Serializable, Comparable<Identifier> 
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Identifier withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Identifier fromJson(JsonNode data) {
         if (data == null) {
@@ -82,7 +93,8 @@ public class Identifier implements IModel, Serializable, Comparable<Identifier> 
             .withClientId(data.get("clientId") == null || data.get("clientId").isNull() ? null : data.get("clientId").asText())
             .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
             .withClientSecret(data.get("clientSecret") == null || data.get("clientSecret").isNull() ? null : data.get("clientSecret").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class Identifier implements IModel, Serializable, Comparable<Identifier> 
                 put("userName", getUserName());
                 put("clientSecret", getClientSecret());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -109,6 +122,7 @@ public class Identifier implements IModel, Serializable, Comparable<Identifier> 
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
         result = prime * result + ((this.clientSecret == null) ? 0 : this.clientSecret.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -139,6 +153,11 @@ public class Identifier implements IModel, Serializable, Comparable<Identifier> 
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

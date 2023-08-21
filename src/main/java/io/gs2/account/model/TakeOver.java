@@ -35,6 +35,7 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
 	private String userIdentifier;
 	private String password;
 	private Long createdAt;
+	private Long revision;
 	public String getTakeOverId() {
 		return takeOverId;
 	}
@@ -95,6 +96,16 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public TakeOver withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static TakeOver fromJson(JsonNode data) {
         if (data == null) {
@@ -106,7 +117,8 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
             .withUserIdentifier(data.get("userIdentifier") == null || data.get("userIdentifier").isNull() ? null : data.get("userIdentifier").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
                 put("userIdentifier", getUserIdentifier());
                 put("password", getPassword());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -137,6 +150,7 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
         result = prime * result + ((this.userIdentifier == null) ? 0 : this.userIdentifier.hashCode());
         result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -177,6 +191,11 @@ public class TakeOver implements IModel, Serializable, Comparable<TakeOver> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

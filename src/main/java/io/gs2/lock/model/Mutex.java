@@ -34,6 +34,7 @@ public class Mutex implements IModel, Serializable, Comparable<Mutex> {
 	private String propertyId;
 	private String transactionId;
 	private Long createdAt;
+	private Long revision;
 	public String getMutexId() {
 		return mutexId;
 	}
@@ -84,6 +85,16 @@ public class Mutex implements IModel, Serializable, Comparable<Mutex> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Mutex withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Mutex fromJson(JsonNode data) {
         if (data == null) {
@@ -94,7 +105,8 @@ public class Mutex implements IModel, Serializable, Comparable<Mutex> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class Mutex implements IModel, Serializable, Comparable<Mutex> {
                 put("propertyId", getPropertyId());
                 put("transactionId", getTransactionId());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -123,6 +136,7 @@ public class Mutex implements IModel, Serializable, Comparable<Mutex> {
         result = prime * result + ((this.propertyId == null) ? 0 : this.propertyId.hashCode());
         result = prime * result + ((this.transactionId == null) ? 0 : this.transactionId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -158,6 +172,11 @@ public class Mutex implements IModel, Serializable, Comparable<Mutex> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

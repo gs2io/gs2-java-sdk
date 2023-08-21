@@ -36,6 +36,7 @@ public class QuestGroupModelMaster implements IModel, Serializable, Comparable<Q
 	private String challengePeriodEventId;
 	private Long createdAt;
 	private Long updatedAt;
+	private Long revision;
 	public String getQuestGroupModelId() {
 		return questGroupModelId;
 	}
@@ -106,6 +107,16 @@ public class QuestGroupModelMaster implements IModel, Serializable, Comparable<Q
 		this.updatedAt = updatedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public QuestGroupModelMaster withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static QuestGroupModelMaster fromJson(JsonNode data) {
         if (data == null) {
@@ -118,7 +129,8 @@ public class QuestGroupModelMaster implements IModel, Serializable, Comparable<Q
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class QuestGroupModelMaster implements IModel, Serializable, Comparable<Q
                 put("challengePeriodEventId", getChallengePeriodEventId());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -151,6 +164,7 @@ public class QuestGroupModelMaster implements IModel, Serializable, Comparable<Q
         result = prime * result + ((this.challengePeriodEventId == null) ? 0 : this.challengePeriodEventId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -196,6 +210,11 @@ public class QuestGroupModelMaster implements IModel, Serializable, Comparable<Q
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

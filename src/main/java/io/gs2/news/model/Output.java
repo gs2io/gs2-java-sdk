@@ -33,6 +33,7 @@ public class Output implements IModel, Serializable, Comparable<Output> {
 	private String name;
 	private String text;
 	private Long createdAt;
+	private Long revision;
 	public String getOutputId() {
 		return outputId;
 	}
@@ -73,6 +74,16 @@ public class Output implements IModel, Serializable, Comparable<Output> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Output withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Output fromJson(JsonNode data) {
         if (data == null) {
@@ -82,7 +93,8 @@ public class Output implements IModel, Serializable, Comparable<Output> {
             .withOutputId(data.get("outputId") == null || data.get("outputId").isNull() ? null : data.get("outputId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withText(data.get("text") == null || data.get("text").isNull() ? null : data.get("text").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class Output implements IModel, Serializable, Comparable<Output> {
                 put("name", getName());
                 put("text", getText());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -109,6 +122,7 @@ public class Output implements IModel, Serializable, Comparable<Output> {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.text == null) ? 0 : this.text.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -139,6 +153,11 @@ public class Output implements IModel, Serializable, Comparable<Output> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

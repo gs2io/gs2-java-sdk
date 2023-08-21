@@ -41,6 +41,7 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
 	private Integer total;
 	private String contentsId;
 	private Long createdAt;
+	private Long revision;
 	public String getReceiptId() {
 		return receiptId;
 	}
@@ -161,6 +162,16 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Receipt withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Receipt fromJson(JsonNode data) {
         if (data == null) {
@@ -178,7 +189,8 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
             .withFree(data.get("free") == null || data.get("free").isNull() ? null : data.get("free").intValue())
             .withTotal(data.get("total") == null || data.get("total").isNull() ? null : data.get("total").intValue())
             .withContentsId(data.get("contentsId") == null || data.get("contentsId").isNull() ? null : data.get("contentsId").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -196,6 +208,7 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
                 put("total", getTotal());
                 put("contentsId", getContentsId());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -221,6 +234,7 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
         result = prime * result + ((this.total == null) ? 0 : this.total.hashCode());
         result = prime * result + ((this.contentsId == null) ? 0 : this.contentsId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -291,6 +305,11 @@ public class Receipt implements IModel, Serializable, Comparable<Receipt> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

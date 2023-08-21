@@ -35,6 +35,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 	private String name;
 	private Integer count;
 	private Long exchangedAt;
+	private Long revision;
 	public String getAwaitId() {
 		return awaitId;
 	}
@@ -95,6 +96,16 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 		this.exchangedAt = exchangedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Await withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Await fromJson(JsonNode data) {
         if (data == null) {
@@ -106,7 +117,8 @@ public class Await implements IModel, Serializable, Comparable<Await> {
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
-            .withExchangedAt(data.get("exchangedAt") == null || data.get("exchangedAt").isNull() ? null : data.get("exchangedAt").longValue());
+            .withExchangedAt(data.get("exchangedAt") == null || data.get("exchangedAt").isNull() ? null : data.get("exchangedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
                 put("name", getName());
                 put("count", getCount());
                 put("exchangedAt", getExchangedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -137,6 +150,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.count == null) ? 0 : this.count.hashCode());
         result = prime * result + ((this.exchangedAt == null) ? 0 : this.exchangedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -177,6 +191,11 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 		if (exchangedAt == null) {
 			return other.exchangedAt == null;
 		} else if (!exchangedAt.equals(other.exchangedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

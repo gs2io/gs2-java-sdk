@@ -34,6 +34,7 @@ public class DisplayItemMaster implements IModel, Serializable {
 	private String salesItemName;
 	private String salesItemGroupName;
 	private String salesPeriodEventId;
+	private Long revision;
 	public String getDisplayItemId() {
 		return displayItemId;
 	}
@@ -84,6 +85,16 @@ public class DisplayItemMaster implements IModel, Serializable {
 		this.salesPeriodEventId = salesPeriodEventId;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public DisplayItemMaster withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static DisplayItemMaster fromJson(JsonNode data) {
         if (data == null) {
@@ -94,7 +105,8 @@ public class DisplayItemMaster implements IModel, Serializable {
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").asText())
             .withSalesItemName(data.get("salesItemName") == null || data.get("salesItemName").isNull() ? null : data.get("salesItemName").asText())
             .withSalesItemGroupName(data.get("salesItemGroupName") == null || data.get("salesItemGroupName").isNull() ? null : data.get("salesItemGroupName").asText())
-            .withSalesPeriodEventId(data.get("salesPeriodEventId") == null || data.get("salesPeriodEventId").isNull() ? null : data.get("salesPeriodEventId").asText());
+            .withSalesPeriodEventId(data.get("salesPeriodEventId") == null || data.get("salesPeriodEventId").isNull() ? null : data.get("salesPeriodEventId").asText())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class DisplayItemMaster implements IModel, Serializable {
                 put("salesItemName", getSalesItemName());
                 put("salesItemGroupName", getSalesItemGroupName());
                 put("salesPeriodEventId", getSalesPeriodEventId());
+                put("revision", getRevision());
             }}
         );
     }
@@ -118,6 +131,7 @@ public class DisplayItemMaster implements IModel, Serializable {
         result = prime * result + ((this.salesItemName == null) ? 0 : this.salesItemName.hashCode());
         result = prime * result + ((this.salesItemGroupName == null) ? 0 : this.salesItemGroupName.hashCode());
         result = prime * result + ((this.salesPeriodEventId == null) ? 0 : this.salesPeriodEventId.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -153,6 +167,11 @@ public class DisplayItemMaster implements IModel, Serializable {
 		if (salesPeriodEventId == null) {
 			return other.salesPeriodEventId == null;
 		} else if (!salesPeriodEventId.equals(other.salesPeriodEventId)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

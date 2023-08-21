@@ -8676,7 +8676,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/big/inventory/{inventoryName}/{itemName}/acquire";
+                + "/{namespaceName}/user/{userId}/big/inventory/{inventoryName}/item/{itemName}/acquire";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
@@ -8763,7 +8763,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/big/inventory/{inventoryName}/{itemName}/consume";
+                + "/{namespaceName}/user/me/big/inventory/{inventoryName}/item/{itemName}/consume";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
@@ -8852,7 +8852,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/big/inventory/{inventoryName}/{itemName}/consume";
+                + "/{namespaceName}/user/{userId}/big/inventory/{inventoryName}/item/{itemName}/consume";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
@@ -8939,7 +8939,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/big/inventory/{inventoryName}";
+                + "/{namespaceName}/user/{userId}/big/inventory/{inventoryName}/item/{itemName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));

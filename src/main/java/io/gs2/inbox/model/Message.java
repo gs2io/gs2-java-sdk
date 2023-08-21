@@ -38,6 +38,7 @@ public class Message implements IModel, Serializable, Comparable<Message> {
 	private Long receivedAt;
 	private Long readAt;
 	private Long expiresAt;
+	private Long revision;
 	public String getMessageId() {
 		return messageId;
 	}
@@ -128,6 +129,16 @@ public class Message implements IModel, Serializable, Comparable<Message> {
 		this.expiresAt = expiresAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Message withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Message fromJson(JsonNode data) {
         if (data == null) {
@@ -147,7 +158,8 @@ public class Message implements IModel, Serializable, Comparable<Message> {
             ).collect(Collectors.toList()))
             .withReceivedAt(data.get("receivedAt") == null || data.get("receivedAt").isNull() ? null : data.get("receivedAt").longValue())
             .withReadAt(data.get("readAt") == null || data.get("readAt").isNull() ? null : data.get("readAt").longValue())
-            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -167,6 +179,7 @@ public class Message implements IModel, Serializable, Comparable<Message> {
                 put("receivedAt", getReceivedAt());
                 put("readAt", getReadAt());
                 put("expiresAt", getExpiresAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -189,6 +202,7 @@ public class Message implements IModel, Serializable, Comparable<Message> {
         result = prime * result + ((this.receivedAt == null) ? 0 : this.receivedAt.hashCode());
         result = prime * result + ((this.readAt == null) ? 0 : this.readAt.hashCode());
         result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -244,6 +258,11 @@ public class Message implements IModel, Serializable, Comparable<Message> {
 		if (expiresAt == null) {
 			return other.expiresAt == null;
 		} else if (!expiresAt.equals(other.expiresAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

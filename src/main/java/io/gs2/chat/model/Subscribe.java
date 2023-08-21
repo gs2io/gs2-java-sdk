@@ -34,6 +34,7 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
 	private String roomName;
 	private List<NotificationType> notificationTypes;
 	private Long createdAt;
+	private Long revision;
 	public String getSubscribeId() {
 		return subscribeId;
 	}
@@ -84,6 +85,16 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Subscribe withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Subscribe fromJson(JsonNode data) {
         if (data == null) {
@@ -99,7 +110,8 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
                     return NotificationType.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -115,6 +127,7 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
                     }
                 ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -133,6 +146,7 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
         result = prime * result + ((this.roomName == null) ? 0 : this.roomName.hashCode());
         result = prime * result + ((this.notificationTypes == null) ? 0 : this.notificationTypes.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -168,6 +182,11 @@ public class Subscribe implements IModel, Serializable, Comparable<Subscribe> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

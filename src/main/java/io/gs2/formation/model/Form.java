@@ -35,6 +35,7 @@ public class Form implements IModel, Serializable, Comparable<Form> {
 	private List<Slot> slots;
 	private Long createdAt;
 	private Long updatedAt;
+	private Long revision;
 	public String getFormId() {
 		return formId;
 	}
@@ -95,6 +96,16 @@ public class Form implements IModel, Serializable, Comparable<Form> {
 		this.updatedAt = updatedAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Form withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Form fromJson(JsonNode data) {
         if (data == null) {
@@ -111,7 +122,8 @@ public class Form implements IModel, Serializable, Comparable<Form> {
                 }
             ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -128,6 +140,7 @@ public class Form implements IModel, Serializable, Comparable<Form> {
                 ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -147,6 +160,7 @@ public class Form implements IModel, Serializable, Comparable<Form> {
         result = prime * result + ((this.slots == null) ? 0 : this.slots.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -187,6 +201,11 @@ public class Form implements IModel, Serializable, Comparable<Form> {
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;
