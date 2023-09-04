@@ -1393,6 +1393,86 @@ import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
+    class TriggerByStampSheetTask extends Gs2RestSessionTask<TriggerByStampSheetResult> {
+        private TriggerByStampSheetRequest request;
+
+        public TriggerByStampSheetTask(
+            TriggerByStampSheetRequest request,
+            AsyncAction<AsyncResult<TriggerByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public TriggerByStampSheetResult parse(JsonNode data) {
+            return TriggerByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "schedule")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/trigger";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void triggerByStampSheetAsync(
+            TriggerByStampSheetRequest request,
+            AsyncAction<AsyncResult<TriggerByStampSheetResult>> callback
+    ) {
+        TriggerByStampSheetTask task = new TriggerByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public TriggerByStampSheetResult triggerByStampSheet(
+            TriggerByStampSheetRequest request
+    ) {
+        final AsyncResult<TriggerByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        triggerByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteTriggerTask extends Gs2RestSessionTask<DeleteTriggerResult> {
         private DeleteTriggerRequest request;
 
