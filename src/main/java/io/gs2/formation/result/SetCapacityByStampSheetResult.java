@@ -34,6 +34,7 @@ import io.gs2.formation.model.MoldModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SetCapacityByStampSheetResult implements IResult, Serializable {
     private Mold item;
+    private Mold old;
     private MoldModel moldModel;
 
 	public Mold getItem() {
@@ -46,6 +47,19 @@ public class SetCapacityByStampSheetResult implements IResult, Serializable {
 
 	public SetCapacityByStampSheetResult withItem(Mold item) {
 		this.item = item;
+		return this;
+	}
+
+	public Mold getOld() {
+		return old;
+	}
+
+	public void setOld(Mold old) {
+		this.old = old;
+	}
+
+	public SetCapacityByStampSheetResult withOld(Mold old) {
+		this.old = old;
 		return this;
 	}
 
@@ -68,6 +82,7 @@ public class SetCapacityByStampSheetResult implements IResult, Serializable {
         }
         return new SetCapacityByStampSheetResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Mold.fromJson(data.get("item")))
+            .withOld(data.get("old") == null || data.get("old").isNull() ? null : Mold.fromJson(data.get("old")))
             .withMoldModel(data.get("moldModel") == null || data.get("moldModel").isNull() ? null : MoldModel.fromJson(data.get("moldModel")));
     }
 
@@ -75,6 +90,7 @@ public class SetCapacityByStampSheetResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("old", getOld() != null ? getOld().toJson() : null);
                 put("moldModel", getMoldModel() != null ? getMoldModel().toJson() : null);
             }}
         );

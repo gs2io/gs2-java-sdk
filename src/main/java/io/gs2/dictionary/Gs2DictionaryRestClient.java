@@ -1794,6 +1794,95 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
         return resultAsyncResult[0].getResult();
     }
 
+    class DeleteEntriesByUserIdTask extends Gs2RestSessionTask<DeleteEntriesByUserIdResult> {
+        private DeleteEntriesByUserIdRequest request;
+
+        public DeleteEntriesByUserIdTask(
+            DeleteEntriesByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteEntriesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteEntriesByUserIdResult parse(JsonNode data) {
+            return DeleteEntriesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/entry/delete";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("entryModelNames", request.getEntryModelNames() == null ? new ArrayList<String>() :
+                        request.getEntryModelNames().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteEntriesByUserIdAsync(
+            DeleteEntriesByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteEntriesByUserIdResult>> callback
+    ) {
+        DeleteEntriesByUserIdTask task = new DeleteEntriesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteEntriesByUserIdResult deleteEntriesByUserId(
+            DeleteEntriesByUserIdRequest request
+    ) {
+        final AsyncResult<DeleteEntriesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteEntriesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class AddEntriesByStampSheetTask extends Gs2RestSessionTask<AddEntriesByStampSheetResult> {
         private AddEntriesByStampSheetRequest request;
 
@@ -1858,6 +1947,86 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
     ) {
         final AsyncResult<AddEntriesByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         addEntriesByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteEntriesByStampTaskTask extends Gs2RestSessionTask<DeleteEntriesByStampTaskResult> {
+        private DeleteEntriesByStampTaskRequest request;
+
+        public DeleteEntriesByStampTaskTask(
+            DeleteEntriesByStampTaskRequest request,
+            AsyncAction<AsyncResult<DeleteEntriesByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteEntriesByStampTaskResult parse(JsonNode data) {
+            return DeleteEntriesByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/entry/delete";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteEntriesByStampTaskAsync(
+            DeleteEntriesByStampTaskRequest request,
+            AsyncAction<AsyncResult<DeleteEntriesByStampTaskResult>> callback
+    ) {
+        DeleteEntriesByStampTaskTask task = new DeleteEntriesByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteEntriesByStampTaskResult deleteEntriesByStampTask(
+            DeleteEntriesByStampTaskRequest request
+    ) {
+        final AsyncResult<DeleteEntriesByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteEntriesByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

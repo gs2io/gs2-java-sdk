@@ -32,6 +32,7 @@ import io.gs2.enchant.model.BalanceParameterStatus;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SetBalanceParameterStatusByUserIdResult implements IResult, Serializable {
     private BalanceParameterStatus item;
+    private BalanceParameterStatus old;
 
 	public BalanceParameterStatus getItem() {
 		return item;
@@ -46,18 +47,33 @@ public class SetBalanceParameterStatusByUserIdResult implements IResult, Seriali
 		return this;
 	}
 
+	public BalanceParameterStatus getOld() {
+		return old;
+	}
+
+	public void setOld(BalanceParameterStatus old) {
+		this.old = old;
+	}
+
+	public SetBalanceParameterStatusByUserIdResult withOld(BalanceParameterStatus old) {
+		this.old = old;
+		return this;
+	}
+
     public static SetBalanceParameterStatusByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new SetBalanceParameterStatusByUserIdResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : BalanceParameterStatus.fromJson(data.get("item")));
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : BalanceParameterStatus.fromJson(data.get("item")))
+            .withOld(data.get("old") == null || data.get("old").isNull() ? null : BalanceParameterStatus.fromJson(data.get("old")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("old", getOld() != null ? getOld().toJson() : null);
             }}
         );
     }

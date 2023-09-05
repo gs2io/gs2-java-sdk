@@ -2538,6 +2538,92 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class SubMoldCapacityByUserIdTask extends Gs2RestSessionTask<SubMoldCapacityByUserIdResult> {
+        private SubMoldCapacityByUserIdRequest request;
+
+        public SubMoldCapacityByUserIdTask(
+            SubMoldCapacityByUserIdRequest request,
+            AsyncAction<AsyncResult<SubMoldCapacityByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SubMoldCapacityByUserIdResult parse(JsonNode data) {
+            return SubMoldCapacityByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/mold/{moldName}/sub";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("capacity", request.getCapacity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void subMoldCapacityByUserIdAsync(
+            SubMoldCapacityByUserIdRequest request,
+            AsyncAction<AsyncResult<SubMoldCapacityByUserIdResult>> callback
+    ) {
+        SubMoldCapacityByUserIdTask task = new SubMoldCapacityByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SubMoldCapacityByUserIdResult subMoldCapacityByUserId(
+            SubMoldCapacityByUserIdRequest request
+    ) {
+        final AsyncResult<SubMoldCapacityByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        subMoldCapacityByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteMoldTask extends Gs2RestSessionTask<DeleteMoldResult> {
         private DeleteMoldRequest request;
 
@@ -2774,6 +2860,86 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
     ) {
         final AsyncResult<AddCapacityByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         addCapacityByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SubCapacityByStampTaskTask extends Gs2RestSessionTask<SubCapacityByStampTaskResult> {
+        private SubCapacityByStampTaskRequest request;
+
+        public SubCapacityByStampTaskTask(
+            SubCapacityByStampTaskRequest request,
+            AsyncAction<AsyncResult<SubCapacityByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SubCapacityByStampTaskResult parse(JsonNode data) {
+            return SubCapacityByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/mold/capacity/sub";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void subCapacityByStampTaskAsync(
+            SubCapacityByStampTaskRequest request,
+            AsyncAction<AsyncResult<SubCapacityByStampTaskResult>> callback
+    ) {
+        SubCapacityByStampTaskTask task = new SubCapacityByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public SubCapacityByStampTaskResult subCapacityByStampTask(
+            SubCapacityByStampTaskRequest request
+    ) {
+        final AsyncResult<SubCapacityByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        subCapacityByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

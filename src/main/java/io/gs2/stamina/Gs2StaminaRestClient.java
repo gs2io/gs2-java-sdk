@@ -3498,6 +3498,92 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class DecreaseMaxValueByUserIdTask extends Gs2RestSessionTask<DecreaseMaxValueByUserIdResult> {
+        private DecreaseMaxValueByUserIdRequest request;
+
+        public DecreaseMaxValueByUserIdTask(
+            DecreaseMaxValueByUserIdRequest request,
+            AsyncAction<AsyncResult<DecreaseMaxValueByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DecreaseMaxValueByUserIdResult parse(JsonNode data) {
+            return DecreaseMaxValueByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/stamina/{staminaName}/decrease";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{staminaName}", this.request.getStaminaName() == null || this.request.getStaminaName().length() == 0 ? "null" : String.valueOf(this.request.getStaminaName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("decreaseValue", request.getDecreaseValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void decreaseMaxValueByUserIdAsync(
+            DecreaseMaxValueByUserIdRequest request,
+            AsyncAction<AsyncResult<DecreaseMaxValueByUserIdResult>> callback
+    ) {
+        DecreaseMaxValueByUserIdTask task = new DecreaseMaxValueByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DecreaseMaxValueByUserIdResult decreaseMaxValueByUserId(
+            DecreaseMaxValueByUserIdRequest request
+    ) {
+        final AsyncResult<DecreaseMaxValueByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        decreaseMaxValueByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class SetMaxValueByUserIdTask extends Gs2RestSessionTask<SetMaxValueByUserIdResult> {
         private SetMaxValueByUserIdRequest request;
 
@@ -4255,6 +4341,86 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
     ) {
         final AsyncResult<RaiseMaxValueByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         raiseMaxValueByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DecreaseMaxValueByStampTaskTask extends Gs2RestSessionTask<DecreaseMaxValueByStampTaskResult> {
+        private DecreaseMaxValueByStampTaskRequest request;
+
+        public DecreaseMaxValueByStampTaskTask(
+            DecreaseMaxValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<DecreaseMaxValueByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DecreaseMaxValueByStampTaskResult parse(JsonNode data) {
+            return DecreaseMaxValueByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "stamina")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamina/decrease";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void decreaseMaxValueByStampTaskAsync(
+            DecreaseMaxValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<DecreaseMaxValueByStampTaskResult>> callback
+    ) {
+        DecreaseMaxValueByStampTaskTask task = new DecreaseMaxValueByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public DecreaseMaxValueByStampTaskResult decreaseMaxValueByStampTask(
+            DecreaseMaxValueByStampTaskRequest request
+    ) {
+        final AsyncResult<DecreaseMaxValueByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        decreaseMaxValueByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

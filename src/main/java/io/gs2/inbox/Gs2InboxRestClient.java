@@ -1839,6 +1839,86 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
         return resultAsyncResult[0].getResult();
     }
 
+    class DeleteMessageByStampTaskTask extends Gs2RestSessionTask<DeleteMessageByStampTaskResult> {
+        private DeleteMessageByStampTaskRequest request;
+
+        public DeleteMessageByStampTaskTask(
+            DeleteMessageByStampTaskRequest request,
+            AsyncAction<AsyncResult<DeleteMessageByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteMessageByStampTaskResult parse(JsonNode data) {
+            return DeleteMessageByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inbox")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/delete";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteMessageByStampTaskAsync(
+            DeleteMessageByStampTaskRequest request,
+            AsyncAction<AsyncResult<DeleteMessageByStampTaskResult>> callback
+    ) {
+        DeleteMessageByStampTaskTask task = new DeleteMessageByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteMessageByStampTaskResult deleteMessageByStampTask(
+            DeleteMessageByStampTaskRequest request
+    ) {
+        final AsyncResult<DeleteMessageByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteMessageByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
         private ExportMasterRequest request;
 

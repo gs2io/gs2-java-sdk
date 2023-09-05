@@ -35,6 +35,7 @@ import io.gs2.stamina.model.StaminaModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SetRecoverValueByUserIdResult implements IResult, Serializable {
     private Stamina item;
+    private Stamina old;
     private StaminaModel staminaModel;
 
 	public Stamina getItem() {
@@ -47,6 +48,19 @@ public class SetRecoverValueByUserIdResult implements IResult, Serializable {
 
 	public SetRecoverValueByUserIdResult withItem(Stamina item) {
 		this.item = item;
+		return this;
+	}
+
+	public Stamina getOld() {
+		return old;
+	}
+
+	public void setOld(Stamina old) {
+		this.old = old;
+	}
+
+	public SetRecoverValueByUserIdResult withOld(Stamina old) {
+		this.old = old;
 		return this;
 	}
 
@@ -69,6 +83,7 @@ public class SetRecoverValueByUserIdResult implements IResult, Serializable {
         }
         return new SetRecoverValueByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Stamina.fromJson(data.get("item")))
+            .withOld(data.get("old") == null || data.get("old").isNull() ? null : Stamina.fromJson(data.get("old")))
             .withStaminaModel(data.get("staminaModel") == null || data.get("staminaModel").isNull() ? null : StaminaModel.fromJson(data.get("staminaModel")));
     }
 
@@ -76,6 +91,7 @@ public class SetRecoverValueByUserIdResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("old", getOld() != null ? getOld().toJson() : null);
                 put("staminaModel", getStaminaModel() != null ? getStaminaModel().toJson() : null);
             }}
         );

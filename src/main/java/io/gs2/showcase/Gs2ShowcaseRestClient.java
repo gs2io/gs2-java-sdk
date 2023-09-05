@@ -3187,6 +3187,93 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
+    class DecrementPurchaseCountByUserIdTask extends Gs2RestSessionTask<DecrementPurchaseCountByUserIdResult> {
+        private DecrementPurchaseCountByUserIdRequest request;
+
+        public DecrementPurchaseCountByUserIdTask(
+            DecrementPurchaseCountByUserIdRequest request,
+            AsyncAction<AsyncResult<DecrementPurchaseCountByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DecrementPurchaseCountByUserIdResult parse(JsonNode data) {
+            return DecrementPurchaseCountByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "showcase")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/random/showcase/user/{userId}/status/{showcaseName}/{displayItemName}/purchase/count/decrease";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
+            url = url.replace("{displayItemName}", this.request.getDisplayItemName() == null || this.request.getDisplayItemName().length() == 0 ? "null" : String.valueOf(this.request.getDisplayItemName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void decrementPurchaseCountByUserIdAsync(
+            DecrementPurchaseCountByUserIdRequest request,
+            AsyncAction<AsyncResult<DecrementPurchaseCountByUserIdResult>> callback
+    ) {
+        DecrementPurchaseCountByUserIdTask task = new DecrementPurchaseCountByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DecrementPurchaseCountByUserIdResult decrementPurchaseCountByUserId(
+            DecrementPurchaseCountByUserIdRequest request
+    ) {
+        final AsyncResult<DecrementPurchaseCountByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        decrementPurchaseCountByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class IncrementPurchaseCountByStampTaskTask extends Gs2RestSessionTask<IncrementPurchaseCountByStampTaskResult> {
         private IncrementPurchaseCountByStampTaskRequest request;
 
@@ -3251,6 +3338,86 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
     ) {
         final AsyncResult<IncrementPurchaseCountByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         incrementPurchaseCountByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DecrementPurchaseCountByStampSheetTask extends Gs2RestSessionTask<DecrementPurchaseCountByStampSheetResult> {
+        private DecrementPurchaseCountByStampSheetRequest request;
+
+        public DecrementPurchaseCountByStampSheetTask(
+            DecrementPurchaseCountByStampSheetRequest request,
+            AsyncAction<AsyncResult<DecrementPurchaseCountByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DecrementPurchaseCountByStampSheetResult parse(JsonNode data) {
+            return DecrementPurchaseCountByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "showcase")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/random/showcase/status/purchase/count/decrease";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void decrementPurchaseCountByStampSheetAsync(
+            DecrementPurchaseCountByStampSheetRequest request,
+            AsyncAction<AsyncResult<DecrementPurchaseCountByStampSheetResult>> callback
+    ) {
+        DecrementPurchaseCountByStampSheetTask task = new DecrementPurchaseCountByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public DecrementPurchaseCountByStampSheetResult decrementPurchaseCountByStampSheet(
+            DecrementPurchaseCountByStampSheetRequest request
+    ) {
+        final AsyncResult<DecrementPurchaseCountByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        decrementPurchaseCountByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

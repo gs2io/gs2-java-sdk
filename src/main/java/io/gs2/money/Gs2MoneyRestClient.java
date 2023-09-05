@@ -1575,6 +1575,91 @@ import io.gs2.money.model.*;public class Gs2MoneyRestClient extends AbstractGs2C
         return resultAsyncResult[0].getResult();
     }
 
+    class RevertRecordReceiptTask extends Gs2RestSessionTask<RevertRecordReceiptResult> {
+        private RevertRecordReceiptRequest request;
+
+        public RevertRecordReceiptTask(
+            RevertRecordReceiptRequest request,
+            AsyncAction<AsyncResult<RevertRecordReceiptResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RevertRecordReceiptResult parse(JsonNode data) {
+            return RevertRecordReceiptResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/receipt/revert";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("receipt", request.getReceipt());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void revertRecordReceiptAsync(
+            RevertRecordReceiptRequest request,
+            AsyncAction<AsyncResult<RevertRecordReceiptResult>> callback
+    ) {
+        RevertRecordReceiptTask task = new RevertRecordReceiptTask(request, callback);
+        session.execute(task);
+    }
+
+    public RevertRecordReceiptResult revertRecordReceipt(
+            RevertRecordReceiptRequest request
+    ) {
+        final AsyncResult<RevertRecordReceiptResult>[] resultAsyncResult = new AsyncResult[]{null};
+        revertRecordReceiptAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class RecordReceiptByStampTaskTask extends Gs2RestSessionTask<RecordReceiptByStampTaskResult> {
         private RecordReceiptByStampTaskRequest request;
 
@@ -1639,6 +1724,86 @@ import io.gs2.money.model.*;public class Gs2MoneyRestClient extends AbstractGs2C
     ) {
         final AsyncResult<RecordReceiptByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         recordReceiptByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RevertRecordReceiptByStampSheetTask extends Gs2RestSessionTask<RevertRecordReceiptByStampSheetResult> {
+        private RevertRecordReceiptByStampSheetRequest request;
+
+        public RevertRecordReceiptByStampSheetTask(
+            RevertRecordReceiptByStampSheetRequest request,
+            AsyncAction<AsyncResult<RevertRecordReceiptByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RevertRecordReceiptByStampSheetResult parse(JsonNode data) {
+            return RevertRecordReceiptByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/receipt/record/revert";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void revertRecordReceiptByStampSheetAsync(
+            RevertRecordReceiptByStampSheetRequest request,
+            AsyncAction<AsyncResult<RevertRecordReceiptByStampSheetResult>> callback
+    ) {
+        RevertRecordReceiptByStampSheetTask task = new RevertRecordReceiptByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public RevertRecordReceiptByStampSheetResult revertRecordReceiptByStampSheet(
+            RevertRecordReceiptByStampSheetRequest request
+    ) {
+        final AsyncResult<RevertRecordReceiptByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        revertRecordReceiptByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

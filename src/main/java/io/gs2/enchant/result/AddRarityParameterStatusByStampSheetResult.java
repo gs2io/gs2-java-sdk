@@ -32,6 +32,7 @@ import io.gs2.enchant.model.RarityParameterStatus;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AddRarityParameterStatusByStampSheetResult implements IResult, Serializable {
     private RarityParameterStatus item;
+    private RarityParameterStatus old;
 
 	public RarityParameterStatus getItem() {
 		return item;
@@ -46,18 +47,33 @@ public class AddRarityParameterStatusByStampSheetResult implements IResult, Seri
 		return this;
 	}
 
+	public RarityParameterStatus getOld() {
+		return old;
+	}
+
+	public void setOld(RarityParameterStatus old) {
+		this.old = old;
+	}
+
+	public AddRarityParameterStatusByStampSheetResult withOld(RarityParameterStatus old) {
+		this.old = old;
+		return this;
+	}
+
     public static AddRarityParameterStatusByStampSheetResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new AddRarityParameterStatusByStampSheetResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RarityParameterStatus.fromJson(data.get("item")));
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : RarityParameterStatus.fromJson(data.get("item")))
+            .withOld(data.get("old") == null || data.get("old").isNull() ? null : RarityParameterStatus.fromJson(data.get("old")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("old", getOld() != null ? getOld().toJson() : null);
             }}
         );
     }

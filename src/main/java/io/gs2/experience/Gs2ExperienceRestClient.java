@@ -2492,6 +2492,93 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
         return resultAsyncResult[0].getResult();
     }
 
+    class SubExperienceByUserIdTask extends Gs2RestSessionTask<SubExperienceByUserIdResult> {
+        private SubExperienceByUserIdRequest request;
+
+        public SubExperienceByUserIdTask(
+            SubExperienceByUserIdRequest request,
+            AsyncAction<AsyncResult<SubExperienceByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SubExperienceByUserIdResult parse(JsonNode data) {
+            return SubExperienceByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}/sub";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("experienceValue", request.getExperienceValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void subExperienceByUserIdAsync(
+            SubExperienceByUserIdRequest request,
+            AsyncAction<AsyncResult<SubExperienceByUserIdResult>> callback
+    ) {
+        SubExperienceByUserIdTask task = new SubExperienceByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SubExperienceByUserIdResult subExperienceByUserId(
+            SubExperienceByUserIdRequest request
+    ) {
+        final AsyncResult<SubExperienceByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        subExperienceByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class SetExperienceByUserIdTask extends Gs2RestSessionTask<SetExperienceByUserIdResult> {
         private SetExperienceByUserIdRequest request;
 
@@ -2650,6 +2737,93 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
     ) {
         final AsyncResult<AddRankCapByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         addRankCapByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SubRankCapByUserIdTask extends Gs2RestSessionTask<SubRankCapByUserIdResult> {
+        private SubRankCapByUserIdRequest request;
+
+        public SubRankCapByUserIdTask(
+            SubRankCapByUserIdRequest request,
+            AsyncAction<AsyncResult<SubRankCapByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SubRankCapByUserIdResult parse(JsonNode data) {
+            return SubRankCapByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/model/{experienceName}/property/{propertyId}/cap/sub";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("rankCapValue", request.getRankCapValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void subRankCapByUserIdAsync(
+            SubRankCapByUserIdRequest request,
+            AsyncAction<AsyncResult<SubRankCapByUserIdResult>> callback
+    ) {
+        SubRankCapByUserIdTask task = new SubRankCapByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SubRankCapByUserIdResult subRankCapByUserId(
+            SubRankCapByUserIdRequest request
+    ) {
+        final AsyncResult<SubRankCapByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        subRankCapByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2919,6 +3093,86 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
         return resultAsyncResult[0].getResult();
     }
 
+    class SubExperienceByStampTaskTask extends Gs2RestSessionTask<SubExperienceByStampTaskResult> {
+        private SubExperienceByStampTaskRequest request;
+
+        public SubExperienceByStampTaskTask(
+            SubExperienceByStampTaskRequest request,
+            AsyncAction<AsyncResult<SubExperienceByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SubExperienceByStampTaskResult parse(JsonNode data) {
+            return SubExperienceByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/experience/sub";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void subExperienceByStampTaskAsync(
+            SubExperienceByStampTaskRequest request,
+            AsyncAction<AsyncResult<SubExperienceByStampTaskResult>> callback
+    ) {
+        SubExperienceByStampTaskTask task = new SubExperienceByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public SubExperienceByStampTaskResult subExperienceByStampTask(
+            SubExperienceByStampTaskRequest request
+    ) {
+        final AsyncResult<SubExperienceByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        subExperienceByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class AddRankCapByStampSheetTask extends Gs2RestSessionTask<AddRankCapByStampSheetResult> {
         private AddRankCapByStampSheetRequest request;
 
@@ -2983,6 +3237,86 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
     ) {
         final AsyncResult<AddRankCapByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         addRankCapByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SubRankCapByStampTaskTask extends Gs2RestSessionTask<SubRankCapByStampTaskResult> {
+        private SubRankCapByStampTaskRequest request;
+
+        public SubRankCapByStampTaskTask(
+            SubRankCapByStampTaskRequest request,
+            AsyncAction<AsyncResult<SubRankCapByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SubRankCapByStampTaskResult parse(JsonNode data) {
+            return SubRankCapByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/rankCap/sub";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void subRankCapByStampTaskAsync(
+            SubRankCapByStampTaskRequest request,
+            AsyncAction<AsyncResult<SubRankCapByStampTaskResult>> callback
+    ) {
+        SubRankCapByStampTaskTask task = new SubRankCapByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public SubRankCapByStampTaskResult subRankCapByStampTask(
+            SubRankCapByStampTaskRequest request
+    ) {
+        final AsyncResult<SubRankCapByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        subRankCapByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

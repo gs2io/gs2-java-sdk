@@ -31,6 +31,7 @@ import io.gs2.experience.model.Status;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SetRankCapByStampSheetResult implements IResult, Serializable {
     private Status item;
+    private Status old;
 
 	public Status getItem() {
 		return item;
@@ -45,18 +46,33 @@ public class SetRankCapByStampSheetResult implements IResult, Serializable {
 		return this;
 	}
 
+	public Status getOld() {
+		return old;
+	}
+
+	public void setOld(Status old) {
+		this.old = old;
+	}
+
+	public SetRankCapByStampSheetResult withOld(Status old) {
+		this.old = old;
+		return this;
+	}
+
     public static SetRankCapByStampSheetResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new SetRankCapByStampSheetResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")));
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")))
+            .withOld(data.get("old") == null || data.get("old").isNull() ? null : Status.fromJson(data.get("old")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("old", getOld() != null ? getOld().toJson() : null);
             }}
         );
     }

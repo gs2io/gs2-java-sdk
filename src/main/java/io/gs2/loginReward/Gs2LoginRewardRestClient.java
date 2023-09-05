@@ -2514,6 +2514,92 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
+    class UnmarkReceivedByUserIdTask extends Gs2RestSessionTask<UnmarkReceivedByUserIdResult> {
+        private UnmarkReceivedByUserIdRequest request;
+
+        public UnmarkReceivedByUserIdTask(
+            UnmarkReceivedByUserIdRequest request,
+            AsyncAction<AsyncResult<UnmarkReceivedByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnmarkReceivedByUserIdResult parse(JsonNode data) {
+            return UnmarkReceivedByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "login-reward")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/receiveStatus/{bonusModelName}/unmark";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{bonusModelName}", this.request.getBonusModelName() == null || this.request.getBonusModelName().length() == 0 ? "null" : String.valueOf(this.request.getBonusModelName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stepNumber", request.getStepNumber());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unmarkReceivedByUserIdAsync(
+            UnmarkReceivedByUserIdRequest request,
+            AsyncAction<AsyncResult<UnmarkReceivedByUserIdResult>> callback
+    ) {
+        UnmarkReceivedByUserIdTask task = new UnmarkReceivedByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnmarkReceivedByUserIdResult unmarkReceivedByUserId(
+            UnmarkReceivedByUserIdRequest request
+    ) {
+        final AsyncResult<UnmarkReceivedByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unmarkReceivedByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class MarkReceivedByStampTaskTask extends Gs2RestSessionTask<MarkReceivedByStampTaskResult> {
         private MarkReceivedByStampTaskRequest request;
 
@@ -2578,6 +2664,86 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
     ) {
         final AsyncResult<MarkReceivedByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         markReceivedByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnmarkReceivedByStampSheetTask extends Gs2RestSessionTask<UnmarkReceivedByStampSheetResult> {
+        private UnmarkReceivedByStampSheetRequest request;
+
+        public UnmarkReceivedByStampSheetTask(
+            UnmarkReceivedByStampSheetRequest request,
+            AsyncAction<AsyncResult<UnmarkReceivedByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnmarkReceivedByStampSheetResult parse(JsonNode data) {
+            return UnmarkReceivedByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "login-reward")
+                .replace("{region}", session.getRegion().getName())
+                + "/receiveStatus/unmark";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unmarkReceivedByStampSheetAsync(
+            UnmarkReceivedByStampSheetRequest request,
+            AsyncAction<AsyncResult<UnmarkReceivedByStampSheetResult>> callback
+    ) {
+        UnmarkReceivedByStampSheetTask task = new UnmarkReceivedByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnmarkReceivedByStampSheetResult unmarkReceivedByStampSheet(
+            UnmarkReceivedByStampSheetRequest request
+    ) {
+        final AsyncResult<UnmarkReceivedByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unmarkReceivedByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

@@ -1128,6 +1128,86 @@ import io.gs2.jobQueue.model.*;public class Gs2JobQueueRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
+    class DeleteByStampTaskTask extends Gs2RestSessionTask<DeleteByStampTaskResult> {
+        private DeleteByStampTaskRequest request;
+
+        public DeleteByStampTaskTask(
+            DeleteByStampTaskRequest request,
+            AsyncAction<AsyncResult<DeleteByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteByStampTaskResult parse(JsonNode data) {
+            return DeleteByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "job-queue")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/job/delete";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteByStampTaskAsync(
+            DeleteByStampTaskRequest request,
+            AsyncAction<AsyncResult<DeleteByStampTaskResult>> callback
+    ) {
+        DeleteByStampTaskTask task = new DeleteByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteByStampTaskResult deleteByStampTask(
+            DeleteByStampTaskRequest request
+    ) {
+        final AsyncResult<DeleteByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetJobResultTask extends Gs2RestSessionTask<GetJobResultResult> {
         private GetJobResultRequest request;
 

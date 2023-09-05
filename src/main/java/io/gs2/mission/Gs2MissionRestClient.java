@@ -489,6 +489,92 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class RevertReceiveByUserIdTask extends Gs2RestSessionTask<RevertReceiveByUserIdResult> {
+        private RevertReceiveByUserIdRequest request;
+
+        public RevertReceiveByUserIdTask(
+            RevertReceiveByUserIdRequest request,
+            AsyncAction<AsyncResult<RevertReceiveByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RevertReceiveByUserIdResult parse(JsonNode data) {
+            return RevertReceiveByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/complete/group/{missionGroupName}/task/{missionTaskName}/revert";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null || this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+            url = url.replace("{missionTaskName}", this.request.getMissionTaskName() == null || this.request.getMissionTaskName().length() == 0 ? "null" : String.valueOf(this.request.getMissionTaskName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void revertReceiveByUserIdAsync(
+            RevertReceiveByUserIdRequest request,
+            AsyncAction<AsyncResult<RevertReceiveByUserIdResult>> callback
+    ) {
+        RevertReceiveByUserIdTask task = new RevertReceiveByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public RevertReceiveByUserIdResult revertReceiveByUserId(
+            RevertReceiveByUserIdRequest request
+    ) {
+        final AsyncResult<RevertReceiveByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        revertReceiveByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetCompleteTask extends Gs2RestSessionTask<GetCompleteResult> {
         private GetCompleteRequest request;
 
@@ -804,6 +890,86 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
     ) {
         final AsyncResult<ReceiveByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         receiveByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RevertReceiveByStampSheetTask extends Gs2RestSessionTask<RevertReceiveByStampSheetResult> {
+        private RevertReceiveByStampSheetRequest request;
+
+        public RevertReceiveByStampSheetTask(
+            RevertReceiveByStampSheetRequest request,
+            AsyncAction<AsyncResult<RevertReceiveByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RevertReceiveByStampSheetResult parse(JsonNode data) {
+            return RevertReceiveByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/revert";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void revertReceiveByStampSheetAsync(
+            RevertReceiveByStampSheetRequest request,
+            AsyncAction<AsyncResult<RevertReceiveByStampSheetResult>> callback
+    ) {
+        RevertReceiveByStampSheetTask task = new RevertReceiveByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public RevertReceiveByStampSheetResult revertReceiveByStampSheet(
+            RevertReceiveByStampSheetRequest request
+    ) {
+        final AsyncResult<RevertReceiveByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        revertReceiveByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2435,6 +2601,92 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class DecreaseCounterByUserIdTask extends Gs2RestSessionTask<DecreaseCounterByUserIdResult> {
+        private DecreaseCounterByUserIdRequest request;
+
+        public DecreaseCounterByUserIdTask(
+            DecreaseCounterByUserIdRequest request,
+            AsyncAction<AsyncResult<DecreaseCounterByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DecreaseCounterByUserIdResult parse(JsonNode data) {
+            return DecreaseCounterByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/counter/{counterName}/decrease";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void decreaseCounterByUserIdAsync(
+            DecreaseCounterByUserIdRequest request,
+            AsyncAction<AsyncResult<DecreaseCounterByUserIdResult>> callback
+    ) {
+        DecreaseCounterByUserIdTask task = new DecreaseCounterByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DecreaseCounterByUserIdResult decreaseCounterByUserId(
+            DecreaseCounterByUserIdRequest request
+    ) {
+        final AsyncResult<DecreaseCounterByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        decreaseCounterByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetCounterTask extends Gs2RestSessionTask<GetCounterResult> {
         private GetCounterRequest request;
 
@@ -2750,6 +3002,86 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
     ) {
         final AsyncResult<IncreaseByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         increaseByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DecreaseByStampTaskTask extends Gs2RestSessionTask<DecreaseByStampTaskResult> {
+        private DecreaseByStampTaskRequest request;
+
+        public DecreaseByStampTaskTask(
+            DecreaseByStampTaskRequest request,
+            AsyncAction<AsyncResult<DecreaseByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DecreaseByStampTaskResult parse(JsonNode data) {
+            return DecreaseByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/decrease";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void decreaseByStampTaskAsync(
+            DecreaseByStampTaskRequest request,
+            AsyncAction<AsyncResult<DecreaseByStampTaskResult>> callback
+    ) {
+        DecreaseByStampTaskTask task = new DecreaseByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public DecreaseByStampTaskResult decreaseByStampTask(
+            DecreaseByStampTaskRequest request
+    ) {
+        final AsyncResult<DecreaseByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        decreaseByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

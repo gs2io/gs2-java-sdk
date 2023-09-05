@@ -1203,6 +1203,91 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class RevertUseByUserIdTask extends Gs2RestSessionTask<RevertUseByUserIdResult> {
+        private RevertUseByUserIdRequest request;
+
+        public RevertUseByUserIdTask(
+            RevertUseByUserIdRequest request,
+            AsyncAction<AsyncResult<RevertUseByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RevertUseByUserIdResult parse(JsonNode data) {
+            return RevertUseByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "serial-key")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/serialKey/revert";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("code", request.getCode());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void revertUseByUserIdAsync(
+            RevertUseByUserIdRequest request,
+            AsyncAction<AsyncResult<RevertUseByUserIdResult>> callback
+    ) {
+        RevertUseByUserIdTask task = new RevertUseByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public RevertUseByUserIdResult revertUseByUserId(
+            RevertUseByUserIdRequest request
+    ) {
+        final AsyncResult<RevertUseByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        revertUseByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class UseByStampTaskTask extends Gs2RestSessionTask<UseByStampTaskResult> {
         private UseByStampTaskRequest request;
 
@@ -1267,6 +1352,86 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
     ) {
         final AsyncResult<UseByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         useByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RevertUseByStampSheetTask extends Gs2RestSessionTask<RevertUseByStampSheetResult> {
+        private RevertUseByStampSheetRequest request;
+
+        public RevertUseByStampSheetTask(
+            RevertUseByStampSheetRequest request,
+            AsyncAction<AsyncResult<RevertUseByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RevertUseByStampSheetResult parse(JsonNode data) {
+            return RevertUseByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "serial-key")
+                .replace("{region}", session.getRegion().getName())
+                + "/serialKey/use";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void revertUseByStampSheetAsync(
+            RevertUseByStampSheetRequest request,
+            AsyncAction<AsyncResult<RevertUseByStampSheetResult>> callback
+    ) {
+        RevertUseByStampSheetTask task = new RevertUseByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public RevertUseByStampSheetResult revertUseByStampSheet(
+            RevertUseByStampSheetRequest request
+    ) {
+        final AsyncResult<RevertUseByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        revertUseByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

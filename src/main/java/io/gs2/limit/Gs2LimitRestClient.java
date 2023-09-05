@@ -1056,6 +1056,93 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
         return resultAsyncResult[0].getResult();
     }
 
+    class CountDownByUserIdTask extends Gs2RestSessionTask<CountDownByUserIdResult> {
+        private CountDownByUserIdRequest request;
+
+        public CountDownByUserIdTask(
+            CountDownByUserIdRequest request,
+            AsyncAction<AsyncResult<CountDownByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CountDownByUserIdResult parse(JsonNode data) {
+            return CountDownByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/counter/{limitName}/{counterName}/decrease";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("countDownValue", request.getCountDownValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void countDownByUserIdAsync(
+            CountDownByUserIdRequest request,
+            AsyncAction<AsyncResult<CountDownByUserIdResult>> callback
+    ) {
+        CountDownByUserIdTask task = new CountDownByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public CountDownByUserIdResult countDownByUserId(
+            CountDownByUserIdRequest request
+    ) {
+        final AsyncResult<CountDownByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        countDownByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteCounterByUserIdTask extends Gs2RestSessionTask<DeleteCounterByUserIdResult> {
         private DeleteCounterByUserIdRequest request;
 
@@ -1206,6 +1293,86 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
     ) {
         final AsyncResult<CountUpByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         countUpByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CountDownByStampSheetTask extends Gs2RestSessionTask<CountDownByStampSheetResult> {
+        private CountDownByStampSheetRequest request;
+
+        public CountDownByStampSheetTask(
+            CountDownByStampSheetRequest request,
+            AsyncAction<AsyncResult<CountDownByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CountDownByStampSheetResult parse(JsonNode data) {
+            return CountDownByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/counter/decrease";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void countDownByStampSheetAsync(
+            CountDownByStampSheetRequest request,
+            AsyncAction<AsyncResult<CountDownByStampSheetResult>> callback
+    ) {
+        CountDownByStampSheetTask task = new CountDownByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public CountDownByStampSheetResult countDownByStampSheet(
+            CountDownByStampSheetRequest request
+    ) {
+        final AsyncResult<CountDownByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        countDownByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
