@@ -31,7 +31,7 @@ import io.gs2.formation.model.SlotWithSignature;
 public class SetFormWithSignatureRequest extends Gs2BasicRequest<SetFormWithSignatureRequest> {
     private String namespaceName;
     private String accessToken;
-    private String moldName;
+    private String moldModelName;
     private Integer index;
     private List<SlotWithSignature> slots;
     private String keyId;
@@ -56,14 +56,14 @@ public class SetFormWithSignatureRequest extends Gs2BasicRequest<SetFormWithSign
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getMoldName() {
-		return moldName;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setMoldName(String moldName) {
-		this.moldName = moldName;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public SetFormWithSignatureRequest withMoldName(String moldName) {
-		this.moldName = moldName;
+	public SetFormWithSignatureRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 	public Integer getIndex() {
@@ -117,7 +117,7 @@ public class SetFormWithSignatureRequest extends Gs2BasicRequest<SetFormWithSign
         return new SetFormWithSignatureRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
             .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<SlotWithSignature>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
@@ -133,7 +133,7 @@ public class SetFormWithSignatureRequest extends Gs2BasicRequest<SetFormWithSign
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("moldName", getMoldName());
+                put("moldModelName", getMoldModelName());
                 put("index", getIndex());
                 put("slots", getSlots() == null ? new ArrayList<SlotWithSignature>() :
                     getSlots().stream().map(item -> {

@@ -30,7 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribePropertyFormsRequest extends Gs2BasicRequest<DescribePropertyFormsRequest> {
     private String namespaceName;
     private String accessToken;
-    private String formModelName;
+    private String propertyFormModelName;
     private String pageToken;
     private Integer limit;
 	public String getNamespaceName() {
@@ -53,14 +53,14 @@ public class DescribePropertyFormsRequest extends Gs2BasicRequest<DescribeProper
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getFormModelName() {
-		return formModelName;
+	public String getPropertyFormModelName() {
+		return propertyFormModelName;
 	}
-	public void setFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public void setPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 	}
-	public DescribePropertyFormsRequest withFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public DescribePropertyFormsRequest withPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 		return this;
 	}
 	public String getPageToken() {
@@ -91,7 +91,7 @@ public class DescribePropertyFormsRequest extends Gs2BasicRequest<DescribeProper
         return new DescribePropertyFormsRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText())
+            .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -101,7 +101,7 @@ public class DescribePropertyFormsRequest extends Gs2BasicRequest<DescribeProper
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("formModelName", getFormModelName());
+                put("propertyFormModelName", getPropertyFormModelName());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
             }}

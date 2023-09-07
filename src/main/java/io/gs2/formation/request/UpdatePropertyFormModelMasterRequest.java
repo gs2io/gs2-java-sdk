@@ -24,35 +24,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.formation.model.Slot;
+import io.gs2.formation.model.SlotModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetPropertyFormByUserIdRequest extends Gs2BasicRequest<SetPropertyFormByUserIdRequest> {
+public class UpdatePropertyFormModelMasterRequest extends Gs2BasicRequest<UpdatePropertyFormModelMasterRequest> {
     private String namespaceName;
-    private String userId;
     private String propertyFormModelName;
-    private String propertyId;
-    private List<Slot> slots;
-    private String duplicationAvoider;
+    private String description;
+    private String metadata;
+    private List<SlotModel> slots;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public SetPropertyFormByUserIdRequest withNamespaceName(String namespaceName) {
+	public UpdatePropertyFormModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
-		return this;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public SetPropertyFormByUserIdRequest withUserId(String userId) {
-		this.userId = userId;
 		return this;
 	}
 	public String getPropertyFormModelName() {
@@ -61,57 +50,54 @@ public class SetPropertyFormByUserIdRequest extends Gs2BasicRequest<SetPropertyF
 	public void setPropertyFormModelName(String propertyFormModelName) {
 		this.propertyFormModelName = propertyFormModelName;
 	}
-	public SetPropertyFormByUserIdRequest withPropertyFormModelName(String propertyFormModelName) {
+	public UpdatePropertyFormModelMasterRequest withPropertyFormModelName(String propertyFormModelName) {
 		this.propertyFormModelName = propertyFormModelName;
 		return this;
 	}
-	public String getPropertyId() {
-		return propertyId;
+	public String getDescription() {
+		return description;
 	}
-	public void setPropertyId(String propertyId) {
-		this.propertyId = propertyId;
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	public SetPropertyFormByUserIdRequest withPropertyId(String propertyId) {
-		this.propertyId = propertyId;
+	public UpdatePropertyFormModelMasterRequest withDescription(String description) {
+		this.description = description;
 		return this;
 	}
-	public List<Slot> getSlots() {
+	public String getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+	public UpdatePropertyFormModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+	public List<SlotModel> getSlots() {
 		return slots;
 	}
-	public void setSlots(List<Slot> slots) {
+	public void setSlots(List<SlotModel> slots) {
 		this.slots = slots;
 	}
-	public SetPropertyFormByUserIdRequest withSlots(List<Slot> slots) {
+	public UpdatePropertyFormModelMasterRequest withSlots(List<SlotModel> slots) {
 		this.slots = slots;
 		return this;
 	}
 
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public SetPropertyFormByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-		return this;
-	}
-
-    public static SetPropertyFormByUserIdRequest fromJson(JsonNode data) {
+    public static UpdatePropertyFormModelMasterRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SetPropertyFormByUserIdRequest()
+        return new UpdatePropertyFormModelMasterRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
-            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<Slot>() :
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<SlotModel>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
-                    return Slot.fromJson(item);
+                    return SlotModel.fromJson(item);
                 }
             ).collect(Collectors.toList()));
     }
@@ -120,10 +106,10 @@ public class SetPropertyFormByUserIdRequest extends Gs2BasicRequest<SetPropertyF
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("userId", getUserId());
                 put("propertyFormModelName", getPropertyFormModelName());
-                put("propertyId", getPropertyId());
-                put("slots", getSlots() == null ? new ArrayList<Slot>() :
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("slots", getSlots() == null ? new ArrayList<SlotModel>() :
                     getSlots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

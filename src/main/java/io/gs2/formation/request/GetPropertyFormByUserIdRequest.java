@@ -30,7 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetPropertyFormByUserIdRequest extends Gs2BasicRequest<GetPropertyFormByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String formModelName;
+    private String propertyFormModelName;
     private String propertyId;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -52,14 +52,14 @@ public class GetPropertyFormByUserIdRequest extends Gs2BasicRequest<GetPropertyF
 		this.userId = userId;
 		return this;
 	}
-	public String getFormModelName() {
-		return formModelName;
+	public String getPropertyFormModelName() {
+		return propertyFormModelName;
 	}
-	public void setFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public void setPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 	}
-	public GetPropertyFormByUserIdRequest withFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public GetPropertyFormByUserIdRequest withPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 		return this;
 	}
 	public String getPropertyId() {
@@ -80,7 +80,7 @@ public class GetPropertyFormByUserIdRequest extends Gs2BasicRequest<GetPropertyF
         return new GetPropertyFormByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText())
+            .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText());
     }
 
@@ -89,7 +89,7 @@ public class GetPropertyFormByUserIdRequest extends Gs2BasicRequest<GetPropertyF
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("formModelName", getFormModelName());
+                put("propertyFormModelName", getPropertyFormModelName());
                 put("propertyId", getPropertyId());
             }}
         );

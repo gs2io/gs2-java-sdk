@@ -25,57 +25,49 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
-import io.gs2.formation.model.Slot;
-import io.gs2.formation.model.PropertyForm;
 import io.gs2.formation.model.SlotModel;
 import io.gs2.formation.model.PropertyFormModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetPropertyFormResult implements IResult, Serializable {
-    private PropertyForm item;
-    private PropertyFormModel propertyFormModel;
+public class DescribePropertyFormModelsResult implements IResult, Serializable {
+    private List<PropertyFormModel> items;
 
-	public PropertyForm getItem() {
-		return item;
+	public List<PropertyFormModel> getItems() {
+		return items;
 	}
 
-	public void setItem(PropertyForm item) {
-		this.item = item;
+	public void setItems(List<PropertyFormModel> items) {
+		this.items = items;
 	}
 
-	public GetPropertyFormResult withItem(PropertyForm item) {
-		this.item = item;
+	public DescribePropertyFormModelsResult withItems(List<PropertyFormModel> items) {
+		this.items = items;
 		return this;
 	}
 
-	public PropertyFormModel getPropertyFormModel() {
-		return propertyFormModel;
-	}
-
-	public void setPropertyFormModel(PropertyFormModel propertyFormModel) {
-		this.propertyFormModel = propertyFormModel;
-	}
-
-	public GetPropertyFormResult withPropertyFormModel(PropertyFormModel propertyFormModel) {
-		this.propertyFormModel = propertyFormModel;
-		return this;
-	}
-
-    public static GetPropertyFormResult fromJson(JsonNode data) {
+    public static DescribePropertyFormModelsResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetPropertyFormResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : PropertyForm.fromJson(data.get("item")))
-            .withPropertyFormModel(data.get("propertyFormModel") == null || data.get("propertyFormModel").isNull() ? null : PropertyFormModel.fromJson(data.get("propertyFormModel")));
+        return new DescribePropertyFormModelsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<PropertyFormModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return PropertyFormModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
-                put("propertyFormModel", getPropertyFormModel() != null ? getPropertyFormModel().toJson() : null);
+                put("items", getItems() == null ? new ArrayList<PropertyFormModel>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }

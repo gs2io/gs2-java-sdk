@@ -534,86 +534,6 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeFormModelsTask extends Gs2RestSessionTask<DescribeFormModelsResult> {
-        private DescribeFormModelsRequest request;
-
-        public DescribeFormModelsTask(
-            DescribeFormModelsRequest request,
-            AsyncAction<AsyncResult<DescribeFormModelsResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeFormModelsResult parse(JsonNode data) {
-            return DescribeFormModelsResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "formation")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/model/form";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeFormModelsAsync(
-            DescribeFormModelsRequest request,
-            AsyncAction<AsyncResult<DescribeFormModelsResult>> callback
-    ) {
-        DescribeFormModelsTask task = new DescribeFormModelsTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeFormModelsResult describeFormModels(
-            DescribeFormModelsRequest request
-    ) {
-        final AsyncResult<DescribeFormModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeFormModelsAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
     class GetFormModelTask extends Gs2RestSessionTask<GetFormModelResult> {
         private GetFormModelRequest request;
 
@@ -639,9 +559,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/model/form/{formModelName}";
+                + "/{namespaceName}/model/{moldModelName}/form/{formModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -1226,10 +1147,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/model/mold/{moldName}";
+                + "/{namespaceName}/model/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1479,10 +1400,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/model/mold/{moldName}";
+                + "/{namespaceName}/master/model/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1560,10 +1481,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/model/mold/{moldName}";
+                + "/{namespaceName}/master/model/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -1646,10 +1567,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/master/model/mold/{moldName}";
+                + "/{namespaceName}/master/model/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1686,6 +1607,593 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
     ) {
         final AsyncResult<DeleteMoldModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteMoldModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribePropertyFormModelsTask extends Gs2RestSessionTask<DescribePropertyFormModelsResult> {
+        private DescribePropertyFormModelsRequest request;
+
+        public DescribePropertyFormModelsTask(
+            DescribePropertyFormModelsRequest request,
+            AsyncAction<AsyncResult<DescribePropertyFormModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribePropertyFormModelsResult parse(JsonNode data) {
+            return DescribePropertyFormModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/propertyForm";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describePropertyFormModelsAsync(
+            DescribePropertyFormModelsRequest request,
+            AsyncAction<AsyncResult<DescribePropertyFormModelsResult>> callback
+    ) {
+        DescribePropertyFormModelsTask task = new DescribePropertyFormModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribePropertyFormModelsResult describePropertyFormModels(
+            DescribePropertyFormModelsRequest request
+    ) {
+        final AsyncResult<DescribePropertyFormModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describePropertyFormModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetPropertyFormModelTask extends Gs2RestSessionTask<GetPropertyFormModelResult> {
+        private GetPropertyFormModelRequest request;
+
+        public GetPropertyFormModelTask(
+            GetPropertyFormModelRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetPropertyFormModelResult parse(JsonNode data) {
+            return GetPropertyFormModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/propertyForm/{propertyFormModelName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getPropertyFormModelAsync(
+            GetPropertyFormModelRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormModelResult>> callback
+    ) {
+        GetPropertyFormModelTask task = new GetPropertyFormModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetPropertyFormModelResult getPropertyFormModel(
+            GetPropertyFormModelRequest request
+    ) {
+        final AsyncResult<GetPropertyFormModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPropertyFormModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribePropertyFormModelMastersTask extends Gs2RestSessionTask<DescribePropertyFormModelMastersResult> {
+        private DescribePropertyFormModelMastersRequest request;
+
+        public DescribePropertyFormModelMastersTask(
+            DescribePropertyFormModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribePropertyFormModelMastersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribePropertyFormModelMastersResult parse(JsonNode data) {
+            return DescribePropertyFormModelMastersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/propertyForm";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describePropertyFormModelMastersAsync(
+            DescribePropertyFormModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribePropertyFormModelMastersResult>> callback
+    ) {
+        DescribePropertyFormModelMastersTask task = new DescribePropertyFormModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribePropertyFormModelMastersResult describePropertyFormModelMasters(
+            DescribePropertyFormModelMastersRequest request
+    ) {
+        final AsyncResult<DescribePropertyFormModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describePropertyFormModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreatePropertyFormModelMasterTask extends Gs2RestSessionTask<CreatePropertyFormModelMasterResult> {
+        private CreatePropertyFormModelMasterRequest request;
+
+        public CreatePropertyFormModelMasterTask(
+            CreatePropertyFormModelMasterRequest request,
+            AsyncAction<AsyncResult<CreatePropertyFormModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreatePropertyFormModelMasterResult parse(JsonNode data) {
+            return CreatePropertyFormModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/propertyForm";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("slots", request.getSlots() == null ? new ArrayList<SlotModel>() :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createPropertyFormModelMasterAsync(
+            CreatePropertyFormModelMasterRequest request,
+            AsyncAction<AsyncResult<CreatePropertyFormModelMasterResult>> callback
+    ) {
+        CreatePropertyFormModelMasterTask task = new CreatePropertyFormModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreatePropertyFormModelMasterResult createPropertyFormModelMaster(
+            CreatePropertyFormModelMasterRequest request
+    ) {
+        final AsyncResult<CreatePropertyFormModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createPropertyFormModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetPropertyFormModelMasterTask extends Gs2RestSessionTask<GetPropertyFormModelMasterResult> {
+        private GetPropertyFormModelMasterRequest request;
+
+        public GetPropertyFormModelMasterTask(
+            GetPropertyFormModelMasterRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetPropertyFormModelMasterResult parse(JsonNode data) {
+            return GetPropertyFormModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/propertyForm/{propertyFormModelName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getPropertyFormModelMasterAsync(
+            GetPropertyFormModelMasterRequest request,
+            AsyncAction<AsyncResult<GetPropertyFormModelMasterResult>> callback
+    ) {
+        GetPropertyFormModelMasterTask task = new GetPropertyFormModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetPropertyFormModelMasterResult getPropertyFormModelMaster(
+            GetPropertyFormModelMasterRequest request
+    ) {
+        final AsyncResult<GetPropertyFormModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPropertyFormModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdatePropertyFormModelMasterTask extends Gs2RestSessionTask<UpdatePropertyFormModelMasterResult> {
+        private UpdatePropertyFormModelMasterRequest request;
+
+        public UpdatePropertyFormModelMasterTask(
+            UpdatePropertyFormModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdatePropertyFormModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdatePropertyFormModelMasterResult parse(JsonNode data) {
+            return UpdatePropertyFormModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/propertyForm/{propertyFormModelName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("slots", request.getSlots() == null ? new ArrayList<SlotModel>() :
+                        request.getSlots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updatePropertyFormModelMasterAsync(
+            UpdatePropertyFormModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdatePropertyFormModelMasterResult>> callback
+    ) {
+        UpdatePropertyFormModelMasterTask task = new UpdatePropertyFormModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdatePropertyFormModelMasterResult updatePropertyFormModelMaster(
+            UpdatePropertyFormModelMasterRequest request
+    ) {
+        final AsyncResult<UpdatePropertyFormModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updatePropertyFormModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeletePropertyFormModelMasterTask extends Gs2RestSessionTask<DeletePropertyFormModelMasterResult> {
+        private DeletePropertyFormModelMasterRequest request;
+
+        public DeletePropertyFormModelMasterTask(
+            DeletePropertyFormModelMasterRequest request,
+            AsyncAction<AsyncResult<DeletePropertyFormModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeletePropertyFormModelMasterResult parse(JsonNode data) {
+            return DeletePropertyFormModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/propertyForm/{propertyFormModelName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deletePropertyFormModelMasterAsync(
+            DeletePropertyFormModelMasterRequest request,
+            AsyncAction<AsyncResult<DeletePropertyFormModelMasterResult>> callback
+    ) {
+        DeletePropertyFormModelMasterTask task = new DeletePropertyFormModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeletePropertyFormModelMasterResult deletePropertyFormModelMaster(
+            DeletePropertyFormModelMasterRequest request
+    ) {
+        final AsyncResult<DeletePropertyFormModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deletePropertyFormModelMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2225,10 +2733,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/mold/{moldName}";
+                + "/{namespaceName}/user/me/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2309,11 +2817,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2391,11 +2899,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2477,11 +2985,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2563,11 +3071,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}/sub";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}/sub";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2649,10 +3157,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/mold/{moldName}";
+                + "/{namespaceName}/user/me/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2736,11 +3244,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3061,10 +3569,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/mold/{moldName}/form";
+                + "/{namespaceName}/user/me/mold/{moldModelName}/form";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -3151,10 +3659,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}/form";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}/form";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -3239,10 +3747,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/mold/{moldName}/form/{index}";
+                + "/{namespaceName}/user/me/mold/{moldModelName}/form/{index}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -3324,11 +3832,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}/form/{index}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -3407,10 +3915,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/mold/{moldName}/form/{index}/signature";
+                + "/{namespaceName}/user/me/mold/{moldModelName}/form/{index}/signature";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -3495,11 +4003,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}/signature";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}/form/{index}/signature";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -3581,11 +4089,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}/form/{index}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -3673,10 +4181,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/mold/{moldName}/form/{index}";
+                + "/{namespaceName}/user/me/mold/{moldModelName}/form/{index}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -3768,11 +4276,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}/stamp/delegate";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}/form/{index}/stamp/delegate";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -3861,10 +4369,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/mold/{moldName}/form/{index}";
+                + "/{namespaceName}/user/me/mold/{moldModelName}/form/{index}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -3949,11 +4457,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}";
+                + "/{namespaceName}/user/{userId}/mold/{moldModelName}/form/{index}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{moldName}", this.request.getMoldName() == null || this.request.getMoldName().length() == 0 ? "null" : String.valueOf(this.request.getMoldName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
             url = url.replace("{index}", this.request.getIndex() == null  ? "null" : String.valueOf(this.request.getIndex()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -4115,10 +4623,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/property/{formModelName}/form";
+                + "/{namespaceName}/user/me/property/{propertyFormModelName}/form";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4205,11 +4713,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/property/{formModelName}/form";
+                + "/{namespaceName}/user/{userId}/property/{propertyFormModelName}/form";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -4293,10 +4801,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/property/{formModelName}/form/{propertyId}";
+                + "/{namespaceName}/user/me/property/{propertyFormModelName}/form/{propertyId}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
             url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -4378,11 +4886,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}";
+                + "/{namespaceName}/user/{userId}/property/{propertyFormModelName}/form/{propertyId}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
             url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -4461,10 +4969,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/property/{formModelName}/form/{propertyId}/signature";
+                + "/{namespaceName}/user/me/property/{propertyFormModelName}/form/{propertyId}/signature";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
             url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -4549,11 +5057,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}/signature";
+                + "/{namespaceName}/user/{userId}/property/{propertyFormModelName}/form/{propertyId}/signature";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
             url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -4635,11 +5143,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}";
+                + "/{namespaceName}/user/{userId}/property/{propertyFormModelName}/form/{propertyId}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
             url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -4727,10 +5235,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/property/{formModelName}/form/{propertyId}";
+                + "/{namespaceName}/user/me/property/{propertyFormModelName}/form/{propertyId}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
             url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -4822,11 +5330,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}/stamp/delegate";
+                + "/{namespaceName}/user/{userId}/property/{propertyFormModelName}/form/{propertyId}/stamp/delegate";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
             url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
@@ -4915,10 +5423,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/property/{formModelName}/form/{propertyId}";
+                + "/{namespaceName}/user/me/property/{propertyFormModelName}/form/{propertyId}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
             url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
@@ -5003,11 +5511,11 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/property/{formModelName}/form/{propertyId}";
+                + "/{namespaceName}/user/{userId}/property/{propertyFormModelName}/form/{propertyId}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
+            url = url.replace("{propertyFormModelName}", this.request.getPropertyFormModelName() == null || this.request.getPropertyFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getPropertyFormModelName()));
             url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();

@@ -30,7 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class AddMoldCapacityByUserIdRequest extends Gs2BasicRequest<AddMoldCapacityByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String moldName;
+    private String moldModelName;
     private Integer capacity;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -53,14 +53,14 @@ public class AddMoldCapacityByUserIdRequest extends Gs2BasicRequest<AddMoldCapac
 		this.userId = userId;
 		return this;
 	}
-	public String getMoldName() {
-		return moldName;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setMoldName(String moldName) {
-		this.moldName = moldName;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public AddMoldCapacityByUserIdRequest withMoldName(String moldName) {
-		this.moldName = moldName;
+	public AddMoldCapacityByUserIdRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 	public Integer getCapacity() {
@@ -94,7 +94,7 @@ public class AddMoldCapacityByUserIdRequest extends Gs2BasicRequest<AddMoldCapac
         return new AddMoldCapacityByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withCapacity(data.get("capacity") == null || data.get("capacity").isNull() ? null : data.get("capacity").intValue());
     }
 
@@ -103,7 +103,7 @@ public class AddMoldCapacityByUserIdRequest extends Gs2BasicRequest<AddMoldCapac
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("moldName", getMoldName());
+                put("moldModelName", getMoldModelName());
                 put("capacity", getCapacity());
             }}
         );

@@ -25,57 +25,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
-import io.gs2.formation.model.Slot;
-import io.gs2.formation.model.PropertyForm;
 import io.gs2.formation.model.SlotModel;
-import io.gs2.formation.model.PropertyFormModel;
+import io.gs2.formation.model.PropertyFormModelMaster;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetPropertyFormWithSignatureResult implements IResult, Serializable {
-    private PropertyForm item;
-    private PropertyFormModel proeprtyFormModel;
+public class DeletePropertyFormModelMasterResult implements IResult, Serializable {
+    private PropertyFormModelMaster item;
 
-	public PropertyForm getItem() {
+	public PropertyFormModelMaster getItem() {
 		return item;
 	}
 
-	public void setItem(PropertyForm item) {
+	public void setItem(PropertyFormModelMaster item) {
 		this.item = item;
 	}
 
-	public SetPropertyFormWithSignatureResult withItem(PropertyForm item) {
+	public DeletePropertyFormModelMasterResult withItem(PropertyFormModelMaster item) {
 		this.item = item;
 		return this;
 	}
 
-	public PropertyFormModel getProeprtyFormModel() {
-		return proeprtyFormModel;
-	}
-
-	public void setProeprtyFormModel(PropertyFormModel proeprtyFormModel) {
-		this.proeprtyFormModel = proeprtyFormModel;
-	}
-
-	public SetPropertyFormWithSignatureResult withProeprtyFormModel(PropertyFormModel proeprtyFormModel) {
-		this.proeprtyFormModel = proeprtyFormModel;
-		return this;
-	}
-
-    public static SetPropertyFormWithSignatureResult fromJson(JsonNode data) {
+    public static DeletePropertyFormModelMasterResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SetPropertyFormWithSignatureResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : PropertyForm.fromJson(data.get("item")))
-            .withProeprtyFormModel(data.get("proeprtyFormModel") == null || data.get("proeprtyFormModel").isNull() ? null : PropertyFormModel.fromJson(data.get("proeprtyFormModel")));
+        return new DeletePropertyFormModelMasterResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : PropertyFormModelMaster.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("proeprtyFormModel", getProeprtyFormModel() != null ? getProeprtyFormModel().toJson() : null);
             }}
         );
     }

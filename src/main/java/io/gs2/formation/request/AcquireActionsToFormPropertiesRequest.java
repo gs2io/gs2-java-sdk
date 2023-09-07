@@ -33,7 +33,7 @@ import io.gs2.formation.model.AcquireActionConfig;
 public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<AcquireActionsToFormPropertiesRequest> {
     private String namespaceName;
     private String userId;
-    private String moldName;
+    private String moldModelName;
     private Integer index;
     private AcquireAction acquireAction;
     private List<AcquireActionConfig> config;
@@ -58,14 +58,14 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
 		this.userId = userId;
 		return this;
 	}
-	public String getMoldName() {
-		return moldName;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setMoldName(String moldName) {
-		this.moldName = moldName;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public AcquireActionsToFormPropertiesRequest withMoldName(String moldName) {
-		this.moldName = moldName;
+	public AcquireActionsToFormPropertiesRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 	public Integer getIndex() {
@@ -119,7 +119,7 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
         return new AcquireActionsToFormPropertiesRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
             .withAcquireAction(data.get("acquireAction") == null || data.get("acquireAction").isNull() ? null : AcquireAction.fromJson(data.get("acquireAction")))
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<AcquireActionConfig>() :
@@ -135,7 +135,7 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("moldName", getMoldName());
+                put("moldModelName", getMoldModelName());
                 put("index", getIndex());
                 put("acquireAction", getAcquireAction() != null ? getAcquireAction().toJson() : null);
                 put("config", getConfig() == null ? new ArrayList<AcquireActionConfig>() :

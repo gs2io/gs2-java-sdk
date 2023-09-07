@@ -27,57 +27,57 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetMoldByUserIdRequest extends Gs2BasicRequest<GetMoldByUserIdRequest> {
+public class DescribePropertyFormModelMastersRequest extends Gs2BasicRequest<DescribePropertyFormModelMastersRequest> {
     private String namespaceName;
-    private String userId;
-    private String moldModelName;
+    private String pageToken;
+    private Integer limit;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public GetMoldByUserIdRequest withNamespaceName(String namespaceName) {
+	public DescribePropertyFormModelMastersRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-	public String getUserId() {
-		return userId;
+	public String getPageToken() {
+		return pageToken;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
 	}
-	public GetMoldByUserIdRequest withUserId(String userId) {
-		this.userId = userId;
+	public DescribePropertyFormModelMastersRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
 		return this;
 	}
-	public String getMoldModelName() {
-		return moldModelName;
+	public Integer getLimit() {
+		return limit;
 	}
-	public void setMoldModelName(String moldModelName) {
-		this.moldModelName = moldModelName;
+	public void setLimit(Integer limit) {
+		this.limit = limit;
 	}
-	public GetMoldByUserIdRequest withMoldModelName(String moldModelName) {
-		this.moldModelName = moldModelName;
+	public DescribePropertyFormModelMastersRequest withLimit(Integer limit) {
+		this.limit = limit;
 		return this;
 	}
 
-    public static GetMoldByUserIdRequest fromJson(JsonNode data) {
+    public static DescribePropertyFormModelMastersRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetMoldByUserIdRequest()
+        return new DescribePropertyFormModelMastersRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText());
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("userId", getUserId());
-                put("moldModelName", getMoldModelName());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
             }}
         );
     }

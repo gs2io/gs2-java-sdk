@@ -30,7 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteFormRequest extends Gs2BasicRequest<DeleteFormRequest> {
     private String namespaceName;
     private String accessToken;
-    private String moldName;
+    private String moldModelName;
     private Integer index;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -53,14 +53,14 @@ public class DeleteFormRequest extends Gs2BasicRequest<DeleteFormRequest> {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getMoldName() {
-		return moldName;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setMoldName(String moldName) {
-		this.moldName = moldName;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public DeleteFormRequest withMoldName(String moldName) {
-		this.moldName = moldName;
+	public DeleteFormRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 	public Integer getIndex() {
@@ -94,7 +94,7 @@ public class DeleteFormRequest extends Gs2BasicRequest<DeleteFormRequest> {
         return new DeleteFormRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue());
     }
 
@@ -103,7 +103,7 @@ public class DeleteFormRequest extends Gs2BasicRequest<DeleteFormRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("moldName", getMoldName());
+                put("moldModelName", getMoldModelName());
                 put("index", getIndex());
             }}
         );

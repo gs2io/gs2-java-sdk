@@ -30,7 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetMoldRequest extends Gs2BasicRequest<GetMoldRequest> {
     private String namespaceName;
     private String accessToken;
-    private String moldName;
+    private String moldModelName;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -51,14 +51,14 @@ public class GetMoldRequest extends Gs2BasicRequest<GetMoldRequest> {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getMoldName() {
-		return moldName;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setMoldName(String moldName) {
-		this.moldName = moldName;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public GetMoldRequest withMoldName(String moldName) {
-		this.moldName = moldName;
+	public GetMoldRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 
@@ -69,7 +69,7 @@ public class GetMoldRequest extends Gs2BasicRequest<GetMoldRequest> {
         return new GetMoldRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText());
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText());
     }
 
     public JsonNode toJson() {
@@ -77,7 +77,7 @@ public class GetMoldRequest extends Gs2BasicRequest<GetMoldRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("moldName", getMoldName());
+                put("moldModelName", getMoldModelName());
             }}
         );
     }

@@ -29,7 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeFormsByUserIdRequest extends Gs2BasicRequest<DescribeFormsByUserIdRequest> {
     private String namespaceName;
-    private String moldName;
+    private String moldModelName;
     private String userId;
     private String pageToken;
     private Integer limit;
@@ -43,14 +43,14 @@ public class DescribeFormsByUserIdRequest extends Gs2BasicRequest<DescribeFormsB
 		this.namespaceName = namespaceName;
 		return this;
 	}
-	public String getMoldName() {
-		return moldName;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setMoldName(String moldName) {
-		this.moldName = moldName;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public DescribeFormsByUserIdRequest withMoldName(String moldName) {
-		this.moldName = moldName;
+	public DescribeFormsByUserIdRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 	public String getUserId() {
@@ -90,7 +90,7 @@ public class DescribeFormsByUserIdRequest extends Gs2BasicRequest<DescribeFormsB
         }
         return new DescribeFormsByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
@@ -100,7 +100,7 @@ public class DescribeFormsByUserIdRequest extends Gs2BasicRequest<DescribeFormsB
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("moldName", getMoldName());
+                put("moldModelName", getMoldModelName());
                 put("userId", getUserId());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());

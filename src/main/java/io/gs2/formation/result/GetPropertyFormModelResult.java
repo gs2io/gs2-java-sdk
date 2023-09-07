@@ -25,57 +25,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.formation.model.*;
-import io.gs2.formation.model.Slot;
-import io.gs2.formation.model.PropertyForm;
 import io.gs2.formation.model.SlotModel;
 import io.gs2.formation.model.PropertyFormModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetPropertyFormWithSignatureResult implements IResult, Serializable {
-    private PropertyForm item;
-    private PropertyFormModel proeprtyFormModel;
+public class GetPropertyFormModelResult implements IResult, Serializable {
+    private PropertyFormModel item;
 
-	public PropertyForm getItem() {
+	public PropertyFormModel getItem() {
 		return item;
 	}
 
-	public void setItem(PropertyForm item) {
+	public void setItem(PropertyFormModel item) {
 		this.item = item;
 	}
 
-	public SetPropertyFormWithSignatureResult withItem(PropertyForm item) {
+	public GetPropertyFormModelResult withItem(PropertyFormModel item) {
 		this.item = item;
 		return this;
 	}
 
-	public PropertyFormModel getProeprtyFormModel() {
-		return proeprtyFormModel;
-	}
-
-	public void setProeprtyFormModel(PropertyFormModel proeprtyFormModel) {
-		this.proeprtyFormModel = proeprtyFormModel;
-	}
-
-	public SetPropertyFormWithSignatureResult withProeprtyFormModel(PropertyFormModel proeprtyFormModel) {
-		this.proeprtyFormModel = proeprtyFormModel;
-		return this;
-	}
-
-    public static SetPropertyFormWithSignatureResult fromJson(JsonNode data) {
+    public static GetPropertyFormModelResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SetPropertyFormWithSignatureResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : PropertyForm.fromJson(data.get("item")))
-            .withProeprtyFormModel(data.get("proeprtyFormModel") == null || data.get("proeprtyFormModel").isNull() ? null : PropertyFormModel.fromJson(data.get("proeprtyFormModel")));
+        return new GetPropertyFormModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : PropertyFormModel.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("proeprtyFormModel", getProeprtyFormModel() != null ? getProeprtyFormModel().toJson() : null);
             }}
         );
     }

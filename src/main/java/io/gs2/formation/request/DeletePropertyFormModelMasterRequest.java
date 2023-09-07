@@ -27,30 +27,17 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetPropertyFormWithSignatureByUserIdRequest extends Gs2BasicRequest<GetPropertyFormWithSignatureByUserIdRequest> {
+public class DeletePropertyFormModelMasterRequest extends Gs2BasicRequest<DeletePropertyFormModelMasterRequest> {
     private String namespaceName;
-    private String userId;
     private String propertyFormModelName;
-    private String propertyId;
-    private String keyId;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public GetPropertyFormWithSignatureByUserIdRequest withNamespaceName(String namespaceName) {
+	public DeletePropertyFormModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
-		return this;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public GetPropertyFormWithSignatureByUserIdRequest withUserId(String userId) {
-		this.userId = userId;
 		return this;
 	}
 	public String getPropertyFormModelName() {
@@ -59,51 +46,25 @@ public class GetPropertyFormWithSignatureByUserIdRequest extends Gs2BasicRequest
 	public void setPropertyFormModelName(String propertyFormModelName) {
 		this.propertyFormModelName = propertyFormModelName;
 	}
-	public GetPropertyFormWithSignatureByUserIdRequest withPropertyFormModelName(String propertyFormModelName) {
+	public DeletePropertyFormModelMasterRequest withPropertyFormModelName(String propertyFormModelName) {
 		this.propertyFormModelName = propertyFormModelName;
 		return this;
 	}
-	public String getPropertyId() {
-		return propertyId;
-	}
-	public void setPropertyId(String propertyId) {
-		this.propertyId = propertyId;
-	}
-	public GetPropertyFormWithSignatureByUserIdRequest withPropertyId(String propertyId) {
-		this.propertyId = propertyId;
-		return this;
-	}
-	public String getKeyId() {
-		return keyId;
-	}
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
-	}
-	public GetPropertyFormWithSignatureByUserIdRequest withKeyId(String keyId) {
-		this.keyId = keyId;
-		return this;
-	}
 
-    public static GetPropertyFormWithSignatureByUserIdRequest fromJson(JsonNode data) {
+    public static DeletePropertyFormModelMasterRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetPropertyFormWithSignatureByUserIdRequest()
+        return new DeletePropertyFormModelMasterRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
-            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
+            .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("userId", getUserId());
                 put("propertyFormModelName", getPropertyFormModelName());
-                put("propertyId", getPropertyId());
-                put("keyId", getKeyId());
             }}
         );
     }

@@ -24,94 +24,80 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.formation.model.Slot;
+import io.gs2.formation.model.SlotModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetFormByUserIdRequest extends Gs2BasicRequest<SetFormByUserIdRequest> {
+public class CreatePropertyFormModelMasterRequest extends Gs2BasicRequest<CreatePropertyFormModelMasterRequest> {
     private String namespaceName;
-    private String userId;
-    private String moldModelName;
-    private Integer index;
-    private List<Slot> slots;
-    private String duplicationAvoider;
+    private String name;
+    private String description;
+    private String metadata;
+    private List<SlotModel> slots;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public SetFormByUserIdRequest withNamespaceName(String namespaceName) {
+	public CreatePropertyFormModelMasterRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-	public String getUserId() {
-		return userId;
+	public String getName() {
+		return name;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public SetFormByUserIdRequest withUserId(String userId) {
-		this.userId = userId;
+	public CreatePropertyFormModelMasterRequest withName(String name) {
+		this.name = name;
 		return this;
 	}
-	public String getMoldModelName() {
-		return moldModelName;
+	public String getDescription() {
+		return description;
 	}
-	public void setMoldModelName(String moldModelName) {
-		this.moldModelName = moldModelName;
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	public SetFormByUserIdRequest withMoldModelName(String moldModelName) {
-		this.moldModelName = moldModelName;
+	public CreatePropertyFormModelMasterRequest withDescription(String description) {
+		this.description = description;
 		return this;
 	}
-	public Integer getIndex() {
-		return index;
+	public String getMetadata() {
+		return metadata;
 	}
-	public void setIndex(Integer index) {
-		this.index = index;
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
 	}
-	public SetFormByUserIdRequest withIndex(Integer index) {
-		this.index = index;
+	public CreatePropertyFormModelMasterRequest withMetadata(String metadata) {
+		this.metadata = metadata;
 		return this;
 	}
-	public List<Slot> getSlots() {
+	public List<SlotModel> getSlots() {
 		return slots;
 	}
-	public void setSlots(List<Slot> slots) {
+	public void setSlots(List<SlotModel> slots) {
 		this.slots = slots;
 	}
-	public SetFormByUserIdRequest withSlots(List<Slot> slots) {
+	public CreatePropertyFormModelMasterRequest withSlots(List<SlotModel> slots) {
 		this.slots = slots;
 		return this;
 	}
 
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public SetFormByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-		return this;
-	}
-
-    public static SetFormByUserIdRequest fromJson(JsonNode data) {
+    public static CreatePropertyFormModelMasterRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SetFormByUserIdRequest()
+        return new CreatePropertyFormModelMasterRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
-            .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
-            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<Slot>() :
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withSlots(data.get("slots") == null || data.get("slots").isNull() ? new ArrayList<SlotModel>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("slots").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
-                    return Slot.fromJson(item);
+                    return SlotModel.fromJson(item);
                 }
             ).collect(Collectors.toList()));
     }
@@ -120,10 +106,10 @@ public class SetFormByUserIdRequest extends Gs2BasicRequest<SetFormByUserIdReque
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("userId", getUserId());
-                put("moldModelName", getMoldModelName());
-                put("index", getIndex());
-                put("slots", getSlots() == null ? new ArrayList<Slot>() :
+                put("name", getName());
+                put("description", getDescription());
+                put("metadata", getMetadata());
+                put("slots", getSlots() == null ? new ArrayList<SlotModel>() :
                     getSlots().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

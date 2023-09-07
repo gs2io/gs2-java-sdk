@@ -30,7 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetPropertyFormWithSignatureRequest extends Gs2BasicRequest<GetPropertyFormWithSignatureRequest> {
     private String namespaceName;
     private String accessToken;
-    private String formModelName;
+    private String propertyFormModelName;
     private String propertyId;
     private String keyId;
 	public String getNamespaceName() {
@@ -53,14 +53,14 @@ public class GetPropertyFormWithSignatureRequest extends Gs2BasicRequest<GetProp
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getFormModelName() {
-		return formModelName;
+	public String getPropertyFormModelName() {
+		return propertyFormModelName;
 	}
-	public void setFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public void setPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 	}
-	public GetPropertyFormWithSignatureRequest withFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public GetPropertyFormWithSignatureRequest withPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 		return this;
 	}
 	public String getPropertyId() {
@@ -91,7 +91,7 @@ public class GetPropertyFormWithSignatureRequest extends Gs2BasicRequest<GetProp
         return new GetPropertyFormWithSignatureRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText())
+            .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
@@ -101,7 +101,7 @@ public class GetPropertyFormWithSignatureRequest extends Gs2BasicRequest<GetProp
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("formModelName", getFormModelName());
+                put("propertyFormModelName", getPropertyFormModelName());
                 put("propertyId", getPropertyId());
                 put("keyId", getKeyId());
             }}

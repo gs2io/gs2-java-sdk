@@ -28,13 +28,13 @@ import io.gs2.formation.model.*;
 import io.gs2.formation.model.Slot;
 import io.gs2.formation.model.PropertyForm;
 import io.gs2.formation.model.SlotModel;
-import io.gs2.formation.model.FormModel;
+import io.gs2.formation.model.PropertyFormModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetPropertyFormByUserIdResult implements IResult, Serializable {
     private PropertyForm item;
-    private FormModel formModel;
+    private PropertyFormModel propertyFormModel;
 
 	public PropertyForm getItem() {
 		return item;
@@ -49,16 +49,16 @@ public class GetPropertyFormByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
-	public FormModel getFormModel() {
-		return formModel;
+	public PropertyFormModel getPropertyFormModel() {
+		return propertyFormModel;
 	}
 
-	public void setFormModel(FormModel formModel) {
-		this.formModel = formModel;
+	public void setPropertyFormModel(PropertyFormModel propertyFormModel) {
+		this.propertyFormModel = propertyFormModel;
 	}
 
-	public GetPropertyFormByUserIdResult withFormModel(FormModel formModel) {
-		this.formModel = formModel;
+	public GetPropertyFormByUserIdResult withPropertyFormModel(PropertyFormModel propertyFormModel) {
+		this.propertyFormModel = propertyFormModel;
 		return this;
 	}
 
@@ -68,14 +68,14 @@ public class GetPropertyFormByUserIdResult implements IResult, Serializable {
         }
         return new GetPropertyFormByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : PropertyForm.fromJson(data.get("item")))
-            .withFormModel(data.get("formModel") == null || data.get("formModel").isNull() ? null : FormModel.fromJson(data.get("formModel")));
+            .withPropertyFormModel(data.get("propertyFormModel") == null || data.get("propertyFormModel").isNull() ? null : PropertyFormModel.fromJson(data.get("propertyFormModel")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("formModel", getFormModel() != null ? getFormModel().toJson() : null);
+                put("propertyFormModel", getPropertyFormModel() != null ? getPropertyFormModel().toJson() : null);
             }}
         );
     }

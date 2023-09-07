@@ -29,6 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetFormModelRequest extends Gs2BasicRequest<GetFormModelRequest> {
     private String namespaceName;
+    private String moldModelName;
     private String formModelName;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -38,6 +39,16 @@ public class GetFormModelRequest extends Gs2BasicRequest<GetFormModelRequest> {
 	}
 	public GetFormModelRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
+		return this;
+	}
+	public String getMoldModelName() {
+		return moldModelName;
+	}
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
+	}
+	public GetFormModelRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 	public String getFormModelName() {
@@ -57,6 +68,7 @@ public class GetFormModelRequest extends Gs2BasicRequest<GetFormModelRequest> {
         }
         return new GetFormModelRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText());
     }
 
@@ -64,6 +76,7 @@ public class GetFormModelRequest extends Gs2BasicRequest<GetFormModelRequest> {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
+                put("moldModelName", getMoldModelName());
                 put("formModelName", getFormModelName());
             }}
         );

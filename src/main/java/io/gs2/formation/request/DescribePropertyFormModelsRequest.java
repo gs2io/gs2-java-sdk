@@ -27,57 +27,31 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetMoldByUserIdRequest extends Gs2BasicRequest<GetMoldByUserIdRequest> {
+public class DescribePropertyFormModelsRequest extends Gs2BasicRequest<DescribePropertyFormModelsRequest> {
     private String namespaceName;
-    private String userId;
-    private String moldModelName;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public GetMoldByUserIdRequest withNamespaceName(String namespaceName) {
+	public DescribePropertyFormModelsRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public GetMoldByUserIdRequest withUserId(String userId) {
-		this.userId = userId;
-		return this;
-	}
-	public String getMoldModelName() {
-		return moldModelName;
-	}
-	public void setMoldModelName(String moldModelName) {
-		this.moldModelName = moldModelName;
-	}
-	public GetMoldByUserIdRequest withMoldModelName(String moldModelName) {
-		this.moldModelName = moldModelName;
-		return this;
-	}
 
-    public static GetMoldByUserIdRequest fromJson(JsonNode data) {
+    public static DescribePropertyFormModelsRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetMoldByUserIdRequest()
-            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText());
+        return new DescribePropertyFormModelsRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("userId", getUserId());
-                put("moldModelName", getMoldModelName());
             }}
         );
     }

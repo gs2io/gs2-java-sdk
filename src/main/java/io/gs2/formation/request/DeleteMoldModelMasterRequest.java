@@ -29,7 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DeleteMoldModelMasterRequest extends Gs2BasicRequest<DeleteMoldModelMasterRequest> {
     private String namespaceName;
-    private String moldName;
+    private String moldModelName;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -40,14 +40,14 @@ public class DeleteMoldModelMasterRequest extends Gs2BasicRequest<DeleteMoldMode
 		this.namespaceName = namespaceName;
 		return this;
 	}
-	public String getMoldName() {
-		return moldName;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setMoldName(String moldName) {
-		this.moldName = moldName;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public DeleteMoldModelMasterRequest withMoldName(String moldName) {
-		this.moldName = moldName;
+	public DeleteMoldModelMasterRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 
@@ -57,14 +57,14 @@ public class DeleteMoldModelMasterRequest extends Gs2BasicRequest<DeleteMoldMode
         }
         return new DeleteMoldModelMasterRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText());
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("moldName", getMoldName());
+                put("moldModelName", getMoldModelName());
             }}
         );
     }

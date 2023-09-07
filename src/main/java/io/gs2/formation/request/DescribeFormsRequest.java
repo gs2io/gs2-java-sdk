@@ -29,7 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DescribeFormsRequest extends Gs2BasicRequest<DescribeFormsRequest> {
     private String namespaceName;
-    private String moldName;
+    private String moldModelName;
     private String accessToken;
     private String pageToken;
     private Integer limit;
@@ -43,14 +43,14 @@ public class DescribeFormsRequest extends Gs2BasicRequest<DescribeFormsRequest> 
 		this.namespaceName = namespaceName;
 		return this;
 	}
-	public String getMoldName() {
-		return moldName;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setMoldName(String moldName) {
-		this.moldName = moldName;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public DescribeFormsRequest withMoldName(String moldName) {
-		this.moldName = moldName;
+	public DescribeFormsRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 	public String getAccessToken() {
@@ -90,7 +90,7 @@ public class DescribeFormsRequest extends Gs2BasicRequest<DescribeFormsRequest> 
         }
         return new DescribeFormsRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
@@ -100,7 +100,7 @@ public class DescribeFormsRequest extends Gs2BasicRequest<DescribeFormsRequest> 
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("moldName", getMoldName());
+                put("moldModelName", getMoldModelName());
                 put("accessToken", getAccessToken());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());

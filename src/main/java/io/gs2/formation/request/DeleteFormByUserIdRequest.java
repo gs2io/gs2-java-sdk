@@ -30,7 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteFormByUserIdRequest extends Gs2BasicRequest<DeleteFormByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String moldName;
+    private String moldModelName;
     private Integer index;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -53,14 +53,14 @@ public class DeleteFormByUserIdRequest extends Gs2BasicRequest<DeleteFormByUserI
 		this.userId = userId;
 		return this;
 	}
-	public String getMoldName() {
-		return moldName;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setMoldName(String moldName) {
-		this.moldName = moldName;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public DeleteFormByUserIdRequest withMoldName(String moldName) {
-		this.moldName = moldName;
+	public DeleteFormByUserIdRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 		return this;
 	}
 	public Integer getIndex() {
@@ -94,7 +94,7 @@ public class DeleteFormByUserIdRequest extends Gs2BasicRequest<DeleteFormByUserI
         return new DeleteFormByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMoldName(data.get("moldName") == null || data.get("moldName").isNull() ? null : data.get("moldName").asText())
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue());
     }
 
@@ -103,7 +103,7 @@ public class DeleteFormByUserIdRequest extends Gs2BasicRequest<DeleteFormByUserI
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("moldName", getMoldName());
+                put("moldModelName", getMoldModelName());
                 put("index", getIndex());
             }}
         );

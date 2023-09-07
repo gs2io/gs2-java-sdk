@@ -28,7 +28,7 @@ import io.gs2.formation.model.*;
 import io.gs2.formation.model.Slot;
 import io.gs2.formation.model.PropertyForm;
 import io.gs2.formation.model.SlotModel;
-import io.gs2.formation.model.FormModel;
+import io.gs2.formation.model.PropertyFormModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -36,7 +36,7 @@ public class GetPropertyFormWithSignatureByUserIdResult implements IResult, Seri
     private PropertyForm item;
     private String body;
     private String signature;
-    private FormModel formModel;
+    private PropertyFormModel propertyFormModel;
 
 	public PropertyForm getItem() {
 		return item;
@@ -77,16 +77,16 @@ public class GetPropertyFormWithSignatureByUserIdResult implements IResult, Seri
 		return this;
 	}
 
-	public FormModel getFormModel() {
-		return formModel;
+	public PropertyFormModel getPropertyFormModel() {
+		return propertyFormModel;
 	}
 
-	public void setFormModel(FormModel formModel) {
-		this.formModel = formModel;
+	public void setPropertyFormModel(PropertyFormModel propertyFormModel) {
+		this.propertyFormModel = propertyFormModel;
 	}
 
-	public GetPropertyFormWithSignatureByUserIdResult withFormModel(FormModel formModel) {
-		this.formModel = formModel;
+	public GetPropertyFormWithSignatureByUserIdResult withPropertyFormModel(PropertyFormModel propertyFormModel) {
+		this.propertyFormModel = propertyFormModel;
 		return this;
 	}
 
@@ -98,7 +98,7 @@ public class GetPropertyFormWithSignatureByUserIdResult implements IResult, Seri
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : PropertyForm.fromJson(data.get("item")))
             .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
             .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText())
-            .withFormModel(data.get("formModel") == null || data.get("formModel").isNull() ? null : FormModel.fromJson(data.get("formModel")));
+            .withPropertyFormModel(data.get("propertyFormModel") == null || data.get("propertyFormModel").isNull() ? null : PropertyFormModel.fromJson(data.get("propertyFormModel")));
     }
 
     public JsonNode toJson() {
@@ -107,7 +107,7 @@ public class GetPropertyFormWithSignatureByUserIdResult implements IResult, Seri
                 put("item", getItem() != null ? getItem().toJson() : null);
                 put("body", getBody());
                 put("signature", getSignature());
-                put("formModel", getFormModel() != null ? getFormModel().toJson() : null);
+                put("propertyFormModel", getPropertyFormModel() != null ? getPropertyFormModel().toJson() : null);
             }}
         );
     }

@@ -33,7 +33,7 @@ import io.gs2.formation.model.AcquireActionConfig;
 public class AcquireActionsToPropertyFormPropertiesRequest extends Gs2BasicRequest<AcquireActionsToPropertyFormPropertiesRequest> {
     private String namespaceName;
     private String userId;
-    private String formModelName;
+    private String propertyFormModelName;
     private String propertyId;
     private AcquireAction acquireAction;
     private List<AcquireActionConfig> config;
@@ -58,14 +58,14 @@ public class AcquireActionsToPropertyFormPropertiesRequest extends Gs2BasicReque
 		this.userId = userId;
 		return this;
 	}
-	public String getFormModelName() {
-		return formModelName;
+	public String getPropertyFormModelName() {
+		return propertyFormModelName;
 	}
-	public void setFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public void setPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 	}
-	public AcquireActionsToPropertyFormPropertiesRequest withFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public AcquireActionsToPropertyFormPropertiesRequest withPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 		return this;
 	}
 	public String getPropertyId() {
@@ -119,7 +119,7 @@ public class AcquireActionsToPropertyFormPropertiesRequest extends Gs2BasicReque
         return new AcquireActionsToPropertyFormPropertiesRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText())
+            .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withAcquireAction(data.get("acquireAction") == null || data.get("acquireAction").isNull() ? null : AcquireAction.fromJson(data.get("acquireAction")))
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<AcquireActionConfig>() :
@@ -135,7 +135,7 @@ public class AcquireActionsToPropertyFormPropertiesRequest extends Gs2BasicReque
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("formModelName", getFormModelName());
+                put("propertyFormModelName", getPropertyFormModelName());
                 put("propertyId", getPropertyId());
                 put("acquireAction", getAcquireAction() != null ? getAcquireAction().toJson() : null);
                 put("config", getConfig() == null ? new ArrayList<AcquireActionConfig>() :

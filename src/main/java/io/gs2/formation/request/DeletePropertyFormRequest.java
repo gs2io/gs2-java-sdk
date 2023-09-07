@@ -30,7 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeletePropertyFormRequest extends Gs2BasicRequest<DeletePropertyFormRequest> {
     private String namespaceName;
     private String accessToken;
-    private String formModelName;
+    private String propertyFormModelName;
     private String propertyId;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -53,14 +53,14 @@ public class DeletePropertyFormRequest extends Gs2BasicRequest<DeletePropertyFor
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getFormModelName() {
-		return formModelName;
+	public String getPropertyFormModelName() {
+		return propertyFormModelName;
 	}
-	public void setFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public void setPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 	}
-	public DeletePropertyFormRequest withFormModelName(String formModelName) {
-		this.formModelName = formModelName;
+	public DeletePropertyFormRequest withPropertyFormModelName(String propertyFormModelName) {
+		this.propertyFormModelName = propertyFormModelName;
 		return this;
 	}
 	public String getPropertyId() {
@@ -94,7 +94,7 @@ public class DeletePropertyFormRequest extends Gs2BasicRequest<DeletePropertyFor
         return new DeletePropertyFormRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withFormModelName(data.get("formModelName") == null || data.get("formModelName").isNull() ? null : data.get("formModelName").asText())
+            .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText());
     }
 
@@ -103,7 +103,7 @@ public class DeletePropertyFormRequest extends Gs2BasicRequest<DeletePropertyFor
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("formModelName", getFormModelName());
+                put("propertyFormModelName", getPropertyFormModelName());
                 put("propertyId", getPropertyId());
             }}
         );
