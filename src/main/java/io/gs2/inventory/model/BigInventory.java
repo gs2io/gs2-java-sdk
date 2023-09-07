@@ -32,6 +32,7 @@ public class BigInventory implements IModel, Serializable, Comparable<BigInvento
 	private String inventoryId;
 	private String inventoryName;
 	private String userId;
+	private List<BigItem> bigItems;
 	private Long createdAt;
 	private Long updatedAt;
 	public String getInventoryId() {
@@ -64,6 +65,16 @@ public class BigInventory implements IModel, Serializable, Comparable<BigInvento
 		this.userId = userId;
 		return this;
 	}
+	public List<BigItem> getBigItems() {
+		return bigItems;
+	}
+	public void setBigItems(List<BigItem> bigItems) {
+		this.bigItems = bigItems;
+	}
+	public BigInventory withBigItems(List<BigItem> bigItems) {
+		this.bigItems = bigItems;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -93,6 +104,12 @@ public class BigInventory implements IModel, Serializable, Comparable<BigInvento
             .withInventoryId(data.get("inventoryId") == null || data.get("inventoryId").isNull() ? null : data.get("inventoryId").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withBigItems(data.get("bigItems") == null || data.get("bigItems").isNull() ? new ArrayList<BigItem>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("bigItems").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return BigItem.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
     }
@@ -103,6 +120,12 @@ public class BigInventory implements IModel, Serializable, Comparable<BigInvento
                 put("inventoryId", getInventoryId());
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
+                put("bigItems", getBigItems() == null ? new ArrayList<BigItem>() :
+                    getBigItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
             }}
@@ -121,6 +144,7 @@ public class BigInventory implements IModel, Serializable, Comparable<BigInvento
         result = prime * result + ((this.inventoryId == null) ? 0 : this.inventoryId.hashCode());
         result = prime * result + ((this.inventoryName == null) ? 0 : this.inventoryName.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
+        result = prime * result + ((this.bigItems == null) ? 0 : this.bigItems.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
 		return result;
@@ -148,6 +172,11 @@ public class BigInventory implements IModel, Serializable, Comparable<BigInvento
 		if (userId == null) {
 			return other.userId == null;
 		} else if (!userId.equals(other.userId)) {
+			return false;
+		}
+		if (bigItems == null) {
+			return other.bigItems == null;
+		} else if (!bigItems.equals(other.bigItems)) {
 			return false;
 		}
 		if (createdAt == null) {
