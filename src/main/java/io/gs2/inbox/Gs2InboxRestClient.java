@@ -577,6 +577,9 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getIsRead() != null) {
+                queryStrings.add("isRead=" + String.valueOf(this.request.getIsRead()));
+            }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
             }
@@ -668,6 +671,9 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
             }
             if (this.request.getUserId() != null) {
                 queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+            }
+            if (this.request.getIsRead() != null) {
+                queryStrings.add("isRead=" + String.valueOf(this.request.getIsRead()));
             }
             if (this.request.getPageToken() != null) {
                 queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));

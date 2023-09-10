@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesRequest> {
     private String namespaceName;
     private String accessToken;
+    private Boolean isRead;
     private String pageToken;
     private Integer limit;
 	public String getNamespaceName() {
@@ -50,6 +51,16 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
 	}
 	public DescribeMessagesRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+		return this;
+	}
+	public Boolean getIsRead() {
+		return isRead;
+	}
+	public void setIsRead(Boolean isRead) {
+		this.isRead = isRead;
+	}
+	public DescribeMessagesRequest withIsRead(Boolean isRead) {
+		this.isRead = isRead;
 		return this;
 	}
 	public String getPageToken() {
@@ -80,6 +91,7 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
         return new DescribeMessagesRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withIsRead(data.get("isRead") == null || data.get("isRead").isNull() ? null : data.get("isRead").booleanValue())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -89,6 +101,7 @@ public class DescribeMessagesRequest extends Gs2BasicRequest<DescribeMessagesReq
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
+                put("isRead", getIsRead());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
             }}

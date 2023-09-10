@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMessagesByUserIdRequest> {
     private String namespaceName;
     private String userId;
+    private Boolean isRead;
     private String pageToken;
     private Integer limit;
 	public String getNamespaceName() {
@@ -50,6 +51,16 @@ public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMes
 	}
 	public DescribeMessagesByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public Boolean getIsRead() {
+		return isRead;
+	}
+	public void setIsRead(Boolean isRead) {
+		this.isRead = isRead;
+	}
+	public DescribeMessagesByUserIdRequest withIsRead(Boolean isRead) {
+		this.isRead = isRead;
 		return this;
 	}
 	public String getPageToken() {
@@ -80,6 +91,7 @@ public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMes
         return new DescribeMessagesByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withIsRead(data.get("isRead") == null || data.get("isRead").isNull() ? null : data.get("isRead").booleanValue())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
             .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
@@ -89,6 +101,7 @@ public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMes
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("isRead", getIsRead());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
             }}
