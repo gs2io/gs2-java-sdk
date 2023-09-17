@@ -608,6 +608,87 @@ import io.gs2.deploy.model.*;public class Gs2DeployRestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
+    class ChangeSetTask extends Gs2RestSessionTask<ChangeSetResult> {
+        private ChangeSetRequest request;
+
+        public ChangeSetTask(
+            ChangeSetRequest request,
+            AsyncAction<AsyncResult<ChangeSetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ChangeSetResult parse(JsonNode data) {
+            return ChangeSetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "deploy")
+                .replace("{region}", session.getRegion().getName())
+                + "/stack/{stackName}";
+
+            url = url.replace("{stackName}", this.request.getStackName() == null || this.request.getStackName().length() == 0 ? "null" : String.valueOf(this.request.getStackName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("template", request.getTemplate());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void changeSetAsync(
+            ChangeSetRequest request,
+            AsyncAction<AsyncResult<ChangeSetResult>> callback
+    ) {
+        ChangeSetTask task = new ChangeSetTask(request, callback);
+        session.execute(task);
+    }
+
+    public ChangeSetResult changeSet(
+            ChangeSetRequest request
+    ) {
+        final AsyncResult<ChangeSetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        changeSetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class UpdateStackFromGitHubTask extends Gs2RestSessionTask<UpdateStackFromGitHubResult> {
         private UpdateStackFromGitHubRequest request;
 
