@@ -654,10 +654,17 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("scope", request.getScope());
+                    put("type", request.getType());
+                    put("currentVersion", request.getCurrentVersion() != null ? request.getCurrentVersion().toJson() : null);
                     put("warningVersion", request.getWarningVersion() != null ? request.getWarningVersion().toJson() : null);
                     put("errorVersion", request.getErrorVersion() != null ? request.getErrorVersion().toJson() : null);
-                    put("scope", request.getScope());
-                    put("currentVersion", request.getCurrentVersion() != null ? request.getCurrentVersion().toJson() : null);
+                    put("scheduleVersions", request.getScheduleVersions() == null ? new ArrayList<ScheduleVersion>() :
+                        request.getScheduleVersions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("needSignature", request.getNeedSignature());
                     put("signatureKeyId", request.getSignatureKeyId());
                     put("contextStack", request.getContextStack());
@@ -824,10 +831,17 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("scope", request.getScope());
+                    put("type", request.getType());
+                    put("currentVersion", request.getCurrentVersion() != null ? request.getCurrentVersion().toJson() : null);
                     put("warningVersion", request.getWarningVersion() != null ? request.getWarningVersion().toJson() : null);
                     put("errorVersion", request.getErrorVersion() != null ? request.getErrorVersion().toJson() : null);
-                    put("scope", request.getScope());
-                    put("currentVersion", request.getCurrentVersion() != null ? request.getCurrentVersion().toJson() : null);
+                    put("scheduleVersions", request.getScheduleVersions() == null ? new ArrayList<ScheduleVersion>() :
+                        request.getScheduleVersions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("needSignature", request.getNeedSignature());
                     put("signatureKeyId", request.getSignatureKeyId());
                     put("contextStack", request.getContextStack());

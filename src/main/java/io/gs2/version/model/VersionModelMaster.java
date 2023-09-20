@@ -33,10 +33,12 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
 	private String name;
 	private String description;
 	private String metadata;
+	private String scope;
+	private String type;
+	private Version currentVersion;
 	private Version warningVersion;
 	private Version errorVersion;
-	private String scope;
-	private Version currentVersion;
+	private List<ScheduleVersion> scheduleVersions;
 	private Boolean needSignature;
 	private String signatureKeyId;
 	private Long createdAt;
@@ -82,6 +84,36 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
 		this.metadata = metadata;
 		return this;
 	}
+	public String getScope() {
+		return scope;
+	}
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
+	public VersionModelMaster withScope(String scope) {
+		this.scope = scope;
+		return this;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public VersionModelMaster withType(String type) {
+		this.type = type;
+		return this;
+	}
+	public Version getCurrentVersion() {
+		return currentVersion;
+	}
+	public void setCurrentVersion(Version currentVersion) {
+		this.currentVersion = currentVersion;
+	}
+	public VersionModelMaster withCurrentVersion(Version currentVersion) {
+		this.currentVersion = currentVersion;
+		return this;
+	}
 	public Version getWarningVersion() {
 		return warningVersion;
 	}
@@ -102,24 +134,14 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
 		this.errorVersion = errorVersion;
 		return this;
 	}
-	public String getScope() {
-		return scope;
+	public List<ScheduleVersion> getScheduleVersions() {
+		return scheduleVersions;
 	}
-	public void setScope(String scope) {
-		this.scope = scope;
+	public void setScheduleVersions(List<ScheduleVersion> scheduleVersions) {
+		this.scheduleVersions = scheduleVersions;
 	}
-	public VersionModelMaster withScope(String scope) {
-		this.scope = scope;
-		return this;
-	}
-	public Version getCurrentVersion() {
-		return currentVersion;
-	}
-	public void setCurrentVersion(Version currentVersion) {
-		this.currentVersion = currentVersion;
-	}
-	public VersionModelMaster withCurrentVersion(Version currentVersion) {
-		this.currentVersion = currentVersion;
+	public VersionModelMaster withScheduleVersions(List<ScheduleVersion> scheduleVersions) {
+		this.scheduleVersions = scheduleVersions;
 		return this;
 	}
 	public Boolean getNeedSignature() {
@@ -182,10 +204,17 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").asText())
+            .withCurrentVersion(data.get("currentVersion") == null || data.get("currentVersion").isNull() ? null : Version.fromJson(data.get("currentVersion")))
             .withWarningVersion(data.get("warningVersion") == null || data.get("warningVersion").isNull() ? null : Version.fromJson(data.get("warningVersion")))
             .withErrorVersion(data.get("errorVersion") == null || data.get("errorVersion").isNull() ? null : Version.fromJson(data.get("errorVersion")))
-            .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
-            .withCurrentVersion(data.get("currentVersion") == null || data.get("currentVersion").isNull() ? null : Version.fromJson(data.get("currentVersion")))
+            .withScheduleVersions(data.get("scheduleVersions") == null || data.get("scheduleVersions").isNull() ? new ArrayList<ScheduleVersion>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("scheduleVersions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ScheduleVersion.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withNeedSignature(data.get("needSignature") == null || data.get("needSignature").isNull() ? null : data.get("needSignature").booleanValue())
             .withSignatureKeyId(data.get("signatureKeyId") == null || data.get("signatureKeyId").isNull() ? null : data.get("signatureKeyId").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
@@ -200,10 +229,17 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
+                put("scope", getScope());
+                put("type", getType());
+                put("currentVersion", getCurrentVersion() != null ? getCurrentVersion().toJson() : null);
                 put("warningVersion", getWarningVersion() != null ? getWarningVersion().toJson() : null);
                 put("errorVersion", getErrorVersion() != null ? getErrorVersion().toJson() : null);
-                put("scope", getScope());
-                put("currentVersion", getCurrentVersion() != null ? getCurrentVersion().toJson() : null);
+                put("scheduleVersions", getScheduleVersions() == null ? new ArrayList<ScheduleVersion>() :
+                    getScheduleVersions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("needSignature", getNeedSignature());
                 put("signatureKeyId", getSignatureKeyId());
                 put("createdAt", getCreatedAt());
@@ -226,10 +262,12 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.scope == null) ? 0 : this.scope.hashCode());
+        result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
+        result = prime * result + ((this.currentVersion == null) ? 0 : this.currentVersion.hashCode());
         result = prime * result + ((this.warningVersion == null) ? 0 : this.warningVersion.hashCode());
         result = prime * result + ((this.errorVersion == null) ? 0 : this.errorVersion.hashCode());
-        result = prime * result + ((this.scope == null) ? 0 : this.scope.hashCode());
-        result = prime * result + ((this.currentVersion == null) ? 0 : this.currentVersion.hashCode());
+        result = prime * result + ((this.scheduleVersions == null) ? 0 : this.scheduleVersions.hashCode());
         result = prime * result + ((this.needSignature == null) ? 0 : this.needSignature.hashCode());
         result = prime * result + ((this.signatureKeyId == null) ? 0 : this.signatureKeyId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -267,6 +305,21 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
 		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
+		if (scope == null) {
+			return other.scope == null;
+		} else if (!scope.equals(other.scope)) {
+			return false;
+		}
+		if (type == null) {
+			return other.type == null;
+		} else if (!type.equals(other.type)) {
+			return false;
+		}
+		if (currentVersion == null) {
+			return other.currentVersion == null;
+		} else if (!currentVersion.equals(other.currentVersion)) {
+			return false;
+		}
 		if (warningVersion == null) {
 			return other.warningVersion == null;
 		} else if (!warningVersion.equals(other.warningVersion)) {
@@ -277,14 +330,9 @@ public class VersionModelMaster implements IModel, Serializable, Comparable<Vers
 		} else if (!errorVersion.equals(other.errorVersion)) {
 			return false;
 		}
-		if (scope == null) {
-			return other.scope == null;
-		} else if (!scope.equals(other.scope)) {
-			return false;
-		}
-		if (currentVersion == null) {
-			return other.currentVersion == null;
-		} else if (!currentVersion.equals(other.currentVersion)) {
+		if (scheduleVersions == null) {
+			return other.scheduleVersions == null;
+		} else if (!scheduleVersions.equals(other.scheduleVersions)) {
 			return false;
 		}
 		if (needSignature == null) {

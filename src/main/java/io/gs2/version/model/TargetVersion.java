@@ -30,9 +30,9 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TargetVersion implements IModel, Serializable {
 	private String versionName;
-	private Version version;
 	private String body;
 	private String signature;
+	private Version version;
 	public String getVersionName() {
 		return versionName;
 	}
@@ -41,16 +41,6 @@ public class TargetVersion implements IModel, Serializable {
 	}
 	public TargetVersion withVersionName(String versionName) {
 		this.versionName = versionName;
-		return this;
-	}
-	public Version getVersion() {
-		return version;
-	}
-	public void setVersion(Version version) {
-		this.version = version;
-	}
-	public TargetVersion withVersion(Version version) {
-		this.version = version;
 		return this;
 	}
 	public String getBody() {
@@ -73,6 +63,16 @@ public class TargetVersion implements IModel, Serializable {
 		this.signature = signature;
 		return this;
 	}
+	public Version getVersion() {
+		return version;
+	}
+	public void setVersion(Version version) {
+		this.version = version;
+	}
+	public TargetVersion withVersion(Version version) {
+		this.version = version;
+		return this;
+	}
 
     public static TargetVersion fromJson(JsonNode data) {
         if (data == null) {
@@ -80,18 +80,18 @@ public class TargetVersion implements IModel, Serializable {
         }
         return new TargetVersion()
             .withVersionName(data.get("versionName") == null || data.get("versionName").isNull() ? null : data.get("versionName").asText())
-            .withVersion(data.get("version") == null || data.get("version").isNull() ? null : Version.fromJson(data.get("version")))
             .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
-            .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText());
+            .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText())
+            .withVersion(data.get("version") == null || data.get("version").isNull() ? null : Version.fromJson(data.get("version")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("versionName", getVersionName());
-                put("version", getVersion() != null ? getVersion().toJson() : null);
                 put("body", getBody());
                 put("signature", getSignature());
+                put("version", getVersion() != null ? getVersion().toJson() : null);
             }}
         );
     }
@@ -101,9 +101,9 @@ public class TargetVersion implements IModel, Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.versionName == null) ? 0 : this.versionName.hashCode());
-        result = prime * result + ((this.version == null) ? 0 : this.version.hashCode());
         result = prime * result + ((this.body == null) ? 0 : this.body.hashCode());
         result = prime * result + ((this.signature == null) ? 0 : this.signature.hashCode());
+        result = prime * result + ((this.version == null) ? 0 : this.version.hashCode());
 		return result;
 	}
 
@@ -121,11 +121,6 @@ public class TargetVersion implements IModel, Serializable {
 		} else if (!versionName.equals(other.versionName)) {
 			return false;
 		}
-		if (version == null) {
-			return other.version == null;
-		} else if (!version.equals(other.version)) {
-			return false;
-		}
 		if (body == null) {
 			return other.body == null;
 		} else if (!body.equals(other.body)) {
@@ -134,6 +129,11 @@ public class TargetVersion implements IModel, Serializable {
 		if (signature == null) {
 			return other.signature == null;
 		} else if (!signature.equals(other.signature)) {
+			return false;
+		}
+		if (version == null) {
+			return other.version == null;
+		} else if (!version.equals(other.version)) {
 			return false;
 		}
 		return true;

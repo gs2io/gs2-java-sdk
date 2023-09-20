@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.version.model.*;
 import io.gs2.version.model.Version;
+import io.gs2.version.model.ScheduleVersion;
 import io.gs2.version.model.VersionModel;
 
 @SuppressWarnings("serial")
