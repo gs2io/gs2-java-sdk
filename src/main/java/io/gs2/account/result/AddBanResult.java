@@ -30,7 +30,7 @@ import io.gs2.account.model.Account;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateBannedResult implements IResult, Serializable {
+public class AddBanResult implements IResult, Serializable {
     private Account item;
 
 	public Account getItem() {
@@ -41,16 +41,16 @@ public class UpdateBannedResult implements IResult, Serializable {
 		this.item = item;
 	}
 
-	public UpdateBannedResult withItem(Account item) {
+	public AddBanResult withItem(Account item) {
 		this.item = item;
 		return this;
 	}
 
-    public static UpdateBannedResult fromJson(JsonNode data) {
+    public static AddBanResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new UpdateBannedResult()
+        return new AddBanResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Account.fromJson(data.get("item")));
     }
 

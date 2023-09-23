@@ -33,6 +33,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 	private String userId;
 	private String password;
 	private Integer timeOffset;
+	private List<BanStatus> banStatuses;
 	private Boolean banned;
 	private Long createdAt;
 	private Long revision;
@@ -76,6 +77,16 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		this.timeOffset = timeOffset;
 		return this;
 	}
+	public List<BanStatus> getBanStatuses() {
+		return banStatuses;
+	}
+	public void setBanStatuses(List<BanStatus> banStatuses) {
+		this.banStatuses = banStatuses;
+	}
+	public Account withBanStatuses(List<BanStatus> banStatuses) {
+		this.banStatuses = banStatuses;
+		return this;
+	}
 	public Boolean getBanned() {
 		return banned;
 	}
@@ -116,6 +127,12 @@ public class Account implements IModel, Serializable, Comparable<Account> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
             .withTimeOffset(data.get("timeOffset") == null || data.get("timeOffset").isNull() ? null : data.get("timeOffset").intValue())
+            .withBanStatuses(data.get("banStatuses") == null || data.get("banStatuses").isNull() ? new ArrayList<BanStatus>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("banStatuses").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return BanStatus.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withBanned(data.get("banned") == null || data.get("banned").isNull() ? null : data.get("banned").booleanValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -128,6 +145,12 @@ public class Account implements IModel, Serializable, Comparable<Account> {
                 put("userId", getUserId());
                 put("password", getPassword());
                 put("timeOffset", getTimeOffset());
+                put("banStatuses", getBanStatuses() == null ? new ArrayList<BanStatus>() :
+                    getBanStatuses().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("banned", getBanned());
                 put("createdAt", getCreatedAt());
                 put("revision", getRevision());
@@ -148,6 +171,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
         result = prime * result + ((this.timeOffset == null) ? 0 : this.timeOffset.hashCode());
+        result = prime * result + ((this.banStatuses == null) ? 0 : this.banStatuses.hashCode());
         result = prime * result + ((this.banned == null) ? 0 : this.banned.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -181,6 +205,11 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		if (timeOffset == null) {
 			return other.timeOffset == null;
 		} else if (!timeOffset.equals(other.timeOffset)) {
+			return false;
+		}
+		if (banStatuses == null) {
+			return other.banStatuses == null;
+		} else if (!banStatuses.equals(other.banStatuses)) {
 			return false;
 		}
 		if (banned == null) {

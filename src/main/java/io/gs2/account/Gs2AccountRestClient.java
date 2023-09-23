@@ -875,6 +875,176 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class AddBanTask extends Gs2RestSessionTask<AddBanResult> {
+        private AddBanRequest request;
+
+        public AddBanTask(
+            AddBanRequest request,
+            AsyncAction<AsyncResult<AddBanResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AddBanResult parse(JsonNode data) {
+            return AddBanResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/ban";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("banStatus", request.getBanStatus() != null ? request.getBanStatus().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void addBanAsync(
+            AddBanRequest request,
+            AsyncAction<AsyncResult<AddBanResult>> callback
+    ) {
+        AddBanTask task = new AddBanTask(request, callback);
+        session.execute(task);
+    }
+
+    public AddBanResult addBan(
+            AddBanRequest request
+    ) {
+        final AsyncResult<AddBanResult>[] resultAsyncResult = new AsyncResult[]{null};
+        addBanAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RemoveBanTask extends Gs2RestSessionTask<RemoveBanResult> {
+        private RemoveBanRequest request;
+
+        public RemoveBanTask(
+            RemoveBanRequest request,
+            AsyncAction<AsyncResult<RemoveBanResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RemoveBanResult parse(JsonNode data) {
+            return RemoveBanResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/ban/{banName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{banStatusName}", this.request.getBanStatusName() == null || this.request.getBanStatusName().length() == 0 ? "null" : String.valueOf(this.request.getBanStatusName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void removeBanAsync(
+            RemoveBanRequest request,
+            AsyncAction<AsyncResult<RemoveBanResult>> callback
+    ) {
+        RemoveBanTask task = new RemoveBanTask(request, callback);
+        session.execute(task);
+    }
+
+    public RemoveBanResult removeBan(
+            RemoveBanRequest request
+    ) {
+        final AsyncResult<RemoveBanResult>[] resultAsyncResult = new AsyncResult[]{null};
+        removeBanAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetAccountTask extends Gs2RestSessionTask<GetAccountResult> {
         private GetAccountRequest request;
 

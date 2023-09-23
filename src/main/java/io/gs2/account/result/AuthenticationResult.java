@@ -25,12 +25,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.account.model.*;
+import io.gs2.account.model.BanStatus;
 import io.gs2.account.model.Account;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AuthenticationResult implements IResult, Serializable {
     private Account item;
+    private List<BanStatus> banStatuses;
     private String body;
     private String signature;
 
@@ -44,6 +46,19 @@ public class AuthenticationResult implements IResult, Serializable {
 
 	public AuthenticationResult withItem(Account item) {
 		this.item = item;
+		return this;
+	}
+
+	public List<BanStatus> getBanStatuses() {
+		return banStatuses;
+	}
+
+	public void setBanStatuses(List<BanStatus> banStatuses) {
+		this.banStatuses = banStatuses;
+	}
+
+	public AuthenticationResult withBanStatuses(List<BanStatus> banStatuses) {
+		this.banStatuses = banStatuses;
 		return this;
 	}
 
@@ -79,6 +94,12 @@ public class AuthenticationResult implements IResult, Serializable {
         }
         return new AuthenticationResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Account.fromJson(data.get("item")))
+            .withBanStatuses(data.get("banStatuses") == null || data.get("banStatuses").isNull() ? new ArrayList<BanStatus>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("banStatuses").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return BanStatus.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withBody(data.get("body") == null || data.get("body").isNull() ? null : data.get("body").asText())
             .withSignature(data.get("signature") == null || data.get("signature").isNull() ? null : data.get("signature").asText());
     }
@@ -87,6 +108,12 @@ public class AuthenticationResult implements IResult, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("banStatuses", getBanStatuses() == null ? new ArrayList<BanStatus>() :
+                    getBanStatuses().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("body", getBody());
                 put("signature", getSignature());
             }}
