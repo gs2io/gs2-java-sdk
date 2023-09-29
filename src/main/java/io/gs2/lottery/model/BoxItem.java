@@ -29,9 +29,20 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BoxItem implements IModel, Serializable {
+	private String prizeId;
 	private List<AcquireAction> acquireActions;
 	private Integer remaining;
 	private Integer initial;
+	public String getPrizeId() {
+		return prizeId;
+	}
+	public void setPrizeId(String prizeId) {
+		this.prizeId = prizeId;
+	}
+	public BoxItem withPrizeId(String prizeId) {
+		this.prizeId = prizeId;
+		return this;
+	}
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
@@ -68,6 +79,7 @@ public class BoxItem implements IModel, Serializable {
             return null;
         }
         return new BoxItem()
+            .withPrizeId(data.get("prizeId") == null || data.get("prizeId").isNull() ? null : data.get("prizeId").asText())
             .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -81,6 +93,7 @@ public class BoxItem implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("prizeId", getPrizeId());
                 put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -97,6 +110,7 @@ public class BoxItem implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((this.prizeId == null) ? 0 : this.prizeId.hashCode());
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
         result = prime * result + ((this.remaining == null) ? 0 : this.remaining.hashCode());
         result = prime * result + ((this.initial == null) ? 0 : this.initial.hashCode());
@@ -112,6 +126,11 @@ public class BoxItem implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		BoxItem other = (BoxItem) o;
+		if (prizeId == null) {
+			return other.prizeId == null;
+		} else if (!prizeId.equals(other.prizeId)) {
+			return false;
+		}
 		if (acquireActions == null) {
 			return other.acquireActions == null;
 		} else if (!acquireActions.equals(other.acquireActions)) {
