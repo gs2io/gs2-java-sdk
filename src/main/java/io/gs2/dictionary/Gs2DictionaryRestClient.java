@@ -1794,6 +1794,180 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyEntryTask extends Gs2RestSessionTask<VerifyEntryResult> {
+        private VerifyEntryRequest request;
+
+        public VerifyEntryTask(
+            VerifyEntryRequest request,
+            AsyncAction<AsyncResult<VerifyEntryResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyEntryResult parse(JsonNode data) {
+            return VerifyEntryResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/entry/{entryModelName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null || this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyEntryAsync(
+            VerifyEntryRequest request,
+            AsyncAction<AsyncResult<VerifyEntryResult>> callback
+    ) {
+        VerifyEntryTask task = new VerifyEntryTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyEntryResult verifyEntry(
+            VerifyEntryRequest request
+    ) {
+        final AsyncResult<VerifyEntryResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyEntryAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyEntryByUserIdTask extends Gs2RestSessionTask<VerifyEntryByUserIdResult> {
+        private VerifyEntryByUserIdRequest request;
+
+        public VerifyEntryByUserIdTask(
+            VerifyEntryByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyEntryByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyEntryByUserIdResult parse(JsonNode data) {
+            return VerifyEntryByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/entry/{entryModelName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{entryModelName}", this.request.getEntryModelName() == null || this.request.getEntryModelName().length() == 0 ? "null" : String.valueOf(this.request.getEntryModelName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyEntryByUserIdAsync(
+            VerifyEntryByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyEntryByUserIdResult>> callback
+    ) {
+        VerifyEntryByUserIdTask task = new VerifyEntryByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyEntryByUserIdResult verifyEntryByUserId(
+            VerifyEntryByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyEntryByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyEntryByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteEntriesByUserIdTask extends Gs2RestSessionTask<DeleteEntriesByUserIdResult> {
         private DeleteEntriesByUserIdRequest request;
 
@@ -2027,6 +2201,86 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
     ) {
         final AsyncResult<DeleteEntriesByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteEntriesByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyEntryByStampTaskTask extends Gs2RestSessionTask<VerifyEntryByStampTaskResult> {
+        private VerifyEntryByStampTaskRequest request;
+
+        public VerifyEntryByStampTaskTask(
+            VerifyEntryByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyEntryByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyEntryByStampTaskResult parse(JsonNode data) {
+            return VerifyEntryByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "dictionary")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/entry/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyEntryByStampTaskAsync(
+            VerifyEntryByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyEntryByStampTaskResult>> callback
+    ) {
+        VerifyEntryByStampTaskTask task = new VerifyEntryByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyEntryByStampTaskResult verifyEntryByStampTask(
+            VerifyEntryByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyEntryByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyEntryByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

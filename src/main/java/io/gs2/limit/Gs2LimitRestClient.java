@@ -1229,6 +1229,184 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyCounterTask extends Gs2RestSessionTask<VerifyCounterResult> {
+        private VerifyCounterRequest request;
+
+        public VerifyCounterTask(
+            VerifyCounterRequest request,
+            AsyncAction<AsyncResult<VerifyCounterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCounterResult parse(JsonNode data) {
+            return VerifyCounterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/counter/{limitName}/{counterName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCounterAsync(
+            VerifyCounterRequest request,
+            AsyncAction<AsyncResult<VerifyCounterResult>> callback
+    ) {
+        VerifyCounterTask task = new VerifyCounterTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCounterResult verifyCounter(
+            VerifyCounterRequest request
+    ) {
+        final AsyncResult<VerifyCounterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCounterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCounterByUserIdTask extends Gs2RestSessionTask<VerifyCounterByUserIdResult> {
+        private VerifyCounterByUserIdRequest request;
+
+        public VerifyCounterByUserIdTask(
+            VerifyCounterByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCounterByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCounterByUserIdResult parse(JsonNode data) {
+            return VerifyCounterByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/counter/{limitName}/{counterName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{limitName}", this.request.getLimitName() == null || this.request.getLimitName().length() == 0 ? "null" : String.valueOf(this.request.getLimitName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCounterByUserIdAsync(
+            VerifyCounterByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCounterByUserIdResult>> callback
+    ) {
+        VerifyCounterByUserIdTask task = new VerifyCounterByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCounterByUserIdResult verifyCounterByUserId(
+            VerifyCounterByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyCounterByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCounterByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class CountUpByStampTaskTask extends Gs2RestSessionTask<CountUpByStampTaskResult> {
         private CountUpByStampTaskRequest request;
 
@@ -1453,6 +1631,86 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
     ) {
         final AsyncResult<DeleteByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCounterByStampTaskTask extends Gs2RestSessionTask<VerifyCounterByStampTaskResult> {
+        private VerifyCounterByStampTaskRequest request;
+
+        public VerifyCounterByStampTaskTask(
+            VerifyCounterByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCounterByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCounterByStampTaskResult parse(JsonNode data) {
+            return VerifyCounterByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/counter/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCounterByStampTaskAsync(
+            VerifyCounterByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCounterByStampTaskResult>> callback
+    ) {
+        VerifyCounterByStampTaskTask task = new VerifyCounterByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCounterByStampTaskResult verifyCounterByStampTask(
+            VerifyCounterByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyCounterByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCounterByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

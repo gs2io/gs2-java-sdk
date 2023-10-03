@@ -559,11 +559,10 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "formation")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/model/{moldModelName}/form/{formModelName}";
+                + "/{namespaceName}/model/{moldModelName}/form";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
-            url = url.replace("{formModelName}", this.request.getFormModelName() == null || this.request.getFormModelName().length() == 0 ? "null" : String.valueOf(this.request.getFormModelName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {

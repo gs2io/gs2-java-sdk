@@ -3013,6 +3013,362 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyRankTask extends Gs2RestSessionTask<VerifyRankResult> {
+        private VerifyRankRequest request;
+
+        public VerifyRankTask(
+            VerifyRankRequest request,
+            AsyncAction<AsyncResult<VerifyRankResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyRankResult parse(JsonNode data) {
+            return VerifyRankResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/status/{experienceName}/verify/rank/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("propertyId", request.getPropertyId());
+                    put("rankValue", request.getRankValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyRankAsync(
+            VerifyRankRequest request,
+            AsyncAction<AsyncResult<VerifyRankResult>> callback
+    ) {
+        VerifyRankTask task = new VerifyRankTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyRankResult verifyRank(
+            VerifyRankRequest request
+    ) {
+        final AsyncResult<VerifyRankResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyRankAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyRankByUserIdTask extends Gs2RestSessionTask<VerifyRankByUserIdResult> {
+        private VerifyRankByUserIdRequest request;
+
+        public VerifyRankByUserIdTask(
+            VerifyRankByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyRankByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyRankByUserIdResult parse(JsonNode data) {
+            return VerifyRankByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/{experienceName}/verify/rank/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("propertyId", request.getPropertyId());
+                    put("rankValue", request.getRankValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyRankByUserIdAsync(
+            VerifyRankByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyRankByUserIdResult>> callback
+    ) {
+        VerifyRankByUserIdTask task = new VerifyRankByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyRankByUserIdResult verifyRankByUserId(
+            VerifyRankByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyRankByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyRankByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyRankCapTask extends Gs2RestSessionTask<VerifyRankCapResult> {
+        private VerifyRankCapRequest request;
+
+        public VerifyRankCapTask(
+            VerifyRankCapRequest request,
+            AsyncAction<AsyncResult<VerifyRankCapResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyRankCapResult parse(JsonNode data) {
+            return VerifyRankCapResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/status/{experienceName}/verify/rankCap/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("propertyId", request.getPropertyId());
+                    put("rankCapValue", request.getRankCapValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyRankCapAsync(
+            VerifyRankCapRequest request,
+            AsyncAction<AsyncResult<VerifyRankCapResult>> callback
+    ) {
+        VerifyRankCapTask task = new VerifyRankCapTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyRankCapResult verifyRankCap(
+            VerifyRankCapRequest request
+    ) {
+        final AsyncResult<VerifyRankCapResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyRankCapAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyRankCapByUserIdTask extends Gs2RestSessionTask<VerifyRankCapByUserIdResult> {
+        private VerifyRankCapByUserIdRequest request;
+
+        public VerifyRankCapByUserIdTask(
+            VerifyRankCapByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyRankCapByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyRankCapByUserIdResult parse(JsonNode data) {
+            return VerifyRankCapByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/{experienceName}/verify/rankCap/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{experienceName}", this.request.getExperienceName() == null || this.request.getExperienceName().length() == 0 ? "null" : String.valueOf(this.request.getExperienceName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("propertyId", request.getPropertyId());
+                    put("rankCapValue", request.getRankCapValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyRankCapByUserIdAsync(
+            VerifyRankCapByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyRankCapByUserIdResult>> callback
+    ) {
+        VerifyRankCapByUserIdTask task = new VerifyRankCapByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyRankCapByUserIdResult verifyRankCapByUserId(
+            VerifyRankCapByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyRankCapByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyRankCapByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class AddExperienceByStampSheetTask extends Gs2RestSessionTask<AddExperienceByStampSheetResult> {
         private AddExperienceByStampSheetRequest request;
 
@@ -3570,6 +3926,166 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
     ) {
         final AsyncResult<MultiplyAcquireActionsByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         multiplyAcquireActionsByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyRankByStampTaskTask extends Gs2RestSessionTask<VerifyRankByStampTaskResult> {
+        private VerifyRankByStampTaskRequest request;
+
+        public VerifyRankByStampTaskTask(
+            VerifyRankByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyRankByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyRankByStampTaskResult parse(JsonNode data) {
+            return VerifyRankByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/rank/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyRankByStampTaskAsync(
+            VerifyRankByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyRankByStampTaskResult>> callback
+    ) {
+        VerifyRankByStampTaskTask task = new VerifyRankByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyRankByStampTaskResult verifyRankByStampTask(
+            VerifyRankByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyRankByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyRankByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyRankCapByStampTaskTask extends Gs2RestSessionTask<VerifyRankCapByStampTaskResult> {
+        private VerifyRankCapByStampTaskRequest request;
+
+        public VerifyRankCapByStampTaskTask(
+            VerifyRankCapByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyRankCapByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyRankCapByStampTaskResult parse(JsonNode data) {
+            return VerifyRankCapByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/rankCap/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyRankCapByStampTaskAsync(
+            VerifyRankCapByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyRankCapByStampTaskResult>> callback
+    ) {
+        VerifyRankCapByStampTaskTask task = new VerifyRankCapByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyRankCapByStampTaskResult verifyRankCapByStampTask(
+            VerifyRankCapByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyRankCapByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyRankCapByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

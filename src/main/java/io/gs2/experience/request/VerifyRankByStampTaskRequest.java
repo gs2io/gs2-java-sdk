@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.formation.request;
+package io.gs2.experience.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,44 +27,44 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetFormModelRequest extends Gs2BasicRequest<GetFormModelRequest> {
-    private String namespaceName;
-    private String moldModelName;
-	public String getNamespaceName() {
-		return namespaceName;
+public class VerifyRankByStampTaskRequest extends Gs2BasicRequest<VerifyRankByStampTaskRequest> {
+    private String stampTask;
+    private String keyId;
+	public String getStampTask() {
+		return stampTask;
 	}
-	public void setNamespaceName(String namespaceName) {
-		this.namespaceName = namespaceName;
+	public void setStampTask(String stampTask) {
+		this.stampTask = stampTask;
 	}
-	public GetFormModelRequest withNamespaceName(String namespaceName) {
-		this.namespaceName = namespaceName;
+	public VerifyRankByStampTaskRequest withStampTask(String stampTask) {
+		this.stampTask = stampTask;
 		return this;
 	}
-	public String getMoldModelName() {
-		return moldModelName;
+	public String getKeyId() {
+		return keyId;
 	}
-	public void setMoldModelName(String moldModelName) {
-		this.moldModelName = moldModelName;
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
 	}
-	public GetFormModelRequest withMoldModelName(String moldModelName) {
-		this.moldModelName = moldModelName;
+	public VerifyRankByStampTaskRequest withKeyId(String keyId) {
+		this.keyId = keyId;
 		return this;
 	}
 
-    public static GetFormModelRequest fromJson(JsonNode data) {
+    public static VerifyRankByStampTaskRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetFormModelRequest()
-            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText());
+        return new VerifyRankByStampTaskRequest()
+            .withStampTask(data.get("stampTask") == null || data.get("stampTask").isNull() ? null : data.get("stampTask").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("namespaceName", getNamespaceName());
-                put("moldModelName", getMoldModelName());
+                put("stampTask", getStampTask());
+                put("keyId", getKeyId());
             }}
         );
     }

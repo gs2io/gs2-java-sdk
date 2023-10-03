@@ -5987,6 +5987,186 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyItemSetTask extends Gs2RestSessionTask<VerifyItemSetResult> {
+        private VerifyItemSetRequest request;
+
+        public VerifyItemSetTask(
+            VerifyItemSetRequest request,
+            AsyncAction<AsyncResult<VerifyItemSetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyItemSetResult parse(JsonNode data) {
+            return VerifyItemSetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("itemSetName", request.getItemSetName());
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyItemSetAsync(
+            VerifyItemSetRequest request,
+            AsyncAction<AsyncResult<VerifyItemSetResult>> callback
+    ) {
+        VerifyItemSetTask task = new VerifyItemSetTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyItemSetResult verifyItemSet(
+            VerifyItemSetRequest request
+    ) {
+        final AsyncResult<VerifyItemSetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyItemSetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyItemSetByUserIdTask extends Gs2RestSessionTask<VerifyItemSetByUserIdResult> {
+        private VerifyItemSetByUserIdRequest request;
+
+        public VerifyItemSetByUserIdTask(
+            VerifyItemSetByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyItemSetByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyItemSetByUserIdResult parse(JsonNode data) {
+            return VerifyItemSetByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("itemSetName", request.getItemSetName());
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyItemSetByUserIdAsync(
+            VerifyItemSetByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyItemSetByUserIdResult>> callback
+    ) {
+        VerifyItemSetByUserIdTask task = new VerifyItemSetByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyItemSetByUserIdResult verifyItemSetByUserId(
+            VerifyItemSetByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyItemSetByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyItemSetByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class AcquireItemSetByStampSheetTask extends Gs2RestSessionTask<AcquireItemSetByStampSheetResult> {
         private AcquireItemSetByStampSheetRequest request;
 
@@ -6131,6 +6311,86 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
     ) {
         final AsyncResult<ConsumeItemSetByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         consumeItemSetByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyItemSetByStampTaskTask extends Gs2RestSessionTask<VerifyItemSetByStampTaskResult> {
+        private VerifyItemSetByStampTaskRequest request;
+
+        public VerifyItemSetByStampTaskTask(
+            VerifyItemSetByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyItemSetByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyItemSetByStampTaskResult parse(JsonNode data) {
+            return VerifyItemSetByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/item/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyItemSetByStampTaskAsync(
+            VerifyItemSetByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyItemSetByStampTaskResult>> callback
+    ) {
+        VerifyItemSetByStampTaskTask task = new VerifyItemSetByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyItemSetByStampTaskResult verifyItemSetByStampTask(
+            VerifyItemSetByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyItemSetByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyItemSetByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -8145,6 +8405,184 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifySimpleItemTask extends Gs2RestSessionTask<VerifySimpleItemResult> {
+        private VerifySimpleItemRequest request;
+
+        public VerifySimpleItemTask(
+            VerifySimpleItemRequest request,
+            AsyncAction<AsyncResult<VerifySimpleItemResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifySimpleItemResult parse(JsonNode data) {
+            return VerifySimpleItemResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/simple/inventory/{inventoryName}/item/{itemName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifySimpleItemAsync(
+            VerifySimpleItemRequest request,
+            AsyncAction<AsyncResult<VerifySimpleItemResult>> callback
+    ) {
+        VerifySimpleItemTask task = new VerifySimpleItemTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifySimpleItemResult verifySimpleItem(
+            VerifySimpleItemRequest request
+    ) {
+        final AsyncResult<VerifySimpleItemResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifySimpleItemAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifySimpleItemByUserIdTask extends Gs2RestSessionTask<VerifySimpleItemByUserIdResult> {
+        private VerifySimpleItemByUserIdRequest request;
+
+        public VerifySimpleItemByUserIdTask(
+            VerifySimpleItemByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifySimpleItemByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifySimpleItemByUserIdResult parse(JsonNode data) {
+            return VerifySimpleItemByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/simple/inventory/{inventoryName}/item/{itemName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifySimpleItemByUserIdAsync(
+            VerifySimpleItemByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifySimpleItemByUserIdResult>> callback
+    ) {
+        VerifySimpleItemByUserIdTask task = new VerifySimpleItemByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifySimpleItemByUserIdResult verifySimpleItemByUserId(
+            VerifySimpleItemByUserIdRequest request
+    ) {
+        final AsyncResult<VerifySimpleItemByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifySimpleItemByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class AcquireSimpleItemsByStampSheetTask extends Gs2RestSessionTask<AcquireSimpleItemsByStampSheetResult> {
         private AcquireSimpleItemsByStampSheetRequest request;
 
@@ -8289,6 +8727,86 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
     ) {
         final AsyncResult<ConsumeSimpleItemsByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         consumeSimpleItemsByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifySimpleItemByStampTaskTask extends Gs2RestSessionTask<VerifySimpleItemByStampTaskResult> {
+        private VerifySimpleItemByStampTaskRequest request;
+
+        public VerifySimpleItemByStampTaskTask(
+            VerifySimpleItemByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifySimpleItemByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifySimpleItemByStampTaskResult parse(JsonNode data) {
+            return VerifySimpleItemByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/simple/item/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifySimpleItemByStampTaskAsync(
+            VerifySimpleItemByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifySimpleItemByStampTaskResult>> callback
+    ) {
+        VerifySimpleItemByStampTaskTask task = new VerifySimpleItemByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifySimpleItemByStampTaskResult verifySimpleItemByStampTask(
+            VerifySimpleItemByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifySimpleItemByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifySimpleItemByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -9000,6 +9518,184 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyBigItemTask extends Gs2RestSessionTask<VerifyBigItemResult> {
+        private VerifyBigItemRequest request;
+
+        public VerifyBigItemTask(
+            VerifyBigItemRequest request,
+            AsyncAction<AsyncResult<VerifyBigItemResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyBigItemResult parse(JsonNode data) {
+            return VerifyBigItemResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/big/inventory/{inventoryName}/item/{itemName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyBigItemAsync(
+            VerifyBigItemRequest request,
+            AsyncAction<AsyncResult<VerifyBigItemResult>> callback
+    ) {
+        VerifyBigItemTask task = new VerifyBigItemTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyBigItemResult verifyBigItem(
+            VerifyBigItemRequest request
+    ) {
+        final AsyncResult<VerifyBigItemResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyBigItemAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyBigItemByUserIdTask extends Gs2RestSessionTask<VerifyBigItemByUserIdResult> {
+        private VerifyBigItemByUserIdRequest request;
+
+        public VerifyBigItemByUserIdTask(
+            VerifyBigItemByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyBigItemByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyBigItemByUserIdResult parse(JsonNode data) {
+            return VerifyBigItemByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/big/inventory/{inventoryName}/item/{itemName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyBigItemByUserIdAsync(
+            VerifyBigItemByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyBigItemByUserIdResult>> callback
+    ) {
+        VerifyBigItemByUserIdTask task = new VerifyBigItemByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyBigItemByUserIdResult verifyBigItemByUserId(
+            VerifyBigItemByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyBigItemByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyBigItemByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class AcquireBigItemByStampSheetTask extends Gs2RestSessionTask<AcquireBigItemByStampSheetResult> {
         private AcquireBigItemByStampSheetRequest request;
 
@@ -9144,6 +9840,86 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
     ) {
         final AsyncResult<ConsumeBigItemByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         consumeBigItemByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyBigItemByStampTaskTask extends Gs2RestSessionTask<VerifyBigItemByStampTaskResult> {
+        private VerifyBigItemByStampTaskRequest request;
+
+        public VerifyBigItemByStampTaskTask(
+            VerifyBigItemByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyBigItemByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyBigItemByStampTaskResult parse(JsonNode data) {
+            return VerifyBigItemByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/big/item/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyBigItemByStampTaskAsync(
+            VerifyBigItemByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyBigItemByStampTaskResult>> callback
+    ) {
+        VerifyBigItemByStampTaskTask task = new VerifyBigItemByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyBigItemByStampTaskResult verifyBigItemByStampTask(
+            VerifyBigItemByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyBigItemByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyBigItemByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
