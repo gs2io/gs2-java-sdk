@@ -985,7 +985,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "account")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/ban/{banName}";
+                + "/{namespaceName}/account/{userId}/ban/{banStatusName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
@@ -2149,6 +2149,91 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
     ) {
         final AsyncResult<DeleteTakeOverByUserIdentifierResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteTakeOverByUserIdentifierAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteTakeOverByUserIdTask extends Gs2RestSessionTask<DeleteTakeOverByUserIdResult> {
+        private DeleteTakeOverByUserIdRequest request;
+
+        public DeleteTakeOverByUserIdTask(
+            DeleteTakeOverByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteTakeOverByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteTakeOverByUserIdResult parse(JsonNode data) {
+            return DeleteTakeOverByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/takeover/type/{type}/takeover";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteTakeOverByUserIdAsync(
+            DeleteTakeOverByUserIdRequest request,
+            AsyncAction<AsyncResult<DeleteTakeOverByUserIdResult>> callback
+    ) {
+        DeleteTakeOverByUserIdTask task = new DeleteTakeOverByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteTakeOverByUserIdResult deleteTakeOverByUserId(
+            DeleteTakeOverByUserIdRequest request
+    ) {
+        final AsyncResult<DeleteTakeOverByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteTakeOverByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
