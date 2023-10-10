@@ -528,6 +528,338 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
         return resultAsyncResult[0].getResult();
     }
 
+    class DumpUserDataByUserIdTask extends Gs2RestSessionTask<DumpUserDataByUserIdResult> {
+        private DumpUserDataByUserIdRequest request;
+
+        public DumpUserDataByUserIdTask(
+            DumpUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<DumpUserDataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DumpUserDataByUserIdResult parse(JsonNode data) {
+            return DumpUserDataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/user/{userId}/dump";
+
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void dumpUserDataByUserIdAsync(
+            DumpUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<DumpUserDataByUserIdResult>> callback
+    ) {
+        DumpUserDataByUserIdTask task = new DumpUserDataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DumpUserDataByUserIdResult dumpUserDataByUserId(
+            DumpUserDataByUserIdRequest request
+    ) {
+        final AsyncResult<DumpUserDataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        dumpUserDataByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CheckDumpUserDataByUserIdTask extends Gs2RestSessionTask<CheckDumpUserDataByUserIdResult> {
+        private CheckDumpUserDataByUserIdRequest request;
+
+        public CheckDumpUserDataByUserIdTask(
+            CheckDumpUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<CheckDumpUserDataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CheckDumpUserDataByUserIdResult parse(JsonNode data) {
+            return CheckDumpUserDataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/user/{userId}/dump";
+
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void checkDumpUserDataByUserIdAsync(
+            CheckDumpUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<CheckDumpUserDataByUserIdResult>> callback
+    ) {
+        CheckDumpUserDataByUserIdTask task = new CheckDumpUserDataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public CheckDumpUserDataByUserIdResult checkDumpUserDataByUserId(
+            CheckDumpUserDataByUserIdRequest request
+    ) {
+        final AsyncResult<CheckDumpUserDataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        checkDumpUserDataByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CleanUserDataByUserIdTask extends Gs2RestSessionTask<CleanUserDataByUserIdResult> {
+        private CleanUserDataByUserIdRequest request;
+
+        public CleanUserDataByUserIdTask(
+            CleanUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<CleanUserDataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CleanUserDataByUserIdResult parse(JsonNode data) {
+            return CleanUserDataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/user/{userId}/clean";
+
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void cleanUserDataByUserIdAsync(
+            CleanUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<CleanUserDataByUserIdResult>> callback
+    ) {
+        CleanUserDataByUserIdTask task = new CleanUserDataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public CleanUserDataByUserIdResult cleanUserDataByUserId(
+            CleanUserDataByUserIdRequest request
+    ) {
+        final AsyncResult<CleanUserDataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        cleanUserDataByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CheckCleanUserDataByUserIdTask extends Gs2RestSessionTask<CheckCleanUserDataByUserIdResult> {
+        private CheckCleanUserDataByUserIdRequest request;
+
+        public CheckCleanUserDataByUserIdTask(
+            CheckCleanUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<CheckCleanUserDataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CheckCleanUserDataByUserIdResult parse(JsonNode data) {
+            return CheckCleanUserDataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "limit")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/user/{userId}/clean";
+
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void checkCleanUserDataByUserIdAsync(
+            CheckCleanUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<CheckCleanUserDataByUserIdResult>> callback
+    ) {
+        CheckCleanUserDataByUserIdTask task = new CheckCleanUserDataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public CheckCleanUserDataByUserIdResult checkCleanUserDataByUserId(
+            CheckCleanUserDataByUserIdRequest request
+    ) {
+        final AsyncResult<CheckCleanUserDataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        checkCleanUserDataByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeCountersTask extends Gs2RestSessionTask<DescribeCountersResult> {
         private DescribeCountersRequest request;
 
