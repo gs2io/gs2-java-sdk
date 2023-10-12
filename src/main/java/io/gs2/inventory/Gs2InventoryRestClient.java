@@ -5270,6 +5270,262 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyInventoryCurrentMaxCapacityTask extends Gs2RestSessionTask<VerifyInventoryCurrentMaxCapacityResult> {
+        private VerifyInventoryCurrentMaxCapacityRequest request;
+
+        public VerifyInventoryCurrentMaxCapacityTask(
+            VerifyInventoryCurrentMaxCapacityRequest request,
+            AsyncAction<AsyncResult<VerifyInventoryCurrentMaxCapacityResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyInventoryCurrentMaxCapacityResult parse(JsonNode data) {
+            return VerifyInventoryCurrentMaxCapacityResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/inventory/{inventoryName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("currentInventoryMaxCapacity", request.getCurrentInventoryMaxCapacity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyInventoryCurrentMaxCapacityAsync(
+            VerifyInventoryCurrentMaxCapacityRequest request,
+            AsyncAction<AsyncResult<VerifyInventoryCurrentMaxCapacityResult>> callback
+    ) {
+        VerifyInventoryCurrentMaxCapacityTask task = new VerifyInventoryCurrentMaxCapacityTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyInventoryCurrentMaxCapacityResult verifyInventoryCurrentMaxCapacity(
+            VerifyInventoryCurrentMaxCapacityRequest request
+    ) {
+        final AsyncResult<VerifyInventoryCurrentMaxCapacityResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyInventoryCurrentMaxCapacityAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyInventoryCurrentMaxCapacityByUserIdTask extends Gs2RestSessionTask<VerifyInventoryCurrentMaxCapacityByUserIdResult> {
+        private VerifyInventoryCurrentMaxCapacityByUserIdRequest request;
+
+        public VerifyInventoryCurrentMaxCapacityByUserIdTask(
+            VerifyInventoryCurrentMaxCapacityByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyInventoryCurrentMaxCapacityByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyInventoryCurrentMaxCapacityByUserIdResult parse(JsonNode data) {
+            return VerifyInventoryCurrentMaxCapacityByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("currentInventoryMaxCapacity", request.getCurrentInventoryMaxCapacity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyInventoryCurrentMaxCapacityByUserIdAsync(
+            VerifyInventoryCurrentMaxCapacityByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyInventoryCurrentMaxCapacityByUserIdResult>> callback
+    ) {
+        VerifyInventoryCurrentMaxCapacityByUserIdTask task = new VerifyInventoryCurrentMaxCapacityByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyInventoryCurrentMaxCapacityByUserIdResult verifyInventoryCurrentMaxCapacityByUserId(
+            VerifyInventoryCurrentMaxCapacityByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyInventoryCurrentMaxCapacityByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyInventoryCurrentMaxCapacityByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyInventoryCurrentMaxCapacityByStampTaskTask extends Gs2RestSessionTask<VerifyInventoryCurrentMaxCapacityByStampTaskResult> {
+        private VerifyInventoryCurrentMaxCapacityByStampTaskRequest request;
+
+        public VerifyInventoryCurrentMaxCapacityByStampTaskTask(
+            VerifyInventoryCurrentMaxCapacityByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyInventoryCurrentMaxCapacityByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyInventoryCurrentMaxCapacityByStampTaskResult parse(JsonNode data) {
+            return VerifyInventoryCurrentMaxCapacityByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/inventory/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyInventoryCurrentMaxCapacityByStampTaskAsync(
+            VerifyInventoryCurrentMaxCapacityByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyInventoryCurrentMaxCapacityByStampTaskResult>> callback
+    ) {
+        VerifyInventoryCurrentMaxCapacityByStampTaskTask task = new VerifyInventoryCurrentMaxCapacityByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyInventoryCurrentMaxCapacityByStampTaskResult verifyInventoryCurrentMaxCapacityByStampTask(
+            VerifyInventoryCurrentMaxCapacityByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyInventoryCurrentMaxCapacityByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyInventoryCurrentMaxCapacityByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class AddCapacityByStampSheetTask extends Gs2RestSessionTask<AddCapacityByStampSheetResult> {
         private AddCapacityByStampSheetRequest request;
 
