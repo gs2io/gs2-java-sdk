@@ -868,6 +868,256 @@ import io.gs2.stateMachine.model.*;public class Gs2StateMachineRestClient extend
         return resultAsyncResult[0].getResult();
     }
 
+    class PrepareImportUserDataByUserIdTask extends Gs2RestSessionTask<PrepareImportUserDataByUserIdResult> {
+        private PrepareImportUserDataByUserIdRequest request;
+
+        public PrepareImportUserDataByUserIdTask(
+            PrepareImportUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<PrepareImportUserDataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PrepareImportUserDataByUserIdResult parse(JsonNode data) {
+            return PrepareImportUserDataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "state-machine")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/user/{userId}/import/prepare";
+
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void prepareImportUserDataByUserIdAsync(
+            PrepareImportUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<PrepareImportUserDataByUserIdResult>> callback
+    ) {
+        PrepareImportUserDataByUserIdTask task = new PrepareImportUserDataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public PrepareImportUserDataByUserIdResult prepareImportUserDataByUserId(
+            PrepareImportUserDataByUserIdRequest request
+    ) {
+        final AsyncResult<PrepareImportUserDataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        prepareImportUserDataByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ImportUserDataByUserIdTask extends Gs2RestSessionTask<ImportUserDataByUserIdResult> {
+        private ImportUserDataByUserIdRequest request;
+
+        public ImportUserDataByUserIdTask(
+            ImportUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<ImportUserDataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ImportUserDataByUserIdResult parse(JsonNode data) {
+            return ImportUserDataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "state-machine")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/user/{userId}/import";
+
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("uploadToken", request.getUploadToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void importUserDataByUserIdAsync(
+            ImportUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<ImportUserDataByUserIdResult>> callback
+    ) {
+        ImportUserDataByUserIdTask task = new ImportUserDataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public ImportUserDataByUserIdResult importUserDataByUserId(
+            ImportUserDataByUserIdRequest request
+    ) {
+        final AsyncResult<ImportUserDataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        importUserDataByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CheckImportUserDataByUserIdTask extends Gs2RestSessionTask<CheckImportUserDataByUserIdResult> {
+        private CheckImportUserDataByUserIdRequest request;
+
+        public CheckImportUserDataByUserIdTask(
+            CheckImportUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<CheckImportUserDataByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CheckImportUserDataByUserIdResult parse(JsonNode data) {
+            return CheckImportUserDataByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "state-machine")
+                .replace("{region}", session.getRegion().getName())
+                + "/system/user/{userId}/import";
+
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void checkImportUserDataByUserIdAsync(
+            CheckImportUserDataByUserIdRequest request,
+            AsyncAction<AsyncResult<CheckImportUserDataByUserIdResult>> callback
+    ) {
+        CheckImportUserDataByUserIdTask task = new CheckImportUserDataByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public CheckImportUserDataByUserIdResult checkImportUserDataByUserId(
+            CheckImportUserDataByUserIdRequest request
+    ) {
+        final AsyncResult<CheckImportUserDataByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        checkImportUserDataByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeStateMachineMastersTask extends Gs2RestSessionTask<DescribeStateMachineMastersResult> {
         private DescribeStateMachineMastersRequest request;
 
