@@ -1056,9 +1056,10 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "idle")
                 .replace("{region}", session.getRegion().getName())
-                + "/system/user/{userId}/import";
+                + "/system/user/{userId}/import/{uploadToken}";
 
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{uploadToken}", this.request.getUploadToken() == null || this.request.getUploadToken().length() == 0 ? "null" : String.valueOf(this.request.getUploadToken()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {

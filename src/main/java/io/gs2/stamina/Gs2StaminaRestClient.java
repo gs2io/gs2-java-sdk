@@ -1054,9 +1054,10 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "stamina")
                 .replace("{region}", session.getRegion().getName())
-                + "/system/user/{userId}/import";
+                + "/system/user/{userId}/import/{uploadToken}";
 
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{uploadToken}", this.request.getUploadToken() == null || this.request.getUploadToken().length() == 0 ? "null" : String.valueOf(this.request.getUploadToken()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
