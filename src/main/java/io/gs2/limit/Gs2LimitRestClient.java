@@ -553,7 +553,7 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "limit")
                 .replace("{region}", session.getRegion().getName())
-                + "/system/user/{userId}/dump";
+                + "/system/dump/user/{userId}";
 
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
@@ -636,7 +636,7 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "limit")
                 .replace("{region}", session.getRegion().getName())
-                + "/system/user/{userId}/dump";
+                + "/system/dump/user/{userId}";
 
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
@@ -719,7 +719,7 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "limit")
                 .replace("{region}", session.getRegion().getName())
-                + "/system/user/{userId}/clean";
+                + "/system/clean/user/{userId}";
 
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
@@ -802,7 +802,7 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "limit")
                 .replace("{region}", session.getRegion().getName())
-                + "/system/user/{userId}/clean";
+                + "/system/clean/user/{userId}";
 
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
@@ -885,7 +885,7 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "limit")
                 .replace("{region}", session.getRegion().getName())
-                + "/system/user/{userId}/import/prepare";
+                + "/system/import/user/{userId}/prepare";
 
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
@@ -968,7 +968,7 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "limit")
                 .replace("{region}", session.getRegion().getName())
-                + "/system/user/{userId}/import";
+                + "/system/import/user/{userId}";
 
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
@@ -1052,7 +1052,7 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "limit")
                 .replace("{region}", session.getRegion().getName())
-                + "/system/user/{userId}/import/{uploadToken}";
+                + "/system/import/user/{userId}/{uploadToken}";
 
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
             url = url.replace("{uploadToken}", this.request.getUploadToken() == null || this.request.getUploadToken().length() == 0 ? "null" : String.valueOf(this.request.getUploadToken()));
