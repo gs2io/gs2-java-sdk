@@ -33,7 +33,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String name;
 	private String description;
 	private TransactionSetting transactionSetting;
-	private String experienceCapScriptId;
+	private String rankCapScriptId;
 	private ScriptSetting changeExperienceScript;
 	private ScriptSetting changeRankScript;
 	private ScriptSetting changeRankCapScript;
@@ -82,14 +82,14 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.transactionSetting = transactionSetting;
 		return this;
 	}
-	public String getExperienceCapScriptId() {
-		return experienceCapScriptId;
+	public String getRankCapScriptId() {
+		return rankCapScriptId;
 	}
-	public void setExperienceCapScriptId(String experienceCapScriptId) {
-		this.experienceCapScriptId = experienceCapScriptId;
+	public void setRankCapScriptId(String rankCapScriptId) {
+		this.rankCapScriptId = rankCapScriptId;
 	}
-	public Namespace withExperienceCapScriptId(String experienceCapScriptId) {
-		this.experienceCapScriptId = experienceCapScriptId;
+	public Namespace withRankCapScriptId(String rankCapScriptId) {
+		this.rankCapScriptId = rankCapScriptId;
 		return this;
 	}
 	public ScriptSetting getChangeExperienceScript() {
@@ -182,7 +182,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
-            .withExperienceCapScriptId(data.get("experienceCapScriptId") == null || data.get("experienceCapScriptId").isNull() ? null : data.get("experienceCapScriptId").asText())
+            .withRankCapScriptId(data.get("rankCapScriptId") == null || data.get("rankCapScriptId").isNull() ? null : data.get("rankCapScriptId").asText())
             .withChangeExperienceScript(data.get("changeExperienceScript") == null || data.get("changeExperienceScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeExperienceScript")))
             .withChangeRankScript(data.get("changeRankScript") == null || data.get("changeRankScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRankScript")))
             .withChangeRankCapScript(data.get("changeRankCapScript") == null || data.get("changeRankCapScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRankCapScript")))
@@ -200,7 +200,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("name", getName());
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
-                put("experienceCapScriptId", getExperienceCapScriptId());
+                put("rankCapScriptId", getRankCapScriptId());
                 put("changeExperienceScript", getChangeExperienceScript() != null ? getChangeExperienceScript().toJson() : null);
                 put("changeRankScript", getChangeRankScript() != null ? getChangeRankScript().toJson() : null);
                 put("changeRankCapScript", getChangeRankCapScript() != null ? getChangeRankCapScript().toJson() : null);
@@ -226,7 +226,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
-        result = prime * result + ((this.experienceCapScriptId == null) ? 0 : this.experienceCapScriptId.hashCode());
+        result = prime * result + ((this.rankCapScriptId == null) ? 0 : this.rankCapScriptId.hashCode());
         result = prime * result + ((this.changeExperienceScript == null) ? 0 : this.changeExperienceScript.hashCode());
         result = prime * result + ((this.changeRankScript == null) ? 0 : this.changeRankScript.hashCode());
         result = prime * result + ((this.changeRankCapScript == null) ? 0 : this.changeRankCapScript.hashCode());
@@ -267,9 +267,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		} else if (!transactionSetting.equals(other.transactionSetting)) {
 			return false;
 		}
-		if (experienceCapScriptId == null) {
-			return other.experienceCapScriptId == null;
-		} else if (!experienceCapScriptId.equals(other.experienceCapScriptId)) {
+		if (rankCapScriptId == null) {
+			return other.rankCapScriptId == null;
+		} else if (!rankCapScriptId.equals(other.rankCapScriptId)) {
 			return false;
 		}
 		if (changeExperienceScript == null) {

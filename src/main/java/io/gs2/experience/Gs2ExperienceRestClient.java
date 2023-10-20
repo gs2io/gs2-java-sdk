@@ -157,7 +157,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
-                    put("experienceCapScriptId", request.getExperienceCapScriptId());
+                    put("rankCapScriptId", request.getRankCapScriptId());
                     put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
                     put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);
                     put("changeRankCapScript", request.getChangeRankCapScript() != null ? request.getChangeRankCapScript().toJson() : null);
@@ -405,7 +405,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
-                    put("experienceCapScriptId", request.getExperienceCapScriptId());
+                    put("rankCapScriptId", request.getRankCapScriptId());
                     put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
                     put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);
                     put("changeRankCapScript", request.getChangeRankCapScript() != null ? request.getChangeRankCapScript().toJson() : null);
