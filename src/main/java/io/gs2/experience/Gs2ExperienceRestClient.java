@@ -161,7 +161,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                     put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
                     put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);
                     put("changeRankCapScript", request.getChangeRankCapScript() != null ? request.getChangeRankCapScript().toJson() : null);
-                    put("overflowExperienceScript", request.getOverflowExperienceScript() != null ? request.getOverflowExperienceScript().toJson() : null);
+                    put("overflowExperienceScript", request.getOverflowExperienceScript());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -409,7 +409,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                     put("changeExperienceScript", request.getChangeExperienceScript() != null ? request.getChangeExperienceScript().toJson() : null);
                     put("changeRankScript", request.getChangeRankScript() != null ? request.getChangeRankScript().toJson() : null);
                     put("changeRankCapScript", request.getChangeRankCapScript() != null ? request.getChangeRankCapScript().toJson() : null);
-                    put("overflowExperienceScript", request.getOverflowExperienceScript() != null ? request.getOverflowExperienceScript().toJson() : null);
+                    put("overflowExperienceScript", request.getOverflowExperienceScript());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

@@ -38,7 +38,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private ScriptSetting changeExperienceScript;
     private ScriptSetting changeRankScript;
     private ScriptSetting changeRankCapScript;
-    private ScriptSetting overflowExperienceScript;
+    private String overflowExperienceScript;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -110,13 +110,13 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.changeRankCapScript = changeRankCapScript;
 		return this;
 	}
-	public ScriptSetting getOverflowExperienceScript() {
+	public String getOverflowExperienceScript() {
 		return overflowExperienceScript;
 	}
-	public void setOverflowExperienceScript(ScriptSetting overflowExperienceScript) {
+	public void setOverflowExperienceScript(String overflowExperienceScript) {
 		this.overflowExperienceScript = overflowExperienceScript;
 	}
-	public UpdateNamespaceRequest withOverflowExperienceScript(ScriptSetting overflowExperienceScript) {
+	public UpdateNamespaceRequest withOverflowExperienceScript(String overflowExperienceScript) {
 		this.overflowExperienceScript = overflowExperienceScript;
 		return this;
 	}
@@ -143,7 +143,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withChangeExperienceScript(data.get("changeExperienceScript") == null || data.get("changeExperienceScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeExperienceScript")))
             .withChangeRankScript(data.get("changeRankScript") == null || data.get("changeRankScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRankScript")))
             .withChangeRankCapScript(data.get("changeRankCapScript") == null || data.get("changeRankCapScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRankCapScript")))
-            .withOverflowExperienceScript(data.get("overflowExperienceScript") == null || data.get("overflowExperienceScript").isNull() ? null : ScriptSetting.fromJson(data.get("overflowExperienceScript")))
+            .withOverflowExperienceScript(data.get("overflowExperienceScript") == null || data.get("overflowExperienceScript").isNull() ? null : data.get("overflowExperienceScript").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -157,7 +157,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("changeExperienceScript", getChangeExperienceScript() != null ? getChangeExperienceScript().toJson() : null);
                 put("changeRankScript", getChangeRankScript() != null ? getChangeRankScript().toJson() : null);
                 put("changeRankCapScript", getChangeRankCapScript() != null ? getChangeRankCapScript().toJson() : null);
-                put("overflowExperienceScript", getOverflowExperienceScript() != null ? getOverflowExperienceScript().toJson() : null);
+                put("overflowExperienceScript", getOverflowExperienceScript());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );
