@@ -31,6 +31,7 @@ import io.gs2.script.model.*;
 public class DebugInvokeResult implements IResult, Serializable {
     private Integer code;
     private String result;
+    private String transaction;
     private Integer executeTime;
     private Integer charged;
     private List<String> output;
@@ -58,6 +59,19 @@ public class DebugInvokeResult implements IResult, Serializable {
 
 	public DebugInvokeResult withResult(String result) {
 		this.result = result;
+		return this;
+	}
+
+	public String getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(String transaction) {
+		this.transaction = transaction;
+	}
+
+	public DebugInvokeResult withTransaction(String transaction) {
+		this.transaction = transaction;
 		return this;
 	}
 
@@ -107,6 +121,7 @@ public class DebugInvokeResult implements IResult, Serializable {
         return new DebugInvokeResult()
             .withCode(data.get("code") == null || data.get("code").isNull() ? null : data.get("code").intValue())
             .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText())
+            .withTransaction(data.get("transaction") == null || data.get("transaction").isNull() ? null : data.get("transaction").asText())
             .withExecuteTime(data.get("executeTime") == null || data.get("executeTime").isNull() ? null : data.get("executeTime").intValue())
             .withCharged(data.get("charged") == null || data.get("charged").isNull() ? null : data.get("charged").intValue())
             .withOutput(data.get("output") == null || data.get("output").isNull() ? new ArrayList<String>() :
@@ -121,6 +136,7 @@ public class DebugInvokeResult implements IResult, Serializable {
             new HashMap<String, Object>() {{
                 put("code", getCode());
                 put("result", getResult());
+                put("transaction", getTransaction());
                 put("executeTime", getExecuteTime());
                 put("charged", getCharged());
                 put("output", getOutput() == null ? new ArrayList<String>() :
