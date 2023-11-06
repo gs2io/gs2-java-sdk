@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.script.model.*;
+import io.gs2.script.model.RandomUsed;
+import io.gs2.script.model.RandomStatus;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -32,6 +34,7 @@ public class InvokeScriptResult implements IResult, Serializable {
     private Integer code;
     private String result;
     private String transaction;
+    private RandomStatus randomStatus;
     private Integer executeTime;
     private Integer charged;
     private List<String> output;
@@ -72,6 +75,19 @@ public class InvokeScriptResult implements IResult, Serializable {
 
 	public InvokeScriptResult withTransaction(String transaction) {
 		this.transaction = transaction;
+		return this;
+	}
+
+	public RandomStatus getRandomStatus() {
+		return randomStatus;
+	}
+
+	public void setRandomStatus(RandomStatus randomStatus) {
+		this.randomStatus = randomStatus;
+	}
+
+	public InvokeScriptResult withRandomStatus(RandomStatus randomStatus) {
+		this.randomStatus = randomStatus;
 		return this;
 	}
 
@@ -122,6 +138,7 @@ public class InvokeScriptResult implements IResult, Serializable {
             .withCode(data.get("code") == null || data.get("code").isNull() ? null : data.get("code").intValue())
             .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText())
             .withTransaction(data.get("transaction") == null || data.get("transaction").isNull() ? null : data.get("transaction").asText())
+            .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
             .withExecuteTime(data.get("executeTime") == null || data.get("executeTime").isNull() ? null : data.get("executeTime").intValue())
             .withCharged(data.get("charged") == null || data.get("charged").isNull() ? null : data.get("charged").intValue())
             .withOutput(data.get("output") == null || data.get("output").isNull() ? new ArrayList<String>() :
@@ -137,6 +154,7 @@ public class InvokeScriptResult implements IResult, Serializable {
                 put("code", getCode());
                 put("result", getResult());
                 put("transaction", getTransaction());
+                put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
                 put("executeTime", getExecuteTime());
                 put("charged", getCharged());
                 put("output", getOutput() == null ? new ArrayList<String>() :

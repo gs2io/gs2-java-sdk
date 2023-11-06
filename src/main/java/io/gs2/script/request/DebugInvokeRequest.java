@@ -24,12 +24,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.script.model.RandomUsed;
+import io.gs2.script.model.RandomStatus;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
     private String script;
     private String args;
+    private RandomStatus randomStatus;
 	public String getScript() {
 		return script;
 	}
@@ -50,6 +53,16 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
 		this.args = args;
 		return this;
 	}
+	public RandomStatus getRandomStatus() {
+		return randomStatus;
+	}
+	public void setRandomStatus(RandomStatus randomStatus) {
+		this.randomStatus = randomStatus;
+	}
+	public DebugInvokeRequest withRandomStatus(RandomStatus randomStatus) {
+		this.randomStatus = randomStatus;
+		return this;
+	}
 
     public static DebugInvokeRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -57,7 +70,8 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
         }
         return new DebugInvokeRequest()
             .withScript(data.get("script") == null || data.get("script").isNull() ? null : data.get("script").asText())
-            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText());
+            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
+            .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")));
     }
 
     public JsonNode toJson() {
@@ -65,6 +79,7 @@ public class DebugInvokeRequest extends Gs2BasicRequest<DebugInvokeRequest> {
             new HashMap<String, Object>() {{
                 put("script", getScript());
                 put("args", getArgs());
+                put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
             }}
         );
     }

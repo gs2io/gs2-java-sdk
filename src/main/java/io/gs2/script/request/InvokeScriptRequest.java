@@ -24,6 +24,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.script.model.RandomUsed;
+import io.gs2.script.model.RandomStatus;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -31,6 +33,7 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
     private String scriptId;
     private String userId;
     private String args;
+    private RandomStatus randomStatus;
 	public String getScriptId() {
 		return scriptId;
 	}
@@ -61,6 +64,16 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
 		this.args = args;
 		return this;
 	}
+	public RandomStatus getRandomStatus() {
+		return randomStatus;
+	}
+	public void setRandomStatus(RandomStatus randomStatus) {
+		this.randomStatus = randomStatus;
+	}
+	public InvokeScriptRequest withRandomStatus(RandomStatus randomStatus) {
+		this.randomStatus = randomStatus;
+		return this;
+	}
 
     public static InvokeScriptRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +82,8 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
         return new InvokeScriptRequest()
             .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText());
+            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
+            .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")));
     }
 
     public JsonNode toJson() {
@@ -78,6 +92,7 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
                 put("scriptId", getScriptId());
                 put("userId", getUserId());
                 put("args", getArgs());
+                put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
             }}
         );
     }

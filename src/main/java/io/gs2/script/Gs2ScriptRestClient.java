@@ -1140,6 +1140,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                     put("scriptId", request.getScriptId());
                     put("userId", request.getUserId());
                     put("args", request.getArgs());
+                    put("randomStatus", request.getRandomStatus() != null ? request.getRandomStatus().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -1220,6 +1221,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                 new HashMap<String, Object>() {{
                     put("script", request.getScript());
                     put("args", request.getArgs());
+                    put("randomStatus", request.getRandomStatus() != null ? request.getRandomStatus().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
