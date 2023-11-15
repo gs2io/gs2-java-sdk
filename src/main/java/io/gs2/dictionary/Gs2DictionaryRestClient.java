@@ -157,7 +157,7 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("entryScript", request.getEntryScript() != null ? request.getEntryScript().toJson() : null);
-                    put("duplicateEntryScript", request.getDuplicateEntryScript() != null ? request.getDuplicateEntryScript().toJson() : null);
+                    put("duplicateEntryScript", request.getDuplicateEntryScript());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -401,7 +401,7 @@ import io.gs2.dictionary.model.*;public class Gs2DictionaryRestClient extends Ab
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("entryScript", request.getEntryScript() != null ? request.getEntryScript().toJson() : null);
-                    put("duplicateEntryScript", request.getDuplicateEntryScript() != null ? request.getDuplicateEntryScript().toJson() : null);
+                    put("duplicateEntryScript", request.getDuplicateEntryScript());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

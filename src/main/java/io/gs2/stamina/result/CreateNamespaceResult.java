@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stamina.model.*;
-import io.gs2.stamina.model.ScriptSetting;
 import io.gs2.stamina.model.LogSetting;
 import io.gs2.stamina.model.Namespace;
 

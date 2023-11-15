@@ -33,7 +33,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String name;
 	private String description;
 	private ScriptSetting entryScript;
-	private ScriptSetting duplicateEntryScript;
+	private String duplicateEntryScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -78,13 +78,13 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.entryScript = entryScript;
 		return this;
 	}
-	public ScriptSetting getDuplicateEntryScript() {
+	public String getDuplicateEntryScript() {
 		return duplicateEntryScript;
 	}
-	public void setDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
+	public void setDuplicateEntryScript(String duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 	}
-	public Namespace withDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
+	public Namespace withDuplicateEntryScript(String duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 		return this;
 	}
@@ -138,7 +138,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withEntryScript(data.get("entryScript") == null || data.get("entryScript").isNull() ? null : ScriptSetting.fromJson(data.get("entryScript")))
-            .withDuplicateEntryScript(data.get("duplicateEntryScript") == null || data.get("duplicateEntryScript").isNull() ? null : ScriptSetting.fromJson(data.get("duplicateEntryScript")))
+            .withDuplicateEntryScript(data.get("duplicateEntryScript") == null || data.get("duplicateEntryScript").isNull() ? null : data.get("duplicateEntryScript").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -152,7 +152,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("name", getName());
                 put("description", getDescription());
                 put("entryScript", getEntryScript() != null ? getEntryScript().toJson() : null);
-                put("duplicateEntryScript", getDuplicateEntryScript() != null ? getDuplicateEntryScript().toJson() : null);
+                put("duplicateEntryScript", getDuplicateEntryScript());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());

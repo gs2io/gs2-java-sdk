@@ -33,7 +33,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String namespaceName;
     private String description;
     private ScriptSetting entryScript;
-    private ScriptSetting duplicateEntryScript;
+    private String duplicateEntryScript;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -65,13 +65,13 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.entryScript = entryScript;
 		return this;
 	}
-	public ScriptSetting getDuplicateEntryScript() {
+	public String getDuplicateEntryScript() {
 		return duplicateEntryScript;
 	}
-	public void setDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
+	public void setDuplicateEntryScript(String duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 	}
-	public UpdateNamespaceRequest withDuplicateEntryScript(ScriptSetting duplicateEntryScript) {
+	public UpdateNamespaceRequest withDuplicateEntryScript(String duplicateEntryScript) {
 		this.duplicateEntryScript = duplicateEntryScript;
 		return this;
 	}
@@ -94,7 +94,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withEntryScript(data.get("entryScript") == null || data.get("entryScript").isNull() ? null : ScriptSetting.fromJson(data.get("entryScript")))
-            .withDuplicateEntryScript(data.get("duplicateEntryScript") == null || data.get("duplicateEntryScript").isNull() ? null : ScriptSetting.fromJson(data.get("duplicateEntryScript")))
+            .withDuplicateEntryScript(data.get("duplicateEntryScript") == null || data.get("duplicateEntryScript").isNull() ? null : data.get("duplicateEntryScript").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -104,7 +104,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
                 put("entryScript", getEntryScript() != null ? getEntryScript().toJson() : null);
-                put("duplicateEntryScript", getDuplicateEntryScript() != null ? getDuplicateEntryScript().toJson() : null);
+                put("duplicateEntryScript", getDuplicateEntryScript());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

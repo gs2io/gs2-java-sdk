@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.stamina.model.ScriptSetting;
 import io.gs2.stamina.model.LogSetting;
 
 @SuppressWarnings("serial")
@@ -32,7 +31,7 @@ import io.gs2.stamina.model.LogSetting;
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
     private String namespaceName;
     private String description;
-    private ScriptSetting overflowTriggerScript;
+    private String overflowTriggerScript;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -54,13 +53,13 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.description = description;
 		return this;
 	}
-	public ScriptSetting getOverflowTriggerScript() {
+	public String getOverflowTriggerScript() {
 		return overflowTriggerScript;
 	}
-	public void setOverflowTriggerScript(ScriptSetting overflowTriggerScript) {
+	public void setOverflowTriggerScript(String overflowTriggerScript) {
 		this.overflowTriggerScript = overflowTriggerScript;
 	}
-	public UpdateNamespaceRequest withOverflowTriggerScript(ScriptSetting overflowTriggerScript) {
+	public UpdateNamespaceRequest withOverflowTriggerScript(String overflowTriggerScript) {
 		this.overflowTriggerScript = overflowTriggerScript;
 		return this;
 	}
@@ -82,7 +81,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
         return new UpdateNamespaceRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withOverflowTriggerScript(data.get("overflowTriggerScript") == null || data.get("overflowTriggerScript").isNull() ? null : ScriptSetting.fromJson(data.get("overflowTriggerScript")))
+            .withOverflowTriggerScript(data.get("overflowTriggerScript") == null || data.get("overflowTriggerScript").isNull() ? null : data.get("overflowTriggerScript").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -91,7 +90,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
-                put("overflowTriggerScript", getOverflowTriggerScript() != null ? getOverflowTriggerScript().toJson() : null);
+                put("overflowTriggerScript", getOverflowTriggerScript());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

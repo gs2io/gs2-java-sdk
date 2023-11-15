@@ -156,7 +156,7 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
-                    put("overflowTriggerScript", request.getOverflowTriggerScript() != null ? request.getOverflowTriggerScript().toJson() : null);
+                    put("overflowTriggerScript", request.getOverflowTriggerScript());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -399,7 +399,7 @@ import io.gs2.stamina.model.*;public class Gs2StaminaRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
-                    put("overflowTriggerScript", request.getOverflowTriggerScript() != null ? request.getOverflowTriggerScript().toJson() : null);
+                    put("overflowTriggerScript", request.getOverflowTriggerScript());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

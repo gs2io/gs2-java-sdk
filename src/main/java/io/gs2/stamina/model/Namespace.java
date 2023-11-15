@@ -32,7 +32,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String namespaceId;
 	private String name;
 	private String description;
-	private ScriptSetting overflowTriggerScript;
+	private String overflowTriggerScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -67,13 +67,13 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.description = description;
 		return this;
 	}
-	public ScriptSetting getOverflowTriggerScript() {
+	public String getOverflowTriggerScript() {
 		return overflowTriggerScript;
 	}
-	public void setOverflowTriggerScript(ScriptSetting overflowTriggerScript) {
+	public void setOverflowTriggerScript(String overflowTriggerScript) {
 		this.overflowTriggerScript = overflowTriggerScript;
 	}
-	public Namespace withOverflowTriggerScript(ScriptSetting overflowTriggerScript) {
+	public Namespace withOverflowTriggerScript(String overflowTriggerScript) {
 		this.overflowTriggerScript = overflowTriggerScript;
 		return this;
 	}
@@ -126,7 +126,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withOverflowTriggerScript(data.get("overflowTriggerScript") == null || data.get("overflowTriggerScript").isNull() ? null : ScriptSetting.fromJson(data.get("overflowTriggerScript")))
+            .withOverflowTriggerScript(data.get("overflowTriggerScript") == null || data.get("overflowTriggerScript").isNull() ? null : data.get("overflowTriggerScript").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -139,7 +139,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
                 put("description", getDescription());
-                put("overflowTriggerScript", getOverflowTriggerScript() != null ? getOverflowTriggerScript().toJson() : null);
+                put("overflowTriggerScript", getOverflowTriggerScript());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
