@@ -33,7 +33,6 @@ public class Entry implements IModel, Serializable, Comparable<Entry> {
 	private String userId;
 	private String name;
 	private Long acquiredAt;
-	private Long revision;
 	public String getEntryId() {
 		return entryId;
 	}
@@ -74,16 +73,6 @@ public class Entry implements IModel, Serializable, Comparable<Entry> {
 		this.acquiredAt = acquiredAt;
 		return this;
 	}
-	public Long getRevision() {
-		return revision;
-	}
-	public void setRevision(Long revision) {
-		this.revision = revision;
-	}
-	public Entry withRevision(Long revision) {
-		this.revision = revision;
-		return this;
-	}
 
     public static Entry fromJson(JsonNode data) {
         if (data == null) {
@@ -93,8 +82,7 @@ public class Entry implements IModel, Serializable, Comparable<Entry> {
             .withEntryId(data.get("entryId") == null || data.get("entryId").isNull() ? null : data.get("entryId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
-            .withAcquiredAt(data.get("acquiredAt") == null || data.get("acquiredAt").isNull() ? null : data.get("acquiredAt").longValue())
-            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
+            .withAcquiredAt(data.get("acquiredAt") == null || data.get("acquiredAt").isNull() ? null : data.get("acquiredAt").longValue());
     }
 
     public JsonNode toJson() {
@@ -104,7 +92,6 @@ public class Entry implements IModel, Serializable, Comparable<Entry> {
                 put("userId", getUserId());
                 put("name", getName());
                 put("acquiredAt", getAcquiredAt());
-                put("revision", getRevision());
             }}
         );
     }
@@ -122,7 +109,6 @@ public class Entry implements IModel, Serializable, Comparable<Entry> {
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.acquiredAt == null) ? 0 : this.acquiredAt.hashCode());
-        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -153,11 +139,6 @@ public class Entry implements IModel, Serializable, Comparable<Entry> {
 		if (acquiredAt == null) {
 			return other.acquiredAt == null;
 		} else if (!acquiredAt.equals(other.acquiredAt)) {
-			return false;
-		}
-		if (revision == null) {
-			return other.revision == null;
-		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

@@ -53,12 +53,15 @@ public class TransactionSetting implements IModel, Serializable {
 		this.distributorNamespaceId = distributorNamespaceId;
 		return this;
 	}
+    @Deprecated
 	public String getKeyId() {
 		return keyId;
 	}
+    @Deprecated
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
+    @Deprecated
 	public TransactionSetting withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
