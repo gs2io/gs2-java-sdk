@@ -31,6 +31,7 @@ public class GetJobResultByUserIdRequest extends Gs2BasicRequest<GetJobResultByU
     private String namespaceName;
     private String userId;
     private String jobName;
+    private Integer tryNumber;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -61,6 +62,16 @@ public class GetJobResultByUserIdRequest extends Gs2BasicRequest<GetJobResultByU
 		this.jobName = jobName;
 		return this;
 	}
+	public Integer getTryNumber() {
+		return tryNumber;
+	}
+	public void setTryNumber(Integer tryNumber) {
+		this.tryNumber = tryNumber;
+	}
+	public GetJobResultByUserIdRequest withTryNumber(Integer tryNumber) {
+		this.tryNumber = tryNumber;
+		return this;
+	}
 
     public static GetJobResultByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +80,8 @@ public class GetJobResultByUserIdRequest extends Gs2BasicRequest<GetJobResultByU
         return new GetJobResultByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withJobName(data.get("jobName") == null || data.get("jobName").isNull() ? null : data.get("jobName").asText());
+            .withJobName(data.get("jobName") == null || data.get("jobName").isNull() ? null : data.get("jobName").asText())
+            .withTryNumber(data.get("tryNumber") == null || data.get("tryNumber").isNull() ? null : data.get("tryNumber").intValue());
     }
 
     public JsonNode toJson() {
@@ -78,6 +90,7 @@ public class GetJobResultByUserIdRequest extends Gs2BasicRequest<GetJobResultByU
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("jobName", getJobName());
+                put("tryNumber", getTryNumber());
             }}
         );
     }

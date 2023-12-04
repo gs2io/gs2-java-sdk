@@ -1825,6 +1825,9 @@ import io.gs2.jobQueue.model.*;public class Gs2JobQueueRestClient extends Abstra
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getTryNumber() != null) {
+                queryStrings.add("tryNumber=" + String.valueOf(this.request.getTryNumber()));
+            }
             url += "?" + String.join("&", queryStrings);
 
             builder
@@ -1909,6 +1912,9 @@ import io.gs2.jobQueue.model.*;public class Gs2JobQueueRestClient extends Abstra
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getTryNumber() != null) {
+                queryStrings.add("tryNumber=" + String.valueOf(this.request.getTryNumber()));
             }
             url += "?" + String.join("&", queryStrings);
 
