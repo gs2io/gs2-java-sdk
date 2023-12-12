@@ -24,15 +24,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.stateMachine.model.ChangeStateEvent;
+import io.gs2.stateMachine.model.EmitEvent;
+import io.gs2.stateMachine.model.Event;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartStateMachineByUserIdRequest> {
+public class ReportByUserIdRequest extends Gs2BasicRequest<ReportByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String args;
-    private String enableSpeculativeExecution;
-    private Integer ttl;
+    private String statusName;
+    private List<Event> events;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -40,7 +42,7 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public StartStateMachineByUserIdRequest withNamespaceName(String namespaceName) {
+	public ReportByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -50,38 +52,28 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public StartStateMachineByUserIdRequest withUserId(String userId) {
+	public ReportByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	public String getArgs() {
-		return args;
+	public String getStatusName() {
+		return statusName;
 	}
-	public void setArgs(String args) {
-		this.args = args;
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
-	public StartStateMachineByUserIdRequest withArgs(String args) {
-		this.args = args;
+	public ReportByUserIdRequest withStatusName(String statusName) {
+		this.statusName = statusName;
 		return this;
 	}
-	public String getEnableSpeculativeExecution() {
-		return enableSpeculativeExecution;
+	public List<Event> getEvents() {
+		return events;
 	}
-	public void setEnableSpeculativeExecution(String enableSpeculativeExecution) {
-		this.enableSpeculativeExecution = enableSpeculativeExecution;
+	public void setEvents(List<Event> events) {
+		this.events = events;
 	}
-	public StartStateMachineByUserIdRequest withEnableSpeculativeExecution(String enableSpeculativeExecution) {
-		this.enableSpeculativeExecution = enableSpeculativeExecution;
-		return this;
-	}
-	public Integer getTtl() {
-		return ttl;
-	}
-	public void setTtl(Integer ttl) {
-		this.ttl = ttl;
-	}
-	public StartStateMachineByUserIdRequest withTtl(Integer ttl) {
-		this.ttl = ttl;
+	public ReportByUserIdRequest withEvents(List<Event> events) {
+		this.events = events;
 		return this;
 	}
 
@@ -93,21 +85,25 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public StartStateMachineByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+	public ReportByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static StartStateMachineByUserIdRequest fromJson(JsonNode data) {
+    public static ReportByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new StartStateMachineByUserIdRequest()
+        return new ReportByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
-            .withEnableSpeculativeExecution(data.get("enableSpeculativeExecution") == null || data.get("enableSpeculativeExecution").isNull() ? null : data.get("enableSpeculativeExecution").asText())
-            .withTtl(data.get("ttl") == null || data.get("ttl").isNull() ? null : data.get("ttl").intValue());
+            .withStatusName(data.get("statusName") == null || data.get("statusName").isNull() ? null : data.get("statusName").asText())
+            .withEvents(data.get("events") == null || data.get("events").isNull() ? new ArrayList<Event>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("events").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Event.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -115,9 +111,13 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("args", getArgs());
-                put("enableSpeculativeExecution", getEnableSpeculativeExecution());
-                put("ttl", getTtl());
+                put("statusName", getStatusName());
+                put("events", getEvents() == null ? new ArrayList<Event>() :
+                    getEvents().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }

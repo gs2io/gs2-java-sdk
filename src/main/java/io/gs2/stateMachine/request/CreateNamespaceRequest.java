@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.stateMachine.model.TransactionSetting;
 import io.gs2.stateMachine.model.ScriptSetting;
 import io.gs2.stateMachine.model.LogSetting;
 
@@ -32,6 +33,8 @@ import io.gs2.stateMachine.model.LogSetting;
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
     private String name;
     private String description;
+    private String supportSpeculativeExecution;
+    private TransactionSetting transactionSetting;
     private ScriptSetting startScript;
     private ScriptSetting passScript;
     private ScriptSetting errorScript;
@@ -55,6 +58,26 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public String getSupportSpeculativeExecution() {
+		return supportSpeculativeExecution;
+	}
+	public void setSupportSpeculativeExecution(String supportSpeculativeExecution) {
+		this.supportSpeculativeExecution = supportSpeculativeExecution;
+	}
+	public CreateNamespaceRequest withSupportSpeculativeExecution(String supportSpeculativeExecution) {
+		this.supportSpeculativeExecution = supportSpeculativeExecution;
+		return this;
+	}
+	public TransactionSetting getTransactionSetting() {
+		return transactionSetting;
+	}
+	public void setTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
+	}
+	public CreateNamespaceRequest withTransactionSetting(TransactionSetting transactionSetting) {
+		this.transactionSetting = transactionSetting;
 		return this;
 	}
 	public ScriptSetting getStartScript() {
@@ -115,6 +138,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         return new CreateNamespaceRequest()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withSupportSpeculativeExecution(data.get("supportSpeculativeExecution") == null || data.get("supportSpeculativeExecution").isNull() ? null : data.get("supportSpeculativeExecution").asText())
+            .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withStartScript(data.get("startScript") == null || data.get("startScript").isNull() ? null : ScriptSetting.fromJson(data.get("startScript")))
             .withPassScript(data.get("passScript") == null || data.get("passScript").isNull() ? null : ScriptSetting.fromJson(data.get("passScript")))
             .withErrorScript(data.get("errorScript") == null || data.get("errorScript").isNull() ? null : ScriptSetting.fromJson(data.get("errorScript")))
@@ -127,6 +152,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("description", getDescription());
+                put("supportSpeculativeExecution", getSupportSpeculativeExecution());
+                put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("startScript", getStartScript() != null ? getStartScript().toJson() : null);
                 put("passScript", getPassScript() != null ? getPassScript().toJson() : null);
                 put("errorScript", getErrorScript() != null ? getErrorScript().toJson() : null);

@@ -33,6 +33,9 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 	private String userId;
 	private String name;
 	private Long stateMachineVersion;
+	private String enableSpeculativeExecution;
+	private String stateMachineDefinition;
+	private RandomStatus randomStatus;
 	private List<StackEntry> stacks;
 	private List<Variable> variables;
 	private String status;
@@ -78,6 +81,36 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 	}
 	public Status withStateMachineVersion(Long stateMachineVersion) {
 		this.stateMachineVersion = stateMachineVersion;
+		return this;
+	}
+	public String getEnableSpeculativeExecution() {
+		return enableSpeculativeExecution;
+	}
+	public void setEnableSpeculativeExecution(String enableSpeculativeExecution) {
+		this.enableSpeculativeExecution = enableSpeculativeExecution;
+	}
+	public Status withEnableSpeculativeExecution(String enableSpeculativeExecution) {
+		this.enableSpeculativeExecution = enableSpeculativeExecution;
+		return this;
+	}
+	public String getStateMachineDefinition() {
+		return stateMachineDefinition;
+	}
+	public void setStateMachineDefinition(String stateMachineDefinition) {
+		this.stateMachineDefinition = stateMachineDefinition;
+	}
+	public Status withStateMachineDefinition(String stateMachineDefinition) {
+		this.stateMachineDefinition = stateMachineDefinition;
+		return this;
+	}
+	public RandomStatus getRandomStatus() {
+		return randomStatus;
+	}
+	public void setRandomStatus(RandomStatus randomStatus) {
+		this.randomStatus = randomStatus;
+	}
+	public Status withRandomStatus(RandomStatus randomStatus) {
+		this.randomStatus = randomStatus;
 		return this;
 	}
 	public List<StackEntry> getStacks() {
@@ -160,6 +193,9 @@ public class Status implements IModel, Serializable, Comparable<Status> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withStateMachineVersion(data.get("stateMachineVersion") == null || data.get("stateMachineVersion").isNull() ? null : data.get("stateMachineVersion").longValue())
+            .withEnableSpeculativeExecution(data.get("enableSpeculativeExecution") == null || data.get("enableSpeculativeExecution").isNull() ? null : data.get("enableSpeculativeExecution").asText())
+            .withStateMachineDefinition(data.get("stateMachineDefinition") == null || data.get("stateMachineDefinition").isNull() ? null : data.get("stateMachineDefinition").asText())
+            .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
             .withStacks(data.get("stacks") == null || data.get("stacks").isNull() ? new ArrayList<StackEntry>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("stacks").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -186,6 +222,9 @@ public class Status implements IModel, Serializable, Comparable<Status> {
                 put("userId", getUserId());
                 put("name", getName());
                 put("stateMachineVersion", getStateMachineVersion());
+                put("enableSpeculativeExecution", getEnableSpeculativeExecution());
+                put("stateMachineDefinition", getStateMachineDefinition());
+                put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
                 put("stacks", getStacks() == null ? new ArrayList<StackEntry>() :
                     getStacks().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -220,6 +259,9 @@ public class Status implements IModel, Serializable, Comparable<Status> {
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.stateMachineVersion == null) ? 0 : this.stateMachineVersion.hashCode());
+        result = prime * result + ((this.enableSpeculativeExecution == null) ? 0 : this.enableSpeculativeExecution.hashCode());
+        result = prime * result + ((this.stateMachineDefinition == null) ? 0 : this.stateMachineDefinition.hashCode());
+        result = prime * result + ((this.randomStatus == null) ? 0 : this.randomStatus.hashCode());
         result = prime * result + ((this.stacks == null) ? 0 : this.stacks.hashCode());
         result = prime * result + ((this.variables == null) ? 0 : this.variables.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
@@ -257,6 +299,21 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 		if (stateMachineVersion == null) {
 			return other.stateMachineVersion == null;
 		} else if (!stateMachineVersion.equals(other.stateMachineVersion)) {
+			return false;
+		}
+		if (enableSpeculativeExecution == null) {
+			return other.enableSpeculativeExecution == null;
+		} else if (!enableSpeculativeExecution.equals(other.enableSpeculativeExecution)) {
+			return false;
+		}
+		if (stateMachineDefinition == null) {
+			return other.stateMachineDefinition == null;
+		} else if (!stateMachineDefinition.equals(other.stateMachineDefinition)) {
+			return false;
+		}
+		if (randomStatus == null) {
+			return other.randomStatus == null;
+		} else if (!randomStatus.equals(other.randomStatus)) {
 			return false;
 		}
 		if (stacks == null) {

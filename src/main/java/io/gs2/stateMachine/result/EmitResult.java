@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stateMachine.model.*;
+import io.gs2.stateMachine.model.RandomUsed;
+import io.gs2.stateMachine.model.RandomStatus;
 import io.gs2.stateMachine.model.StackEntry;
 import io.gs2.stateMachine.model.Variable;
 import io.gs2.stateMachine.model.Status;

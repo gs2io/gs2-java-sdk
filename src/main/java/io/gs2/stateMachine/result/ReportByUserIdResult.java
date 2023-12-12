@@ -25,35 +25,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.stateMachine.model.*;
-import io.gs2.stateMachine.model.TransactionSetting;
-import io.gs2.stateMachine.model.ScriptSetting;
-import io.gs2.stateMachine.model.LogSetting;
-import io.gs2.stateMachine.model.Namespace;
+import io.gs2.stateMachine.model.RandomUsed;
+import io.gs2.stateMachine.model.RandomStatus;
+import io.gs2.stateMachine.model.StackEntry;
+import io.gs2.stateMachine.model.Variable;
+import io.gs2.stateMachine.model.Status;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CreateNamespaceResult implements IResult, Serializable {
-    private Namespace item;
+public class ReportByUserIdResult implements IResult, Serializable {
+    private Status item;
 
-	public Namespace getItem() {
+	public Status getItem() {
 		return item;
 	}
 
-	public void setItem(Namespace item) {
+	public void setItem(Status item) {
 		this.item = item;
 	}
 
-	public CreateNamespaceResult withItem(Namespace item) {
+	public ReportByUserIdResult withItem(Status item) {
 		this.item = item;
 		return this;
 	}
 
-    public static CreateNamespaceResult fromJson(JsonNode data) {
+    public static ReportByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new CreateNamespaceResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Namespace.fromJson(data.get("item")));
+        return new ReportByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {

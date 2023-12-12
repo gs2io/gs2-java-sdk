@@ -156,6 +156,8 @@ import io.gs2.stateMachine.model.*;public class Gs2StateMachineRestClient extend
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("supportSpeculativeExecution", request.getSupportSpeculativeExecution());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("startScript", request.getStartScript() != null ? request.getStartScript().toJson() : null);
                     put("passScript", request.getPassScript() != null ? request.getPassScript().toJson() : null);
                     put("errorScript", request.getErrorScript() != null ? request.getErrorScript().toJson() : null);
@@ -402,6 +404,8 @@ import io.gs2.stateMachine.model.*;public class Gs2StateMachineRestClient extend
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("supportSpeculativeExecution", request.getSupportSpeculativeExecution());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("startScript", request.getStartScript() != null ? request.getStartScript().toJson() : null);
                     put("passScript", request.getPassScript() != null ? request.getPassScript().toJson() : null);
                     put("errorScript", request.getErrorScript() != null ? request.getErrorScript().toJson() : null);
@@ -1830,6 +1834,7 @@ import io.gs2.stateMachine.model.*;public class Gs2StateMachineRestClient extend
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("args", request.getArgs());
+                    put("enableSpeculativeExecution", request.getEnableSpeculativeExecution());
                     put("ttl", request.getTtl());
                     put("contextStack", request.getContextStack());
                 }}
@@ -2123,6 +2128,190 @@ import io.gs2.stateMachine.model.*;public class Gs2StateMachineRestClient extend
     ) {
         final AsyncResult<EmitByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         emitByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ReportTask extends Gs2RestSessionTask<ReportResult> {
+        private ReportRequest request;
+
+        public ReportTask(
+            ReportRequest request,
+            AsyncAction<AsyncResult<ReportResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ReportResult parse(JsonNode data) {
+            return ReportResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "state-machine")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/status/{statusName}/report";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{statusName}", this.request.getStatusName() == null || this.request.getStatusName().length() == 0 ? "null" : String.valueOf(this.request.getStatusName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("events", request.getEvents() == null ? new ArrayList<Event>() :
+                        request.getEvents().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void reportAsync(
+            ReportRequest request,
+            AsyncAction<AsyncResult<ReportResult>> callback
+    ) {
+        ReportTask task = new ReportTask(request, callback);
+        session.execute(task);
+    }
+
+    public ReportResult report(
+            ReportRequest request
+    ) {
+        final AsyncResult<ReportResult>[] resultAsyncResult = new AsyncResult[]{null};
+        reportAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ReportByUserIdTask extends Gs2RestSessionTask<ReportByUserIdResult> {
+        private ReportByUserIdRequest request;
+
+        public ReportByUserIdTask(
+            ReportByUserIdRequest request,
+            AsyncAction<AsyncResult<ReportByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ReportByUserIdResult parse(JsonNode data) {
+            return ReportByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "state-machine")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/{statusName}/report";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{statusName}", this.request.getStatusName() == null || this.request.getStatusName().length() == 0 ? "null" : String.valueOf(this.request.getStatusName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("events", request.getEvents() == null ? new ArrayList<Event>() :
+                        request.getEvents().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void reportByUserIdAsync(
+            ReportByUserIdRequest request,
+            AsyncAction<AsyncResult<ReportByUserIdResult>> callback
+    ) {
+        ReportByUserIdTask task = new ReportByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public ReportByUserIdResult reportByUserId(
+            ReportByUserIdRequest request
+    ) {
+        final AsyncResult<ReportByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        reportByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
