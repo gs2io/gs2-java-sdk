@@ -31,7 +31,6 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
     private String namespaceName;
     private String userId;
     private String args;
-    private String enableSpeculativeExecution;
     private Integer ttl;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -62,16 +61,6 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
 	}
 	public StartStateMachineByUserIdRequest withArgs(String args) {
 		this.args = args;
-		return this;
-	}
-	public String getEnableSpeculativeExecution() {
-		return enableSpeculativeExecution;
-	}
-	public void setEnableSpeculativeExecution(String enableSpeculativeExecution) {
-		this.enableSpeculativeExecution = enableSpeculativeExecution;
-	}
-	public StartStateMachineByUserIdRequest withEnableSpeculativeExecution(String enableSpeculativeExecution) {
-		this.enableSpeculativeExecution = enableSpeculativeExecution;
 		return this;
 	}
 	public Integer getTtl() {
@@ -106,7 +95,6 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
-            .withEnableSpeculativeExecution(data.get("enableSpeculativeExecution") == null || data.get("enableSpeculativeExecution").isNull() ? null : data.get("enableSpeculativeExecution").asText())
             .withTtl(data.get("ttl") == null || data.get("ttl").isNull() ? null : data.get("ttl").intValue());
     }
 
@@ -116,7 +104,6 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("args", getArgs());
-                put("enableSpeculativeExecution", getEnableSpeculativeExecution());
                 put("ttl", getTtl());
             }}
         );

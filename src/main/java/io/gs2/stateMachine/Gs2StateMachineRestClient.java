@@ -1834,7 +1834,6 @@ import io.gs2.stateMachine.model.*;public class Gs2StateMachineRestClient extend
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("args", request.getArgs());
-                    put("enableSpeculativeExecution", request.getEnableSpeculativeExecution());
                     put("ttl", request.getTtl());
                     put("contextStack", request.getContextStack());
                 }}

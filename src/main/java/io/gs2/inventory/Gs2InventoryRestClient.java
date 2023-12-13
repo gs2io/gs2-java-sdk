@@ -8309,7 +8309,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "inventory")
                 .replace("{region}", session.getRegion().getName())
-                + "/stamp/item/verify";
+                + "/stamp/item/reference/verify";
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
