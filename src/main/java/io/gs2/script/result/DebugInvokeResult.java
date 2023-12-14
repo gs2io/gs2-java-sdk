@@ -25,6 +25,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.script.model.*;
+import io.gs2.script.model.ConsumeAction;
+import io.gs2.script.model.AcquireAction;
+import io.gs2.script.model.Transaction;
 import io.gs2.script.model.RandomUsed;
 import io.gs2.script.model.RandomStatus;
 
@@ -33,7 +36,7 @@ import io.gs2.script.model.RandomStatus;
 public class DebugInvokeResult implements IResult, Serializable {
     private Integer code;
     private String result;
-    private String transaction;
+    private Transaction transaction;
     private RandomStatus randomStatus;
     private Integer executeTime;
     private Integer charged;
@@ -65,15 +68,15 @@ public class DebugInvokeResult implements IResult, Serializable {
 		return this;
 	}
 
-	public String getTransaction() {
+	public Transaction getTransaction() {
 		return transaction;
 	}
 
-	public void setTransaction(String transaction) {
+	public void setTransaction(Transaction transaction) {
 		this.transaction = transaction;
 	}
 
-	public DebugInvokeResult withTransaction(String transaction) {
+	public DebugInvokeResult withTransaction(Transaction transaction) {
 		this.transaction = transaction;
 		return this;
 	}
@@ -137,7 +140,7 @@ public class DebugInvokeResult implements IResult, Serializable {
         return new DebugInvokeResult()
             .withCode(data.get("code") == null || data.get("code").isNull() ? null : data.get("code").intValue())
             .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText())
-            .withTransaction(data.get("transaction") == null || data.get("transaction").isNull() ? null : data.get("transaction").asText())
+            .withTransaction(data.get("transaction") == null || data.get("transaction").isNull() ? null : Transaction.fromJson(data.get("transaction")))
             .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
             .withExecuteTime(data.get("executeTime") == null || data.get("executeTime").isNull() ? null : data.get("executeTime").intValue())
             .withCharged(data.get("charged") == null || data.get("charged").isNull() ? null : data.get("charged").intValue())
@@ -153,7 +156,7 @@ public class DebugInvokeResult implements IResult, Serializable {
             new HashMap<String, Object>() {{
                 put("code", getCode());
                 put("result", getResult());
-                put("transaction", getTransaction());
+                put("transaction", getTransaction() != null ? getTransaction().toJson() : null);
                 put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
                 put("executeTime", getExecuteTime());
                 put("charged", getCharged());
