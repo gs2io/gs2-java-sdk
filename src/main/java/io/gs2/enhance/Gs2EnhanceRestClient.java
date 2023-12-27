@@ -1726,6 +1726,597 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeUnleashRateModelsTask extends Gs2RestSessionTask<DescribeUnleashRateModelsResult> {
+        private DescribeUnleashRateModelsRequest request;
+
+        public DescribeUnleashRateModelsTask(
+            DescribeUnleashRateModelsRequest request,
+            AsyncAction<AsyncResult<DescribeUnleashRateModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeUnleashRateModelsResult parse(JsonNode data) {
+            return DescribeUnleashRateModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/unleash/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeUnleashRateModelsAsync(
+            DescribeUnleashRateModelsRequest request,
+            AsyncAction<AsyncResult<DescribeUnleashRateModelsResult>> callback
+    ) {
+        DescribeUnleashRateModelsTask task = new DescribeUnleashRateModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeUnleashRateModelsResult describeUnleashRateModels(
+            DescribeUnleashRateModelsRequest request
+    ) {
+        final AsyncResult<DescribeUnleashRateModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeUnleashRateModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetUnleashRateModelTask extends Gs2RestSessionTask<GetUnleashRateModelResult> {
+        private GetUnleashRateModelRequest request;
+
+        public GetUnleashRateModelTask(
+            GetUnleashRateModelRequest request,
+            AsyncAction<AsyncResult<GetUnleashRateModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetUnleashRateModelResult parse(JsonNode data) {
+            return GetUnleashRateModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/unleash/model/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getUnleashRateModelAsync(
+            GetUnleashRateModelRequest request,
+            AsyncAction<AsyncResult<GetUnleashRateModelResult>> callback
+    ) {
+        GetUnleashRateModelTask task = new GetUnleashRateModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetUnleashRateModelResult getUnleashRateModel(
+            GetUnleashRateModelRequest request
+    ) {
+        final AsyncResult<GetUnleashRateModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getUnleashRateModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeUnleashRateModelMastersTask extends Gs2RestSessionTask<DescribeUnleashRateModelMastersResult> {
+        private DescribeUnleashRateModelMastersRequest request;
+
+        public DescribeUnleashRateModelMastersTask(
+            DescribeUnleashRateModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeUnleashRateModelMastersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeUnleashRateModelMastersResult parse(JsonNode data) {
+            return DescribeUnleashRateModelMastersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/unleash/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeUnleashRateModelMastersAsync(
+            DescribeUnleashRateModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeUnleashRateModelMastersResult>> callback
+    ) {
+        DescribeUnleashRateModelMastersTask task = new DescribeUnleashRateModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeUnleashRateModelMastersResult describeUnleashRateModelMasters(
+            DescribeUnleashRateModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeUnleashRateModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeUnleashRateModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateUnleashRateModelMasterTask extends Gs2RestSessionTask<CreateUnleashRateModelMasterResult> {
+        private CreateUnleashRateModelMasterRequest request;
+
+        public CreateUnleashRateModelMasterTask(
+            CreateUnleashRateModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateUnleashRateModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateUnleashRateModelMasterResult parse(JsonNode data) {
+            return CreateUnleashRateModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/unleash/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("targetInventoryModelId", request.getTargetInventoryModelId());
+                    put("gradeModelId", request.getGradeModelId());
+                    put("gradeEntries", request.getGradeEntries() == null ? new ArrayList<UnleashRateEntryModel>() :
+                        request.getGradeEntries().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createUnleashRateModelMasterAsync(
+            CreateUnleashRateModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateUnleashRateModelMasterResult>> callback
+    ) {
+        CreateUnleashRateModelMasterTask task = new CreateUnleashRateModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateUnleashRateModelMasterResult createUnleashRateModelMaster(
+            CreateUnleashRateModelMasterRequest request
+    ) {
+        final AsyncResult<CreateUnleashRateModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createUnleashRateModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetUnleashRateModelMasterTask extends Gs2RestSessionTask<GetUnleashRateModelMasterResult> {
+        private GetUnleashRateModelMasterRequest request;
+
+        public GetUnleashRateModelMasterTask(
+            GetUnleashRateModelMasterRequest request,
+            AsyncAction<AsyncResult<GetUnleashRateModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetUnleashRateModelMasterResult parse(JsonNode data) {
+            return GetUnleashRateModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/unleash/model/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getUnleashRateModelMasterAsync(
+            GetUnleashRateModelMasterRequest request,
+            AsyncAction<AsyncResult<GetUnleashRateModelMasterResult>> callback
+    ) {
+        GetUnleashRateModelMasterTask task = new GetUnleashRateModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetUnleashRateModelMasterResult getUnleashRateModelMaster(
+            GetUnleashRateModelMasterRequest request
+    ) {
+        final AsyncResult<GetUnleashRateModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getUnleashRateModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateUnleashRateModelMasterTask extends Gs2RestSessionTask<UpdateUnleashRateModelMasterResult> {
+        private UpdateUnleashRateModelMasterRequest request;
+
+        public UpdateUnleashRateModelMasterTask(
+            UpdateUnleashRateModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateUnleashRateModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateUnleashRateModelMasterResult parse(JsonNode data) {
+            return UpdateUnleashRateModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/unleash/model/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("targetInventoryModelId", request.getTargetInventoryModelId());
+                    put("gradeModelId", request.getGradeModelId());
+                    put("gradeEntries", request.getGradeEntries() == null ? new ArrayList<UnleashRateEntryModel>() :
+                        request.getGradeEntries().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateUnleashRateModelMasterAsync(
+            UpdateUnleashRateModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateUnleashRateModelMasterResult>> callback
+    ) {
+        UpdateUnleashRateModelMasterTask task = new UpdateUnleashRateModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateUnleashRateModelMasterResult updateUnleashRateModelMaster(
+            UpdateUnleashRateModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateUnleashRateModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateUnleashRateModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteUnleashRateModelMasterTask extends Gs2RestSessionTask<DeleteUnleashRateModelMasterResult> {
+        private DeleteUnleashRateModelMasterRequest request;
+
+        public DeleteUnleashRateModelMasterTask(
+            DeleteUnleashRateModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteUnleashRateModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteUnleashRateModelMasterResult parse(JsonNode data) {
+            return DeleteUnleashRateModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/unleash/model/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteUnleashRateModelMasterAsync(
+            DeleteUnleashRateModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteUnleashRateModelMasterResult>> callback
+    ) {
+        DeleteUnleashRateModelMasterTask task = new DeleteUnleashRateModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteUnleashRateModelMasterResult deleteUnleashRateModelMaster(
+            DeleteUnleashRateModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteUnleashRateModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteUnleashRateModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DirectEnhanceTask extends Gs2RestSessionTask<DirectEnhanceResult> {
         private DirectEnhanceRequest request;
 
@@ -1988,6 +2579,282 @@ import io.gs2.enhance.model.*;public class Gs2EnhanceRestClient extends Abstract
     ) {
         final AsyncResult<DirectEnhanceByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         directEnhanceByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnleashTask extends Gs2RestSessionTask<UnleashResult> {
+        private UnleashRequest request;
+
+        public UnleashTask(
+            UnleashRequest request,
+            AsyncAction<AsyncResult<UnleashResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnleashResult parse(JsonNode data) {
+            return UnleashResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/unleash/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("targetItemSetId", request.getTargetItemSetId());
+                    put("materials", request.getMaterials() == null ? new ArrayList<String>() :
+                        request.getMaterials().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unleashAsync(
+            UnleashRequest request,
+            AsyncAction<AsyncResult<UnleashResult>> callback
+    ) {
+        UnleashTask task = new UnleashTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnleashResult unleash(
+            UnleashRequest request
+    ) {
+        final AsyncResult<UnleashResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unleashAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnleashByUserIdTask extends Gs2RestSessionTask<UnleashByUserIdResult> {
+        private UnleashByUserIdRequest request;
+
+        public UnleashByUserIdTask(
+            UnleashByUserIdRequest request,
+            AsyncAction<AsyncResult<UnleashByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnleashByUserIdResult parse(JsonNode data) {
+            return UnleashByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/unleash/{rateName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{rateName}", this.request.getRateName() == null || this.request.getRateName().length() == 0 ? "null" : String.valueOf(this.request.getRateName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("targetItemSetId", request.getTargetItemSetId());
+                    put("materials", request.getMaterials() == null ? new ArrayList<String>() :
+                        request.getMaterials().stream().map(item -> {
+                            return item;
+                        }
+                    ).collect(Collectors.toList()));
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unleashByUserIdAsync(
+            UnleashByUserIdRequest request,
+            AsyncAction<AsyncResult<UnleashByUserIdResult>> callback
+    ) {
+        UnleashByUserIdTask task = new UnleashByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnleashByUserIdResult unleashByUserId(
+            UnleashByUserIdRequest request
+    ) {
+        final AsyncResult<UnleashByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unleashByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UnleashByStampSheetTask extends Gs2RestSessionTask<UnleashByStampSheetResult> {
+        private UnleashByStampSheetRequest request;
+
+        public UnleashByStampSheetTask(
+            UnleashByStampSheetRequest request,
+            AsyncAction<AsyncResult<UnleashByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UnleashByStampSheetResult parse(JsonNode data) {
+            return UnleashByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "enhance")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/unleash";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void unleashByStampSheetAsync(
+            UnleashByStampSheetRequest request,
+            AsyncAction<AsyncResult<UnleashByStampSheetResult>> callback
+    ) {
+        UnleashByStampSheetTask task = new UnleashByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public UnleashByStampSheetResult unleashByStampSheet(
+            UnleashByStampSheetRequest request
+    ) {
+        final AsyncResult<UnleashByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        unleashByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
