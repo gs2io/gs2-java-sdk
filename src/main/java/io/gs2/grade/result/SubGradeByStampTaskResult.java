@@ -32,6 +32,8 @@ import io.gs2.grade.model.Status;
 public class SubGradeByStampTaskResult implements IResult, Serializable {
     private Status item;
     private String newContextStack;
+    private String experienceNamespaceName;
+    private io.gs2.experience.model.Status experienceStatus;
 
 	public Status getItem() {
 		return item;
@@ -59,13 +61,41 @@ public class SubGradeByStampTaskResult implements IResult, Serializable {
 		return this;
 	}
 
+	public String getExperienceNamespaceName() {
+		return experienceNamespaceName;
+	}
+
+	public void setExperienceNamespaceName(String experienceNamespaceName) {
+		this.experienceNamespaceName = experienceNamespaceName;
+	}
+
+	public SubGradeByStampTaskResult withExperienceNamespaceName(String experienceNamespaceName) {
+		this.experienceNamespaceName = experienceNamespaceName;
+		return this;
+	}
+
+	public io.gs2.experience.model.Status getExperienceStatus() {
+		return experienceStatus;
+	}
+
+	public void setExperienceStatus(io.gs2.experience.model.Status experienceStatus) {
+		this.experienceStatus = experienceStatus;
+	}
+
+	public SubGradeByStampTaskResult withExperienceStatus(io.gs2.experience.model.Status experienceStatus) {
+		this.experienceStatus = experienceStatus;
+		return this;
+	}
+
     public static SubGradeByStampTaskResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new SubGradeByStampTaskResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")))
-            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText())
+            .withExperienceNamespaceName(data.get("experienceNamespaceName") == null || data.get("experienceNamespaceName").isNull() ? null : data.get("experienceNamespaceName").asText())
+            .withExperienceStatus(data.get("experienceStatus") == null || data.get("experienceStatus").isNull() ? null : io.gs2.experience.model.Status.fromJson(data.get("experienceStatus")));
     }
 
     public JsonNode toJson() {
@@ -73,6 +103,8 @@ public class SubGradeByStampTaskResult implements IResult, Serializable {
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
                 put("newContextStack", getNewContextStack());
+                put("experienceNamespaceName", getExperienceNamespaceName());
+                put("experienceStatus", getExperienceStatus() != null ? getExperienceStatus().toJson() : null);
             }}
         );
     }

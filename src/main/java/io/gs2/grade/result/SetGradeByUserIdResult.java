@@ -32,6 +32,8 @@ import io.gs2.grade.model.Status;
 public class SetGradeByUserIdResult implements IResult, Serializable {
     private Status item;
     private Status old;
+    private String experienceNamespaceName;
+    private io.gs2.experience.model.Status experienceStatus;
 
 	public Status getItem() {
 		return item;
@@ -59,13 +61,41 @@ public class SetGradeByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
+	public String getExperienceNamespaceName() {
+		return experienceNamespaceName;
+	}
+
+	public void setExperienceNamespaceName(String experienceNamespaceName) {
+		this.experienceNamespaceName = experienceNamespaceName;
+	}
+
+	public SetGradeByUserIdResult withExperienceNamespaceName(String experienceNamespaceName) {
+		this.experienceNamespaceName = experienceNamespaceName;
+		return this;
+	}
+
+	public io.gs2.experience.model.Status getExperienceStatus() {
+		return experienceStatus;
+	}
+
+	public void setExperienceStatus(io.gs2.experience.model.Status experienceStatus) {
+		this.experienceStatus = experienceStatus;
+	}
+
+	public SetGradeByUserIdResult withExperienceStatus(io.gs2.experience.model.Status experienceStatus) {
+		this.experienceStatus = experienceStatus;
+		return this;
+	}
+
     public static SetGradeByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new SetGradeByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")))
-            .withOld(data.get("old") == null || data.get("old").isNull() ? null : Status.fromJson(data.get("old")));
+            .withOld(data.get("old") == null || data.get("old").isNull() ? null : Status.fromJson(data.get("old")))
+            .withExperienceNamespaceName(data.get("experienceNamespaceName") == null || data.get("experienceNamespaceName").isNull() ? null : data.get("experienceNamespaceName").asText())
+            .withExperienceStatus(data.get("experienceStatus") == null || data.get("experienceStatus").isNull() ? null : io.gs2.experience.model.Status.fromJson(data.get("experienceStatus")));
     }
 
     public JsonNode toJson() {
@@ -73,6 +103,8 @@ public class SetGradeByUserIdResult implements IResult, Serializable {
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
                 put("old", getOld() != null ? getOld().toJson() : null);
+                put("experienceNamespaceName", getExperienceNamespaceName());
+                put("experienceStatus", getExperienceStatus() != null ? getExperienceStatus().toJson() : null);
             }}
         );
     }

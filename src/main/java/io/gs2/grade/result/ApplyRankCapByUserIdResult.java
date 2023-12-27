@@ -31,6 +31,8 @@ import io.gs2.grade.model.Status;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ApplyRankCapByUserIdResult implements IResult, Serializable {
     private Status item;
+    private String experienceNamespaceName;
+    private io.gs2.experience.model.Status experienceStatus;
 
 	public Status getItem() {
 		return item;
@@ -45,18 +47,48 @@ public class ApplyRankCapByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
+	public String getExperienceNamespaceName() {
+		return experienceNamespaceName;
+	}
+
+	public void setExperienceNamespaceName(String experienceNamespaceName) {
+		this.experienceNamespaceName = experienceNamespaceName;
+	}
+
+	public ApplyRankCapByUserIdResult withExperienceNamespaceName(String experienceNamespaceName) {
+		this.experienceNamespaceName = experienceNamespaceName;
+		return this;
+	}
+
+	public io.gs2.experience.model.Status getExperienceStatus() {
+		return experienceStatus;
+	}
+
+	public void setExperienceStatus(io.gs2.experience.model.Status experienceStatus) {
+		this.experienceStatus = experienceStatus;
+	}
+
+	public ApplyRankCapByUserIdResult withExperienceStatus(io.gs2.experience.model.Status experienceStatus) {
+		this.experienceStatus = experienceStatus;
+		return this;
+	}
+
     public static ApplyRankCapByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new ApplyRankCapByUserIdResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")));
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Status.fromJson(data.get("item")))
+            .withExperienceNamespaceName(data.get("experienceNamespaceName") == null || data.get("experienceNamespaceName").isNull() ? null : data.get("experienceNamespaceName").asText())
+            .withExperienceStatus(data.get("experienceStatus") == null || data.get("experienceStatus").isNull() ? null : io.gs2.experience.model.Status.fromJson(data.get("experienceStatus")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("experienceNamespaceName", getExperienceNamespaceName());
+                put("experienceStatus", getExperienceStatus() != null ? getExperienceStatus().toJson() : null);
             }}
         );
     }
