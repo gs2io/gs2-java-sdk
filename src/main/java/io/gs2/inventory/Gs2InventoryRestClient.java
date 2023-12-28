@@ -6559,6 +6559,94 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class AcquireItemSetWithGradeByUserIdTask extends Gs2RestSessionTask<AcquireItemSetWithGradeByUserIdResult> {
+        private AcquireItemSetWithGradeByUserIdRequest request;
+
+        public AcquireItemSetWithGradeByUserIdTask(
+            AcquireItemSetWithGradeByUserIdRequest request,
+            AsyncAction<AsyncResult<AcquireItemSetWithGradeByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AcquireItemSetWithGradeByUserIdResult parse(JsonNode data) {
+            return AcquireItemSetWithGradeByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/acquire/grade";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{inventoryName}", this.request.getInventoryName() == null || this.request.getInventoryName().length() == 0 ? "null" : String.valueOf(this.request.getInventoryName()));
+            url = url.replace("{itemName}", this.request.getItemName() == null || this.request.getItemName().length() == 0 ? "null" : String.valueOf(this.request.getItemName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("gradeModelId", request.getGradeModelId());
+                    put("gradeValue", request.getGradeValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void acquireItemSetWithGradeByUserIdAsync(
+            AcquireItemSetWithGradeByUserIdRequest request,
+            AsyncAction<AsyncResult<AcquireItemSetWithGradeByUserIdResult>> callback
+    ) {
+        AcquireItemSetWithGradeByUserIdTask task = new AcquireItemSetWithGradeByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public AcquireItemSetWithGradeByUserIdResult acquireItemSetWithGradeByUserId(
+            AcquireItemSetWithGradeByUserIdRequest request
+    ) {
+        final AsyncResult<AcquireItemSetWithGradeByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        acquireItemSetWithGradeByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ConsumeItemSetTask extends Gs2RestSessionTask<ConsumeItemSetResult> {
         private ConsumeItemSetRequest request;
 
@@ -7070,6 +7158,86 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
     ) {
         final AsyncResult<AcquireItemSetByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         acquireItemSetByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AcquireItemSetWithGradeByStampSheetTask extends Gs2RestSessionTask<AcquireItemSetWithGradeByStampSheetResult> {
+        private AcquireItemSetWithGradeByStampSheetRequest request;
+
+        public AcquireItemSetWithGradeByStampSheetTask(
+            AcquireItemSetWithGradeByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireItemSetWithGradeByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AcquireItemSetWithGradeByStampSheetResult parse(JsonNode data) {
+            return AcquireItemSetWithGradeByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "inventory")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/item/acquire/grade";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void acquireItemSetWithGradeByStampSheetAsync(
+            AcquireItemSetWithGradeByStampSheetRequest request,
+            AsyncAction<AsyncResult<AcquireItemSetWithGradeByStampSheetResult>> callback
+    ) {
+        AcquireItemSetWithGradeByStampSheetTask task = new AcquireItemSetWithGradeByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public AcquireItemSetWithGradeByStampSheetResult acquireItemSetWithGradeByStampSheet(
+            AcquireItemSetWithGradeByStampSheetRequest request
+    ) {
+        final AsyncResult<AcquireItemSetWithGradeByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        acquireItemSetWithGradeByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
