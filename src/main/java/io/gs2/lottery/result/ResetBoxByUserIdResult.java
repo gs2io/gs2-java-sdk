@@ -25,21 +25,40 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
+import io.gs2.lottery.model.AcquireAction;
+import io.gs2.lottery.model.BoxItem;
+import io.gs2.lottery.model.BoxItems;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ResetBoxByUserIdResult implements IResult, Serializable {
+    private BoxItems item;
+
+	public BoxItems getItem() {
+		return item;
+	}
+
+	public void setItem(BoxItems item) {
+		this.item = item;
+	}
+
+	public ResetBoxByUserIdResult withItem(BoxItems item) {
+		this.item = item;
+		return this;
+	}
 
     public static ResetBoxByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new ResetBoxByUserIdResult();
+        return new ResetBoxByUserIdResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : BoxItems.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }
