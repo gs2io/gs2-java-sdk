@@ -27,11 +27,14 @@ import io.gs2.core.model.*;
 import io.gs2.lottery.model.*;
 import io.gs2.lottery.model.AcquireAction;
 import io.gs2.lottery.model.DrawnPrize;
+import io.gs2.lottery.model.BoxItem;
+import io.gs2.lottery.model.BoxItems;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DrawByStampSheetResult implements IResult, Serializable {
     private List<DrawnPrize> items;
+    private BoxItems boxItems;
     private String transactionId;
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
@@ -47,6 +50,19 @@ public class DrawByStampSheetResult implements IResult, Serializable {
 
 	public DrawByStampSheetResult withItems(List<DrawnPrize> items) {
 		this.items = items;
+		return this;
+	}
+
+	public BoxItems getBoxItems() {
+		return boxItems;
+	}
+
+	public void setBoxItems(BoxItems boxItems) {
+		this.boxItems = boxItems;
+	}
+
+	public DrawByStampSheetResult withBoxItems(BoxItems boxItems) {
+		this.boxItems = boxItems;
 		return this;
 	}
 
@@ -113,6 +129,7 @@ public class DrawByStampSheetResult implements IResult, Serializable {
                     return DrawnPrize.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withBoxItems(data.get("boxItems") == null || data.get("boxItems").isNull() ? null : BoxItems.fromJson(data.get("boxItems")))
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
             .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
@@ -128,6 +145,7 @@ public class DrawByStampSheetResult implements IResult, Serializable {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("boxItems", getBoxItems() != null ? getBoxItems().toJson() : null);
                 put("transactionId", getTransactionId());
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
