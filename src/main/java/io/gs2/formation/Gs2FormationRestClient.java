@@ -4868,7 +4868,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("acquireAction", request.getAcquireAction() != null ? request.getAcquireAction().toJson() : null);
-                    put("config", request.getConfig() == null ? new ArrayList<AcquireActionConfig>() :
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -5922,7 +5922,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("acquireAction", request.getAcquireAction() != null ? request.getAcquireAction().toJson() : null);
-                    put("config", request.getConfig() == null ? new ArrayList<AcquireActionConfig>() :
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
                         request.getConfig().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

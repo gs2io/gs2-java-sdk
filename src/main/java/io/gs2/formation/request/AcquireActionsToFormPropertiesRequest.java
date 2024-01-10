@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.formation.model.AcquireAction;
 import io.gs2.formation.model.Config;
-import io.gs2.formation.model.AcquireActionConfig;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -36,7 +35,7 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
     private String moldModelName;
     private Integer index;
     private AcquireAction acquireAction;
-    private List<AcquireActionConfig> config;
+    private List<Config> config;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -88,13 +87,13 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
 		this.acquireAction = acquireAction;
 		return this;
 	}
-	public List<AcquireActionConfig> getConfig() {
+	public List<Config> getConfig() {
 		return config;
 	}
-	public void setConfig(List<AcquireActionConfig> config) {
+	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-	public AcquireActionsToFormPropertiesRequest withConfig(List<AcquireActionConfig> config) {
+	public AcquireActionsToFormPropertiesRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;
 	}
@@ -122,10 +121,10 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
             .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
             .withIndex(data.get("index") == null || data.get("index").isNull() ? null : data.get("index").intValue())
             .withAcquireAction(data.get("acquireAction") == null || data.get("acquireAction").isNull() ? null : AcquireAction.fromJson(data.get("acquireAction")))
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<AcquireActionConfig>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
-                    return AcquireActionConfig.fromJson(item);
+                    return Config.fromJson(item);
                 }
             ).collect(Collectors.toList()));
     }
@@ -138,7 +137,7 @@ public class AcquireActionsToFormPropertiesRequest extends Gs2BasicRequest<Acqui
                 put("moldModelName", getMoldModelName());
                 put("index", getIndex());
                 put("acquireAction", getAcquireAction() != null ? getAcquireAction().toJson() : null);
-                put("config", getConfig() == null ? new ArrayList<AcquireActionConfig>() :
+                put("config", getConfig() == null ? new ArrayList<Config>() :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.formation.model.AcquireAction;
 import io.gs2.formation.model.Config;
-import io.gs2.formation.model.AcquireActionConfig;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -36,7 +35,7 @@ public class AcquireActionsToPropertyFormPropertiesRequest extends Gs2BasicReque
     private String propertyFormModelName;
     private String propertyId;
     private AcquireAction acquireAction;
-    private List<AcquireActionConfig> config;
+    private List<Config> config;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -88,13 +87,13 @@ public class AcquireActionsToPropertyFormPropertiesRequest extends Gs2BasicReque
 		this.acquireAction = acquireAction;
 		return this;
 	}
-	public List<AcquireActionConfig> getConfig() {
+	public List<Config> getConfig() {
 		return config;
 	}
-	public void setConfig(List<AcquireActionConfig> config) {
+	public void setConfig(List<Config> config) {
 		this.config = config;
 	}
-	public AcquireActionsToPropertyFormPropertiesRequest withConfig(List<AcquireActionConfig> config) {
+	public AcquireActionsToPropertyFormPropertiesRequest withConfig(List<Config> config) {
 		this.config = config;
 		return this;
 	}
@@ -122,10 +121,10 @@ public class AcquireActionsToPropertyFormPropertiesRequest extends Gs2BasicReque
             .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withAcquireAction(data.get("acquireAction") == null || data.get("acquireAction").isNull() ? null : AcquireAction.fromJson(data.get("acquireAction")))
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<AcquireActionConfig>() :
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
-                    return AcquireActionConfig.fromJson(item);
+                    return Config.fromJson(item);
                 }
             ).collect(Collectors.toList()));
     }
@@ -138,7 +137,7 @@ public class AcquireActionsToPropertyFormPropertiesRequest extends Gs2BasicReque
                 put("propertyFormModelName", getPropertyFormModelName());
                 put("propertyId", getPropertyId());
                 put("acquireAction", getAcquireAction() != null ? getAcquireAction().toJson() : null);
-                put("config", getConfig() == null ? new ArrayList<AcquireActionConfig>() :
+                put("config", getConfig() == null ? new ArrayList<Config>() :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
