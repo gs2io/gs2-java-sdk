@@ -35,6 +35,7 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
 	private Integer paid;
 	private Integer free;
 	private List<WalletDetail> detail;
+	private Boolean shareFree;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -98,6 +99,16 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
 		this.detail = detail;
 		return this;
 	}
+	public Boolean getShareFree() {
+		return shareFree;
+	}
+	public void setShareFree(Boolean shareFree) {
+		this.shareFree = shareFree;
+	}
+	public Wallet withShareFree(Boolean shareFree) {
+		this.shareFree = shareFree;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -145,6 +156,7 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
                     return WalletDetail.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withShareFree(data.get("shareFree") == null || data.get("shareFree").isNull() ? null : data.get("shareFree").booleanValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -164,6 +176,7 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("shareFree", getShareFree());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -186,6 +199,7 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
         result = prime * result + ((this.paid == null) ? 0 : this.paid.hashCode());
         result = prime * result + ((this.free == null) ? 0 : this.free.hashCode());
         result = prime * result + ((this.detail == null) ? 0 : this.detail.hashCode());
+        result = prime * result + ((this.shareFree == null) ? 0 : this.shareFree.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -229,6 +243,11 @@ public class Wallet implements IModel, Serializable, Comparable<Wallet> {
 		if (detail == null) {
 			return other.detail == null;
 		} else if (!detail.equals(other.detail)) {
+			return false;
+		}
+		if (shareFree == null) {
+			return other.shareFree == null;
+		} else if (!shareFree.equals(other.shareFree)) {
 			return false;
 		}
 		if (createdAt == null) {
