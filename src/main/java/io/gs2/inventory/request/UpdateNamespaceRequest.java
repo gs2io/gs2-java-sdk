@@ -35,6 +35,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private ScriptSetting acquireScript;
     private ScriptSetting overflowScript;
     private ScriptSetting consumeScript;
+    private ScriptSetting simpleItemAcquireScript;
+    private ScriptSetting simpleItemConsumeScript;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -86,6 +88,26 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.consumeScript = consumeScript;
 		return this;
 	}
+	public ScriptSetting getSimpleItemAcquireScript() {
+		return simpleItemAcquireScript;
+	}
+	public void setSimpleItemAcquireScript(ScriptSetting simpleItemAcquireScript) {
+		this.simpleItemAcquireScript = simpleItemAcquireScript;
+	}
+	public UpdateNamespaceRequest withSimpleItemAcquireScript(ScriptSetting simpleItemAcquireScript) {
+		this.simpleItemAcquireScript = simpleItemAcquireScript;
+		return this;
+	}
+	public ScriptSetting getSimpleItemConsumeScript() {
+		return simpleItemConsumeScript;
+	}
+	public void setSimpleItemConsumeScript(ScriptSetting simpleItemConsumeScript) {
+		this.simpleItemConsumeScript = simpleItemConsumeScript;
+	}
+	public UpdateNamespaceRequest withSimpleItemConsumeScript(ScriptSetting simpleItemConsumeScript) {
+		this.simpleItemConsumeScript = simpleItemConsumeScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -107,6 +129,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withAcquireScript(data.get("acquireScript") == null || data.get("acquireScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquireScript")))
             .withOverflowScript(data.get("overflowScript") == null || data.get("overflowScript").isNull() ? null : ScriptSetting.fromJson(data.get("overflowScript")))
             .withConsumeScript(data.get("consumeScript") == null || data.get("consumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("consumeScript")))
+            .withSimpleItemAcquireScript(data.get("simpleItemAcquireScript") == null || data.get("simpleItemAcquireScript").isNull() ? null : ScriptSetting.fromJson(data.get("simpleItemAcquireScript")))
+            .withSimpleItemConsumeScript(data.get("simpleItemConsumeScript") == null || data.get("simpleItemConsumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("simpleItemConsumeScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -118,6 +142,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("acquireScript", getAcquireScript() != null ? getAcquireScript().toJson() : null);
                 put("overflowScript", getOverflowScript() != null ? getOverflowScript().toJson() : null);
                 put("consumeScript", getConsumeScript() != null ? getConsumeScript().toJson() : null);
+                put("simpleItemAcquireScript", getSimpleItemAcquireScript() != null ? getSimpleItemAcquireScript().toJson() : null);
+                put("simpleItemConsumeScript", getSimpleItemConsumeScript() != null ? getSimpleItemConsumeScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

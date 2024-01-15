@@ -159,6 +159,8 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
                     put("acquireScript", request.getAcquireScript() != null ? request.getAcquireScript().toJson() : null);
                     put("overflowScript", request.getOverflowScript() != null ? request.getOverflowScript().toJson() : null);
                     put("consumeScript", request.getConsumeScript() != null ? request.getConsumeScript().toJson() : null);
+                    put("simpleItemAcquireScript", request.getSimpleItemAcquireScript() != null ? request.getSimpleItemAcquireScript().toJson() : null);
+                    put("simpleItemConsumeScript", request.getSimpleItemConsumeScript() != null ? request.getSimpleItemConsumeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -404,6 +406,8 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
                     put("acquireScript", request.getAcquireScript() != null ? request.getAcquireScript().toJson() : null);
                     put("overflowScript", request.getOverflowScript() != null ? request.getOverflowScript().toJson() : null);
                     put("consumeScript", request.getConsumeScript() != null ? request.getConsumeScript().toJson() : null);
+                    put("simpleItemAcquireScript", request.getSimpleItemAcquireScript() != null ? request.getSimpleItemAcquireScript().toJson() : null);
+                    put("simpleItemConsumeScript", request.getSimpleItemConsumeScript() != null ? request.getSimpleItemConsumeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
