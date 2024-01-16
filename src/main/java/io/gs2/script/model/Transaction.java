@@ -29,8 +29,19 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Transaction implements IModel, Serializable {
+	private String transactionId;
 	private List<ConsumeAction> consumeActions;
 	private List<AcquireAction> acquireActions;
+	public String getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+	public Transaction withTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+		return this;
+	}
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
@@ -57,6 +68,7 @@ public class Transaction implements IModel, Serializable {
             return null;
         }
         return new Transaction()
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -74,6 +86,7 @@ public class Transaction implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("transactionId", getTransactionId());
                 put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -94,6 +107,7 @@ public class Transaction implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((this.transactionId == null) ? 0 : this.transactionId.hashCode());
         result = prime * result + ((this.consumeActions == null) ? 0 : this.consumeActions.hashCode());
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
 		return result;
@@ -108,6 +122,11 @@ public class Transaction implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		Transaction other = (Transaction) o;
+		if (transactionId == null) {
+			return other.transactionId == null;
+		} else if (!transactionId.equals(other.transactionId)) {
+			return false;
+		}
 		if (consumeActions == null) {
 			return other.consumeActions == null;
 		} else if (!consumeActions.equals(other.consumeActions)) {

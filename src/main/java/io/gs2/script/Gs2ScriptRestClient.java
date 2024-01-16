@@ -156,6 +156,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -398,6 +399,7 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
