@@ -28,7 +28,7 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetCookieRequestEntry implements IModel, Serializable {
+public class SetCookieRequestEntry implements IModel, Serializable, Comparable<SetCookieRequestEntry> {
 	private String key;
 	private String value;
 	public String getKey() {
@@ -69,6 +69,11 @@ public class SetCookieRequestEntry implements IModel, Serializable {
             }}
         );
     }
+
+	@Override
+	public int compareTo(SetCookieRequestEntry o) {
+		return key.compareTo(o.key);
+	}
 
 	@Override
 	public int hashCode() {

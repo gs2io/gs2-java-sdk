@@ -34,6 +34,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 	private String rateName;
 	private String name;
 	private Integer count;
+	private List<Config> config;
 	private Long exchangedAt;
 	private Long revision;
 	public String getAwaitId() {
@@ -86,6 +87,16 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 		this.count = count;
 		return this;
 	}
+	public List<Config> getConfig() {
+		return config;
+	}
+	public void setConfig(List<Config> config) {
+		this.config = config;
+	}
+	public Await withConfig(List<Config> config) {
+		this.config = config;
+		return this;
+	}
 	public Long getExchangedAt() {
 		return exchangedAt;
 	}
@@ -117,6 +128,12 @@ public class Await implements IModel, Serializable, Comparable<Await> {
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Config.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withExchangedAt(data.get("exchangedAt") == null || data.get("exchangedAt").isNull() ? null : data.get("exchangedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
@@ -129,6 +146,12 @@ public class Await implements IModel, Serializable, Comparable<Await> {
                 put("rateName", getRateName());
                 put("name", getName());
                 put("count", getCount());
+                put("config", getConfig() == null ? new ArrayList<Config>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("exchangedAt", getExchangedAt());
                 put("revision", getRevision());
             }}
@@ -149,6 +172,7 @@ public class Await implements IModel, Serializable, Comparable<Await> {
         result = prime * result + ((this.rateName == null) ? 0 : this.rateName.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.count == null) ? 0 : this.count.hashCode());
+        result = prime * result + ((this.config == null) ? 0 : this.config.hashCode());
         result = prime * result + ((this.exchangedAt == null) ? 0 : this.exchangedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
@@ -186,6 +210,11 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 		if (count == null) {
 			return other.count == null;
 		} else if (!count.equals(other.count)) {
+			return false;
+		}
+		if (config == null) {
+			return other.config == null;
+		} else if (!config.equals(other.config)) {
 			return false;
 		}
 		if (exchangedAt == null) {

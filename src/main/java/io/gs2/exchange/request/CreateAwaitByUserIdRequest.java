@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.exchange.model.Config;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -32,6 +33,7 @@ public class CreateAwaitByUserIdRequest extends Gs2BasicRequest<CreateAwaitByUse
     private String userId;
     private String rateName;
     private Integer count;
+    private List<Config> config;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +75,16 @@ public class CreateAwaitByUserIdRequest extends Gs2BasicRequest<CreateAwaitByUse
 		this.count = count;
 		return this;
 	}
+	public List<Config> getConfig() {
+		return config;
+	}
+	public void setConfig(List<Config> config) {
+		this.config = config;
+	}
+	public CreateAwaitByUserIdRequest withConfig(List<Config> config) {
+		this.config = config;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +107,13 @@ public class CreateAwaitByUserIdRequest extends Gs2BasicRequest<CreateAwaitByUse
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
-            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue());
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
+            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Config.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
@@ -105,6 +123,12 @@ public class CreateAwaitByUserIdRequest extends Gs2BasicRequest<CreateAwaitByUse
                 put("userId", getUserId());
                 put("rateName", getRateName());
                 put("count", getCount());
+                put("config", getConfig() == null ? new ArrayList<Config>() :
+                    getConfig().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }

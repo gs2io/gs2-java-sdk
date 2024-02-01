@@ -3395,6 +3395,12 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
