@@ -2580,6 +2580,92 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         return resultAsyncResult[0].getResult();
     }
 
+    class SetMaximumIdleMinutesByUserIdTask extends Gs2RestSessionTask<SetMaximumIdleMinutesByUserIdResult> {
+        private SetMaximumIdleMinutesByUserIdRequest request;
+
+        public SetMaximumIdleMinutesByUserIdTask(
+            SetMaximumIdleMinutesByUserIdRequest request,
+            AsyncAction<AsyncResult<SetMaximumIdleMinutesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetMaximumIdleMinutesByUserIdResult parse(JsonNode data) {
+            return SetMaximumIdleMinutesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "idle")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/model/{categoryName}/maximumIdle";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("maximumIdleMinutes", request.getMaximumIdleMinutes());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setMaximumIdleMinutesByUserIdAsync(
+            SetMaximumIdleMinutesByUserIdRequest request,
+            AsyncAction<AsyncResult<SetMaximumIdleMinutesByUserIdResult>> callback
+    ) {
+        SetMaximumIdleMinutesByUserIdTask task = new SetMaximumIdleMinutesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetMaximumIdleMinutesByUserIdResult setMaximumIdleMinutesByUserId(
+            SetMaximumIdleMinutesByUserIdRequest request
+    ) {
+        final AsyncResult<SetMaximumIdleMinutesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setMaximumIdleMinutesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class IncreaseMaximumIdleMinutesByStampSheetTask extends Gs2RestSessionTask<IncreaseMaximumIdleMinutesByStampSheetResult> {
         private IncreaseMaximumIdleMinutesByStampSheetRequest request;
 
@@ -2724,6 +2810,86 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
     ) {
         final AsyncResult<DecreaseMaximumIdleMinutesByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         decreaseMaximumIdleMinutesByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SetMaximumIdleMinutesByStampSheetTask extends Gs2RestSessionTask<SetMaximumIdleMinutesByStampSheetResult> {
+        private SetMaximumIdleMinutesByStampSheetRequest request;
+
+        public SetMaximumIdleMinutesByStampSheetTask(
+            SetMaximumIdleMinutesByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetMaximumIdleMinutesByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetMaximumIdleMinutesByStampSheetResult parse(JsonNode data) {
+            return SetMaximumIdleMinutesByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "idle")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/status/maximumIdleMinutes/set";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setMaximumIdleMinutesByStampSheetAsync(
+            SetMaximumIdleMinutesByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetMaximumIdleMinutesByStampSheetResult>> callback
+    ) {
+        SetMaximumIdleMinutesByStampSheetTask task = new SetMaximumIdleMinutesByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetMaximumIdleMinutesByStampSheetResult setMaximumIdleMinutesByStampSheet(
+            SetMaximumIdleMinutesByStampSheetRequest request
+    ) {
+        final AsyncResult<SetMaximumIdleMinutesByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setMaximumIdleMinutesByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
