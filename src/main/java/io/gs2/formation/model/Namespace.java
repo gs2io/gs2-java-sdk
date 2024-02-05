@@ -35,6 +35,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private TransactionSetting transactionSetting;
 	private ScriptSetting updateMoldScript;
 	private ScriptSetting updateFormScript;
+	private ScriptSetting updatePropertyFormScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -99,6 +100,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.updateFormScript = updateFormScript;
 		return this;
 	}
+	public ScriptSetting getUpdatePropertyFormScript() {
+		return updatePropertyFormScript;
+	}
+	public void setUpdatePropertyFormScript(ScriptSetting updatePropertyFormScript) {
+		this.updatePropertyFormScript = updatePropertyFormScript;
+	}
+	public Namespace withUpdatePropertyFormScript(ScriptSetting updatePropertyFormScript) {
+		this.updatePropertyFormScript = updatePropertyFormScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -151,6 +162,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withUpdateMoldScript(data.get("updateMoldScript") == null || data.get("updateMoldScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateMoldScript")))
             .withUpdateFormScript(data.get("updateFormScript") == null || data.get("updateFormScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateFormScript")))
+            .withUpdatePropertyFormScript(data.get("updatePropertyFormScript") == null || data.get("updatePropertyFormScript").isNull() ? null : ScriptSetting.fromJson(data.get("updatePropertyFormScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -166,6 +178,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("updateMoldScript", getUpdateMoldScript() != null ? getUpdateMoldScript().toJson() : null);
                 put("updateFormScript", getUpdateFormScript() != null ? getUpdateFormScript().toJson() : null);
+                put("updatePropertyFormScript", getUpdatePropertyFormScript() != null ? getUpdatePropertyFormScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -189,6 +202,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.updateMoldScript == null) ? 0 : this.updateMoldScript.hashCode());
         result = prime * result + ((this.updateFormScript == null) ? 0 : this.updateFormScript.hashCode());
+        result = prime * result + ((this.updatePropertyFormScript == null) ? 0 : this.updatePropertyFormScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -233,6 +247,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (updateFormScript == null) {
 			return other.updateFormScript == null;
 		} else if (!updateFormScript.equals(other.updateFormScript)) {
+			return false;
+		}
+		if (updatePropertyFormScript == null) {
+			return other.updatePropertyFormScript == null;
+		} else if (!updatePropertyFormScript.equals(other.updatePropertyFormScript)) {
 			return false;
 		}
 		if (logSetting == null) {

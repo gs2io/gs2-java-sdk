@@ -159,6 +159,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("updateMoldScript", request.getUpdateMoldScript() != null ? request.getUpdateMoldScript().toJson() : null);
                     put("updateFormScript", request.getUpdateFormScript() != null ? request.getUpdateFormScript().toJson() : null);
+                    put("updatePropertyFormScript", request.getUpdatePropertyFormScript() != null ? request.getUpdatePropertyFormScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -404,6 +405,7 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("updateMoldScript", request.getUpdateMoldScript() != null ? request.getUpdateMoldScript().toJson() : null);
                     put("updateFormScript", request.getUpdateFormScript() != null ? request.getUpdateFormScript().toJson() : null);
+                    put("updatePropertyFormScript", request.getUpdatePropertyFormScript() != null ? request.getUpdatePropertyFormScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

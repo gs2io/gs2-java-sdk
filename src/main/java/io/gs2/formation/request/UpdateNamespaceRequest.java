@@ -36,6 +36,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private TransactionSetting transactionSetting;
     private ScriptSetting updateMoldScript;
     private ScriptSetting updateFormScript;
+    private ScriptSetting updatePropertyFormScript;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -87,6 +88,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.updateFormScript = updateFormScript;
 		return this;
 	}
+	public ScriptSetting getUpdatePropertyFormScript() {
+		return updatePropertyFormScript;
+	}
+	public void setUpdatePropertyFormScript(ScriptSetting updatePropertyFormScript) {
+		this.updatePropertyFormScript = updatePropertyFormScript;
+	}
+	public UpdateNamespaceRequest withUpdatePropertyFormScript(ScriptSetting updatePropertyFormScript) {
+		this.updatePropertyFormScript = updatePropertyFormScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -108,6 +119,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withUpdateMoldScript(data.get("updateMoldScript") == null || data.get("updateMoldScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateMoldScript")))
             .withUpdateFormScript(data.get("updateFormScript") == null || data.get("updateFormScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateFormScript")))
+            .withUpdatePropertyFormScript(data.get("updatePropertyFormScript") == null || data.get("updatePropertyFormScript").isNull() ? null : ScriptSetting.fromJson(data.get("updatePropertyFormScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -119,6 +131,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("updateMoldScript", getUpdateMoldScript() != null ? getUpdateMoldScript().toJson() : null);
                 put("updateFormScript", getUpdateFormScript() != null ? getUpdateFormScript().toJson() : null);
+                put("updatePropertyFormScript", getUpdatePropertyFormScript() != null ? getUpdatePropertyFormScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );
