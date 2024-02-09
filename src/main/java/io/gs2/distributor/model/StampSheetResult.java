@@ -34,7 +34,9 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
 	private String transactionId;
 	private List<ConsumeAction> taskRequests;
 	private AcquireAction sheetRequest;
+	private List<Integer> taskResultCodes;
 	private List<String> taskResults;
+	private Integer sheetResultCode;
 	private String sheetResult;
 	private String nextTransactionId;
 	private Long createdAt;
@@ -89,6 +91,16 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
 		this.sheetRequest = sheetRequest;
 		return this;
 	}
+	public List<Integer> getTaskResultCodes() {
+		return taskResultCodes;
+	}
+	public void setTaskResultCodes(List<Integer> taskResultCodes) {
+		this.taskResultCodes = taskResultCodes;
+	}
+	public StampSheetResult withTaskResultCodes(List<Integer> taskResultCodes) {
+		this.taskResultCodes = taskResultCodes;
+		return this;
+	}
 	public List<String> getTaskResults() {
 		return taskResults;
 	}
@@ -97,6 +109,16 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
 	}
 	public StampSheetResult withTaskResults(List<String> taskResults) {
 		this.taskResults = taskResults;
+		return this;
+	}
+	public Integer getSheetResultCode() {
+		return sheetResultCode;
+	}
+	public void setSheetResultCode(Integer sheetResultCode) {
+		this.sheetResultCode = sheetResultCode;
+	}
+	public StampSheetResult withSheetResultCode(Integer sheetResultCode) {
+		this.sheetResultCode = sheetResultCode;
 		return this;
 	}
 	public String getSheetResult() {
@@ -155,11 +177,17 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
                 }
             ).collect(Collectors.toList()))
             .withSheetRequest(data.get("sheetRequest") == null || data.get("sheetRequest").isNull() ? null : AcquireAction.fromJson(data.get("sheetRequest")))
+            .withTaskResultCodes(data.get("taskResultCodes") == null || data.get("taskResultCodes").isNull() ? new ArrayList<Integer>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskResultCodes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.intValue();
+                }
+            ).collect(Collectors.toList()))
             .withTaskResults(data.get("taskResults") == null || data.get("taskResults").isNull() ? new ArrayList<String>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
+            .withSheetResultCode(data.get("sheetResultCode") == null || data.get("sheetResultCode").isNull() ? null : data.get("sheetResultCode").intValue())
             .withSheetResult(data.get("sheetResult") == null || data.get("sheetResult").isNull() ? null : data.get("sheetResult").asText())
             .withNextTransactionId(data.get("nextTransactionId") == null || data.get("nextTransactionId").isNull() ? null : data.get("nextTransactionId").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
@@ -179,11 +207,17 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
                     }
                 ).collect(Collectors.toList()));
                 put("sheetRequest", getSheetRequest() != null ? getSheetRequest().toJson() : null);
+                put("taskResultCodes", getTaskResultCodes() == null ? new ArrayList<Integer>() :
+                    getTaskResultCodes().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
                 put("taskResults", getTaskResults() == null ? new ArrayList<String>() :
                     getTaskResults().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("sheetResultCode", getSheetResultCode());
                 put("sheetResult", getSheetResult());
                 put("nextTransactionId", getNextTransactionId());
                 put("createdAt", getCreatedAt());
@@ -206,7 +240,9 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
         result = prime * result + ((this.transactionId == null) ? 0 : this.transactionId.hashCode());
         result = prime * result + ((this.taskRequests == null) ? 0 : this.taskRequests.hashCode());
         result = prime * result + ((this.sheetRequest == null) ? 0 : this.sheetRequest.hashCode());
+        result = prime * result + ((this.taskResultCodes == null) ? 0 : this.taskResultCodes.hashCode());
         result = prime * result + ((this.taskResults == null) ? 0 : this.taskResults.hashCode());
+        result = prime * result + ((this.sheetResultCode == null) ? 0 : this.sheetResultCode.hashCode());
         result = prime * result + ((this.sheetResult == null) ? 0 : this.sheetResult.hashCode());
         result = prime * result + ((this.nextTransactionId == null) ? 0 : this.nextTransactionId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -248,9 +284,19 @@ public class StampSheetResult implements IModel, Serializable, Comparable<StampS
 		} else if (!sheetRequest.equals(other.sheetRequest)) {
 			return false;
 		}
+		if (taskResultCodes == null) {
+			return other.taskResultCodes == null;
+		} else if (!taskResultCodes.equals(other.taskResultCodes)) {
+			return false;
+		}
 		if (taskResults == null) {
 			return other.taskResults == null;
 		} else if (!taskResults.equals(other.taskResults)) {
+			return false;
+		}
+		if (sheetResultCode == null) {
+			return other.sheetResultCode == null;
+		} else if (!sheetResultCode.equals(other.sheetResultCode)) {
 			return false;
 		}
 		if (sheetResult == null) {

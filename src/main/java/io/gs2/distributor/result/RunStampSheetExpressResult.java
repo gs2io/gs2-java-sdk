@@ -29,8 +29,23 @@ import io.gs2.distributor.model.*;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RunStampSheetExpressResult implements IResult, Serializable {
+    private List<Integer> taskResultCodes;
     private List<String> taskResults;
+    private Integer sheetResultCode;
     private String sheetResult;
+
+	public List<Integer> getTaskResultCodes() {
+		return taskResultCodes;
+	}
+
+	public void setTaskResultCodes(List<Integer> taskResultCodes) {
+		this.taskResultCodes = taskResultCodes;
+	}
+
+	public RunStampSheetExpressResult withTaskResultCodes(List<Integer> taskResultCodes) {
+		this.taskResultCodes = taskResultCodes;
+		return this;
+	}
 
 	public List<String> getTaskResults() {
 		return taskResults;
@@ -42,6 +57,19 @@ public class RunStampSheetExpressResult implements IResult, Serializable {
 
 	public RunStampSheetExpressResult withTaskResults(List<String> taskResults) {
 		this.taskResults = taskResults;
+		return this;
+	}
+
+	public Integer getSheetResultCode() {
+		return sheetResultCode;
+	}
+
+	public void setSheetResultCode(Integer sheetResultCode) {
+		this.sheetResultCode = sheetResultCode;
+	}
+
+	public RunStampSheetExpressResult withSheetResultCode(Integer sheetResultCode) {
+		this.sheetResultCode = sheetResultCode;
 		return this;
 	}
 
@@ -63,22 +91,34 @@ public class RunStampSheetExpressResult implements IResult, Serializable {
             return null;
         }
         return new RunStampSheetExpressResult()
+            .withTaskResultCodes(data.get("taskResultCodes") == null || data.get("taskResultCodes").isNull() ? new ArrayList<Integer>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskResultCodes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.intValue();
+                }
+            ).collect(Collectors.toList()))
             .withTaskResults(data.get("taskResults") == null || data.get("taskResults").isNull() ? new ArrayList<String>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskResults").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
+            .withSheetResultCode(data.get("sheetResultCode") == null || data.get("sheetResultCode").isNull() ? null : data.get("sheetResultCode").intValue())
             .withSheetResult(data.get("sheetResult") == null || data.get("sheetResult").isNull() ? null : data.get("sheetResult").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("taskResultCodes", getTaskResultCodes() == null ? new ArrayList<Integer>() :
+                    getTaskResultCodes().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
                 put("taskResults", getTaskResults() == null ? new ArrayList<String>() :
                     getTaskResults().stream().map(item -> {
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("sheetResultCode", getSheetResultCode());
                 put("sheetResult", getSheetResult());
             }}
         );

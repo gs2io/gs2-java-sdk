@@ -30,6 +30,7 @@ import io.gs2.distributor.model.*;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RunStampTaskWithoutNamespaceResult implements IResult, Serializable {
     private String contextStack;
+    private Integer statusCode;
     private String result;
 
 	public String getContextStack() {
@@ -42,6 +43,19 @@ public class RunStampTaskWithoutNamespaceResult implements IResult, Serializable
 
 	public RunStampTaskWithoutNamespaceResult withContextStack(String contextStack) {
 		this.contextStack = contextStack;
+		return this;
+	}
+
+	public Integer getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(Integer statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public RunStampTaskWithoutNamespaceResult withStatusCode(Integer statusCode) {
+		this.statusCode = statusCode;
 		return this;
 	}
 
@@ -64,6 +78,7 @@ public class RunStampTaskWithoutNamespaceResult implements IResult, Serializable
         }
         return new RunStampTaskWithoutNamespaceResult()
             .withContextStack(data.get("contextStack") == null || data.get("contextStack").isNull() ? null : data.get("contextStack").asText())
+            .withStatusCode(data.get("statusCode") == null || data.get("statusCode").isNull() ? null : data.get("statusCode").intValue())
             .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText());
     }
 
@@ -71,6 +86,7 @@ public class RunStampTaskWithoutNamespaceResult implements IResult, Serializable
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("contextStack", getContextStack());
+                put("statusCode", getStatusCode());
                 put("result", getResult());
             }}
         );

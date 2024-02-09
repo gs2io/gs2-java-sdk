@@ -29,7 +29,21 @@ import io.gs2.distributor.model.*;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RunStampSheetWithoutNamespaceResult implements IResult, Serializable {
+    private Integer statusCode;
     private String result;
+
+	public Integer getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(Integer statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public RunStampSheetWithoutNamespaceResult withStatusCode(Integer statusCode) {
+		this.statusCode = statusCode;
+		return this;
+	}
 
 	public String getResult() {
 		return result;
@@ -49,12 +63,14 @@ public class RunStampSheetWithoutNamespaceResult implements IResult, Serializabl
             return null;
         }
         return new RunStampSheetWithoutNamespaceResult()
+            .withStatusCode(data.get("statusCode") == null || data.get("statusCode").isNull() ? null : data.get("statusCode").intValue())
             .withResult(data.get("result") == null || data.get("result").isNull() ? null : data.get("result").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("statusCode", getStatusCode());
                 put("result", getResult());
             }}
         );
