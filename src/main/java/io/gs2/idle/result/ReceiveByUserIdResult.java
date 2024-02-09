@@ -26,11 +26,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.idle.model.*;
 import io.gs2.idle.model.AcquireAction;
+import io.gs2.idle.model.Status;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReceiveByUserIdResult implements IResult, Serializable {
     private List<AcquireAction> items;
+    private Status status;
     private String transactionId;
     private String stampSheet;
     private String stampSheetEncryptionKeyId;
@@ -46,6 +48,19 @@ public class ReceiveByUserIdResult implements IResult, Serializable {
 
 	public ReceiveByUserIdResult withItems(List<AcquireAction> items) {
 		this.items = items;
+		return this;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public ReceiveByUserIdResult withStatus(Status status) {
+		this.status = status;
 		return this;
 	}
 
@@ -112,6 +127,7 @@ public class ReceiveByUserIdResult implements IResult, Serializable {
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withStatus(data.get("status") == null || data.get("status").isNull() ? null : Status.fromJson(data.get("status")))
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
             .withStampSheet(data.get("stampSheet") == null || data.get("stampSheet").isNull() ? null : data.get("stampSheet").asText())
             .withStampSheetEncryptionKeyId(data.get("stampSheetEncryptionKeyId") == null || data.get("stampSheetEncryptionKeyId").isNull() ? null : data.get("stampSheetEncryptionKeyId").asText())
@@ -127,6 +143,7 @@ public class ReceiveByUserIdResult implements IResult, Serializable {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("status", getStatus() != null ? getStatus().toJson() : null);
                 put("transactionId", getTransactionId());
                 put("stampSheet", getStampSheet());
                 put("stampSheetEncryptionKeyId", getStampSheetEncryptionKeyId());
