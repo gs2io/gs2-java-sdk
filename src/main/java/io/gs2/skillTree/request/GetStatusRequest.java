@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetStatusRequest extends Gs2BasicRequest<GetStatusRequest> {
     private String namespaceName;
     private String accessToken;
+    private String propertyId;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -50,6 +51,16 @@ public class GetStatusRequest extends Gs2BasicRequest<GetStatusRequest> {
 		this.accessToken = accessToken;
 		return this;
 	}
+	public String getPropertyId() {
+		return propertyId;
+	}
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+	}
+	public GetStatusRequest withPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+		return this;
+	}
 
     public static GetStatusRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -57,7 +68,8 @@ public class GetStatusRequest extends Gs2BasicRequest<GetStatusRequest> {
         }
         return new GetStatusRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText());
     }
 
     public JsonNode toJson() {
@@ -65,6 +77,7 @@ public class GetStatusRequest extends Gs2BasicRequest<GetStatusRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
+                put("propertyId", getPropertyId());
             }}
         );
     }

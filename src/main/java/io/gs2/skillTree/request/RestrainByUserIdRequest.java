@@ -31,6 +31,7 @@ import io.gs2.skillTree.model.Config;
 public class RestrainByUserIdRequest extends Gs2BasicRequest<RestrainByUserIdRequest> {
     private String namespaceName;
     private String userId;
+    private String propertyId;
     private List<String> nodeModelNames;
     private List<Config> config;
     private String duplicationAvoider;
@@ -52,6 +53,16 @@ public class RestrainByUserIdRequest extends Gs2BasicRequest<RestrainByUserIdReq
 	}
 	public RestrainByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public String getPropertyId() {
+		return propertyId;
+	}
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+	}
+	public RestrainByUserIdRequest withPropertyId(String propertyId) {
+		this.propertyId = propertyId;
 		return this;
 	}
 	public List<String> getNodeModelNames() {
@@ -95,6 +106,7 @@ public class RestrainByUserIdRequest extends Gs2BasicRequest<RestrainByUserIdReq
         return new RestrainByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withNodeModelNames(data.get("nodeModelNames") == null || data.get("nodeModelNames").isNull() ? new ArrayList<String>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("nodeModelNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
@@ -113,6 +125,7 @@ public class RestrainByUserIdRequest extends Gs2BasicRequest<RestrainByUserIdReq
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("propertyId", getPropertyId());
                 put("nodeModelNames", getNodeModelNames() == null ? new ArrayList<String>() :
                     getNodeModelNames().stream().map(item -> {
                         return item;

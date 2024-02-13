@@ -24,23 +24,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.skillTree.model.Config;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ResetRequest extends Gs2BasicRequest<ResetRequest> {
+public class DescribeStatusesRequest extends Gs2BasicRequest<DescribeStatusesRequest> {
     private String namespaceName;
     private String accessToken;
-    private String propertyId;
-    private List<Config> config;
-    private String duplicationAvoider;
+    private String pageToken;
+    private Integer limit;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public ResetRequest withNamespaceName(String namespaceName) {
+	public DescribeStatusesRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -50,58 +48,40 @@ public class ResetRequest extends Gs2BasicRequest<ResetRequest> {
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	public ResetRequest withAccessToken(String accessToken) {
+	public DescribeStatusesRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public String getPropertyId() {
-		return propertyId;
+	public String getPageToken() {
+		return pageToken;
 	}
-	public void setPropertyId(String propertyId) {
-		this.propertyId = propertyId;
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
 	}
-	public ResetRequest withPropertyId(String propertyId) {
-		this.propertyId = propertyId;
+	public DescribeStatusesRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
 		return this;
 	}
-	public List<Config> getConfig() {
-		return config;
+	public Integer getLimit() {
+		return limit;
 	}
-	public void setConfig(List<Config> config) {
-		this.config = config;
+	public void setLimit(Integer limit) {
+		this.limit = limit;
 	}
-	public ResetRequest withConfig(List<Config> config) {
-		this.config = config;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public ResetRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
+	public DescribeStatusesRequest withLimit(Integer limit) {
+		this.limit = limit;
 		return this;
 	}
 
-    public static ResetRequest fromJson(JsonNode data) {
+    public static DescribeStatusesRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new ResetRequest()
+        return new DescribeStatusesRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
-                    //noinspection Convert2MethodRef
-                    return Config.fromJson(item);
-                }
-            ).collect(Collectors.toList()));
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
     public JsonNode toJson() {
@@ -109,13 +89,8 @@ public class ResetRequest extends Gs2BasicRequest<ResetRequest> {
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("propertyId", getPropertyId());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
-                    getConfig().stream().map(item -> {
-                        //noinspection Convert2MethodRef
-                        return item.toJson();
-                    }
-                ).collect(Collectors.toList()));
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
             }}
         );
     }

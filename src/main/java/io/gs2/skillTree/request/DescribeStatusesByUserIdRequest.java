@@ -27,17 +27,18 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetStatusByUserIdRequest extends Gs2BasicRequest<GetStatusByUserIdRequest> {
+public class DescribeStatusesByUserIdRequest extends Gs2BasicRequest<DescribeStatusesByUserIdRequest> {
     private String namespaceName;
     private String userId;
-    private String propertyId;
+    private String pageToken;
+    private Integer limit;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public GetStatusByUserIdRequest withNamespaceName(String namespaceName) {
+	public DescribeStatusesByUserIdRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
@@ -47,29 +48,40 @@ public class GetStatusByUserIdRequest extends Gs2BasicRequest<GetStatusByUserIdR
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public GetStatusByUserIdRequest withUserId(String userId) {
+	public DescribeStatusesByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	public String getPropertyId() {
-		return propertyId;
+	public String getPageToken() {
+		return pageToken;
 	}
-	public void setPropertyId(String propertyId) {
-		this.propertyId = propertyId;
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
 	}
-	public GetStatusByUserIdRequest withPropertyId(String propertyId) {
-		this.propertyId = propertyId;
+	public DescribeStatusesByUserIdRequest withPageToken(String pageToken) {
+		this.pageToken = pageToken;
+		return this;
+	}
+	public Integer getLimit() {
+		return limit;
+	}
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+	public DescribeStatusesByUserIdRequest withLimit(Integer limit) {
+		this.limit = limit;
 		return this;
 	}
 
-    public static GetStatusByUserIdRequest fromJson(JsonNode data) {
+    public static DescribeStatusesByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetStatusByUserIdRequest()
+        return new DescribeStatusesByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText());
+            .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
     }
 
     public JsonNode toJson() {
@@ -77,7 +89,8 @@ public class GetStatusByUserIdRequest extends Gs2BasicRequest<GetStatusByUserIdR
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("propertyId", getPropertyId());
+                put("pageToken", getPageToken());
+                put("limit", getLimit());
             }}
         );
     }

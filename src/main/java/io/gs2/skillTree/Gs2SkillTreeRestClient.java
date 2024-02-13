@@ -1741,10 +1741,11 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/status/node/release/mark";
+                + "/{namespaceName}/user/{userId}/status/{propertyId}/node/release/mark";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -1830,9 +1831,10 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/status/node/release";
+                + "/{namespaceName}/user/me/status/{propertyId}/node/release";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -1927,10 +1929,11 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/status/node/release";
+                + "/{namespaceName}/user/{userId}/status/{propertyId}/node/release";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2022,10 +2025,11 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/status/node/restrain/mark";
+                + "/{namespaceName}/user/{userId}/status/{propertyId}/node/restrain/mark";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2111,9 +2115,10 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/status/node/restrain";
+                + "/{namespaceName}/user/me/status/{propertyId}/node/restrain";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2208,10 +2213,11 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/status/node/restrain";
+                + "/{namespaceName}/user/{userId}/status/{propertyId}/node/restrain";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2278,6 +2284,182 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribeStatusesTask extends Gs2RestSessionTask<DescribeStatusesResult> {
+        private DescribeStatusesRequest request;
+
+        public DescribeStatusesTask(
+            DescribeStatusesRequest request,
+            AsyncAction<AsyncResult<DescribeStatusesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeStatusesResult parse(JsonNode data) {
+            return DescribeStatusesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "skill-tree")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/status";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeStatusesAsync(
+            DescribeStatusesRequest request,
+            AsyncAction<AsyncResult<DescribeStatusesResult>> callback
+    ) {
+        DescribeStatusesTask task = new DescribeStatusesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeStatusesResult describeStatuses(
+            DescribeStatusesRequest request
+    ) {
+        final AsyncResult<DescribeStatusesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeStatusesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeStatusesByUserIdTask extends Gs2RestSessionTask<DescribeStatusesByUserIdResult> {
+        private DescribeStatusesByUserIdRequest request;
+
+        public DescribeStatusesByUserIdTask(
+            DescribeStatusesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeStatusesByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeStatusesByUserIdResult parse(JsonNode data) {
+            return DescribeStatusesByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "skill-tree")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/status/";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeStatusesByUserIdAsync(
+            DescribeStatusesByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeStatusesByUserIdResult>> callback
+    ) {
+        DescribeStatusesByUserIdTask task = new DescribeStatusesByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeStatusesByUserIdResult describeStatusesByUserId(
+            DescribeStatusesByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeStatusesByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeStatusesByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetStatusTask extends Gs2RestSessionTask<GetStatusResult> {
         private GetStatusRequest request;
 
@@ -2303,9 +2485,10 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/status";
+                + "/{namespaceName}/user/me/status/{propertyId}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2386,10 +2569,11 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/status";
+                + "/{namespaceName}/user/{userId}/status/{propertyId}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -2467,9 +2651,10 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/status/reset";
+                + "/{namespaceName}/user/me/status/{propertyId}/reset";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
@@ -2559,10 +2744,11 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "skill-tree")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/{userId}/status/reset";
+                + "/{namespaceName}/user/{userId}/status/{propertyId}/reset";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{propertyId}", this.request.getPropertyId() == null || this.request.getPropertyId().length() == 0 ? "null" : String.valueOf(this.request.getPropertyId()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {

@@ -31,6 +31,7 @@ import io.gs2.skillTree.model.Config;
 public class ResetByUserIdRequest extends Gs2BasicRequest<ResetByUserIdRequest> {
     private String namespaceName;
     private String userId;
+    private String propertyId;
     private List<Config> config;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -51,6 +52,16 @@ public class ResetByUserIdRequest extends Gs2BasicRequest<ResetByUserIdRequest> 
 	}
 	public ResetByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public String getPropertyId() {
+		return propertyId;
+	}
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+	}
+	public ResetByUserIdRequest withPropertyId(String propertyId) {
+		this.propertyId = propertyId;
 		return this;
 	}
 	public List<Config> getConfig() {
@@ -84,6 +95,7 @@ public class ResetByUserIdRequest extends Gs2BasicRequest<ResetByUserIdRequest> 
         return new ResetByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -97,6 +109,7 @@ public class ResetByUserIdRequest extends Gs2BasicRequest<ResetByUserIdRequest> 
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("propertyId", getPropertyId());
                 put("config", getConfig() == null ? new ArrayList<Config>() :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef

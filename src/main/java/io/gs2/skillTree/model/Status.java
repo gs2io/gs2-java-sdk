@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class Status implements IModel, Serializable, Comparable<Status> {
 	private String statusId;
 	private String userId;
+	private String propertyId;
 	private List<String> releasedNodeNames;
 	private Long createdAt;
 	private Long updatedAt;
@@ -53,6 +54,16 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 	}
 	public Status withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public String getPropertyId() {
+		return propertyId;
+	}
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
+	}
+	public Status withPropertyId(String propertyId) {
+		this.propertyId = propertyId;
 		return this;
 	}
 	public List<String> getReleasedNodeNames() {
@@ -103,6 +114,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
         return new Status()
             .withStatusId(data.get("statusId") == null || data.get("statusId").isNull() ? null : data.get("statusId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withReleasedNodeNames(data.get("releasedNodeNames") == null || data.get("releasedNodeNames").isNull() ? new ArrayList<String>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("releasedNodeNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
@@ -118,6 +130,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
             new HashMap<String, Object>() {{
                 put("statusId", getStatusId());
                 put("userId", getUserId());
+                put("propertyId", getPropertyId());
                 put("releasedNodeNames", getReleasedNodeNames() == null ? new ArrayList<String>() :
                     getReleasedNodeNames().stream().map(item -> {
                         return item;
@@ -141,6 +154,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
         int result = 1;
         result = prime * result + ((this.statusId == null) ? 0 : this.statusId.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
+        result = prime * result + ((this.propertyId == null) ? 0 : this.propertyId.hashCode());
         result = prime * result + ((this.releasedNodeNames == null) ? 0 : this.releasedNodeNames.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -165,6 +179,11 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 		if (userId == null) {
 			return other.userId == null;
 		} else if (!userId.equals(other.userId)) {
+			return false;
+		}
+		if (propertyId == null) {
+			return other.propertyId == null;
+		} else if (!propertyId.equals(other.propertyId)) {
 			return false;
 		}
 		if (releasedNodeNames == null) {
