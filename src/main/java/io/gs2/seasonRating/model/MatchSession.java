@@ -1,0 +1,146 @@
+/*
+ * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
+ * Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+package io.gs2.seasonRating.model;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.gs2.core.model.IModel;
+
+
+@SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class MatchSession implements IModel, Serializable, Comparable<MatchSession> {
+	private String sessionId;
+	private String name;
+	private Long createdAt;
+	private Long revision;
+	public String getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	public MatchSession withSessionId(String sessionId) {
+		this.sessionId = sessionId;
+		return this;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public MatchSession withName(String name) {
+		this.name = name;
+		return this;
+	}
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+	public MatchSession withCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+		return this;
+	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public MatchSession withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
+
+    public static MatchSession fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new MatchSession()
+            .withSessionId(data.get("sessionId") == null || data.get("sessionId").isNull() ? null : data.get("sessionId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("sessionId", getSessionId());
+                put("name", getName());
+                put("createdAt", getCreatedAt());
+                put("revision", getRevision());
+            }}
+        );
+    }
+
+	@Override
+	public int compareTo(MatchSession o) {
+		return sessionId.compareTo(o.sessionId);
+	}
+
+	@Override
+	public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.sessionId == null) ? 0 : this.sessionId.hashCode());
+        result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null)
+			return false;
+		if (getClass() != o.getClass())
+			return false;
+		MatchSession other = (MatchSession) o;
+		if (sessionId == null) {
+			return other.sessionId == null;
+		} else if (!sessionId.equals(other.sessionId)) {
+			return false;
+		}
+		if (name == null) {
+			return other.name == null;
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (createdAt == null) {
+			return other.createdAt == null;
+		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
+			return false;
+		}
+		return true;
+	}
+}

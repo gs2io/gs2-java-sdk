@@ -33,6 +33,7 @@ public class AddExperienceByUserIdRequest extends Gs2BasicRequest<AddExperienceB
     private String experienceName;
     private String propertyId;
     private Long experienceValue;
+    private Boolean truncateExperienceWhenRankUp;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class AddExperienceByUserIdRequest extends Gs2BasicRequest<AddExperienceB
 		this.experienceValue = experienceValue;
 		return this;
 	}
+	public Boolean getTruncateExperienceWhenRankUp() {
+		return truncateExperienceWhenRankUp;
+	}
+	public void setTruncateExperienceWhenRankUp(Boolean truncateExperienceWhenRankUp) {
+		this.truncateExperienceWhenRankUp = truncateExperienceWhenRankUp;
+	}
+	public AddExperienceByUserIdRequest withTruncateExperienceWhenRankUp(Boolean truncateExperienceWhenRankUp) {
+		this.truncateExperienceWhenRankUp = truncateExperienceWhenRankUp;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class AddExperienceByUserIdRequest extends Gs2BasicRequest<AddExperienceB
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").longValue());
+            .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").longValue())
+            .withTruncateExperienceWhenRankUp(data.get("truncateExperienceWhenRankUp") == null || data.get("truncateExperienceWhenRankUp").isNull() ? null : data.get("truncateExperienceWhenRankUp").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class AddExperienceByUserIdRequest extends Gs2BasicRequest<AddExperienceB
                 put("experienceName", getExperienceName());
                 put("propertyId", getPropertyId());
                 put("experienceValue", getExperienceValue());
+                put("truncateExperienceWhenRankUp", getTruncateExperienceWhenRankUp());
             }}
         );
     }

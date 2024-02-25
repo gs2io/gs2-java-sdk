@@ -1404,6 +1404,107 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
         return resultAsyncResult[0].getResult();
     }
 
+    class QueryAccessLogWithTelemetryTask extends Gs2RestSessionTask<QueryAccessLogWithTelemetryResult> {
+        private QueryAccessLogWithTelemetryRequest request;
+
+        public QueryAccessLogWithTelemetryTask(
+            QueryAccessLogWithTelemetryRequest request,
+            AsyncAction<AsyncResult<QueryAccessLogWithTelemetryResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public QueryAccessLogWithTelemetryResult parse(JsonNode data) {
+            return QueryAccessLogWithTelemetryResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/log/access/telemetry";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getUserId() != null) {
+                queryStrings.add("userId=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserId()))));
+            }
+            if (this.request.getBegin() != null) {
+                queryStrings.add("begin=" + String.valueOf(this.request.getBegin()));
+            }
+            if (this.request.getEnd() != null) {
+                queryStrings.add("end=" + String.valueOf(this.request.getEnd()));
+            }
+            if (this.request.getLongTerm() != null) {
+                queryStrings.add("longTerm=" + String.valueOf(this.request.getLongTerm()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void queryAccessLogWithTelemetryAsync(
+            QueryAccessLogWithTelemetryRequest request,
+            AsyncAction<AsyncResult<QueryAccessLogWithTelemetryResult>> callback
+    ) {
+        QueryAccessLogWithTelemetryTask task = new QueryAccessLogWithTelemetryTask(request, callback);
+        session.execute(task);
+    }
+
+    public QueryAccessLogWithTelemetryResult queryAccessLogWithTelemetry(
+            QueryAccessLogWithTelemetryRequest request
+    ) {
+        final AsyncResult<QueryAccessLogWithTelemetryResult>[] resultAsyncResult = new AsyncResult[]{null};
+        queryAccessLogWithTelemetryAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class PutLogTask extends Gs2RestSessionTask<PutLogResult> {
         private PutLogRequest request;
 

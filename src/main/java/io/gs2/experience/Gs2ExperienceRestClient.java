@@ -3023,6 +3023,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("experienceValue", request.getExperienceValue());
+                    put("truncateExperienceWhenRankUp", request.getTruncateExperienceWhenRankUp());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -4016,6 +4017,86 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
     ) {
         final AsyncResult<AddExperienceByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         addExperienceByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SetExperienceByStampSheetTask extends Gs2RestSessionTask<SetExperienceByStampSheetResult> {
+        private SetExperienceByStampSheetRequest request;
+
+        public SetExperienceByStampSheetTask(
+            SetExperienceByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetExperienceByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetExperienceByStampSheetResult parse(JsonNode data) {
+            return SetExperienceByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "experience")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/experience/set";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setExperienceByStampSheetAsync(
+            SetExperienceByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetExperienceByStampSheetResult>> callback
+    ) {
+        SetExperienceByStampSheetTask task = new SetExperienceByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetExperienceByStampSheetResult setExperienceByStampSheet(
+            SetExperienceByStampSheetRequest request
+    ) {
+        final AsyncResult<SetExperienceByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setExperienceByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

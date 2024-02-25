@@ -15,7 +15,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.account;
+package io.gs2.seasonRating;
 
 import java.io.IOException;
 import java.util.*;
@@ -33,11 +33,11 @@ import io.gs2.core.net.*;
 import io.gs2.core.util.EncodingUtil;
 
 import io.gs2.core.AbstractGs2Client;
-import io.gs2.account.request.*;
-import io.gs2.account.result.*;
-import io.gs2.account.model.*;public class Gs2AccountRestClient extends AbstractGs2Client<Gs2AccountRestClient> {
+import io.gs2.seasonRating.request.*;
+import io.gs2.seasonRating.result.*;
+import io.gs2.seasonRating.model.*;public class Gs2SeasonRatingRestClient extends AbstractGs2Client<Gs2SeasonRatingRestClient> {
 
-	public Gs2AccountRestClient(Gs2RestSession gs2RestSession) {
+	public Gs2SeasonRatingRestClient(Gs2RestSession gs2RestSession) {
 		super(gs2RestSession);
 	}
 
@@ -64,7 +64,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
@@ -148,7 +148,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/";
 
@@ -156,12 +156,6 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
-                    put("changePasswordIfTakeOver", request.getChangePasswordIfTakeOver());
-                    put("differentUserIdForLoginAndDataRetention", request.getDifferentUserIdForLoginAndDataRetention());
-                    put("createAccountScript", request.getCreateAccountScript() != null ? request.getCreateAccountScript().toJson() : null);
-                    put("authenticationScript", request.getAuthenticationScript() != null ? request.getAuthenticationScript().toJson() : null);
-                    put("createTakeOverScript", request.getCreateTakeOverScript() != null ? request.getCreateTakeOverScript().toJson() : null);
-                    put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -235,7 +229,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/status";
 
@@ -315,7 +309,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
@@ -395,7 +389,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
@@ -404,11 +398,6 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
-                    put("changePasswordIfTakeOver", request.getChangePasswordIfTakeOver());
-                    put("createAccountScript", request.getCreateAccountScript() != null ? request.getCreateAccountScript().toJson() : null);
-                    put("authenticationScript", request.getAuthenticationScript() != null ? request.getAuthenticationScript().toJson() : null);
-                    put("createTakeOverScript", request.getCreateTakeOverScript() != null ? request.getCreateTakeOverScript().toJson() : null);
-                    put("doTakeOverScript", request.getDoTakeOverScript() != null ? request.getDoTakeOverScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -482,7 +471,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}";
 
@@ -562,7 +551,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/system/dump/user/{userId}";
 
@@ -645,7 +634,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/system/dump/user/{userId}";
 
@@ -728,7 +717,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/system/clean/user/{userId}";
 
@@ -811,7 +800,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/system/clean/user/{userId}";
 
@@ -894,7 +883,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/system/import/user/{userId}/prepare";
 
@@ -977,7 +966,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/system/import/user/{userId}";
 
@@ -1061,7 +1050,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
                 + "/system/import/user/{userId}/{uploadToken}";
 
@@ -1122,12 +1111,12 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class DescribeAccountsTask extends Gs2RestSessionTask<DescribeAccountsResult> {
-        private DescribeAccountsRequest request;
+    class DescribeMatchSessionsTask extends Gs2RestSessionTask<DescribeMatchSessionsResult> {
+        private DescribeMatchSessionsRequest request;
 
-        public DescribeAccountsTask(
-            DescribeAccountsRequest request,
-            AsyncAction<AsyncResult<DescribeAccountsResult>> userCallback
+        public DescribeMatchSessionsTask(
+            DescribeMatchSessionsRequest request,
+            AsyncAction<AsyncResult<DescribeMatchSessionsResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -1137,17 +1126,17 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
 
         @Override
-        public DescribeAccountsResult parse(JsonNode data) {
-            return DescribeAccountsResult.fromJson(data);
+        public DescribeMatchSessionsResult parse(JsonNode data) {
+            return DescribeMatchSessionsResult.fromJson(data);
         }
 
         @Override
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account";
+                + "/{namespaceName}/session";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
@@ -1179,19 +1168,19 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
     }
 
-    public void describeAccountsAsync(
-            DescribeAccountsRequest request,
-            AsyncAction<AsyncResult<DescribeAccountsResult>> callback
+    public void describeMatchSessionsAsync(
+            DescribeMatchSessionsRequest request,
+            AsyncAction<AsyncResult<DescribeMatchSessionsResult>> callback
     ) {
-        DescribeAccountsTask task = new DescribeAccountsTask(request, callback);
+        DescribeMatchSessionsTask task = new DescribeMatchSessionsTask(request, callback);
         session.execute(task);
     }
 
-    public DescribeAccountsResult describeAccounts(
-            DescribeAccountsRequest request
+    public DescribeMatchSessionsResult describeMatchSessions(
+            DescribeMatchSessionsRequest request
     ) {
-        final AsyncResult<DescribeAccountsResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeAccountsAsync(
+        final AsyncResult<DescribeMatchSessionsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeMatchSessionsAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -1208,12 +1197,12 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class CreateAccountTask extends Gs2RestSessionTask<CreateAccountResult> {
-        private CreateAccountRequest request;
+    class CreateMatchSessionTask extends Gs2RestSessionTask<CreateMatchSessionResult> {
+        private CreateMatchSessionRequest request;
 
-        public CreateAccountTask(
-            CreateAccountRequest request,
-            AsyncAction<AsyncResult<CreateAccountResult>> userCallback
+        public CreateMatchSessionTask(
+            CreateMatchSessionRequest request,
+            AsyncAction<AsyncResult<CreateMatchSessionResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -1223,22 +1212,24 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
 
         @Override
-        public CreateAccountResult parse(JsonNode data) {
-            return CreateAccountResult.fromJson(data);
+        public CreateMatchSessionResult parse(JsonNode data) {
+            return CreateMatchSessionResult.fromJson(data);
         }
 
         @Override
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account";
+                + "/{namespaceName}/session";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("sessionName", request.getSessionName());
+                    put("ttlSeconds", request.getTtlSeconds());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -1259,19 +1250,19 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
     }
 
-    public void createAccountAsync(
-            CreateAccountRequest request,
-            AsyncAction<AsyncResult<CreateAccountResult>> callback
+    public void createMatchSessionAsync(
+            CreateMatchSessionRequest request,
+            AsyncAction<AsyncResult<CreateMatchSessionResult>> callback
     ) {
-        CreateAccountTask task = new CreateAccountTask(request, callback);
+        CreateMatchSessionTask task = new CreateMatchSessionTask(request, callback);
         session.execute(task);
     }
 
-    public CreateAccountResult createAccount(
-            CreateAccountRequest request
+    public CreateMatchSessionResult createMatchSession(
+            CreateMatchSessionRequest request
     ) {
-        final AsyncResult<CreateAccountResult>[] resultAsyncResult = new AsyncResult[]{null};
-        createAccountAsync(
+        final AsyncResult<CreateMatchSessionResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createMatchSessionAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -1288,12 +1279,12 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class UpdateTimeOffsetTask extends Gs2RestSessionTask<UpdateTimeOffsetResult> {
-        private UpdateTimeOffsetRequest request;
+    class GetMatchSessionTask extends Gs2RestSessionTask<GetMatchSessionResult> {
+        private GetMatchSessionRequest request;
 
-        public UpdateTimeOffsetTask(
-            UpdateTimeOffsetRequest request,
-            AsyncAction<AsyncResult<UpdateTimeOffsetResult>> userCallback
+        public GetMatchSessionTask(
+            GetMatchSessionRequest request,
+            AsyncAction<AsyncResult<GetMatchSessionResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -1303,360 +1294,20 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
 
         @Override
-        public UpdateTimeOffsetResult parse(JsonNode data) {
-            return UpdateTimeOffsetResult.fromJson(data);
+        public GetMatchSessionResult parse(JsonNode data) {
+            return GetMatchSessionResult.fromJson(data);
         }
 
         @Override
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/time_offset";
+                + "/{namespaceName}/session/{sessionName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("timeOffset", request.getTimeOffset());
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.PUT)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void updateTimeOffsetAsync(
-            UpdateTimeOffsetRequest request,
-            AsyncAction<AsyncResult<UpdateTimeOffsetResult>> callback
-    ) {
-        UpdateTimeOffsetTask task = new UpdateTimeOffsetTask(request, callback);
-        session.execute(task);
-    }
-
-    public UpdateTimeOffsetResult updateTimeOffset(
-            UpdateTimeOffsetRequest request
-    ) {
-        final AsyncResult<UpdateTimeOffsetResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateTimeOffsetAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class UpdateBannedTask extends Gs2RestSessionTask<UpdateBannedResult> {
-        private UpdateBannedRequest request;
-
-        public UpdateBannedTask(
-            UpdateBannedRequest request,
-            AsyncAction<AsyncResult<UpdateBannedResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public UpdateBannedResult parse(JsonNode data) {
-            return UpdateBannedResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/banned";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("banned", request.getBanned());
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.PUT)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void updateBannedAsync(
-            UpdateBannedRequest request,
-            AsyncAction<AsyncResult<UpdateBannedResult>> callback
-    ) {
-        UpdateBannedTask task = new UpdateBannedTask(request, callback);
-        session.execute(task);
-    }
-
-    public UpdateBannedResult updateBanned(
-            UpdateBannedRequest request
-    ) {
-        final AsyncResult<UpdateBannedResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateBannedAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class AddBanTask extends Gs2RestSessionTask<AddBanResult> {
-        private AddBanRequest request;
-
-        public AddBanTask(
-            AddBanRequest request,
-            AsyncAction<AsyncResult<AddBanResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public AddBanResult parse(JsonNode data) {
-            return AddBanResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/ban";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("banStatus", request.getBanStatus() != null ? request.getBanStatus().toJson() : null);
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.POST)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void addBanAsync(
-            AddBanRequest request,
-            AsyncAction<AsyncResult<AddBanResult>> callback
-    ) {
-        AddBanTask task = new AddBanTask(request, callback);
-        session.execute(task);
-    }
-
-    public AddBanResult addBan(
-            AddBanRequest request
-    ) {
-        final AsyncResult<AddBanResult>[] resultAsyncResult = new AsyncResult[]{null};
-        addBanAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class RemoveBanTask extends Gs2RestSessionTask<RemoveBanResult> {
-        private RemoveBanRequest request;
-
-        public RemoveBanTask(
-            RemoveBanRequest request,
-            AsyncAction<AsyncResult<RemoveBanResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public RemoveBanResult parse(JsonNode data) {
-            return RemoveBanResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/ban/{banStatusName}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{banStatusName}", this.request.getBanStatusName() == null || this.request.getBanStatusName().length() == 0 ? "null" : String.valueOf(this.request.getBanStatusName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void removeBanAsync(
-            RemoveBanRequest request,
-            AsyncAction<AsyncResult<RemoveBanResult>> callback
-    ) {
-        RemoveBanTask task = new RemoveBanTask(request, callback);
-        session.execute(task);
-    }
-
-    public RemoveBanResult removeBan(
-            RemoveBanRequest request
-    ) {
-        final AsyncResult<RemoveBanResult>[] resultAsyncResult = new AsyncResult[]{null};
-        removeBanAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetAccountTask extends Gs2RestSessionTask<GetAccountResult> {
-        private GetAccountRequest request;
-
-        public GetAccountTask(
-            GetAccountRequest request,
-            AsyncAction<AsyncResult<GetAccountResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetAccountResult parse(JsonNode data) {
-            return GetAccountResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{sessionName}", this.request.getSessionName() == null || this.request.getSessionName().length() == 0 ? "null" : String.valueOf(this.request.getSessionName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1680,19 +1331,19 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
     }
 
-    public void getAccountAsync(
-            GetAccountRequest request,
-            AsyncAction<AsyncResult<GetAccountResult>> callback
+    public void getMatchSessionAsync(
+            GetMatchSessionRequest request,
+            AsyncAction<AsyncResult<GetMatchSessionResult>> callback
     ) {
-        GetAccountTask task = new GetAccountTask(request, callback);
+        GetMatchSessionTask task = new GetMatchSessionTask(request, callback);
         session.execute(task);
     }
 
-    public GetAccountResult getAccount(
-            GetAccountRequest request
+    public GetMatchSessionResult getMatchSession(
+            GetMatchSessionRequest request
     ) {
-        final AsyncResult<GetAccountResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getAccountAsync(
+        final AsyncResult<GetMatchSessionResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getMatchSessionAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -1709,12 +1360,12 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class DeleteAccountTask extends Gs2RestSessionTask<DeleteAccountResult> {
-        private DeleteAccountRequest request;
+    class DeleteMatchSessionTask extends Gs2RestSessionTask<DeleteMatchSessionResult> {
+        private DeleteMatchSessionRequest request;
 
-        public DeleteAccountTask(
-            DeleteAccountRequest request,
-            AsyncAction<AsyncResult<DeleteAccountResult>> userCallback
+        public DeleteMatchSessionTask(
+            DeleteMatchSessionRequest request,
+            AsyncAction<AsyncResult<DeleteMatchSessionResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -1724,20 +1375,20 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
 
         @Override
-        public DeleteAccountResult parse(JsonNode data) {
-            return DeleteAccountResult.fromJson(data);
+        public DeleteMatchSessionResult parse(JsonNode data) {
+            return DeleteMatchSessionResult.fromJson(data);
         }
 
         @Override
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}";
+                + "/{namespaceName}/session/{sessionName}";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{sessionName}", this.request.getSessionName() == null || this.request.getSessionName().length() == 0 ? "null" : String.valueOf(this.request.getSessionName()));
 
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
@@ -1754,9 +1405,6 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -1764,19 +1412,19 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
     }
 
-    public void deleteAccountAsync(
-            DeleteAccountRequest request,
-            AsyncAction<AsyncResult<DeleteAccountResult>> callback
+    public void deleteMatchSessionAsync(
+            DeleteMatchSessionRequest request,
+            AsyncAction<AsyncResult<DeleteMatchSessionResult>> callback
     ) {
-        DeleteAccountTask task = new DeleteAccountTask(request, callback);
+        DeleteMatchSessionTask task = new DeleteMatchSessionTask(request, callback);
         session.execute(task);
     }
 
-    public DeleteAccountResult deleteAccount(
-            DeleteAccountRequest request
+    public DeleteMatchSessionResult deleteMatchSession(
+            DeleteMatchSessionRequest request
     ) {
-        final AsyncResult<DeleteAccountResult>[] resultAsyncResult = new AsyncResult[]{null};
-        deleteAccountAsync(
+        final AsyncResult<DeleteMatchSessionResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteMatchSessionAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -1793,12 +1441,12 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class AuthenticationTask extends Gs2RestSessionTask<AuthenticationResult> {
-        private AuthenticationRequest request;
+    class DescribeSeasonModelMastersTask extends Gs2RestSessionTask<DescribeSeasonModelMastersResult> {
+        private DescribeSeasonModelMastersRequest request;
 
-        public AuthenticationTask(
-            AuthenticationRequest request,
-            AsyncAction<AsyncResult<AuthenticationResult>> userCallback
+        public DescribeSeasonModelMastersTask(
+            DescribeSeasonModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonModelMastersResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -1808,287 +1456,937 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
 
         @Override
-        public AuthenticationResult parse(JsonNode data) {
-            return AuthenticationResult.fromJson(data);
+        public DescribeSeasonModelMastersResult parse(JsonNode data) {
+            return DescribeSeasonModelMastersResult.fromJson(data);
         }
 
         @Override
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}";
+                + "/{namespaceName}/master/rating";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSeasonModelMastersAsync(
+            DescribeSeasonModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonModelMastersResult>> callback
+    ) {
+        DescribeSeasonModelMastersTask task = new DescribeSeasonModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSeasonModelMastersResult describeSeasonModelMasters(
+            DescribeSeasonModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeSeasonModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSeasonModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateSeasonModelMasterTask extends Gs2RestSessionTask<CreateSeasonModelMasterResult> {
+        private CreateSeasonModelMasterRequest request;
+
+        public CreateSeasonModelMasterTask(
+            CreateSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateSeasonModelMasterResult parse(JsonNode data) {
+            return CreateSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/rating";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("tiers", request.getTiers() == null ? new ArrayList<TierModel>() :
+                        request.getTiers().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createSeasonModelMasterAsync(
+            CreateSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateSeasonModelMasterResult>> callback
+    ) {
+        CreateSeasonModelMasterTask task = new CreateSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateSeasonModelMasterResult createSeasonModelMaster(
+            CreateSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<CreateSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSeasonModelMasterTask extends Gs2RestSessionTask<GetSeasonModelMasterResult> {
+        private GetSeasonModelMasterRequest request;
+
+        public GetSeasonModelMasterTask(
+            GetSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<GetSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSeasonModelMasterResult parse(JsonNode data) {
+            return GetSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/rating/{seasonName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSeasonModelMasterAsync(
+            GetSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<GetSeasonModelMasterResult>> callback
+    ) {
+        GetSeasonModelMasterTask task = new GetSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSeasonModelMasterResult getSeasonModelMaster(
+            GetSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<GetSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateSeasonModelMasterTask extends Gs2RestSessionTask<UpdateSeasonModelMasterResult> {
+        private UpdateSeasonModelMasterRequest request;
+
+        public UpdateSeasonModelMasterTask(
+            UpdateSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateSeasonModelMasterResult parse(JsonNode data) {
+            return UpdateSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/rating/{seasonName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("tiers", request.getTiers() == null ? new ArrayList<TierModel>() :
+                        request.getTiers().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateSeasonModelMasterAsync(
+            UpdateSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateSeasonModelMasterResult>> callback
+    ) {
+        UpdateSeasonModelMasterTask task = new UpdateSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateSeasonModelMasterResult updateSeasonModelMaster(
+            UpdateSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteSeasonModelMasterTask extends Gs2RestSessionTask<DeleteSeasonModelMasterResult> {
+        private DeleteSeasonModelMasterRequest request;
+
+        public DeleteSeasonModelMasterTask(
+            DeleteSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteSeasonModelMasterResult parse(JsonNode data) {
+            return DeleteSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/rating/{seasonName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteSeasonModelMasterAsync(
+            DeleteSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteSeasonModelMasterResult>> callback
+    ) {
+        DeleteSeasonModelMasterTask task = new DeleteSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteSeasonModelMasterResult deleteSeasonModelMaster(
+            DeleteSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSeasonModelsTask extends Gs2RestSessionTask<DescribeSeasonModelsResult> {
+        private DescribeSeasonModelsRequest request;
+
+        public DescribeSeasonModelsTask(
+            DescribeSeasonModelsRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSeasonModelsResult parse(JsonNode data) {
+            return DescribeSeasonModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/rating";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSeasonModelsAsync(
+            DescribeSeasonModelsRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonModelsResult>> callback
+    ) {
+        DescribeSeasonModelsTask task = new DescribeSeasonModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSeasonModelsResult describeSeasonModels(
+            DescribeSeasonModelsRequest request
+    ) {
+        final AsyncResult<DescribeSeasonModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSeasonModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSeasonModelTask extends Gs2RestSessionTask<GetSeasonModelResult> {
+        private GetSeasonModelRequest request;
+
+        public GetSeasonModelTask(
+            GetSeasonModelRequest request,
+            AsyncAction<AsyncResult<GetSeasonModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSeasonModelResult parse(JsonNode data) {
+            return GetSeasonModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/rating/{seasonName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSeasonModelAsync(
+            GetSeasonModelRequest request,
+            AsyncAction<AsyncResult<GetSeasonModelResult>> callback
+    ) {
+        GetSeasonModelTask task = new GetSeasonModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSeasonModelResult getSeasonModel(
+            GetSeasonModelRequest request
+    ) {
+        final AsyncResult<GetSeasonModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSeasonModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
+        private ExportMasterRequest request;
+
+        public ExportMasterTask(
+            ExportMasterRequest request,
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/export";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void exportMasterAsync(
+            ExportMasterRequest request,
+            AsyncAction<AsyncResult<ExportMasterResult>> callback
+    ) {
+        ExportMasterTask task = new ExportMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public ExportMasterResult exportMaster(
+            ExportMasterRequest request
+    ) {
+        final AsyncResult<ExportMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        exportMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetCurrentSeasonModelMasterTask extends Gs2RestSessionTask<GetCurrentSeasonModelMasterResult> {
+        private GetCurrentSeasonModelMasterRequest request;
+
+        public GetCurrentSeasonModelMasterTask(
+            GetCurrentSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetCurrentSeasonModelMasterResult parse(JsonNode data) {
+            return GetCurrentSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getCurrentSeasonModelMasterAsync(
+            GetCurrentSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentSeasonModelMasterResult>> callback
+    ) {
+        GetCurrentSeasonModelMasterTask task = new GetCurrentSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetCurrentSeasonModelMasterResult getCurrentSeasonModelMaster(
+            GetCurrentSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<GetCurrentSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCurrentSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateCurrentSeasonModelMasterTask extends Gs2RestSessionTask<UpdateCurrentSeasonModelMasterResult> {
+        private UpdateCurrentSeasonModelMasterRequest request;
+
+        public UpdateCurrentSeasonModelMasterTask(
+            UpdateCurrentSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentSeasonModelMasterResult parse(JsonNode data) {
+            return UpdateCurrentSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateCurrentSeasonModelMasterAsync(
+            UpdateCurrentSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentSeasonModelMasterResult>> callback
+    ) {
+        UpdateCurrentSeasonModelMasterTask task = new UpdateCurrentSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateCurrentSeasonModelMasterResult updateCurrentSeasonModelMaster(
+            UpdateCurrentSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateCurrentSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateCurrentSeasonModelMasterFromGitHubTask extends Gs2RestSessionTask<UpdateCurrentSeasonModelMasterFromGitHubResult> {
+        private UpdateCurrentSeasonModelMasterFromGitHubRequest request;
+
+        public UpdateCurrentSeasonModelMasterFromGitHubTask(
+            UpdateCurrentSeasonModelMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentSeasonModelMasterFromGitHubResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentSeasonModelMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentSeasonModelMasterFromGitHubResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/from_git_hub";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateCurrentSeasonModelMasterFromGitHubAsync(
+            UpdateCurrentSeasonModelMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentSeasonModelMasterFromGitHubResult>> callback
+    ) {
+        UpdateCurrentSeasonModelMasterFromGitHubTask task = new UpdateCurrentSeasonModelMasterFromGitHubTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateCurrentSeasonModelMasterFromGitHubResult updateCurrentSeasonModelMasterFromGitHub(
+            UpdateCurrentSeasonModelMasterFromGitHubRequest request
+    ) {
+        final AsyncResult<UpdateCurrentSeasonModelMasterFromGitHubResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentSeasonModelMasterFromGitHubAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetBallotTask extends Gs2RestSessionTask<GetBallotResult> {
+        private GetBallotRequest request;
+
+        public GetBallotTask(
+            GetBallotRequest request,
+            AsyncAction<AsyncResult<GetBallotResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetBallotResult parse(JsonNode data) {
+            return GetBallotResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/vote/{seasonName}/{sessionName}/ballot";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{sessionName}", this.request.getSessionName() == null || this.request.getSessionName().length() == 0 ? "null" : String.valueOf(this.request.getSessionName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("numberOfPlayer", request.getNumberOfPlayer());
                     put("keyId", request.getKeyId());
-                    put("password", request.getPassword());
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.PUT)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void authenticationAsync(
-            AuthenticationRequest request,
-            AsyncAction<AsyncResult<AuthenticationResult>> callback
-    ) {
-        AuthenticationTask task = new AuthenticationTask(request, callback);
-        session.execute(task);
-    }
-
-    public AuthenticationResult authentication(
-            AuthenticationRequest request
-    ) {
-        final AsyncResult<AuthenticationResult>[] resultAsyncResult = new AsyncResult[]{null};
-        authenticationAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeTakeOversTask extends Gs2RestSessionTask<DescribeTakeOversResult> {
-        private DescribeTakeOversRequest request;
-
-        public DescribeTakeOversTask(
-            DescribeTakeOversRequest request,
-            AsyncAction<AsyncResult<DescribeTakeOversResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeTakeOversResult parse(JsonNode data) {
-            return DescribeTakeOversResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/me/takeover";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getPageToken() != null) {
-                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
-            }
-            if (this.request.getLimit() != null) {
-                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeTakeOversAsync(
-            DescribeTakeOversRequest request,
-            AsyncAction<AsyncResult<DescribeTakeOversResult>> callback
-    ) {
-        DescribeTakeOversTask task = new DescribeTakeOversTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeTakeOversResult describeTakeOvers(
-            DescribeTakeOversRequest request
-    ) {
-        final AsyncResult<DescribeTakeOversResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeTakeOversAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DescribeTakeOversByUserIdTask extends Gs2RestSessionTask<DescribeTakeOversByUserIdResult> {
-        private DescribeTakeOversByUserIdRequest request;
-
-        public DescribeTakeOversByUserIdTask(
-            DescribeTakeOversByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeTakeOversByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DescribeTakeOversByUserIdResult parse(JsonNode data) {
-            return DescribeTakeOversByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/takeover";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getPageToken() != null) {
-                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
-            }
-            if (this.request.getLimit() != null) {
-                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void describeTakeOversByUserIdAsync(
-            DescribeTakeOversByUserIdRequest request,
-            AsyncAction<AsyncResult<DescribeTakeOversByUserIdResult>> callback
-    ) {
-        DescribeTakeOversByUserIdTask task = new DescribeTakeOversByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public DescribeTakeOversByUserIdResult describeTakeOversByUserId(
-            DescribeTakeOversByUserIdRequest request
-    ) {
-        final AsyncResult<DescribeTakeOversByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        describeTakeOversByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class CreateTakeOverTask extends Gs2RestSessionTask<CreateTakeOverResult> {
-        private CreateTakeOverRequest request;
-
-        public CreateTakeOverTask(
-            CreateTakeOverRequest request,
-            AsyncAction<AsyncResult<CreateTakeOverResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public CreateTakeOverResult parse(JsonNode data) {
-            return CreateTakeOverResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/me/takeover";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("type", request.getType());
-                    put("userIdentifier", request.getUserIdentifier());
-                    put("password", request.getPassword());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2105,9 +2403,6 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
 
             builder
                 .build()
@@ -2115,19 +2410,19 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
     }
 
-    public void createTakeOverAsync(
-            CreateTakeOverRequest request,
-            AsyncAction<AsyncResult<CreateTakeOverResult>> callback
+    public void getBallotAsync(
+            GetBallotRequest request,
+            AsyncAction<AsyncResult<GetBallotResult>> callback
     ) {
-        CreateTakeOverTask task = new CreateTakeOverTask(request, callback);
+        GetBallotTask task = new GetBallotTask(request, callback);
         session.execute(task);
     }
 
-    public CreateTakeOverResult createTakeOver(
-            CreateTakeOverRequest request
+    public GetBallotResult getBallot(
+            GetBallotRequest request
     ) {
-        final AsyncResult<CreateTakeOverResult>[] resultAsyncResult = new AsyncResult[]{null};
-        createTakeOverAsync(
+        final AsyncResult<GetBallotResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getBallotAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2144,12 +2439,12 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class CreateTakeOverByUserIdTask extends Gs2RestSessionTask<CreateTakeOverByUserIdResult> {
-        private CreateTakeOverByUserIdRequest request;
+    class GetBallotByUserIdTask extends Gs2RestSessionTask<GetBallotByUserIdResult> {
+        private GetBallotByUserIdRequest request;
 
-        public CreateTakeOverByUserIdTask(
-            CreateTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<CreateTakeOverByUserIdResult>> userCallback
+        public GetBallotByUserIdTask(
+            GetBallotByUserIdRequest request,
+            AsyncAction<AsyncResult<GetBallotByUserIdResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -2159,714 +2454,27 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
 
         @Override
-        public CreateTakeOverByUserIdResult parse(JsonNode data) {
-            return CreateTakeOverByUserIdResult.fromJson(data);
+        public GetBallotByUserIdResult parse(JsonNode data) {
+            return GetBallotByUserIdResult.fromJson(data);
         }
 
         @Override
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/takeover";
+                + "/{namespaceName}/user/{userId}/vote/{seasonName}/{sessionName}/ballot";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{sessionName}", this.request.getSessionName() == null || this.request.getSessionName().length() == 0 ? "null" : String.valueOf(this.request.getSessionName()));
             url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("type", request.getType());
-                    put("userIdentifier", request.getUserIdentifier());
-                    put("password", request.getPassword());
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.POST)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void createTakeOverByUserIdAsync(
-            CreateTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<CreateTakeOverByUserIdResult>> callback
-    ) {
-        CreateTakeOverByUserIdTask task = new CreateTakeOverByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public CreateTakeOverByUserIdResult createTakeOverByUserId(
-            CreateTakeOverByUserIdRequest request
-    ) {
-        final AsyncResult<CreateTakeOverByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        createTakeOverByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetTakeOverTask extends Gs2RestSessionTask<GetTakeOverResult> {
-        private GetTakeOverRequest request;
-
-        public GetTakeOverTask(
-            GetTakeOverRequest request,
-            AsyncAction<AsyncResult<GetTakeOverResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetTakeOverResult parse(JsonNode data) {
-            return GetTakeOverResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/me/takeover/type/{type}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void getTakeOverAsync(
-            GetTakeOverRequest request,
-            AsyncAction<AsyncResult<GetTakeOverResult>> callback
-    ) {
-        GetTakeOverTask task = new GetTakeOverTask(request, callback);
-        session.execute(task);
-    }
-
-    public GetTakeOverResult getTakeOver(
-            GetTakeOverRequest request
-    ) {
-        final AsyncResult<GetTakeOverResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getTakeOverAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class GetTakeOverByUserIdTask extends Gs2RestSessionTask<GetTakeOverByUserIdResult> {
-        private GetTakeOverByUserIdRequest request;
-
-        public GetTakeOverByUserIdTask(
-            GetTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<GetTakeOverByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public GetTakeOverByUserIdResult parse(JsonNode data) {
-            return GetTakeOverByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/takeover/type/{type}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.GET)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void getTakeOverByUserIdAsync(
-            GetTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<GetTakeOverByUserIdResult>> callback
-    ) {
-        GetTakeOverByUserIdTask task = new GetTakeOverByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public GetTakeOverByUserIdResult getTakeOverByUserId(
-            GetTakeOverByUserIdRequest request
-    ) {
-        final AsyncResult<GetTakeOverByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getTakeOverByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class UpdateTakeOverTask extends Gs2RestSessionTask<UpdateTakeOverResult> {
-        private UpdateTakeOverRequest request;
-
-        public UpdateTakeOverTask(
-            UpdateTakeOverRequest request,
-            AsyncAction<AsyncResult<UpdateTakeOverResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public UpdateTakeOverResult parse(JsonNode data) {
-            return UpdateTakeOverResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/me/takeover/type/{type}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("oldPassword", request.getOldPassword());
-                    put("password", request.getPassword());
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.PUT)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void updateTakeOverAsync(
-            UpdateTakeOverRequest request,
-            AsyncAction<AsyncResult<UpdateTakeOverResult>> callback
-    ) {
-        UpdateTakeOverTask task = new UpdateTakeOverTask(request, callback);
-        session.execute(task);
-    }
-
-    public UpdateTakeOverResult updateTakeOver(
-            UpdateTakeOverRequest request
-    ) {
-        final AsyncResult<UpdateTakeOverResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateTakeOverAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class UpdateTakeOverByUserIdTask extends Gs2RestSessionTask<UpdateTakeOverByUserIdResult> {
-        private UpdateTakeOverByUserIdRequest request;
-
-        public UpdateTakeOverByUserIdTask(
-            UpdateTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<UpdateTakeOverByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public UpdateTakeOverByUserIdResult parse(JsonNode data) {
-            return UpdateTakeOverByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/takeover/type/{type}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("oldPassword", request.getOldPassword());
-                    put("password", request.getPassword());
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.PUT)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void updateTakeOverByUserIdAsync(
-            UpdateTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<UpdateTakeOverByUserIdResult>> callback
-    ) {
-        UpdateTakeOverByUserIdTask task = new UpdateTakeOverByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public UpdateTakeOverByUserIdResult updateTakeOverByUserId(
-            UpdateTakeOverByUserIdRequest request
-    ) {
-        final AsyncResult<UpdateTakeOverByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateTakeOverByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DeleteTakeOverTask extends Gs2RestSessionTask<DeleteTakeOverResult> {
-        private DeleteTakeOverRequest request;
-
-        public DeleteTakeOverTask(
-            DeleteTakeOverRequest request,
-            AsyncAction<AsyncResult<DeleteTakeOverResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DeleteTakeOverResult parse(JsonNode data) {
-            return DeleteTakeOverResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/me/takeover/type/{type}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            if (this.request.getUserIdentifier() != null) {
-                queryStrings.add("userIdentifier=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserIdentifier()))));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void deleteTakeOverAsync(
-            DeleteTakeOverRequest request,
-            AsyncAction<AsyncResult<DeleteTakeOverResult>> callback
-    ) {
-        DeleteTakeOverTask task = new DeleteTakeOverTask(request, callback);
-        session.execute(task);
-    }
-
-    public DeleteTakeOverResult deleteTakeOver(
-            DeleteTakeOverRequest request
-    ) {
-        final AsyncResult<DeleteTakeOverResult>[] resultAsyncResult = new AsyncResult[]{null};
-        deleteTakeOverAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DeleteTakeOverByUserIdentifierTask extends Gs2RestSessionTask<DeleteTakeOverByUserIdentifierResult> {
-        private DeleteTakeOverByUserIdentifierRequest request;
-
-        public DeleteTakeOverByUserIdentifierTask(
-            DeleteTakeOverByUserIdentifierRequest request,
-            AsyncAction<AsyncResult<DeleteTakeOverByUserIdentifierResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DeleteTakeOverByUserIdentifierResult parse(JsonNode data) {
-            return DeleteTakeOverByUserIdentifierResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/takeover/type/{type}/userIdentifier/{userIdentifier}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
-            url = url.replace("{userIdentifier}", this.request.getUserIdentifier() == null || this.request.getUserIdentifier().length() == 0 ? "null" : String.valueOf(this.request.getUserIdentifier()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void deleteTakeOverByUserIdentifierAsync(
-            DeleteTakeOverByUserIdentifierRequest request,
-            AsyncAction<AsyncResult<DeleteTakeOverByUserIdentifierResult>> callback
-    ) {
-        DeleteTakeOverByUserIdentifierTask task = new DeleteTakeOverByUserIdentifierTask(request, callback);
-        session.execute(task);
-    }
-
-    public DeleteTakeOverByUserIdentifierResult deleteTakeOverByUserIdentifier(
-            DeleteTakeOverByUserIdentifierRequest request
-    ) {
-        final AsyncResult<DeleteTakeOverByUserIdentifierResult>[] resultAsyncResult = new AsyncResult[]{null};
-        deleteTakeOverByUserIdentifierAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DeleteTakeOverByUserIdTask extends Gs2RestSessionTask<DeleteTakeOverByUserIdResult> {
-        private DeleteTakeOverByUserIdRequest request;
-
-        public DeleteTakeOverByUserIdTask(
-            DeleteTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteTakeOverByUserIdResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DeleteTakeOverByUserIdResult parse(JsonNode data) {
-            return DeleteTakeOverByUserIdResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/takeover/type/{type}/takeover";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
-            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
-
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
-
-            builder
-                .setMethod(HttpTask.Method.DELETE)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void deleteTakeOverByUserIdAsync(
-            DeleteTakeOverByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteTakeOverByUserIdResult>> callback
-    ) {
-        DeleteTakeOverByUserIdTask task = new DeleteTakeOverByUserIdTask(request, callback);
-        session.execute(task);
-    }
-
-    public DeleteTakeOverByUserIdResult deleteTakeOverByUserId(
-            DeleteTakeOverByUserIdRequest request
-    ) {
-        final AsyncResult<DeleteTakeOverByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        deleteTakeOverByUserIdAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
-    class DoTakeOverTask extends Gs2RestSessionTask<DoTakeOverResult> {
-        private DoTakeOverRequest request;
-
-        public DoTakeOverTask(
-            DoTakeOverRequest request,
-            AsyncAction<AsyncResult<DoTakeOverResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public DoTakeOverResult parse(JsonNode data) {
-            return DoTakeOverResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/takeover/type/{type}";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()).replace("{", "%7b").replace("}", "%7d"));
-            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("userIdentifier", request.getUserIdentifier());
-                    put("password", request.getPassword());
+                    put("numberOfPlayer", request.getNumberOfPlayer());
+                    put("keyId", request.getKeyId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2887,19 +2495,19 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
     }
 
-    public void doTakeOverAsync(
-            DoTakeOverRequest request,
-            AsyncAction<AsyncResult<DoTakeOverResult>> callback
+    public void getBallotByUserIdAsync(
+            GetBallotByUserIdRequest request,
+            AsyncAction<AsyncResult<GetBallotByUserIdResult>> callback
     ) {
-        DoTakeOverTask task = new DoTakeOverTask(request, callback);
+        GetBallotByUserIdTask task = new GetBallotByUserIdTask(request, callback);
         session.execute(task);
     }
 
-    public DoTakeOverResult doTakeOver(
-            DoTakeOverRequest request
+    public GetBallotByUserIdResult getBallotByUserId(
+            GetBallotByUserIdRequest request
     ) {
-        final AsyncResult<DoTakeOverResult>[] resultAsyncResult = new AsyncResult[]{null};
-        doTakeOverAsync(
+        final AsyncResult<GetBallotByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getBallotByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2916,12 +2524,12 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class GetDataOwnerByUserIdTask extends Gs2RestSessionTask<GetDataOwnerByUserIdResult> {
-        private GetDataOwnerByUserIdRequest request;
+    class VoteTask extends Gs2RestSessionTask<VoteResult> {
+        private VoteRequest request;
 
-        public GetDataOwnerByUserIdTask(
-            GetDataOwnerByUserIdRequest request,
-            AsyncAction<AsyncResult<GetDataOwnerByUserIdResult>> userCallback
+        public VoteTask(
+            VoteRequest request,
+            AsyncAction<AsyncResult<VoteResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -2931,29 +2539,37 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
 
         @Override
-        public GetDataOwnerByUserIdResult parse(JsonNode data) {
-            return GetDataOwnerByUserIdResult.fromJson(data);
+        public VoteResult parse(JsonNode data) {
+            return VoteResult.fromJson(data);
         }
 
         @Override
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/dataOwner";
+                + "/{namespaceName}/action/vote";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("ballotBody", request.getBallotBody());
+                    put("ballotSignature", request.getBallotSignature());
+                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                        request.getGameResults().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
-                .setMethod(HttpTask.Method.GET)
+                .setMethod(HttpTask.Method.POST)
                 .setUrl(url)
                 .setHeader("Content-Type", "application/json")
                 .setHttpResponseHandler(this);
@@ -2968,19 +2584,19 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
     }
 
-    public void getDataOwnerByUserIdAsync(
-            GetDataOwnerByUserIdRequest request,
-            AsyncAction<AsyncResult<GetDataOwnerByUserIdResult>> callback
+    public void voteAsync(
+            VoteRequest request,
+            AsyncAction<AsyncResult<VoteResult>> callback
     ) {
-        GetDataOwnerByUserIdTask task = new GetDataOwnerByUserIdTask(request, callback);
+        VoteTask task = new VoteTask(request, callback);
         session.execute(task);
     }
 
-    public GetDataOwnerByUserIdResult getDataOwnerByUserId(
-            GetDataOwnerByUserIdRequest request
+    public VoteResult vote(
+            VoteRequest request
     ) {
-        final AsyncResult<GetDataOwnerByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getDataOwnerByUserIdAsync(
+        final AsyncResult<VoteResult>[] resultAsyncResult = new AsyncResult[]{null};
+        voteAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2997,12 +2613,12 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
-    class DeleteDataOwnerByUserIdTask extends Gs2RestSessionTask<DeleteDataOwnerByUserIdResult> {
-        private DeleteDataOwnerByUserIdRequest request;
+    class VoteMultipleTask extends Gs2RestSessionTask<VoteMultipleResult> {
+        private VoteMultipleRequest request;
 
-        public DeleteDataOwnerByUserIdTask(
-            DeleteDataOwnerByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteDataOwnerByUserIdResult>> userCallback
+        public VoteMultipleTask(
+            VoteMultipleRequest request,
+            AsyncAction<AsyncResult<VoteMultipleResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3012,38 +2628,47 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
 
         @Override
-        public DeleteDataOwnerByUserIdResult parse(JsonNode data) {
-            return DeleteDataOwnerByUserIdResult.fromJson(data);
+        public VoteMultipleResult parse(JsonNode data) {
+            return VoteMultipleResult.fromJson(data);
         }
 
         @Override
         protected void executeImpl() {
 
             String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "account")
+                .replace("{service}", "season-rating")
                 .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/account/{userId}/dataOwner";
+                + "/{namespaceName}/action/vote/multiple";
 
             url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
 
-            List<String> queryStrings = new ArrayList<> ();
-            if (this.request.getContextStack() != null) {
-                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
-            }
-            url += "?" + String.join("&", queryStrings);
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("signedBallots", request.getSignedBallots() == null ? new ArrayList<SignedBallot>() :
+                        request.getSignedBallots().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("gameResults", request.getGameResults() == null ? new ArrayList<GameResult>() :
+                        request.getGameResults().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
 
             builder
-                .setMethod(HttpTask.Method.DELETE)
+                .setMethod(HttpTask.Method.POST)
                 .setUrl(url)
                 .setHeader("Content-Type", "application/json")
                 .setHttpResponseHandler(this);
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
 
             builder
@@ -3052,19 +2677,101 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         }
     }
 
-    public void deleteDataOwnerByUserIdAsync(
-            DeleteDataOwnerByUserIdRequest request,
-            AsyncAction<AsyncResult<DeleteDataOwnerByUserIdResult>> callback
+    public void voteMultipleAsync(
+            VoteMultipleRequest request,
+            AsyncAction<AsyncResult<VoteMultipleResult>> callback
     ) {
-        DeleteDataOwnerByUserIdTask task = new DeleteDataOwnerByUserIdTask(request, callback);
+        VoteMultipleTask task = new VoteMultipleTask(request, callback);
         session.execute(task);
     }
 
-    public DeleteDataOwnerByUserIdResult deleteDataOwnerByUserId(
-            DeleteDataOwnerByUserIdRequest request
+    public VoteMultipleResult voteMultiple(
+            VoteMultipleRequest request
     ) {
-        final AsyncResult<DeleteDataOwnerByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
-        deleteDataOwnerByUserIdAsync(
+        final AsyncResult<VoteMultipleResult>[] resultAsyncResult = new AsyncResult[]{null};
+        voteMultipleAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CommitVoteTask extends Gs2RestSessionTask<CommitVoteResult> {
+        private CommitVoteRequest request;
+
+        public CommitVoteTask(
+            CommitVoteRequest request,
+            AsyncAction<AsyncResult<CommitVoteResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CommitVoteResult parse(JsonNode data) {
+            return CommitVoteResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "season-rating")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/vote/{seasonName}/{sessionName}/action/vote/commit";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{sessionName}", this.request.getSessionName() == null || this.request.getSessionName().length() == 0 ? "null" : String.valueOf(this.request.getSessionName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void commitVoteAsync(
+            CommitVoteRequest request,
+            AsyncAction<AsyncResult<CommitVoteResult>> callback
+    ) {
+        CommitVoteTask task = new CommitVoteTask(request, callback);
+        session.execute(task);
+    }
+
+    public CommitVoteResult commitVote(
+            CommitVoteRequest request
+    ) {
+        final AsyncResult<CommitVoteResult>[] resultAsyncResult = new AsyncResult[]{null};
+        commitVoteAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
