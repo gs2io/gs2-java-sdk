@@ -35,6 +35,7 @@ public class UpdateSeasonModelMasterRequest extends Gs2BasicRequest<UpdateSeason
     private String metadata;
     private List<TierModel> tiers;
     private String experienceModelId;
+    private String challengePeriodEventId;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -95,6 +96,16 @@ public class UpdateSeasonModelMasterRequest extends Gs2BasicRequest<UpdateSeason
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
+	public String getChallengePeriodEventId() {
+		return challengePeriodEventId;
+	}
+	public void setChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+	}
+	public UpdateSeasonModelMasterRequest withChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+		return this;
+	}
 
     public static UpdateSeasonModelMasterRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -111,7 +122,8 @@ public class UpdateSeasonModelMasterRequest extends Gs2BasicRequest<UpdateSeason
                     return TierModel.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText());
+            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText());
     }
 
     public JsonNode toJson() {
@@ -128,6 +140,7 @@ public class UpdateSeasonModelMasterRequest extends Gs2BasicRequest<UpdateSeason
                     }
                 ).collect(Collectors.toList()));
                 put("experienceModelId", getExperienceModelId());
+                put("challengePeriodEventId", getChallengePeriodEventId());
             }}
         );
     }

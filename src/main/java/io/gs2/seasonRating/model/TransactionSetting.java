@@ -29,20 +29,8 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TransactionSetting implements IModel, Serializable {
-	private Boolean enableAutoRun;
 	private String distributorNamespaceId;
-	private String keyId;
 	private String queueNamespaceId;
-	public Boolean getEnableAutoRun() {
-		return enableAutoRun;
-	}
-	public void setEnableAutoRun(Boolean enableAutoRun) {
-		this.enableAutoRun = enableAutoRun;
-	}
-	public TransactionSetting withEnableAutoRun(Boolean enableAutoRun) {
-		this.enableAutoRun = enableAutoRun;
-		return this;
-	}
 	public String getDistributorNamespaceId() {
 		return distributorNamespaceId;
 	}
@@ -51,16 +39,6 @@ public class TransactionSetting implements IModel, Serializable {
 	}
 	public TransactionSetting withDistributorNamespaceId(String distributorNamespaceId) {
 		this.distributorNamespaceId = distributorNamespaceId;
-		return this;
-	}
-	public String getKeyId() {
-		return keyId;
-	}
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
-	}
-	public TransactionSetting withKeyId(String keyId) {
-		this.keyId = keyId;
 		return this;
 	}
 	public String getQueueNamespaceId() {
@@ -79,18 +57,14 @@ public class TransactionSetting implements IModel, Serializable {
             return null;
         }
         return new TransactionSetting()
-            .withEnableAutoRun(data.get("enableAutoRun") == null || data.get("enableAutoRun").isNull() ? null : data.get("enableAutoRun").booleanValue())
             .withDistributorNamespaceId(data.get("distributorNamespaceId") == null || data.get("distributorNamespaceId").isNull() ? null : data.get("distributorNamespaceId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("enableAutoRun", getEnableAutoRun());
                 put("distributorNamespaceId", getDistributorNamespaceId());
-                put("keyId", getKeyId());
                 put("queueNamespaceId", getQueueNamespaceId());
             }}
         );
@@ -100,9 +74,7 @@ public class TransactionSetting implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.enableAutoRun == null) ? 0 : this.enableAutoRun.hashCode());
         result = prime * result + ((this.distributorNamespaceId == null) ? 0 : this.distributorNamespaceId.hashCode());
-        result = prime * result + ((this.keyId == null) ? 0 : this.keyId.hashCode());
         result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
 		return result;
 	}
@@ -116,19 +88,9 @@ public class TransactionSetting implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		TransactionSetting other = (TransactionSetting) o;
-		if (enableAutoRun == null) {
-			return other.enableAutoRun == null;
-		} else if (!enableAutoRun.equals(other.enableAutoRun)) {
-			return false;
-		}
 		if (distributorNamespaceId == null) {
 			return other.distributorNamespaceId == null;
 		} else if (!distributorNamespaceId.equals(other.distributorNamespaceId)) {
-			return false;
-		}
-		if (keyId == null) {
-			return other.keyId == null;
-		} else if (!keyId.equals(other.keyId)) {
 			return false;
 		}
 		if (queueNamespaceId == null) {

@@ -34,6 +34,7 @@ public class SeasonModel implements IModel, Serializable, Comparable<SeasonModel
 	private String metadata;
 	private List<TierModel> tiers;
 	private String experienceModelId;
+	private String challengePeriodEventId;
 	public String getSeasonModelId() {
 		return seasonModelId;
 	}
@@ -84,6 +85,16 @@ public class SeasonModel implements IModel, Serializable, Comparable<SeasonModel
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
+	public String getChallengePeriodEventId() {
+		return challengePeriodEventId;
+	}
+	public void setChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+	}
+	public SeasonModel withChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+		return this;
+	}
 
     public static SeasonModel fromJson(JsonNode data) {
         if (data == null) {
@@ -99,7 +110,8 @@ public class SeasonModel implements IModel, Serializable, Comparable<SeasonModel
                     return TierModel.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText());
+            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText());
     }
 
     public JsonNode toJson() {
@@ -115,6 +127,7 @@ public class SeasonModel implements IModel, Serializable, Comparable<SeasonModel
                     }
                 ).collect(Collectors.toList()));
                 put("experienceModelId", getExperienceModelId());
+                put("challengePeriodEventId", getChallengePeriodEventId());
             }}
         );
     }
@@ -133,6 +146,7 @@ public class SeasonModel implements IModel, Serializable, Comparable<SeasonModel
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.tiers == null) ? 0 : this.tiers.hashCode());
         result = prime * result + ((this.experienceModelId == null) ? 0 : this.experienceModelId.hashCode());
+        result = prime * result + ((this.challengePeriodEventId == null) ? 0 : this.challengePeriodEventId.hashCode());
 		return result;
 	}
 
@@ -168,6 +182,11 @@ public class SeasonModel implements IModel, Serializable, Comparable<SeasonModel
 		if (experienceModelId == null) {
 			return other.experienceModelId == null;
 		} else if (!experienceModelId.equals(other.experienceModelId)) {
+			return false;
+		}
+		if (challengePeriodEventId == null) {
+			return other.challengePeriodEventId == null;
+		} else if (!challengePeriodEventId.equals(other.challengePeriodEventId)) {
 			return false;
 		}
 		return true;

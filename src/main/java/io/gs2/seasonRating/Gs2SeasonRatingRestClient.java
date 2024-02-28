@@ -156,6 +156,7 @@ import io.gs2.seasonRating.model.*;public class Gs2SeasonRatingRestClient extend
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -398,6 +399,7 @@ import io.gs2.seasonRating.model.*;public class Gs2SeasonRatingRestClient extend
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -1568,6 +1570,7 @@ import io.gs2.seasonRating.model.*;public class Gs2SeasonRatingRestClient extend
                         }
                     ).collect(Collectors.toList()));
                     put("experienceModelId", request.getExperienceModelId());
+                    put("challengePeriodEventId", request.getChallengePeriodEventId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -1739,6 +1742,7 @@ import io.gs2.seasonRating.model.*;public class Gs2SeasonRatingRestClient extend
                         }
                     ).collect(Collectors.toList()));
                     put("experienceModelId", request.getExperienceModelId());
+                    put("challengePeriodEventId", request.getChallengePeriodEventId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

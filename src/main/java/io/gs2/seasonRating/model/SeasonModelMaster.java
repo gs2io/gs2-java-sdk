@@ -35,6 +35,7 @@ public class SeasonModelMaster implements IModel, Serializable, Comparable<Seaso
 	private String description;
 	private List<TierModel> tiers;
 	private String experienceModelId;
+	private String challengePeriodEventId;
 	private Long createdAt;
 	private Long updatedAt;
 	private Long revision;
@@ -98,6 +99,16 @@ public class SeasonModelMaster implements IModel, Serializable, Comparable<Seaso
 		this.experienceModelId = experienceModelId;
 		return this;
 	}
+	public String getChallengePeriodEventId() {
+		return challengePeriodEventId;
+	}
+	public void setChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+	}
+	public SeasonModelMaster withChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -145,6 +156,7 @@ public class SeasonModelMaster implements IModel, Serializable, Comparable<Seaso
                 }
             ).collect(Collectors.toList()))
             .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -164,6 +176,7 @@ public class SeasonModelMaster implements IModel, Serializable, Comparable<Seaso
                     }
                 ).collect(Collectors.toList()));
                 put("experienceModelId", getExperienceModelId());
+                put("challengePeriodEventId", getChallengePeriodEventId());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
                 put("revision", getRevision());
@@ -186,6 +199,7 @@ public class SeasonModelMaster implements IModel, Serializable, Comparable<Seaso
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.tiers == null) ? 0 : this.tiers.hashCode());
         result = prime * result + ((this.experienceModelId == null) ? 0 : this.experienceModelId.hashCode());
+        result = prime * result + ((this.challengePeriodEventId == null) ? 0 : this.challengePeriodEventId.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -229,6 +243,11 @@ public class SeasonModelMaster implements IModel, Serializable, Comparable<Seaso
 		if (experienceModelId == null) {
 			return other.experienceModelId == null;
 		} else if (!experienceModelId.equals(other.experienceModelId)) {
+			return false;
+		}
+		if (challengePeriodEventId == null) {
+			return other.challengePeriodEventId == null;
+		} else if (!challengePeriodEventId.equals(other.challengePeriodEventId)) {
 			return false;
 		}
 		if (createdAt == null) {

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.seasonRating.model.*;
+import io.gs2.seasonRating.model.TransactionSetting;
 import io.gs2.seasonRating.model.LogSetting;
 import io.gs2.seasonRating.model.Namespace;
 
