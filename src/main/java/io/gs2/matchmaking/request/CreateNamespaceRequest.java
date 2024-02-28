@@ -40,6 +40,9 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String completeMatchmakingTriggerType;
     private String completeMatchmakingTriggerRealtimeNamespaceId;
     private String completeMatchmakingTriggerScriptId;
+    private String enableCollaborateSeasonRating;
+    private String collaborateSeasonRatingNamespaceId;
+    private Integer collaborateSeasonRatingTtl;
     private ScriptSetting changeRatingScript;
     private NotificationSetting joinNotification;
     private NotificationSetting leaveNotification;
@@ -136,6 +139,36 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
 		return this;
 	}
+	public String getEnableCollaborateSeasonRating() {
+		return enableCollaborateSeasonRating;
+	}
+	public void setEnableCollaborateSeasonRating(String enableCollaborateSeasonRating) {
+		this.enableCollaborateSeasonRating = enableCollaborateSeasonRating;
+	}
+	public CreateNamespaceRequest withEnableCollaborateSeasonRating(String enableCollaborateSeasonRating) {
+		this.enableCollaborateSeasonRating = enableCollaborateSeasonRating;
+		return this;
+	}
+	public String getCollaborateSeasonRatingNamespaceId() {
+		return collaborateSeasonRatingNamespaceId;
+	}
+	public void setCollaborateSeasonRatingNamespaceId(String collaborateSeasonRatingNamespaceId) {
+		this.collaborateSeasonRatingNamespaceId = collaborateSeasonRatingNamespaceId;
+	}
+	public CreateNamespaceRequest withCollaborateSeasonRatingNamespaceId(String collaborateSeasonRatingNamespaceId) {
+		this.collaborateSeasonRatingNamespaceId = collaborateSeasonRatingNamespaceId;
+		return this;
+	}
+	public Integer getCollaborateSeasonRatingTtl() {
+		return collaborateSeasonRatingTtl;
+	}
+	public void setCollaborateSeasonRatingTtl(Integer collaborateSeasonRatingTtl) {
+		this.collaborateSeasonRatingTtl = collaborateSeasonRatingTtl;
+	}
+	public CreateNamespaceRequest withCollaborateSeasonRatingTtl(Integer collaborateSeasonRatingTtl) {
+		this.collaborateSeasonRatingTtl = collaborateSeasonRatingTtl;
+		return this;
+	}
 	public ScriptSetting getChangeRatingScript() {
 		return changeRatingScript;
 	}
@@ -211,6 +244,9 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withCompleteMatchmakingTriggerType(data.get("completeMatchmakingTriggerType") == null || data.get("completeMatchmakingTriggerType").isNull() ? null : data.get("completeMatchmakingTriggerType").asText())
             .withCompleteMatchmakingTriggerRealtimeNamespaceId(data.get("completeMatchmakingTriggerRealtimeNamespaceId") == null || data.get("completeMatchmakingTriggerRealtimeNamespaceId").isNull() ? null : data.get("completeMatchmakingTriggerRealtimeNamespaceId").asText())
             .withCompleteMatchmakingTriggerScriptId(data.get("completeMatchmakingTriggerScriptId") == null || data.get("completeMatchmakingTriggerScriptId").isNull() ? null : data.get("completeMatchmakingTriggerScriptId").asText())
+            .withEnableCollaborateSeasonRating(data.get("enableCollaborateSeasonRating") == null || data.get("enableCollaborateSeasonRating").isNull() ? null : data.get("enableCollaborateSeasonRating").asText())
+            .withCollaborateSeasonRatingNamespaceId(data.get("collaborateSeasonRatingNamespaceId") == null || data.get("collaborateSeasonRatingNamespaceId").isNull() ? null : data.get("collaborateSeasonRatingNamespaceId").asText())
+            .withCollaborateSeasonRatingTtl(data.get("collaborateSeasonRatingTtl") == null || data.get("collaborateSeasonRatingTtl").isNull() ? null : data.get("collaborateSeasonRatingTtl").intValue())
             .withChangeRatingScript(data.get("changeRatingScript") == null || data.get("changeRatingScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRatingScript")))
             .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
             .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
@@ -231,6 +267,9 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("completeMatchmakingTriggerType", getCompleteMatchmakingTriggerType());
                 put("completeMatchmakingTriggerRealtimeNamespaceId", getCompleteMatchmakingTriggerRealtimeNamespaceId());
                 put("completeMatchmakingTriggerScriptId", getCompleteMatchmakingTriggerScriptId());
+                put("enableCollaborateSeasonRating", getEnableCollaborateSeasonRating());
+                put("collaborateSeasonRatingNamespaceId", getCollaborateSeasonRatingNamespaceId());
+                put("collaborateSeasonRatingTtl", getCollaborateSeasonRatingTtl());
                 put("changeRatingScript", getChangeRatingScript() != null ? getChangeRatingScript().toJson() : null);
                 put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
                 put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);

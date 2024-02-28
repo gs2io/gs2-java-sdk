@@ -163,6 +163,9 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                     put("completeMatchmakingTriggerType", request.getCompleteMatchmakingTriggerType());
                     put("completeMatchmakingTriggerRealtimeNamespaceId", request.getCompleteMatchmakingTriggerRealtimeNamespaceId());
                     put("completeMatchmakingTriggerScriptId", request.getCompleteMatchmakingTriggerScriptId());
+                    put("enableCollaborateSeasonRating", request.getEnableCollaborateSeasonRating());
+                    put("collaborateSeasonRatingNamespaceId", request.getCollaborateSeasonRatingNamespaceId());
+                    put("collaborateSeasonRatingTtl", request.getCollaborateSeasonRatingTtl());
                     put("changeRatingScript", request.getChangeRatingScript() != null ? request.getChangeRatingScript().toJson() : null);
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);
@@ -417,6 +420,9 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                     put("completeMatchmakingTriggerType", request.getCompleteMatchmakingTriggerType());
                     put("completeMatchmakingTriggerRealtimeNamespaceId", request.getCompleteMatchmakingTriggerRealtimeNamespaceId());
                     put("completeMatchmakingTriggerScriptId", request.getCompleteMatchmakingTriggerScriptId());
+                    put("enableCollaborateSeasonRating", request.getEnableCollaborateSeasonRating());
+                    put("collaborateSeasonRatingNamespaceId", request.getCollaborateSeasonRatingNamespaceId());
+                    put("collaborateSeasonRatingTtl", request.getCollaborateSeasonRatingTtl());
                     put("changeRatingScript", request.getChangeRatingScript() != null ? request.getChangeRatingScript().toJson() : null);
                     put("joinNotification", request.getJoinNotification() != null ? request.getJoinNotification().toJson() : null);
                     put("leaveNotification", request.getLeaveNotification() != null ? request.getLeaveNotification().toJson() : null);

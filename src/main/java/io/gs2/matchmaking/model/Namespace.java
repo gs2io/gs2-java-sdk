@@ -39,6 +39,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String completeMatchmakingTriggerType;
 	private String completeMatchmakingTriggerRealtimeNamespaceId;
 	private String completeMatchmakingTriggerScriptId;
+	private String enableCollaborateSeasonRating;
+	private String collaborateSeasonRatingNamespaceId;
+	private Integer collaborateSeasonRatingTtl;
 	private ScriptSetting changeRatingScript;
 	private NotificationSetting joinNotification;
 	private NotificationSetting leaveNotification;
@@ -148,6 +151,36 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.completeMatchmakingTriggerScriptId = completeMatchmakingTriggerScriptId;
 		return this;
 	}
+	public String getEnableCollaborateSeasonRating() {
+		return enableCollaborateSeasonRating;
+	}
+	public void setEnableCollaborateSeasonRating(String enableCollaborateSeasonRating) {
+		this.enableCollaborateSeasonRating = enableCollaborateSeasonRating;
+	}
+	public Namespace withEnableCollaborateSeasonRating(String enableCollaborateSeasonRating) {
+		this.enableCollaborateSeasonRating = enableCollaborateSeasonRating;
+		return this;
+	}
+	public String getCollaborateSeasonRatingNamespaceId() {
+		return collaborateSeasonRatingNamespaceId;
+	}
+	public void setCollaborateSeasonRatingNamespaceId(String collaborateSeasonRatingNamespaceId) {
+		this.collaborateSeasonRatingNamespaceId = collaborateSeasonRatingNamespaceId;
+	}
+	public Namespace withCollaborateSeasonRatingNamespaceId(String collaborateSeasonRatingNamespaceId) {
+		this.collaborateSeasonRatingNamespaceId = collaborateSeasonRatingNamespaceId;
+		return this;
+	}
+	public Integer getCollaborateSeasonRatingTtl() {
+		return collaborateSeasonRatingTtl;
+	}
+	public void setCollaborateSeasonRatingTtl(Integer collaborateSeasonRatingTtl) {
+		this.collaborateSeasonRatingTtl = collaborateSeasonRatingTtl;
+	}
+	public Namespace withCollaborateSeasonRatingTtl(Integer collaborateSeasonRatingTtl) {
+		this.collaborateSeasonRatingTtl = collaborateSeasonRatingTtl;
+		return this;
+	}
 	public ScriptSetting getChangeRatingScript() {
 		return changeRatingScript;
 	}
@@ -254,6 +287,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withCompleteMatchmakingTriggerType(data.get("completeMatchmakingTriggerType") == null || data.get("completeMatchmakingTriggerType").isNull() ? null : data.get("completeMatchmakingTriggerType").asText())
             .withCompleteMatchmakingTriggerRealtimeNamespaceId(data.get("completeMatchmakingTriggerRealtimeNamespaceId") == null || data.get("completeMatchmakingTriggerRealtimeNamespaceId").isNull() ? null : data.get("completeMatchmakingTriggerRealtimeNamespaceId").asText())
             .withCompleteMatchmakingTriggerScriptId(data.get("completeMatchmakingTriggerScriptId") == null || data.get("completeMatchmakingTriggerScriptId").isNull() ? null : data.get("completeMatchmakingTriggerScriptId").asText())
+            .withEnableCollaborateSeasonRating(data.get("enableCollaborateSeasonRating") == null || data.get("enableCollaborateSeasonRating").isNull() ? null : data.get("enableCollaborateSeasonRating").asText())
+            .withCollaborateSeasonRatingNamespaceId(data.get("collaborateSeasonRatingNamespaceId") == null || data.get("collaborateSeasonRatingNamespaceId").isNull() ? null : data.get("collaborateSeasonRatingNamespaceId").asText())
+            .withCollaborateSeasonRatingTtl(data.get("collaborateSeasonRatingTtl") == null || data.get("collaborateSeasonRatingTtl").isNull() ? null : data.get("collaborateSeasonRatingTtl").intValue())
             .withChangeRatingScript(data.get("changeRatingScript") == null || data.get("changeRatingScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeRatingScript")))
             .withJoinNotification(data.get("joinNotification") == null || data.get("joinNotification").isNull() ? null : NotificationSetting.fromJson(data.get("joinNotification")))
             .withLeaveNotification(data.get("leaveNotification") == null || data.get("leaveNotification").isNull() ? null : NotificationSetting.fromJson(data.get("leaveNotification")))
@@ -278,6 +314,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("completeMatchmakingTriggerType", getCompleteMatchmakingTriggerType());
                 put("completeMatchmakingTriggerRealtimeNamespaceId", getCompleteMatchmakingTriggerRealtimeNamespaceId());
                 put("completeMatchmakingTriggerScriptId", getCompleteMatchmakingTriggerScriptId());
+                put("enableCollaborateSeasonRating", getEnableCollaborateSeasonRating());
+                put("collaborateSeasonRatingNamespaceId", getCollaborateSeasonRatingNamespaceId());
+                put("collaborateSeasonRatingTtl", getCollaborateSeasonRatingTtl());
                 put("changeRatingScript", getChangeRatingScript() != null ? getChangeRatingScript().toJson() : null);
                 put("joinNotification", getJoinNotification() != null ? getJoinNotification().toJson() : null);
                 put("leaveNotification", getLeaveNotification() != null ? getLeaveNotification().toJson() : null);
@@ -310,6 +349,9 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.completeMatchmakingTriggerType == null) ? 0 : this.completeMatchmakingTriggerType.hashCode());
         result = prime * result + ((this.completeMatchmakingTriggerRealtimeNamespaceId == null) ? 0 : this.completeMatchmakingTriggerRealtimeNamespaceId.hashCode());
         result = prime * result + ((this.completeMatchmakingTriggerScriptId == null) ? 0 : this.completeMatchmakingTriggerScriptId.hashCode());
+        result = prime * result + ((this.enableCollaborateSeasonRating == null) ? 0 : this.enableCollaborateSeasonRating.hashCode());
+        result = prime * result + ((this.collaborateSeasonRatingNamespaceId == null) ? 0 : this.collaborateSeasonRatingNamespaceId.hashCode());
+        result = prime * result + ((this.collaborateSeasonRatingTtl == null) ? 0 : this.collaborateSeasonRatingTtl.hashCode());
         result = prime * result + ((this.changeRatingScript == null) ? 0 : this.changeRatingScript.hashCode());
         result = prime * result + ((this.joinNotification == null) ? 0 : this.joinNotification.hashCode());
         result = prime * result + ((this.leaveNotification == null) ? 0 : this.leaveNotification.hashCode());
@@ -379,6 +421,21 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (completeMatchmakingTriggerScriptId == null) {
 			return other.completeMatchmakingTriggerScriptId == null;
 		} else if (!completeMatchmakingTriggerScriptId.equals(other.completeMatchmakingTriggerScriptId)) {
+			return false;
+		}
+		if (enableCollaborateSeasonRating == null) {
+			return other.enableCollaborateSeasonRating == null;
+		} else if (!enableCollaborateSeasonRating.equals(other.enableCollaborateSeasonRating)) {
+			return false;
+		}
+		if (collaborateSeasonRatingNamespaceId == null) {
+			return other.collaborateSeasonRatingNamespaceId == null;
+		} else if (!collaborateSeasonRatingNamespaceId.equals(other.collaborateSeasonRatingNamespaceId)) {
+			return false;
+		}
+		if (collaborateSeasonRatingTtl == null) {
+			return other.collaborateSeasonRatingTtl == null;
+		} else if (!collaborateSeasonRatingTtl.equals(other.collaborateSeasonRatingTtl)) {
 			return false;
 		}
 		if (changeRatingScript == null) {
