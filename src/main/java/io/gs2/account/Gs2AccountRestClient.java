@@ -2860,7 +2860,7 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
                 .replace("{region}", session.getRegion().getName())
                 + "/{namespaceName}/takeover/type/{type}";
 
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()).replace("{", "%7b").replace("}", "%7d"));
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
             url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
 
             builder.setBody(new ObjectMapper().valueToTree(

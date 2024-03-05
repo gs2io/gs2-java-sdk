@@ -34,6 +34,7 @@ public class VerifyRankCapByUserIdRequest extends Gs2BasicRequest<VerifyRankCapB
     private String verifyType;
     private String propertyId;
     private Long rankCapValue;
+    private Boolean multiplyValueSpecifyingQuantity;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class VerifyRankCapByUserIdRequest extends Gs2BasicRequest<VerifyRankCapB
 		this.rankCapValue = rankCapValue;
 		return this;
 	}
+	public Boolean getMultiplyValueSpecifyingQuantity() {
+		return multiplyValueSpecifyingQuantity;
+	}
+	public void setMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+	}
+	public VerifyRankCapByUserIdRequest withMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -119,7 +130,8 @@ public class VerifyRankCapByUserIdRequest extends Gs2BasicRequest<VerifyRankCapB
             .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withRankCapValue(data.get("rankCapValue") == null || data.get("rankCapValue").isNull() ? null : data.get("rankCapValue").longValue());
+            .withRankCapValue(data.get("rankCapValue") == null || data.get("rankCapValue").isNull() ? null : data.get("rankCapValue").longValue())
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class VerifyRankCapByUserIdRequest extends Gs2BasicRequest<VerifyRankCapB
                 put("verifyType", getVerifyType());
                 put("propertyId", getPropertyId());
                 put("rankCapValue", getRankCapValue());
+                put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
             }}
         );
     }

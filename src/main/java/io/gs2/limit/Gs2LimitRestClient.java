@@ -1847,6 +1847,7 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -1938,6 +1939,7 @@ import io.gs2.limit.model.*;public class Gs2LimitRestClient extends AbstractGs2C
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

@@ -33,6 +33,7 @@ public class VerifyInventoryCurrentMaxCapacityRequest extends Gs2BasicRequest<Ve
     private String inventoryName;
     private String verifyType;
     private Integer currentInventoryMaxCapacity;
+    private Boolean multiplyValueSpecifyingQuantity;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class VerifyInventoryCurrentMaxCapacityRequest extends Gs2BasicRequest<Ve
 		this.currentInventoryMaxCapacity = currentInventoryMaxCapacity;
 		return this;
 	}
+	public Boolean getMultiplyValueSpecifyingQuantity() {
+		return multiplyValueSpecifyingQuantity;
+	}
+	public void setMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+	}
+	public VerifyInventoryCurrentMaxCapacityRequest withMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class VerifyInventoryCurrentMaxCapacityRequest extends Gs2BasicRequest<Ve
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
-            .withCurrentInventoryMaxCapacity(data.get("currentInventoryMaxCapacity") == null || data.get("currentInventoryMaxCapacity").isNull() ? null : data.get("currentInventoryMaxCapacity").intValue());
+            .withCurrentInventoryMaxCapacity(data.get("currentInventoryMaxCapacity") == null || data.get("currentInventoryMaxCapacity").isNull() ? null : data.get("currentInventoryMaxCapacity").intValue())
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class VerifyInventoryCurrentMaxCapacityRequest extends Gs2BasicRequest<Ve
                 put("inventoryName", getInventoryName());
                 put("verifyType", getVerifyType());
                 put("currentInventoryMaxCapacity", getCurrentInventoryMaxCapacity());
+                put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
             }}
         );
     }

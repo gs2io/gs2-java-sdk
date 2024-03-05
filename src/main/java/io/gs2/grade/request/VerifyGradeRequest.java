@@ -34,6 +34,7 @@ public class VerifyGradeRequest extends Gs2BasicRequest<VerifyGradeRequest> {
     private String verifyType;
     private String propertyId;
     private Long gradeValue;
+    private Boolean multiplyValueSpecifyingQuantity;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class VerifyGradeRequest extends Gs2BasicRequest<VerifyGradeRequest> {
 		this.gradeValue = gradeValue;
 		return this;
 	}
+	public Boolean getMultiplyValueSpecifyingQuantity() {
+		return multiplyValueSpecifyingQuantity;
+	}
+	public void setMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+	}
+	public VerifyGradeRequest withMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -119,7 +130,8 @@ public class VerifyGradeRequest extends Gs2BasicRequest<VerifyGradeRequest> {
             .withGradeName(data.get("gradeName") == null || data.get("gradeName").isNull() ? null : data.get("gradeName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withGradeValue(data.get("gradeValue") == null || data.get("gradeValue").isNull() ? null : data.get("gradeValue").longValue());
+            .withGradeValue(data.get("gradeValue") == null || data.get("gradeValue").isNull() ? null : data.get("gradeValue").longValue())
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class VerifyGradeRequest extends Gs2BasicRequest<VerifyGradeRequest> {
                 put("verifyType", getVerifyType());
                 put("propertyId", getPropertyId());
                 put("gradeValue", getGradeValue());
+                put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
             }}
         );
     }

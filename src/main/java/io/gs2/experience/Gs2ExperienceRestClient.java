@@ -3632,6 +3632,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                 new HashMap<String, Object>() {{
                     put("propertyId", request.getPropertyId());
                     put("rankValue", request.getRankValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -3723,6 +3724,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                 new HashMap<String, Object>() {{
                     put("propertyId", request.getPropertyId());
                     put("rankValue", request.getRankValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -3810,6 +3812,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                 new HashMap<String, Object>() {{
                     put("propertyId", request.getPropertyId());
                     put("rankCapValue", request.getRankCapValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -3901,6 +3904,7 @@ import io.gs2.experience.model.*;public class Gs2ExperienceRestClient extends Ab
                 new HashMap<String, Object>() {{
                     put("propertyId", request.getPropertyId());
                     put("rankCapValue", request.getRankCapValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

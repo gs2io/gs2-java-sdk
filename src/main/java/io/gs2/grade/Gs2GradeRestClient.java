@@ -2634,6 +2634,7 @@ import io.gs2.grade.model.*;public class Gs2GradeRestClient extends AbstractGs2C
                 new HashMap<String, Object>() {{
                     put("propertyId", request.getPropertyId());
                     put("gradeValue", request.getGradeValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2725,6 +2726,7 @@ import io.gs2.grade.model.*;public class Gs2GradeRestClient extends AbstractGs2C
                 new HashMap<String, Object>() {{
                     put("propertyId", request.getPropertyId());
                     put("gradeValue", request.getGradeValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

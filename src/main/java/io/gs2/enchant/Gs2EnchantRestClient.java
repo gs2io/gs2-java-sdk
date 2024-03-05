@@ -4216,6 +4216,7 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("parameterValueName", request.getParameterValueName());
                     put("parameterCount", request.getParameterCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -4308,6 +4309,7 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("parameterValueName", request.getParameterValueName());
                     put("parameterCount", request.getParameterCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

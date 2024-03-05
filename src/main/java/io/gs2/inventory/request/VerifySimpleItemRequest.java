@@ -34,6 +34,7 @@ public class VerifySimpleItemRequest extends Gs2BasicRequest<VerifySimpleItemReq
     private String itemName;
     private String verifyType;
     private Long count;
+    private Boolean multiplyValueSpecifyingQuantity;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class VerifySimpleItemRequest extends Gs2BasicRequest<VerifySimpleItemReq
 		this.count = count;
 		return this;
 	}
+	public Boolean getMultiplyValueSpecifyingQuantity() {
+		return multiplyValueSpecifyingQuantity;
+	}
+	public void setMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+	}
+	public VerifySimpleItemRequest withMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -119,7 +130,8 @@ public class VerifySimpleItemRequest extends Gs2BasicRequest<VerifySimpleItemReq
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
-            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").longValue());
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").longValue())
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class VerifySimpleItemRequest extends Gs2BasicRequest<VerifySimpleItemReq
                 put("itemName", getItemName());
                 put("verifyType", getVerifyType());
                 put("count", getCount());
+                put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
             }}
         );
     }

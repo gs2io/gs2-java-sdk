@@ -35,6 +35,7 @@ public class VerifyRarityParameterStatusRequest extends Gs2BasicRequest<VerifyRa
     private String verifyType;
     private String parameterValueName;
     private Integer parameterCount;
+    private Boolean multiplyValueSpecifyingQuantity;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -106,6 +107,16 @@ public class VerifyRarityParameterStatusRequest extends Gs2BasicRequest<VerifyRa
 		this.parameterCount = parameterCount;
 		return this;
 	}
+	public Boolean getMultiplyValueSpecifyingQuantity() {
+		return multiplyValueSpecifyingQuantity;
+	}
+	public void setMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+	}
+	public VerifyRarityParameterStatusRequest withMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -131,7 +142,8 @@ public class VerifyRarityParameterStatusRequest extends Gs2BasicRequest<VerifyRa
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withParameterValueName(data.get("parameterValueName") == null || data.get("parameterValueName").isNull() ? null : data.get("parameterValueName").asText())
-            .withParameterCount(data.get("parameterCount") == null || data.get("parameterCount").isNull() ? null : data.get("parameterCount").intValue());
+            .withParameterCount(data.get("parameterCount") == null || data.get("parameterCount").isNull() ? null : data.get("parameterCount").intValue())
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue());
     }
 
     public JsonNode toJson() {
@@ -144,6 +156,7 @@ public class VerifyRarityParameterStatusRequest extends Gs2BasicRequest<VerifyRa
                 put("verifyType", getVerifyType());
                 put("parameterValueName", getParameterValueName());
                 put("parameterCount", getParameterCount());
+                put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
             }}
         );
     }

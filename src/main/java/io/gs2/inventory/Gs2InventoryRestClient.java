@@ -5559,6 +5559,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("currentInventoryMaxCapacity", request.getCurrentInventoryMaxCapacity());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -5649,6 +5650,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("currentInventoryMaxCapacity", request.getCurrentInventoryMaxCapacity());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -6954,6 +6956,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
                 new HashMap<String, Object>() {{
                     put("itemSetName", request.getItemSetName());
                     put("count", request.getCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -7046,6 +7049,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
                 new HashMap<String, Object>() {{
                     put("itemSetName", request.getItemSetName());
                     put("count", request.getCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -9542,6 +9546,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -9633,6 +9638,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -10822,6 +10828,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -10913,6 +10920,7 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("count", request.getCount());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
