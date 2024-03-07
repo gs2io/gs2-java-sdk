@@ -27,11 +27,13 @@ import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
 import io.gs2.mission.model.ScopedValue;
 import io.gs2.mission.model.Counter;
+import io.gs2.mission.model.Complete;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IncreaseCounterByUserIdResult implements IResult, Serializable {
     private Counter item;
+    private List<Complete> changedCompletes;
 
 	public Counter getItem() {
 		return item;
@@ -46,18 +48,43 @@ public class IncreaseCounterByUserIdResult implements IResult, Serializable {
 		return this;
 	}
 
+	public List<Complete> getChangedCompletes() {
+		return changedCompletes;
+	}
+
+	public void setChangedCompletes(List<Complete> changedCompletes) {
+		this.changedCompletes = changedCompletes;
+	}
+
+	public IncreaseCounterByUserIdResult withChangedCompletes(List<Complete> changedCompletes) {
+		this.changedCompletes = changedCompletes;
+		return this;
+	}
+
     public static IncreaseCounterByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new IncreaseCounterByUserIdResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")));
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")))
+            .withChangedCompletes(data.get("changedCompletes") == null || data.get("changedCompletes").isNull() ? new ArrayList<Complete>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("changedCompletes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Complete.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("changedCompletes", getChangedCompletes() == null ? new ArrayList<Complete>() :
+                    getChangedCompletes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }
