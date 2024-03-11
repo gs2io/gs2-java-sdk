@@ -34,6 +34,7 @@ public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
     private String userId;
     private Integer count;
     private List<Config> config;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -85,6 +86,16 @@ public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
 		this.config = config;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DrawByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -113,7 +124,8 @@ public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -129,6 +141,7 @@ public class DrawByUserIdRequest extends Gs2BasicRequest<DrawByUserIdRequest> {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

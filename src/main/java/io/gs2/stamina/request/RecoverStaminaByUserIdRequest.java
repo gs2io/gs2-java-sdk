@@ -32,6 +32,7 @@ public class RecoverStaminaByUserIdRequest extends Gs2BasicRequest<RecoverStamin
     private String staminaName;
     private String userId;
     private Integer recoverValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class RecoverStaminaByUserIdRequest extends Gs2BasicRequest<RecoverStamin
 		this.recoverValue = recoverValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public RecoverStaminaByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class RecoverStaminaByUserIdRequest extends Gs2BasicRequest<RecoverStamin
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withRecoverValue(data.get("recoverValue") == null || data.get("recoverValue").isNull() ? null : data.get("recoverValue").intValue());
+            .withRecoverValue(data.get("recoverValue") == null || data.get("recoverValue").isNull() ? null : data.get("recoverValue").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class RecoverStaminaByUserIdRequest extends Gs2BasicRequest<RecoverStamin
                 put("staminaName", getStaminaName());
                 put("userId", getUserId());
                 put("recoverValue", getRecoverValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

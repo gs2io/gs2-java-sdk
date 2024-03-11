@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteAccountRequest extends Gs2BasicRequest<DeleteAccountRequest> {
     private String namespaceName;
     private String userId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -49,6 +50,16 @@ public class DeleteAccountRequest extends Gs2BasicRequest<DeleteAccountRequest> 
 	}
 	public DeleteAccountRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteAccountRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
 		return this;
 	}
 
@@ -71,7 +82,8 @@ public class DeleteAccountRequest extends Gs2BasicRequest<DeleteAccountRequest> 
         }
         return new DeleteAccountRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -79,6 +91,7 @@ public class DeleteAccountRequest extends Gs2BasicRequest<DeleteAccountRequest> 
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

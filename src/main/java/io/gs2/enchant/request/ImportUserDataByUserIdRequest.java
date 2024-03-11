@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class ImportUserDataByUserIdRequest extends Gs2BasicRequest<ImportUserDataByUserIdRequest> {
     private String userId;
     private String uploadToken;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getUserId() {
 		return userId;
@@ -49,6 +50,16 @@ public class ImportUserDataByUserIdRequest extends Gs2BasicRequest<ImportUserDat
 	}
 	public ImportUserDataByUserIdRequest withUploadToken(String uploadToken) {
 		this.uploadToken = uploadToken;
+		return this;
+	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public ImportUserDataByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
 		return this;
 	}
 
@@ -71,7 +82,8 @@ public class ImportUserDataByUserIdRequest extends Gs2BasicRequest<ImportUserDat
         }
         return new ImportUserDataByUserIdRequest()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withUploadToken(data.get("uploadToken") == null || data.get("uploadToken").isNull() ? null : data.get("uploadToken").asText());
+            .withUploadToken(data.get("uploadToken") == null || data.get("uploadToken").isNull() ? null : data.get("uploadToken").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -79,6 +91,7 @@ public class ImportUserDataByUserIdRequest extends Gs2BasicRequest<ImportUserDat
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
                 put("uploadToken", getUploadToken());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

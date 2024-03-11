@@ -33,6 +33,7 @@ public class AddRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Add
     private String parameterName;
     private String propertyId;
     private Integer count;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class AddRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Add
 		this.count = count;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AddRarityParameterStatusByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class AddRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Add
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withParameterName(data.get("parameterName") == null || data.get("parameterName").isNull() ? null : data.get("parameterName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue());
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class AddRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Add
                 put("parameterName", getParameterName());
                 put("propertyId", getPropertyId());
                 put("count", getCount());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

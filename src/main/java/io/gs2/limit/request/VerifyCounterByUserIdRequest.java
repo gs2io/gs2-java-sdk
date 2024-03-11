@@ -35,6 +35,7 @@ public class VerifyCounterByUserIdRequest extends Gs2BasicRequest<VerifyCounterB
     private String verifyType;
     private Integer count;
     private Boolean multiplyValueSpecifyingQuantity;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -106,6 +107,16 @@ public class VerifyCounterByUserIdRequest extends Gs2BasicRequest<VerifyCounterB
 		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public VerifyCounterByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -131,7 +142,8 @@ public class VerifyCounterByUserIdRequest extends Gs2BasicRequest<VerifyCounterB
             .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
-            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue());
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -144,6 +156,7 @@ public class VerifyCounterByUserIdRequest extends Gs2BasicRequest<VerifyCounterB
                 put("verifyType", getVerifyType());
                 put("count", getCount());
                 put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -33,6 +33,7 @@ public class CountDownByUserIdRequest extends Gs2BasicRequest<CountDownByUserIdR
     private String counterName;
     private String userId;
     private Integer countDownValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class CountDownByUserIdRequest extends Gs2BasicRequest<CountDownByUserIdR
 		this.countDownValue = countDownValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public CountDownByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class CountDownByUserIdRequest extends Gs2BasicRequest<CountDownByUserIdR
             .withLimitName(data.get("limitName") == null || data.get("limitName").isNull() ? null : data.get("limitName").asText())
             .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withCountDownValue(data.get("countDownValue") == null || data.get("countDownValue").isNull() ? null : data.get("countDownValue").intValue());
+            .withCountDownValue(data.get("countDownValue") == null || data.get("countDownValue").isNull() ? null : data.get("countDownValue").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class CountDownByUserIdRequest extends Gs2BasicRequest<CountDownByUserIdR
                 put("counterName", getCounterName());
                 put("userId", getUserId());
                 put("countDownValue", getCountDownValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

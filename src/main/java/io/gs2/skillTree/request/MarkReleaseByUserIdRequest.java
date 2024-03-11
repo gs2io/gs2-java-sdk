@@ -32,6 +32,7 @@ public class MarkReleaseByUserIdRequest extends Gs2BasicRequest<MarkReleaseByUse
     private String userId;
     private String propertyId;
     private List<String> nodeModelNames;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class MarkReleaseByUserIdRequest extends Gs2BasicRequest<MarkReleaseByUse
 		this.nodeModelNames = nodeModelNames;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public MarkReleaseByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -99,7 +110,8 @@ public class MarkReleaseByUserIdRequest extends Gs2BasicRequest<MarkReleaseByUse
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("nodeModelNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -113,6 +125,7 @@ public class MarkReleaseByUserIdRequest extends Gs2BasicRequest<MarkReleaseByUse
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

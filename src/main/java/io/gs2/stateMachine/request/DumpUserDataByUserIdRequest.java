@@ -29,6 +29,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DumpUserDataByUserIdRequest extends Gs2BasicRequest<DumpUserDataByUserIdRequest> {
     private String userId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getUserId() {
 		return userId;
@@ -38,6 +39,16 @@ public class DumpUserDataByUserIdRequest extends Gs2BasicRequest<DumpUserDataByU
 	}
 	public DumpUserDataByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DumpUserDataByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
 		return this;
 	}
 
@@ -59,13 +70,15 @@ public class DumpUserDataByUserIdRequest extends Gs2BasicRequest<DumpUserDataByU
             return null;
         }
         return new DumpUserDataByUserIdRequest()
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

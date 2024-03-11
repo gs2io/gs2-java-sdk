@@ -32,6 +32,7 @@ public class ReceiveByUserIdRequest extends Gs2BasicRequest<ReceiveByUserIdReque
     private String missionGroupName;
     private String missionTaskName;
     private String userId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class ReceiveByUserIdRequest extends Gs2BasicRequest<ReceiveByUserIdReque
 		this.userId = userId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public ReceiveByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class ReceiveByUserIdRequest extends Gs2BasicRequest<ReceiveByUserIdReque
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withMissionGroupName(data.get("missionGroupName") == null || data.get("missionGroupName").isNull() ? null : data.get("missionGroupName").asText())
             .withMissionTaskName(data.get("missionTaskName") == null || data.get("missionTaskName").isNull() ? null : data.get("missionTaskName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class ReceiveByUserIdRequest extends Gs2BasicRequest<ReceiveByUserIdReque
                 put("missionGroupName", getMissionGroupName());
                 put("missionTaskName", getMissionTaskName());
                 put("userId", getUserId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

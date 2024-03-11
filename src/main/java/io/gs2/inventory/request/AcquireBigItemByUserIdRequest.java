@@ -33,6 +33,7 @@ public class AcquireBigItemByUserIdRequest extends Gs2BasicRequest<AcquireBigIte
     private String userId;
     private String itemName;
     private String acquireCount;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class AcquireBigItemByUserIdRequest extends Gs2BasicRequest<AcquireBigIte
 		this.acquireCount = acquireCount;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AcquireBigItemByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class AcquireBigItemByUserIdRequest extends Gs2BasicRequest<AcquireBigIte
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
-            .withAcquireCount(data.get("acquireCount") == null || data.get("acquireCount").isNull() ? null : data.get("acquireCount").asText());
+            .withAcquireCount(data.get("acquireCount") == null || data.get("acquireCount").isNull() ? null : data.get("acquireCount").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class AcquireBigItemByUserIdRequest extends Gs2BasicRequest<AcquireBigIte
                 put("userId", getUserId());
                 put("itemName", getItemName());
                 put("acquireCount", getAcquireCount());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

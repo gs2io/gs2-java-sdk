@@ -33,6 +33,7 @@ public class CreateTakeOverByUserIdRequest extends Gs2BasicRequest<CreateTakeOve
     private Integer type;
     private String userIdentifier;
     private String password;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class CreateTakeOverByUserIdRequest extends Gs2BasicRequest<CreateTakeOve
 		this.password = password;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public CreateTakeOverByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class CreateTakeOverByUserIdRequest extends Gs2BasicRequest<CreateTakeOve
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
             .withUserIdentifier(data.get("userIdentifier") == null || data.get("userIdentifier").isNull() ? null : data.get("userIdentifier").asText())
-            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class CreateTakeOverByUserIdRequest extends Gs2BasicRequest<CreateTakeOve
                 put("type", getType());
                 put("userIdentifier", getUserIdentifier());
                 put("password", getPassword());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

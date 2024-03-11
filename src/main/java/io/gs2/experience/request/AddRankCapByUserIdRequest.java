@@ -33,6 +33,7 @@ public class AddRankCapByUserIdRequest extends Gs2BasicRequest<AddRankCapByUserI
     private String experienceName;
     private String propertyId;
     private Long rankCapValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class AddRankCapByUserIdRequest extends Gs2BasicRequest<AddRankCapByUserI
 		this.rankCapValue = rankCapValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AddRankCapByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class AddRankCapByUserIdRequest extends Gs2BasicRequest<AddRankCapByUserI
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withRankCapValue(data.get("rankCapValue") == null || data.get("rankCapValue").isNull() ? null : data.get("rankCapValue").longValue());
+            .withRankCapValue(data.get("rankCapValue") == null || data.get("rankCapValue").isNull() ? null : data.get("rankCapValue").longValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class AddRankCapByUserIdRequest extends Gs2BasicRequest<AddRankCapByUserI
                 put("experienceName", getExperienceName());
                 put("propertyId", getPropertyId());
                 put("rankCapValue", getRankCapValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

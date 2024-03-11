@@ -34,6 +34,7 @@ public class VerifyInventoryCurrentMaxCapacityByUserIdRequest extends Gs2BasicRe
     private String verifyType;
     private Integer currentInventoryMaxCapacity;
     private Boolean multiplyValueSpecifyingQuantity;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class VerifyInventoryCurrentMaxCapacityByUserIdRequest extends Gs2BasicRe
 		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public VerifyInventoryCurrentMaxCapacityByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -119,7 +130,8 @@ public class VerifyInventoryCurrentMaxCapacityByUserIdRequest extends Gs2BasicRe
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withCurrentInventoryMaxCapacity(data.get("currentInventoryMaxCapacity") == null || data.get("currentInventoryMaxCapacity").isNull() ? null : data.get("currentInventoryMaxCapacity").intValue())
-            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue());
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class VerifyInventoryCurrentMaxCapacityByUserIdRequest extends Gs2BasicRe
                 put("verifyType", getVerifyType());
                 put("currentInventoryMaxCapacity", getCurrentInventoryMaxCapacity());
                 put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

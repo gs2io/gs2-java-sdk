@@ -32,6 +32,7 @@ public class AddBanRequest extends Gs2BasicRequest<AddBanRequest> {
     private String namespaceName;
     private String userId;
     private BanStatus banStatus;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -63,6 +64,16 @@ public class AddBanRequest extends Gs2BasicRequest<AddBanRequest> {
 		this.banStatus = banStatus;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AddBanRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -84,7 +95,8 @@ public class AddBanRequest extends Gs2BasicRequest<AddBanRequest> {
         return new AddBanRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withBanStatus(data.get("banStatus") == null || data.get("banStatus").isNull() ? null : BanStatus.fromJson(data.get("banStatus")));
+            .withBanStatus(data.get("banStatus") == null || data.get("banStatus").isNull() ? null : BanStatus.fromJson(data.get("banStatus")))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -93,6 +105,7 @@ public class AddBanRequest extends Gs2BasicRequest<AddBanRequest> {
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("banStatus", getBanStatus() != null ? getBanStatus().toJson() : null);
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -33,6 +33,7 @@ public class ConsumeSimpleItemsByUserIdRequest extends Gs2BasicRequest<ConsumeSi
     private String inventoryName;
     private String userId;
     private List<ConsumeCount> consumeCounts;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -74,6 +75,16 @@ public class ConsumeSimpleItemsByUserIdRequest extends Gs2BasicRequest<ConsumeSi
 		this.consumeCounts = consumeCounts;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public ConsumeSimpleItemsByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -101,7 +112,8 @@ public class ConsumeSimpleItemsByUserIdRequest extends Gs2BasicRequest<ConsumeSi
                     //noinspection Convert2MethodRef
                     return ConsumeCount.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -116,6 +128,7 @@ public class ConsumeSimpleItemsByUserIdRequest extends Gs2BasicRequest<ConsumeSi
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

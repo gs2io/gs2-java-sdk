@@ -33,6 +33,7 @@ public class UpdateProfileByUserIdRequest extends Gs2BasicRequest<UpdateProfileB
     private String publicProfile;
     private String followerProfile;
     private String friendProfile;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class UpdateProfileByUserIdRequest extends Gs2BasicRequest<UpdateProfileB
 		this.friendProfile = friendProfile;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UpdateProfileByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class UpdateProfileByUserIdRequest extends Gs2BasicRequest<UpdateProfileB
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPublicProfile(data.get("publicProfile") == null || data.get("publicProfile").isNull() ? null : data.get("publicProfile").asText())
             .withFollowerProfile(data.get("followerProfile") == null || data.get("followerProfile").isNull() ? null : data.get("followerProfile").asText())
-            .withFriendProfile(data.get("friendProfile") == null || data.get("friendProfile").isNull() ? null : data.get("friendProfile").asText());
+            .withFriendProfile(data.get("friendProfile") == null || data.get("friendProfile").isNull() ? null : data.get("friendProfile").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class UpdateProfileByUserIdRequest extends Gs2BasicRequest<UpdateProfileB
                 put("publicProfile", getPublicProfile());
                 put("followerProfile", getFollowerProfile());
                 put("friendProfile", getFriendProfile());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -32,6 +32,7 @@ public class PrepareReUploadByUserIdRequest extends Gs2BasicRequest<PrepareReUpl
     private String dataObjectName;
     private String userId;
     private String contentType;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class PrepareReUploadByUserIdRequest extends Gs2BasicRequest<PrepareReUpl
 		this.contentType = contentType;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public PrepareReUploadByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class PrepareReUploadByUserIdRequest extends Gs2BasicRequest<PrepareReUpl
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDataObjectName(data.get("dataObjectName") == null || data.get("dataObjectName").isNull() ? null : data.get("dataObjectName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withContentType(data.get("contentType") == null || data.get("contentType").isNull() ? null : data.get("contentType").asText());
+            .withContentType(data.get("contentType") == null || data.get("contentType").isNull() ? null : data.get("contentType").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class PrepareReUploadByUserIdRequest extends Gs2BasicRequest<PrepareReUpl
                 put("dataObjectName", getDataObjectName());
                 put("userId", getUserId());
                 put("contentType", getContentType());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

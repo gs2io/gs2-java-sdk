@@ -35,6 +35,7 @@ public class VerifyGradeByUserIdRequest extends Gs2BasicRequest<VerifyGradeByUse
     private String propertyId;
     private Long gradeValue;
     private Boolean multiplyValueSpecifyingQuantity;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -106,6 +107,16 @@ public class VerifyGradeByUserIdRequest extends Gs2BasicRequest<VerifyGradeByUse
 		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public VerifyGradeByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -131,7 +142,8 @@ public class VerifyGradeByUserIdRequest extends Gs2BasicRequest<VerifyGradeByUse
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withGradeValue(data.get("gradeValue") == null || data.get("gradeValue").isNull() ? null : data.get("gradeValue").longValue())
-            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue());
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -144,6 +156,7 @@ public class VerifyGradeByUserIdRequest extends Gs2BasicRequest<VerifyGradeByUse
                 put("propertyId", getPropertyId());
                 put("gradeValue", getGradeValue());
                 put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

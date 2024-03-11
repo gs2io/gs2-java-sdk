@@ -33,6 +33,7 @@ public class UpdateTakeOverByUserIdRequest extends Gs2BasicRequest<UpdateTakeOve
     private Integer type;
     private String oldPassword;
     private String password;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class UpdateTakeOverByUserIdRequest extends Gs2BasicRequest<UpdateTakeOve
 		this.password = password;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UpdateTakeOverByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class UpdateTakeOverByUserIdRequest extends Gs2BasicRequest<UpdateTakeOve
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
             .withOldPassword(data.get("oldPassword") == null || data.get("oldPassword").isNull() ? null : data.get("oldPassword").asText())
-            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class UpdateTakeOverByUserIdRequest extends Gs2BasicRequest<UpdateTakeOve
                 put("type", getType());
                 put("oldPassword", getOldPassword());
                 put("password", getPassword());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

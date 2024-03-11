@@ -32,6 +32,7 @@ public class SubMoldCapacityByUserIdRequest extends Gs2BasicRequest<SubMoldCapac
     private String userId;
     private String moldModelName;
     private Integer capacity;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class SubMoldCapacityByUserIdRequest extends Gs2BasicRequest<SubMoldCapac
 		this.capacity = capacity;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SubMoldCapacityByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class SubMoldCapacityByUserIdRequest extends Gs2BasicRequest<SubMoldCapac
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
-            .withCapacity(data.get("capacity") == null || data.get("capacity").isNull() ? null : data.get("capacity").intValue());
+            .withCapacity(data.get("capacity") == null || data.get("capacity").isNull() ? null : data.get("capacity").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class SubMoldCapacityByUserIdRequest extends Gs2BasicRequest<SubMoldCapac
                 put("userId", getUserId());
                 put("moldModelName", getMoldModelName());
                 put("capacity", getCapacity());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

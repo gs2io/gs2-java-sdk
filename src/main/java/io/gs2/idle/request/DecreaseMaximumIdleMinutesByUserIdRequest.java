@@ -32,6 +32,7 @@ public class DecreaseMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<D
     private String userId;
     private String categoryName;
     private Integer decreaseMinutes;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class DecreaseMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<D
 		this.decreaseMinutes = decreaseMinutes;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DecreaseMaximumIdleMinutesByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class DecreaseMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<D
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
-            .withDecreaseMinutes(data.get("decreaseMinutes") == null || data.get("decreaseMinutes").isNull() ? null : data.get("decreaseMinutes").intValue());
+            .withDecreaseMinutes(data.get("decreaseMinutes") == null || data.get("decreaseMinutes").isNull() ? null : data.get("decreaseMinutes").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class DecreaseMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<D
                 put("userId", getUserId());
                 put("categoryName", getCategoryName());
                 put("decreaseMinutes", getDecreaseMinutes());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

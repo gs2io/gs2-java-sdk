@@ -32,6 +32,7 @@ public class SubscribeByUserIdRequest extends Gs2BasicRequest<SubscribeByUserIdR
     private String categoryName;
     private String userId;
     private String targetUserId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class SubscribeByUserIdRequest extends Gs2BasicRequest<SubscribeByUserIdR
 		this.targetUserId = targetUserId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SubscribeByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class SubscribeByUserIdRequest extends Gs2BasicRequest<SubscribeByUserIdR
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText());
+            .withTargetUserId(data.get("targetUserId") == null || data.get("targetUserId").isNull() ? null : data.get("targetUserId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class SubscribeByUserIdRequest extends Gs2BasicRequest<SubscribeByUserIdR
                 put("categoryName", getCategoryName());
                 put("userId", getUserId());
                 put("targetUserId", getTargetUserId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

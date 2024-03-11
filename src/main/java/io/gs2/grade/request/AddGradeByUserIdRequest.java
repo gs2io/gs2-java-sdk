@@ -33,6 +33,7 @@ public class AddGradeByUserIdRequest extends Gs2BasicRequest<AddGradeByUserIdReq
     private String gradeName;
     private String propertyId;
     private Long gradeValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class AddGradeByUserIdRequest extends Gs2BasicRequest<AddGradeByUserIdReq
 		this.gradeValue = gradeValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AddGradeByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class AddGradeByUserIdRequest extends Gs2BasicRequest<AddGradeByUserIdReq
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withGradeName(data.get("gradeName") == null || data.get("gradeName").isNull() ? null : data.get("gradeName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withGradeValue(data.get("gradeValue") == null || data.get("gradeValue").isNull() ? null : data.get("gradeValue").longValue());
+            .withGradeValue(data.get("gradeValue") == null || data.get("gradeValue").isNull() ? null : data.get("gradeValue").longValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class AddGradeByUserIdRequest extends Gs2BasicRequest<AddGradeByUserIdReq
                 put("gradeName", getGradeName());
                 put("propertyId", getPropertyId());
                 put("gradeValue", getGradeValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

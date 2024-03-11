@@ -1156,6 +1156,9 @@ import io.gs2.script.model.*;public class Gs2ScriptRestClient extends AbstractGs
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()

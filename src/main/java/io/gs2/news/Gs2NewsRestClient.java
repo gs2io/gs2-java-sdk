@@ -1234,6 +1234,9 @@ import io.gs2.news.model.*;public class Gs2NewsRestClient extends AbstractGs2Cli
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -1397,6 +1400,9 @@ import io.gs2.news.model.*;public class Gs2NewsRestClient extends AbstractGs2Cli
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder

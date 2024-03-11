@@ -32,6 +32,7 @@ public class ConsumeStaminaByUserIdRequest extends Gs2BasicRequest<ConsumeStamin
     private String staminaName;
     private String userId;
     private Integer consumeValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class ConsumeStaminaByUserIdRequest extends Gs2BasicRequest<ConsumeStamin
 		this.consumeValue = consumeValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public ConsumeStaminaByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class ConsumeStaminaByUserIdRequest extends Gs2BasicRequest<ConsumeStamin
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withConsumeValue(data.get("consumeValue") == null || data.get("consumeValue").isNull() ? null : data.get("consumeValue").intValue());
+            .withConsumeValue(data.get("consumeValue") == null || data.get("consumeValue").isNull() ? null : data.get("consumeValue").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class ConsumeStaminaByUserIdRequest extends Gs2BasicRequest<ConsumeStamin
                 put("staminaName", getStaminaName());
                 put("userId", getUserId());
                 put("consumeValue", getConsumeValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

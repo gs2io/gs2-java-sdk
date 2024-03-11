@@ -31,6 +31,7 @@ public class GetTakeOverByUserIdRequest extends Gs2BasicRequest<GetTakeOverByUse
     private String namespaceName;
     private String userId;
     private Integer type;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -61,6 +62,16 @@ public class GetTakeOverByUserIdRequest extends Gs2BasicRequest<GetTakeOverByUse
 		this.type = type;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetTakeOverByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetTakeOverByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +80,8 @@ public class GetTakeOverByUserIdRequest extends Gs2BasicRequest<GetTakeOverByUse
         return new GetTakeOverByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue());
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -78,6 +90,7 @@ public class GetTakeOverByUserIdRequest extends Gs2BasicRequest<GetTakeOverByUse
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("type", getType());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

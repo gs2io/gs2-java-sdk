@@ -31,6 +31,7 @@ import io.gs2.distributor.model.DistributeResource;
 public class DistributeWithoutOverflowProcessRequest extends Gs2BasicRequest<DistributeWithoutOverflowProcessRequest> {
     private String userId;
     private DistributeResource distributeResource;
+    private String timeOffsetToken;
 	public String getUserId() {
 		return userId;
 	}
@@ -51,6 +52,16 @@ public class DistributeWithoutOverflowProcessRequest extends Gs2BasicRequest<Dis
 		this.distributeResource = distributeResource;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DistributeWithoutOverflowProcessRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static DistributeWithoutOverflowProcessRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -58,7 +69,8 @@ public class DistributeWithoutOverflowProcessRequest extends Gs2BasicRequest<Dis
         }
         return new DistributeWithoutOverflowProcessRequest()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withDistributeResource(data.get("distributeResource") == null || data.get("distributeResource").isNull() ? null : DistributeResource.fromJson(data.get("distributeResource")));
+            .withDistributeResource(data.get("distributeResource") == null || data.get("distributeResource").isNull() ? null : DistributeResource.fromJson(data.get("distributeResource")))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -66,6 +78,7 @@ public class DistributeWithoutOverflowProcessRequest extends Gs2BasicRequest<Dis
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
                 put("distributeResource", getDistributeResource() != null ? getDistributeResource().toJson() : null);
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

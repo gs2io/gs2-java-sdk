@@ -32,6 +32,7 @@ public class SetMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<SetMax
     private String userId;
     private String categoryName;
     private Integer maximumIdleMinutes;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class SetMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<SetMax
 		this.maximumIdleMinutes = maximumIdleMinutes;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SetMaximumIdleMinutesByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class SetMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<SetMax
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
-            .withMaximumIdleMinutes(data.get("maximumIdleMinutes") == null || data.get("maximumIdleMinutes").isNull() ? null : data.get("maximumIdleMinutes").intValue());
+            .withMaximumIdleMinutes(data.get("maximumIdleMinutes") == null || data.get("maximumIdleMinutes").isNull() ? null : data.get("maximumIdleMinutes").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class SetMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<SetMax
                 put("userId", getUserId());
                 put("categoryName", getCategoryName());
                 put("maximumIdleMinutes", getMaximumIdleMinutes());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

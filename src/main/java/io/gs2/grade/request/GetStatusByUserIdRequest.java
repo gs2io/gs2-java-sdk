@@ -32,6 +32,7 @@ public class GetStatusByUserIdRequest extends Gs2BasicRequest<GetStatusByUserIdR
     private String userId;
     private String gradeName;
     private String propertyId;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,16 @@ public class GetStatusByUserIdRequest extends Gs2BasicRequest<GetStatusByUserIdR
 		this.propertyId = propertyId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetStatusByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetStatusByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -81,7 +92,8 @@ public class GetStatusByUserIdRequest extends Gs2BasicRequest<GetStatusByUserIdR
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withGradeName(data.get("gradeName") == null || data.get("gradeName").isNull() ? null : data.get("gradeName").asText())
-            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText());
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -91,6 +103,7 @@ public class GetStatusByUserIdRequest extends Gs2BasicRequest<GetStatusByUserIdR
                 put("userId", getUserId());
                 put("gradeName", getGradeName());
                 put("propertyId", getPropertyId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

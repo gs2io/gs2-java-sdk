@@ -34,6 +34,7 @@ public class SendNotificationRequest extends Gs2BasicRequest<SendNotificationReq
     private String payload;
     private Boolean enableTransferMobileNotification;
     private String sound;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class SendNotificationRequest extends Gs2BasicRequest<SendNotificationReq
 		this.sound = sound;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SendNotificationRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -119,7 +130,8 @@ public class SendNotificationRequest extends Gs2BasicRequest<SendNotificationReq
             .withSubject(data.get("subject") == null || data.get("subject").isNull() ? null : data.get("subject").asText())
             .withPayload(data.get("payload") == null || data.get("payload").isNull() ? null : data.get("payload").asText())
             .withEnableTransferMobileNotification(data.get("enableTransferMobileNotification") == null || data.get("enableTransferMobileNotification").isNull() ? null : data.get("enableTransferMobileNotification").booleanValue())
-            .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText());
+            .withSound(data.get("sound") == null || data.get("sound").isNull() ? null : data.get("sound").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class SendNotificationRequest extends Gs2BasicRequest<SendNotificationReq
                 put("payload", getPayload());
                 put("enableTransferMobileNotification", getEnableTransferMobileNotification());
                 put("sound", getSound());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

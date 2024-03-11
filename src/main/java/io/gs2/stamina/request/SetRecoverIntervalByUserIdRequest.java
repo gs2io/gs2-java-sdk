@@ -32,6 +32,7 @@ public class SetRecoverIntervalByUserIdRequest extends Gs2BasicRequest<SetRecove
     private String staminaName;
     private String userId;
     private Integer recoverIntervalMinutes;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class SetRecoverIntervalByUserIdRequest extends Gs2BasicRequest<SetRecove
 		this.recoverIntervalMinutes = recoverIntervalMinutes;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SetRecoverIntervalByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class SetRecoverIntervalByUserIdRequest extends Gs2BasicRequest<SetRecove
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withRecoverIntervalMinutes(data.get("recoverIntervalMinutes") == null || data.get("recoverIntervalMinutes").isNull() ? null : data.get("recoverIntervalMinutes").intValue());
+            .withRecoverIntervalMinutes(data.get("recoverIntervalMinutes") == null || data.get("recoverIntervalMinutes").isNull() ? null : data.get("recoverIntervalMinutes").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class SetRecoverIntervalByUserIdRequest extends Gs2BasicRequest<SetRecove
                 put("staminaName", getStaminaName());
                 put("userId", getUserId());
                 put("recoverIntervalMinutes", getRecoverIntervalMinutes());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

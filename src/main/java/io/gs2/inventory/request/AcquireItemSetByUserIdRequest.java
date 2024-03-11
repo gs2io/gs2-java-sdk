@@ -36,6 +36,7 @@ public class AcquireItemSetByUserIdRequest extends Gs2BasicRequest<AcquireItemSe
     private Long expiresAt;
     private Boolean createNewItemSet;
     private String itemSetName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -117,6 +118,16 @@ public class AcquireItemSetByUserIdRequest extends Gs2BasicRequest<AcquireItemSe
 		this.itemSetName = itemSetName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AcquireItemSetByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -143,7 +154,8 @@ public class AcquireItemSetByUserIdRequest extends Gs2BasicRequest<AcquireItemSe
             .withAcquireCount(data.get("acquireCount") == null || data.get("acquireCount").isNull() ? null : data.get("acquireCount").longValue())
             .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
             .withCreateNewItemSet(data.get("createNewItemSet") == null || data.get("createNewItemSet").isNull() ? null : data.get("createNewItemSet").booleanValue())
-            .withItemSetName(data.get("itemSetName") == null || data.get("itemSetName").isNull() ? null : data.get("itemSetName").asText());
+            .withItemSetName(data.get("itemSetName") == null || data.get("itemSetName").isNull() ? null : data.get("itemSetName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -157,6 +169,7 @@ public class AcquireItemSetByUserIdRequest extends Gs2BasicRequest<AcquireItemSe
                 put("expiresAt", getExpiresAt());
                 put("createNewItemSet", getCreateNewItemSet());
                 put("itemSetName", getItemSetName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

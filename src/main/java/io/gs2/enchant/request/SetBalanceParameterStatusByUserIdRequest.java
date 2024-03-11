@@ -34,6 +34,7 @@ public class SetBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest<Se
     private String parameterName;
     private String propertyId;
     private List<BalanceParameterValue> parameterValues;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -85,6 +86,16 @@ public class SetBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest<Se
 		this.parameterValues = parameterValues;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SetBalanceParameterStatusByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -113,7 +124,8 @@ public class SetBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest<Se
                     //noinspection Convert2MethodRef
                     return BalanceParameterValue.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -129,6 +141,7 @@ public class SetBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest<Se
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

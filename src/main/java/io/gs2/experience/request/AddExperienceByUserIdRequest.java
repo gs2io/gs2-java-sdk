@@ -34,6 +34,7 @@ public class AddExperienceByUserIdRequest extends Gs2BasicRequest<AddExperienceB
     private String propertyId;
     private Long experienceValue;
     private Boolean truncateExperienceWhenRankUp;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class AddExperienceByUserIdRequest extends Gs2BasicRequest<AddExperienceB
 		this.truncateExperienceWhenRankUp = truncateExperienceWhenRankUp;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AddExperienceByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -119,7 +130,8 @@ public class AddExperienceByUserIdRequest extends Gs2BasicRequest<AddExperienceB
             .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").longValue())
-            .withTruncateExperienceWhenRankUp(data.get("truncateExperienceWhenRankUp") == null || data.get("truncateExperienceWhenRankUp").isNull() ? null : data.get("truncateExperienceWhenRankUp").booleanValue());
+            .withTruncateExperienceWhenRankUp(data.get("truncateExperienceWhenRankUp") == null || data.get("truncateExperienceWhenRankUp").isNull() ? null : data.get("truncateExperienceWhenRankUp").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class AddExperienceByUserIdRequest extends Gs2BasicRequest<AddExperienceB
                 put("propertyId", getPropertyId());
                 put("experienceValue", getExperienceValue());
                 put("truncateExperienceWhenRankUp", getTruncateExperienceWhenRankUp());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

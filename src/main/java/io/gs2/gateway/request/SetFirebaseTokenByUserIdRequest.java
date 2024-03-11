@@ -31,6 +31,7 @@ public class SetFirebaseTokenByUserIdRequest extends Gs2BasicRequest<SetFirebase
     private String namespaceName;
     private String userId;
     private String token;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class SetFirebaseTokenByUserIdRequest extends Gs2BasicRequest<SetFirebase
 		this.token = token;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SetFirebaseTokenByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class SetFirebaseTokenByUserIdRequest extends Gs2BasicRequest<SetFirebase
         return new SetFirebaseTokenByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText());
+            .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class SetFirebaseTokenByUserIdRequest extends Gs2BasicRequest<SetFirebase
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("token", getToken());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

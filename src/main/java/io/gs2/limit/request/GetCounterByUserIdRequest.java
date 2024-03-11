@@ -32,6 +32,7 @@ public class GetCounterByUserIdRequest extends Gs2BasicRequest<GetCounterByUserI
     private String limitName;
     private String userId;
     private String counterName;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,16 @@ public class GetCounterByUserIdRequest extends Gs2BasicRequest<GetCounterByUserI
 		this.counterName = counterName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetCounterByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetCounterByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -81,7 +92,8 @@ public class GetCounterByUserIdRequest extends Gs2BasicRequest<GetCounterByUserI
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withLimitName(data.get("limitName") == null || data.get("limitName").isNull() ? null : data.get("limitName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText());
+            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -91,6 +103,7 @@ public class GetCounterByUserIdRequest extends Gs2BasicRequest<GetCounterByUserI
                 put("limitName", getLimitName());
                 put("userId", getUserId());
                 put("counterName", getCounterName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -32,6 +32,7 @@ public class UnlockByUserIdRequest extends Gs2BasicRequest<UnlockByUserIdRequest
     private String propertyId;
     private String userId;
     private String transactionId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class UnlockByUserIdRequest extends Gs2BasicRequest<UnlockByUserIdRequest
 		this.transactionId = transactionId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UnlockByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class UnlockByUserIdRequest extends Gs2BasicRequest<UnlockByUserIdRequest
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText());
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class UnlockByUserIdRequest extends Gs2BasicRequest<UnlockByUserIdRequest
                 put("propertyId", getPropertyId());
                 put("userId", getUserId());
                 put("transactionId", getTransactionId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

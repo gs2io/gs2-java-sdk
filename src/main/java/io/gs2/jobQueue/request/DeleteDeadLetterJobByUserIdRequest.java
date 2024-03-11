@@ -31,6 +31,7 @@ public class DeleteDeadLetterJobByUserIdRequest extends Gs2BasicRequest<DeleteDe
     private String namespaceName;
     private String userId;
     private String deadLetterJobName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class DeleteDeadLetterJobByUserIdRequest extends Gs2BasicRequest<DeleteDe
 		this.deadLetterJobName = deadLetterJobName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteDeadLetterJobByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class DeleteDeadLetterJobByUserIdRequest extends Gs2BasicRequest<DeleteDe
         return new DeleteDeadLetterJobByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withDeadLetterJobName(data.get("deadLetterJobName") == null || data.get("deadLetterJobName").isNull() ? null : data.get("deadLetterJobName").asText());
+            .withDeadLetterJobName(data.get("deadLetterJobName") == null || data.get("deadLetterJobName").isNull() ? null : data.get("deadLetterJobName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class DeleteDeadLetterJobByUserIdRequest extends Gs2BasicRequest<DeleteDe
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("deadLetterJobName", getDeadLetterJobName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

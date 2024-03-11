@@ -31,6 +31,7 @@ public class PrepareDownloadByUserIdRequest extends Gs2BasicRequest<PrepareDownl
     private String namespaceName;
     private String userId;
     private String dataObjectId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class PrepareDownloadByUserIdRequest extends Gs2BasicRequest<PrepareDownl
 		this.dataObjectId = dataObjectId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public PrepareDownloadByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class PrepareDownloadByUserIdRequest extends Gs2BasicRequest<PrepareDownl
         return new PrepareDownloadByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withDataObjectId(data.get("dataObjectId") == null || data.get("dataObjectId").isNull() ? null : data.get("dataObjectId").asText());
+            .withDataObjectId(data.get("dataObjectId") == null || data.get("dataObjectId").isNull() ? null : data.get("dataObjectId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class PrepareDownloadByUserIdRequest extends Gs2BasicRequest<PrepareDownl
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("dataObjectId", getDataObjectId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

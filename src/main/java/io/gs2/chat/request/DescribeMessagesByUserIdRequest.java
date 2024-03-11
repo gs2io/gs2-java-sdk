@@ -34,6 +34,7 @@ public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMes
     private String userId;
     private Long startAt;
     private Integer limit;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -94,6 +95,16 @@ public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMes
 		this.limit = limit;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DescribeMessagesByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static DescribeMessagesByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -105,7 +116,8 @@ public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMes
             .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withStartAt(data.get("startAt") == null || data.get("startAt").isNull() ? null : data.get("startAt").longValue())
-            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -117,6 +129,7 @@ public class DescribeMessagesByUserIdRequest extends Gs2BasicRequest<DescribeMes
                 put("userId", getUserId());
                 put("startAt", getStartAt());
                 put("limit", getLimit());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

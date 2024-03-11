@@ -34,6 +34,7 @@ public class CreateRoomFromBackendRequest extends Gs2BasicRequest<CreateRoomFrom
     private String metadata;
     private String password;
     private List<String> whiteListUserIds;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class CreateRoomFromBackendRequest extends Gs2BasicRequest<CreateRoomFrom
 		this.whiteListUserIds = whiteListUserIds;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public CreateRoomFromBackendRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -123,7 +134,8 @@ public class CreateRoomFromBackendRequest extends Gs2BasicRequest<CreateRoomFrom
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("whiteListUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -139,6 +151,7 @@ public class CreateRoomFromBackendRequest extends Gs2BasicRequest<CreateRoomFrom
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

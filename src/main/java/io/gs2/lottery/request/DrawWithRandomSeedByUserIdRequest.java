@@ -35,6 +35,7 @@ public class DrawWithRandomSeedByUserIdRequest extends Gs2BasicRequest<DrawWithR
     private Long randomSeed;
     private Integer count;
     private List<Config> config;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,16 @@ public class DrawWithRandomSeedByUserIdRequest extends Gs2BasicRequest<DrawWithR
 		this.config = config;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DrawWithRandomSeedByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -125,7 +136,8 @@ public class DrawWithRandomSeedByUserIdRequest extends Gs2BasicRequest<DrawWithR
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -142,6 +154,7 @@ public class DrawWithRandomSeedByUserIdRequest extends Gs2BasicRequest<DrawWithR
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

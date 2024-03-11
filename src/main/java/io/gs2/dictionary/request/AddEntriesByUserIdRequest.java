@@ -31,6 +31,7 @@ public class AddEntriesByUserIdRequest extends Gs2BasicRequest<AddEntriesByUserI
     private String namespaceName;
     private String userId;
     private List<String> entryModelNames;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class AddEntriesByUserIdRequest extends Gs2BasicRequest<AddEntriesByUserI
 		this.entryModelNames = entryModelNames;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AddEntriesByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -87,7 +98,8 @@ public class AddEntriesByUserIdRequest extends Gs2BasicRequest<AddEntriesByUserI
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("entryModelNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -100,6 +112,7 @@ public class AddEntriesByUserIdRequest extends Gs2BasicRequest<AddEntriesByUserI
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

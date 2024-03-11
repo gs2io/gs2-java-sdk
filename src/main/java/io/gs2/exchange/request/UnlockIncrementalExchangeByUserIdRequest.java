@@ -32,6 +32,7 @@ public class UnlockIncrementalExchangeByUserIdRequest extends Gs2BasicRequest<Un
     private String rateName;
     private String userId;
     private String lockTransactionId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class UnlockIncrementalExchangeByUserIdRequest extends Gs2BasicRequest<Un
 		this.lockTransactionId = lockTransactionId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UnlockIncrementalExchangeByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class UnlockIncrementalExchangeByUserIdRequest extends Gs2BasicRequest<Un
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withLockTransactionId(data.get("lockTransactionId") == null || data.get("lockTransactionId").isNull() ? null : data.get("lockTransactionId").asText());
+            .withLockTransactionId(data.get("lockTransactionId") == null || data.get("lockTransactionId").isNull() ? null : data.get("lockTransactionId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class UnlockIncrementalExchangeByUserIdRequest extends Gs2BasicRequest<Un
                 put("rateName", getRateName());
                 put("userId", getUserId());
                 put("lockTransactionId", getLockTransactionId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -33,6 +33,7 @@ public class UpdateGatheringByUserIdRequest extends Gs2BasicRequest<UpdateGather
     private String gatheringName;
     private String userId;
     private List<AttributeRange> attributeRanges;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -74,6 +75,16 @@ public class UpdateGatheringByUserIdRequest extends Gs2BasicRequest<UpdateGather
 		this.attributeRanges = attributeRanges;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UpdateGatheringByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -101,7 +112,8 @@ public class UpdateGatheringByUserIdRequest extends Gs2BasicRequest<UpdateGather
                     //noinspection Convert2MethodRef
                     return AttributeRange.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -116,6 +128,7 @@ public class UpdateGatheringByUserIdRequest extends Gs2BasicRequest<UpdateGather
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

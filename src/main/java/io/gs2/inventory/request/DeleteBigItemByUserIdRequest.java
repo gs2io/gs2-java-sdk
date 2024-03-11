@@ -32,6 +32,7 @@ public class DeleteBigItemByUserIdRequest extends Gs2BasicRequest<DeleteBigItemB
     private String inventoryName;
     private String userId;
     private String itemName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class DeleteBigItemByUserIdRequest extends Gs2BasicRequest<DeleteBigItemB
 		this.itemName = itemName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteBigItemByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class DeleteBigItemByUserIdRequest extends Gs2BasicRequest<DeleteBigItemB
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText());
+            .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class DeleteBigItemByUserIdRequest extends Gs2BasicRequest<DeleteBigItemB
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
                 put("itemName", getItemName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

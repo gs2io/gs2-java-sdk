@@ -32,6 +32,7 @@ public class GetPropertyFormByUserIdRequest extends Gs2BasicRequest<GetPropertyF
     private String userId;
     private String propertyFormModelName;
     private String propertyId;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,16 @@ public class GetPropertyFormByUserIdRequest extends Gs2BasicRequest<GetPropertyF
 		this.propertyId = propertyId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetPropertyFormByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetPropertyFormByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -81,7 +92,8 @@ public class GetPropertyFormByUserIdRequest extends Gs2BasicRequest<GetPropertyF
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPropertyFormModelName(data.get("propertyFormModelName") == null || data.get("propertyFormModelName").isNull() ? null : data.get("propertyFormModelName").asText())
-            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText());
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -91,6 +103,7 @@ public class GetPropertyFormByUserIdRequest extends Gs2BasicRequest<GetPropertyF
                 put("userId", getUserId());
                 put("propertyFormModelName", getPropertyFormModelName());
                 put("propertyId", getPropertyId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

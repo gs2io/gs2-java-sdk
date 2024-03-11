@@ -33,6 +33,7 @@ public class GetItemSetByUserIdRequest extends Gs2BasicRequest<GetItemSetByUserI
     private String userId;
     private String itemName;
     private String itemSetName;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -83,6 +84,16 @@ public class GetItemSetByUserIdRequest extends Gs2BasicRequest<GetItemSetByUserI
 		this.itemSetName = itemSetName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetItemSetByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetItemSetByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -93,7 +104,8 @@ public class GetItemSetByUserIdRequest extends Gs2BasicRequest<GetItemSetByUserI
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
-            .withItemSetName(data.get("itemSetName") == null || data.get("itemSetName").isNull() ? null : data.get("itemSetName").asText());
+            .withItemSetName(data.get("itemSetName") == null || data.get("itemSetName").isNull() ? null : data.get("itemSetName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -104,6 +116,7 @@ public class GetItemSetByUserIdRequest extends Gs2BasicRequest<GetItemSetByUserI
                 put("userId", getUserId());
                 put("itemName", getItemName());
                 put("itemSetName", getItemSetName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

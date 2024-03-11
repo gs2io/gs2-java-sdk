@@ -32,6 +32,7 @@ public class IncreaseMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<I
     private String userId;
     private String categoryName;
     private Integer increaseMinutes;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class IncreaseMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<I
 		this.increaseMinutes = increaseMinutes;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public IncreaseMaximumIdleMinutesByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class IncreaseMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<I
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
-            .withIncreaseMinutes(data.get("increaseMinutes") == null || data.get("increaseMinutes").isNull() ? null : data.get("increaseMinutes").intValue());
+            .withIncreaseMinutes(data.get("increaseMinutes") == null || data.get("increaseMinutes").isNull() ? null : data.get("increaseMinutes").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class IncreaseMaximumIdleMinutesByUserIdRequest extends Gs2BasicRequest<I
                 put("userId", getUserId());
                 put("categoryName", getCategoryName());
                 put("increaseMinutes", getIncreaseMinutes());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

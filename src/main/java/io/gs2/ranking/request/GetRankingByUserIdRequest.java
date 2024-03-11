@@ -34,6 +34,7 @@ public class GetRankingByUserIdRequest extends Gs2BasicRequest<GetRankingByUserI
     private String scorerUserId;
     private String uniqueId;
     private String additionalScopeName;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -94,6 +95,16 @@ public class GetRankingByUserIdRequest extends Gs2BasicRequest<GetRankingByUserI
 		this.additionalScopeName = additionalScopeName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetRankingByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetRankingByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -105,7 +116,8 @@ public class GetRankingByUserIdRequest extends Gs2BasicRequest<GetRankingByUserI
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withScorerUserId(data.get("scorerUserId") == null || data.get("scorerUserId").isNull() ? null : data.get("scorerUserId").asText())
             .withUniqueId(data.get("uniqueId") == null || data.get("uniqueId").isNull() ? null : data.get("uniqueId").asText())
-            .withAdditionalScopeName(data.get("additionalScopeName") == null || data.get("additionalScopeName").isNull() ? null : data.get("additionalScopeName").asText());
+            .withAdditionalScopeName(data.get("additionalScopeName") == null || data.get("additionalScopeName").isNull() ? null : data.get("additionalScopeName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -117,6 +129,7 @@ public class GetRankingByUserIdRequest extends Gs2BasicRequest<GetRankingByUserI
                 put("scorerUserId", getScorerUserId());
                 put("uniqueId", getUniqueId());
                 put("additionalScopeName", getAdditionalScopeName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

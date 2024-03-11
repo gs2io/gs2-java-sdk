@@ -36,6 +36,7 @@ public class DirectEnhanceByUserIdRequest extends Gs2BasicRequest<DirectEnhanceB
     private String targetItemSetId;
     private List<Material> materials;
     private List<Config> config;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -97,6 +98,16 @@ public class DirectEnhanceByUserIdRequest extends Gs2BasicRequest<DirectEnhanceB
 		this.config = config;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DirectEnhanceByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -131,7 +142,8 @@ public class DirectEnhanceByUserIdRequest extends Gs2BasicRequest<DirectEnhanceB
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -153,6 +165,7 @@ public class DirectEnhanceByUserIdRequest extends Gs2BasicRequest<DirectEnhanceB
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

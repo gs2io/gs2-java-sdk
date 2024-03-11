@@ -31,6 +31,7 @@ public class GetWalletByUserIdRequest extends Gs2BasicRequest<GetWalletByUserIdR
     private String namespaceName;
     private String userId;
     private Integer slot;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -61,6 +62,16 @@ public class GetWalletByUserIdRequest extends Gs2BasicRequest<GetWalletByUserIdR
 		this.slot = slot;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetWalletByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetWalletByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +80,8 @@ public class GetWalletByUserIdRequest extends Gs2BasicRequest<GetWalletByUserIdR
         return new GetWalletByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue());
+            .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -78,6 +90,7 @@ public class GetWalletByUserIdRequest extends Gs2BasicRequest<GetWalletByUserIdR
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("slot", getSlot());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

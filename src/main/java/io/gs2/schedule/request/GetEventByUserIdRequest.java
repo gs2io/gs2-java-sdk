@@ -32,6 +32,7 @@ public class GetEventByUserIdRequest extends Gs2BasicRequest<GetEventByUserIdReq
     private String eventName;
     private String userId;
     private Boolean isInSchedule;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,16 @@ public class GetEventByUserIdRequest extends Gs2BasicRequest<GetEventByUserIdReq
 		this.isInSchedule = isInSchedule;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetEventByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetEventByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -81,7 +92,8 @@ public class GetEventByUserIdRequest extends Gs2BasicRequest<GetEventByUserIdReq
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withEventName(data.get("eventName") == null || data.get("eventName").isNull() ? null : data.get("eventName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withIsInSchedule(data.get("isInSchedule") == null || data.get("isInSchedule").isNull() ? null : data.get("isInSchedule").booleanValue());
+            .withIsInSchedule(data.get("isInSchedule") == null || data.get("isInSchedule").isNull() ? null : data.get("isInSchedule").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -91,6 +103,7 @@ public class GetEventByUserIdRequest extends Gs2BasicRequest<GetEventByUserIdReq
                 put("eventName", getEventName());
                 put("userId", getUserId());
                 put("isInSchedule", getIsInSchedule());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

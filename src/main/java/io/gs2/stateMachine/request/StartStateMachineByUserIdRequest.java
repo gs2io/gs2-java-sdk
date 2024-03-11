@@ -32,6 +32,7 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
     private String userId;
     private String args;
     private Integer ttl;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
 		this.ttl = ttl;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public StartStateMachineByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
-            .withTtl(data.get("ttl") == null || data.get("ttl").isNull() ? null : data.get("ttl").intValue());
+            .withTtl(data.get("ttl") == null || data.get("ttl").isNull() ? null : data.get("ttl").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class StartStateMachineByUserIdRequest extends Gs2BasicRequest<StartState
                 put("userId", getUserId());
                 put("args", getArgs());
                 put("ttl", getTtl());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

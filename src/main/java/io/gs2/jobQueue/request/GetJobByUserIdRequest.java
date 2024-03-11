@@ -31,6 +31,7 @@ public class GetJobByUserIdRequest extends Gs2BasicRequest<GetJobByUserIdRequest
     private String namespaceName;
     private String userId;
     private String jobName;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -61,6 +62,16 @@ public class GetJobByUserIdRequest extends Gs2BasicRequest<GetJobByUserIdRequest
 		this.jobName = jobName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetJobByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetJobByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +80,8 @@ public class GetJobByUserIdRequest extends Gs2BasicRequest<GetJobByUserIdRequest
         return new GetJobByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withJobName(data.get("jobName") == null || data.get("jobName").isNull() ? null : data.get("jobName").asText());
+            .withJobName(data.get("jobName") == null || data.get("jobName").isNull() ? null : data.get("jobName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -78,6 +90,7 @@ public class GetJobByUserIdRequest extends Gs2BasicRequest<GetJobByUserIdRequest
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("jobName", getJobName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

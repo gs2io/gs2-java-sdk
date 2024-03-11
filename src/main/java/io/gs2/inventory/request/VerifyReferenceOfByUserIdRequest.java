@@ -35,6 +35,7 @@ public class VerifyReferenceOfByUserIdRequest extends Gs2BasicRequest<VerifyRefe
     private String itemSetName;
     private String referenceOf;
     private String verifyType;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -106,6 +107,16 @@ public class VerifyReferenceOfByUserIdRequest extends Gs2BasicRequest<VerifyRefe
 		this.verifyType = verifyType;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public VerifyReferenceOfByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -131,7 +142,8 @@ public class VerifyReferenceOfByUserIdRequest extends Gs2BasicRequest<VerifyRefe
             .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
             .withItemSetName(data.get("itemSetName") == null || data.get("itemSetName").isNull() ? null : data.get("itemSetName").asText())
             .withReferenceOf(data.get("referenceOf") == null || data.get("referenceOf").isNull() ? null : data.get("referenceOf").asText())
-            .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText());
+            .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -144,6 +156,7 @@ public class VerifyReferenceOfByUserIdRequest extends Gs2BasicRequest<VerifyRefe
                 put("itemSetName", getItemSetName());
                 put("referenceOf", getReferenceOf());
                 put("verifyType", getVerifyType());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

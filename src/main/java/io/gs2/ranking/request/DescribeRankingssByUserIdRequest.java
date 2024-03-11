@@ -35,6 +35,7 @@ public class DescribeRankingssByUserIdRequest extends Gs2BasicRequest<DescribeRa
     private Long startIndex;
     private String pageToken;
     private Integer limit;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -105,6 +106,16 @@ public class DescribeRankingssByUserIdRequest extends Gs2BasicRequest<DescribeRa
 		this.limit = limit;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DescribeRankingssByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static DescribeRankingssByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -117,7 +128,8 @@ public class DescribeRankingssByUserIdRequest extends Gs2BasicRequest<DescribeRa
             .withAdditionalScopeName(data.get("additionalScopeName") == null || data.get("additionalScopeName").isNull() ? null : data.get("additionalScopeName").asText())
             .withStartIndex(data.get("startIndex") == null || data.get("startIndex").isNull() ? null : data.get("startIndex").longValue())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
-            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -130,6 +142,7 @@ public class DescribeRankingssByUserIdRequest extends Gs2BasicRequest<DescribeRa
                 put("startIndex", getStartIndex());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

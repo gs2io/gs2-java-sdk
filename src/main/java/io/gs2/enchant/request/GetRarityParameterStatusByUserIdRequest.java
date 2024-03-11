@@ -32,6 +32,7 @@ public class GetRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Get
     private String userId;
     private String parameterName;
     private String propertyId;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,16 @@ public class GetRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Get
 		this.propertyId = propertyId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetRarityParameterStatusByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetRarityParameterStatusByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -81,7 +92,8 @@ public class GetRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Get
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withParameterName(data.get("parameterName") == null || data.get("parameterName").isNull() ? null : data.get("parameterName").asText())
-            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText());
+            .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -91,6 +103,7 @@ public class GetRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<Get
                 put("userId", getUserId());
                 put("parameterName", getParameterName());
                 put("propertyId", getPropertyId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

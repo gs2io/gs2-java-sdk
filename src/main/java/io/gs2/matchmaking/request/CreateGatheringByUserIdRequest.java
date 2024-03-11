@@ -41,6 +41,7 @@ public class CreateGatheringByUserIdRequest extends Gs2BasicRequest<CreateGather
     private List<String> allowUserIds;
     private Long expiresAt;
     private TimeSpan expiresAtTimeSpan;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -122,6 +123,16 @@ public class CreateGatheringByUserIdRequest extends Gs2BasicRequest<CreateGather
 		this.expiresAtTimeSpan = expiresAtTimeSpan;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public CreateGatheringByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -162,7 +173,8 @@ public class CreateGatheringByUserIdRequest extends Gs2BasicRequest<CreateGather
                 }
             ).collect(Collectors.toList()))
             .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
-            .withExpiresAtTimeSpan(data.get("expiresAtTimeSpan") == null || data.get("expiresAtTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresAtTimeSpan")));
+            .withExpiresAtTimeSpan(data.get("expiresAtTimeSpan") == null || data.get("expiresAtTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresAtTimeSpan")))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -190,6 +202,7 @@ public class CreateGatheringByUserIdRequest extends Gs2BasicRequest<CreateGather
                 ).collect(Collectors.toList()));
                 put("expiresAt", getExpiresAt());
                 put("expiresAtTimeSpan", getExpiresAtTimeSpan() != null ? getExpiresAtTimeSpan().toJson() : null);
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

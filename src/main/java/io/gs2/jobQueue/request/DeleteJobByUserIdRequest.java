@@ -31,6 +31,7 @@ public class DeleteJobByUserIdRequest extends Gs2BasicRequest<DeleteJobByUserIdR
     private String namespaceName;
     private String userId;
     private String jobName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class DeleteJobByUserIdRequest extends Gs2BasicRequest<DeleteJobByUserIdR
 		this.jobName = jobName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteJobByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class DeleteJobByUserIdRequest extends Gs2BasicRequest<DeleteJobByUserIdR
         return new DeleteJobByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withJobName(data.get("jobName") == null || data.get("jobName").isNull() ? null : data.get("jobName").asText());
+            .withJobName(data.get("jobName") == null || data.get("jobName").isNull() ? null : data.get("jobName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class DeleteJobByUserIdRequest extends Gs2BasicRequest<DeleteJobByUserIdR
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("jobName", getJobName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

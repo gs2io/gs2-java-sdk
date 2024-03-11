@@ -33,6 +33,7 @@ public class AcquireForceByUserIdRequest extends Gs2BasicRequest<AcquireForceByU
     private String userId;
     private String awaitName;
     private List<Config> config;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -74,6 +75,16 @@ public class AcquireForceByUserIdRequest extends Gs2BasicRequest<AcquireForceByU
 		this.config = config;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AcquireForceByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -101,7 +112,8 @@ public class AcquireForceByUserIdRequest extends Gs2BasicRequest<AcquireForceByU
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -116,6 +128,7 @@ public class AcquireForceByUserIdRequest extends Gs2BasicRequest<AcquireForceByU
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

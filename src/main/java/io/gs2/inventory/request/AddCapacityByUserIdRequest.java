@@ -32,6 +32,7 @@ public class AddCapacityByUserIdRequest extends Gs2BasicRequest<AddCapacityByUse
     private String inventoryName;
     private String userId;
     private Integer addCapacityValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class AddCapacityByUserIdRequest extends Gs2BasicRequest<AddCapacityByUse
 		this.addCapacityValue = addCapacityValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public AddCapacityByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class AddCapacityByUserIdRequest extends Gs2BasicRequest<AddCapacityByUse
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withAddCapacityValue(data.get("addCapacityValue") == null || data.get("addCapacityValue").isNull() ? null : data.get("addCapacityValue").intValue());
+            .withAddCapacityValue(data.get("addCapacityValue") == null || data.get("addCapacityValue").isNull() ? null : data.get("addCapacityValue").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class AddCapacityByUserIdRequest extends Gs2BasicRequest<AddCapacityByUse
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
                 put("addCapacityValue", getAddCapacityValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -33,6 +33,7 @@ public class GetStatusWithSignatureByUserIdRequest extends Gs2BasicRequest<GetSt
     private String experienceName;
     private String propertyId;
     private String keyId;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -83,6 +84,16 @@ public class GetStatusWithSignatureByUserIdRequest extends Gs2BasicRequest<GetSt
 		this.keyId = keyId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetStatusWithSignatureByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetStatusWithSignatureByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -93,7 +104,8 @@ public class GetStatusWithSignatureByUserIdRequest extends Gs2BasicRequest<GetSt
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -104,6 +116,7 @@ public class GetStatusWithSignatureByUserIdRequest extends Gs2BasicRequest<GetSt
                 put("experienceName", getExperienceName());
                 put("propertyId", getPropertyId());
                 put("keyId", getKeyId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

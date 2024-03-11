@@ -37,6 +37,7 @@ public class PutPositionByUserIdRequest extends Gs2BasicRequest<PutPositionByUse
     private Position position;
     private Vector vector;
     private Float r;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -108,6 +109,16 @@ public class PutPositionByUserIdRequest extends Gs2BasicRequest<PutPositionByUse
 		this.r = r;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public PutPositionByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -133,7 +144,8 @@ public class PutPositionByUserIdRequest extends Gs2BasicRequest<PutPositionByUse
             .withLayerModelName(data.get("layerModelName") == null || data.get("layerModelName").isNull() ? null : data.get("layerModelName").asText())
             .withPosition(data.get("position") == null || data.get("position").isNull() ? null : Position.fromJson(data.get("position")))
             .withVector(data.get("vector") == null || data.get("vector").isNull() ? null : Vector.fromJson(data.get("vector")))
-            .withR(data.get("r") == null || data.get("r").isNull() ? null : data.get("r").floatValue());
+            .withR(data.get("r") == null || data.get("r").isNull() ? null : data.get("r").floatValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -146,6 +158,7 @@ public class PutPositionByUserIdRequest extends Gs2BasicRequest<PutPositionByUse
                 put("position", getPosition() != null ? getPosition().toJson() : null);
                 put("vector", getVector() != null ? getVector().toJson() : null);
                 put("r", getR());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

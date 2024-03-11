@@ -33,6 +33,7 @@ public class DistributeRequest extends Gs2BasicRequest<DistributeRequest> {
     private String distributorName;
     private String userId;
     private DistributeResource distributeResource;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -73,6 +74,16 @@ public class DistributeRequest extends Gs2BasicRequest<DistributeRequest> {
 		this.distributeResource = distributeResource;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DistributeRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static DistributeRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -82,7 +93,8 @@ public class DistributeRequest extends Gs2BasicRequest<DistributeRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDistributorName(data.get("distributorName") == null || data.get("distributorName").isNull() ? null : data.get("distributorName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withDistributeResource(data.get("distributeResource") == null || data.get("distributeResource").isNull() ? null : DistributeResource.fromJson(data.get("distributeResource")));
+            .withDistributeResource(data.get("distributeResource") == null || data.get("distributeResource").isNull() ? null : DistributeResource.fromJson(data.get("distributeResource")))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class DistributeRequest extends Gs2BasicRequest<DistributeRequest> {
                 put("distributorName", getDistributorName());
                 put("userId", getUserId());
                 put("distributeResource", getDistributeResource() != null ? getDistributeResource().toJson() : null);
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

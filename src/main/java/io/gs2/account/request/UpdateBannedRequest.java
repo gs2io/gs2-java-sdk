@@ -31,6 +31,7 @@ public class UpdateBannedRequest extends Gs2BasicRequest<UpdateBannedRequest> {
     private String namespaceName;
     private String userId;
     private Boolean banned;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class UpdateBannedRequest extends Gs2BasicRequest<UpdateBannedRequest> {
 		this.banned = banned;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UpdateBannedRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class UpdateBannedRequest extends Gs2BasicRequest<UpdateBannedRequest> {
         return new UpdateBannedRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withBanned(data.get("banned") == null || data.get("banned").isNull() ? null : data.get("banned").booleanValue());
+            .withBanned(data.get("banned") == null || data.get("banned").isNull() ? null : data.get("banned").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class UpdateBannedRequest extends Gs2BasicRequest<UpdateBannedRequest> {
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("banned", getBanned());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

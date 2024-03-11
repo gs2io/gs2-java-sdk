@@ -31,6 +31,7 @@ public class DeleteRatingRequest extends Gs2BasicRequest<DeleteRatingRequest> {
     private String namespaceName;
     private String userId;
     private String ratingName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class DeleteRatingRequest extends Gs2BasicRequest<DeleteRatingRequest> {
 		this.ratingName = ratingName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteRatingRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class DeleteRatingRequest extends Gs2BasicRequest<DeleteRatingRequest> {
         return new DeleteRatingRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText());
+            .withRatingName(data.get("ratingName") == null || data.get("ratingName").isNull() ? null : data.get("ratingName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class DeleteRatingRequest extends Gs2BasicRequest<DeleteRatingRequest> {
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("ratingName", getRatingName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

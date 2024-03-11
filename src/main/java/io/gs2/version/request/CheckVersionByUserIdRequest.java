@@ -33,6 +33,7 @@ public class CheckVersionByUserIdRequest extends Gs2BasicRequest<CheckVersionByU
     private String namespaceName;
     private String userId;
     private List<TargetVersion> targetVersions;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -64,6 +65,16 @@ public class CheckVersionByUserIdRequest extends Gs2BasicRequest<CheckVersionByU
 		this.targetVersions = targetVersions;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public CheckVersionByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -90,7 +101,8 @@ public class CheckVersionByUserIdRequest extends Gs2BasicRequest<CheckVersionByU
                     //noinspection Convert2MethodRef
                     return TargetVersion.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -104,6 +116,7 @@ public class CheckVersionByUserIdRequest extends Gs2BasicRequest<CheckVersionByU
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class LoginRequest extends Gs2BasicRequest<LoginRequest> {
     private String userId;
     private Integer timeOffset;
+    private String timeOffsetToken;
 	public String getUserId() {
 		return userId;
 	}
@@ -50,6 +51,16 @@ public class LoginRequest extends Gs2BasicRequest<LoginRequest> {
 		this.timeOffset = timeOffset;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public LoginRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static LoginRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -57,7 +68,8 @@ public class LoginRequest extends Gs2BasicRequest<LoginRequest> {
         }
         return new LoginRequest()
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTimeOffset(data.get("timeOffset") == null || data.get("timeOffset").isNull() ? null : data.get("timeOffset").intValue());
+            .withTimeOffset(data.get("timeOffset") == null || data.get("timeOffset").isNull() ? null : data.get("timeOffset").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -65,6 +77,7 @@ public class LoginRequest extends Gs2BasicRequest<LoginRequest> {
             new HashMap<String, Object>() {{
                 put("userId", getUserId());
                 put("timeOffset", getTimeOffset());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

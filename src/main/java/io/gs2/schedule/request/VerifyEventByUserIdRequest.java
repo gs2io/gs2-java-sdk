@@ -32,6 +32,7 @@ public class VerifyEventByUserIdRequest extends Gs2BasicRequest<VerifyEventByUse
     private String userId;
     private String eventName;
     private String verifyType;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class VerifyEventByUserIdRequest extends Gs2BasicRequest<VerifyEventByUse
 		this.verifyType = verifyType;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public VerifyEventByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class VerifyEventByUserIdRequest extends Gs2BasicRequest<VerifyEventByUse
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withEventName(data.get("eventName") == null || data.get("eventName").isNull() ? null : data.get("eventName").asText())
-            .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText());
+            .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class VerifyEventByUserIdRequest extends Gs2BasicRequest<VerifyEventByUse
                 put("userId", getUserId());
                 put("eventName", getEventName());
                 put("verifyType", getVerifyType());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

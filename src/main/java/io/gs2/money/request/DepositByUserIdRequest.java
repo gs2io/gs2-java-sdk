@@ -33,6 +33,7 @@ public class DepositByUserIdRequest extends Gs2BasicRequest<DepositByUserIdReque
     private Integer slot;
     private Float price;
     private Integer count;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class DepositByUserIdRequest extends Gs2BasicRequest<DepositByUserIdReque
 		this.count = count;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DepositByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class DepositByUserIdRequest extends Gs2BasicRequest<DepositByUserIdReque
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
             .withPrice(data.get("price") == null || data.get("price").isNull() ? null : data.get("price").floatValue())
-            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue());
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class DepositByUserIdRequest extends Gs2BasicRequest<DepositByUserIdReque
                 put("slot", getSlot());
                 put("price", getPrice());
                 put("count", getCount());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -31,6 +31,7 @@ public class DeleteDataObjectByUserIdRequest extends Gs2BasicRequest<DeleteDataO
     private String namespaceName;
     private String userId;
     private String dataObjectName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class DeleteDataObjectByUserIdRequest extends Gs2BasicRequest<DeleteDataO
 		this.dataObjectName = dataObjectName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteDataObjectByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class DeleteDataObjectByUserIdRequest extends Gs2BasicRequest<DeleteDataO
         return new DeleteDataObjectByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withDataObjectName(data.get("dataObjectName") == null || data.get("dataObjectName").isNull() ? null : data.get("dataObjectName").asText());
+            .withDataObjectName(data.get("dataObjectName") == null || data.get("dataObjectName").isNull() ? null : data.get("dataObjectName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class DeleteDataObjectByUserIdRequest extends Gs2BasicRequest<DeleteDataO
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("dataObjectName", getDataObjectName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

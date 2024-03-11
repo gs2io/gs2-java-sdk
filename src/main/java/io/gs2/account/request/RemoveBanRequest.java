@@ -31,6 +31,7 @@ public class RemoveBanRequest extends Gs2BasicRequest<RemoveBanRequest> {
     private String namespaceName;
     private String userId;
     private String banStatusName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class RemoveBanRequest extends Gs2BasicRequest<RemoveBanRequest> {
 		this.banStatusName = banStatusName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public RemoveBanRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class RemoveBanRequest extends Gs2BasicRequest<RemoveBanRequest> {
         return new RemoveBanRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withBanStatusName(data.get("banStatusName") == null || data.get("banStatusName").isNull() ? null : data.get("banStatusName").asText());
+            .withBanStatusName(data.get("banStatusName") == null || data.get("banStatusName").isNull() ? null : data.get("banStatusName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class RemoveBanRequest extends Gs2BasicRequest<RemoveBanRequest> {
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("banStatusName", getBanStatusName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

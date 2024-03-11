@@ -31,6 +31,7 @@ public class DeleteTriggerByUserIdRequest extends Gs2BasicRequest<DeleteTriggerB
     private String namespaceName;
     private String userId;
     private String triggerName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class DeleteTriggerByUserIdRequest extends Gs2BasicRequest<DeleteTriggerB
 		this.triggerName = triggerName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteTriggerByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class DeleteTriggerByUserIdRequest extends Gs2BasicRequest<DeleteTriggerB
         return new DeleteTriggerByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTriggerName(data.get("triggerName") == null || data.get("triggerName").isNull() ? null : data.get("triggerName").asText());
+            .withTriggerName(data.get("triggerName") == null || data.get("triggerName").isNull() ? null : data.get("triggerName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class DeleteTriggerByUserIdRequest extends Gs2BasicRequest<DeleteTriggerB
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("triggerName", getTriggerName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

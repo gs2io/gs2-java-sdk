@@ -31,6 +31,7 @@ public class DeleteAcceptVersionByUserIdRequest extends Gs2BasicRequest<DeleteAc
     private String namespaceName;
     private String userId;
     private String versionName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class DeleteAcceptVersionByUserIdRequest extends Gs2BasicRequest<DeleteAc
 		this.versionName = versionName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteAcceptVersionByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class DeleteAcceptVersionByUserIdRequest extends Gs2BasicRequest<DeleteAc
         return new DeleteAcceptVersionByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withVersionName(data.get("versionName") == null || data.get("versionName").isNull() ? null : data.get("versionName").asText());
+            .withVersionName(data.get("versionName") == null || data.get("versionName").isNull() ? null : data.get("versionName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class DeleteAcceptVersionByUserIdRequest extends Gs2BasicRequest<DeleteAc
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("versionName", getVersionName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

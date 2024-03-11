@@ -34,6 +34,7 @@ public class DoMatchmakingByUserIdRequest extends Gs2BasicRequest<DoMatchmakingB
     private String userId;
     private Player player;
     private String matchmakingContextToken;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -75,6 +76,16 @@ public class DoMatchmakingByUserIdRequest extends Gs2BasicRequest<DoMatchmakingB
 		this.matchmakingContextToken = matchmakingContextToken;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DoMatchmakingByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -97,7 +108,8 @@ public class DoMatchmakingByUserIdRequest extends Gs2BasicRequest<DoMatchmakingB
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withPlayer(data.get("player") == null || data.get("player").isNull() ? null : Player.fromJson(data.get("player")))
-            .withMatchmakingContextToken(data.get("matchmakingContextToken") == null || data.get("matchmakingContextToken").isNull() ? null : data.get("matchmakingContextToken").asText());
+            .withMatchmakingContextToken(data.get("matchmakingContextToken") == null || data.get("matchmakingContextToken").isNull() ? null : data.get("matchmakingContextToken").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -107,6 +119,7 @@ public class DoMatchmakingByUserIdRequest extends Gs2BasicRequest<DoMatchmakingB
                 put("userId", getUserId());
                 put("player", getPlayer() != null ? getPlayer().toJson() : null);
                 put("matchmakingContextToken", getMatchmakingContextToken());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

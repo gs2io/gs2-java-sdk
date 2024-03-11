@@ -35,6 +35,7 @@ public class ReportByUserIdRequest extends Gs2BasicRequest<ReportByUserIdRequest
     private String userId;
     private String statusName;
     private List<Event> events;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -76,6 +77,16 @@ public class ReportByUserIdRequest extends Gs2BasicRequest<ReportByUserIdRequest
 		this.events = events;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public ReportByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -103,7 +114,8 @@ public class ReportByUserIdRequest extends Gs2BasicRequest<ReportByUserIdRequest
                     //noinspection Convert2MethodRef
                     return Event.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class ReportByUserIdRequest extends Gs2BasicRequest<ReportByUserIdRequest
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

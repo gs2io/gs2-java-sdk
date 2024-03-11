@@ -32,6 +32,7 @@ public class SetCapacityByUserIdRequest extends Gs2BasicRequest<SetCapacityByUse
     private String inventoryName;
     private String userId;
     private Integer newCapacityValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class SetCapacityByUserIdRequest extends Gs2BasicRequest<SetCapacityByUse
 		this.newCapacityValue = newCapacityValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SetCapacityByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class SetCapacityByUserIdRequest extends Gs2BasicRequest<SetCapacityByUse
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withNewCapacityValue(data.get("newCapacityValue") == null || data.get("newCapacityValue").isNull() ? null : data.get("newCapacityValue").intValue());
+            .withNewCapacityValue(data.get("newCapacityValue") == null || data.get("newCapacityValue").isNull() ? null : data.get("newCapacityValue").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class SetCapacityByUserIdRequest extends Gs2BasicRequest<SetCapacityByUse
                 put("inventoryName", getInventoryName());
                 put("userId", getUserId());
                 put("newCapacityValue", getNewCapacityValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

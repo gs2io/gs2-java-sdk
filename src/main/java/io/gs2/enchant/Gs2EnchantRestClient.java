@@ -577,6 +577,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -659,6 +662,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder
@@ -743,6 +749,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -826,6 +835,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -908,6 +920,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder
@@ -993,6 +1008,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -1076,6 +1094,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder
@@ -2773,6 +2794,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -2941,6 +2965,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -3026,6 +3053,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder
@@ -3117,6 +3147,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder
@@ -3289,6 +3322,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder
@@ -3552,6 +3588,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -3720,6 +3759,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -3805,6 +3847,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder
@@ -3896,6 +3941,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder
@@ -4063,6 +4111,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder
@@ -4326,6 +4377,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -4497,6 +4551,9 @@ import io.gs2.enchant.model.*;public class Gs2EnchantRestClient extends Abstract
             }
             if (this.request.getDuplicationAvoider() != null) {
                 builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
 
             builder

@@ -38,6 +38,7 @@ public class ActionByUserIdRequest extends Gs2BasicRequest<ActionByUserIdRequest
     private String layerModelName;
     private MyPosition position;
     private List<Scope> scopes;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -99,6 +100,16 @@ public class ActionByUserIdRequest extends Gs2BasicRequest<ActionByUserIdRequest
 		this.scopes = scopes;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public ActionByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -128,7 +139,8 @@ public class ActionByUserIdRequest extends Gs2BasicRequest<ActionByUserIdRequest
                     //noinspection Convert2MethodRef
                     return Scope.fromJson(item);
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -145,6 +157,7 @@ public class ActionByUserIdRequest extends Gs2BasicRequest<ActionByUserIdRequest
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

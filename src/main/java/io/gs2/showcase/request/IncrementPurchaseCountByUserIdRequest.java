@@ -33,6 +33,7 @@ public class IncrementPurchaseCountByUserIdRequest extends Gs2BasicRequest<Incre
     private String displayItemName;
     private String userId;
     private Integer count;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class IncrementPurchaseCountByUserIdRequest extends Gs2BasicRequest<Incre
 		this.count = count;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public IncrementPurchaseCountByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class IncrementPurchaseCountByUserIdRequest extends Gs2BasicRequest<Incre
             .withShowcaseName(data.get("showcaseName") == null || data.get("showcaseName").isNull() ? null : data.get("showcaseName").asText())
             .withDisplayItemName(data.get("displayItemName") == null || data.get("displayItemName").isNull() ? null : data.get("displayItemName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue());
+            .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class IncrementPurchaseCountByUserIdRequest extends Gs2BasicRequest<Incre
                 put("displayItemName", getDisplayItemName());
                 put("userId", getUserId());
                 put("count", getCount());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

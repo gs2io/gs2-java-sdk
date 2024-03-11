@@ -35,6 +35,7 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
     private String targetItemSetId;
     private List<Material> materials;
     private Boolean force;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -96,6 +97,16 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
 		this.force = force;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public CreateProgressByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -125,7 +136,8 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
                     return Material.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue());
+            .withForce(data.get("force") == null || data.get("force").isNull() ? null : data.get("force").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -142,6 +154,7 @@ public class CreateProgressByUserIdRequest extends Gs2BasicRequest<CreateProgres
                     }
                 ).collect(Collectors.toList()));
                 put("force", getForce());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -31,6 +31,7 @@ public class RevertRecordReceiptRequest extends Gs2BasicRequest<RevertRecordRece
     private String namespaceName;
     private String userId;
     private String receipt;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class RevertRecordReceiptRequest extends Gs2BasicRequest<RevertRecordRece
 		this.receipt = receipt;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public RevertRecordReceiptRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class RevertRecordReceiptRequest extends Gs2BasicRequest<RevertRecordRece
         return new RevertRecordReceiptRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withReceipt(data.get("receipt") == null || data.get("receipt").isNull() ? null : data.get("receipt").asText());
+            .withReceipt(data.get("receipt") == null || data.get("receipt").isNull() ? null : data.get("receipt").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class RevertRecordReceiptRequest extends Gs2BasicRequest<RevertRecordRece
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("receipt", getReceipt());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

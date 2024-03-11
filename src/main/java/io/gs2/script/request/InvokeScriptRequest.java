@@ -34,6 +34,7 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
     private String userId;
     private String args;
     private RandomStatus randomStatus;
+    private String timeOffsetToken;
 	public String getScriptId() {
 		return scriptId;
 	}
@@ -74,6 +75,16 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
 		this.randomStatus = randomStatus;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public InvokeScriptRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static InvokeScriptRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -83,7 +94,8 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
             .withScriptId(data.get("scriptId") == null || data.get("scriptId").isNull() ? null : data.get("scriptId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withArgs(data.get("args") == null || data.get("args").isNull() ? null : data.get("args").asText())
-            .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")));
+            .withRandomStatus(data.get("randomStatus") == null || data.get("randomStatus").isNull() ? null : RandomStatus.fromJson(data.get("randomStatus")))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -93,6 +105,7 @@ public class InvokeScriptRequest extends Gs2BasicRequest<InvokeScriptRequest> {
                 put("userId", getUserId());
                 put("args", getArgs());
                 put("randomStatus", getRandomStatus() != null ? getRandomStatus().toJson() : null);
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

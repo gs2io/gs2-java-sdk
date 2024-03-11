@@ -85,6 +85,9 @@ import io.gs2.auth.model.*;public class Gs2AuthRestClient extends AbstractGs2Cli
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
 
             builder
                 .build()
@@ -186,6 +189,89 @@ import io.gs2.auth.model.*;public class Gs2AuthRestClient extends AbstractGs2Cli
     ) {
         final AsyncResult<LoginBySignatureResult>[] resultAsyncResult = new AsyncResult[]{null};
         loginBySignatureAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class IssueTimeOffsetTokenByUserIdTask extends Gs2RestSessionTask<IssueTimeOffsetTokenByUserIdResult> {
+        private IssueTimeOffsetTokenByUserIdRequest request;
+
+        public IssueTimeOffsetTokenByUserIdTask(
+            IssueTimeOffsetTokenByUserIdRequest request,
+            AsyncAction<AsyncResult<IssueTimeOffsetTokenByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IssueTimeOffsetTokenByUserIdResult parse(JsonNode data) {
+            return IssueTimeOffsetTokenByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "auth")
+                .replace("{region}", session.getRegion().getName())
+                + "/timeoffset/token";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userId", request.getUserId());
+                    put("timeOffset", request.getTimeOffset());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void issueTimeOffsetTokenByUserIdAsync(
+            IssueTimeOffsetTokenByUserIdRequest request,
+            AsyncAction<AsyncResult<IssueTimeOffsetTokenByUserIdResult>> callback
+    ) {
+        IssueTimeOffsetTokenByUserIdTask task = new IssueTimeOffsetTokenByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public IssueTimeOffsetTokenByUserIdResult issueTimeOffsetTokenByUserId(
+            IssueTimeOffsetTokenByUserIdRequest request
+    ) {
+        final AsyncResult<IssueTimeOffsetTokenByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        issueTimeOffsetTokenByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

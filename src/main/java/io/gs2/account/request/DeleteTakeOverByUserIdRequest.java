@@ -31,6 +31,7 @@ public class DeleteTakeOverByUserIdRequest extends Gs2BasicRequest<DeleteTakeOve
     private String namespaceName;
     private String userId;
     private Integer type;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class DeleteTakeOverByUserIdRequest extends Gs2BasicRequest<DeleteTakeOve
 		this.type = type;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteTakeOverByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class DeleteTakeOverByUserIdRequest extends Gs2BasicRequest<DeleteTakeOve
         return new DeleteTakeOverByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue());
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class DeleteTakeOverByUserIdRequest extends Gs2BasicRequest<DeleteTakeOve
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("type", getType());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

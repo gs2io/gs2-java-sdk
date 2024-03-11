@@ -33,6 +33,7 @@ public class ReDrawBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest
     private String parameterName;
     private String propertyId;
     private List<String> fixedParameterNames;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class ReDrawBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest
 		this.fixedParameterNames = fixedParameterNames;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public ReDrawBalanceParameterStatusByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -111,7 +122,8 @@ public class ReDrawBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("fixedParameterNames").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -126,6 +138,7 @@ public class ReDrawBalanceParameterStatusByUserIdRequest extends Gs2BasicRequest
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

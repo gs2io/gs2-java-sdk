@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class DeleteProfileByUserIdRequest extends Gs2BasicRequest<DeleteProfileByUserIdRequest> {
     private String namespaceName;
     private String userId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -49,6 +50,16 @@ public class DeleteProfileByUserIdRequest extends Gs2BasicRequest<DeleteProfileB
 	}
 	public DeleteProfileByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteProfileByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
 		return this;
 	}
 
@@ -71,7 +82,8 @@ public class DeleteProfileByUserIdRequest extends Gs2BasicRequest<DeleteProfileB
         }
         return new DeleteProfileByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -79,6 +91,7 @@ public class DeleteProfileByUserIdRequest extends Gs2BasicRequest<DeleteProfileB
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

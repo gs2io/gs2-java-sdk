@@ -34,6 +34,7 @@ public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFrom
     private String password;
     private List<String> whiteListUserIds;
     private String userId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFrom
 		this.userId = userId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UpdateRoomFromBackendRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -123,7 +134,8 @@ public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFrom
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -139,6 +151,7 @@ public class UpdateRoomFromBackendRequest extends Gs2BasicRequest<UpdateRoomFrom
                     }
                 ).collect(Collectors.toList()));
                 put("userId", getUserId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

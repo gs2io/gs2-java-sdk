@@ -32,6 +32,7 @@ public class RaiseMaxValueByUserIdRequest extends Gs2BasicRequest<RaiseMaxValueB
     private String staminaName;
     private String userId;
     private Integer raiseValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class RaiseMaxValueByUserIdRequest extends Gs2BasicRequest<RaiseMaxValueB
 		this.raiseValue = raiseValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public RaiseMaxValueByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class RaiseMaxValueByUserIdRequest extends Gs2BasicRequest<RaiseMaxValueB
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withRaiseValue(data.get("raiseValue") == null || data.get("raiseValue").isNull() ? null : data.get("raiseValue").intValue());
+            .withRaiseValue(data.get("raiseValue") == null || data.get("raiseValue").isNull() ? null : data.get("raiseValue").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class RaiseMaxValueByUserIdRequest extends Gs2BasicRequest<RaiseMaxValueB
                 put("staminaName", getStaminaName());
                 put("userId", getUserId());
                 put("raiseValue", getRaiseValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

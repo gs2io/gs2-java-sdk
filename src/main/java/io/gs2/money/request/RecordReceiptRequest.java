@@ -32,6 +32,7 @@ public class RecordReceiptRequest extends Gs2BasicRequest<RecordReceiptRequest> 
     private String userId;
     private String contentsId;
     private String receipt;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class RecordReceiptRequest extends Gs2BasicRequest<RecordReceiptRequest> 
 		this.receipt = receipt;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public RecordReceiptRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class RecordReceiptRequest extends Gs2BasicRequest<RecordReceiptRequest> 
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withContentsId(data.get("contentsId") == null || data.get("contentsId").isNull() ? null : data.get("contentsId").asText())
-            .withReceipt(data.get("receipt") == null || data.get("receipt").isNull() ? null : data.get("receipt").asText());
+            .withReceipt(data.get("receipt") == null || data.get("receipt").isNull() ? null : data.get("receipt").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class RecordReceiptRequest extends Gs2BasicRequest<RecordReceiptRequest> 
                 put("userId", getUserId());
                 put("contentsId", getContentsId());
                 put("receipt", getReceipt());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

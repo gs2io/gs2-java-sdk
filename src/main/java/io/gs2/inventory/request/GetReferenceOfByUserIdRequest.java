@@ -34,6 +34,7 @@ public class GetReferenceOfByUserIdRequest extends Gs2BasicRequest<GetReferenceO
     private String itemName;
     private String itemSetName;
     private String referenceOf;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -94,6 +95,16 @@ public class GetReferenceOfByUserIdRequest extends Gs2BasicRequest<GetReferenceO
 		this.referenceOf = referenceOf;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetReferenceOfByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetReferenceOfByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -105,7 +116,8 @@ public class GetReferenceOfByUserIdRequest extends Gs2BasicRequest<GetReferenceO
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
             .withItemSetName(data.get("itemSetName") == null || data.get("itemSetName").isNull() ? null : data.get("itemSetName").asText())
-            .withReferenceOf(data.get("referenceOf") == null || data.get("referenceOf").isNull() ? null : data.get("referenceOf").asText());
+            .withReferenceOf(data.get("referenceOf") == null || data.get("referenceOf").isNull() ? null : data.get("referenceOf").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -117,6 +129,7 @@ public class GetReferenceOfByUserIdRequest extends Gs2BasicRequest<GetReferenceO
                 put("itemName", getItemName());
                 put("itemSetName", getItemSetName());
                 put("referenceOf", getReferenceOf());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

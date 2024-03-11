@@ -31,6 +31,7 @@ public class RevertUseByUserIdRequest extends Gs2BasicRequest<RevertUseByUserIdR
     private String namespaceName;
     private String userId;
     private String code;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class RevertUseByUserIdRequest extends Gs2BasicRequest<RevertUseByUserIdR
 		this.code = code;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public RevertUseByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class RevertUseByUserIdRequest extends Gs2BasicRequest<RevertUseByUserIdR
         return new RevertUseByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withCode(data.get("code") == null || data.get("code").isNull() ? null : data.get("code").asText());
+            .withCode(data.get("code") == null || data.get("code").isNull() ? null : data.get("code").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class RevertUseByUserIdRequest extends Gs2BasicRequest<RevertUseByUserIdR
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("code", getCode());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

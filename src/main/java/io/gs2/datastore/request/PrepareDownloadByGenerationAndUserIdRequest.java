@@ -32,6 +32,7 @@ public class PrepareDownloadByGenerationAndUserIdRequest extends Gs2BasicRequest
     private String userId;
     private String dataObjectId;
     private String generation;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class PrepareDownloadByGenerationAndUserIdRequest extends Gs2BasicRequest
 		this.generation = generation;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public PrepareDownloadByGenerationAndUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class PrepareDownloadByGenerationAndUserIdRequest extends Gs2BasicRequest
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withDataObjectId(data.get("dataObjectId") == null || data.get("dataObjectId").isNull() ? null : data.get("dataObjectId").asText())
-            .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText());
+            .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class PrepareDownloadByGenerationAndUserIdRequest extends Gs2BasicRequest
                 put("userId", getUserId());
                 put("dataObjectId", getDataObjectId());
                 put("generation", getGeneration());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

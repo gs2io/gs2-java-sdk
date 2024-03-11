@@ -31,6 +31,7 @@ public class GetStampSheetResultByUserIdRequest extends Gs2BasicRequest<GetStamp
     private String namespaceName;
     private String userId;
     private String transactionId;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -61,6 +62,16 @@ public class GetStampSheetResultByUserIdRequest extends Gs2BasicRequest<GetStamp
 		this.transactionId = transactionId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetStampSheetResultByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetStampSheetResultByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -69,7 +80,8 @@ public class GetStampSheetResultByUserIdRequest extends Gs2BasicRequest<GetStamp
         return new GetStampSheetResultByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText());
+            .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -78,6 +90,7 @@ public class GetStampSheetResultByUserIdRequest extends Gs2BasicRequest<GetStamp
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("transactionId", getTransactionId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

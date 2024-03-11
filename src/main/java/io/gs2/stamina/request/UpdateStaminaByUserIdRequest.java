@@ -35,6 +35,7 @@ public class UpdateStaminaByUserIdRequest extends Gs2BasicRequest<UpdateStaminaB
     private Integer maxValue;
     private Integer recoverIntervalMinutes;
     private Integer recoverValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -106,6 +107,16 @@ public class UpdateStaminaByUserIdRequest extends Gs2BasicRequest<UpdateStaminaB
 		this.recoverValue = recoverValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UpdateStaminaByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -131,7 +142,8 @@ public class UpdateStaminaByUserIdRequest extends Gs2BasicRequest<UpdateStaminaB
             .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").intValue())
             .withMaxValue(data.get("maxValue") == null || data.get("maxValue").isNull() ? null : data.get("maxValue").intValue())
             .withRecoverIntervalMinutes(data.get("recoverIntervalMinutes") == null || data.get("recoverIntervalMinutes").isNull() ? null : data.get("recoverIntervalMinutes").intValue())
-            .withRecoverValue(data.get("recoverValue") == null || data.get("recoverValue").isNull() ? null : data.get("recoverValue").intValue());
+            .withRecoverValue(data.get("recoverValue") == null || data.get("recoverValue").isNull() ? null : data.get("recoverValue").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -144,6 +156,7 @@ public class UpdateStaminaByUserIdRequest extends Gs2BasicRequest<UpdateStaminaB
                 put("maxValue", getMaxValue());
                 put("recoverIntervalMinutes", getRecoverIntervalMinutes());
                 put("recoverValue", getRecoverValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

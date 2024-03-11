@@ -32,6 +32,7 @@ public class GetJobResultByUserIdRequest extends Gs2BasicRequest<GetJobResultByU
     private String userId;
     private String jobName;
     private Integer tryNumber;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,16 @@ public class GetJobResultByUserIdRequest extends Gs2BasicRequest<GetJobResultByU
 		this.tryNumber = tryNumber;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetJobResultByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetJobResultByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -81,7 +92,8 @@ public class GetJobResultByUserIdRequest extends Gs2BasicRequest<GetJobResultByU
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withJobName(data.get("jobName") == null || data.get("jobName").isNull() ? null : data.get("jobName").asText())
-            .withTryNumber(data.get("tryNumber") == null || data.get("tryNumber").isNull() ? null : data.get("tryNumber").intValue());
+            .withTryNumber(data.get("tryNumber") == null || data.get("tryNumber").isNull() ? null : data.get("tryNumber").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -91,6 +103,7 @@ public class GetJobResultByUserIdRequest extends Gs2BasicRequest<GetJobResultByU
                 put("userId", getUserId());
                 put("jobName", getJobName());
                 put("tryNumber", getTryNumber());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

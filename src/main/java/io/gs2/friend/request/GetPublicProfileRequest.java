@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class GetPublicProfileRequest extends Gs2BasicRequest<GetPublicProfileRequest> {
     private String namespaceName;
     private String userId;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -50,6 +51,16 @@ public class GetPublicProfileRequest extends Gs2BasicRequest<GetPublicProfileReq
 		this.userId = userId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetPublicProfileRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetPublicProfileRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -57,7 +68,8 @@ public class GetPublicProfileRequest extends Gs2BasicRequest<GetPublicProfileReq
         }
         return new GetPublicProfileRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText());
+            .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -65,6 +77,7 @@ public class GetPublicProfileRequest extends Gs2BasicRequest<GetPublicProfileReq
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

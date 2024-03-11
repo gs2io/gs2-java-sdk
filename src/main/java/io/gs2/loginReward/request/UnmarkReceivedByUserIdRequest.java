@@ -32,6 +32,7 @@ public class UnmarkReceivedByUserIdRequest extends Gs2BasicRequest<UnmarkReceive
     private String bonusModelName;
     private String userId;
     private Integer stepNumber;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class UnmarkReceivedByUserIdRequest extends Gs2BasicRequest<UnmarkReceive
 		this.stepNumber = stepNumber;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public UnmarkReceivedByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class UnmarkReceivedByUserIdRequest extends Gs2BasicRequest<UnmarkReceive
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withBonusModelName(data.get("bonusModelName") == null || data.get("bonusModelName").isNull() ? null : data.get("bonusModelName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withStepNumber(data.get("stepNumber") == null || data.get("stepNumber").isNull() ? null : data.get("stepNumber").intValue());
+            .withStepNumber(data.get("stepNumber") == null || data.get("stepNumber").isNull() ? null : data.get("stepNumber").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class UnmarkReceivedByUserIdRequest extends Gs2BasicRequest<UnmarkReceive
                 put("bonusModelName", getBonusModelName());
                 put("userId", getUserId());
                 put("stepNumber", getStepNumber());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

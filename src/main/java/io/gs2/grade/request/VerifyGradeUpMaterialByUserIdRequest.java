@@ -34,6 +34,7 @@ public class VerifyGradeUpMaterialByUserIdRequest extends Gs2BasicRequest<Verify
     private String verifyType;
     private String propertyId;
     private String materialPropertyId;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class VerifyGradeUpMaterialByUserIdRequest extends Gs2BasicRequest<Verify
 		this.materialPropertyId = materialPropertyId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public VerifyGradeUpMaterialByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -119,7 +130,8 @@ public class VerifyGradeUpMaterialByUserIdRequest extends Gs2BasicRequest<Verify
             .withGradeName(data.get("gradeName") == null || data.get("gradeName").isNull() ? null : data.get("gradeName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withMaterialPropertyId(data.get("materialPropertyId") == null || data.get("materialPropertyId").isNull() ? null : data.get("materialPropertyId").asText());
+            .withMaterialPropertyId(data.get("materialPropertyId") == null || data.get("materialPropertyId").isNull() ? null : data.get("materialPropertyId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class VerifyGradeUpMaterialByUserIdRequest extends Gs2BasicRequest<Verify
                 put("verifyType", getVerifyType());
                 put("propertyId", getPropertyId());
                 put("materialPropertyId", getMaterialPropertyId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

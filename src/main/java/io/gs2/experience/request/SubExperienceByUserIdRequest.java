@@ -33,6 +33,7 @@ public class SubExperienceByUserIdRequest extends Gs2BasicRequest<SubExperienceB
     private String experienceName;
     private String propertyId;
     private Long experienceValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class SubExperienceByUserIdRequest extends Gs2BasicRequest<SubExperienceB
 		this.experienceValue = experienceValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SubExperienceByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class SubExperienceByUserIdRequest extends Gs2BasicRequest<SubExperienceB
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withExperienceName(data.get("experienceName") == null || data.get("experienceName").isNull() ? null : data.get("experienceName").asText())
             .withPropertyId(data.get("propertyId") == null || data.get("propertyId").isNull() ? null : data.get("propertyId").asText())
-            .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").longValue());
+            .withExperienceValue(data.get("experienceValue") == null || data.get("experienceValue").isNull() ? null : data.get("experienceValue").longValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class SubExperienceByUserIdRequest extends Gs2BasicRequest<SubExperienceB
                 put("experienceName", getExperienceName());
                 put("propertyId", getPropertyId());
                 put("experienceValue", getExperienceValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

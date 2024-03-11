@@ -33,6 +33,7 @@ public class WithdrawByUserIdRequest extends Gs2BasicRequest<WithdrawByUserIdReq
     private Integer slot;
     private Integer count;
     private Boolean paidOnly;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class WithdrawByUserIdRequest extends Gs2BasicRequest<WithdrawByUserIdReq
 		this.paidOnly = paidOnly;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public WithdrawByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class WithdrawByUserIdRequest extends Gs2BasicRequest<WithdrawByUserIdReq
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withSlot(data.get("slot") == null || data.get("slot").isNull() ? null : data.get("slot").intValue())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
-            .withPaidOnly(data.get("paidOnly") == null || data.get("paidOnly").isNull() ? null : data.get("paidOnly").booleanValue());
+            .withPaidOnly(data.get("paidOnly") == null || data.get("paidOnly").isNull() ? null : data.get("paidOnly").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class WithdrawByUserIdRequest extends Gs2BasicRequest<WithdrawByUserIdReq
                 put("slot", getSlot());
                 put("count", getCount());
                 put("paidOnly", getPaidOnly());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

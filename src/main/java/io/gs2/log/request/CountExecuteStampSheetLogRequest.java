@@ -38,6 +38,7 @@ public class CountExecuteStampSheetLogRequest extends Gs2BasicRequest<CountExecu
     private Boolean longTerm;
     private String pageToken;
     private Integer limit;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -138,6 +139,16 @@ public class CountExecuteStampSheetLogRequest extends Gs2BasicRequest<CountExecu
 		this.limit = limit;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public CountExecuteStampSheetLogRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static CountExecuteStampSheetLogRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -153,7 +164,8 @@ public class CountExecuteStampSheetLogRequest extends Gs2BasicRequest<CountExecu
             .withEnd(data.get("end") == null || data.get("end").isNull() ? null : data.get("end").longValue())
             .withLongTerm(data.get("longTerm") == null || data.get("longTerm").isNull() ? null : data.get("longTerm").booleanValue())
             .withPageToken(data.get("pageToken") == null || data.get("pageToken").isNull() ? null : data.get("pageToken").asText())
-            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue());
+            .withLimit(data.get("limit") == null || data.get("limit").isNull() ? null : data.get("limit").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -169,6 +181,7 @@ public class CountExecuteStampSheetLogRequest extends Gs2BasicRequest<CountExecu
                 put("longTerm", getLongTerm());
                 put("pageToken", getPageToken());
                 put("limit", getLimit());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

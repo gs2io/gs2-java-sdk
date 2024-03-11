@@ -34,6 +34,7 @@ public class CountUpByUserIdRequest extends Gs2BasicRequest<CountUpByUserIdReque
     private String userId;
     private Integer countUpValue;
     private Integer maxValue;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -95,6 +96,16 @@ public class CountUpByUserIdRequest extends Gs2BasicRequest<CountUpByUserIdReque
 		this.maxValue = maxValue;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public CountUpByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -119,7 +130,8 @@ public class CountUpByUserIdRequest extends Gs2BasicRequest<CountUpByUserIdReque
             .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCountUpValue(data.get("countUpValue") == null || data.get("countUpValue").isNull() ? null : data.get("countUpValue").intValue())
-            .withMaxValue(data.get("maxValue") == null || data.get("maxValue").isNull() ? null : data.get("maxValue").intValue());
+            .withMaxValue(data.get("maxValue") == null || data.get("maxValue").isNull() ? null : data.get("maxValue").intValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -131,6 +143,7 @@ public class CountUpByUserIdRequest extends Gs2BasicRequest<CountUpByUserIdReque
                 put("userId", getUserId());
                 put("countUpValue", getCountUpValue());
                 put("maxValue", getMaxValue());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

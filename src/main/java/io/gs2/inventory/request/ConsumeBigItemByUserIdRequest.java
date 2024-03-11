@@ -33,6 +33,7 @@ public class ConsumeBigItemByUserIdRequest extends Gs2BasicRequest<ConsumeBigIte
     private String userId;
     private String itemName;
     private String consumeCount;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -84,6 +85,16 @@ public class ConsumeBigItemByUserIdRequest extends Gs2BasicRequest<ConsumeBigIte
 		this.consumeCount = consumeCount;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public ConsumeBigItemByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -107,7 +118,8 @@ public class ConsumeBigItemByUserIdRequest extends Gs2BasicRequest<ConsumeBigIte
             .withInventoryName(data.get("inventoryName") == null || data.get("inventoryName").isNull() ? null : data.get("inventoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withItemName(data.get("itemName") == null || data.get("itemName").isNull() ? null : data.get("itemName").asText())
-            .withConsumeCount(data.get("consumeCount") == null || data.get("consumeCount").isNull() ? null : data.get("consumeCount").asText());
+            .withConsumeCount(data.get("consumeCount") == null || data.get("consumeCount").isNull() ? null : data.get("consumeCount").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -118,6 +130,7 @@ public class ConsumeBigItemByUserIdRequest extends Gs2BasicRequest<ConsumeBigIte
                 put("userId", getUserId());
                 put("itemName", getItemName());
                 put("consumeCount", getConsumeCount());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

@@ -32,6 +32,7 @@ public class DeleteMessageRequest extends Gs2BasicRequest<DeleteMessageRequest> 
     private String roomName;
     private String userId;
     private String messageName;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -73,6 +74,16 @@ public class DeleteMessageRequest extends Gs2BasicRequest<DeleteMessageRequest> 
 		this.messageName = messageName;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public DeleteMessageRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -95,7 +106,8 @@ public class DeleteMessageRequest extends Gs2BasicRequest<DeleteMessageRequest> 
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withRoomName(data.get("roomName") == null || data.get("roomName").isNull() ? null : data.get("roomName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withMessageName(data.get("messageName") == null || data.get("messageName").isNull() ? null : data.get("messageName").asText());
+            .withMessageName(data.get("messageName") == null || data.get("messageName").isNull() ? null : data.get("messageName").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -105,6 +117,7 @@ public class DeleteMessageRequest extends Gs2BasicRequest<DeleteMessageRequest> 
                 put("roomName", getRoomName());
                 put("userId", getUserId());
                 put("messageName", getMessageName());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

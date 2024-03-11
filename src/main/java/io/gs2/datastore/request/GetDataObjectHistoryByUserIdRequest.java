@@ -32,6 +32,7 @@ public class GetDataObjectHistoryByUserIdRequest extends Gs2BasicRequest<GetData
     private String userId;
     private String dataObjectName;
     private String generation;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -72,6 +73,16 @@ public class GetDataObjectHistoryByUserIdRequest extends Gs2BasicRequest<GetData
 		this.generation = generation;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetDataObjectHistoryByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetDataObjectHistoryByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -81,7 +92,8 @@ public class GetDataObjectHistoryByUserIdRequest extends Gs2BasicRequest<GetData
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withDataObjectName(data.get("dataObjectName") == null || data.get("dataObjectName").isNull() ? null : data.get("dataObjectName").asText())
-            .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText());
+            .withGeneration(data.get("generation") == null || data.get("generation").isNull() ? null : data.get("generation").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -91,6 +103,7 @@ public class GetDataObjectHistoryByUserIdRequest extends Gs2BasicRequest<GetData
                 put("userId", getUserId());
                 put("dataObjectName", getDataObjectName());
                 put("generation", getGeneration());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

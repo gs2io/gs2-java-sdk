@@ -35,6 +35,7 @@ public class PrepareUploadByUserIdRequest extends Gs2BasicRequest<PrepareUploadB
     private String scope;
     private List<String> allowUserIds;
     private Boolean updateIfExists;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -106,6 +107,16 @@ public class PrepareUploadByUserIdRequest extends Gs2BasicRequest<PrepareUploadB
 		this.updateIfExists = updateIfExists;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public PrepareUploadByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -135,7 +146,8 @@ public class PrepareUploadByUserIdRequest extends Gs2BasicRequest<PrepareUploadB
                     return item.asText();
                 }
             ).collect(Collectors.toList()))
-            .withUpdateIfExists(data.get("updateIfExists") == null || data.get("updateIfExists").isNull() ? null : data.get("updateIfExists").booleanValue());
+            .withUpdateIfExists(data.get("updateIfExists") == null || data.get("updateIfExists").isNull() ? null : data.get("updateIfExists").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -152,6 +164,7 @@ public class PrepareUploadByUserIdRequest extends Gs2BasicRequest<PrepareUploadB
                     }
                 ).collect(Collectors.toList()));
                 put("updateIfExists", getUpdateIfExists());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

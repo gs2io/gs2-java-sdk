@@ -36,6 +36,7 @@ public class VerifyRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<
     private String parameterValueName;
     private Integer parameterCount;
     private Boolean multiplyValueSpecifyingQuantity;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -117,6 +118,16 @@ public class VerifyRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<
 		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public VerifyRarityParameterStatusByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -143,7 +154,8 @@ public class VerifyRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
             .withParameterValueName(data.get("parameterValueName") == null || data.get("parameterValueName").isNull() ? null : data.get("parameterValueName").asText())
             .withParameterCount(data.get("parameterCount") == null || data.get("parameterCount").isNull() ? null : data.get("parameterCount").intValue())
-            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue());
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -157,6 +169,7 @@ public class VerifyRarityParameterStatusByUserIdRequest extends Gs2BasicRequest<
                 put("parameterValueName", getParameterValueName());
                 put("parameterCount", getParameterCount());
                 put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

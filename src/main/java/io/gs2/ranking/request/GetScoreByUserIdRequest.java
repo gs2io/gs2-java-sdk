@@ -33,6 +33,7 @@ public class GetScoreByUserIdRequest extends Gs2BasicRequest<GetScoreByUserIdReq
     private String userId;
     private String scorerUserId;
     private String uniqueId;
+    private String timeOffsetToken;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -83,6 +84,16 @@ public class GetScoreByUserIdRequest extends Gs2BasicRequest<GetScoreByUserIdReq
 		this.uniqueId = uniqueId;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public GetScoreByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
     public static GetScoreByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -93,7 +104,8 @@ public class GetScoreByUserIdRequest extends Gs2BasicRequest<GetScoreByUserIdReq
             .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withScorerUserId(data.get("scorerUserId") == null || data.get("scorerUserId").isNull() ? null : data.get("scorerUserId").asText())
-            .withUniqueId(data.get("uniqueId") == null || data.get("uniqueId").isNull() ? null : data.get("uniqueId").asText());
+            .withUniqueId(data.get("uniqueId") == null || data.get("uniqueId").isNull() ? null : data.get("uniqueId").asText())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -104,6 +116,7 @@ public class GetScoreByUserIdRequest extends Gs2BasicRequest<GetScoreByUserIdReq
                 put("userId", getUserId());
                 put("scorerUserId", getScorerUserId());
                 put("uniqueId", getUniqueId());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }

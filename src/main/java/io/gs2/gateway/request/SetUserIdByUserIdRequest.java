@@ -31,6 +31,7 @@ public class SetUserIdByUserIdRequest extends Gs2BasicRequest<SetUserIdByUserIdR
     private String namespaceName;
     private String userId;
     private Boolean allowConcurrentAccess;
+    private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +63,16 @@ public class SetUserIdByUserIdRequest extends Gs2BasicRequest<SetUserIdByUserIdR
 		this.allowConcurrentAccess = allowConcurrentAccess;
 		return this;
 	}
+	public String getTimeOffsetToken() {
+		return timeOffsetToken;
+	}
+	public void setTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+	}
+	public SetUserIdByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +94,8 @@ public class SetUserIdByUserIdRequest extends Gs2BasicRequest<SetUserIdByUserIdR
         return new SetUserIdByUserIdRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withAllowConcurrentAccess(data.get("allowConcurrentAccess") == null || data.get("allowConcurrentAccess").isNull() ? null : data.get("allowConcurrentAccess").booleanValue());
+            .withAllowConcurrentAccess(data.get("allowConcurrentAccess") == null || data.get("allowConcurrentAccess").isNull() ? null : data.get("allowConcurrentAccess").booleanValue())
+            .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
     public JsonNode toJson() {
@@ -92,6 +104,7 @@ public class SetUserIdByUserIdRequest extends Gs2BasicRequest<SetUserIdByUserIdR
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("allowConcurrentAccess", getAllowConcurrentAccess());
+                put("timeOffsetToken", getTimeOffsetToken());
             }}
         );
     }
