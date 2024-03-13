@@ -160,6 +160,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("enableDirectExchange", request.getEnableDirectExchange());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("exchangeScript", request.getExchangeScript() != null ? request.getExchangeScript().toJson() : null);
+                    put("incrementalExchangeScript", request.getIncrementalExchangeScript() != null ? request.getIncrementalExchangeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());
@@ -408,6 +409,7 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("enableDirectExchange", request.getEnableDirectExchange());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("exchangeScript", request.getExchangeScript() != null ? request.getExchangeScript().toJson() : null);
+                    put("incrementalExchangeScript", request.getIncrementalExchangeScript() != null ? request.getIncrementalExchangeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("queueNamespaceId", request.getQueueNamespaceId());
                     put("keyId", request.getKeyId());

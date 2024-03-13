@@ -37,6 +37,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private Boolean enableDirectExchange;
     private TransactionSetting transactionSetting;
     private ScriptSetting exchangeScript;
+    private ScriptSetting incrementalExchangeScript;
     private LogSetting logSetting;
     private String queueNamespaceId;
     private String keyId;
@@ -100,6 +101,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.exchangeScript = exchangeScript;
 		return this;
 	}
+	public ScriptSetting getIncrementalExchangeScript() {
+		return incrementalExchangeScript;
+	}
+	public void setIncrementalExchangeScript(ScriptSetting incrementalExchangeScript) {
+		this.incrementalExchangeScript = incrementalExchangeScript;
+	}
+	public UpdateNamespaceRequest withIncrementalExchangeScript(ScriptSetting incrementalExchangeScript) {
+		this.incrementalExchangeScript = incrementalExchangeScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -148,6 +159,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withEnableDirectExchange(data.get("enableDirectExchange") == null || data.get("enableDirectExchange").isNull() ? null : data.get("enableDirectExchange").booleanValue())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withExchangeScript(data.get("exchangeScript") == null || data.get("exchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("exchangeScript")))
+            .withIncrementalExchangeScript(data.get("incrementalExchangeScript") == null || data.get("incrementalExchangeScript").isNull() ? null : ScriptSetting.fromJson(data.get("incrementalExchangeScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
@@ -162,6 +174,7 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("enableDirectExchange", getEnableDirectExchange());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("exchangeScript", getExchangeScript() != null ? getExchangeScript().toJson() : null);
+                put("incrementalExchangeScript", getIncrementalExchangeScript() != null ? getIncrementalExchangeScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());
