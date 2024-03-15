@@ -161,6 +161,8 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
                     put("consumeScript", request.getConsumeScript() != null ? request.getConsumeScript().toJson() : null);
                     put("simpleItemAcquireScript", request.getSimpleItemAcquireScript() != null ? request.getSimpleItemAcquireScript().toJson() : null);
                     put("simpleItemConsumeScript", request.getSimpleItemConsumeScript() != null ? request.getSimpleItemConsumeScript().toJson() : null);
+                    put("bigItemAcquireScript", request.getBigItemAcquireScript() != null ? request.getBigItemAcquireScript().toJson() : null);
+                    put("bigItemConsumeScript", request.getBigItemConsumeScript() != null ? request.getBigItemConsumeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -408,6 +410,8 @@ import io.gs2.inventory.model.*;public class Gs2InventoryRestClient extends Abst
                     put("consumeScript", request.getConsumeScript() != null ? request.getConsumeScript().toJson() : null);
                     put("simpleItemAcquireScript", request.getSimpleItemAcquireScript() != null ? request.getSimpleItemAcquireScript().toJson() : null);
                     put("simpleItemConsumeScript", request.getSimpleItemConsumeScript() != null ? request.getSimpleItemConsumeScript().toJson() : null);
+                    put("bigItemAcquireScript", request.getBigItemAcquireScript() != null ? request.getBigItemAcquireScript().toJson() : null);
+                    put("bigItemConsumeScript", request.getBigItemConsumeScript() != null ? request.getBigItemConsumeScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

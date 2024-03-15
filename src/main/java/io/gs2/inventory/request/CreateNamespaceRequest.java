@@ -37,6 +37,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private ScriptSetting consumeScript;
     private ScriptSetting simpleItemAcquireScript;
     private ScriptSetting simpleItemConsumeScript;
+    private ScriptSetting bigItemAcquireScript;
+    private ScriptSetting bigItemConsumeScript;
     private LogSetting logSetting;
 	public String getName() {
 		return name;
@@ -108,6 +110,26 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.simpleItemConsumeScript = simpleItemConsumeScript;
 		return this;
 	}
+	public ScriptSetting getBigItemAcquireScript() {
+		return bigItemAcquireScript;
+	}
+	public void setBigItemAcquireScript(ScriptSetting bigItemAcquireScript) {
+		this.bigItemAcquireScript = bigItemAcquireScript;
+	}
+	public CreateNamespaceRequest withBigItemAcquireScript(ScriptSetting bigItemAcquireScript) {
+		this.bigItemAcquireScript = bigItemAcquireScript;
+		return this;
+	}
+	public ScriptSetting getBigItemConsumeScript() {
+		return bigItemConsumeScript;
+	}
+	public void setBigItemConsumeScript(ScriptSetting bigItemConsumeScript) {
+		this.bigItemConsumeScript = bigItemConsumeScript;
+	}
+	public CreateNamespaceRequest withBigItemConsumeScript(ScriptSetting bigItemConsumeScript) {
+		this.bigItemConsumeScript = bigItemConsumeScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -131,6 +153,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withConsumeScript(data.get("consumeScript") == null || data.get("consumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("consumeScript")))
             .withSimpleItemAcquireScript(data.get("simpleItemAcquireScript") == null || data.get("simpleItemAcquireScript").isNull() ? null : ScriptSetting.fromJson(data.get("simpleItemAcquireScript")))
             .withSimpleItemConsumeScript(data.get("simpleItemConsumeScript") == null || data.get("simpleItemConsumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("simpleItemConsumeScript")))
+            .withBigItemAcquireScript(data.get("bigItemAcquireScript") == null || data.get("bigItemAcquireScript").isNull() ? null : ScriptSetting.fromJson(data.get("bigItemAcquireScript")))
+            .withBigItemConsumeScript(data.get("bigItemConsumeScript") == null || data.get("bigItemConsumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("bigItemConsumeScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -144,6 +168,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("consumeScript", getConsumeScript() != null ? getConsumeScript().toJson() : null);
                 put("simpleItemAcquireScript", getSimpleItemAcquireScript() != null ? getSimpleItemAcquireScript().toJson() : null);
                 put("simpleItemConsumeScript", getSimpleItemConsumeScript() != null ? getSimpleItemConsumeScript().toJson() : null);
+                put("bigItemAcquireScript", getBigItemAcquireScript() != null ? getBigItemAcquireScript().toJson() : null);
+                put("bigItemConsumeScript", getBigItemConsumeScript() != null ? getBigItemConsumeScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

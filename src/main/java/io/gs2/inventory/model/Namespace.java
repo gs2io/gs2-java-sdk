@@ -37,6 +37,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private ScriptSetting consumeScript;
 	private ScriptSetting simpleItemAcquireScript;
 	private ScriptSetting simpleItemConsumeScript;
+	private ScriptSetting bigItemAcquireScript;
+	private ScriptSetting bigItemConsumeScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -121,6 +123,26 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.simpleItemConsumeScript = simpleItemConsumeScript;
 		return this;
 	}
+	public ScriptSetting getBigItemAcquireScript() {
+		return bigItemAcquireScript;
+	}
+	public void setBigItemAcquireScript(ScriptSetting bigItemAcquireScript) {
+		this.bigItemAcquireScript = bigItemAcquireScript;
+	}
+	public Namespace withBigItemAcquireScript(ScriptSetting bigItemAcquireScript) {
+		this.bigItemAcquireScript = bigItemAcquireScript;
+		return this;
+	}
+	public ScriptSetting getBigItemConsumeScript() {
+		return bigItemConsumeScript;
+	}
+	public void setBigItemConsumeScript(ScriptSetting bigItemConsumeScript) {
+		this.bigItemConsumeScript = bigItemConsumeScript;
+	}
+	public Namespace withBigItemConsumeScript(ScriptSetting bigItemConsumeScript) {
+		this.bigItemConsumeScript = bigItemConsumeScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -175,6 +197,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withConsumeScript(data.get("consumeScript") == null || data.get("consumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("consumeScript")))
             .withSimpleItemAcquireScript(data.get("simpleItemAcquireScript") == null || data.get("simpleItemAcquireScript").isNull() ? null : ScriptSetting.fromJson(data.get("simpleItemAcquireScript")))
             .withSimpleItemConsumeScript(data.get("simpleItemConsumeScript") == null || data.get("simpleItemConsumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("simpleItemConsumeScript")))
+            .withBigItemAcquireScript(data.get("bigItemAcquireScript") == null || data.get("bigItemAcquireScript").isNull() ? null : ScriptSetting.fromJson(data.get("bigItemAcquireScript")))
+            .withBigItemConsumeScript(data.get("bigItemConsumeScript") == null || data.get("bigItemConsumeScript").isNull() ? null : ScriptSetting.fromJson(data.get("bigItemConsumeScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -192,6 +216,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("consumeScript", getConsumeScript() != null ? getConsumeScript().toJson() : null);
                 put("simpleItemAcquireScript", getSimpleItemAcquireScript() != null ? getSimpleItemAcquireScript().toJson() : null);
                 put("simpleItemConsumeScript", getSimpleItemConsumeScript() != null ? getSimpleItemConsumeScript().toJson() : null);
+                put("bigItemAcquireScript", getBigItemAcquireScript() != null ? getBigItemAcquireScript().toJson() : null);
+                put("bigItemConsumeScript", getBigItemConsumeScript() != null ? getBigItemConsumeScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -217,6 +243,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.consumeScript == null) ? 0 : this.consumeScript.hashCode());
         result = prime * result + ((this.simpleItemAcquireScript == null) ? 0 : this.simpleItemAcquireScript.hashCode());
         result = prime * result + ((this.simpleItemConsumeScript == null) ? 0 : this.simpleItemConsumeScript.hashCode());
+        result = prime * result + ((this.bigItemAcquireScript == null) ? 0 : this.bigItemAcquireScript.hashCode());
+        result = prime * result + ((this.bigItemConsumeScript == null) ? 0 : this.bigItemConsumeScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -271,6 +299,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (simpleItemConsumeScript == null) {
 			return other.simpleItemConsumeScript == null;
 		} else if (!simpleItemConsumeScript.equals(other.simpleItemConsumeScript)) {
+			return false;
+		}
+		if (bigItemAcquireScript == null) {
+			return other.bigItemAcquireScript == null;
+		} else if (!bigItemAcquireScript.equals(other.bigItemAcquireScript)) {
+			return false;
+		}
+		if (bigItemConsumeScript == null) {
+			return other.bigItemConsumeScript == null;
+		} else if (!bigItemConsumeScript.equals(other.bigItemConsumeScript)) {
 			return false;
 		}
 		if (logSetting == null) {
