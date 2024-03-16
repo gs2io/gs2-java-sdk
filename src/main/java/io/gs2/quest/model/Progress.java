@@ -35,6 +35,7 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 	private String questModelId;
 	private Long randomSeed;
 	private List<Reward> rewards;
+	private List<Reward> failedRewards;
 	private String metadata;
 	private Long createdAt;
 	private Long updatedAt;
@@ -99,6 +100,16 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 		this.rewards = rewards;
 		return this;
 	}
+	public List<Reward> getFailedRewards() {
+		return failedRewards;
+	}
+	public void setFailedRewards(List<Reward> failedRewards) {
+		this.failedRewards = failedRewards;
+	}
+	public Progress withFailedRewards(List<Reward> failedRewards) {
+		this.failedRewards = failedRewards;
+		return this;
+	}
 	public String getMetadata() {
 		return metadata;
 	}
@@ -156,6 +167,12 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
                     return Reward.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withFailedRewards(data.get("failedRewards") == null || data.get("failedRewards").isNull() ? new ArrayList<Reward>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("failedRewards").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return Reward.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -172,6 +189,12 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
                 put("randomSeed", getRandomSeed());
                 put("rewards", getRewards() == null ? new ArrayList<Reward>() :
                     getRewards().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("failedRewards", getFailedRewards() == null ? new ArrayList<Reward>() :
+                    getFailedRewards().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
@@ -199,6 +222,7 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
         result = prime * result + ((this.questModelId == null) ? 0 : this.questModelId.hashCode());
         result = prime * result + ((this.randomSeed == null) ? 0 : this.randomSeed.hashCode());
         result = prime * result + ((this.rewards == null) ? 0 : this.rewards.hashCode());
+        result = prime * result + ((this.failedRewards == null) ? 0 : this.failedRewards.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -243,6 +267,11 @@ public class Progress implements IModel, Serializable, Comparable<Progress> {
 		if (rewards == null) {
 			return other.rewards == null;
 		} else if (!rewards.equals(other.rewards)) {
+			return false;
+		}
+		if (failedRewards == null) {
+			return other.failedRewards == null;
+		} else if (!failedRewards.equals(other.failedRewards)) {
 			return false;
 		}
 		if (metadata == null) {
