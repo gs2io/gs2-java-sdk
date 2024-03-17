@@ -34,7 +34,9 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 	private String rateName;
 	private String name;
 	private Integer count;
+	private Integer skipSeconds;
 	private List<Config> config;
+	private Long acquirableAt;
 	private Long exchangedAt;
 	private Long revision;
 	public String getAwaitId() {
@@ -87,6 +89,16 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 		this.count = count;
 		return this;
 	}
+	public Integer getSkipSeconds() {
+		return skipSeconds;
+	}
+	public void setSkipSeconds(Integer skipSeconds) {
+		this.skipSeconds = skipSeconds;
+	}
+	public Await withSkipSeconds(Integer skipSeconds) {
+		this.skipSeconds = skipSeconds;
+		return this;
+	}
 	public List<Config> getConfig() {
 		return config;
 	}
@@ -95,6 +107,16 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 	}
 	public Await withConfig(List<Config> config) {
 		this.config = config;
+		return this;
+	}
+	public Long getAcquirableAt() {
+		return acquirableAt;
+	}
+	public void setAcquirableAt(Long acquirableAt) {
+		this.acquirableAt = acquirableAt;
+	}
+	public Await withAcquirableAt(Long acquirableAt) {
+		this.acquirableAt = acquirableAt;
 		return this;
 	}
 	public Long getExchangedAt() {
@@ -128,12 +150,14 @@ public class Await implements IModel, Serializable, Comparable<Await> {
             .withRateName(data.get("rateName") == null || data.get("rateName").isNull() ? null : data.get("rateName").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withCount(data.get("count") == null || data.get("count").isNull() ? null : data.get("count").intValue())
+            .withSkipSeconds(data.get("skipSeconds") == null || data.get("skipSeconds").isNull() ? null : data.get("skipSeconds").intValue())
             .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Config.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withAcquirableAt(data.get("acquirableAt") == null || data.get("acquirableAt").isNull() ? null : data.get("acquirableAt").longValue())
             .withExchangedAt(data.get("exchangedAt") == null || data.get("exchangedAt").isNull() ? null : data.get("exchangedAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
@@ -146,12 +170,14 @@ public class Await implements IModel, Serializable, Comparable<Await> {
                 put("rateName", getRateName());
                 put("name", getName());
                 put("count", getCount());
+                put("skipSeconds", getSkipSeconds());
                 put("config", getConfig() == null ? new ArrayList<Config>() :
                     getConfig().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("acquirableAt", getAcquirableAt());
                 put("exchangedAt", getExchangedAt());
                 put("revision", getRevision());
             }}
@@ -172,7 +198,9 @@ public class Await implements IModel, Serializable, Comparable<Await> {
         result = prime * result + ((this.rateName == null) ? 0 : this.rateName.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.count == null) ? 0 : this.count.hashCode());
+        result = prime * result + ((this.skipSeconds == null) ? 0 : this.skipSeconds.hashCode());
         result = prime * result + ((this.config == null) ? 0 : this.config.hashCode());
+        result = prime * result + ((this.acquirableAt == null) ? 0 : this.acquirableAt.hashCode());
         result = prime * result + ((this.exchangedAt == null) ? 0 : this.exchangedAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
@@ -212,9 +240,19 @@ public class Await implements IModel, Serializable, Comparable<Await> {
 		} else if (!count.equals(other.count)) {
 			return false;
 		}
+		if (skipSeconds == null) {
+			return other.skipSeconds == null;
+		} else if (!skipSeconds.equals(other.skipSeconds)) {
+			return false;
+		}
 		if (config == null) {
 			return other.config == null;
 		} else if (!config.equals(other.config)) {
+			return false;
+		}
+		if (acquirableAt == null) {
+			return other.acquirableAt == null;
+		} else if (!acquirableAt.equals(other.acquirableAt)) {
 			return false;
 		}
 		if (exchangedAt == null) {

@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.exchange.model.Config;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -32,7 +31,9 @@ public class SkipByUserIdRequest extends Gs2BasicRequest<SkipByUserIdRequest> {
     private String namespaceName;
     private String userId;
     private String awaitName;
-    private List<Config> config;
+    private String skipType;
+    private Integer minutes;
+    private Float rate;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -65,14 +66,34 @@ public class SkipByUserIdRequest extends Gs2BasicRequest<SkipByUserIdRequest> {
 		this.awaitName = awaitName;
 		return this;
 	}
-	public List<Config> getConfig() {
-		return config;
+	public String getSkipType() {
+		return skipType;
 	}
-	public void setConfig(List<Config> config) {
-		this.config = config;
+	public void setSkipType(String skipType) {
+		this.skipType = skipType;
 	}
-	public SkipByUserIdRequest withConfig(List<Config> config) {
-		this.config = config;
+	public SkipByUserIdRequest withSkipType(String skipType) {
+		this.skipType = skipType;
+		return this;
+	}
+	public Integer getMinutes() {
+		return minutes;
+	}
+	public void setMinutes(Integer minutes) {
+		this.minutes = minutes;
+	}
+	public SkipByUserIdRequest withMinutes(Integer minutes) {
+		this.minutes = minutes;
+		return this;
+	}
+	public Float getRate() {
+		return rate;
+	}
+	public void setRate(Float rate) {
+		this.rate = rate;
+	}
+	public SkipByUserIdRequest withRate(Float rate) {
+		this.rate = rate;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -107,12 +128,9 @@ public class SkipByUserIdRequest extends Gs2BasicRequest<SkipByUserIdRequest> {
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withAwaitName(data.get("awaitName") == null || data.get("awaitName").isNull() ? null : data.get("awaitName").asText())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
-                    //noinspection Convert2MethodRef
-                    return Config.fromJson(item);
-                }
-            ).collect(Collectors.toList()))
+            .withSkipType(data.get("skipType") == null || data.get("skipType").isNull() ? null : data.get("skipType").asText())
+            .withMinutes(data.get("minutes") == null || data.get("minutes").isNull() ? null : data.get("minutes").intValue())
+            .withRate(data.get("rate") == null || data.get("rate").isNull() ? null : data.get("rate").floatValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -122,12 +140,9 @@ public class SkipByUserIdRequest extends Gs2BasicRequest<SkipByUserIdRequest> {
                 put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
                 put("awaitName", getAwaitName());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
-                    getConfig().stream().map(item -> {
-                        //noinspection Convert2MethodRef
-                        return item.toJson();
-                    }
-                ).collect(Collectors.toList()));
+                put("skipType", getSkipType());
+                put("minutes", getMinutes());
+                put("rate", getRate());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

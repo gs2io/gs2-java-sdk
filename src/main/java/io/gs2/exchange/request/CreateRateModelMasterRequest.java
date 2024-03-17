@@ -24,8 +24,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.exchange.model.ConsumeAction;
 import io.gs2.exchange.model.AcquireAction;
+import io.gs2.exchange.model.ConsumeAction;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -36,8 +36,6 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
     private String metadata;
     private String timingType;
     private Integer lockTime;
-    private Boolean enableSkip;
-    private List<ConsumeAction> skipConsumeActions;
     private List<AcquireAction> acquireActions;
     private List<ConsumeAction> consumeActions;
 	public String getNamespaceName() {
@@ -100,26 +98,6 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
 		this.lockTime = lockTime;
 		return this;
 	}
-	public Boolean getEnableSkip() {
-		return enableSkip;
-	}
-	public void setEnableSkip(Boolean enableSkip) {
-		this.enableSkip = enableSkip;
-	}
-	public CreateRateModelMasterRequest withEnableSkip(Boolean enableSkip) {
-		this.enableSkip = enableSkip;
-		return this;
-	}
-	public List<ConsumeAction> getSkipConsumeActions() {
-		return skipConsumeActions;
-	}
-	public void setSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
-		this.skipConsumeActions = skipConsumeActions;
-	}
-	public CreateRateModelMasterRequest withSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
-		this.skipConsumeActions = skipConsumeActions;
-		return this;
-	}
 	public List<AcquireAction> getAcquireActions() {
 		return acquireActions;
 	}
@@ -152,13 +130,6 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withTimingType(data.get("timingType") == null || data.get("timingType").isNull() ? null : data.get("timingType").asText())
             .withLockTime(data.get("lockTime") == null || data.get("lockTime").isNull() ? null : data.get("lockTime").intValue())
-            .withEnableSkip(data.get("enableSkip") == null || data.get("enableSkip").isNull() ? null : data.get("enableSkip").booleanValue())
-            .withSkipConsumeActions(data.get("skipConsumeActions") == null || data.get("skipConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("skipConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
-                    //noinspection Convert2MethodRef
-                    return ConsumeAction.fromJson(item);
-                }
-            ).collect(Collectors.toList()))
             .withAcquireActions(data.get("acquireActions") == null || data.get("acquireActions").isNull() ? new ArrayList<AcquireAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("acquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -182,13 +153,6 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
                 put("metadata", getMetadata());
                 put("timingType", getTimingType());
                 put("lockTime", getLockTime());
-                put("enableSkip", getEnableSkip());
-                put("skipConsumeActions", getSkipConsumeActions() == null ? new ArrayList<ConsumeAction>() :
-                    getSkipConsumeActions().stream().map(item -> {
-                        //noinspection Convert2MethodRef
-                        return item.toJson();
-                    }
-                ).collect(Collectors.toList()));
                 put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef

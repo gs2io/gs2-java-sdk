@@ -30,7 +30,7 @@ import io.gs2.exchange.model.Await;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SkipByUserIdResult implements IResult, Serializable {
+public class SkipByStampSheetResult implements IResult, Serializable {
     private Await item;
 
 	public Await getItem() {
@@ -41,16 +41,16 @@ public class SkipByUserIdResult implements IResult, Serializable {
 		this.item = item;
 	}
 
-	public SkipByUserIdResult withItem(Await item) {
+	public SkipByStampSheetResult withItem(Await item) {
 		this.item = item;
 		return this;
 	}
 
-    public static SkipByUserIdResult fromJson(JsonNode data) {
+    public static SkipByStampSheetResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SkipByUserIdResult()
+        return new SkipByStampSheetResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Await.fromJson(data.get("item")));
     }
 

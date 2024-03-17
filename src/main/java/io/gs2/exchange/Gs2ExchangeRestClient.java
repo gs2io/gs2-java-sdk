@@ -1429,13 +1429,6 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("metadata", request.getMetadata());
                     put("timingType", request.getTimingType());
                     put("lockTime", request.getLockTime());
-                    put("enableSkip", request.getEnableSkip());
-                    put("skipConsumeActions", request.getSkipConsumeActions() == null ? new ArrayList<ConsumeAction>() :
-                        request.getSkipConsumeActions().stream().map(item -> {
-                            //noinspection Convert2MethodRef
-                            return item.toJson();
-                        }
-                    ).collect(Collectors.toList()));
                     put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -1614,13 +1607,6 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("metadata", request.getMetadata());
                     put("timingType", request.getTimingType());
                     put("lockTime", request.getLockTime());
-                    put("enableSkip", request.getEnableSkip());
-                    put("skipConsumeActions", request.getSkipConsumeActions() == null ? new ArrayList<ConsumeAction>() :
-                        request.getSkipConsumeActions().stream().map(item -> {
-                            //noinspection Convert2MethodRef
-                            return item.toJson();
-                        }
-                    ).collect(Collectors.toList()));
                     put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -4123,99 +4109,6 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
-    class SkipTask extends Gs2RestSessionTask<SkipResult> {
-        private SkipRequest request;
-
-        public SkipTask(
-            SkipRequest request,
-            AsyncAction<AsyncResult<SkipResult>> userCallback
-        ) {
-            super(
-                    (Gs2RestSession) session,
-                    userCallback
-            );
-            this.request = request;
-        }
-
-        @Override
-        public SkipResult parse(JsonNode data) {
-            return SkipResult.fromJson(data);
-        }
-
-        @Override
-        protected void executeImpl() {
-
-            String url = Gs2RestSession.EndpointHost
-                .replace("{service}", "exchange")
-                .replace("{region}", session.getRegion().getName())
-                + "/{namespaceName}/user/me/exchange/await/{awaitName}/skip";
-
-            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
-            url = url.replace("{awaitName}", this.request.getAwaitName() == null || this.request.getAwaitName().length() == 0 ? "null" : String.valueOf(this.request.getAwaitName()));
-
-            builder.setBody(new ObjectMapper().valueToTree(
-                new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
-                        request.getConfig().stream().map(item -> {
-                            //noinspection Convert2MethodRef
-                            return item.toJson();
-                        }
-                    ).collect(Collectors.toList()));
-                    put("contextStack", request.getContextStack());
-                }}
-            ).toString().getBytes());
-
-            builder
-                .setMethod(HttpTask.Method.POST)
-                .setUrl(url)
-                .setHeader("Content-Type", "application/json")
-                .setHttpResponseHandler(this);
-
-            if (this.request.getRequestId() != null) {
-                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getAccessToken() != null) {
-                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
-
-            builder
-                .build()
-                .send();
-        }
-    }
-
-    public void skipAsync(
-            SkipRequest request,
-            AsyncAction<AsyncResult<SkipResult>> callback
-    ) {
-        SkipTask task = new SkipTask(request, callback);
-        session.execute(task);
-    }
-
-    public SkipResult skip(
-            SkipRequest request
-    ) {
-        final AsyncResult<SkipResult>[] resultAsyncResult = new AsyncResult[]{null};
-        skipAsync(
-                request,
-                result -> resultAsyncResult[0] = result
-        );
-        while (resultAsyncResult[0] == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
-        if(resultAsyncResult[0].getError() != null) {
-            throw resultAsyncResult[0].getError();
-        }
-
-        return resultAsyncResult[0].getResult();
-    }
-
     class SkipByUserIdTask extends Gs2RestSessionTask<SkipByUserIdResult> {
         private SkipByUserIdRequest request;
 
@@ -4249,12 +4142,9 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
-                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
-                        request.getConfig().stream().map(item -> {
-                            //noinspection Convert2MethodRef
-                            return item.toJson();
-                        }
-                    ).collect(Collectors.toList()));
+                    put("skipType", request.getSkipType());
+                    put("minutes", request.getMinutes());
+                    put("rate", request.getRate());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -4549,6 +4439,86 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
     ) {
         final AsyncResult<CreateAwaitByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         createAwaitByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SkipByStampSheetTask extends Gs2RestSessionTask<SkipByStampSheetResult> {
+        private SkipByStampSheetRequest request;
+
+        public SkipByStampSheetTask(
+            SkipByStampSheetRequest request,
+            AsyncAction<AsyncResult<SkipByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SkipByStampSheetResult parse(JsonNode data) {
+            return SkipByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "exchange")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/await/skip";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void skipByStampSheetAsync(
+            SkipByStampSheetRequest request,
+            AsyncAction<AsyncResult<SkipByStampSheetResult>> callback
+    ) {
+        SkipByStampSheetTask task = new SkipByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public SkipByStampSheetResult skipByStampSheet(
+            SkipByStampSheetRequest request
+    ) {
+        final AsyncResult<SkipByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        skipByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

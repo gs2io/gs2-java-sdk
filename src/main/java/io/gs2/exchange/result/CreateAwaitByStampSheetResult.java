@@ -32,7 +32,6 @@ import io.gs2.exchange.model.Await;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreateAwaitByStampSheetResult implements IResult, Serializable {
     private Await item;
-    private Long unlockAt;
 
 	public Await getItem() {
 		return item;
@@ -47,33 +46,18 @@ public class CreateAwaitByStampSheetResult implements IResult, Serializable {
 		return this;
 	}
 
-	public Long getUnlockAt() {
-		return unlockAt;
-	}
-
-	public void setUnlockAt(Long unlockAt) {
-		this.unlockAt = unlockAt;
-	}
-
-	public CreateAwaitByStampSheetResult withUnlockAt(Long unlockAt) {
-		this.unlockAt = unlockAt;
-		return this;
-	}
-
     public static CreateAwaitByStampSheetResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new CreateAwaitByStampSheetResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Await.fromJson(data.get("item")))
-            .withUnlockAt(data.get("unlockAt") == null || data.get("unlockAt").isNull() ? null : data.get("unlockAt").longValue());
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Await.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
-                put("unlockAt", getUnlockAt());
             }}
         );
     }
