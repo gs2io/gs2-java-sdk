@@ -2163,6 +2163,181 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
+    class EarlyCompleteTask extends Gs2RestSessionTask<EarlyCompleteResult> {
+        private EarlyCompleteRequest request;
+
+        public EarlyCompleteTask(
+            EarlyCompleteRequest request,
+            AsyncAction<AsyncResult<EarlyCompleteResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public EarlyCompleteResult parse(JsonNode data) {
+            return EarlyCompleteResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/gathering/{gatheringName}/user/me/early";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void earlyCompleteAsync(
+            EarlyCompleteRequest request,
+            AsyncAction<AsyncResult<EarlyCompleteResult>> callback
+    ) {
+        EarlyCompleteTask task = new EarlyCompleteTask(request, callback);
+        session.execute(task);
+    }
+
+    public EarlyCompleteResult earlyComplete(
+            EarlyCompleteRequest request
+    ) {
+        final AsyncResult<EarlyCompleteResult>[] resultAsyncResult = new AsyncResult[]{null};
+        earlyCompleteAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class EarlyCompleteByUserIdTask extends Gs2RestSessionTask<EarlyCompleteByUserIdResult> {
+        private EarlyCompleteByUserIdRequest request;
+
+        public EarlyCompleteByUserIdTask(
+            EarlyCompleteByUserIdRequest request,
+            AsyncAction<AsyncResult<EarlyCompleteByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public EarlyCompleteByUserIdResult parse(JsonNode data) {
+            return EarlyCompleteByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/gathering/{gatheringName}/user/{userId}/early";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void earlyCompleteByUserIdAsync(
+            EarlyCompleteByUserIdRequest request,
+            AsyncAction<AsyncResult<EarlyCompleteByUserIdResult>> callback
+    ) {
+        EarlyCompleteByUserIdTask task = new EarlyCompleteByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public EarlyCompleteByUserIdResult earlyCompleteByUserId(
+            EarlyCompleteByUserIdRequest request
+    ) {
+        final AsyncResult<EarlyCompleteByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        earlyCompleteByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteGatheringTask extends Gs2RestSessionTask<DeleteGatheringResult> {
         private DeleteGatheringRequest request;
 
