@@ -32,20 +32,20 @@ import io.gs2.inventory.model.Inventory;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GetReferenceOfByUserIdResult implements IResult, Serializable {
-    private List<String> item;
+    private String item;
     private ItemSet itemSet;
     private ItemModel itemModel;
     private Inventory inventory;
 
-	public List<String> getItem() {
+	public String getItem() {
 		return item;
 	}
 
-	public void setItem(List<String> item) {
+	public void setItem(String item) {
 		this.item = item;
 	}
 
-	public GetReferenceOfByUserIdResult withItem(List<String> item) {
+	public GetReferenceOfByUserIdResult withItem(String item) {
 		this.item = item;
 		return this;
 	}
@@ -94,11 +94,7 @@ public class GetReferenceOfByUserIdResult implements IResult, Serializable {
             return null;
         }
         return new GetReferenceOfByUserIdResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? new ArrayList<String>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("item").elements(), Spliterator.NONNULL), false).map(item -> {
-                    return item.asText();
-                }
-            ).collect(Collectors.toList()))
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : data.get("item").asText())
             .withItemSet(data.get("itemSet") == null || data.get("itemSet").isNull() ? null : ItemSet.fromJson(data.get("itemSet")))
             .withItemModel(data.get("itemModel") == null || data.get("itemModel").isNull() ? null : ItemModel.fromJson(data.get("itemModel")))
             .withInventory(data.get("inventory") == null || data.get("inventory").isNull() ? null : Inventory.fromJson(data.get("inventory")));
@@ -107,11 +103,7 @@ public class GetReferenceOfByUserIdResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() == null ? new ArrayList<String>() :
-                    getItem().stream().map(item -> {
-                        return item;
-                    }
-                ).collect(Collectors.toList()));
+                put("item", getItem());
                 put("itemSet", getItemSet() != null ? getItemSet().toJson() : null);
                 put("itemModel", getItemModel() != null ? getItemModel().toJson() : null);
                 put("inventory", getInventory() != null ? getInventory().toJson() : null);
