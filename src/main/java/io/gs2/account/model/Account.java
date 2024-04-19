@@ -35,6 +35,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 	private Integer timeOffset;
 	private List<BanStatus> banStatuses;
 	private Boolean banned;
+	private Long lastAuthenticatedAt;
 	private Long createdAt;
 	private Long revision;
 	public String getAccountId() {
@@ -97,6 +98,16 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		this.banned = banned;
 		return this;
 	}
+	public Long getLastAuthenticatedAt() {
+		return lastAuthenticatedAt;
+	}
+	public void setLastAuthenticatedAt(Long lastAuthenticatedAt) {
+		this.lastAuthenticatedAt = lastAuthenticatedAt;
+	}
+	public Account withLastAuthenticatedAt(Long lastAuthenticatedAt) {
+		this.lastAuthenticatedAt = lastAuthenticatedAt;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -134,6 +145,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
                 }
             ).collect(Collectors.toList()))
             .withBanned(data.get("banned") == null || data.get("banned").isNull() ? null : data.get("banned").booleanValue())
+            .withLastAuthenticatedAt(data.get("lastAuthenticatedAt") == null || data.get("lastAuthenticatedAt").isNull() ? null : data.get("lastAuthenticatedAt").longValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
@@ -152,6 +164,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
                     }
                 ).collect(Collectors.toList()));
                 put("banned", getBanned());
+                put("lastAuthenticatedAt", getLastAuthenticatedAt());
                 put("createdAt", getCreatedAt());
                 put("revision", getRevision());
             }}
@@ -173,6 +186,7 @@ public class Account implements IModel, Serializable, Comparable<Account> {
         result = prime * result + ((this.timeOffset == null) ? 0 : this.timeOffset.hashCode());
         result = prime * result + ((this.banStatuses == null) ? 0 : this.banStatuses.hashCode());
         result = prime * result + ((this.banned == null) ? 0 : this.banned.hashCode());
+        result = prime * result + ((this.lastAuthenticatedAt == null) ? 0 : this.lastAuthenticatedAt.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
@@ -215,6 +229,11 @@ public class Account implements IModel, Serializable, Comparable<Account> {
 		if (banned == null) {
 			return other.banned == null;
 		} else if (!banned.equals(other.banned)) {
+			return false;
+		}
+		if (lastAuthenticatedAt == null) {
+			return other.lastAuthenticatedAt == null;
+		} else if (!lastAuthenticatedAt.equals(other.lastAuthenticatedAt)) {
 			return false;
 		}
 		if (createdAt == null) {
