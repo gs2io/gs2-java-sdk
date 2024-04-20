@@ -31,10 +31,10 @@ import io.gs2.mission.model.Complete;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DecreaseByStampTaskResult implements IResult, Serializable {
+public class SetCounterByUserIdResult implements IResult, Serializable {
     private Counter item;
+    private Counter old;
     private List<Complete> changedCompletes;
-    private String newContextStack;
 
 	public Counter getItem() {
 		return item;
@@ -44,8 +44,21 @@ public class DecreaseByStampTaskResult implements IResult, Serializable {
 		this.item = item;
 	}
 
-	public DecreaseByStampTaskResult withItem(Counter item) {
+	public SetCounterByUserIdResult withItem(Counter item) {
 		this.item = item;
+		return this;
+	}
+
+	public Counter getOld() {
+		return old;
+	}
+
+	public void setOld(Counter old) {
+		this.old = old;
+	}
+
+	public SetCounterByUserIdResult withOld(Counter old) {
+		this.old = old;
 		return this;
 	}
 
@@ -57,50 +70,37 @@ public class DecreaseByStampTaskResult implements IResult, Serializable {
 		this.changedCompletes = changedCompletes;
 	}
 
-	public DecreaseByStampTaskResult withChangedCompletes(List<Complete> changedCompletes) {
+	public SetCounterByUserIdResult withChangedCompletes(List<Complete> changedCompletes) {
 		this.changedCompletes = changedCompletes;
 		return this;
 	}
 
-	public String getNewContextStack() {
-		return newContextStack;
-	}
-
-	public void setNewContextStack(String newContextStack) {
-		this.newContextStack = newContextStack;
-	}
-
-	public DecreaseByStampTaskResult withNewContextStack(String newContextStack) {
-		this.newContextStack = newContextStack;
-		return this;
-	}
-
-    public static DecreaseByStampTaskResult fromJson(JsonNode data) {
+    public static SetCounterByUserIdResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new DecreaseByStampTaskResult()
+        return new SetCounterByUserIdResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Counter.fromJson(data.get("item")))
+            .withOld(data.get("old") == null || data.get("old").isNull() ? null : Counter.fromJson(data.get("old")))
             .withChangedCompletes(data.get("changedCompletes") == null || data.get("changedCompletes").isNull() ? new ArrayList<Complete>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("changedCompletes").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
                     return Complete.fromJson(item);
                 }
-            ).collect(Collectors.toList()))
-            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("old", getOld() != null ? getOld().toJson() : null);
                 put("changedCompletes", getChangedCompletes() == null ? new ArrayList<Complete>() :
                     getChangedCompletes().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("newContextStack", getNewContextStack());
             }}
         );
     }

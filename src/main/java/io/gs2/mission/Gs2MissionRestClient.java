@@ -3229,6 +3229,100 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class SetCounterByUserIdTask extends Gs2RestSessionTask<SetCounterByUserIdResult> {
+        private SetCounterByUserIdRequest request;
+
+        public SetCounterByUserIdTask(
+            SetCounterByUserIdRequest request,
+            AsyncAction<AsyncResult<SetCounterByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetCounterByUserIdResult parse(JsonNode data) {
+            return SetCounterByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/counter/{counterName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("values", request.getValues() == null ? new ArrayList<ScopedValue>() :
+                        request.getValues().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setCounterByUserIdAsync(
+            SetCounterByUserIdRequest request,
+            AsyncAction<AsyncResult<SetCounterByUserIdResult>> callback
+    ) {
+        SetCounterByUserIdTask task = new SetCounterByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetCounterByUserIdResult setCounterByUserId(
+            SetCounterByUserIdRequest request
+    ) {
+        final AsyncResult<SetCounterByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setCounterByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DecreaseCounterByUserIdTask extends Gs2RestSessionTask<DecreaseCounterByUserIdResult> {
         private DecreaseCounterByUserIdRequest request;
 
@@ -3639,6 +3733,86 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
     ) {
         final AsyncResult<IncreaseByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         increaseByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SetByStampSheetTask extends Gs2RestSessionTask<SetByStampSheetResult> {
+        private SetByStampSheetRequest request;
+
+        public SetByStampSheetTask(
+            SetByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetByStampSheetResult parse(JsonNode data) {
+            return SetByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/set";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setByStampSheetAsync(
+            SetByStampSheetRequest request,
+            AsyncAction<AsyncResult<SetByStampSheetResult>> callback
+    ) {
+        SetByStampSheetTask task = new SetByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetByStampSheetResult setByStampSheet(
+            SetByStampSheetRequest request
+    ) {
+        final AsyncResult<SetByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setByStampSheetAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
