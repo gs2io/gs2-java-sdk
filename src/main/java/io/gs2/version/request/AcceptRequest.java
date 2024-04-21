@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.version.model.Version;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -31,6 +32,7 @@ public class AcceptRequest extends Gs2BasicRequest<AcceptRequest> {
     private String namespaceName;
     private String versionName;
     private String accessToken;
+    private Version version;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -62,6 +64,16 @@ public class AcceptRequest extends Gs2BasicRequest<AcceptRequest> {
 		this.accessToken = accessToken;
 		return this;
 	}
+	public Version getVersion() {
+		return version;
+	}
+	public void setVersion(Version version) {
+		this.version = version;
+	}
+	public AcceptRequest withVersion(Version version) {
+		this.version = version;
+		return this;
+	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -83,7 +95,8 @@ public class AcceptRequest extends Gs2BasicRequest<AcceptRequest> {
         return new AcceptRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withVersionName(data.get("versionName") == null || data.get("versionName").isNull() ? null : data.get("versionName").asText())
-            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText());
+            .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
+            .withVersion(data.get("version") == null || data.get("version").isNull() ? null : Version.fromJson(data.get("version")));
     }
 
     public JsonNode toJson() {
@@ -92,6 +105,7 @@ public class AcceptRequest extends Gs2BasicRequest<AcceptRequest> {
                 put("namespaceName", getNamespaceName());
                 put("versionName", getVersionName());
                 put("accessToken", getAccessToken());
+                put("version", getVersion() != null ? getVersion().toJson() : null);
             }}
         );
     }

@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.version.model.Version;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -31,6 +32,7 @@ public class AcceptByUserIdRequest extends Gs2BasicRequest<AcceptByUserIdRequest
     private String namespaceName;
     private String versionName;
     private String userId;
+    private Version version;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -61,6 +63,16 @@ public class AcceptByUserIdRequest extends Gs2BasicRequest<AcceptByUserIdRequest
 	}
 	public AcceptByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public Version getVersion() {
+		return version;
+	}
+	public void setVersion(Version version) {
+		this.version = version;
+	}
+	public AcceptByUserIdRequest withVersion(Version version) {
+		this.version = version;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -95,6 +107,7 @@ public class AcceptByUserIdRequest extends Gs2BasicRequest<AcceptByUserIdRequest
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withVersionName(data.get("versionName") == null || data.get("versionName").isNull() ? null : data.get("versionName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withVersion(data.get("version") == null || data.get("version").isNull() ? null : Version.fromJson(data.get("version")))
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -104,6 +117,7 @@ public class AcceptByUserIdRequest extends Gs2BasicRequest<AcceptByUserIdRequest
                 put("namespaceName", getNamespaceName());
                 put("versionName", getVersionName());
                 put("userId", getUserId());
+                put("version", getVersion() != null ? getVersion().toJson() : null);
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

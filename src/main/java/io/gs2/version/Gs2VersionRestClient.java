@@ -1952,6 +1952,7 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("versionName", request.getVersionName());
+                    put("version", request.getVersion() != null ? request.getVersion().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2040,6 +2041,7 @@ import io.gs2.version.model.*;public class Gs2VersionRestClient extends Abstract
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("versionName", request.getVersionName());
+                    put("version", request.getVersion() != null ? request.getVersion().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
