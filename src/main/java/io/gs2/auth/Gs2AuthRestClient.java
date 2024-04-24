@@ -205,6 +205,91 @@ import io.gs2.auth.model.*;public class Gs2AuthRestClient extends AbstractGs2Cli
         return resultAsyncResult[0].getResult();
     }
 
+    class FederationTask extends Gs2RestSessionTask<FederationResult> {
+        private FederationRequest request;
+
+        public FederationTask(
+            FederationRequest request,
+            AsyncAction<AsyncResult<FederationResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public FederationResult parse(JsonNode data) {
+            return FederationResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "auth")
+                .replace("{region}", session.getRegion().getName())
+                + "/federation";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("originalUserId", request.getOriginalUserId());
+                    put("userId", request.getUserId());
+                    put("policyDocument", request.getPolicyDocument());
+                    put("timeOffset", request.getTimeOffset());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void federationAsync(
+            FederationRequest request,
+            AsyncAction<AsyncResult<FederationResult>> callback
+    ) {
+        FederationTask task = new FederationTask(request, callback);
+        session.execute(task);
+    }
+
+    public FederationResult federation(
+            FederationRequest request
+    ) {
+        final AsyncResult<FederationResult>[] resultAsyncResult = new AsyncResult[]{null};
+        federationAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class IssueTimeOffsetTokenByUserIdTask extends Gs2RestSessionTask<IssueTimeOffsetTokenByUserIdResult> {
         private IssueTimeOffsetTokenByUserIdRequest request;
 

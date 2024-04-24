@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class AccessToken implements IModel, Serializable {
 	private String token;
 	private String userId;
+	private String federationFromUserId;
 	private Long expire;
 	private Integer timeOffset;
 	public String getToken() {
@@ -51,6 +52,16 @@ public class AccessToken implements IModel, Serializable {
 	}
 	public AccessToken withUserId(String userId) {
 		this.userId = userId;
+		return this;
+	}
+	public String getFederationFromUserId() {
+		return federationFromUserId;
+	}
+	public void setFederationFromUserId(String federationFromUserId) {
+		this.federationFromUserId = federationFromUserId;
+	}
+	public AccessToken withFederationFromUserId(String federationFromUserId) {
+		this.federationFromUserId = federationFromUserId;
 		return this;
 	}
 	public Long getExpire() {
@@ -81,6 +92,7 @@ public class AccessToken implements IModel, Serializable {
         return new AccessToken()
             .withToken(data.get("token") == null || data.get("token").isNull() ? null : data.get("token").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
+            .withFederationFromUserId(data.get("federationFromUserId") == null || data.get("federationFromUserId").isNull() ? null : data.get("federationFromUserId").asText())
             .withExpire(data.get("expire") == null || data.get("expire").isNull() ? null : data.get("expire").longValue())
             .withTimeOffset(data.get("timeOffset") == null || data.get("timeOffset").isNull() ? null : data.get("timeOffset").intValue());
     }
@@ -90,6 +102,7 @@ public class AccessToken implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("token", getToken());
                 put("userId", getUserId());
+                put("federationFromUserId", getFederationFromUserId());
                 put("expire", getExpire());
                 put("timeOffset", getTimeOffset());
             }}
@@ -102,6 +115,7 @@ public class AccessToken implements IModel, Serializable {
         int result = 1;
         result = prime * result + ((this.token == null) ? 0 : this.token.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
+        result = prime * result + ((this.federationFromUserId == null) ? 0 : this.federationFromUserId.hashCode());
         result = prime * result + ((this.expire == null) ? 0 : this.expire.hashCode());
         result = prime * result + ((this.timeOffset == null) ? 0 : this.timeOffset.hashCode());
 		return result;
@@ -124,6 +138,11 @@ public class AccessToken implements IModel, Serializable {
 		if (userId == null) {
 			return other.userId == null;
 		} else if (!userId.equals(other.userId)) {
+			return false;
+		}
+		if (federationFromUserId == null) {
+			return other.federationFromUserId == null;
+		} else if (!federationFromUserId.equals(other.federationFromUserId)) {
 			return false;
 		}
 		if (expire == null) {
