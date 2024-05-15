@@ -4,12 +4,14 @@ public class RequestError {
 
 	String component;
 	String message;
+	String code;
 
 	public RequestError() {}
 	
-	public RequestError(String component, String message) {
+	public RequestError(String component, String message, String code) {
 		this.component = component;
 		this.message = message;
+		this.code = code;
 	}
 	
 	public String getComponent() {
@@ -23,5 +25,11 @@ public class RequestError {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

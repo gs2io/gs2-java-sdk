@@ -38,10 +38,11 @@ abstract public class Gs2Exception extends RuntimeException {
 				JSONObject error = errors.getJSONObject(i);
 				e.setComponent(error.getString("component"));
 				e.setMessage(error.getString("message"));
+				e.setCode(error.getString("code"));
 				this.errors.add(e);
 			}
 		} catch (JSONException e) {
-			this.errors.add(new RequestError("unknown", getMessage()));
+			this.errors.add(new RequestError("unknown", getMessage(), null));
 		}
 	}
 	
