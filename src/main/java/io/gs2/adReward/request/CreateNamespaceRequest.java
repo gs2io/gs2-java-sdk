@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.adReward.model.AdMob;
 import io.gs2.adReward.model.UnityAd;
+import io.gs2.adReward.model.AppLovinMax;
 import io.gs2.adReward.model.NotificationSetting;
 import io.gs2.adReward.model.LogSetting;
 
@@ -35,6 +36,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String name;
     private AdMob admob;
     private UnityAd unityAd;
+    private List<AppLovinMax> appLovinMaxes;
     private String description;
     private NotificationSetting changePointNotification;
     private LogSetting logSetting;
@@ -66,6 +68,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withUnityAd(UnityAd unityAd) {
 		this.unityAd = unityAd;
+		return this;
+	}
+	public List<AppLovinMax> getAppLovinMaxes() {
+		return appLovinMaxes;
+	}
+	public void setAppLovinMaxes(List<AppLovinMax> appLovinMaxes) {
+		this.appLovinMaxes = appLovinMaxes;
+	}
+	public CreateNamespaceRequest withAppLovinMaxes(List<AppLovinMax> appLovinMaxes) {
+		this.appLovinMaxes = appLovinMaxes;
 		return this;
 	}
 	public String getDescription() {
@@ -107,6 +119,12 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withAdmob(data.get("admob") == null || data.get("admob").isNull() ? null : AdMob.fromJson(data.get("admob")))
             .withUnityAd(data.get("unityAd") == null || data.get("unityAd").isNull() ? null : UnityAd.fromJson(data.get("unityAd")))
+            .withAppLovinMaxes(data.get("appLovinMaxes") == null || data.get("appLovinMaxes").isNull() ? new ArrayList<AppLovinMax>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("appLovinMaxes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AppLovinMax.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withChangePointNotification(data.get("changePointNotification") == null || data.get("changePointNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changePointNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
@@ -118,6 +136,12 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("name", getName());
                 put("admob", getAdmob() != null ? getAdmob().toJson() : null);
                 put("unityAd", getUnityAd() != null ? getUnityAd().toJson() : null);
+                put("appLovinMaxes", getAppLovinMaxes() == null ? new ArrayList<AppLovinMax>() :
+                    getAppLovinMaxes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("description", getDescription());
                 put("changePointNotification", getChangePointNotification() != null ? getChangePointNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);

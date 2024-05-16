@@ -157,6 +157,12 @@ import io.gs2.adReward.model.*;public class Gs2AdRewardRestClient extends Abstra
                     put("name", request.getName());
                     put("admob", request.getAdmob() != null ? request.getAdmob().toJson() : null);
                     put("unityAd", request.getUnityAd() != null ? request.getUnityAd().toJson() : null);
+                    put("appLovinMaxes", request.getAppLovinMaxes() == null ? new ArrayList<AppLovinMax>() :
+                        request.getAppLovinMaxes().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("description", request.getDescription());
                     put("changePointNotification", request.getChangePointNotification() != null ? request.getChangePointNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
@@ -403,6 +409,12 @@ import io.gs2.adReward.model.*;public class Gs2AdRewardRestClient extends Abstra
                     put("description", request.getDescription());
                     put("admob", request.getAdmob() != null ? request.getAdmob().toJson() : null);
                     put("unityAd", request.getUnityAd() != null ? request.getUnityAd().toJson() : null);
+                    put("appLovinMaxes", request.getAppLovinMaxes() == null ? new ArrayList<AppLovinMax>() :
+                        request.getAppLovinMaxes().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("changePointNotification", request.getChangePointNotification() != null ? request.getChangePointNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());

@@ -34,6 +34,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String description;
 	private AdMob admob;
 	private UnityAd unityAd;
+	private List<AppLovinMax> appLovinMaxes;
 	private NotificationSetting changePointNotification;
 	private LogSetting logSetting;
 	private Long createdAt;
@@ -87,6 +88,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withUnityAd(UnityAd unityAd) {
 		this.unityAd = unityAd;
+		return this;
+	}
+	public List<AppLovinMax> getAppLovinMaxes() {
+		return appLovinMaxes;
+	}
+	public void setAppLovinMaxes(List<AppLovinMax> appLovinMaxes) {
+		this.appLovinMaxes = appLovinMaxes;
+	}
+	public Namespace withAppLovinMaxes(List<AppLovinMax> appLovinMaxes) {
+		this.appLovinMaxes = appLovinMaxes;
 		return this;
 	}
 	public NotificationSetting getChangePointNotification() {
@@ -150,6 +161,12 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withAdmob(data.get("admob") == null || data.get("admob").isNull() ? null : AdMob.fromJson(data.get("admob")))
             .withUnityAd(data.get("unityAd") == null || data.get("unityAd").isNull() ? null : UnityAd.fromJson(data.get("unityAd")))
+            .withAppLovinMaxes(data.get("appLovinMaxes") == null || data.get("appLovinMaxes").isNull() ? new ArrayList<AppLovinMax>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("appLovinMaxes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return AppLovinMax.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withChangePointNotification(data.get("changePointNotification") == null || data.get("changePointNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changePointNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
@@ -165,6 +182,12 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("description", getDescription());
                 put("admob", getAdmob() != null ? getAdmob().toJson() : null);
                 put("unityAd", getUnityAd() != null ? getUnityAd().toJson() : null);
+                put("appLovinMaxes", getAppLovinMaxes() == null ? new ArrayList<AppLovinMax>() :
+                    getAppLovinMaxes().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("changePointNotification", getChangePointNotification() != null ? getChangePointNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
@@ -188,6 +211,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.admob == null) ? 0 : this.admob.hashCode());
         result = prime * result + ((this.unityAd == null) ? 0 : this.unityAd.hashCode());
+        result = prime * result + ((this.appLovinMaxes == null) ? 0 : this.appLovinMaxes.hashCode());
         result = prime * result + ((this.changePointNotification == null) ? 0 : this.changePointNotification.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -228,6 +252,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (unityAd == null) {
 			return other.unityAd == null;
 		} else if (!unityAd.equals(other.unityAd)) {
+			return false;
+		}
+		if (appLovinMaxes == null) {
+			return other.appLovinMaxes == null;
+		} else if (!appLovinMaxes.equals(other.appLovinMaxes)) {
 			return false;
 		}
 		if (changePointNotification == null) {
