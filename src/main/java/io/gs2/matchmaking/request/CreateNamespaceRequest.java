@@ -34,6 +34,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String name;
     private String description;
     private Boolean enableRating;
+    private String enableDisconnectDetection;
+    private Integer disconnectDetectionTimeoutSeconds;
     private String createGatheringTriggerType;
     private String createGatheringTriggerRealtimeNamespaceId;
     private String createGatheringTriggerScriptId;
@@ -77,6 +79,26 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 	}
 	public CreateNamespaceRequest withEnableRating(Boolean enableRating) {
 		this.enableRating = enableRating;
+		return this;
+	}
+	public String getEnableDisconnectDetection() {
+		return enableDisconnectDetection;
+	}
+	public void setEnableDisconnectDetection(String enableDisconnectDetection) {
+		this.enableDisconnectDetection = enableDisconnectDetection;
+	}
+	public CreateNamespaceRequest withEnableDisconnectDetection(String enableDisconnectDetection) {
+		this.enableDisconnectDetection = enableDisconnectDetection;
+		return this;
+	}
+	public Integer getDisconnectDetectionTimeoutSeconds() {
+		return disconnectDetectionTimeoutSeconds;
+	}
+	public void setDisconnectDetectionTimeoutSeconds(Integer disconnectDetectionTimeoutSeconds) {
+		this.disconnectDetectionTimeoutSeconds = disconnectDetectionTimeoutSeconds;
+	}
+	public CreateNamespaceRequest withDisconnectDetectionTimeoutSeconds(Integer disconnectDetectionTimeoutSeconds) {
+		this.disconnectDetectionTimeoutSeconds = disconnectDetectionTimeoutSeconds;
 		return this;
 	}
 	public String getCreateGatheringTriggerType() {
@@ -238,6 +260,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withEnableRating(data.get("enableRating") == null || data.get("enableRating").isNull() ? null : data.get("enableRating").booleanValue())
+            .withEnableDisconnectDetection(data.get("enableDisconnectDetection") == null || data.get("enableDisconnectDetection").isNull() ? null : data.get("enableDisconnectDetection").asText())
+            .withDisconnectDetectionTimeoutSeconds(data.get("disconnectDetectionTimeoutSeconds") == null || data.get("disconnectDetectionTimeoutSeconds").isNull() ? null : data.get("disconnectDetectionTimeoutSeconds").intValue())
             .withCreateGatheringTriggerType(data.get("createGatheringTriggerType") == null || data.get("createGatheringTriggerType").isNull() ? null : data.get("createGatheringTriggerType").asText())
             .withCreateGatheringTriggerRealtimeNamespaceId(data.get("createGatheringTriggerRealtimeNamespaceId") == null || data.get("createGatheringTriggerRealtimeNamespaceId").isNull() ? null : data.get("createGatheringTriggerRealtimeNamespaceId").asText())
             .withCreateGatheringTriggerScriptId(data.get("createGatheringTriggerScriptId") == null || data.get("createGatheringTriggerScriptId").isNull() ? null : data.get("createGatheringTriggerScriptId").asText())
@@ -261,6 +285,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("name", getName());
                 put("description", getDescription());
                 put("enableRating", getEnableRating());
+                put("enableDisconnectDetection", getEnableDisconnectDetection());
+                put("disconnectDetectionTimeoutSeconds", getDisconnectDetectionTimeoutSeconds());
                 put("createGatheringTriggerType", getCreateGatheringTriggerType());
                 put("createGatheringTriggerRealtimeNamespaceId", getCreateGatheringTriggerRealtimeNamespaceId());
                 put("createGatheringTriggerScriptId", getCreateGatheringTriggerScriptId());

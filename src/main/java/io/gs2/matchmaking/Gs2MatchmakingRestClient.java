@@ -157,6 +157,8 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("enableRating", request.getEnableRating());
+                    put("enableDisconnectDetection", request.getEnableDisconnectDetection());
+                    put("disconnectDetectionTimeoutSeconds", request.getDisconnectDetectionTimeoutSeconds());
                     put("createGatheringTriggerType", request.getCreateGatheringTriggerType());
                     put("createGatheringTriggerRealtimeNamespaceId", request.getCreateGatheringTriggerRealtimeNamespaceId());
                     put("createGatheringTriggerScriptId", request.getCreateGatheringTriggerScriptId());
@@ -414,6 +416,8 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("enableRating", request.getEnableRating());
+                    put("enableDisconnectDetection", request.getEnableDisconnectDetection());
+                    put("disconnectDetectionTimeoutSeconds", request.getDisconnectDetectionTimeoutSeconds());
                     put("createGatheringTriggerType", request.getCreateGatheringTriggerType());
                     put("createGatheringTriggerRealtimeNamespaceId", request.getCreateGatheringTriggerRealtimeNamespaceId());
                     put("createGatheringTriggerScriptId", request.getCreateGatheringTriggerScriptId());
@@ -1891,6 +1895,181 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
     ) {
         final AsyncResult<DoMatchmakingByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         doMatchmakingByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class PingTask extends Gs2RestSessionTask<PingResult> {
+        private PingRequest request;
+
+        public PingTask(
+            PingRequest request,
+            AsyncAction<AsyncResult<PingResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PingResult parse(JsonNode data) {
+            return PingResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/gathering/{gatheringName}/ping";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void pingAsync(
+            PingRequest request,
+            AsyncAction<AsyncResult<PingResult>> callback
+    ) {
+        PingTask task = new PingTask(request, callback);
+        session.execute(task);
+    }
+
+    public PingResult ping(
+            PingRequest request
+    ) {
+        final AsyncResult<PingResult>[] resultAsyncResult = new AsyncResult[]{null};
+        pingAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class PingByUserIdTask extends Gs2RestSessionTask<PingByUserIdResult> {
+        private PingByUserIdRequest request;
+
+        public PingByUserIdTask(
+            PingByUserIdRequest request,
+            AsyncAction<AsyncResult<PingByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PingByUserIdResult parse(JsonNode data) {
+            return PingByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/gathering/{gatheringName}/user/{userId}/ping";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{gatheringName}", this.request.getGatheringName() == null || this.request.getGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getGatheringName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void pingByUserIdAsync(
+            PingByUserIdRequest request,
+            AsyncAction<AsyncResult<PingByUserIdResult>> callback
+    ) {
+        PingByUserIdTask task = new PingByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public PingByUserIdResult pingByUserId(
+            PingByUserIdRequest request
+    ) {
+        final AsyncResult<PingByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        pingByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

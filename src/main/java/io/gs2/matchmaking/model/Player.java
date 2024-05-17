@@ -33,6 +33,7 @@ public class Player implements IModel, Serializable {
 	private List<Attribute> attributes;
 	private String roleName;
 	private List<String> denyUserIds;
+	private Long createdAt;
 	public String getUserId() {
 		return userId;
 	}
@@ -73,6 +74,16 @@ public class Player implements IModel, Serializable {
 		this.denyUserIds = denyUserIds;
 		return this;
 	}
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+	public Player withCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+		return this;
+	}
 
     public static Player fromJson(JsonNode data) {
         if (data == null) {
@@ -91,7 +102,8 @@ public class Player implements IModel, Serializable {
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("denyUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
                 }
-            ).collect(Collectors.toList()));
+            ).collect(Collectors.toList()))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
     }
 
     public JsonNode toJson() {
@@ -110,6 +122,7 @@ public class Player implements IModel, Serializable {
                         return item;
                     }
                 ).collect(Collectors.toList()));
+                put("createdAt", getCreatedAt());
             }}
         );
     }
@@ -122,6 +135,7 @@ public class Player implements IModel, Serializable {
         result = prime * result + ((this.attributes == null) ? 0 : this.attributes.hashCode());
         result = prime * result + ((this.roleName == null) ? 0 : this.roleName.hashCode());
         result = prime * result + ((this.denyUserIds == null) ? 0 : this.denyUserIds.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
 		return result;
 	}
 
@@ -152,6 +166,11 @@ public class Player implements IModel, Serializable {
 		if (denyUserIds == null) {
 			return other.denyUserIds == null;
 		} else if (!denyUserIds.equals(other.denyUserIds)) {
+			return false;
+		}
+		if (createdAt == null) {
+			return other.createdAt == null;
+		} else if (!createdAt.equals(other.createdAt)) {
 			return false;
 		}
 		return true;

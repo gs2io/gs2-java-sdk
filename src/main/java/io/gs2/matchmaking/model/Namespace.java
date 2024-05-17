@@ -33,6 +33,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String name;
 	private String description;
 	private Boolean enableRating;
+	private String enableDisconnectDetection;
+	private Integer disconnectDetectionTimeoutSeconds;
 	private String createGatheringTriggerType;
 	private String createGatheringTriggerRealtimeNamespaceId;
 	private String createGatheringTriggerScriptId;
@@ -89,6 +91,26 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withEnableRating(Boolean enableRating) {
 		this.enableRating = enableRating;
+		return this;
+	}
+	public String getEnableDisconnectDetection() {
+		return enableDisconnectDetection;
+	}
+	public void setEnableDisconnectDetection(String enableDisconnectDetection) {
+		this.enableDisconnectDetection = enableDisconnectDetection;
+	}
+	public Namespace withEnableDisconnectDetection(String enableDisconnectDetection) {
+		this.enableDisconnectDetection = enableDisconnectDetection;
+		return this;
+	}
+	public Integer getDisconnectDetectionTimeoutSeconds() {
+		return disconnectDetectionTimeoutSeconds;
+	}
+	public void setDisconnectDetectionTimeoutSeconds(Integer disconnectDetectionTimeoutSeconds) {
+		this.disconnectDetectionTimeoutSeconds = disconnectDetectionTimeoutSeconds;
+	}
+	public Namespace withDisconnectDetectionTimeoutSeconds(Integer disconnectDetectionTimeoutSeconds) {
+		this.disconnectDetectionTimeoutSeconds = disconnectDetectionTimeoutSeconds;
 		return this;
 	}
 	public String getCreateGatheringTriggerType() {
@@ -281,6 +303,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withEnableRating(data.get("enableRating") == null || data.get("enableRating").isNull() ? null : data.get("enableRating").booleanValue())
+            .withEnableDisconnectDetection(data.get("enableDisconnectDetection") == null || data.get("enableDisconnectDetection").isNull() ? null : data.get("enableDisconnectDetection").asText())
+            .withDisconnectDetectionTimeoutSeconds(data.get("disconnectDetectionTimeoutSeconds") == null || data.get("disconnectDetectionTimeoutSeconds").isNull() ? null : data.get("disconnectDetectionTimeoutSeconds").intValue())
             .withCreateGatheringTriggerType(data.get("createGatheringTriggerType") == null || data.get("createGatheringTriggerType").isNull() ? null : data.get("createGatheringTriggerType").asText())
             .withCreateGatheringTriggerRealtimeNamespaceId(data.get("createGatheringTriggerRealtimeNamespaceId") == null || data.get("createGatheringTriggerRealtimeNamespaceId").isNull() ? null : data.get("createGatheringTriggerRealtimeNamespaceId").asText())
             .withCreateGatheringTriggerScriptId(data.get("createGatheringTriggerScriptId") == null || data.get("createGatheringTriggerScriptId").isNull() ? null : data.get("createGatheringTriggerScriptId").asText())
@@ -308,6 +332,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("name", getName());
                 put("description", getDescription());
                 put("enableRating", getEnableRating());
+                put("enableDisconnectDetection", getEnableDisconnectDetection());
+                put("disconnectDetectionTimeoutSeconds", getDisconnectDetectionTimeoutSeconds());
                 put("createGatheringTriggerType", getCreateGatheringTriggerType());
                 put("createGatheringTriggerRealtimeNamespaceId", getCreateGatheringTriggerRealtimeNamespaceId());
                 put("createGatheringTriggerScriptId", getCreateGatheringTriggerScriptId());
@@ -343,6 +369,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.enableRating == null) ? 0 : this.enableRating.hashCode());
+        result = prime * result + ((this.enableDisconnectDetection == null) ? 0 : this.enableDisconnectDetection.hashCode());
+        result = prime * result + ((this.disconnectDetectionTimeoutSeconds == null) ? 0 : this.disconnectDetectionTimeoutSeconds.hashCode());
         result = prime * result + ((this.createGatheringTriggerType == null) ? 0 : this.createGatheringTriggerType.hashCode());
         result = prime * result + ((this.createGatheringTriggerRealtimeNamespaceId == null) ? 0 : this.createGatheringTriggerRealtimeNamespaceId.hashCode());
         result = prime * result + ((this.createGatheringTriggerScriptId == null) ? 0 : this.createGatheringTriggerScriptId.hashCode());
@@ -391,6 +419,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (enableRating == null) {
 			return other.enableRating == null;
 		} else if (!enableRating.equals(other.enableRating)) {
+			return false;
+		}
+		if (enableDisconnectDetection == null) {
+			return other.enableDisconnectDetection == null;
+		} else if (!enableDisconnectDetection.equals(other.enableDisconnectDetection)) {
+			return false;
+		}
+		if (disconnectDetectionTimeoutSeconds == null) {
+			return other.disconnectDetectionTimeoutSeconds == null;
+		} else if (!disconnectDetectionTimeoutSeconds.equals(other.disconnectDetectionTimeoutSeconds)) {
 			return false;
 		}
 		if (createGatheringTriggerType == null) {
