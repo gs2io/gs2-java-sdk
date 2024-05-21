@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.schedule.model.RepeatSetting;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -43,6 +44,7 @@ public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterR
     private Integer repeatBeginHour;
     private Integer repeatEndHour;
     private String relativeTriggerName;
+    private RepeatSetting repeatSetting;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -113,72 +115,93 @@ public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterR
 		this.absoluteEnd = absoluteEnd;
 		return this;
 	}
+    @Deprecated
 	public String getRepeatType() {
 		return repeatType;
 	}
+    @Deprecated
 	public void setRepeatType(String repeatType) {
 		this.repeatType = repeatType;
 	}
+    @Deprecated
 	public CreateEventMasterRequest withRepeatType(String repeatType) {
 		this.repeatType = repeatType;
 		return this;
 	}
+    @Deprecated
 	public Integer getRepeatBeginDayOfMonth() {
 		return repeatBeginDayOfMonth;
 	}
+    @Deprecated
 	public void setRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
 		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
 	}
+    @Deprecated
 	public CreateEventMasterRequest withRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
 		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
 		return this;
 	}
+    @Deprecated
 	public Integer getRepeatEndDayOfMonth() {
 		return repeatEndDayOfMonth;
 	}
+    @Deprecated
 	public void setRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
 		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
 	}
+    @Deprecated
 	public CreateEventMasterRequest withRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
 		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
 		return this;
 	}
+    @Deprecated
 	public String getRepeatBeginDayOfWeek() {
 		return repeatBeginDayOfWeek;
 	}
+    @Deprecated
 	public void setRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
 		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
 	}
+    @Deprecated
 	public CreateEventMasterRequest withRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
 		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
 		return this;
 	}
+    @Deprecated
 	public String getRepeatEndDayOfWeek() {
 		return repeatEndDayOfWeek;
 	}
+    @Deprecated
 	public void setRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
 		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
 	}
+    @Deprecated
 	public CreateEventMasterRequest withRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
 		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
 		return this;
 	}
+    @Deprecated
 	public Integer getRepeatBeginHour() {
 		return repeatBeginHour;
 	}
+    @Deprecated
 	public void setRepeatBeginHour(Integer repeatBeginHour) {
 		this.repeatBeginHour = repeatBeginHour;
 	}
+    @Deprecated
 	public CreateEventMasterRequest withRepeatBeginHour(Integer repeatBeginHour) {
 		this.repeatBeginHour = repeatBeginHour;
 		return this;
 	}
+    @Deprecated
 	public Integer getRepeatEndHour() {
 		return repeatEndHour;
 	}
+    @Deprecated
 	public void setRepeatEndHour(Integer repeatEndHour) {
 		this.repeatEndHour = repeatEndHour;
 	}
+    @Deprecated
 	public CreateEventMasterRequest withRepeatEndHour(Integer repeatEndHour) {
 		this.repeatEndHour = repeatEndHour;
 		return this;
@@ -191,6 +214,16 @@ public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterR
 	}
 	public CreateEventMasterRequest withRelativeTriggerName(String relativeTriggerName) {
 		this.relativeTriggerName = relativeTriggerName;
+		return this;
+	}
+	public RepeatSetting getRepeatSetting() {
+		return repeatSetting;
+	}
+	public void setRepeatSetting(RepeatSetting repeatSetting) {
+		this.repeatSetting = repeatSetting;
+	}
+	public CreateEventMasterRequest withRepeatSetting(RepeatSetting repeatSetting) {
+		this.repeatSetting = repeatSetting;
 		return this;
 	}
 
@@ -213,7 +246,8 @@ public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterR
             .withRepeatEndDayOfWeek(data.get("repeatEndDayOfWeek") == null || data.get("repeatEndDayOfWeek").isNull() ? null : data.get("repeatEndDayOfWeek").asText())
             .withRepeatBeginHour(data.get("repeatBeginHour") == null || data.get("repeatBeginHour").isNull() ? null : data.get("repeatBeginHour").intValue())
             .withRepeatEndHour(data.get("repeatEndHour") == null || data.get("repeatEndHour").isNull() ? null : data.get("repeatEndHour").intValue())
-            .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText());
+            .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText())
+            .withRepeatSetting(data.get("repeatSetting") == null || data.get("repeatSetting").isNull() ? null : RepeatSetting.fromJson(data.get("repeatSetting")));
     }
 
     public JsonNode toJson() {
@@ -234,6 +268,7 @@ public class CreateEventMasterRequest extends Gs2BasicRequest<CreateEventMasterR
                 put("repeatBeginHour", getRepeatBeginHour());
                 put("repeatEndHour", getRepeatEndHour());
                 put("relativeTriggerName", getRelativeTriggerName());
+                put("repeatSetting", getRepeatSetting() != null ? getRepeatSetting().toJson() : null);
             }}
         );
     }

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.schedule.model.*;
+import io.gs2.schedule.model.RepeatSetting;
 import io.gs2.schedule.model.Event;
 import io.gs2.schedule.model.RepeatSchedule;
 

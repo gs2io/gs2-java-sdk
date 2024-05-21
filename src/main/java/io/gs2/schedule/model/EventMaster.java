@@ -34,19 +34,20 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 	private String description;
 	private String metadata;
 	private String scheduleType;
-	private String repeatType;
 	private Long absoluteBegin;
 	private Long absoluteEnd;
+	private String relativeTriggerName;
+	private RepeatSetting repeatSetting;
+	private Long createdAt;
+	private Long updatedAt;
+	private Long revision;
+	private String repeatType;
 	private Integer repeatBeginDayOfMonth;
 	private Integer repeatEndDayOfMonth;
 	private String repeatBeginDayOfWeek;
 	private String repeatEndDayOfWeek;
 	private Integer repeatBeginHour;
 	private Integer repeatEndHour;
-	private String relativeTriggerName;
-	private Long createdAt;
-	private Long updatedAt;
-	private Long revision;
 	public String getEventId() {
 		return eventId;
 	}
@@ -97,16 +98,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 		this.scheduleType = scheduleType;
 		return this;
 	}
-	public String getRepeatType() {
-		return repeatType;
-	}
-	public void setRepeatType(String repeatType) {
-		this.repeatType = repeatType;
-	}
-	public EventMaster withRepeatType(String repeatType) {
-		this.repeatType = repeatType;
-		return this;
-	}
 	public Long getAbsoluteBegin() {
 		return absoluteBegin;
 	}
@@ -127,66 +118,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 		this.absoluteEnd = absoluteEnd;
 		return this;
 	}
-	public Integer getRepeatBeginDayOfMonth() {
-		return repeatBeginDayOfMonth;
-	}
-	public void setRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
-		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
-	}
-	public EventMaster withRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
-		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
-		return this;
-	}
-	public Integer getRepeatEndDayOfMonth() {
-		return repeatEndDayOfMonth;
-	}
-	public void setRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
-		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
-	}
-	public EventMaster withRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
-		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
-		return this;
-	}
-	public String getRepeatBeginDayOfWeek() {
-		return repeatBeginDayOfWeek;
-	}
-	public void setRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
-		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
-	}
-	public EventMaster withRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
-		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
-		return this;
-	}
-	public String getRepeatEndDayOfWeek() {
-		return repeatEndDayOfWeek;
-	}
-	public void setRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
-		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
-	}
-	public EventMaster withRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
-		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
-		return this;
-	}
-	public Integer getRepeatBeginHour() {
-		return repeatBeginHour;
-	}
-	public void setRepeatBeginHour(Integer repeatBeginHour) {
-		this.repeatBeginHour = repeatBeginHour;
-	}
-	public EventMaster withRepeatBeginHour(Integer repeatBeginHour) {
-		this.repeatBeginHour = repeatBeginHour;
-		return this;
-	}
-	public Integer getRepeatEndHour() {
-		return repeatEndHour;
-	}
-	public void setRepeatEndHour(Integer repeatEndHour) {
-		this.repeatEndHour = repeatEndHour;
-	}
-	public EventMaster withRepeatEndHour(Integer repeatEndHour) {
-		this.repeatEndHour = repeatEndHour;
-		return this;
-	}
 	public String getRelativeTriggerName() {
 		return relativeTriggerName;
 	}
@@ -195,6 +126,16 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 	}
 	public EventMaster withRelativeTriggerName(String relativeTriggerName) {
 		this.relativeTriggerName = relativeTriggerName;
+		return this;
+	}
+	public RepeatSetting getRepeatSetting() {
+		return repeatSetting;
+	}
+	public void setRepeatSetting(RepeatSetting repeatSetting) {
+		this.repeatSetting = repeatSetting;
+	}
+	public EventMaster withRepeatSetting(RepeatSetting repeatSetting) {
+		this.repeatSetting = repeatSetting;
 		return this;
 	}
 	public Long getCreatedAt() {
@@ -227,6 +168,97 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 		this.revision = revision;
 		return this;
 	}
+    @Deprecated
+	public String getRepeatType() {
+		return repeatType;
+	}
+    @Deprecated
+	public void setRepeatType(String repeatType) {
+		this.repeatType = repeatType;
+	}
+    @Deprecated
+	public EventMaster withRepeatType(String repeatType) {
+		this.repeatType = repeatType;
+		return this;
+	}
+    @Deprecated
+	public Integer getRepeatBeginDayOfMonth() {
+		return repeatBeginDayOfMonth;
+	}
+    @Deprecated
+	public void setRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
+		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
+	}
+    @Deprecated
+	public EventMaster withRepeatBeginDayOfMonth(Integer repeatBeginDayOfMonth) {
+		this.repeatBeginDayOfMonth = repeatBeginDayOfMonth;
+		return this;
+	}
+    @Deprecated
+	public Integer getRepeatEndDayOfMonth() {
+		return repeatEndDayOfMonth;
+	}
+    @Deprecated
+	public void setRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
+		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
+	}
+    @Deprecated
+	public EventMaster withRepeatEndDayOfMonth(Integer repeatEndDayOfMonth) {
+		this.repeatEndDayOfMonth = repeatEndDayOfMonth;
+		return this;
+	}
+    @Deprecated
+	public String getRepeatBeginDayOfWeek() {
+		return repeatBeginDayOfWeek;
+	}
+    @Deprecated
+	public void setRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
+		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
+	}
+    @Deprecated
+	public EventMaster withRepeatBeginDayOfWeek(String repeatBeginDayOfWeek) {
+		this.repeatBeginDayOfWeek = repeatBeginDayOfWeek;
+		return this;
+	}
+    @Deprecated
+	public String getRepeatEndDayOfWeek() {
+		return repeatEndDayOfWeek;
+	}
+    @Deprecated
+	public void setRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
+		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
+	}
+    @Deprecated
+	public EventMaster withRepeatEndDayOfWeek(String repeatEndDayOfWeek) {
+		this.repeatEndDayOfWeek = repeatEndDayOfWeek;
+		return this;
+	}
+    @Deprecated
+	public Integer getRepeatBeginHour() {
+		return repeatBeginHour;
+	}
+    @Deprecated
+	public void setRepeatBeginHour(Integer repeatBeginHour) {
+		this.repeatBeginHour = repeatBeginHour;
+	}
+    @Deprecated
+	public EventMaster withRepeatBeginHour(Integer repeatBeginHour) {
+		this.repeatBeginHour = repeatBeginHour;
+		return this;
+	}
+    @Deprecated
+	public Integer getRepeatEndHour() {
+		return repeatEndHour;
+	}
+    @Deprecated
+	public void setRepeatEndHour(Integer repeatEndHour) {
+		this.repeatEndHour = repeatEndHour;
+	}
+    @Deprecated
+	public EventMaster withRepeatEndHour(Integer repeatEndHour) {
+		this.repeatEndHour = repeatEndHour;
+		return this;
+	}
 
     public static EventMaster fromJson(JsonNode data) {
         if (data == null) {
@@ -238,19 +270,20 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withScheduleType(data.get("scheduleType") == null || data.get("scheduleType").isNull() ? null : data.get("scheduleType").asText())
-            .withRepeatType(data.get("repeatType") == null || data.get("repeatType").isNull() ? null : data.get("repeatType").asText())
             .withAbsoluteBegin(data.get("absoluteBegin") == null || data.get("absoluteBegin").isNull() ? null : data.get("absoluteBegin").longValue())
             .withAbsoluteEnd(data.get("absoluteEnd") == null || data.get("absoluteEnd").isNull() ? null : data.get("absoluteEnd").longValue())
+            .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText())
+            .withRepeatSetting(data.get("repeatSetting") == null || data.get("repeatSetting").isNull() ? null : RepeatSetting.fromJson(data.get("repeatSetting")))
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue())
+            .withRepeatType(data.get("repeatType") == null || data.get("repeatType").isNull() ? null : data.get("repeatType").asText())
             .withRepeatBeginDayOfMonth(data.get("repeatBeginDayOfMonth") == null || data.get("repeatBeginDayOfMonth").isNull() ? null : data.get("repeatBeginDayOfMonth").intValue())
             .withRepeatEndDayOfMonth(data.get("repeatEndDayOfMonth") == null || data.get("repeatEndDayOfMonth").isNull() ? null : data.get("repeatEndDayOfMonth").intValue())
             .withRepeatBeginDayOfWeek(data.get("repeatBeginDayOfWeek") == null || data.get("repeatBeginDayOfWeek").isNull() ? null : data.get("repeatBeginDayOfWeek").asText())
             .withRepeatEndDayOfWeek(data.get("repeatEndDayOfWeek") == null || data.get("repeatEndDayOfWeek").isNull() ? null : data.get("repeatEndDayOfWeek").asText())
             .withRepeatBeginHour(data.get("repeatBeginHour") == null || data.get("repeatBeginHour").isNull() ? null : data.get("repeatBeginHour").intValue())
-            .withRepeatEndHour(data.get("repeatEndHour") == null || data.get("repeatEndHour").isNull() ? null : data.get("repeatEndHour").intValue())
-            .withRelativeTriggerName(data.get("relativeTriggerName") == null || data.get("relativeTriggerName").isNull() ? null : data.get("relativeTriggerName").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
-            .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
-            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
+            .withRepeatEndHour(data.get("repeatEndHour") == null || data.get("repeatEndHour").isNull() ? null : data.get("repeatEndHour").intValue());
     }
 
     public JsonNode toJson() {
@@ -261,19 +294,20 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
                 put("description", getDescription());
                 put("metadata", getMetadata());
                 put("scheduleType", getScheduleType());
-                put("repeatType", getRepeatType());
                 put("absoluteBegin", getAbsoluteBegin());
                 put("absoluteEnd", getAbsoluteEnd());
+                put("relativeTriggerName", getRelativeTriggerName());
+                put("repeatSetting", getRepeatSetting() != null ? getRepeatSetting().toJson() : null);
+                put("createdAt", getCreatedAt());
+                put("updatedAt", getUpdatedAt());
+                put("revision", getRevision());
+                put("repeatType", getRepeatType());
                 put("repeatBeginDayOfMonth", getRepeatBeginDayOfMonth());
                 put("repeatEndDayOfMonth", getRepeatEndDayOfMonth());
                 put("repeatBeginDayOfWeek", getRepeatBeginDayOfWeek());
                 put("repeatEndDayOfWeek", getRepeatEndDayOfWeek());
                 put("repeatBeginHour", getRepeatBeginHour());
                 put("repeatEndHour", getRepeatEndHour());
-                put("relativeTriggerName", getRelativeTriggerName());
-                put("createdAt", getCreatedAt());
-                put("updatedAt", getUpdatedAt());
-                put("revision", getRevision());
             }}
         );
     }
@@ -292,19 +326,20 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.scheduleType == null) ? 0 : this.scheduleType.hashCode());
-        result = prime * result + ((this.repeatType == null) ? 0 : this.repeatType.hashCode());
         result = prime * result + ((this.absoluteBegin == null) ? 0 : this.absoluteBegin.hashCode());
         result = prime * result + ((this.absoluteEnd == null) ? 0 : this.absoluteEnd.hashCode());
+        result = prime * result + ((this.relativeTriggerName == null) ? 0 : this.relativeTriggerName.hashCode());
+        result = prime * result + ((this.repeatSetting == null) ? 0 : this.repeatSetting.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
+        result = prime * result + ((this.repeatType == null) ? 0 : this.repeatType.hashCode());
         result = prime * result + ((this.repeatBeginDayOfMonth == null) ? 0 : this.repeatBeginDayOfMonth.hashCode());
         result = prime * result + ((this.repeatEndDayOfMonth == null) ? 0 : this.repeatEndDayOfMonth.hashCode());
         result = prime * result + ((this.repeatBeginDayOfWeek == null) ? 0 : this.repeatBeginDayOfWeek.hashCode());
         result = prime * result + ((this.repeatEndDayOfWeek == null) ? 0 : this.repeatEndDayOfWeek.hashCode());
         result = prime * result + ((this.repeatBeginHour == null) ? 0 : this.repeatBeginHour.hashCode());
         result = prime * result + ((this.repeatEndHour == null) ? 0 : this.repeatEndHour.hashCode());
-        result = prime * result + ((this.relativeTriggerName == null) ? 0 : this.relativeTriggerName.hashCode());
-        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
-        result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -342,11 +377,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 		} else if (!scheduleType.equals(other.scheduleType)) {
 			return false;
 		}
-		if (repeatType == null) {
-			return other.repeatType == null;
-		} else if (!repeatType.equals(other.repeatType)) {
-			return false;
-		}
 		if (absoluteBegin == null) {
 			return other.absoluteBegin == null;
 		} else if (!absoluteBegin.equals(other.absoluteBegin)) {
@@ -355,6 +385,36 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 		if (absoluteEnd == null) {
 			return other.absoluteEnd == null;
 		} else if (!absoluteEnd.equals(other.absoluteEnd)) {
+			return false;
+		}
+		if (relativeTriggerName == null) {
+			return other.relativeTriggerName == null;
+		} else if (!relativeTriggerName.equals(other.relativeTriggerName)) {
+			return false;
+		}
+		if (repeatSetting == null) {
+			return other.repeatSetting == null;
+		} else if (!repeatSetting.equals(other.repeatSetting)) {
+			return false;
+		}
+		if (createdAt == null) {
+			return other.createdAt == null;
+		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (updatedAt == null) {
+			return other.updatedAt == null;
+		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
+			return false;
+		}
+		if (repeatType == null) {
+			return other.repeatType == null;
+		} else if (!repeatType.equals(other.repeatType)) {
 			return false;
 		}
 		if (repeatBeginDayOfMonth == null) {
@@ -385,26 +445,6 @@ public class EventMaster implements IModel, Serializable, Comparable<EventMaster
 		if (repeatEndHour == null) {
 			return other.repeatEndHour == null;
 		} else if (!repeatEndHour.equals(other.repeatEndHour)) {
-			return false;
-		}
-		if (relativeTriggerName == null) {
-			return other.relativeTriggerName == null;
-		} else if (!relativeTriggerName.equals(other.relativeTriggerName)) {
-			return false;
-		}
-		if (createdAt == null) {
-			return other.createdAt == null;
-		} else if (!createdAt.equals(other.createdAt)) {
-			return false;
-		}
-		if (updatedAt == null) {
-			return other.updatedAt == null;
-		} else if (!updatedAt.equals(other.updatedAt)) {
-			return false;
-		}
-		if (revision == null) {
-			return other.revision == null;
-		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;
