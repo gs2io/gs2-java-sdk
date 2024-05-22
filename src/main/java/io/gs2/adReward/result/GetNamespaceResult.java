@@ -28,6 +28,7 @@ import io.gs2.adReward.model.*;
 import io.gs2.adReward.model.AdMob;
 import io.gs2.adReward.model.UnityAd;
 import io.gs2.adReward.model.AppLovinMax;
+import io.gs2.adReward.model.ScriptSetting;
 import io.gs2.adReward.model.NotificationSetting;
 import io.gs2.adReward.model.LogSetting;
 import io.gs2.adReward.model.Namespace;

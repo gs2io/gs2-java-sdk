@@ -35,6 +35,7 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
 	private List<AcquireAction> readAcquireActions;
 	private TimeSpan expiresTimeSpan;
 	private Long expiresAt;
+	private String messageReceptionPeriodEventId;
 	public String getGlobalMessageId() {
 		return globalMessageId;
 	}
@@ -95,6 +96,16 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
 		this.expiresAt = expiresAt;
 		return this;
 	}
+	public String getMessageReceptionPeriodEventId() {
+		return messageReceptionPeriodEventId;
+	}
+	public void setMessageReceptionPeriodEventId(String messageReceptionPeriodEventId) {
+		this.messageReceptionPeriodEventId = messageReceptionPeriodEventId;
+	}
+	public GlobalMessage withMessageReceptionPeriodEventId(String messageReceptionPeriodEventId) {
+		this.messageReceptionPeriodEventId = messageReceptionPeriodEventId;
+		return this;
+	}
 
     public static GlobalMessage fromJson(JsonNode data) {
         if (data == null) {
@@ -111,7 +122,8 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
                 }
             ).collect(Collectors.toList()))
             .withExpiresTimeSpan(data.get("expiresTimeSpan") == null || data.get("expiresTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresTimeSpan")))
-            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withMessageReceptionPeriodEventId(data.get("messageReceptionPeriodEventId") == null || data.get("messageReceptionPeriodEventId").isNull() ? null : data.get("messageReceptionPeriodEventId").asText());
     }
 
     public JsonNode toJson() {
@@ -128,6 +140,7 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
                 ).collect(Collectors.toList()));
                 put("expiresTimeSpan", getExpiresTimeSpan() != null ? getExpiresTimeSpan().toJson() : null);
                 put("expiresAt", getExpiresAt());
+                put("messageReceptionPeriodEventId", getMessageReceptionPeriodEventId());
             }}
         );
     }
@@ -147,6 +160,7 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
         result = prime * result + ((this.readAcquireActions == null) ? 0 : this.readAcquireActions.hashCode());
         result = prime * result + ((this.expiresTimeSpan == null) ? 0 : this.expiresTimeSpan.hashCode());
         result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
+        result = prime * result + ((this.messageReceptionPeriodEventId == null) ? 0 : this.messageReceptionPeriodEventId.hashCode());
 		return result;
 	}
 
@@ -187,6 +201,11 @@ public class GlobalMessage implements IModel, Serializable, Comparable<GlobalMes
 		if (expiresAt == null) {
 			return other.expiresAt == null;
 		} else if (!expiresAt.equals(other.expiresAt)) {
+			return false;
+		}
+		if (messageReceptionPeriodEventId == null) {
+			return other.messageReceptionPeriodEventId == null;
+		} else if (!messageReceptionPeriodEventId.equals(other.messageReceptionPeriodEventId)) {
 			return false;
 		}
 		return true;

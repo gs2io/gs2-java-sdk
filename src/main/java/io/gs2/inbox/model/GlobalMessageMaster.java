@@ -34,8 +34,9 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
 	private String metadata;
 	private List<AcquireAction> readAcquireActions;
 	private TimeSpan expiresTimeSpan;
-	private Long createdAt;
 	private Long expiresAt;
+	private String messageReceptionPeriodEventId;
+	private Long createdAt;
 	private Long revision;
 	public String getGlobalMessageId() {
 		return globalMessageId;
@@ -87,16 +88,6 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
 		this.expiresTimeSpan = expiresTimeSpan;
 		return this;
 	}
-	public Long getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(Long createdAt) {
-		this.createdAt = createdAt;
-	}
-	public GlobalMessageMaster withCreatedAt(Long createdAt) {
-		this.createdAt = createdAt;
-		return this;
-	}
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
@@ -105,6 +96,26 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
 	}
 	public GlobalMessageMaster withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
+		return this;
+	}
+	public String getMessageReceptionPeriodEventId() {
+		return messageReceptionPeriodEventId;
+	}
+	public void setMessageReceptionPeriodEventId(String messageReceptionPeriodEventId) {
+		this.messageReceptionPeriodEventId = messageReceptionPeriodEventId;
+	}
+	public GlobalMessageMaster withMessageReceptionPeriodEventId(String messageReceptionPeriodEventId) {
+		this.messageReceptionPeriodEventId = messageReceptionPeriodEventId;
+		return this;
+	}
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+	public GlobalMessageMaster withCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
 		return this;
 	}
 	public Long getRevision() {
@@ -133,8 +144,9 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
                 }
             ).collect(Collectors.toList()))
             .withExpiresTimeSpan(data.get("expiresTimeSpan") == null || data.get("expiresTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresTimeSpan")))
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withMessageReceptionPeriodEventId(data.get("messageReceptionPeriodEventId") == null || data.get("messageReceptionPeriodEventId").isNull() ? null : data.get("messageReceptionPeriodEventId").asText())
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
@@ -151,8 +163,9 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
                     }
                 ).collect(Collectors.toList()));
                 put("expiresTimeSpan", getExpiresTimeSpan() != null ? getExpiresTimeSpan().toJson() : null);
-                put("createdAt", getCreatedAt());
                 put("expiresAt", getExpiresAt());
+                put("messageReceptionPeriodEventId", getMessageReceptionPeriodEventId());
+                put("createdAt", getCreatedAt());
                 put("revision", getRevision());
             }}
         );
@@ -172,8 +185,9 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.readAcquireActions == null) ? 0 : this.readAcquireActions.hashCode());
         result = prime * result + ((this.expiresTimeSpan == null) ? 0 : this.expiresTimeSpan.hashCode());
-        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
+        result = prime * result + ((this.messageReceptionPeriodEventId == null) ? 0 : this.messageReceptionPeriodEventId.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
@@ -212,14 +226,19 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
 		} else if (!expiresTimeSpan.equals(other.expiresTimeSpan)) {
 			return false;
 		}
-		if (createdAt == null) {
-			return other.createdAt == null;
-		} else if (!createdAt.equals(other.createdAt)) {
-			return false;
-		}
 		if (expiresAt == null) {
 			return other.expiresAt == null;
 		} else if (!expiresAt.equals(other.expiresAt)) {
+			return false;
+		}
+		if (messageReceptionPeriodEventId == null) {
+			return other.messageReceptionPeriodEventId == null;
+		} else if (!messageReceptionPeriodEventId.equals(other.messageReceptionPeriodEventId)) {
+			return false;
+		}
+		if (createdAt == null) {
+			return other.createdAt == null;
+		} else if (!createdAt.equals(other.createdAt)) {
 			return false;
 		}
 		if (revision == null) {

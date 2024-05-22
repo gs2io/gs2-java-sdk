@@ -35,6 +35,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private AdMob admob;
 	private UnityAd unityAd;
 	private List<AppLovinMax> appLovinMaxes;
+	private ScriptSetting acquirePointScript;
+	private ScriptSetting consumePointScript;
 	private NotificationSetting changePointNotification;
 	private LogSetting logSetting;
 	private Long createdAt;
@@ -98,6 +100,26 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withAppLovinMaxes(List<AppLovinMax> appLovinMaxes) {
 		this.appLovinMaxes = appLovinMaxes;
+		return this;
+	}
+	public ScriptSetting getAcquirePointScript() {
+		return acquirePointScript;
+	}
+	public void setAcquirePointScript(ScriptSetting acquirePointScript) {
+		this.acquirePointScript = acquirePointScript;
+	}
+	public Namespace withAcquirePointScript(ScriptSetting acquirePointScript) {
+		this.acquirePointScript = acquirePointScript;
+		return this;
+	}
+	public ScriptSetting getConsumePointScript() {
+		return consumePointScript;
+	}
+	public void setConsumePointScript(ScriptSetting consumePointScript) {
+		this.consumePointScript = consumePointScript;
+	}
+	public Namespace withConsumePointScript(ScriptSetting consumePointScript) {
+		this.consumePointScript = consumePointScript;
 		return this;
 	}
 	public NotificationSetting getChangePointNotification() {
@@ -167,6 +189,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                     return AppLovinMax.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withAcquirePointScript(data.get("acquirePointScript") == null || data.get("acquirePointScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquirePointScript")))
+            .withConsumePointScript(data.get("consumePointScript") == null || data.get("consumePointScript").isNull() ? null : ScriptSetting.fromJson(data.get("consumePointScript")))
             .withChangePointNotification(data.get("changePointNotification") == null || data.get("changePointNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changePointNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
@@ -188,6 +212,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("acquirePointScript", getAcquirePointScript() != null ? getAcquirePointScript().toJson() : null);
+                put("consumePointScript", getConsumePointScript() != null ? getConsumePointScript().toJson() : null);
                 put("changePointNotification", getChangePointNotification() != null ? getChangePointNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
@@ -212,6 +238,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.admob == null) ? 0 : this.admob.hashCode());
         result = prime * result + ((this.unityAd == null) ? 0 : this.unityAd.hashCode());
         result = prime * result + ((this.appLovinMaxes == null) ? 0 : this.appLovinMaxes.hashCode());
+        result = prime * result + ((this.acquirePointScript == null) ? 0 : this.acquirePointScript.hashCode());
+        result = prime * result + ((this.consumePointScript == null) ? 0 : this.consumePointScript.hashCode());
         result = prime * result + ((this.changePointNotification == null) ? 0 : this.changePointNotification.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -257,6 +285,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (appLovinMaxes == null) {
 			return other.appLovinMaxes == null;
 		} else if (!appLovinMaxes.equals(other.appLovinMaxes)) {
+			return false;
+		}
+		if (acquirePointScript == null) {
+			return other.acquirePointScript == null;
+		} else if (!acquirePointScript.equals(other.acquirePointScript)) {
+			return false;
+		}
+		if (consumePointScript == null) {
+			return other.consumePointScript == null;
+		} else if (!consumePointScript.equals(other.consumePointScript)) {
 			return false;
 		}
 		if (changePointNotification == null) {

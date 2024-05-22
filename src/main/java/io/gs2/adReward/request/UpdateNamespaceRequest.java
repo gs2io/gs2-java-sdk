@@ -27,6 +27,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.adReward.model.AdMob;
 import io.gs2.adReward.model.UnityAd;
 import io.gs2.adReward.model.AppLovinMax;
+import io.gs2.adReward.model.ScriptSetting;
 import io.gs2.adReward.model.NotificationSetting;
 import io.gs2.adReward.model.LogSetting;
 
@@ -38,6 +39,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private AdMob admob;
     private UnityAd unityAd;
     private List<AppLovinMax> appLovinMaxes;
+    private ScriptSetting acquirePointScript;
+    private ScriptSetting consumePointScript;
     private NotificationSetting changePointNotification;
     private LogSetting logSetting;
 	public String getNamespaceName() {
@@ -90,6 +93,26 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.appLovinMaxes = appLovinMaxes;
 		return this;
 	}
+	public ScriptSetting getAcquirePointScript() {
+		return acquirePointScript;
+	}
+	public void setAcquirePointScript(ScriptSetting acquirePointScript) {
+		this.acquirePointScript = acquirePointScript;
+	}
+	public UpdateNamespaceRequest withAcquirePointScript(ScriptSetting acquirePointScript) {
+		this.acquirePointScript = acquirePointScript;
+		return this;
+	}
+	public ScriptSetting getConsumePointScript() {
+		return consumePointScript;
+	}
+	public void setConsumePointScript(ScriptSetting consumePointScript) {
+		this.consumePointScript = consumePointScript;
+	}
+	public UpdateNamespaceRequest withConsumePointScript(ScriptSetting consumePointScript) {
+		this.consumePointScript = consumePointScript;
+		return this;
+	}
 	public NotificationSetting getChangePointNotification() {
 		return changePointNotification;
 	}
@@ -126,6 +149,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                     return AppLovinMax.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withAcquirePointScript(data.get("acquirePointScript") == null || data.get("acquirePointScript").isNull() ? null : ScriptSetting.fromJson(data.get("acquirePointScript")))
+            .withConsumePointScript(data.get("consumePointScript") == null || data.get("consumePointScript").isNull() ? null : ScriptSetting.fromJson(data.get("consumePointScript")))
             .withChangePointNotification(data.get("changePointNotification") == null || data.get("changePointNotification").isNull() ? null : NotificationSetting.fromJson(data.get("changePointNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
@@ -143,6 +168,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("acquirePointScript", getAcquirePointScript() != null ? getAcquirePointScript().toJson() : null);
+                put("consumePointScript", getConsumePointScript() != null ? getConsumePointScript().toJson() : null);
                 put("changePointNotification", getChangePointNotification() != null ? getChangePointNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}

@@ -2999,6 +2999,7 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
                     ).collect(Collectors.toList()));
                     put("expiresTimeSpan", request.getExpiresTimeSpan() != null ? request.getExpiresTimeSpan().toJson() : null);
                     put("expiresAt", request.getExpiresAt());
+                    put("messageReceptionPeriodEventId", request.getMessageReceptionPeriodEventId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -3170,6 +3171,7 @@ import io.gs2.inbox.model.*;public class Gs2InboxRestClient extends AbstractGs2C
                     ).collect(Collectors.toList()));
                     put("expiresTimeSpan", request.getExpiresTimeSpan() != null ? request.getExpiresTimeSpan().toJson() : null);
                     put("expiresAt", request.getExpiresAt());
+                    put("messageReceptionPeriodEventId", request.getMessageReceptionPeriodEventId());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

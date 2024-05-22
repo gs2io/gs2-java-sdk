@@ -36,6 +36,7 @@ public class UpdateGlobalMessageMasterRequest extends Gs2BasicRequest<UpdateGlob
     private List<AcquireAction> readAcquireActions;
     private TimeSpan expiresTimeSpan;
     private Long expiresAt;
+    private String messageReceptionPeriodEventId;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -96,6 +97,16 @@ public class UpdateGlobalMessageMasterRequest extends Gs2BasicRequest<UpdateGlob
 		this.expiresAt = expiresAt;
 		return this;
 	}
+	public String getMessageReceptionPeriodEventId() {
+		return messageReceptionPeriodEventId;
+	}
+	public void setMessageReceptionPeriodEventId(String messageReceptionPeriodEventId) {
+		this.messageReceptionPeriodEventId = messageReceptionPeriodEventId;
+	}
+	public UpdateGlobalMessageMasterRequest withMessageReceptionPeriodEventId(String messageReceptionPeriodEventId) {
+		this.messageReceptionPeriodEventId = messageReceptionPeriodEventId;
+		return this;
+	}
 
     public static UpdateGlobalMessageMasterRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -112,7 +123,8 @@ public class UpdateGlobalMessageMasterRequest extends Gs2BasicRequest<UpdateGlob
                 }
             ).collect(Collectors.toList()))
             .withExpiresTimeSpan(data.get("expiresTimeSpan") == null || data.get("expiresTimeSpan").isNull() ? null : TimeSpan.fromJson(data.get("expiresTimeSpan")))
-            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue());
+            .withExpiresAt(data.get("expiresAt") == null || data.get("expiresAt").isNull() ? null : data.get("expiresAt").longValue())
+            .withMessageReceptionPeriodEventId(data.get("messageReceptionPeriodEventId") == null || data.get("messageReceptionPeriodEventId").isNull() ? null : data.get("messageReceptionPeriodEventId").asText());
     }
 
     public JsonNode toJson() {
@@ -129,6 +141,7 @@ public class UpdateGlobalMessageMasterRequest extends Gs2BasicRequest<UpdateGlob
                 ).collect(Collectors.toList()));
                 put("expiresTimeSpan", getExpiresTimeSpan() != null ? getExpiresTimeSpan().toJson() : null);
                 put("expiresAt", getExpiresAt());
+                put("messageReceptionPeriodEventId", getMessageReceptionPeriodEventId());
             }}
         );
     }

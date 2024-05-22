@@ -164,6 +164,8 @@ import io.gs2.adReward.model.*;public class Gs2AdRewardRestClient extends Abstra
                         }
                     ).collect(Collectors.toList()));
                     put("description", request.getDescription());
+                    put("acquirePointScript", request.getAcquirePointScript() != null ? request.getAcquirePointScript().toJson() : null);
+                    put("consumePointScript", request.getConsumePointScript() != null ? request.getConsumePointScript().toJson() : null);
                     put("changePointNotification", request.getChangePointNotification() != null ? request.getChangePointNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
@@ -415,6 +417,8 @@ import io.gs2.adReward.model.*;public class Gs2AdRewardRestClient extends Abstra
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("acquirePointScript", request.getAcquirePointScript() != null ? request.getAcquirePointScript().toJson() : null);
+                    put("consumePointScript", request.getConsumePointScript() != null ? request.getConsumePointScript().toJson() : null);
                     put("changePointNotification", request.getChangePointNotification() != null ? request.getChangePointNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
