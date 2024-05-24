@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
+import io.gs2.mission.model.TargetCounterModel;
+import io.gs2.mission.model.ConsumeAction;
 import io.gs2.mission.model.AcquireAction;
 import io.gs2.mission.model.MissionTaskModel;
 

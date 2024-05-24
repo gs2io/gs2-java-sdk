@@ -3581,6 +3581,189 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyCounterValueTask extends Gs2RestSessionTask<VerifyCounterValueResult> {
+        private VerifyCounterValueRequest request;
+
+        public VerifyCounterValueTask(
+            VerifyCounterValueRequest request,
+            AsyncAction<AsyncResult<VerifyCounterValueResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCounterValueResult parse(JsonNode data) {
+            return VerifyCounterValueResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/counter/{counterName}/verify/counter/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("resetType", request.getResetType());
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCounterValueAsync(
+            VerifyCounterValueRequest request,
+            AsyncAction<AsyncResult<VerifyCounterValueResult>> callback
+    ) {
+        VerifyCounterValueTask task = new VerifyCounterValueTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCounterValueResult verifyCounterValue(
+            VerifyCounterValueRequest request
+    ) {
+        final AsyncResult<VerifyCounterValueResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCounterValueAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCounterValueByUserIdTask extends Gs2RestSessionTask<VerifyCounterValueByUserIdResult> {
+        private VerifyCounterValueByUserIdRequest request;
+
+        public VerifyCounterValueByUserIdTask(
+            VerifyCounterValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCounterValueByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCounterValueByUserIdResult parse(JsonNode data) {
+            return VerifyCounterValueByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/counter/{counterName}/verify/counter/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{counterName}", this.request.getCounterName() == null || this.request.getCounterName().length() == 0 ? "null" : String.valueOf(this.request.getCounterName()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("resetType", request.getResetType());
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCounterValueByUserIdAsync(
+            VerifyCounterValueByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCounterValueByUserIdResult>> callback
+    ) {
+        VerifyCounterValueByUserIdTask task = new VerifyCounterValueByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCounterValueByUserIdResult verifyCounterValueByUserId(
+            VerifyCounterValueByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyCounterValueByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCounterValueByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteCounterByUserIdTask extends Gs2RestSessionTask<DeleteCounterByUserIdResult> {
         private DeleteCounterByUserIdRequest request;
 
@@ -3893,6 +4076,86 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
     ) {
         final AsyncResult<DecreaseByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
         decreaseByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCounterValueByStampTaskTask extends Gs2RestSessionTask<VerifyCounterValueByStampTaskResult> {
+        private VerifyCounterValueByStampTaskRequest request;
+
+        public VerifyCounterValueByStampTaskTask(
+            VerifyCounterValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCounterValueByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCounterValueByStampTaskResult parse(JsonNode data) {
+            return VerifyCounterValueByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/counter/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCounterValueByStampTaskAsync(
+            VerifyCounterValueByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCounterValueByStampTaskResult>> callback
+    ) {
+        VerifyCounterValueByStampTaskTask task = new VerifyCounterValueByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCounterValueByStampTaskResult verifyCounterValueByStampTask(
+            VerifyCounterValueByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyCounterValueByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCounterValueByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -4838,9 +5101,14 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("name", request.getName());
                     put("metadata", request.getMetadata());
                     put("description", request.getDescription());
-                    put("counterName", request.getCounterName());
-                    put("targetResetType", request.getTargetResetType());
-                    put("targetValue", request.getTargetValue());
+                    put("verifyCompleteType", request.getVerifyCompleteType());
+                    put("targetCounter", request.getTargetCounter() != null ? request.getTargetCounter().toJson() : null);
+                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getVerifyCompleteConsumeActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("completeAcquireActions", request.getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getCompleteAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -4849,6 +5117,9 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     ).collect(Collectors.toList()));
                     put("challengePeriodEventId", request.getChallengePeriodEventId());
                     put("premiseMissionTaskName", request.getPremiseMissionTaskName());
+                    put("counterName", request.getCounterName());
+                    put("targetResetType", request.getTargetResetType());
+                    put("targetValue", request.getTargetValue());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -5015,9 +5286,14 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                 new HashMap<String, Object>() {{
                     put("metadata", request.getMetadata());
                     put("description", request.getDescription());
-                    put("counterName", request.getCounterName());
-                    put("targetResetType", request.getTargetResetType());
-                    put("targetValue", request.getTargetValue());
+                    put("verifyCompleteType", request.getVerifyCompleteType());
+                    put("targetCounter", request.getTargetCounter() != null ? request.getTargetCounter().toJson() : null);
+                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getVerifyCompleteConsumeActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("completeAcquireActions", request.getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getCompleteAcquireActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -5026,6 +5302,9 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     ).collect(Collectors.toList()));
                     put("challengePeriodEventId", request.getChallengePeriodEventId());
                     put("premiseMissionTaskName", request.getPremiseMissionTaskName());
+                    put("counterName", request.getCounterName());
+                    put("targetResetType", request.getTargetResetType());
+                    put("targetValue", request.getTargetValue());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());

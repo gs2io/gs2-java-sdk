@@ -32,12 +32,15 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
 	private String missionTaskId;
 	private String name;
 	private String metadata;
-	private String counterName;
-	private String targetResetType;
-	private Long targetValue;
+	private String verifyCompleteType;
+	private TargetCounterModel targetCounter;
+	private List<ConsumeAction> verifyCompleteConsumeActions;
 	private List<AcquireAction> completeAcquireActions;
 	private String challengePeriodEventId;
 	private String premiseMissionTaskName;
+	private String counterName;
+	private String targetResetType;
+	private Long targetValue;
 	public String getMissionTaskId() {
 		return missionTaskId;
 	}
@@ -68,34 +71,34 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
 		this.metadata = metadata;
 		return this;
 	}
-	public String getCounterName() {
-		return counterName;
+	public String getVerifyCompleteType() {
+		return verifyCompleteType;
 	}
-	public void setCounterName(String counterName) {
-		this.counterName = counterName;
+	public void setVerifyCompleteType(String verifyCompleteType) {
+		this.verifyCompleteType = verifyCompleteType;
 	}
-	public MissionTaskModel withCounterName(String counterName) {
-		this.counterName = counterName;
+	public MissionTaskModel withVerifyCompleteType(String verifyCompleteType) {
+		this.verifyCompleteType = verifyCompleteType;
 		return this;
 	}
-	public String getTargetResetType() {
-		return targetResetType;
+	public TargetCounterModel getTargetCounter() {
+		return targetCounter;
 	}
-	public void setTargetResetType(String targetResetType) {
-		this.targetResetType = targetResetType;
+	public void setTargetCounter(TargetCounterModel targetCounter) {
+		this.targetCounter = targetCounter;
 	}
-	public MissionTaskModel withTargetResetType(String targetResetType) {
-		this.targetResetType = targetResetType;
+	public MissionTaskModel withTargetCounter(TargetCounterModel targetCounter) {
+		this.targetCounter = targetCounter;
 		return this;
 	}
-	public Long getTargetValue() {
-		return targetValue;
+	public List<ConsumeAction> getVerifyCompleteConsumeActions() {
+		return verifyCompleteConsumeActions;
 	}
-	public void setTargetValue(Long targetValue) {
-		this.targetValue = targetValue;
+	public void setVerifyCompleteConsumeActions(List<ConsumeAction> verifyCompleteConsumeActions) {
+		this.verifyCompleteConsumeActions = verifyCompleteConsumeActions;
 	}
-	public MissionTaskModel withTargetValue(Long targetValue) {
-		this.targetValue = targetValue;
+	public MissionTaskModel withVerifyCompleteConsumeActions(List<ConsumeAction> verifyCompleteConsumeActions) {
+		this.verifyCompleteConsumeActions = verifyCompleteConsumeActions;
 		return this;
 	}
 	public List<AcquireAction> getCompleteAcquireActions() {
@@ -128,6 +131,45 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
 		this.premiseMissionTaskName = premiseMissionTaskName;
 		return this;
 	}
+    @Deprecated
+	public String getCounterName() {
+		return counterName;
+	}
+    @Deprecated
+	public void setCounterName(String counterName) {
+		this.counterName = counterName;
+	}
+    @Deprecated
+	public MissionTaskModel withCounterName(String counterName) {
+		this.counterName = counterName;
+		return this;
+	}
+    @Deprecated
+	public String getTargetResetType() {
+		return targetResetType;
+	}
+    @Deprecated
+	public void setTargetResetType(String targetResetType) {
+		this.targetResetType = targetResetType;
+	}
+    @Deprecated
+	public MissionTaskModel withTargetResetType(String targetResetType) {
+		this.targetResetType = targetResetType;
+		return this;
+	}
+    @Deprecated
+	public Long getTargetValue() {
+		return targetValue;
+	}
+    @Deprecated
+	public void setTargetValue(Long targetValue) {
+		this.targetValue = targetValue;
+	}
+    @Deprecated
+	public MissionTaskModel withTargetValue(Long targetValue) {
+		this.targetValue = targetValue;
+		return this;
+	}
 
     public static MissionTaskModel fromJson(JsonNode data) {
         if (data == null) {
@@ -137,9 +179,14 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
             .withMissionTaskId(data.get("missionTaskId") == null || data.get("missionTaskId").isNull() ? null : data.get("missionTaskId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
-            .withTargetResetType(data.get("targetResetType") == null || data.get("targetResetType").isNull() ? null : data.get("targetResetType").asText())
-            .withTargetValue(data.get("targetValue") == null || data.get("targetValue").isNull() ? null : data.get("targetValue").longValue())
+            .withVerifyCompleteType(data.get("verifyCompleteType") == null || data.get("verifyCompleteType").isNull() ? null : data.get("verifyCompleteType").asText())
+            .withTargetCounter(data.get("targetCounter") == null || data.get("targetCounter").isNull() ? null : TargetCounterModel.fromJson(data.get("targetCounter")))
+            .withVerifyCompleteConsumeActions(data.get("verifyCompleteConsumeActions") == null || data.get("verifyCompleteConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyCompleteConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ConsumeAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -147,7 +194,10 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
                 }
             ).collect(Collectors.toList()))
             .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
-            .withPremiseMissionTaskName(data.get("premiseMissionTaskName") == null || data.get("premiseMissionTaskName").isNull() ? null : data.get("premiseMissionTaskName").asText());
+            .withPremiseMissionTaskName(data.get("premiseMissionTaskName") == null || data.get("premiseMissionTaskName").isNull() ? null : data.get("premiseMissionTaskName").asText())
+            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
+            .withTargetResetType(data.get("targetResetType") == null || data.get("targetResetType").isNull() ? null : data.get("targetResetType").asText())
+            .withTargetValue(data.get("targetValue") == null || data.get("targetValue").isNull() ? null : data.get("targetValue").longValue());
     }
 
     public JsonNode toJson() {
@@ -156,9 +206,14 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
                 put("missionTaskId", getMissionTaskId());
                 put("name", getName());
                 put("metadata", getMetadata());
-                put("counterName", getCounterName());
-                put("targetResetType", getTargetResetType());
-                put("targetValue", getTargetValue());
+                put("verifyCompleteType", getVerifyCompleteType());
+                put("targetCounter", getTargetCounter() != null ? getTargetCounter().toJson() : null);
+                put("verifyCompleteConsumeActions", getVerifyCompleteConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    getVerifyCompleteConsumeActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("completeAcquireActions", getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getCompleteAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -167,6 +222,9 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
                 ).collect(Collectors.toList()));
                 put("challengePeriodEventId", getChallengePeriodEventId());
                 put("premiseMissionTaskName", getPremiseMissionTaskName());
+                put("counterName", getCounterName());
+                put("targetResetType", getTargetResetType());
+                put("targetValue", getTargetValue());
             }}
         );
     }
@@ -183,12 +241,15 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
         result = prime * result + ((this.missionTaskId == null) ? 0 : this.missionTaskId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
-        result = prime * result + ((this.counterName == null) ? 0 : this.counterName.hashCode());
-        result = prime * result + ((this.targetResetType == null) ? 0 : this.targetResetType.hashCode());
-        result = prime * result + ((this.targetValue == null) ? 0 : this.targetValue.hashCode());
+        result = prime * result + ((this.verifyCompleteType == null) ? 0 : this.verifyCompleteType.hashCode());
+        result = prime * result + ((this.targetCounter == null) ? 0 : this.targetCounter.hashCode());
+        result = prime * result + ((this.verifyCompleteConsumeActions == null) ? 0 : this.verifyCompleteConsumeActions.hashCode());
         result = prime * result + ((this.completeAcquireActions == null) ? 0 : this.completeAcquireActions.hashCode());
         result = prime * result + ((this.challengePeriodEventId == null) ? 0 : this.challengePeriodEventId.hashCode());
         result = prime * result + ((this.premiseMissionTaskName == null) ? 0 : this.premiseMissionTaskName.hashCode());
+        result = prime * result + ((this.counterName == null) ? 0 : this.counterName.hashCode());
+        result = prime * result + ((this.targetResetType == null) ? 0 : this.targetResetType.hashCode());
+        result = prime * result + ((this.targetValue == null) ? 0 : this.targetValue.hashCode());
 		return result;
 	}
 
@@ -216,19 +277,19 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
 		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
-		if (counterName == null) {
-			return other.counterName == null;
-		} else if (!counterName.equals(other.counterName)) {
+		if (verifyCompleteType == null) {
+			return other.verifyCompleteType == null;
+		} else if (!verifyCompleteType.equals(other.verifyCompleteType)) {
 			return false;
 		}
-		if (targetResetType == null) {
-			return other.targetResetType == null;
-		} else if (!targetResetType.equals(other.targetResetType)) {
+		if (targetCounter == null) {
+			return other.targetCounter == null;
+		} else if (!targetCounter.equals(other.targetCounter)) {
 			return false;
 		}
-		if (targetValue == null) {
-			return other.targetValue == null;
-		} else if (!targetValue.equals(other.targetValue)) {
+		if (verifyCompleteConsumeActions == null) {
+			return other.verifyCompleteConsumeActions == null;
+		} else if (!verifyCompleteConsumeActions.equals(other.verifyCompleteConsumeActions)) {
 			return false;
 		}
 		if (completeAcquireActions == null) {
@@ -244,6 +305,21 @@ public class MissionTaskModel implements IModel, Serializable, Comparable<Missio
 		if (premiseMissionTaskName == null) {
 			return other.premiseMissionTaskName == null;
 		} else if (!premiseMissionTaskName.equals(other.premiseMissionTaskName)) {
+			return false;
+		}
+		if (counterName == null) {
+			return other.counterName == null;
+		} else if (!counterName.equals(other.counterName)) {
+			return false;
+		}
+		if (targetResetType == null) {
+			return other.targetResetType == null;
+		} else if (!targetResetType.equals(other.targetResetType)) {
+			return false;
+		}
+		if (targetValue == null) {
+			return other.targetValue == null;
+		} else if (!targetValue.equals(other.targetValue)) {
 			return false;
 		}
 		return true;

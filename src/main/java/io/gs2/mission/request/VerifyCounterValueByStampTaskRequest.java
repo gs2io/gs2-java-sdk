@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.mission.result;
+package io.gs2.mission.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,44 +23,48 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.gs2.core.model.*;
-import io.gs2.mission.model.*;
-import io.gs2.mission.model.TargetCounterModel;
-import io.gs2.mission.model.ConsumeAction;
-import io.gs2.mission.model.AcquireAction;
-import io.gs2.mission.model.MissionTaskModel;
-import io.gs2.mission.model.MissionGroupModel;
+import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetMissionGroupModelResult implements IResult, Serializable {
-    private MissionGroupModel item;
-
-	public MissionGroupModel getItem() {
-		return item;
+public class VerifyCounterValueByStampTaskRequest extends Gs2BasicRequest<VerifyCounterValueByStampTaskRequest> {
+    private String stampTask;
+    private String keyId;
+	public String getStampTask() {
+		return stampTask;
 	}
-
-	public void setItem(MissionGroupModel item) {
-		this.item = item;
+	public void setStampTask(String stampTask) {
+		this.stampTask = stampTask;
 	}
-
-	public GetMissionGroupModelResult withItem(MissionGroupModel item) {
-		this.item = item;
+	public VerifyCounterValueByStampTaskRequest withStampTask(String stampTask) {
+		this.stampTask = stampTask;
+		return this;
+	}
+	public String getKeyId() {
+		return keyId;
+	}
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+	public VerifyCounterValueByStampTaskRequest withKeyId(String keyId) {
+		this.keyId = keyId;
 		return this;
 	}
 
-    public static GetMissionGroupModelResult fromJson(JsonNode data) {
+    public static VerifyCounterValueByStampTaskRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetMissionGroupModelResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : MissionGroupModel.fromJson(data.get("item")));
+        return new VerifyCounterValueByStampTaskRequest()
+            .withStampTask(data.get("stampTask") == null || data.get("stampTask").isNull() ? null : data.get("stampTask").asText())
+            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
+                put("stampTask", getStampTask());
+                put("keyId", getKeyId());
             }}
         );
     }

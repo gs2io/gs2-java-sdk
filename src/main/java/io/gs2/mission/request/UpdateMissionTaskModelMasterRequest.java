@@ -24,6 +24,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.mission.model.TargetCounterModel;
+import io.gs2.mission.model.ConsumeAction;
 import io.gs2.mission.model.AcquireAction;
 
 @SuppressWarnings("serial")
@@ -34,12 +36,15 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
     private String missionTaskName;
     private String metadata;
     private String description;
-    private String counterName;
-    private String targetResetType;
-    private Long targetValue;
+    private String verifyCompleteType;
+    private TargetCounterModel targetCounter;
+    private List<ConsumeAction> verifyCompleteConsumeActions;
     private List<AcquireAction> completeAcquireActions;
     private String challengePeriodEventId;
     private String premiseMissionTaskName;
+    private String counterName;
+    private String targetResetType;
+    private Long targetValue;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -90,34 +95,34 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
 		this.description = description;
 		return this;
 	}
-	public String getCounterName() {
-		return counterName;
+	public String getVerifyCompleteType() {
+		return verifyCompleteType;
 	}
-	public void setCounterName(String counterName) {
-		this.counterName = counterName;
+	public void setVerifyCompleteType(String verifyCompleteType) {
+		this.verifyCompleteType = verifyCompleteType;
 	}
-	public UpdateMissionTaskModelMasterRequest withCounterName(String counterName) {
-		this.counterName = counterName;
+	public UpdateMissionTaskModelMasterRequest withVerifyCompleteType(String verifyCompleteType) {
+		this.verifyCompleteType = verifyCompleteType;
 		return this;
 	}
-	public String getTargetResetType() {
-		return targetResetType;
+	public TargetCounterModel getTargetCounter() {
+		return targetCounter;
 	}
-	public void setTargetResetType(String targetResetType) {
-		this.targetResetType = targetResetType;
+	public void setTargetCounter(TargetCounterModel targetCounter) {
+		this.targetCounter = targetCounter;
 	}
-	public UpdateMissionTaskModelMasterRequest withTargetResetType(String targetResetType) {
-		this.targetResetType = targetResetType;
+	public UpdateMissionTaskModelMasterRequest withTargetCounter(TargetCounterModel targetCounter) {
+		this.targetCounter = targetCounter;
 		return this;
 	}
-	public Long getTargetValue() {
-		return targetValue;
+	public List<ConsumeAction> getVerifyCompleteConsumeActions() {
+		return verifyCompleteConsumeActions;
 	}
-	public void setTargetValue(Long targetValue) {
-		this.targetValue = targetValue;
+	public void setVerifyCompleteConsumeActions(List<ConsumeAction> verifyCompleteConsumeActions) {
+		this.verifyCompleteConsumeActions = verifyCompleteConsumeActions;
 	}
-	public UpdateMissionTaskModelMasterRequest withTargetValue(Long targetValue) {
-		this.targetValue = targetValue;
+	public UpdateMissionTaskModelMasterRequest withVerifyCompleteConsumeActions(List<ConsumeAction> verifyCompleteConsumeActions) {
+		this.verifyCompleteConsumeActions = verifyCompleteConsumeActions;
 		return this;
 	}
 	public List<AcquireAction> getCompleteAcquireActions() {
@@ -150,6 +155,45 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
 		this.premiseMissionTaskName = premiseMissionTaskName;
 		return this;
 	}
+    @Deprecated
+	public String getCounterName() {
+		return counterName;
+	}
+    @Deprecated
+	public void setCounterName(String counterName) {
+		this.counterName = counterName;
+	}
+    @Deprecated
+	public UpdateMissionTaskModelMasterRequest withCounterName(String counterName) {
+		this.counterName = counterName;
+		return this;
+	}
+    @Deprecated
+	public String getTargetResetType() {
+		return targetResetType;
+	}
+    @Deprecated
+	public void setTargetResetType(String targetResetType) {
+		this.targetResetType = targetResetType;
+	}
+    @Deprecated
+	public UpdateMissionTaskModelMasterRequest withTargetResetType(String targetResetType) {
+		this.targetResetType = targetResetType;
+		return this;
+	}
+    @Deprecated
+	public Long getTargetValue() {
+		return targetValue;
+	}
+    @Deprecated
+	public void setTargetValue(Long targetValue) {
+		this.targetValue = targetValue;
+	}
+    @Deprecated
+	public UpdateMissionTaskModelMasterRequest withTargetValue(Long targetValue) {
+		this.targetValue = targetValue;
+		return this;
+	}
 
     public static UpdateMissionTaskModelMasterRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -161,9 +205,14 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
             .withMissionTaskName(data.get("missionTaskName") == null || data.get("missionTaskName").isNull() ? null : data.get("missionTaskName").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
-            .withTargetResetType(data.get("targetResetType") == null || data.get("targetResetType").isNull() ? null : data.get("targetResetType").asText())
-            .withTargetValue(data.get("targetValue") == null || data.get("targetValue").isNull() ? null : data.get("targetValue").longValue())
+            .withVerifyCompleteType(data.get("verifyCompleteType") == null || data.get("verifyCompleteType").isNull() ? null : data.get("verifyCompleteType").asText())
+            .withTargetCounter(data.get("targetCounter") == null || data.get("targetCounter").isNull() ? null : TargetCounterModel.fromJson(data.get("targetCounter")))
+            .withVerifyCompleteConsumeActions(data.get("verifyCompleteConsumeActions") == null || data.get("verifyCompleteConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyCompleteConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return ConsumeAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("completeAcquireActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -171,7 +220,10 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
                 }
             ).collect(Collectors.toList()))
             .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText())
-            .withPremiseMissionTaskName(data.get("premiseMissionTaskName") == null || data.get("premiseMissionTaskName").isNull() ? null : data.get("premiseMissionTaskName").asText());
+            .withPremiseMissionTaskName(data.get("premiseMissionTaskName") == null || data.get("premiseMissionTaskName").isNull() ? null : data.get("premiseMissionTaskName").asText())
+            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
+            .withTargetResetType(data.get("targetResetType") == null || data.get("targetResetType").isNull() ? null : data.get("targetResetType").asText())
+            .withTargetValue(data.get("targetValue") == null || data.get("targetValue").isNull() ? null : data.get("targetValue").longValue());
     }
 
     public JsonNode toJson() {
@@ -182,9 +234,14 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
                 put("missionTaskName", getMissionTaskName());
                 put("metadata", getMetadata());
                 put("description", getDescription());
-                put("counterName", getCounterName());
-                put("targetResetType", getTargetResetType());
-                put("targetValue", getTargetValue());
+                put("verifyCompleteType", getVerifyCompleteType());
+                put("targetCounter", getTargetCounter() != null ? getTargetCounter().toJson() : null);
+                put("verifyCompleteConsumeActions", getVerifyCompleteConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    getVerifyCompleteConsumeActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("completeAcquireActions", getCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getCompleteAcquireActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -193,6 +250,9 @@ public class UpdateMissionTaskModelMasterRequest extends Gs2BasicRequest<UpdateM
                 ).collect(Collectors.toList()));
                 put("challengePeriodEventId", getChallengePeriodEventId());
                 put("premiseMissionTaskName", getPremiseMissionTaskName());
+                put("counterName", getCounterName());
+                put("targetResetType", getTargetResetType());
+                put("targetValue", getTargetValue());
             }}
         );
     }

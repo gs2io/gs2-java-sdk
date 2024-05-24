@@ -25,42 +25,37 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
-import io.gs2.mission.model.TargetCounterModel;
-import io.gs2.mission.model.ConsumeAction;
-import io.gs2.mission.model.AcquireAction;
-import io.gs2.mission.model.MissionTaskModel;
-import io.gs2.mission.model.MissionGroupModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetMissionGroupModelResult implements IResult, Serializable {
-    private MissionGroupModel item;
+public class VerifyCounterValueByStampTaskResult implements IResult, Serializable {
+    private String newContextStack;
 
-	public MissionGroupModel getItem() {
-		return item;
+	public String getNewContextStack() {
+		return newContextStack;
 	}
 
-	public void setItem(MissionGroupModel item) {
-		this.item = item;
+	public void setNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
 	}
 
-	public GetMissionGroupModelResult withItem(MissionGroupModel item) {
-		this.item = item;
+	public VerifyCounterValueByStampTaskResult withNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
 		return this;
 	}
 
-    public static GetMissionGroupModelResult fromJson(JsonNode data) {
+    public static VerifyCounterValueByStampTaskResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetMissionGroupModelResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : MissionGroupModel.fromJson(data.get("item")));
+        return new VerifyCounterValueByStampTaskResult()
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
+                put("newContextStack", getNewContextStack());
             }}
         );
     }

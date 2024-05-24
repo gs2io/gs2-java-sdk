@@ -25,42 +25,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.mission.model.*;
-import io.gs2.mission.model.TargetCounterModel;
-import io.gs2.mission.model.ConsumeAction;
-import io.gs2.mission.model.AcquireAction;
-import io.gs2.mission.model.MissionTaskModel;
-import io.gs2.mission.model.MissionGroupModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GetMissionGroupModelResult implements IResult, Serializable {
-    private MissionGroupModel item;
+public class VerifyCounterValueResult implements IResult, Serializable {
 
-	public MissionGroupModel getItem() {
-		return item;
-	}
-
-	public void setItem(MissionGroupModel item) {
-		this.item = item;
-	}
-
-	public GetMissionGroupModelResult withItem(MissionGroupModel item) {
-		this.item = item;
-		return this;
-	}
-
-    public static GetMissionGroupModelResult fromJson(JsonNode data) {
+    public static VerifyCounterValueResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new GetMissionGroupModelResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : MissionGroupModel.fromJson(data.get("item")));
+        return new VerifyCounterValueResult();
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
             }}
         );
     }
