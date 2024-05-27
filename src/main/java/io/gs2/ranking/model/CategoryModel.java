@@ -34,16 +34,17 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 	private String metadata;
 	private Long minimumValue;
 	private Long maximumValue;
+	private Boolean sum;
 	private String orderDirection;
 	private String scope;
+	private GlobalRankingSetting globalRankingSetting;
+	private String entryPeriodEventId;
+	private String accessPeriodEventId;
 	private Boolean uniqueByUserId;
-	private Boolean sum;
 	private Integer calculateFixedTimingHour;
 	private Integer calculateFixedTimingMinute;
 	private Integer calculateIntervalMinutes;
 	private List<Scope> additionalScopes;
-	private String entryPeriodEventId;
-	private String accessPeriodEventId;
 	private List<String> ignoreUserIds;
 	private String generation;
 	public String getCategoryModelId() {
@@ -96,6 +97,16 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 		this.maximumValue = maximumValue;
 		return this;
 	}
+	public Boolean getSum() {
+		return sum;
+	}
+	public void setSum(Boolean sum) {
+		this.sum = sum;
+	}
+	public CategoryModel withSum(Boolean sum) {
+		this.sum = sum;
+		return this;
+	}
 	public String getOrderDirection() {
 		return orderDirection;
 	}
@@ -116,64 +127,14 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 		this.scope = scope;
 		return this;
 	}
-	public Boolean getUniqueByUserId() {
-		return uniqueByUserId;
+	public GlobalRankingSetting getGlobalRankingSetting() {
+		return globalRankingSetting;
 	}
-	public void setUniqueByUserId(Boolean uniqueByUserId) {
-		this.uniqueByUserId = uniqueByUserId;
+	public void setGlobalRankingSetting(GlobalRankingSetting globalRankingSetting) {
+		this.globalRankingSetting = globalRankingSetting;
 	}
-	public CategoryModel withUniqueByUserId(Boolean uniqueByUserId) {
-		this.uniqueByUserId = uniqueByUserId;
-		return this;
-	}
-	public Boolean getSum() {
-		return sum;
-	}
-	public void setSum(Boolean sum) {
-		this.sum = sum;
-	}
-	public CategoryModel withSum(Boolean sum) {
-		this.sum = sum;
-		return this;
-	}
-	public Integer getCalculateFixedTimingHour() {
-		return calculateFixedTimingHour;
-	}
-	public void setCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
-		this.calculateFixedTimingHour = calculateFixedTimingHour;
-	}
-	public CategoryModel withCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
-		this.calculateFixedTimingHour = calculateFixedTimingHour;
-		return this;
-	}
-	public Integer getCalculateFixedTimingMinute() {
-		return calculateFixedTimingMinute;
-	}
-	public void setCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
-		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
-	}
-	public CategoryModel withCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
-		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
-		return this;
-	}
-	public Integer getCalculateIntervalMinutes() {
-		return calculateIntervalMinutes;
-	}
-	public void setCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
-		this.calculateIntervalMinutes = calculateIntervalMinutes;
-	}
-	public CategoryModel withCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
-		this.calculateIntervalMinutes = calculateIntervalMinutes;
-		return this;
-	}
-	public List<Scope> getAdditionalScopes() {
-		return additionalScopes;
-	}
-	public void setAdditionalScopes(List<Scope> additionalScopes) {
-		this.additionalScopes = additionalScopes;
-	}
-	public CategoryModel withAdditionalScopes(List<Scope> additionalScopes) {
-		this.additionalScopes = additionalScopes;
+	public CategoryModel withGlobalRankingSetting(GlobalRankingSetting globalRankingSetting) {
+		this.globalRankingSetting = globalRankingSetting;
 		return this;
 	}
 	public String getEntryPeriodEventId() {
@@ -196,22 +157,93 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 		this.accessPeriodEventId = accessPeriodEventId;
 		return this;
 	}
+    @Deprecated
+	public Boolean getUniqueByUserId() {
+		return uniqueByUserId;
+	}
+    @Deprecated
+	public void setUniqueByUserId(Boolean uniqueByUserId) {
+		this.uniqueByUserId = uniqueByUserId;
+	}
+    @Deprecated
+	public CategoryModel withUniqueByUserId(Boolean uniqueByUserId) {
+		this.uniqueByUserId = uniqueByUserId;
+		return this;
+	}
+    @Deprecated
+	public Integer getCalculateFixedTimingHour() {
+		return calculateFixedTimingHour;
+	}
+    @Deprecated
+	public void setCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
+		this.calculateFixedTimingHour = calculateFixedTimingHour;
+	}
+    @Deprecated
+	public CategoryModel withCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
+		this.calculateFixedTimingHour = calculateFixedTimingHour;
+		return this;
+	}
+    @Deprecated
+	public Integer getCalculateFixedTimingMinute() {
+		return calculateFixedTimingMinute;
+	}
+    @Deprecated
+	public void setCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
+		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
+	}
+    @Deprecated
+	public CategoryModel withCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
+		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
+		return this;
+	}
+    @Deprecated
+	public Integer getCalculateIntervalMinutes() {
+		return calculateIntervalMinutes;
+	}
+    @Deprecated
+	public void setCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
+		this.calculateIntervalMinutes = calculateIntervalMinutes;
+	}
+    @Deprecated
+	public CategoryModel withCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
+		this.calculateIntervalMinutes = calculateIntervalMinutes;
+		return this;
+	}
+    @Deprecated
+	public List<Scope> getAdditionalScopes() {
+		return additionalScopes;
+	}
+    @Deprecated
+	public void setAdditionalScopes(List<Scope> additionalScopes) {
+		this.additionalScopes = additionalScopes;
+	}
+    @Deprecated
+	public CategoryModel withAdditionalScopes(List<Scope> additionalScopes) {
+		this.additionalScopes = additionalScopes;
+		return this;
+	}
+    @Deprecated
 	public List<String> getIgnoreUserIds() {
 		return ignoreUserIds;
 	}
+    @Deprecated
 	public void setIgnoreUserIds(List<String> ignoreUserIds) {
 		this.ignoreUserIds = ignoreUserIds;
 	}
+    @Deprecated
 	public CategoryModel withIgnoreUserIds(List<String> ignoreUserIds) {
 		this.ignoreUserIds = ignoreUserIds;
 		return this;
 	}
+    @Deprecated
 	public String getGeneration() {
 		return generation;
 	}
+    @Deprecated
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
+    @Deprecated
 	public CategoryModel withGeneration(String generation) {
 		this.generation = generation;
 		return this;
@@ -227,10 +259,13 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withMinimumValue(data.get("minimumValue") == null || data.get("minimumValue").isNull() ? null : data.get("minimumValue").longValue())
             .withMaximumValue(data.get("maximumValue") == null || data.get("maximumValue").isNull() ? null : data.get("maximumValue").longValue())
+            .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
             .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
             .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
+            .withGlobalRankingSetting(data.get("globalRankingSetting") == null || data.get("globalRankingSetting").isNull() ? null : GlobalRankingSetting.fromJson(data.get("globalRankingSetting")))
+            .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
+            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
             .withUniqueByUserId(data.get("uniqueByUserId") == null || data.get("uniqueByUserId").isNull() ? null : data.get("uniqueByUserId").booleanValue())
-            .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
             .withCalculateFixedTimingHour(data.get("calculateFixedTimingHour") == null || data.get("calculateFixedTimingHour").isNull() ? null : data.get("calculateFixedTimingHour").intValue())
             .withCalculateFixedTimingMinute(data.get("calculateFixedTimingMinute") == null || data.get("calculateFixedTimingMinute").isNull() ? null : data.get("calculateFixedTimingMinute").intValue())
             .withCalculateIntervalMinutes(data.get("calculateIntervalMinutes") == null || data.get("calculateIntervalMinutes").isNull() ? null : data.get("calculateIntervalMinutes").intValue())
@@ -240,8 +275,6 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
                     return Scope.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
-            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
             .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? new ArrayList<String>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("ignoreUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
@@ -258,10 +291,13 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
                 put("metadata", getMetadata());
                 put("minimumValue", getMinimumValue());
                 put("maximumValue", getMaximumValue());
+                put("sum", getSum());
                 put("orderDirection", getOrderDirection());
                 put("scope", getScope());
+                put("globalRankingSetting", getGlobalRankingSetting() != null ? getGlobalRankingSetting().toJson() : null);
+                put("entryPeriodEventId", getEntryPeriodEventId());
+                put("accessPeriodEventId", getAccessPeriodEventId());
                 put("uniqueByUserId", getUniqueByUserId());
-                put("sum", getSum());
                 put("calculateFixedTimingHour", getCalculateFixedTimingHour());
                 put("calculateFixedTimingMinute", getCalculateFixedTimingMinute());
                 put("calculateIntervalMinutes", getCalculateIntervalMinutes());
@@ -271,8 +307,6 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("entryPeriodEventId", getEntryPeriodEventId());
-                put("accessPeriodEventId", getAccessPeriodEventId());
                 put("ignoreUserIds", getIgnoreUserIds() == null ? new ArrayList<String>() :
                     getIgnoreUserIds().stream().map(item -> {
                         return item;
@@ -297,16 +331,17 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.minimumValue == null) ? 0 : this.minimumValue.hashCode());
         result = prime * result + ((this.maximumValue == null) ? 0 : this.maximumValue.hashCode());
+        result = prime * result + ((this.sum == null) ? 0 : this.sum.hashCode());
         result = prime * result + ((this.orderDirection == null) ? 0 : this.orderDirection.hashCode());
         result = prime * result + ((this.scope == null) ? 0 : this.scope.hashCode());
+        result = prime * result + ((this.globalRankingSetting == null) ? 0 : this.globalRankingSetting.hashCode());
+        result = prime * result + ((this.entryPeriodEventId == null) ? 0 : this.entryPeriodEventId.hashCode());
+        result = prime * result + ((this.accessPeriodEventId == null) ? 0 : this.accessPeriodEventId.hashCode());
         result = prime * result + ((this.uniqueByUserId == null) ? 0 : this.uniqueByUserId.hashCode());
-        result = prime * result + ((this.sum == null) ? 0 : this.sum.hashCode());
         result = prime * result + ((this.calculateFixedTimingHour == null) ? 0 : this.calculateFixedTimingHour.hashCode());
         result = prime * result + ((this.calculateFixedTimingMinute == null) ? 0 : this.calculateFixedTimingMinute.hashCode());
         result = prime * result + ((this.calculateIntervalMinutes == null) ? 0 : this.calculateIntervalMinutes.hashCode());
         result = prime * result + ((this.additionalScopes == null) ? 0 : this.additionalScopes.hashCode());
-        result = prime * result + ((this.entryPeriodEventId == null) ? 0 : this.entryPeriodEventId.hashCode());
-        result = prime * result + ((this.accessPeriodEventId == null) ? 0 : this.accessPeriodEventId.hashCode());
         result = prime * result + ((this.ignoreUserIds == null) ? 0 : this.ignoreUserIds.hashCode());
         result = prime * result + ((this.generation == null) ? 0 : this.generation.hashCode());
 		return result;
@@ -346,6 +381,11 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 		} else if (!maximumValue.equals(other.maximumValue)) {
 			return false;
 		}
+		if (sum == null) {
+			return other.sum == null;
+		} else if (!sum.equals(other.sum)) {
+			return false;
+		}
 		if (orderDirection == null) {
 			return other.orderDirection == null;
 		} else if (!orderDirection.equals(other.orderDirection)) {
@@ -356,14 +396,24 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 		} else if (!scope.equals(other.scope)) {
 			return false;
 		}
+		if (globalRankingSetting == null) {
+			return other.globalRankingSetting == null;
+		} else if (!globalRankingSetting.equals(other.globalRankingSetting)) {
+			return false;
+		}
+		if (entryPeriodEventId == null) {
+			return other.entryPeriodEventId == null;
+		} else if (!entryPeriodEventId.equals(other.entryPeriodEventId)) {
+			return false;
+		}
+		if (accessPeriodEventId == null) {
+			return other.accessPeriodEventId == null;
+		} else if (!accessPeriodEventId.equals(other.accessPeriodEventId)) {
+			return false;
+		}
 		if (uniqueByUserId == null) {
 			return other.uniqueByUserId == null;
 		} else if (!uniqueByUserId.equals(other.uniqueByUserId)) {
-			return false;
-		}
-		if (sum == null) {
-			return other.sum == null;
-		} else if (!sum.equals(other.sum)) {
 			return false;
 		}
 		if (calculateFixedTimingHour == null) {
@@ -384,16 +434,6 @@ public class CategoryModel implements IModel, Serializable, Comparable<CategoryM
 		if (additionalScopes == null) {
 			return other.additionalScopes == null;
 		} else if (!additionalScopes.equals(other.additionalScopes)) {
-			return false;
-		}
-		if (entryPeriodEventId == null) {
-			return other.entryPeriodEventId == null;
-		} else if (!entryPeriodEventId.equals(other.entryPeriodEventId)) {
-			return false;
-		}
-		if (accessPeriodEventId == null) {
-			return other.accessPeriodEventId == null;
-		} else if (!accessPeriodEventId.equals(other.accessPeriodEventId)) {
 			return false;
 		}
 		if (ignoreUserIds == null) {

@@ -1417,6 +1417,9 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("maximumValue", request.getMaximumValue());
                     put("orderDirection", request.getOrderDirection());
                     put("scope", request.getScope());
+                    put("globalRankingSetting", request.getGlobalRankingSetting() != null ? request.getGlobalRankingSetting().toJson() : null);
+                    put("entryPeriodEventId", request.getEntryPeriodEventId());
+                    put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("uniqueByUserId", request.getUniqueByUserId());
                     put("sum", request.getSum());
                     put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
@@ -1428,8 +1431,6 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("entryPeriodEventId", request.getEntryPeriodEventId());
-                    put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("ignoreUserIds", request.getIgnoreUserIds() == null ? new ArrayList<String>() :
                         request.getIgnoreUserIds().stream().map(item -> {
                             return item;
@@ -1604,6 +1605,9 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                     put("maximumValue", request.getMaximumValue());
                     put("orderDirection", request.getOrderDirection());
                     put("scope", request.getScope());
+                    put("globalRankingSetting", request.getGlobalRankingSetting() != null ? request.getGlobalRankingSetting().toJson() : null);
+                    put("entryPeriodEventId", request.getEntryPeriodEventId());
+                    put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("uniqueByUserId", request.getUniqueByUserId());
                     put("sum", request.getSum());
                     put("calculateFixedTimingHour", request.getCalculateFixedTimingHour());
@@ -1615,8 +1619,6 @@ import io.gs2.ranking.model.*;public class Gs2RankingRestClient extends Abstract
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
-                    put("entryPeriodEventId", request.getEntryPeriodEventId());
-                    put("accessPeriodEventId", request.getAccessPeriodEventId());
                     put("ignoreUserIds", request.getIgnoreUserIds() == null ? new ArrayList<String>() :
                         request.getIgnoreUserIds().stream().map(item -> {
                             return item;

@@ -25,7 +25,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.ranking.model.*;
+import io.gs2.ranking.model.FixedTiming;
 import io.gs2.ranking.model.Scope;
+import io.gs2.ranking.model.GlobalRankingSetting;
 import io.gs2.ranking.model.CategoryModel;
 
 @SuppressWarnings("serial")

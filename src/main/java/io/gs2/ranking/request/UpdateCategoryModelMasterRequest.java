@@ -24,7 +24,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.ranking.model.FixedTiming;
 import io.gs2.ranking.model.Scope;
+import io.gs2.ranking.model.GlobalRankingSetting;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -37,14 +39,15 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
     private Long maximumValue;
     private String orderDirection;
     private String scope;
+    private GlobalRankingSetting globalRankingSetting;
+    private String entryPeriodEventId;
+    private String accessPeriodEventId;
     private Boolean uniqueByUserId;
     private Boolean sum;
     private Integer calculateFixedTimingHour;
     private Integer calculateFixedTimingMinute;
     private Integer calculateIntervalMinutes;
     private List<Scope> additionalScopes;
-    private String entryPeriodEventId;
-    private String accessPeriodEventId;
     private List<String> ignoreUserIds;
     private String generation;
 	public String getNamespaceName() {
@@ -127,64 +130,14 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
 		this.scope = scope;
 		return this;
 	}
-	public Boolean getUniqueByUserId() {
-		return uniqueByUserId;
+	public GlobalRankingSetting getGlobalRankingSetting() {
+		return globalRankingSetting;
 	}
-	public void setUniqueByUserId(Boolean uniqueByUserId) {
-		this.uniqueByUserId = uniqueByUserId;
+	public void setGlobalRankingSetting(GlobalRankingSetting globalRankingSetting) {
+		this.globalRankingSetting = globalRankingSetting;
 	}
-	public UpdateCategoryModelMasterRequest withUniqueByUserId(Boolean uniqueByUserId) {
-		this.uniqueByUserId = uniqueByUserId;
-		return this;
-	}
-	public Boolean getSum() {
-		return sum;
-	}
-	public void setSum(Boolean sum) {
-		this.sum = sum;
-	}
-	public UpdateCategoryModelMasterRequest withSum(Boolean sum) {
-		this.sum = sum;
-		return this;
-	}
-	public Integer getCalculateFixedTimingHour() {
-		return calculateFixedTimingHour;
-	}
-	public void setCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
-		this.calculateFixedTimingHour = calculateFixedTimingHour;
-	}
-	public UpdateCategoryModelMasterRequest withCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
-		this.calculateFixedTimingHour = calculateFixedTimingHour;
-		return this;
-	}
-	public Integer getCalculateFixedTimingMinute() {
-		return calculateFixedTimingMinute;
-	}
-	public void setCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
-		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
-	}
-	public UpdateCategoryModelMasterRequest withCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
-		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
-		return this;
-	}
-	public Integer getCalculateIntervalMinutes() {
-		return calculateIntervalMinutes;
-	}
-	public void setCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
-		this.calculateIntervalMinutes = calculateIntervalMinutes;
-	}
-	public UpdateCategoryModelMasterRequest withCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
-		this.calculateIntervalMinutes = calculateIntervalMinutes;
-		return this;
-	}
-	public List<Scope> getAdditionalScopes() {
-		return additionalScopes;
-	}
-	public void setAdditionalScopes(List<Scope> additionalScopes) {
-		this.additionalScopes = additionalScopes;
-	}
-	public UpdateCategoryModelMasterRequest withAdditionalScopes(List<Scope> additionalScopes) {
-		this.additionalScopes = additionalScopes;
+	public UpdateCategoryModelMasterRequest withGlobalRankingSetting(GlobalRankingSetting globalRankingSetting) {
+		this.globalRankingSetting = globalRankingSetting;
 		return this;
 	}
 	public String getEntryPeriodEventId() {
@@ -207,22 +160,103 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
 		this.accessPeriodEventId = accessPeriodEventId;
 		return this;
 	}
+    @Deprecated
+	public Boolean getUniqueByUserId() {
+		return uniqueByUserId;
+	}
+    @Deprecated
+	public void setUniqueByUserId(Boolean uniqueByUserId) {
+		this.uniqueByUserId = uniqueByUserId;
+	}
+    @Deprecated
+	public UpdateCategoryModelMasterRequest withUniqueByUserId(Boolean uniqueByUserId) {
+		this.uniqueByUserId = uniqueByUserId;
+		return this;
+	}
+	public Boolean getSum() {
+		return sum;
+	}
+	public void setSum(Boolean sum) {
+		this.sum = sum;
+	}
+	public UpdateCategoryModelMasterRequest withSum(Boolean sum) {
+		this.sum = sum;
+		return this;
+	}
+    @Deprecated
+	public Integer getCalculateFixedTimingHour() {
+		return calculateFixedTimingHour;
+	}
+    @Deprecated
+	public void setCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
+		this.calculateFixedTimingHour = calculateFixedTimingHour;
+	}
+    @Deprecated
+	public UpdateCategoryModelMasterRequest withCalculateFixedTimingHour(Integer calculateFixedTimingHour) {
+		this.calculateFixedTimingHour = calculateFixedTimingHour;
+		return this;
+	}
+    @Deprecated
+	public Integer getCalculateFixedTimingMinute() {
+		return calculateFixedTimingMinute;
+	}
+    @Deprecated
+	public void setCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
+		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
+	}
+    @Deprecated
+	public UpdateCategoryModelMasterRequest withCalculateFixedTimingMinute(Integer calculateFixedTimingMinute) {
+		this.calculateFixedTimingMinute = calculateFixedTimingMinute;
+		return this;
+	}
+    @Deprecated
+	public Integer getCalculateIntervalMinutes() {
+		return calculateIntervalMinutes;
+	}
+    @Deprecated
+	public void setCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
+		this.calculateIntervalMinutes = calculateIntervalMinutes;
+	}
+    @Deprecated
+	public UpdateCategoryModelMasterRequest withCalculateIntervalMinutes(Integer calculateIntervalMinutes) {
+		this.calculateIntervalMinutes = calculateIntervalMinutes;
+		return this;
+	}
+    @Deprecated
+	public List<Scope> getAdditionalScopes() {
+		return additionalScopes;
+	}
+    @Deprecated
+	public void setAdditionalScopes(List<Scope> additionalScopes) {
+		this.additionalScopes = additionalScopes;
+	}
+    @Deprecated
+	public UpdateCategoryModelMasterRequest withAdditionalScopes(List<Scope> additionalScopes) {
+		this.additionalScopes = additionalScopes;
+		return this;
+	}
+    @Deprecated
 	public List<String> getIgnoreUserIds() {
 		return ignoreUserIds;
 	}
+    @Deprecated
 	public void setIgnoreUserIds(List<String> ignoreUserIds) {
 		this.ignoreUserIds = ignoreUserIds;
 	}
+    @Deprecated
 	public UpdateCategoryModelMasterRequest withIgnoreUserIds(List<String> ignoreUserIds) {
 		this.ignoreUserIds = ignoreUserIds;
 		return this;
 	}
+    @Deprecated
 	public String getGeneration() {
 		return generation;
 	}
+    @Deprecated
 	public void setGeneration(String generation) {
 		this.generation = generation;
 	}
+    @Deprecated
 	public UpdateCategoryModelMasterRequest withGeneration(String generation) {
 		this.generation = generation;
 		return this;
@@ -241,6 +275,9 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
             .withMaximumValue(data.get("maximumValue") == null || data.get("maximumValue").isNull() ? null : data.get("maximumValue").longValue())
             .withOrderDirection(data.get("orderDirection") == null || data.get("orderDirection").isNull() ? null : data.get("orderDirection").asText())
             .withScope(data.get("scope") == null || data.get("scope").isNull() ? null : data.get("scope").asText())
+            .withGlobalRankingSetting(data.get("globalRankingSetting") == null || data.get("globalRankingSetting").isNull() ? null : GlobalRankingSetting.fromJson(data.get("globalRankingSetting")))
+            .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
+            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
             .withUniqueByUserId(data.get("uniqueByUserId") == null || data.get("uniqueByUserId").isNull() ? null : data.get("uniqueByUserId").booleanValue())
             .withSum(data.get("sum") == null || data.get("sum").isNull() ? null : data.get("sum").booleanValue())
             .withCalculateFixedTimingHour(data.get("calculateFixedTimingHour") == null || data.get("calculateFixedTimingHour").isNull() ? null : data.get("calculateFixedTimingHour").intValue())
@@ -252,8 +289,6 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
                     return Scope.fromJson(item);
                 }
             ).collect(Collectors.toList()))
-            .withEntryPeriodEventId(data.get("entryPeriodEventId") == null || data.get("entryPeriodEventId").isNull() ? null : data.get("entryPeriodEventId").asText())
-            .withAccessPeriodEventId(data.get("accessPeriodEventId") == null || data.get("accessPeriodEventId").isNull() ? null : data.get("accessPeriodEventId").asText())
             .withIgnoreUserIds(data.get("ignoreUserIds") == null || data.get("ignoreUserIds").isNull() ? new ArrayList<String>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("ignoreUserIds").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.asText();
@@ -273,6 +308,9 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
                 put("maximumValue", getMaximumValue());
                 put("orderDirection", getOrderDirection());
                 put("scope", getScope());
+                put("globalRankingSetting", getGlobalRankingSetting() != null ? getGlobalRankingSetting().toJson() : null);
+                put("entryPeriodEventId", getEntryPeriodEventId());
+                put("accessPeriodEventId", getAccessPeriodEventId());
                 put("uniqueByUserId", getUniqueByUserId());
                 put("sum", getSum());
                 put("calculateFixedTimingHour", getCalculateFixedTimingHour());
@@ -284,8 +322,6 @@ public class UpdateCategoryModelMasterRequest extends Gs2BasicRequest<UpdateCate
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
-                put("entryPeriodEventId", getEntryPeriodEventId());
-                put("accessPeriodEventId", getAccessPeriodEventId());
                 put("ignoreUserIds", getIgnoreUserIds() == null ? new ArrayList<String>() :
                     getIgnoreUserIds().stream().map(item -> {
                         return item;
