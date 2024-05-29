@@ -87,12 +87,15 @@ public class UpdateGlobalMessageMasterRequest extends Gs2BasicRequest<UpdateGlob
 		this.expiresTimeSpan = expiresTimeSpan;
 		return this;
 	}
+    @Deprecated
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
+    @Deprecated
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
+    @Deprecated
 	public UpdateGlobalMessageMasterRequest withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;

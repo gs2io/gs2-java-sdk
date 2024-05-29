@@ -156,6 +156,7 @@ import io.gs2.buff.model.*;public class Gs2BuffRestClient extends AbstractGs2Cli
                 new HashMap<String, Object>() {{
                     put("name", request.getName());
                     put("description", request.getDescription());
+                    put("applyBuffScript", request.getApplyBuffScript() != null ? request.getApplyBuffScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -398,6 +399,7 @@ import io.gs2.buff.model.*;public class Gs2BuffRestClient extends AbstractGs2Cli
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
+                    put("applyBuffScript", request.getApplyBuffScript() != null ? request.getApplyBuffScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

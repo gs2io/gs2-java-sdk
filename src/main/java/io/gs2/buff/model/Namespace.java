@@ -32,6 +32,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String namespaceId;
 	private String name;
 	private String description;
+	private ScriptSetting applyBuffScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -64,6 +65,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	public ScriptSetting getApplyBuffScript() {
+		return applyBuffScript;
+	}
+	public void setApplyBuffScript(ScriptSetting applyBuffScript) {
+		this.applyBuffScript = applyBuffScript;
+	}
+	public Namespace withApplyBuffScript(ScriptSetting applyBuffScript) {
+		this.applyBuffScript = applyBuffScript;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -115,6 +126,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withApplyBuffScript(data.get("applyBuffScript") == null || data.get("applyBuffScript").isNull() ? null : ScriptSetting.fromJson(data.get("applyBuffScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -127,6 +139,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
                 put("description", getDescription());
+                put("applyBuffScript", getApplyBuffScript() != null ? getApplyBuffScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -147,6 +160,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.applyBuffScript == null) ? 0 : this.applyBuffScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -176,6 +190,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (description == null) {
 			return other.description == null;
 		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (applyBuffScript == null) {
+			return other.applyBuffScript == null;
+		} else if (!applyBuffScript.equals(other.applyBuffScript)) {
 			return false;
 		}
 		if (logSetting == null) {

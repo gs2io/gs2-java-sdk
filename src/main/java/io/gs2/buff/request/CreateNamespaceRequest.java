@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.buff.model.ScriptSetting;
 import io.gs2.buff.model.LogSetting;
 
 @SuppressWarnings("serial")
@@ -31,6 +32,7 @@ import io.gs2.buff.model.LogSetting;
 public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceRequest> {
     private String name;
     private String description;
+    private ScriptSetting applyBuffScript;
     private LogSetting logSetting;
 	public String getName() {
 		return name;
@@ -52,6 +54,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.description = description;
 		return this;
 	}
+	public ScriptSetting getApplyBuffScript() {
+		return applyBuffScript;
+	}
+	public void setApplyBuffScript(ScriptSetting applyBuffScript) {
+		this.applyBuffScript = applyBuffScript;
+	}
+	public CreateNamespaceRequest withApplyBuffScript(ScriptSetting applyBuffScript) {
+		this.applyBuffScript = applyBuffScript;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -70,6 +82,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
         return new CreateNamespaceRequest()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
+            .withApplyBuffScript(data.get("applyBuffScript") == null || data.get("applyBuffScript").isNull() ? null : ScriptSetting.fromJson(data.get("applyBuffScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -78,6 +91,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("description", getDescription());
+                put("applyBuffScript", getApplyBuffScript() != null ? getApplyBuffScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

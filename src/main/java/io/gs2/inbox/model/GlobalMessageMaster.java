@@ -88,12 +88,15 @@ public class GlobalMessageMaster implements IModel, Serializable, Comparable<Glo
 		this.expiresTimeSpan = expiresTimeSpan;
 		return this;
 	}
+    @Deprecated
 	public Long getExpiresAt() {
 		return expiresAt;
 	}
+    @Deprecated
 	public void setExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 	}
+    @Deprecated
 	public GlobalMessageMaster withExpiresAt(Long expiresAt) {
 		this.expiresAt = expiresAt;
 		return this;
