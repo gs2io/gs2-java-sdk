@@ -37,6 +37,7 @@ public class Score implements IModel, Serializable, Comparable<Score> {
 	private Long score;
 	private String metadata;
 	private Long createdAt;
+	private Long revision;
 	public String getScoreId() {
 		return scoreId;
 	}
@@ -117,6 +118,16 @@ public class Score implements IModel, Serializable, Comparable<Score> {
 		this.createdAt = createdAt;
 		return this;
 	}
+	public Long getRevision() {
+		return revision;
+	}
+	public void setRevision(Long revision) {
+		this.revision = revision;
+	}
+	public Score withRevision(Long revision) {
+		this.revision = revision;
+		return this;
+	}
 
     public static Score fromJson(JsonNode data) {
         if (data == null) {
@@ -130,7 +141,8 @@ public class Score implements IModel, Serializable, Comparable<Score> {
             .withScorerUserId(data.get("scorerUserId") == null || data.get("scorerUserId").isNull() ? null : data.get("scorerUserId").asText())
             .withScore(data.get("score") == null || data.get("score").isNull() ? null : data.get("score").longValue())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
-            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue());
+            .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
+            .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
 
     public JsonNode toJson() {
@@ -144,6 +156,7 @@ public class Score implements IModel, Serializable, Comparable<Score> {
                 put("score", getScore());
                 put("metadata", getMetadata());
                 put("createdAt", getCreatedAt());
+                put("revision", getRevision());
             }}
         );
     }
@@ -165,6 +178,7 @@ public class Score implements IModel, Serializable, Comparable<Score> {
         result = prime * result + ((this.score == null) ? 0 : this.score.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
 	}
 
@@ -215,6 +229,11 @@ public class Score implements IModel, Serializable, Comparable<Score> {
 		if (createdAt == null) {
 			return other.createdAt == null;
 		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (revision == null) {
+			return other.revision == null;
+		} else if (!revision.equals(other.revision)) {
 			return false;
 		}
 		return true;

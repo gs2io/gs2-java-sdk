@@ -3250,6 +3250,363 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyCurrentMaximumMemberCountTask extends Gs2RestSessionTask<VerifyCurrentMaximumMemberCountResult> {
+        private VerifyCurrentMaximumMemberCountRequest request;
+
+        public VerifyCurrentMaximumMemberCountTask(
+            VerifyCurrentMaximumMemberCountRequest request,
+            AsyncAction<AsyncResult<VerifyCurrentMaximumMemberCountResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCurrentMaximumMemberCountResult parse(JsonNode data) {
+            return VerifyCurrentMaximumMemberCountResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/me/currentMaximumMemberCount/verify";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("verifyType", request.getVerifyType());
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCurrentMaximumMemberCountAsync(
+            VerifyCurrentMaximumMemberCountRequest request,
+            AsyncAction<AsyncResult<VerifyCurrentMaximumMemberCountResult>> callback
+    ) {
+        VerifyCurrentMaximumMemberCountTask task = new VerifyCurrentMaximumMemberCountTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCurrentMaximumMemberCountResult verifyCurrentMaximumMemberCount(
+            VerifyCurrentMaximumMemberCountRequest request
+    ) {
+        final AsyncResult<VerifyCurrentMaximumMemberCountResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCurrentMaximumMemberCountAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCurrentMaximumMemberCountByGuildNameTask extends Gs2RestSessionTask<VerifyCurrentMaximumMemberCountByGuildNameResult> {
+        private VerifyCurrentMaximumMemberCountByGuildNameRequest request;
+
+        public VerifyCurrentMaximumMemberCountByGuildNameTask(
+            VerifyCurrentMaximumMemberCountByGuildNameRequest request,
+            AsyncAction<AsyncResult<VerifyCurrentMaximumMemberCountByGuildNameResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCurrentMaximumMemberCountByGuildNameResult parse(JsonNode data) {
+            return VerifyCurrentMaximumMemberCountByGuildNameResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/currentMaximumMemberCount/verify";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("verifyType", request.getVerifyType());
+                    put("value", request.getValue());
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCurrentMaximumMemberCountByGuildNameAsync(
+            VerifyCurrentMaximumMemberCountByGuildNameRequest request,
+            AsyncAction<AsyncResult<VerifyCurrentMaximumMemberCountByGuildNameResult>> callback
+    ) {
+        VerifyCurrentMaximumMemberCountByGuildNameTask task = new VerifyCurrentMaximumMemberCountByGuildNameTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCurrentMaximumMemberCountByGuildNameResult verifyCurrentMaximumMemberCountByGuildName(
+            VerifyCurrentMaximumMemberCountByGuildNameRequest request
+    ) {
+        final AsyncResult<VerifyCurrentMaximumMemberCountByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCurrentMaximumMemberCountByGuildNameAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyIncludeMemberTask extends Gs2RestSessionTask<VerifyIncludeMemberResult> {
+        private VerifyIncludeMemberRequest request;
+
+        public VerifyIncludeMemberTask(
+            VerifyIncludeMemberRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeMemberResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyIncludeMemberResult parse(JsonNode data) {
+            return VerifyIncludeMemberResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/member/me/verify";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("verifyType", request.getVerifyType());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyIncludeMemberAsync(
+            VerifyIncludeMemberRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeMemberResult>> callback
+    ) {
+        VerifyIncludeMemberTask task = new VerifyIncludeMemberTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyIncludeMemberResult verifyIncludeMember(
+            VerifyIncludeMemberRequest request
+    ) {
+        final AsyncResult<VerifyIncludeMemberResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyIncludeMemberAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyIncludeMemberByUserIdTask extends Gs2RestSessionTask<VerifyIncludeMemberByUserIdResult> {
+        private VerifyIncludeMemberByUserIdRequest request;
+
+        public VerifyIncludeMemberByUserIdTask(
+            VerifyIncludeMemberByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeMemberByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyIncludeMemberByUserIdResult parse(JsonNode data) {
+            return VerifyIncludeMemberByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/member/{userId}/verify";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("verifyType", request.getVerifyType());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyIncludeMemberByUserIdAsync(
+            VerifyIncludeMemberByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeMemberByUserIdResult>> callback
+    ) {
+        VerifyIncludeMemberByUserIdTask task = new VerifyIncludeMemberByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyIncludeMemberByUserIdResult verifyIncludeMemberByUserId(
+            VerifyIncludeMemberByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyIncludeMemberByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyIncludeMemberByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class SetMaximumCurrentMaximumMemberCountByGuildNameTask extends Gs2RestSessionTask<SetMaximumCurrentMaximumMemberCountByGuildNameResult> {
         private SetMaximumCurrentMaximumMemberCountByGuildNameRequest request;
 
@@ -3737,6 +4094,166 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
     ) {
         final AsyncResult<SetMaximumCurrentMaximumMemberCountByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         setMaximumCurrentMaximumMemberCountByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCurrentMaximumMemberCountByStampTaskTask extends Gs2RestSessionTask<VerifyCurrentMaximumMemberCountByStampTaskResult> {
+        private VerifyCurrentMaximumMemberCountByStampTaskRequest request;
+
+        public VerifyCurrentMaximumMemberCountByStampTaskTask(
+            VerifyCurrentMaximumMemberCountByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCurrentMaximumMemberCountByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCurrentMaximumMemberCountByStampTaskResult parse(JsonNode data) {
+            return VerifyCurrentMaximumMemberCountByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/guild/currentMaximumMemberCount/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCurrentMaximumMemberCountByStampTaskAsync(
+            VerifyCurrentMaximumMemberCountByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCurrentMaximumMemberCountByStampTaskResult>> callback
+    ) {
+        VerifyCurrentMaximumMemberCountByStampTaskTask task = new VerifyCurrentMaximumMemberCountByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCurrentMaximumMemberCountByStampTaskResult verifyCurrentMaximumMemberCountByStampTask(
+            VerifyCurrentMaximumMemberCountByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyCurrentMaximumMemberCountByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCurrentMaximumMemberCountByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyIncludeMemberByStampTaskTask extends Gs2RestSessionTask<VerifyIncludeMemberByStampTaskResult> {
+        private VerifyIncludeMemberByStampTaskRequest request;
+
+        public VerifyIncludeMemberByStampTaskTask(
+            VerifyIncludeMemberByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeMemberByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyIncludeMemberByStampTaskResult parse(JsonNode data) {
+            return VerifyIncludeMemberByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/guild/member/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyIncludeMemberByStampTaskAsync(
+            VerifyIncludeMemberByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeMemberByStampTaskResult>> callback
+    ) {
+        VerifyIncludeMemberByStampTaskTask task = new VerifyIncludeMemberByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyIncludeMemberByStampTaskResult verifyIncludeMemberByStampTask(
+            VerifyIncludeMemberByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyIncludeMemberByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyIncludeMemberByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
