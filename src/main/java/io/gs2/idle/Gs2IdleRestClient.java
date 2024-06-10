@@ -2948,6 +2948,86 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         return resultAsyncResult[0].getResult();
     }
 
+    class ReceiveByStampSheetTask extends Gs2RestSessionTask<ReceiveByStampSheetResult> {
+        private ReceiveByStampSheetRequest request;
+
+        public ReceiveByStampSheetTask(
+            ReceiveByStampSheetRequest request,
+            AsyncAction<AsyncResult<ReceiveByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ReceiveByStampSheetResult parse(JsonNode data) {
+            return ReceiveByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "idle")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/status/receive";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void receiveByStampSheetAsync(
+            ReceiveByStampSheetRequest request,
+            AsyncAction<AsyncResult<ReceiveByStampSheetResult>> callback
+    ) {
+        ReceiveByStampSheetTask task = new ReceiveByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public ReceiveByStampSheetResult receiveByStampSheet(
+            ReceiveByStampSheetRequest request
+    ) {
+        final AsyncResult<ReceiveByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        receiveByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
         private ExportMasterRequest request;
 

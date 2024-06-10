@@ -2586,6 +2586,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2674,6 +2675,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -5106,6 +5108,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -5195,6 +5198,7 @@ import io.gs2.ranking2.model.*;public class Gs2Ranking2RestClient extends Abstra
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("season", request.getSeason());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
