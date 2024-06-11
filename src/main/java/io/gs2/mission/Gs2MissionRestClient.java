@@ -844,6 +844,97 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyCompleteByUserIdTask extends Gs2RestSessionTask<VerifyCompleteByUserIdResult> {
+        private VerifyCompleteByUserIdRequest request;
+
+        public VerifyCompleteByUserIdTask(
+            VerifyCompleteByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCompleteByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCompleteByUserIdResult parse(JsonNode data) {
+            return VerifyCompleteByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/complete/group/{missionGroupName}/task/{missionTaskName}/verify/{verifyType}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{missionGroupName}", this.request.getMissionGroupName() == null || this.request.getMissionGroupName().length() == 0 ? "null" : String.valueOf(this.request.getMissionGroupName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{verifyType}", this.request.getVerifyType() == null || this.request.getVerifyType().length() == 0 ? "null" : String.valueOf(this.request.getVerifyType()));
+            url = url.replace("{missionTaskName}", this.request.getMissionTaskName() == null || this.request.getMissionTaskName().length() == 0 ? "null" : String.valueOf(this.request.getMissionTaskName()));
+            url = url.replace("{multiplyValueSpecifyingQuantity}", this.request.getMultiplyValueSpecifyingQuantity() == null  ? "null" : String.valueOf(this.request.getMultiplyValueSpecifyingQuantity()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCompleteByUserIdAsync(
+            VerifyCompleteByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyCompleteByUserIdResult>> callback
+    ) {
+        VerifyCompleteByUserIdTask task = new VerifyCompleteByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCompleteByUserIdResult verifyCompleteByUserId(
+            VerifyCompleteByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyCompleteByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCompleteByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class ReceiveByStampTaskTask extends Gs2RestSessionTask<ReceiveByStampTaskResult> {
         private ReceiveByStampTaskRequest request;
 
@@ -988,6 +1079,86 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
     ) {
         final AsyncResult<RevertReceiveByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
         revertReceiveByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyCompleteByStampTaskTask extends Gs2RestSessionTask<VerifyCompleteByStampTaskResult> {
+        private VerifyCompleteByStampTaskRequest request;
+
+        public VerifyCompleteByStampTaskTask(
+            VerifyCompleteByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCompleteByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyCompleteByStampTaskResult parse(JsonNode data) {
+            return VerifyCompleteByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "mission")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/complete/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyCompleteByStampTaskAsync(
+            VerifyCompleteByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyCompleteByStampTaskResult>> callback
+    ) {
+        VerifyCompleteByStampTaskTask task = new VerifyCompleteByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyCompleteByStampTaskResult verifyCompleteByStampTask(
+            VerifyCompleteByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyCompleteByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyCompleteByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
