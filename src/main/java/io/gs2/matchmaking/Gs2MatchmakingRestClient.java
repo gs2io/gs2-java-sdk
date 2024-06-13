@@ -3257,12 +3257,12 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
-    class GetCurrentRatingModelMasterTask extends Gs2RestSessionTask<GetCurrentRatingModelMasterResult> {
-        private GetCurrentRatingModelMasterRequest request;
+    class GetCurrentModelMasterTask extends Gs2RestSessionTask<GetCurrentModelMasterResult> {
+        private GetCurrentModelMasterRequest request;
 
-        public GetCurrentRatingModelMasterTask(
-            GetCurrentRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentRatingModelMasterResult>> userCallback
+        public GetCurrentModelMasterTask(
+            GetCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3272,8 +3272,8 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         }
 
         @Override
-        public GetCurrentRatingModelMasterResult parse(JsonNode data) {
-            return GetCurrentRatingModelMasterResult.fromJson(data);
+        public GetCurrentModelMasterResult parse(JsonNode data) {
+            return GetCurrentModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -3308,19 +3308,19 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         }
     }
 
-    public void getCurrentRatingModelMasterAsync(
-            GetCurrentRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<GetCurrentRatingModelMasterResult>> callback
+    public void getCurrentModelMasterAsync(
+            GetCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentModelMasterResult>> callback
     ) {
-        GetCurrentRatingModelMasterTask task = new GetCurrentRatingModelMasterTask(request, callback);
+        GetCurrentModelMasterTask task = new GetCurrentModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    public GetCurrentRatingModelMasterResult getCurrentRatingModelMaster(
-            GetCurrentRatingModelMasterRequest request
+    public GetCurrentModelMasterResult getCurrentModelMaster(
+            GetCurrentModelMasterRequest request
     ) {
-        final AsyncResult<GetCurrentRatingModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        getCurrentRatingModelMasterAsync(
+        final AsyncResult<GetCurrentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCurrentModelMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -3337,12 +3337,12 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
-    class UpdateCurrentRatingModelMasterTask extends Gs2RestSessionTask<UpdateCurrentRatingModelMasterResult> {
-        private UpdateCurrentRatingModelMasterRequest request;
+    class UpdateCurrentModelMasterTask extends Gs2RestSessionTask<UpdateCurrentModelMasterResult> {
+        private UpdateCurrentModelMasterRequest request;
 
-        public UpdateCurrentRatingModelMasterTask(
-            UpdateCurrentRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterResult>> userCallback
+        public UpdateCurrentModelMasterTask(
+            UpdateCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3352,8 +3352,8 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         }
 
         @Override
-        public UpdateCurrentRatingModelMasterResult parse(JsonNode data) {
-            return UpdateCurrentRatingModelMasterResult.fromJson(data);
+        public UpdateCurrentModelMasterResult parse(JsonNode data) {
+            return UpdateCurrentModelMasterResult.fromJson(data);
         }
 
         @Override
@@ -3389,19 +3389,19 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         }
     }
 
-    public void updateCurrentRatingModelMasterAsync(
-            UpdateCurrentRatingModelMasterRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterResult>> callback
+    public void updateCurrentModelMasterAsync(
+            UpdateCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterResult>> callback
     ) {
-        UpdateCurrentRatingModelMasterTask task = new UpdateCurrentRatingModelMasterTask(request, callback);
+        UpdateCurrentModelMasterTask task = new UpdateCurrentModelMasterTask(request, callback);
         session.execute(task);
     }
 
-    public UpdateCurrentRatingModelMasterResult updateCurrentRatingModelMaster(
-            UpdateCurrentRatingModelMasterRequest request
+    public UpdateCurrentModelMasterResult updateCurrentModelMaster(
+            UpdateCurrentModelMasterRequest request
     ) {
-        final AsyncResult<UpdateCurrentRatingModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateCurrentRatingModelMasterAsync(
+        final AsyncResult<UpdateCurrentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentModelMasterAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -3418,12 +3418,12 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
-    class UpdateCurrentRatingModelMasterFromGitHubTask extends Gs2RestSessionTask<UpdateCurrentRatingModelMasterFromGitHubResult> {
-        private UpdateCurrentRatingModelMasterFromGitHubRequest request;
+    class UpdateCurrentModelMasterFromGitHubTask extends Gs2RestSessionTask<UpdateCurrentModelMasterFromGitHubResult> {
+        private UpdateCurrentModelMasterFromGitHubRequest request;
 
-        public UpdateCurrentRatingModelMasterFromGitHubTask(
-            UpdateCurrentRatingModelMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterFromGitHubResult>> userCallback
+        public UpdateCurrentModelMasterFromGitHubTask(
+            UpdateCurrentModelMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterFromGitHubResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -3433,8 +3433,8 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         }
 
         @Override
-        public UpdateCurrentRatingModelMasterFromGitHubResult parse(JsonNode data) {
-            return UpdateCurrentRatingModelMasterFromGitHubResult.fromJson(data);
+        public UpdateCurrentModelMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentModelMasterFromGitHubResult.fromJson(data);
         }
 
         @Override
@@ -3470,19 +3470,1477 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         }
     }
 
-    public void updateCurrentRatingModelMasterFromGitHubAsync(
-            UpdateCurrentRatingModelMasterFromGitHubRequest request,
-            AsyncAction<AsyncResult<UpdateCurrentRatingModelMasterFromGitHubResult>> callback
+    public void updateCurrentModelMasterFromGitHubAsync(
+            UpdateCurrentModelMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterFromGitHubResult>> callback
     ) {
-        UpdateCurrentRatingModelMasterFromGitHubTask task = new UpdateCurrentRatingModelMasterFromGitHubTask(request, callback);
+        UpdateCurrentModelMasterFromGitHubTask task = new UpdateCurrentModelMasterFromGitHubTask(request, callback);
         session.execute(task);
     }
 
-    public UpdateCurrentRatingModelMasterFromGitHubResult updateCurrentRatingModelMasterFromGitHub(
-            UpdateCurrentRatingModelMasterFromGitHubRequest request
+    public UpdateCurrentModelMasterFromGitHubResult updateCurrentModelMasterFromGitHub(
+            UpdateCurrentModelMasterFromGitHubRequest request
     ) {
-        final AsyncResult<UpdateCurrentRatingModelMasterFromGitHubResult>[] resultAsyncResult = new AsyncResult[]{null};
-        updateCurrentRatingModelMasterFromGitHubAsync(
+        final AsyncResult<UpdateCurrentModelMasterFromGitHubResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentModelMasterFromGitHubAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSeasonModelsTask extends Gs2RestSessionTask<DescribeSeasonModelsResult> {
+        private DescribeSeasonModelsRequest request;
+
+        public DescribeSeasonModelsTask(
+            DescribeSeasonModelsRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSeasonModelsResult parse(JsonNode data) {
+            return DescribeSeasonModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/season";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSeasonModelsAsync(
+            DescribeSeasonModelsRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonModelsResult>> callback
+    ) {
+        DescribeSeasonModelsTask task = new DescribeSeasonModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSeasonModelsResult describeSeasonModels(
+            DescribeSeasonModelsRequest request
+    ) {
+        final AsyncResult<DescribeSeasonModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSeasonModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSeasonModelTask extends Gs2RestSessionTask<GetSeasonModelResult> {
+        private GetSeasonModelRequest request;
+
+        public GetSeasonModelTask(
+            GetSeasonModelRequest request,
+            AsyncAction<AsyncResult<GetSeasonModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSeasonModelResult parse(JsonNode data) {
+            return GetSeasonModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/season/{seasonName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSeasonModelAsync(
+            GetSeasonModelRequest request,
+            AsyncAction<AsyncResult<GetSeasonModelResult>> callback
+    ) {
+        GetSeasonModelTask task = new GetSeasonModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSeasonModelResult getSeasonModel(
+            GetSeasonModelRequest request
+    ) {
+        final AsyncResult<GetSeasonModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSeasonModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSeasonModelMastersTask extends Gs2RestSessionTask<DescribeSeasonModelMastersResult> {
+        private DescribeSeasonModelMastersRequest request;
+
+        public DescribeSeasonModelMastersTask(
+            DescribeSeasonModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonModelMastersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSeasonModelMastersResult parse(JsonNode data) {
+            return DescribeSeasonModelMastersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/season";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSeasonModelMastersAsync(
+            DescribeSeasonModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonModelMastersResult>> callback
+    ) {
+        DescribeSeasonModelMastersTask task = new DescribeSeasonModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSeasonModelMastersResult describeSeasonModelMasters(
+            DescribeSeasonModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeSeasonModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSeasonModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateSeasonModelMasterTask extends Gs2RestSessionTask<CreateSeasonModelMasterResult> {
+        private CreateSeasonModelMasterRequest request;
+
+        public CreateSeasonModelMasterTask(
+            CreateSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateSeasonModelMasterResult parse(JsonNode data) {
+            return CreateSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/season";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("name", request.getName());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("maximumParticipants", request.getMaximumParticipants());
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("challengePeriodEventId", request.getChallengePeriodEventId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createSeasonModelMasterAsync(
+            CreateSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateSeasonModelMasterResult>> callback
+    ) {
+        CreateSeasonModelMasterTask task = new CreateSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateSeasonModelMasterResult createSeasonModelMaster(
+            CreateSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<CreateSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSeasonModelMasterTask extends Gs2RestSessionTask<GetSeasonModelMasterResult> {
+        private GetSeasonModelMasterRequest request;
+
+        public GetSeasonModelMasterTask(
+            GetSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<GetSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSeasonModelMasterResult parse(JsonNode data) {
+            return GetSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/season/{seasonName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSeasonModelMasterAsync(
+            GetSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<GetSeasonModelMasterResult>> callback
+    ) {
+        GetSeasonModelMasterTask task = new GetSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSeasonModelMasterResult getSeasonModelMaster(
+            GetSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<GetSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateSeasonModelMasterTask extends Gs2RestSessionTask<UpdateSeasonModelMasterResult> {
+        private UpdateSeasonModelMasterRequest request;
+
+        public UpdateSeasonModelMasterTask(
+            UpdateSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateSeasonModelMasterResult parse(JsonNode data) {
+            return UpdateSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/season/{seasonName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("maximumParticipants", request.getMaximumParticipants());
+                    put("experienceModelId", request.getExperienceModelId());
+                    put("challengePeriodEventId", request.getChallengePeriodEventId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateSeasonModelMasterAsync(
+            UpdateSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateSeasonModelMasterResult>> callback
+    ) {
+        UpdateSeasonModelMasterTask task = new UpdateSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateSeasonModelMasterResult updateSeasonModelMaster(
+            UpdateSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteSeasonModelMasterTask extends Gs2RestSessionTask<DeleteSeasonModelMasterResult> {
+        private DeleteSeasonModelMasterRequest request;
+
+        public DeleteSeasonModelMasterTask(
+            DeleteSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteSeasonModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteSeasonModelMasterResult parse(JsonNode data) {
+            return DeleteSeasonModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/season/{seasonName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteSeasonModelMasterAsync(
+            DeleteSeasonModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteSeasonModelMasterResult>> callback
+    ) {
+        DeleteSeasonModelMasterTask task = new DeleteSeasonModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteSeasonModelMasterResult deleteSeasonModelMaster(
+            DeleteSeasonModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteSeasonModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteSeasonModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeSeasonGatheringsTask extends Gs2RestSessionTask<DescribeSeasonGatheringsResult> {
+        private DescribeSeasonGatheringsRequest request;
+
+        public DescribeSeasonGatheringsTask(
+            DescribeSeasonGatheringsRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonGatheringsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeSeasonGatheringsResult parse(JsonNode data) {
+            return DescribeSeasonGatheringsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/season/{seasonName}/{season}/gathering";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{season}", this.request.getSeason() == null  ? "null" : String.valueOf(this.request.getSeason()));
+            url = url.replace("{tier}", this.request.getTier() == null  ? "null" : String.valueOf(this.request.getTier()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeSeasonGatheringsAsync(
+            DescribeSeasonGatheringsRequest request,
+            AsyncAction<AsyncResult<DescribeSeasonGatheringsResult>> callback
+    ) {
+        DescribeSeasonGatheringsTask task = new DescribeSeasonGatheringsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeSeasonGatheringsResult describeSeasonGatherings(
+            DescribeSeasonGatheringsRequest request
+    ) {
+        final AsyncResult<DescribeSeasonGatheringsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeSeasonGatheringsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeMatchmakingSeasonGatheringsTask extends Gs2RestSessionTask<DescribeMatchmakingSeasonGatheringsResult> {
+        private DescribeMatchmakingSeasonGatheringsRequest request;
+
+        public DescribeMatchmakingSeasonGatheringsTask(
+            DescribeMatchmakingSeasonGatheringsRequest request,
+            AsyncAction<AsyncResult<DescribeMatchmakingSeasonGatheringsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeMatchmakingSeasonGatheringsResult parse(JsonNode data) {
+            return DescribeMatchmakingSeasonGatheringsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/season/{seasonName}/{season}/gathering/matchmaking";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{season}", this.request.getSeason() == null  ? "null" : String.valueOf(this.request.getSeason()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getTier() != null) {
+                queryStrings.add("tier=" + String.valueOf(this.request.getTier()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeMatchmakingSeasonGatheringsAsync(
+            DescribeMatchmakingSeasonGatheringsRequest request,
+            AsyncAction<AsyncResult<DescribeMatchmakingSeasonGatheringsResult>> callback
+    ) {
+        DescribeMatchmakingSeasonGatheringsTask task = new DescribeMatchmakingSeasonGatheringsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeMatchmakingSeasonGatheringsResult describeMatchmakingSeasonGatherings(
+            DescribeMatchmakingSeasonGatheringsRequest request
+    ) {
+        final AsyncResult<DescribeMatchmakingSeasonGatheringsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeMatchmakingSeasonGatheringsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DoSeasonMatchmakingTask extends Gs2RestSessionTask<DoSeasonMatchmakingResult> {
+        private DoSeasonMatchmakingRequest request;
+
+        public DoSeasonMatchmakingTask(
+            DoSeasonMatchmakingRequest request,
+            AsyncAction<AsyncResult<DoSeasonMatchmakingResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DoSeasonMatchmakingResult parse(JsonNode data) {
+            return DoSeasonMatchmakingResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/season/{seasonName}/gathering/do";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("matchmakingContextToken", request.getMatchmakingContextToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void doSeasonMatchmakingAsync(
+            DoSeasonMatchmakingRequest request,
+            AsyncAction<AsyncResult<DoSeasonMatchmakingResult>> callback
+    ) {
+        DoSeasonMatchmakingTask task = new DoSeasonMatchmakingTask(request, callback);
+        session.execute(task);
+    }
+
+    public DoSeasonMatchmakingResult doSeasonMatchmaking(
+            DoSeasonMatchmakingRequest request
+    ) {
+        final AsyncResult<DoSeasonMatchmakingResult>[] resultAsyncResult = new AsyncResult[]{null};
+        doSeasonMatchmakingAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DoSeasonMatchmakingByUserIdTask extends Gs2RestSessionTask<DoSeasonMatchmakingByUserIdResult> {
+        private DoSeasonMatchmakingByUserIdRequest request;
+
+        public DoSeasonMatchmakingByUserIdTask(
+            DoSeasonMatchmakingByUserIdRequest request,
+            AsyncAction<AsyncResult<DoSeasonMatchmakingByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DoSeasonMatchmakingByUserIdResult parse(JsonNode data) {
+            return DoSeasonMatchmakingByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/season/{seasonName}/gathering/do";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("matchmakingContextToken", request.getMatchmakingContextToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void doSeasonMatchmakingByUserIdAsync(
+            DoSeasonMatchmakingByUserIdRequest request,
+            AsyncAction<AsyncResult<DoSeasonMatchmakingByUserIdResult>> callback
+    ) {
+        DoSeasonMatchmakingByUserIdTask task = new DoSeasonMatchmakingByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DoSeasonMatchmakingByUserIdResult doSeasonMatchmakingByUserId(
+            DoSeasonMatchmakingByUserIdRequest request
+    ) {
+        final AsyncResult<DoSeasonMatchmakingByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        doSeasonMatchmakingByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetSeasonGatheringTask extends Gs2RestSessionTask<GetSeasonGatheringResult> {
+        private GetSeasonGatheringRequest request;
+
+        public GetSeasonGatheringTask(
+            GetSeasonGatheringRequest request,
+            AsyncAction<AsyncResult<GetSeasonGatheringResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetSeasonGatheringResult parse(JsonNode data) {
+            return GetSeasonGatheringResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/season/{seasonName}/{season}/{tier}/gathering/{seasonGatheringName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{season}", this.request.getSeason() == null  ? "null" : String.valueOf(this.request.getSeason()));
+            url = url.replace("{tier}", this.request.getTier() == null  ? "null" : String.valueOf(this.request.getTier()));
+            url = url.replace("{seasonGatheringName}", this.request.getSeasonGatheringName() == null || this.request.getSeasonGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonGatheringName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getSeasonGatheringAsync(
+            GetSeasonGatheringRequest request,
+            AsyncAction<AsyncResult<GetSeasonGatheringResult>> callback
+    ) {
+        GetSeasonGatheringTask task = new GetSeasonGatheringTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetSeasonGatheringResult getSeasonGathering(
+            GetSeasonGatheringRequest request
+    ) {
+        final AsyncResult<GetSeasonGatheringResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getSeasonGatheringAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteSeasonGatheringTask extends Gs2RestSessionTask<DeleteSeasonGatheringResult> {
+        private DeleteSeasonGatheringRequest request;
+
+        public DeleteSeasonGatheringTask(
+            DeleteSeasonGatheringRequest request,
+            AsyncAction<AsyncResult<DeleteSeasonGatheringResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteSeasonGatheringResult parse(JsonNode data) {
+            return DeleteSeasonGatheringResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/season/{seasonName}/{season}/{tier}/gathering/{seasonGatheringName}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{season}", this.request.getSeason() == null  ? "null" : String.valueOf(this.request.getSeason()));
+            url = url.replace("{tier}", this.request.getTier() == null  ? "null" : String.valueOf(this.request.getTier()));
+            url = url.replace("{seasonGatheringName}", this.request.getSeasonGatheringName() == null || this.request.getSeasonGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonGatheringName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteSeasonGatheringAsync(
+            DeleteSeasonGatheringRequest request,
+            AsyncAction<AsyncResult<DeleteSeasonGatheringResult>> callback
+    ) {
+        DeleteSeasonGatheringTask task = new DeleteSeasonGatheringTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteSeasonGatheringResult deleteSeasonGathering(
+            DeleteSeasonGatheringRequest request
+    ) {
+        final AsyncResult<DeleteSeasonGatheringResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteSeasonGatheringAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeJoinedSeasonGatheringsTask extends Gs2RestSessionTask<DescribeJoinedSeasonGatheringsResult> {
+        private DescribeJoinedSeasonGatheringsRequest request;
+
+        public DescribeJoinedSeasonGatheringsTask(
+            DescribeJoinedSeasonGatheringsRequest request,
+            AsyncAction<AsyncResult<DescribeJoinedSeasonGatheringsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeJoinedSeasonGatheringsResult parse(JsonNode data) {
+            return DescribeJoinedSeasonGatheringsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/season/{seasonName}/gathering/join";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeJoinedSeasonGatheringsAsync(
+            DescribeJoinedSeasonGatheringsRequest request,
+            AsyncAction<AsyncResult<DescribeJoinedSeasonGatheringsResult>> callback
+    ) {
+        DescribeJoinedSeasonGatheringsTask task = new DescribeJoinedSeasonGatheringsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeJoinedSeasonGatheringsResult describeJoinedSeasonGatherings(
+            DescribeJoinedSeasonGatheringsRequest request
+    ) {
+        final AsyncResult<DescribeJoinedSeasonGatheringsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeJoinedSeasonGatheringsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeJoinedSeasonGatheringsByUserIdTask extends Gs2RestSessionTask<DescribeJoinedSeasonGatheringsByUserIdResult> {
+        private DescribeJoinedSeasonGatheringsByUserIdRequest request;
+
+        public DescribeJoinedSeasonGatheringsByUserIdTask(
+            DescribeJoinedSeasonGatheringsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeJoinedSeasonGatheringsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeJoinedSeasonGatheringsByUserIdResult parse(JsonNode data) {
+            return DescribeJoinedSeasonGatheringsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/season/{seasonName}/gathering/join";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeJoinedSeasonGatheringsByUserIdAsync(
+            DescribeJoinedSeasonGatheringsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribeJoinedSeasonGatheringsByUserIdResult>> callback
+    ) {
+        DescribeJoinedSeasonGatheringsByUserIdTask task = new DescribeJoinedSeasonGatheringsByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeJoinedSeasonGatheringsByUserIdResult describeJoinedSeasonGatheringsByUserId(
+            DescribeJoinedSeasonGatheringsByUserIdRequest request
+    ) {
+        final AsyncResult<DescribeJoinedSeasonGatheringsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeJoinedSeasonGatheringsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetJoinedSeasonGatheringTask extends Gs2RestSessionTask<GetJoinedSeasonGatheringResult> {
+        private GetJoinedSeasonGatheringRequest request;
+
+        public GetJoinedSeasonGatheringTask(
+            GetJoinedSeasonGatheringRequest request,
+            AsyncAction<AsyncResult<GetJoinedSeasonGatheringResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetJoinedSeasonGatheringResult parse(JsonNode data) {
+            return GetJoinedSeasonGatheringResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/season/{seasonName}/gathering/join/{season}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{season}", this.request.getSeason() == null  ? "null" : String.valueOf(this.request.getSeason()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getJoinedSeasonGatheringAsync(
+            GetJoinedSeasonGatheringRequest request,
+            AsyncAction<AsyncResult<GetJoinedSeasonGatheringResult>> callback
+    ) {
+        GetJoinedSeasonGatheringTask task = new GetJoinedSeasonGatheringTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetJoinedSeasonGatheringResult getJoinedSeasonGathering(
+            GetJoinedSeasonGatheringRequest request
+    ) {
+        final AsyncResult<GetJoinedSeasonGatheringResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getJoinedSeasonGatheringAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetJoinedSeasonGatheringByUserIdTask extends Gs2RestSessionTask<GetJoinedSeasonGatheringByUserIdResult> {
+        private GetJoinedSeasonGatheringByUserIdRequest request;
+
+        public GetJoinedSeasonGatheringByUserIdTask(
+            GetJoinedSeasonGatheringByUserIdRequest request,
+            AsyncAction<AsyncResult<GetJoinedSeasonGatheringByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetJoinedSeasonGatheringByUserIdResult parse(JsonNode data) {
+            return GetJoinedSeasonGatheringByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/{userId}/season/{seasonName}/gathering/join/{season}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{season}", this.request.getSeason() == null  ? "null" : String.valueOf(this.request.getSeason()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getJoinedSeasonGatheringByUserIdAsync(
+            GetJoinedSeasonGatheringByUserIdRequest request,
+            AsyncAction<AsyncResult<GetJoinedSeasonGatheringByUserIdResult>> callback
+    ) {
+        GetJoinedSeasonGatheringByUserIdTask task = new GetJoinedSeasonGatheringByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetJoinedSeasonGatheringByUserIdResult getJoinedSeasonGatheringByUserId(
+            GetJoinedSeasonGatheringByUserIdRequest request
+    ) {
+        final AsyncResult<GetJoinedSeasonGatheringByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getJoinedSeasonGatheringByUserIdAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

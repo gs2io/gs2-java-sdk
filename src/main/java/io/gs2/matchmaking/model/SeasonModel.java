@@ -1,0 +1,184 @@
+/*
+ * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
+ * Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+package io.gs2.matchmaking.model;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.gs2.core.model.IModel;
+
+
+@SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class SeasonModel implements IModel, Serializable, Comparable<SeasonModel> {
+	private String seasonModelId;
+	private String name;
+	private String metadata;
+	private Integer maximumParticipants;
+	private String experienceModelId;
+	private String challengePeriodEventId;
+	public String getSeasonModelId() {
+		return seasonModelId;
+	}
+	public void setSeasonModelId(String seasonModelId) {
+		this.seasonModelId = seasonModelId;
+	}
+	public SeasonModel withSeasonModelId(String seasonModelId) {
+		this.seasonModelId = seasonModelId;
+		return this;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public SeasonModel withName(String name) {
+		this.name = name;
+		return this;
+	}
+	public String getMetadata() {
+		return metadata;
+	}
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
+	public SeasonModel withMetadata(String metadata) {
+		this.metadata = metadata;
+		return this;
+	}
+	public Integer getMaximumParticipants() {
+		return maximumParticipants;
+	}
+	public void setMaximumParticipants(Integer maximumParticipants) {
+		this.maximumParticipants = maximumParticipants;
+	}
+	public SeasonModel withMaximumParticipants(Integer maximumParticipants) {
+		this.maximumParticipants = maximumParticipants;
+		return this;
+	}
+	public String getExperienceModelId() {
+		return experienceModelId;
+	}
+	public void setExperienceModelId(String experienceModelId) {
+		this.experienceModelId = experienceModelId;
+	}
+	public SeasonModel withExperienceModelId(String experienceModelId) {
+		this.experienceModelId = experienceModelId;
+		return this;
+	}
+	public String getChallengePeriodEventId() {
+		return challengePeriodEventId;
+	}
+	public void setChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+	}
+	public SeasonModel withChallengePeriodEventId(String challengePeriodEventId) {
+		this.challengePeriodEventId = challengePeriodEventId;
+		return this;
+	}
+
+    public static SeasonModel fromJson(JsonNode data) {
+        if (data == null) {
+            return null;
+        }
+        return new SeasonModel()
+            .withSeasonModelId(data.get("seasonModelId") == null || data.get("seasonModelId").isNull() ? null : data.get("seasonModelId").asText())
+            .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
+            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withMaximumParticipants(data.get("maximumParticipants") == null || data.get("maximumParticipants").isNull() ? null : data.get("maximumParticipants").intValue())
+            .withExperienceModelId(data.get("experienceModelId") == null || data.get("experienceModelId").isNull() ? null : data.get("experienceModelId").asText())
+            .withChallengePeriodEventId(data.get("challengePeriodEventId") == null || data.get("challengePeriodEventId").isNull() ? null : data.get("challengePeriodEventId").asText());
+    }
+
+    public JsonNode toJson() {
+        return new ObjectMapper().valueToTree(
+            new HashMap<String, Object>() {{
+                put("seasonModelId", getSeasonModelId());
+                put("name", getName());
+                put("metadata", getMetadata());
+                put("maximumParticipants", getMaximumParticipants());
+                put("experienceModelId", getExperienceModelId());
+                put("challengePeriodEventId", getChallengePeriodEventId());
+            }}
+        );
+    }
+
+	@Override
+	public int compareTo(SeasonModel o) {
+		return seasonModelId.compareTo(o.seasonModelId);
+	}
+
+	@Override
+	public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.seasonModelId == null) ? 0 : this.seasonModelId.hashCode());
+        result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+        result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.maximumParticipants == null) ? 0 : this.maximumParticipants.hashCode());
+        result = prime * result + ((this.experienceModelId == null) ? 0 : this.experienceModelId.hashCode());
+        result = prime * result + ((this.challengePeriodEventId == null) ? 0 : this.challengePeriodEventId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null)
+			return false;
+		if (getClass() != o.getClass())
+			return false;
+		SeasonModel other = (SeasonModel) o;
+		if (seasonModelId == null) {
+			return other.seasonModelId == null;
+		} else if (!seasonModelId.equals(other.seasonModelId)) {
+			return false;
+		}
+		if (name == null) {
+			return other.name == null;
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (metadata == null) {
+			return other.metadata == null;
+		} else if (!metadata.equals(other.metadata)) {
+			return false;
+		}
+		if (maximumParticipants == null) {
+			return other.maximumParticipants == null;
+		} else if (!maximumParticipants.equals(other.maximumParticipants)) {
+			return false;
+		}
+		if (experienceModelId == null) {
+			return other.experienceModelId == null;
+		} else if (!experienceModelId.equals(other.experienceModelId)) {
+			return false;
+		}
+		if (challengePeriodEventId == null) {
+			return other.challengePeriodEventId == null;
+		} else if (!challengePeriodEventId.equals(other.challengePeriodEventId)) {
+			return false;
+		}
+		return true;
+	}
+}

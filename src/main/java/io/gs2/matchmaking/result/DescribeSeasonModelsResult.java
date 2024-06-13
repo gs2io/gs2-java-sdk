@@ -25,38 +25,48 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
-import io.gs2.matchmaking.model.CurrentModelMaster;
+import io.gs2.matchmaking.model.SeasonModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExportMasterResult implements IResult, Serializable {
-    private CurrentModelMaster item;
+public class DescribeSeasonModelsResult implements IResult, Serializable {
+    private List<SeasonModel> items;
 
-	public CurrentModelMaster getItem() {
-		return item;
+	public List<SeasonModel> getItems() {
+		return items;
 	}
 
-	public void setItem(CurrentModelMaster item) {
-		this.item = item;
+	public void setItems(List<SeasonModel> items) {
+		this.items = items;
 	}
 
-	public ExportMasterResult withItem(CurrentModelMaster item) {
-		this.item = item;
+	public DescribeSeasonModelsResult withItems(List<SeasonModel> items) {
+		this.items = items;
 		return this;
 	}
 
-    public static ExportMasterResult fromJson(JsonNode data) {
+    public static DescribeSeasonModelsResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new ExportMasterResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentModelMaster.fromJson(data.get("item")));
+        return new DescribeSeasonModelsResult()
+            .withItems(data.get("items") == null || data.get("items").isNull() ? new ArrayList<SeasonModel>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("items").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return SeasonModel.fromJson(item);
+                }
+            ).collect(Collectors.toList()));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
+                put("items", getItems() == null ? new ArrayList<SeasonModel>() :
+                    getItems().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
             }}
         );
     }

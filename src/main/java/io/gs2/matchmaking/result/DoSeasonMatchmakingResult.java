@@ -25,38 +25,54 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
-import io.gs2.matchmaking.model.CurrentModelMaster;
+import io.gs2.matchmaking.model.SeasonGathering;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExportMasterResult implements IResult, Serializable {
-    private CurrentModelMaster item;
+public class DoSeasonMatchmakingResult implements IResult, Serializable {
+    private SeasonGathering item;
+    private String matchmakingContextToken;
 
-	public CurrentModelMaster getItem() {
+	public SeasonGathering getItem() {
 		return item;
 	}
 
-	public void setItem(CurrentModelMaster item) {
+	public void setItem(SeasonGathering item) {
 		this.item = item;
 	}
 
-	public ExportMasterResult withItem(CurrentModelMaster item) {
+	public DoSeasonMatchmakingResult withItem(SeasonGathering item) {
 		this.item = item;
 		return this;
 	}
 
-    public static ExportMasterResult fromJson(JsonNode data) {
+	public String getMatchmakingContextToken() {
+		return matchmakingContextToken;
+	}
+
+	public void setMatchmakingContextToken(String matchmakingContextToken) {
+		this.matchmakingContextToken = matchmakingContextToken;
+	}
+
+	public DoSeasonMatchmakingResult withMatchmakingContextToken(String matchmakingContextToken) {
+		this.matchmakingContextToken = matchmakingContextToken;
+		return this;
+	}
+
+    public static DoSeasonMatchmakingResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new ExportMasterResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentModelMaster.fromJson(data.get("item")));
+        return new DoSeasonMatchmakingResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SeasonGathering.fromJson(data.get("item")))
+            .withMatchmakingContextToken(data.get("matchmakingContextToken") == null || data.get("matchmakingContextToken").isNull() ? null : data.get("matchmakingContextToken").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("matchmakingContextToken", getMatchmakingContextToken());
             }}
         );
     }

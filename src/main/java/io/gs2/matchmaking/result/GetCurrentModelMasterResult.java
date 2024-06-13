@@ -29,7 +29,7 @@ import io.gs2.matchmaking.model.CurrentModelMaster;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExportMasterResult implements IResult, Serializable {
+public class GetCurrentModelMasterResult implements IResult, Serializable {
     private CurrentModelMaster item;
 
 	public CurrentModelMaster getItem() {
@@ -40,16 +40,16 @@ public class ExportMasterResult implements IResult, Serializable {
 		this.item = item;
 	}
 
-	public ExportMasterResult withItem(CurrentModelMaster item) {
+	public GetCurrentModelMasterResult withItem(CurrentModelMaster item) {
 		this.item = item;
 		return this;
 	}
 
-    public static ExportMasterResult fromJson(JsonNode data) {
+    public static GetCurrentModelMasterResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new ExportMasterResult()
+        return new GetCurrentModelMasterResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentModelMaster.fromJson(data.get("item")));
     }
 

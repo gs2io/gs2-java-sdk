@@ -25,32 +25,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.matchmaking.model.*;
-import io.gs2.matchmaking.model.CurrentModelMaster;
+import io.gs2.matchmaking.model.SeasonModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExportMasterResult implements IResult, Serializable {
-    private CurrentModelMaster item;
+public class GetSeasonModelResult implements IResult, Serializable {
+    private SeasonModel item;
 
-	public CurrentModelMaster getItem() {
+	public SeasonModel getItem() {
 		return item;
 	}
 
-	public void setItem(CurrentModelMaster item) {
+	public void setItem(SeasonModel item) {
 		this.item = item;
 	}
 
-	public ExportMasterResult withItem(CurrentModelMaster item) {
+	public GetSeasonModelResult withItem(SeasonModel item) {
 		this.item = item;
 		return this;
 	}
 
-    public static ExportMasterResult fromJson(JsonNode data) {
+    public static GetSeasonModelResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new ExportMasterResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentModelMaster.fromJson(data.get("item")));
+        return new GetSeasonModelResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : SeasonModel.fromJson(data.get("item")));
     }
 
     public JsonNode toJson() {

@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.matchmaking.result;
+package io.gs2.matchmaking.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,40 +23,35 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.gs2.core.model.*;
-import io.gs2.matchmaking.model.*;
-import io.gs2.matchmaking.model.CurrentModelMaster;
+import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExportMasterResult implements IResult, Serializable {
-    private CurrentModelMaster item;
-
-	public CurrentModelMaster getItem() {
-		return item;
+public class GetCurrentModelMasterRequest extends Gs2BasicRequest<GetCurrentModelMasterRequest> {
+    private String namespaceName;
+	public String getNamespaceName() {
+		return namespaceName;
 	}
-
-	public void setItem(CurrentModelMaster item) {
-		this.item = item;
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
 	}
-
-	public ExportMasterResult withItem(CurrentModelMaster item) {
-		this.item = item;
+	public GetCurrentModelMasterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
 		return this;
 	}
 
-    public static ExportMasterResult fromJson(JsonNode data) {
+    public static GetCurrentModelMasterRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new ExportMasterResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : CurrentModelMaster.fromJson(data.get("item")));
+        return new GetCurrentModelMasterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
+                put("namespaceName", getNamespaceName());
             }}
         );
     }
