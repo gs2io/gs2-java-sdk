@@ -4521,6 +4521,189 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
+    class VerifyIncludeParticipantTask extends Gs2RestSessionTask<VerifyIncludeParticipantResult> {
+        private VerifyIncludeParticipantRequest request;
+
+        public VerifyIncludeParticipantTask(
+            VerifyIncludeParticipantRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeParticipantResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyIncludeParticipantResult parse(JsonNode data) {
+            return VerifyIncludeParticipantResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/season/{seasonName}/{season}/{tier}/gathering/{seasonGatheringName}/participant/me/verify";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{season}", this.request.getSeason() == null  ? "null" : String.valueOf(this.request.getSeason()));
+            url = url.replace("{tier}", this.request.getTier() == null  ? "null" : String.valueOf(this.request.getTier()));
+            url = url.replace("{seasonGatheringName}", this.request.getSeasonGatheringName() == null || this.request.getSeasonGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonGatheringName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("verifyType", request.getVerifyType());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyIncludeParticipantAsync(
+            VerifyIncludeParticipantRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeParticipantResult>> callback
+    ) {
+        VerifyIncludeParticipantTask task = new VerifyIncludeParticipantTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyIncludeParticipantResult verifyIncludeParticipant(
+            VerifyIncludeParticipantRequest request
+    ) {
+        final AsyncResult<VerifyIncludeParticipantResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyIncludeParticipantAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyIncludeParticipantByUserIdTask extends Gs2RestSessionTask<VerifyIncludeParticipantByUserIdResult> {
+        private VerifyIncludeParticipantByUserIdRequest request;
+
+        public VerifyIncludeParticipantByUserIdTask(
+            VerifyIncludeParticipantByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeParticipantByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyIncludeParticipantByUserIdResult parse(JsonNode data) {
+            return VerifyIncludeParticipantByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/season/{seasonName}/{season}/{tier}/gathering/{seasonGatheringName}/participant/{userId}/verify";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{seasonName}", this.request.getSeasonName() == null || this.request.getSeasonName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonName()));
+            url = url.replace("{season}", this.request.getSeason() == null  ? "null" : String.valueOf(this.request.getSeason()));
+            url = url.replace("{tier}", this.request.getTier() == null  ? "null" : String.valueOf(this.request.getTier()));
+            url = url.replace("{seasonGatheringName}", this.request.getSeasonGatheringName() == null || this.request.getSeasonGatheringName().length() == 0 ? "null" : String.valueOf(this.request.getSeasonGatheringName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("verifyType", request.getVerifyType());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyIncludeParticipantByUserIdAsync(
+            VerifyIncludeParticipantByUserIdRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeParticipantByUserIdResult>> callback
+    ) {
+        VerifyIncludeParticipantByUserIdTask task = new VerifyIncludeParticipantByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyIncludeParticipantByUserIdResult verifyIncludeParticipantByUserId(
+            VerifyIncludeParticipantByUserIdRequest request
+    ) {
+        final AsyncResult<VerifyIncludeParticipantByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyIncludeParticipantByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeleteSeasonGatheringTask extends Gs2RestSessionTask<DeleteSeasonGatheringResult> {
         private DeleteSeasonGatheringRequest request;
 
@@ -4589,6 +4772,86 @@ import io.gs2.matchmaking.model.*;public class Gs2MatchmakingRestClient extends 
     ) {
         final AsyncResult<DeleteSeasonGatheringResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteSeasonGatheringAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class VerifyIncludeParticipantByStampTaskTask extends Gs2RestSessionTask<VerifyIncludeParticipantByStampTaskResult> {
+        private VerifyIncludeParticipantByStampTaskRequest request;
+
+        public VerifyIncludeParticipantByStampTaskTask(
+            VerifyIncludeParticipantByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeParticipantByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public VerifyIncludeParticipantByStampTaskResult parse(JsonNode data) {
+            return VerifyIncludeParticipantByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "matchmaking")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/season/gathering/participant/verify";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void verifyIncludeParticipantByStampTaskAsync(
+            VerifyIncludeParticipantByStampTaskRequest request,
+            AsyncAction<AsyncResult<VerifyIncludeParticipantByStampTaskResult>> callback
+    ) {
+        VerifyIncludeParticipantByStampTaskTask task = new VerifyIncludeParticipantByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public VerifyIncludeParticipantByStampTaskResult verifyIncludeParticipantByStampTask(
+            VerifyIncludeParticipantByStampTaskRequest request
+    ) {
+        final AsyncResult<VerifyIncludeParticipantByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        verifyIncludeParticipantByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
