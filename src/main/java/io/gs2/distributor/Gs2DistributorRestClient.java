@@ -2096,6 +2096,182 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
+    class SetTransactionDefaultConfigTask extends Gs2RestSessionTask<SetTransactionDefaultConfigResult> {
+        private SetTransactionDefaultConfigRequest request;
+
+        public SetTransactionDefaultConfigTask(
+            SetTransactionDefaultConfigRequest request,
+            AsyncAction<AsyncResult<SetTransactionDefaultConfigResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetTransactionDefaultConfigResult parse(JsonNode data) {
+            return SetTransactionDefaultConfigResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/transaction/user/me/config";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setTransactionDefaultConfigAsync(
+            SetTransactionDefaultConfigRequest request,
+            AsyncAction<AsyncResult<SetTransactionDefaultConfigResult>> callback
+    ) {
+        SetTransactionDefaultConfigTask task = new SetTransactionDefaultConfigTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetTransactionDefaultConfigResult setTransactionDefaultConfig(
+            SetTransactionDefaultConfigRequest request
+    ) {
+        final AsyncResult<SetTransactionDefaultConfigResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setTransactionDefaultConfigAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SetTransactionDefaultConfigByUserIdTask extends Gs2RestSessionTask<SetTransactionDefaultConfigByUserIdResult> {
+        private SetTransactionDefaultConfigByUserIdRequest request;
+
+        public SetTransactionDefaultConfigByUserIdTask(
+            SetTransactionDefaultConfigByUserIdRequest request,
+            AsyncAction<AsyncResult<SetTransactionDefaultConfigByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SetTransactionDefaultConfigByUserIdResult parse(JsonNode data) {
+            return SetTransactionDefaultConfigByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/transaction/user/{userId}/config";
+
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("config", request.getConfig() == null ? new ArrayList<Config>() :
+                        request.getConfig().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void setTransactionDefaultConfigByUserIdAsync(
+            SetTransactionDefaultConfigByUserIdRequest request,
+            AsyncAction<AsyncResult<SetTransactionDefaultConfigByUserIdResult>> callback
+    ) {
+        SetTransactionDefaultConfigByUserIdTask task = new SetTransactionDefaultConfigByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SetTransactionDefaultConfigByUserIdResult setTransactionDefaultConfigByUserId(
+            SetTransactionDefaultConfigByUserIdRequest request
+    ) {
+        final AsyncResult<SetTransactionDefaultConfigByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        setTransactionDefaultConfigByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetStampSheetResultTask extends Gs2RestSessionTask<GetStampSheetResultResult> {
         private GetStampSheetResultRequest request;
 
