@@ -1415,10 +1415,10 @@ import io.gs2.buff.model.*;public class Gs2BuffRestClient extends AbstractGs2Cli
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("expression", request.getExpression());
                     put("targetType", request.getTargetType());
                     put("targetModel", request.getTargetModel() != null ? request.getTargetModel().toJson() : null);
                     put("targetAction", request.getTargetAction() != null ? request.getTargetAction().toJson() : null);
-                    put("expression", request.getExpression());
                     put("priority", request.getPriority());
                     put("applyPeriodScheduleEventId", request.getApplyPeriodScheduleEventId());
                     put("contextStack", request.getContextStack());
@@ -1585,10 +1585,10 @@ import io.gs2.buff.model.*;public class Gs2BuffRestClient extends AbstractGs2Cli
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("expression", request.getExpression());
                     put("targetType", request.getTargetType());
                     put("targetModel", request.getTargetModel() != null ? request.getTargetModel().toJson() : null);
                     put("targetAction", request.getTargetAction() != null ? request.getTargetAction().toJson() : null);
-                    put("expression", request.getExpression());
                     put("priority", request.getPriority());
                     put("applyPeriodScheduleEventId", request.getApplyPeriodScheduleEventId());
                     put("contextStack", request.getContextStack());

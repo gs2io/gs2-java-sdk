@@ -35,10 +35,10 @@ public class CreateBuffEntryModelMasterRequest extends Gs2BasicRequest<CreateBuf
     private String name;
     private String description;
     private String metadata;
+    private String expression;
     private String targetType;
     private BuffTargetModel targetModel;
     private BuffTargetAction targetAction;
-    private String expression;
     private Integer priority;
     private String applyPeriodScheduleEventId;
 	public String getNamespaceName() {
@@ -81,6 +81,16 @@ public class CreateBuffEntryModelMasterRequest extends Gs2BasicRequest<CreateBuf
 		this.metadata = metadata;
 		return this;
 	}
+	public String getExpression() {
+		return expression;
+	}
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+	public CreateBuffEntryModelMasterRequest withExpression(String expression) {
+		this.expression = expression;
+		return this;
+	}
 	public String getTargetType() {
 		return targetType;
 	}
@@ -109,16 +119,6 @@ public class CreateBuffEntryModelMasterRequest extends Gs2BasicRequest<CreateBuf
 	}
 	public CreateBuffEntryModelMasterRequest withTargetAction(BuffTargetAction targetAction) {
 		this.targetAction = targetAction;
-		return this;
-	}
-	public String getExpression() {
-		return expression;
-	}
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
-	public CreateBuffEntryModelMasterRequest withExpression(String expression) {
-		this.expression = expression;
 		return this;
 	}
 	public Integer getPriority() {
@@ -151,10 +151,10 @@ public class CreateBuffEntryModelMasterRequest extends Gs2BasicRequest<CreateBuf
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withExpression(data.get("expression") == null || data.get("expression").isNull() ? null : data.get("expression").asText())
             .withTargetType(data.get("targetType") == null || data.get("targetType").isNull() ? null : data.get("targetType").asText())
             .withTargetModel(data.get("targetModel") == null || data.get("targetModel").isNull() ? null : BuffTargetModel.fromJson(data.get("targetModel")))
             .withTargetAction(data.get("targetAction") == null || data.get("targetAction").isNull() ? null : BuffTargetAction.fromJson(data.get("targetAction")))
-            .withExpression(data.get("expression") == null || data.get("expression").isNull() ? null : data.get("expression").asText())
             .withPriority(data.get("priority") == null || data.get("priority").isNull() ? null : data.get("priority").intValue())
             .withApplyPeriodScheduleEventId(data.get("applyPeriodScheduleEventId") == null || data.get("applyPeriodScheduleEventId").isNull() ? null : data.get("applyPeriodScheduleEventId").asText());
     }
@@ -166,10 +166,10 @@ public class CreateBuffEntryModelMasterRequest extends Gs2BasicRequest<CreateBuf
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
+                put("expression", getExpression());
                 put("targetType", getTargetType());
                 put("targetModel", getTargetModel() != null ? getTargetModel().toJson() : null);
                 put("targetAction", getTargetAction() != null ? getTargetAction().toJson() : null);
-                put("expression", getExpression());
                 put("priority", getPriority());
                 put("applyPeriodScheduleEventId", getApplyPeriodScheduleEventId());
             }}

@@ -32,10 +32,10 @@ public class BuffEntryModel implements IModel, Serializable, Comparable<BuffEntr
 	private String buffEntryModelId;
 	private String name;
 	private String metadata;
+	private String expression;
 	private String targetType;
 	private BuffTargetModel targetModel;
 	private BuffTargetAction targetAction;
-	private String expression;
 	private Integer priority;
 	private String applyPeriodScheduleEventId;
 	public String getBuffEntryModelId() {
@@ -68,6 +68,16 @@ public class BuffEntryModel implements IModel, Serializable, Comparable<BuffEntr
 		this.metadata = metadata;
 		return this;
 	}
+	public String getExpression() {
+		return expression;
+	}
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+	public BuffEntryModel withExpression(String expression) {
+		this.expression = expression;
+		return this;
+	}
 	public String getTargetType() {
 		return targetType;
 	}
@@ -96,16 +106,6 @@ public class BuffEntryModel implements IModel, Serializable, Comparable<BuffEntr
 	}
 	public BuffEntryModel withTargetAction(BuffTargetAction targetAction) {
 		this.targetAction = targetAction;
-		return this;
-	}
-	public String getExpression() {
-		return expression;
-	}
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
-	public BuffEntryModel withExpression(String expression) {
-		this.expression = expression;
 		return this;
 	}
 	public Integer getPriority() {
@@ -137,10 +137,10 @@ public class BuffEntryModel implements IModel, Serializable, Comparable<BuffEntr
             .withBuffEntryModelId(data.get("buffEntryModelId") == null || data.get("buffEntryModelId").isNull() ? null : data.get("buffEntryModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withExpression(data.get("expression") == null || data.get("expression").isNull() ? null : data.get("expression").asText())
             .withTargetType(data.get("targetType") == null || data.get("targetType").isNull() ? null : data.get("targetType").asText())
             .withTargetModel(data.get("targetModel") == null || data.get("targetModel").isNull() ? null : BuffTargetModel.fromJson(data.get("targetModel")))
             .withTargetAction(data.get("targetAction") == null || data.get("targetAction").isNull() ? null : BuffTargetAction.fromJson(data.get("targetAction")))
-            .withExpression(data.get("expression") == null || data.get("expression").isNull() ? null : data.get("expression").asText())
             .withPriority(data.get("priority") == null || data.get("priority").isNull() ? null : data.get("priority").intValue())
             .withApplyPeriodScheduleEventId(data.get("applyPeriodScheduleEventId") == null || data.get("applyPeriodScheduleEventId").isNull() ? null : data.get("applyPeriodScheduleEventId").asText());
     }
@@ -151,10 +151,10 @@ public class BuffEntryModel implements IModel, Serializable, Comparable<BuffEntr
                 put("buffEntryModelId", getBuffEntryModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
+                put("expression", getExpression());
                 put("targetType", getTargetType());
                 put("targetModel", getTargetModel() != null ? getTargetModel().toJson() : null);
                 put("targetAction", getTargetAction() != null ? getTargetAction().toJson() : null);
-                put("expression", getExpression());
                 put("priority", getPriority());
                 put("applyPeriodScheduleEventId", getApplyPeriodScheduleEventId());
             }}
@@ -173,10 +173,10 @@ public class BuffEntryModel implements IModel, Serializable, Comparable<BuffEntr
         result = prime * result + ((this.buffEntryModelId == null) ? 0 : this.buffEntryModelId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.expression == null) ? 0 : this.expression.hashCode());
         result = prime * result + ((this.targetType == null) ? 0 : this.targetType.hashCode());
         result = prime * result + ((this.targetModel == null) ? 0 : this.targetModel.hashCode());
         result = prime * result + ((this.targetAction == null) ? 0 : this.targetAction.hashCode());
-        result = prime * result + ((this.expression == null) ? 0 : this.expression.hashCode());
         result = prime * result + ((this.priority == null) ? 0 : this.priority.hashCode());
         result = prime * result + ((this.applyPeriodScheduleEventId == null) ? 0 : this.applyPeriodScheduleEventId.hashCode());
 		return result;
@@ -206,6 +206,11 @@ public class BuffEntryModel implements IModel, Serializable, Comparable<BuffEntr
 		} else if (!metadata.equals(other.metadata)) {
 			return false;
 		}
+		if (expression == null) {
+			return other.expression == null;
+		} else if (!expression.equals(other.expression)) {
+			return false;
+		}
 		if (targetType == null) {
 			return other.targetType == null;
 		} else if (!targetType.equals(other.targetType)) {
@@ -219,11 +224,6 @@ public class BuffEntryModel implements IModel, Serializable, Comparable<BuffEntr
 		if (targetAction == null) {
 			return other.targetAction == null;
 		} else if (!targetAction.equals(other.targetAction)) {
-			return false;
-		}
-		if (expression == null) {
-			return other.expression == null;
-		} else if (!expression.equals(other.expression)) {
 			return false;
 		}
 		if (priority == null) {
