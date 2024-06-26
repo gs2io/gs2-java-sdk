@@ -3254,4 +3254,439 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
 
         return resultAsyncResult[0].getResult();
     }
+
+    class DescribeDailyTransactionHistoriesByCurrencyTask extends Gs2RestSessionTask<DescribeDailyTransactionHistoriesByCurrencyResult> {
+        private DescribeDailyTransactionHistoriesByCurrencyRequest request;
+
+        public DescribeDailyTransactionHistoriesByCurrencyTask(
+            DescribeDailyTransactionHistoriesByCurrencyRequest request,
+            AsyncAction<AsyncResult<DescribeDailyTransactionHistoriesByCurrencyResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeDailyTransactionHistoriesByCurrencyResult parse(JsonNode data) {
+            return DescribeDailyTransactionHistoriesByCurrencyResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/transaction/daily/currency/{currency}/date/{year}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{currency}", this.request.getCurrency() == null || this.request.getCurrency().length() == 0 ? "null" : String.valueOf(this.request.getCurrency()));
+            url = url.replace("{year}", this.request.getYear() == null  ? "null" : String.valueOf(this.request.getYear()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getMonth() != null) {
+                queryStrings.add("month=" + String.valueOf(this.request.getMonth()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeDailyTransactionHistoriesByCurrencyAsync(
+            DescribeDailyTransactionHistoriesByCurrencyRequest request,
+            AsyncAction<AsyncResult<DescribeDailyTransactionHistoriesByCurrencyResult>> callback
+    ) {
+        DescribeDailyTransactionHistoriesByCurrencyTask task = new DescribeDailyTransactionHistoriesByCurrencyTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeDailyTransactionHistoriesByCurrencyResult describeDailyTransactionHistoriesByCurrency(
+            DescribeDailyTransactionHistoriesByCurrencyRequest request
+    ) {
+        final AsyncResult<DescribeDailyTransactionHistoriesByCurrencyResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeDailyTransactionHistoriesByCurrencyAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeDailyTransactionHistoriesTask extends Gs2RestSessionTask<DescribeDailyTransactionHistoriesResult> {
+        private DescribeDailyTransactionHistoriesRequest request;
+
+        public DescribeDailyTransactionHistoriesTask(
+            DescribeDailyTransactionHistoriesRequest request,
+            AsyncAction<AsyncResult<DescribeDailyTransactionHistoriesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeDailyTransactionHistoriesResult parse(JsonNode data) {
+            return DescribeDailyTransactionHistoriesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/transaction/daily/{year}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{year}", this.request.getYear() == null  ? "null" : String.valueOf(this.request.getYear()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getMonth() != null) {
+                queryStrings.add("month=" + String.valueOf(this.request.getMonth()));
+            }
+            if (this.request.getDay() != null) {
+                queryStrings.add("day=" + String.valueOf(this.request.getDay()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeDailyTransactionHistoriesAsync(
+            DescribeDailyTransactionHistoriesRequest request,
+            AsyncAction<AsyncResult<DescribeDailyTransactionHistoriesResult>> callback
+    ) {
+        DescribeDailyTransactionHistoriesTask task = new DescribeDailyTransactionHistoriesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeDailyTransactionHistoriesResult describeDailyTransactionHistories(
+            DescribeDailyTransactionHistoriesRequest request
+    ) {
+        final AsyncResult<DescribeDailyTransactionHistoriesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeDailyTransactionHistoriesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetDailyTransactionHistoryTask extends Gs2RestSessionTask<GetDailyTransactionHistoryResult> {
+        private GetDailyTransactionHistoryRequest request;
+
+        public GetDailyTransactionHistoryTask(
+            GetDailyTransactionHistoryRequest request,
+            AsyncAction<AsyncResult<GetDailyTransactionHistoryResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetDailyTransactionHistoryResult parse(JsonNode data) {
+            return GetDailyTransactionHistoryResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/transaction/daily/{year}/{month}/{day}/currency/{currency}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{year}", this.request.getYear() == null  ? "null" : String.valueOf(this.request.getYear()));
+            url = url.replace("{month}", this.request.getMonth() == null  ? "null" : String.valueOf(this.request.getMonth()));
+            url = url.replace("{day}", this.request.getDay() == null  ? "null" : String.valueOf(this.request.getDay()));
+            url = url.replace("{currency}", this.request.getCurrency() == null || this.request.getCurrency().length() == 0 ? "null" : String.valueOf(this.request.getCurrency()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getDailyTransactionHistoryAsync(
+            GetDailyTransactionHistoryRequest request,
+            AsyncAction<AsyncResult<GetDailyTransactionHistoryResult>> callback
+    ) {
+        GetDailyTransactionHistoryTask task = new GetDailyTransactionHistoryTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetDailyTransactionHistoryResult getDailyTransactionHistory(
+            GetDailyTransactionHistoryRequest request
+    ) {
+        final AsyncResult<GetDailyTransactionHistoryResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getDailyTransactionHistoryAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeUnusedBalancesTask extends Gs2RestSessionTask<DescribeUnusedBalancesResult> {
+        private DescribeUnusedBalancesRequest request;
+
+        public DescribeUnusedBalancesTask(
+            DescribeUnusedBalancesRequest request,
+            AsyncAction<AsyncResult<DescribeUnusedBalancesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeUnusedBalancesResult parse(JsonNode data) {
+            return DescribeUnusedBalancesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/balance/unused";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeUnusedBalancesAsync(
+            DescribeUnusedBalancesRequest request,
+            AsyncAction<AsyncResult<DescribeUnusedBalancesResult>> callback
+    ) {
+        DescribeUnusedBalancesTask task = new DescribeUnusedBalancesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeUnusedBalancesResult describeUnusedBalances(
+            DescribeUnusedBalancesRequest request
+    ) {
+        final AsyncResult<DescribeUnusedBalancesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeUnusedBalancesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetUnusedBalanceTask extends Gs2RestSessionTask<GetUnusedBalanceResult> {
+        private GetUnusedBalanceRequest request;
+
+        public GetUnusedBalanceTask(
+            GetUnusedBalanceRequest request,
+            AsyncAction<AsyncResult<GetUnusedBalanceResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetUnusedBalanceResult parse(JsonNode data) {
+            return GetUnusedBalanceResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "money2")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/balance/unused/{currency}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{currency}", this.request.getCurrency() == null || this.request.getCurrency().length() == 0 ? "null" : String.valueOf(this.request.getCurrency()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getUnusedBalanceAsync(
+            GetUnusedBalanceRequest request,
+            AsyncAction<AsyncResult<GetUnusedBalanceResult>> callback
+    ) {
+        GetUnusedBalanceTask task = new GetUnusedBalanceTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetUnusedBalanceResult getUnusedBalance(
+            GetUnusedBalanceRequest request
+    ) {
+        final AsyncResult<GetUnusedBalanceResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getUnusedBalanceAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
 }
