@@ -158,6 +158,7 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("receiveScript", request.getReceiveScript() != null ? request.getReceiveScript().toJson() : null);
+                    put("overrideAcquireActionsScriptId", request.getOverrideAcquireActionsScriptId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -402,6 +403,7 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
                     put("description", request.getDescription());
                     put("transactionSetting", request.getTransactionSetting() != null ? request.getTransactionSetting().toJson() : null);
                     put("receiveScript", request.getReceiveScript() != null ? request.getReceiveScript().toJson() : null);
+                    put("overrideAcquireActionsScriptId", request.getOverrideAcquireActionsScriptId());
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

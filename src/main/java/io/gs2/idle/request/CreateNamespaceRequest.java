@@ -35,6 +35,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String description;
     private TransactionSetting transactionSetting;
     private ScriptSetting receiveScript;
+    private String overrideAcquireActionsScriptId;
     private LogSetting logSetting;
 	public String getName() {
 		return name;
@@ -76,6 +77,16 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.receiveScript = receiveScript;
 		return this;
 	}
+	public String getOverrideAcquireActionsScriptId() {
+		return overrideAcquireActionsScriptId;
+	}
+	public void setOverrideAcquireActionsScriptId(String overrideAcquireActionsScriptId) {
+		this.overrideAcquireActionsScriptId = overrideAcquireActionsScriptId;
+	}
+	public CreateNamespaceRequest withOverrideAcquireActionsScriptId(String overrideAcquireActionsScriptId) {
+		this.overrideAcquireActionsScriptId = overrideAcquireActionsScriptId;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -96,6 +107,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withReceiveScript(data.get("receiveScript") == null || data.get("receiveScript").isNull() ? null : ScriptSetting.fromJson(data.get("receiveScript")))
+            .withOverrideAcquireActionsScriptId(data.get("overrideAcquireActionsScriptId") == null || data.get("overrideAcquireActionsScriptId").isNull() ? null : data.get("overrideAcquireActionsScriptId").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -106,6 +118,7 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("receiveScript", getReceiveScript() != null ? getReceiveScript().toJson() : null);
+                put("overrideAcquireActionsScriptId", getOverrideAcquireActionsScriptId());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

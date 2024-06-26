@@ -34,6 +34,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String description;
 	private TransactionSetting transactionSetting;
 	private ScriptSetting receiveScript;
+	private String overrideAcquireActionsScriptId;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -88,6 +89,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.receiveScript = receiveScript;
 		return this;
 	}
+	public String getOverrideAcquireActionsScriptId() {
+		return overrideAcquireActionsScriptId;
+	}
+	public void setOverrideAcquireActionsScriptId(String overrideAcquireActionsScriptId) {
+		this.overrideAcquireActionsScriptId = overrideAcquireActionsScriptId;
+	}
+	public Namespace withOverrideAcquireActionsScriptId(String overrideAcquireActionsScriptId) {
+		this.overrideAcquireActionsScriptId = overrideAcquireActionsScriptId;
+		return this;
+	}
 	public LogSetting getLogSetting() {
 		return logSetting;
 	}
@@ -139,6 +150,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withReceiveScript(data.get("receiveScript") == null || data.get("receiveScript").isNull() ? null : ScriptSetting.fromJson(data.get("receiveScript")))
+            .withOverrideAcquireActionsScriptId(data.get("overrideAcquireActionsScriptId") == null || data.get("overrideAcquireActionsScriptId").isNull() ? null : data.get("overrideAcquireActionsScriptId").asText())
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -153,6 +165,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("description", getDescription());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("receiveScript", getReceiveScript() != null ? getReceiveScript().toJson() : null);
+                put("overrideAcquireActionsScriptId", getOverrideAcquireActionsScriptId());
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -175,6 +188,7 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.receiveScript == null) ? 0 : this.receiveScript.hashCode());
+        result = prime * result + ((this.overrideAcquireActionsScriptId == null) ? 0 : this.overrideAcquireActionsScriptId.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -214,6 +228,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (receiveScript == null) {
 			return other.receiveScript == null;
 		} else if (!receiveScript.equals(other.receiveScript)) {
+			return false;
+		}
+		if (overrideAcquireActionsScriptId == null) {
+			return other.overrideAcquireActionsScriptId == null;
+		} else if (!overrideAcquireActionsScriptId.equals(other.overrideAcquireActionsScriptId)) {
 			return false;
 		}
 		if (logSetting == null) {
