@@ -2003,7 +2003,7 @@ import io.gs2.serialKey.model.*;public class Gs2SerialKeyRestClient extends Abst
             String url = Gs2RestSession.EndpointHost
                 .replace("{service}", "serial-key")
                 .replace("{region}", session.getRegion().getName())
-                + "/serialKey/use";
+                + "/serialKey/revert";
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
