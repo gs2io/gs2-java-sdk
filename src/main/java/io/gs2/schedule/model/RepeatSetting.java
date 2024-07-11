@@ -36,6 +36,9 @@ public class RepeatSetting implements IModel, Serializable {
 	private String endDayOfWeek;
 	private Integer beginHour;
 	private Integer endHour;
+	private Long anchorTimestamp;
+	private Integer activeDays;
+	private Integer inactiveDays;
 	public String getRepeatType() {
 		return repeatType;
 	}
@@ -106,6 +109,36 @@ public class RepeatSetting implements IModel, Serializable {
 		this.endHour = endHour;
 		return this;
 	}
+	public Long getAnchorTimestamp() {
+		return anchorTimestamp;
+	}
+	public void setAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+	}
+	public RepeatSetting withAnchorTimestamp(Long anchorTimestamp) {
+		this.anchorTimestamp = anchorTimestamp;
+		return this;
+	}
+	public Integer getActiveDays() {
+		return activeDays;
+	}
+	public void setActiveDays(Integer activeDays) {
+		this.activeDays = activeDays;
+	}
+	public RepeatSetting withActiveDays(Integer activeDays) {
+		this.activeDays = activeDays;
+		return this;
+	}
+	public Integer getInactiveDays() {
+		return inactiveDays;
+	}
+	public void setInactiveDays(Integer inactiveDays) {
+		this.inactiveDays = inactiveDays;
+	}
+	public RepeatSetting withInactiveDays(Integer inactiveDays) {
+		this.inactiveDays = inactiveDays;
+		return this;
+	}
 
     public static RepeatSetting fromJson(JsonNode data) {
         if (data == null) {
@@ -118,7 +151,10 @@ public class RepeatSetting implements IModel, Serializable {
             .withBeginDayOfWeek(data.get("beginDayOfWeek") == null || data.get("beginDayOfWeek").isNull() ? null : data.get("beginDayOfWeek").asText())
             .withEndDayOfWeek(data.get("endDayOfWeek") == null || data.get("endDayOfWeek").isNull() ? null : data.get("endDayOfWeek").asText())
             .withBeginHour(data.get("beginHour") == null || data.get("beginHour").isNull() ? null : data.get("beginHour").intValue())
-            .withEndHour(data.get("endHour") == null || data.get("endHour").isNull() ? null : data.get("endHour").intValue());
+            .withEndHour(data.get("endHour") == null || data.get("endHour").isNull() ? null : data.get("endHour").intValue())
+            .withAnchorTimestamp(data.get("anchorTimestamp") == null || data.get("anchorTimestamp").isNull() ? null : data.get("anchorTimestamp").longValue())
+            .withActiveDays(data.get("activeDays") == null || data.get("activeDays").isNull() ? null : data.get("activeDays").intValue())
+            .withInactiveDays(data.get("inactiveDays") == null || data.get("inactiveDays").isNull() ? null : data.get("inactiveDays").intValue());
     }
 
     public JsonNode toJson() {
@@ -131,6 +167,9 @@ public class RepeatSetting implements IModel, Serializable {
                 put("endDayOfWeek", getEndDayOfWeek());
                 put("beginHour", getBeginHour());
                 put("endHour", getEndHour());
+                put("anchorTimestamp", getAnchorTimestamp());
+                put("activeDays", getActiveDays());
+                put("inactiveDays", getInactiveDays());
             }}
         );
     }
@@ -146,6 +185,9 @@ public class RepeatSetting implements IModel, Serializable {
         result = prime * result + ((this.endDayOfWeek == null) ? 0 : this.endDayOfWeek.hashCode());
         result = prime * result + ((this.beginHour == null) ? 0 : this.beginHour.hashCode());
         result = prime * result + ((this.endHour == null) ? 0 : this.endHour.hashCode());
+        result = prime * result + ((this.anchorTimestamp == null) ? 0 : this.anchorTimestamp.hashCode());
+        result = prime * result + ((this.activeDays == null) ? 0 : this.activeDays.hashCode());
+        result = prime * result + ((this.inactiveDays == null) ? 0 : this.inactiveDays.hashCode());
 		return result;
 	}
 
@@ -191,6 +233,21 @@ public class RepeatSetting implements IModel, Serializable {
 		if (endHour == null) {
 			return other.endHour == null;
 		} else if (!endHour.equals(other.endHour)) {
+			return false;
+		}
+		if (anchorTimestamp == null) {
+			return other.anchorTimestamp == null;
+		} else if (!anchorTimestamp.equals(other.anchorTimestamp)) {
+			return false;
+		}
+		if (activeDays == null) {
+			return other.activeDays == null;
+		} else if (!activeDays.equals(other.activeDays)) {
+			return false;
+		}
+		if (inactiveDays == null) {
+			return other.inactiveDays == null;
+		} else if (!inactiveDays.equals(other.inactiveDays)) {
 			return false;
 		}
 		return true;
