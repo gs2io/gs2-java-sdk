@@ -2973,6 +2973,971 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class DescribePlatformIdsTask extends Gs2RestSessionTask<DescribePlatformIdsResult> {
+        private DescribePlatformIdsRequest request;
+
+        public DescribePlatformIdsTask(
+            DescribePlatformIdsRequest request,
+            AsyncAction<AsyncResult<DescribePlatformIdsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribePlatformIdsResult parse(JsonNode data) {
+            return DescribePlatformIdsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/me/platformId";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describePlatformIdsAsync(
+            DescribePlatformIdsRequest request,
+            AsyncAction<AsyncResult<DescribePlatformIdsResult>> callback
+    ) {
+        DescribePlatformIdsTask task = new DescribePlatformIdsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribePlatformIdsResult describePlatformIds(
+            DescribePlatformIdsRequest request
+    ) {
+        final AsyncResult<DescribePlatformIdsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describePlatformIdsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribePlatformIdsByUserIdTask extends Gs2RestSessionTask<DescribePlatformIdsByUserIdResult> {
+        private DescribePlatformIdsByUserIdRequest request;
+
+        public DescribePlatformIdsByUserIdTask(
+            DescribePlatformIdsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribePlatformIdsByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribePlatformIdsByUserIdResult parse(JsonNode data) {
+            return DescribePlatformIdsByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/platformId";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describePlatformIdsByUserIdAsync(
+            DescribePlatformIdsByUserIdRequest request,
+            AsyncAction<AsyncResult<DescribePlatformIdsByUserIdResult>> callback
+    ) {
+        DescribePlatformIdsByUserIdTask task = new DescribePlatformIdsByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribePlatformIdsByUserIdResult describePlatformIdsByUserId(
+            DescribePlatformIdsByUserIdRequest request
+    ) {
+        final AsyncResult<DescribePlatformIdsByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describePlatformIdsByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreatePlatformIdTask extends Gs2RestSessionTask<CreatePlatformIdResult> {
+        private CreatePlatformIdRequest request;
+
+        public CreatePlatformIdTask(
+            CreatePlatformIdRequest request,
+            AsyncAction<AsyncResult<CreatePlatformIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreatePlatformIdResult parse(JsonNode data) {
+            return CreatePlatformIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/me/platformId";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("type", request.getType());
+                    put("userIdentifier", request.getUserIdentifier());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createPlatformIdAsync(
+            CreatePlatformIdRequest request,
+            AsyncAction<AsyncResult<CreatePlatformIdResult>> callback
+    ) {
+        CreatePlatformIdTask task = new CreatePlatformIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreatePlatformIdResult createPlatformId(
+            CreatePlatformIdRequest request
+    ) {
+        final AsyncResult<CreatePlatformIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createPlatformIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreatePlatformIdByUserIdTask extends Gs2RestSessionTask<CreatePlatformIdByUserIdResult> {
+        private CreatePlatformIdByUserIdRequest request;
+
+        public CreatePlatformIdByUserIdTask(
+            CreatePlatformIdByUserIdRequest request,
+            AsyncAction<AsyncResult<CreatePlatformIdByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreatePlatformIdByUserIdResult parse(JsonNode data) {
+            return CreatePlatformIdByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/platformId";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("type", request.getType());
+                    put("userIdentifier", request.getUserIdentifier());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createPlatformIdByUserIdAsync(
+            CreatePlatformIdByUserIdRequest request,
+            AsyncAction<AsyncResult<CreatePlatformIdByUserIdResult>> callback
+    ) {
+        CreatePlatformIdByUserIdTask task = new CreatePlatformIdByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreatePlatformIdByUserIdResult createPlatformIdByUserId(
+            CreatePlatformIdByUserIdRequest request
+    ) {
+        final AsyncResult<CreatePlatformIdByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createPlatformIdByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetPlatformIdTask extends Gs2RestSessionTask<GetPlatformIdResult> {
+        private GetPlatformIdRequest request;
+
+        public GetPlatformIdTask(
+            GetPlatformIdRequest request,
+            AsyncAction<AsyncResult<GetPlatformIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetPlatformIdResult parse(JsonNode data) {
+            return GetPlatformIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/me/platformId/type/{type}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getPlatformIdAsync(
+            GetPlatformIdRequest request,
+            AsyncAction<AsyncResult<GetPlatformIdResult>> callback
+    ) {
+        GetPlatformIdTask task = new GetPlatformIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetPlatformIdResult getPlatformId(
+            GetPlatformIdRequest request
+    ) {
+        final AsyncResult<GetPlatformIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPlatformIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetPlatformIdByUserIdTask extends Gs2RestSessionTask<GetPlatformIdByUserIdResult> {
+        private GetPlatformIdByUserIdRequest request;
+
+        public GetPlatformIdByUserIdTask(
+            GetPlatformIdByUserIdRequest request,
+            AsyncAction<AsyncResult<GetPlatformIdByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetPlatformIdByUserIdResult parse(JsonNode data) {
+            return GetPlatformIdByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/platformId/type/{type}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getPlatformIdByUserIdAsync(
+            GetPlatformIdByUserIdRequest request,
+            AsyncAction<AsyncResult<GetPlatformIdByUserIdResult>> callback
+    ) {
+        GetPlatformIdByUserIdTask task = new GetPlatformIdByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetPlatformIdByUserIdResult getPlatformIdByUserId(
+            GetPlatformIdByUserIdRequest request
+    ) {
+        final AsyncResult<GetPlatformIdByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getPlatformIdByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class FindPlatformIdTask extends Gs2RestSessionTask<FindPlatformIdResult> {
+        private FindPlatformIdRequest request;
+
+        public FindPlatformIdTask(
+            FindPlatformIdRequest request,
+            AsyncAction<AsyncResult<FindPlatformIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public FindPlatformIdResult parse(JsonNode data) {
+            return FindPlatformIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/me/platformId/type/{type}/userIdentifier/{userIdentifier}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{userIdentifier}", this.request.getUserIdentifier() == null || this.request.getUserIdentifier().length() == 0 ? "null" : String.valueOf(this.request.getUserIdentifier()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void findPlatformIdAsync(
+            FindPlatformIdRequest request,
+            AsyncAction<AsyncResult<FindPlatformIdResult>> callback
+    ) {
+        FindPlatformIdTask task = new FindPlatformIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public FindPlatformIdResult findPlatformId(
+            FindPlatformIdRequest request
+    ) {
+        final AsyncResult<FindPlatformIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        findPlatformIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class FindPlatformIdByUserIdTask extends Gs2RestSessionTask<FindPlatformIdByUserIdResult> {
+        private FindPlatformIdByUserIdRequest request;
+
+        public FindPlatformIdByUserIdTask(
+            FindPlatformIdByUserIdRequest request,
+            AsyncAction<AsyncResult<FindPlatformIdByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public FindPlatformIdByUserIdResult parse(JsonNode data) {
+            return FindPlatformIdByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/platformId/type/{type}/userIdentifier/{userIdentifier}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{userIdentifier}", this.request.getUserIdentifier() == null || this.request.getUserIdentifier().length() == 0 ? "null" : String.valueOf(this.request.getUserIdentifier()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void findPlatformIdByUserIdAsync(
+            FindPlatformIdByUserIdRequest request,
+            AsyncAction<AsyncResult<FindPlatformIdByUserIdResult>> callback
+    ) {
+        FindPlatformIdByUserIdTask task = new FindPlatformIdByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public FindPlatformIdByUserIdResult findPlatformIdByUserId(
+            FindPlatformIdByUserIdRequest request
+    ) {
+        final AsyncResult<FindPlatformIdByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        findPlatformIdByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeletePlatformIdTask extends Gs2RestSessionTask<DeletePlatformIdResult> {
+        private DeletePlatformIdRequest request;
+
+        public DeletePlatformIdTask(
+            DeletePlatformIdRequest request,
+            AsyncAction<AsyncResult<DeletePlatformIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeletePlatformIdResult parse(JsonNode data) {
+            return DeletePlatformIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/me/platformId/type/{type}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getUserIdentifier() != null) {
+                queryStrings.add("userIdentifier=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserIdentifier()))));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deletePlatformIdAsync(
+            DeletePlatformIdRequest request,
+            AsyncAction<AsyncResult<DeletePlatformIdResult>> callback
+    ) {
+        DeletePlatformIdTask task = new DeletePlatformIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeletePlatformIdResult deletePlatformId(
+            DeletePlatformIdRequest request
+    ) {
+        final AsyncResult<DeletePlatformIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deletePlatformIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeletePlatformIdByUserIdentifierTask extends Gs2RestSessionTask<DeletePlatformIdByUserIdentifierResult> {
+        private DeletePlatformIdByUserIdentifierRequest request;
+
+        public DeletePlatformIdByUserIdentifierTask(
+            DeletePlatformIdByUserIdentifierRequest request,
+            AsyncAction<AsyncResult<DeletePlatformIdByUserIdentifierResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeletePlatformIdByUserIdentifierResult parse(JsonNode data) {
+            return DeletePlatformIdByUserIdentifierResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/platformId/type/{type}/userIdentifier/{userIdentifier}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+            url = url.replace("{userIdentifier}", this.request.getUserIdentifier() == null || this.request.getUserIdentifier().length() == 0 ? "null" : String.valueOf(this.request.getUserIdentifier()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deletePlatformIdByUserIdentifierAsync(
+            DeletePlatformIdByUserIdentifierRequest request,
+            AsyncAction<AsyncResult<DeletePlatformIdByUserIdentifierResult>> callback
+    ) {
+        DeletePlatformIdByUserIdentifierTask task = new DeletePlatformIdByUserIdentifierTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeletePlatformIdByUserIdentifierResult deletePlatformIdByUserIdentifier(
+            DeletePlatformIdByUserIdentifierRequest request
+    ) {
+        final AsyncResult<DeletePlatformIdByUserIdentifierResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deletePlatformIdByUserIdentifierAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeletePlatformIdByUserIdTask extends Gs2RestSessionTask<DeletePlatformIdByUserIdResult> {
+        private DeletePlatformIdByUserIdRequest request;
+
+        public DeletePlatformIdByUserIdTask(
+            DeletePlatformIdByUserIdRequest request,
+            AsyncAction<AsyncResult<DeletePlatformIdByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeletePlatformIdByUserIdResult parse(JsonNode data) {
+            return DeletePlatformIdByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/platformId/type/{type}/platformId";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deletePlatformIdByUserIdAsync(
+            DeletePlatformIdByUserIdRequest request,
+            AsyncAction<AsyncResult<DeletePlatformIdByUserIdResult>> callback
+    ) {
+        DeletePlatformIdByUserIdTask task = new DeletePlatformIdByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeletePlatformIdByUserIdResult deletePlatformIdByUserId(
+            DeletePlatformIdByUserIdRequest request
+    ) {
+        final AsyncResult<DeletePlatformIdByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deletePlatformIdByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetDataOwnerByUserIdTask extends Gs2RestSessionTask<GetDataOwnerByUserIdResult> {
         private GetDataOwnerByUserIdRequest request;
 
