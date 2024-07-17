@@ -30,7 +30,7 @@ import io.gs2.identifier.model.Password;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CreatePasswordResult implements IResult, Serializable {
+public class ChallengeMfaResult implements IResult, Serializable {
     private Password item;
 
 	public Password getItem() {
@@ -41,16 +41,16 @@ public class CreatePasswordResult implements IResult, Serializable {
 		this.item = item;
 	}
 
-	public CreatePasswordResult withItem(Password item) {
+	public ChallengeMfaResult withItem(Password item) {
 		this.item = item;
 		return this;
 	}
 
-    public static CreatePasswordResult fromJson(JsonNode data) {
+    public static ChallengeMfaResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new CreatePasswordResult()
+        return new ChallengeMfaResult()
             .withItem(data.get("item") == null || data.get("item").isNull() ? null : Password.fromJson(data.get("item")));
     }
 

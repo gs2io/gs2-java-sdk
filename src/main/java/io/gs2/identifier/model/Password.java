@@ -32,6 +32,8 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 	private String passwordId;
 	private String userId;
 	private String userName;
+	private String enableTwoFactorAuthentication;
+	private TwoFactorAuthenticationSetting twoFactorAuthenticationSetting;
 	private Long createdAt;
 	private Long revision;
 	public String getPasswordId() {
@@ -64,6 +66,26 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 		this.userName = userName;
 		return this;
 	}
+	public String getEnableTwoFactorAuthentication() {
+		return enableTwoFactorAuthentication;
+	}
+	public void setEnableTwoFactorAuthentication(String enableTwoFactorAuthentication) {
+		this.enableTwoFactorAuthentication = enableTwoFactorAuthentication;
+	}
+	public Password withEnableTwoFactorAuthentication(String enableTwoFactorAuthentication) {
+		this.enableTwoFactorAuthentication = enableTwoFactorAuthentication;
+		return this;
+	}
+	public TwoFactorAuthenticationSetting getTwoFactorAuthenticationSetting() {
+		return twoFactorAuthenticationSetting;
+	}
+	public void setTwoFactorAuthenticationSetting(TwoFactorAuthenticationSetting twoFactorAuthenticationSetting) {
+		this.twoFactorAuthenticationSetting = twoFactorAuthenticationSetting;
+	}
+	public Password withTwoFactorAuthenticationSetting(TwoFactorAuthenticationSetting twoFactorAuthenticationSetting) {
+		this.twoFactorAuthenticationSetting = twoFactorAuthenticationSetting;
+		return this;
+	}
 	public Long getCreatedAt() {
 		return createdAt;
 	}
@@ -93,6 +115,8 @@ public class Password implements IModel, Serializable, Comparable<Password> {
             .withPasswordId(data.get("passwordId") == null || data.get("passwordId").isNull() ? null : data.get("passwordId").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
+            .withEnableTwoFactorAuthentication(data.get("enableTwoFactorAuthentication") == null || data.get("enableTwoFactorAuthentication").isNull() ? null : data.get("enableTwoFactorAuthentication").asText())
+            .withTwoFactorAuthenticationSetting(data.get("twoFactorAuthenticationSetting") == null || data.get("twoFactorAuthenticationSetting").isNull() ? null : TwoFactorAuthenticationSetting.fromJson(data.get("twoFactorAuthenticationSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
     }
@@ -103,6 +127,8 @@ public class Password implements IModel, Serializable, Comparable<Password> {
                 put("passwordId", getPasswordId());
                 put("userId", getUserId());
                 put("userName", getUserName());
+                put("enableTwoFactorAuthentication", getEnableTwoFactorAuthentication());
+                put("twoFactorAuthenticationSetting", getTwoFactorAuthenticationSetting() != null ? getTwoFactorAuthenticationSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("revision", getRevision());
             }}
@@ -121,6 +147,8 @@ public class Password implements IModel, Serializable, Comparable<Password> {
         result = prime * result + ((this.passwordId == null) ? 0 : this.passwordId.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
+        result = prime * result + ((this.enableTwoFactorAuthentication == null) ? 0 : this.enableTwoFactorAuthentication.hashCode());
+        result = prime * result + ((this.twoFactorAuthenticationSetting == null) ? 0 : this.twoFactorAuthenticationSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
 		return result;
@@ -148,6 +176,16 @@ public class Password implements IModel, Serializable, Comparable<Password> {
 		if (userName == null) {
 			return other.userName == null;
 		} else if (!userName.equals(other.userName)) {
+			return false;
+		}
+		if (enableTwoFactorAuthentication == null) {
+			return other.enableTwoFactorAuthentication == null;
+		} else if (!enableTwoFactorAuthentication.equals(other.enableTwoFactorAuthentication)) {
+			return false;
+		}
+		if (twoFactorAuthenticationSetting == null) {
+			return other.twoFactorAuthenticationSetting == null;
+		} else if (!twoFactorAuthenticationSetting.equals(other.twoFactorAuthenticationSetting)) {
 			return false;
 		}
 		if (createdAt == null) {

@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.identifier.result;
+package io.gs2.identifier.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,41 +23,35 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.gs2.core.model.*;
-import io.gs2.identifier.model.*;
-import io.gs2.identifier.model.TwoFactorAuthenticationSetting;
-import io.gs2.identifier.model.Password;
+import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CreatePasswordResult implements IResult, Serializable {
-    private Password item;
-
-	public Password getItem() {
-		return item;
+public class EnableMfaRequest extends Gs2BasicRequest<EnableMfaRequest> {
+    private String userName;
+	public String getUserName() {
+		return userName;
 	}
-
-	public void setItem(Password item) {
-		this.item = item;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-
-	public CreatePasswordResult withItem(Password item) {
-		this.item = item;
+	public EnableMfaRequest withUserName(String userName) {
+		this.userName = userName;
 		return this;
 	}
 
-    public static CreatePasswordResult fromJson(JsonNode data) {
+    public static EnableMfaRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new CreatePasswordResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Password.fromJson(data.get("item")));
+        return new EnableMfaRequest()
+            .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("item", getItem() != null ? getItem().toJson() : null);
+                put("userName", getUserName());
             }}
         );
     }

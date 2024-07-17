@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.identifier.model.*;
+import io.gs2.identifier.model.TwoFactorAuthenticationSetting;
 import io.gs2.identifier.model.Password;
 
 @SuppressWarnings("serial")

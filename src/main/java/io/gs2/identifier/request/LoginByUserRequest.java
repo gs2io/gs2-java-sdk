@@ -30,6 +30,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class LoginByUserRequest extends Gs2BasicRequest<LoginByUserRequest> {
     private String userName;
     private String password;
+    private String otp;
 	public String getUserName() {
 		return userName;
 	}
@@ -50,6 +51,16 @@ public class LoginByUserRequest extends Gs2BasicRequest<LoginByUserRequest> {
 		this.password = password;
 		return this;
 	}
+	public String getOtp() {
+		return otp;
+	}
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
+	public LoginByUserRequest withOtp(String otp) {
+		this.otp = otp;
+		return this;
+	}
 
     public static LoginByUserRequest fromJson(JsonNode data) {
         if (data == null) {
@@ -57,7 +68,8 @@ public class LoginByUserRequest extends Gs2BasicRequest<LoginByUserRequest> {
         }
         return new LoginByUserRequest()
             .withUserName(data.get("userName") == null || data.get("userName").isNull() ? null : data.get("userName").asText())
-            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText());
+            .withPassword(data.get("password") == null || data.get("password").isNull() ? null : data.get("password").asText())
+            .withOtp(data.get("otp") == null || data.get("otp").isNull() ? null : data.get("otp").asText());
     }
 
     public JsonNode toJson() {
@@ -65,6 +77,7 @@ public class LoginByUserRequest extends Gs2BasicRequest<LoginByUserRequest> {
             new HashMap<String, Object>() {{
                 put("userName", getUserName());
                 put("password", getPassword());
+                put("otp", getOtp());
             }}
         );
     }
