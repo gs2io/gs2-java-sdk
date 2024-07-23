@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.ranking.request;
+package io.gs2.guild.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,31 +27,41 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdRequest> {
+public class DeleteIgnoreUserByGuildNameRequest extends Gs2BasicRequest<DeleteIgnoreUserByGuildNameRequest> {
     private String namespaceName;
-    private String categoryName;
+    private String guildModelName;
+    private String guildName;
     private String userId;
-    private Long score;
-    private String metadata;
     private String timeOffsetToken;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
 	public void setNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 	}
-	public PutScoreByUserIdRequest withNamespaceName(String namespaceName) {
+	public DeleteIgnoreUserByGuildNameRequest withNamespaceName(String namespaceName) {
 		this.namespaceName = namespaceName;
 		return this;
 	}
-	public String getCategoryName() {
-		return categoryName;
+	public String getGuildModelName() {
+		return guildModelName;
 	}
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	public void setGuildModelName(String guildModelName) {
+		this.guildModelName = guildModelName;
 	}
-	public PutScoreByUserIdRequest withCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	public DeleteIgnoreUserByGuildNameRequest withGuildModelName(String guildModelName) {
+		this.guildModelName = guildModelName;
+		return this;
+	}
+	public String getGuildName() {
+		return guildName;
+	}
+	public void setGuildName(String guildName) {
+		this.guildName = guildName;
+	}
+	public DeleteIgnoreUserByGuildNameRequest withGuildName(String guildName) {
+		this.guildName = guildName;
 		return this;
 	}
 	public String getUserId() {
@@ -60,28 +70,8 @@ public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdReq
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public PutScoreByUserIdRequest withUserId(String userId) {
+	public DeleteIgnoreUserByGuildNameRequest withUserId(String userId) {
 		this.userId = userId;
-		return this;
-	}
-	public Long getScore() {
-		return score;
-	}
-	public void setScore(Long score) {
-		this.score = score;
-	}
-	public PutScoreByUserIdRequest withScore(Long score) {
-		this.score = score;
-		return this;
-	}
-	public String getMetadata() {
-		return metadata;
-	}
-	public void setMetadata(String metadata) {
-		this.metadata = metadata;
-	}
-	public PutScoreByUserIdRequest withMetadata(String metadata) {
-		this.metadata = metadata;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -90,21 +80,33 @@ public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdReq
 	public void setTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
 	}
-	public PutScoreByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+	public DeleteIgnoreUserByGuildNameRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
 		return this;
 	}
 
-    public static PutScoreByUserIdRequest fromJson(JsonNode data) {
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DeleteIgnoreUserByGuildNameRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+		return this;
+	}
+
+    public static DeleteIgnoreUserByGuildNameRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new PutScoreByUserIdRequest()
+        return new DeleteIgnoreUserByGuildNameRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
-            .withCategoryName(data.get("categoryName") == null || data.get("categoryName").isNull() ? null : data.get("categoryName").asText())
+            .withGuildModelName(data.get("guildModelName") == null || data.get("guildModelName").isNull() ? null : data.get("guildModelName").asText())
+            .withGuildName(data.get("guildName") == null || data.get("guildName").isNull() ? null : data.get("guildName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withScore(data.get("score") == null || data.get("score").isNull() ? null : data.get("score").longValue())
-            .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -112,10 +114,9 @@ public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdReq
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
-                put("categoryName", getCategoryName());
+                put("guildModelName", getGuildModelName());
+                put("guildName", getGuildName());
                 put("userId", getUserId());
-                put("score", getScore());
-                put("metadata", getMetadata());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

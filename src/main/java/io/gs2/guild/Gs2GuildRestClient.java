@@ -6524,4 +6524,707 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
 
         return resultAsyncResult[0].getResult();
     }
+
+    class DescribeIgnoreUsersTask extends Gs2RestSessionTask<DescribeIgnoreUsersResult> {
+        private DescribeIgnoreUsersRequest request;
+
+        public DescribeIgnoreUsersTask(
+            DescribeIgnoreUsersRequest request,
+            AsyncAction<AsyncResult<DescribeIgnoreUsersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeIgnoreUsersResult parse(JsonNode data) {
+            return DescribeIgnoreUsersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/me/ignore/user";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeIgnoreUsersAsync(
+            DescribeIgnoreUsersRequest request,
+            AsyncAction<AsyncResult<DescribeIgnoreUsersResult>> callback
+    ) {
+        DescribeIgnoreUsersTask task = new DescribeIgnoreUsersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeIgnoreUsersResult describeIgnoreUsers(
+            DescribeIgnoreUsersRequest request
+    ) {
+        final AsyncResult<DescribeIgnoreUsersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeIgnoreUsersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeIgnoreUsersByGuildNameTask extends Gs2RestSessionTask<DescribeIgnoreUsersByGuildNameResult> {
+        private DescribeIgnoreUsersByGuildNameRequest request;
+
+        public DescribeIgnoreUsersByGuildNameTask(
+            DescribeIgnoreUsersByGuildNameRequest request,
+            AsyncAction<AsyncResult<DescribeIgnoreUsersByGuildNameResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeIgnoreUsersByGuildNameResult parse(JsonNode data) {
+            return DescribeIgnoreUsersByGuildNameResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/ignore/user";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeIgnoreUsersByGuildNameAsync(
+            DescribeIgnoreUsersByGuildNameRequest request,
+            AsyncAction<AsyncResult<DescribeIgnoreUsersByGuildNameResult>> callback
+    ) {
+        DescribeIgnoreUsersByGuildNameTask task = new DescribeIgnoreUsersByGuildNameTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeIgnoreUsersByGuildNameResult describeIgnoreUsersByGuildName(
+            DescribeIgnoreUsersByGuildNameRequest request
+    ) {
+        final AsyncResult<DescribeIgnoreUsersByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeIgnoreUsersByGuildNameAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetIgnoreUserTask extends Gs2RestSessionTask<GetIgnoreUserResult> {
+        private GetIgnoreUserRequest request;
+
+        public GetIgnoreUserTask(
+            GetIgnoreUserRequest request,
+            AsyncAction<AsyncResult<GetIgnoreUserResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetIgnoreUserResult parse(JsonNode data) {
+            return GetIgnoreUserResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/me/ignore/user/{userId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getIgnoreUserAsync(
+            GetIgnoreUserRequest request,
+            AsyncAction<AsyncResult<GetIgnoreUserResult>> callback
+    ) {
+        GetIgnoreUserTask task = new GetIgnoreUserTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetIgnoreUserResult getIgnoreUser(
+            GetIgnoreUserRequest request
+    ) {
+        final AsyncResult<GetIgnoreUserResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getIgnoreUserAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetIgnoreUserByGuildNameTask extends Gs2RestSessionTask<GetIgnoreUserByGuildNameResult> {
+        private GetIgnoreUserByGuildNameRequest request;
+
+        public GetIgnoreUserByGuildNameTask(
+            GetIgnoreUserByGuildNameRequest request,
+            AsyncAction<AsyncResult<GetIgnoreUserByGuildNameResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetIgnoreUserByGuildNameResult parse(JsonNode data) {
+            return GetIgnoreUserByGuildNameResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/ignore/user/{userId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getIgnoreUserByGuildNameAsync(
+            GetIgnoreUserByGuildNameRequest request,
+            AsyncAction<AsyncResult<GetIgnoreUserByGuildNameResult>> callback
+    ) {
+        GetIgnoreUserByGuildNameTask task = new GetIgnoreUserByGuildNameTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetIgnoreUserByGuildNameResult getIgnoreUserByGuildName(
+            GetIgnoreUserByGuildNameRequest request
+    ) {
+        final AsyncResult<GetIgnoreUserByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getIgnoreUserByGuildNameAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AddIgnoreUserTask extends Gs2RestSessionTask<AddIgnoreUserResult> {
+        private AddIgnoreUserRequest request;
+
+        public AddIgnoreUserTask(
+            AddIgnoreUserRequest request,
+            AsyncAction<AsyncResult<AddIgnoreUserResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AddIgnoreUserResult parse(JsonNode data) {
+            return AddIgnoreUserResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/me/ignore/user/{userId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void addIgnoreUserAsync(
+            AddIgnoreUserRequest request,
+            AsyncAction<AsyncResult<AddIgnoreUserResult>> callback
+    ) {
+        AddIgnoreUserTask task = new AddIgnoreUserTask(request, callback);
+        session.execute(task);
+    }
+
+    public AddIgnoreUserResult addIgnoreUser(
+            AddIgnoreUserRequest request
+    ) {
+        final AsyncResult<AddIgnoreUserResult>[] resultAsyncResult = new AsyncResult[]{null};
+        addIgnoreUserAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AddIgnoreUserByGuildNameTask extends Gs2RestSessionTask<AddIgnoreUserByGuildNameResult> {
+        private AddIgnoreUserByGuildNameRequest request;
+
+        public AddIgnoreUserByGuildNameTask(
+            AddIgnoreUserByGuildNameRequest request,
+            AsyncAction<AsyncResult<AddIgnoreUserByGuildNameResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AddIgnoreUserByGuildNameResult parse(JsonNode data) {
+            return AddIgnoreUserByGuildNameResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/ignore/user/{userId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void addIgnoreUserByGuildNameAsync(
+            AddIgnoreUserByGuildNameRequest request,
+            AsyncAction<AsyncResult<AddIgnoreUserByGuildNameResult>> callback
+    ) {
+        AddIgnoreUserByGuildNameTask task = new AddIgnoreUserByGuildNameTask(request, callback);
+        session.execute(task);
+    }
+
+    public AddIgnoreUserByGuildNameResult addIgnoreUserByGuildName(
+            AddIgnoreUserByGuildNameRequest request
+    ) {
+        final AsyncResult<AddIgnoreUserByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
+        addIgnoreUserByGuildNameAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteIgnoreUserTask extends Gs2RestSessionTask<DeleteIgnoreUserResult> {
+        private DeleteIgnoreUserRequest request;
+
+        public DeleteIgnoreUserTask(
+            DeleteIgnoreUserRequest request,
+            AsyncAction<AsyncResult<DeleteIgnoreUserResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteIgnoreUserResult parse(JsonNode data) {
+            return DeleteIgnoreUserResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/me/ignore/user/{userId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteIgnoreUserAsync(
+            DeleteIgnoreUserRequest request,
+            AsyncAction<AsyncResult<DeleteIgnoreUserResult>> callback
+    ) {
+        DeleteIgnoreUserTask task = new DeleteIgnoreUserTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteIgnoreUserResult deleteIgnoreUser(
+            DeleteIgnoreUserRequest request
+    ) {
+        final AsyncResult<DeleteIgnoreUserResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteIgnoreUserAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteIgnoreUserByGuildNameTask extends Gs2RestSessionTask<DeleteIgnoreUserByGuildNameResult> {
+        private DeleteIgnoreUserByGuildNameRequest request;
+
+        public DeleteIgnoreUserByGuildNameTask(
+            DeleteIgnoreUserByGuildNameRequest request,
+            AsyncAction<AsyncResult<DeleteIgnoreUserByGuildNameResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteIgnoreUserByGuildNameResult parse(JsonNode data) {
+            return DeleteIgnoreUserByGuildNameResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/ignore/user/{userId}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteIgnoreUserByGuildNameAsync(
+            DeleteIgnoreUserByGuildNameRequest request,
+            AsyncAction<AsyncResult<DeleteIgnoreUserByGuildNameResult>> callback
+    ) {
+        DeleteIgnoreUserByGuildNameTask task = new DeleteIgnoreUserByGuildNameTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteIgnoreUserByGuildNameResult deleteIgnoreUserByGuildName(
+            DeleteIgnoreUserByGuildNameRequest request
+    ) {
+        final AsyncResult<DeleteIgnoreUserByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteIgnoreUserByGuildNameAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
 }

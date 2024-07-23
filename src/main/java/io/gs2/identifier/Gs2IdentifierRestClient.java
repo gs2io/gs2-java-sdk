@@ -1514,6 +1514,247 @@ import io.gs2.identifier.model.*;public class Gs2IdentifierRestClient extends Ab
         return resultAsyncResult[0].getResult();
     }
 
+    class EnableMfaTask extends Gs2RestSessionTask<EnableMfaResult> {
+        private EnableMfaRequest request;
+
+        public EnableMfaTask(
+            EnableMfaRequest request,
+            AsyncAction<AsyncResult<EnableMfaResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public EnableMfaResult parse(JsonNode data) {
+            return EnableMfaResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "identifier")
+                .replace("{region}", session.getRegion().getName())
+                + "/user/{userName}/mfa";
+
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void enableMfaAsync(
+            EnableMfaRequest request,
+            AsyncAction<AsyncResult<EnableMfaResult>> callback
+    ) {
+        EnableMfaTask task = new EnableMfaTask(request, callback);
+        session.execute(task);
+    }
+
+    public EnableMfaResult enableMfa(
+            EnableMfaRequest request
+    ) {
+        final AsyncResult<EnableMfaResult>[] resultAsyncResult = new AsyncResult[]{null};
+        enableMfaAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ChallengeMfaTask extends Gs2RestSessionTask<ChallengeMfaResult> {
+        private ChallengeMfaRequest request;
+
+        public ChallengeMfaTask(
+            ChallengeMfaRequest request,
+            AsyncAction<AsyncResult<ChallengeMfaResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ChallengeMfaResult parse(JsonNode data) {
+            return ChallengeMfaResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "identifier")
+                .replace("{region}", session.getRegion().getName())
+                + "/user/{userName}/mfa/challenge";
+
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("passcode", request.getPasscode());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void challengeMfaAsync(
+            ChallengeMfaRequest request,
+            AsyncAction<AsyncResult<ChallengeMfaResult>> callback
+    ) {
+        ChallengeMfaTask task = new ChallengeMfaTask(request, callback);
+        session.execute(task);
+    }
+
+    public ChallengeMfaResult challengeMfa(
+            ChallengeMfaRequest request
+    ) {
+        final AsyncResult<ChallengeMfaResult>[] resultAsyncResult = new AsyncResult[]{null};
+        challengeMfaAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DisableMfaTask extends Gs2RestSessionTask<DisableMfaResult> {
+        private DisableMfaRequest request;
+
+        public DisableMfaTask(
+            DisableMfaRequest request,
+            AsyncAction<AsyncResult<DisableMfaResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DisableMfaResult parse(JsonNode data) {
+            return DisableMfaResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "identifier")
+                .replace("{region}", session.getRegion().getName())
+                + "/user/{userName}/mfa";
+
+            url = url.replace("{userName}", this.request.getUserName() == null || this.request.getUserName().length() == 0 ? "null" : String.valueOf(this.request.getUserName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void disableMfaAsync(
+            DisableMfaRequest request,
+            AsyncAction<AsyncResult<DisableMfaResult>> callback
+    ) {
+        DisableMfaTask task = new DisableMfaTask(request, callback);
+        session.execute(task);
+    }
+
+    public DisableMfaResult disableMfa(
+            DisableMfaRequest request
+    ) {
+        final AsyncResult<DisableMfaResult>[] resultAsyncResult = new AsyncResult[]{null};
+        disableMfaAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DeletePasswordTask extends Gs2RestSessionTask<DeletePasswordResult> {
         private DeletePasswordRequest request;
 
@@ -1946,6 +2187,7 @@ import io.gs2.identifier.model.*;public class Gs2IdentifierRestClient extends Ab
                 new HashMap<String, Object>() {{
                     put("userName", request.getUserName());
                     put("password", request.getPassword());
+                    put("otp", request.getOtp());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
