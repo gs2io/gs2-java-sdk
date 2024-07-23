@@ -588,9 +588,6 @@ import io.gs2.money.model.*;public class Gs2MoneyRestClient extends AbstractGs2C
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
@@ -673,9 +670,6 @@ import io.gs2.money.model.*;public class Gs2MoneyRestClient extends AbstractGs2C
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
@@ -760,9 +754,6 @@ import io.gs2.money.model.*;public class Gs2MoneyRestClient extends AbstractGs2C
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
@@ -846,9 +837,6 @@ import io.gs2.money.model.*;public class Gs2MoneyRestClient extends AbstractGs2C
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
@@ -931,9 +919,6 @@ import io.gs2.money.model.*;public class Gs2MoneyRestClient extends AbstractGs2C
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
@@ -1019,9 +1004,6 @@ import io.gs2.money.model.*;public class Gs2MoneyRestClient extends AbstractGs2C
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
-            }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
@@ -1105,9 +1087,6 @@ import io.gs2.money.model.*;public class Gs2MoneyRestClient extends AbstractGs2C
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
-            }
-            if (this.request.getDuplicationAvoider() != null) {
-                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());

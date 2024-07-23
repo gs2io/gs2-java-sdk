@@ -31,7 +31,6 @@ public class ImportUserDataByUserIdRequest extends Gs2BasicRequest<ImportUserDat
     private String userId;
     private String uploadToken;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getUserId() {
 		return userId;
 	}
@@ -60,19 +59,6 @@ public class ImportUserDataByUserIdRequest extends Gs2BasicRequest<ImportUserDat
 	}
 	public ImportUserDataByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public ImportUserDataByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

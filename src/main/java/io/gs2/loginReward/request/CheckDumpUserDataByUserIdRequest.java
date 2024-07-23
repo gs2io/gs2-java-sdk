@@ -30,7 +30,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class CheckDumpUserDataByUserIdRequest extends Gs2BasicRequest<CheckDumpUserDataByUserIdRequest> {
     private String userId;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getUserId() {
 		return userId;
 	}
@@ -49,19 +48,6 @@ public class CheckDumpUserDataByUserIdRequest extends Gs2BasicRequest<CheckDumpU
 	}
 	public CheckDumpUserDataByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public CheckDumpUserDataByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

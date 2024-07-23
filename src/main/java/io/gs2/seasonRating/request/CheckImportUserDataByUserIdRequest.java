@@ -31,7 +31,6 @@ public class CheckImportUserDataByUserIdRequest extends Gs2BasicRequest<CheckImp
     private String userId;
     private String uploadToken;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getUserId() {
 		return userId;
 	}
@@ -60,19 +59,6 @@ public class CheckImportUserDataByUserIdRequest extends Gs2BasicRequest<CheckImp
 	}
 	public CheckImportUserDataByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public CheckImportUserDataByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

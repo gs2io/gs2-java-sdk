@@ -30,7 +30,6 @@ import io.gs2.core.control.Gs2BasicRequest;
 public class PrepareImportUserDataByUserIdRequest extends Gs2BasicRequest<PrepareImportUserDataByUserIdRequest> {
     private String userId;
     private String timeOffsetToken;
-    private String duplicationAvoider;
 	public String getUserId() {
 		return userId;
 	}
@@ -49,19 +48,6 @@ public class PrepareImportUserDataByUserIdRequest extends Gs2BasicRequest<Prepar
 	}
 	public PrepareImportUserDataByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
-		return this;
-	}
-
-	public String getDuplicationAvoider() {
-		return duplicationAvoider;
-	}
-
-	public void setDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
-	}
-
-	public PrepareImportUserDataByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
-		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
