@@ -25,41 +25,57 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.guild.model.*;
-import io.gs2.guild.model.NotificationSetting;
-import io.gs2.guild.model.ScriptSetting;
-import io.gs2.guild.model.LogSetting;
-import io.gs2.guild.model.Namespace;
+import io.gs2.guild.model.LastGuildMasterActivity;
+import io.gs2.guild.model.RoleModel;
+import io.gs2.guild.model.Member;
+import io.gs2.guild.model.Guild;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateNamespaceResult implements IResult, Serializable {
-    private Namespace item;
+public class GetLastGuildMasterActivityByGuildNameResult implements IResult, Serializable {
+    private LastGuildMasterActivity item;
+    private Guild guild;
 
-	public Namespace getItem() {
+	public LastGuildMasterActivity getItem() {
 		return item;
 	}
 
-	public void setItem(Namespace item) {
+	public void setItem(LastGuildMasterActivity item) {
 		this.item = item;
 	}
 
-	public UpdateNamespaceResult withItem(Namespace item) {
+	public GetLastGuildMasterActivityByGuildNameResult withItem(LastGuildMasterActivity item) {
 		this.item = item;
 		return this;
 	}
 
-    public static UpdateNamespaceResult fromJson(JsonNode data) {
+	public Guild getGuild() {
+		return guild;
+	}
+
+	public void setGuild(Guild guild) {
+		this.guild = guild;
+	}
+
+	public GetLastGuildMasterActivityByGuildNameResult withGuild(Guild guild) {
+		this.guild = guild;
+		return this;
+	}
+
+    public static GetLastGuildMasterActivityByGuildNameResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new UpdateNamespaceResult()
-            .withItem(data.get("item") == null || data.get("item").isNull() ? null : Namespace.fromJson(data.get("item")));
+        return new GetLastGuildMasterActivityByGuildNameResult()
+            .withItem(data.get("item") == null || data.get("item").isNull() ? null : LastGuildMasterActivity.fromJson(data.get("item")))
+            .withGuild(data.get("guild") == null || data.get("guild").isNull() ? null : Guild.fromJson(data.get("guild")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("item", getItem() != null ? getItem().toJson() : null);
+                put("guild", getGuild() != null ? getGuild().toJson() : null);
             }}
         );
     }

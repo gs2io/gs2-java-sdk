@@ -35,6 +35,7 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
 	private String metadata;
 	private Integer defaultMaximumMemberCount;
 	private Integer maximumMemberCount;
+	private Integer inactivityPeriodDays;
 	private List<RoleModel> roles;
 	private String guildMasterRole;
 	private String guildMemberDefaultRole;
@@ -100,6 +101,16 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
 	}
 	public GuildModelMaster withMaximumMemberCount(Integer maximumMemberCount) {
 		this.maximumMemberCount = maximumMemberCount;
+		return this;
+	}
+	public Integer getInactivityPeriodDays() {
+		return inactivityPeriodDays;
+	}
+	public void setInactivityPeriodDays(Integer inactivityPeriodDays) {
+		this.inactivityPeriodDays = inactivityPeriodDays;
+	}
+	public GuildModelMaster withInactivityPeriodDays(Integer inactivityPeriodDays) {
+		this.inactivityPeriodDays = inactivityPeriodDays;
 		return this;
 	}
 	public List<RoleModel> getRoles() {
@@ -184,6 +195,7 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDefaultMaximumMemberCount(data.get("defaultMaximumMemberCount") == null || data.get("defaultMaximumMemberCount").isNull() ? null : data.get("defaultMaximumMemberCount").intValue())
             .withMaximumMemberCount(data.get("maximumMemberCount") == null || data.get("maximumMemberCount").isNull() ? null : data.get("maximumMemberCount").intValue())
+            .withInactivityPeriodDays(data.get("inactivityPeriodDays") == null || data.get("inactivityPeriodDays").isNull() ? null : data.get("inactivityPeriodDays").intValue())
             .withRoles(data.get("roles") == null || data.get("roles").isNull() ? new ArrayList<RoleModel>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("roles").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -207,6 +219,7 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
                 put("metadata", getMetadata());
                 put("defaultMaximumMemberCount", getDefaultMaximumMemberCount());
                 put("maximumMemberCount", getMaximumMemberCount());
+                put("inactivityPeriodDays", getInactivityPeriodDays());
                 put("roles", getRoles() == null ? new ArrayList<RoleModel>() :
                     getRoles().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -238,6 +251,7 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
         result = prime * result + ((this.defaultMaximumMemberCount == null) ? 0 : this.defaultMaximumMemberCount.hashCode());
         result = prime * result + ((this.maximumMemberCount == null) ? 0 : this.maximumMemberCount.hashCode());
+        result = prime * result + ((this.inactivityPeriodDays == null) ? 0 : this.inactivityPeriodDays.hashCode());
         result = prime * result + ((this.roles == null) ? 0 : this.roles.hashCode());
         result = prime * result + ((this.guildMasterRole == null) ? 0 : this.guildMasterRole.hashCode());
         result = prime * result + ((this.guildMemberDefaultRole == null) ? 0 : this.guildMemberDefaultRole.hashCode());
@@ -285,6 +299,11 @@ public class GuildModelMaster implements IModel, Serializable, Comparable<GuildM
 		if (maximumMemberCount == null) {
 			return other.maximumMemberCount == null;
 		} else if (!maximumMemberCount.equals(other.maximumMemberCount)) {
+			return false;
+		}
+		if (inactivityPeriodDays == null) {
+			return other.inactivityPeriodDays == null;
+		} else if (!inactivityPeriodDays.equals(other.inactivityPeriodDays)) {
 			return false;
 		}
 		if (roles == null) {

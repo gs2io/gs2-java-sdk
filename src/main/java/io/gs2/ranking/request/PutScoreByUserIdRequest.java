@@ -34,6 +34,7 @@ public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdReq
     private Long score;
     private String metadata;
     private String timeOffsetToken;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -92,6 +93,19 @@ public class PutScoreByUserIdRequest extends Gs2BasicRequest<PutScoreByUserIdReq
 	}
 	public PutScoreByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public PutScoreByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

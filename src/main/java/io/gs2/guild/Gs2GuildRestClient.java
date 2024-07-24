@@ -161,6 +161,10 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("changeMemberNotification", request.getChangeMemberNotification() != null ? request.getChangeMemberNotification().toJson() : null);
                     put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
                     put("removeRequestNotification", request.getRemoveRequestNotification() != null ? request.getRemoveRequestNotification().toJson() : null);
+                    put("createGuildScript", request.getCreateGuildScript() != null ? request.getCreateGuildScript().toJson() : null);
+                    put("joinGuildScript", request.getJoinGuildScript() != null ? request.getJoinGuildScript().toJson() : null);
+                    put("leaveGuildScript", request.getLeaveGuildScript() != null ? request.getLeaveGuildScript().toJson() : null);
+                    put("changeRoleScript", request.getChangeRoleScript() != null ? request.getChangeRoleScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -408,6 +412,10 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("changeMemberNotification", request.getChangeMemberNotification() != null ? request.getChangeMemberNotification().toJson() : null);
                     put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
                     put("removeRequestNotification", request.getRemoveRequestNotification() != null ? request.getRemoveRequestNotification().toJson() : null);
+                    put("createGuildScript", request.getCreateGuildScript() != null ? request.getCreateGuildScript().toJson() : null);
+                    put("joinGuildScript", request.getJoinGuildScript() != null ? request.getJoinGuildScript().toJson() : null);
+                    put("leaveGuildScript", request.getLeaveGuildScript() != null ? request.getLeaveGuildScript().toJson() : null);
+                    put("changeRoleScript", request.getChangeRoleScript() != null ? request.getChangeRoleScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -1243,6 +1251,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("metadata", request.getMetadata());
                     put("defaultMaximumMemberCount", request.getDefaultMaximumMemberCount());
                     put("maximumMemberCount", request.getMaximumMemberCount());
+                    put("inactivityPeriodDays", request.getInactivityPeriodDays());
                     put("roles", request.getRoles() == null ? new ArrayList<RoleModel>() :
                         request.getRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -1418,6 +1427,7 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
                     put("metadata", request.getMetadata());
                     put("defaultMaximumMemberCount", request.getDefaultMaximumMemberCount());
                     put("maximumMemberCount", request.getMaximumMemberCount());
+                    put("inactivityPeriodDays", request.getInactivityPeriodDays());
                     put("roles", request.getRoles() == null ? new ArrayList<RoleModel>() :
                         request.getRoles().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -4766,6 +4776,344 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
     ) {
         final AsyncResult<WithdrawalByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         withdrawalByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetLastGuildMasterActivityTask extends Gs2RestSessionTask<GetLastGuildMasterActivityResult> {
+        private GetLastGuildMasterActivityRequest request;
+
+        public GetLastGuildMasterActivityTask(
+            GetLastGuildMasterActivityRequest request,
+            AsyncAction<AsyncResult<GetLastGuildMasterActivityResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetLastGuildMasterActivityResult parse(JsonNode data) {
+            return GetLastGuildMasterActivityResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/me/activity/guildMaster/last";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getLastGuildMasterActivityAsync(
+            GetLastGuildMasterActivityRequest request,
+            AsyncAction<AsyncResult<GetLastGuildMasterActivityResult>> callback
+    ) {
+        GetLastGuildMasterActivityTask task = new GetLastGuildMasterActivityTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetLastGuildMasterActivityResult getLastGuildMasterActivity(
+            GetLastGuildMasterActivityRequest request
+    ) {
+        final AsyncResult<GetLastGuildMasterActivityResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getLastGuildMasterActivityAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetLastGuildMasterActivityByGuildNameTask extends Gs2RestSessionTask<GetLastGuildMasterActivityByGuildNameResult> {
+        private GetLastGuildMasterActivityByGuildNameRequest request;
+
+        public GetLastGuildMasterActivityByGuildNameTask(
+            GetLastGuildMasterActivityByGuildNameRequest request,
+            AsyncAction<AsyncResult<GetLastGuildMasterActivityByGuildNameResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetLastGuildMasterActivityByGuildNameResult parse(JsonNode data) {
+            return GetLastGuildMasterActivityByGuildNameResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/activity/guildMaster/last";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getLastGuildMasterActivityByGuildNameAsync(
+            GetLastGuildMasterActivityByGuildNameRequest request,
+            AsyncAction<AsyncResult<GetLastGuildMasterActivityByGuildNameResult>> callback
+    ) {
+        GetLastGuildMasterActivityByGuildNameTask task = new GetLastGuildMasterActivityByGuildNameTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetLastGuildMasterActivityByGuildNameResult getLastGuildMasterActivityByGuildName(
+            GetLastGuildMasterActivityByGuildNameRequest request
+    ) {
+        final AsyncResult<GetLastGuildMasterActivityByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getLastGuildMasterActivityByGuildNameAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class PromoteSeniorMemberTask extends Gs2RestSessionTask<PromoteSeniorMemberResult> {
+        private PromoteSeniorMemberRequest request;
+
+        public PromoteSeniorMemberTask(
+            PromoteSeniorMemberRequest request,
+            AsyncAction<AsyncResult<PromoteSeniorMemberResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PromoteSeniorMemberResult parse(JsonNode data) {
+            return PromoteSeniorMemberResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/me/promote";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void promoteSeniorMemberAsync(
+            PromoteSeniorMemberRequest request,
+            AsyncAction<AsyncResult<PromoteSeniorMemberResult>> callback
+    ) {
+        PromoteSeniorMemberTask task = new PromoteSeniorMemberTask(request, callback);
+        session.execute(task);
+    }
+
+    public PromoteSeniorMemberResult promoteSeniorMember(
+            PromoteSeniorMemberRequest request
+    ) {
+        final AsyncResult<PromoteSeniorMemberResult>[] resultAsyncResult = new AsyncResult[]{null};
+        promoteSeniorMemberAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class PromoteSeniorMemberByGuildNameTask extends Gs2RestSessionTask<PromoteSeniorMemberByGuildNameResult> {
+        private PromoteSeniorMemberByGuildNameRequest request;
+
+        public PromoteSeniorMemberByGuildNameTask(
+            PromoteSeniorMemberByGuildNameRequest request,
+            AsyncAction<AsyncResult<PromoteSeniorMemberByGuildNameResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public PromoteSeniorMemberByGuildNameResult parse(JsonNode data) {
+            return PromoteSeniorMemberByGuildNameResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/{guildName}/promote";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+            url = url.replace("{guildName}", this.request.getGuildName() == null || this.request.getGuildName().length() == 0 ? "null" : String.valueOf(this.request.getGuildName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void promoteSeniorMemberByGuildNameAsync(
+            PromoteSeniorMemberByGuildNameRequest request,
+            AsyncAction<AsyncResult<PromoteSeniorMemberByGuildNameResult>> callback
+    ) {
+        PromoteSeniorMemberByGuildNameTask task = new PromoteSeniorMemberByGuildNameTask(request, callback);
+        session.execute(task);
+    }
+
+    public PromoteSeniorMemberByGuildNameResult promoteSeniorMemberByGuildName(
+            PromoteSeniorMemberByGuildNameRequest request
+    ) {
+        final AsyncResult<PromoteSeniorMemberByGuildNameResult>[] resultAsyncResult = new AsyncResult[]{null};
+        promoteSeniorMemberByGuildNameAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

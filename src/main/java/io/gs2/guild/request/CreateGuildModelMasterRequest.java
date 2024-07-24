@@ -35,6 +35,7 @@ public class CreateGuildModelMasterRequest extends Gs2BasicRequest<CreateGuildMo
     private String metadata;
     private Integer defaultMaximumMemberCount;
     private Integer maximumMemberCount;
+    private Integer inactivityPeriodDays;
     private List<RoleModel> roles;
     private String guildMasterRole;
     private String guildMemberDefaultRole;
@@ -99,6 +100,16 @@ public class CreateGuildModelMasterRequest extends Gs2BasicRequest<CreateGuildMo
 		this.maximumMemberCount = maximumMemberCount;
 		return this;
 	}
+	public Integer getInactivityPeriodDays() {
+		return inactivityPeriodDays;
+	}
+	public void setInactivityPeriodDays(Integer inactivityPeriodDays) {
+		this.inactivityPeriodDays = inactivityPeriodDays;
+	}
+	public CreateGuildModelMasterRequest withInactivityPeriodDays(Integer inactivityPeriodDays) {
+		this.inactivityPeriodDays = inactivityPeriodDays;
+		return this;
+	}
 	public List<RoleModel> getRoles() {
 		return roles;
 	}
@@ -151,6 +162,7 @@ public class CreateGuildModelMasterRequest extends Gs2BasicRequest<CreateGuildMo
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
             .withDefaultMaximumMemberCount(data.get("defaultMaximumMemberCount") == null || data.get("defaultMaximumMemberCount").isNull() ? null : data.get("defaultMaximumMemberCount").intValue())
             .withMaximumMemberCount(data.get("maximumMemberCount") == null || data.get("maximumMemberCount").isNull() ? null : data.get("maximumMemberCount").intValue())
+            .withInactivityPeriodDays(data.get("inactivityPeriodDays") == null || data.get("inactivityPeriodDays").isNull() ? null : data.get("inactivityPeriodDays").intValue())
             .withRoles(data.get("roles") == null || data.get("roles").isNull() ? new ArrayList<RoleModel>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("roles").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -171,6 +183,7 @@ public class CreateGuildModelMasterRequest extends Gs2BasicRequest<CreateGuildMo
                 put("metadata", getMetadata());
                 put("defaultMaximumMemberCount", getDefaultMaximumMemberCount());
                 put("maximumMemberCount", getMaximumMemberCount());
+                put("inactivityPeriodDays", getInactivityPeriodDays());
                 put("roles", getRoles() == null ? new ArrayList<RoleModel>() :
                     getRoles().stream().map(item -> {
                         //noinspection Convert2MethodRef
