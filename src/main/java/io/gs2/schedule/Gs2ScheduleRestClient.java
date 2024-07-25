@@ -2603,6 +2603,9 @@ import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends Abstra
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
+            if (this.request.getIsInSchedule() != null) {
+                queryStrings.add("isInSchedule=" + String.valueOf(this.request.getIsInSchedule()));
+            }
             url += "?" + String.join("&", queryStrings);
 
             builder
@@ -2687,6 +2690,9 @@ import io.gs2.schedule.model.*;public class Gs2ScheduleRestClient extends Abstra
             List<String> queryStrings = new ArrayList<> ();
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getIsInSchedule() != null) {
+                queryStrings.add("isInSchedule=" + String.valueOf(this.request.getIsInSchedule()));
             }
             url += "?" + String.join("&", queryStrings);
 
