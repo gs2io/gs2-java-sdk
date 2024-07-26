@@ -35,6 +35,7 @@ public class QuestModel implements IModel, Serializable, Comparable<QuestModel> 
 	private List<Contents> contents;
 	private String challengePeriodEventId;
 	private List<AcquireAction> firstCompleteAcquireActions;
+	private List<VerifyAction> verifyActions;
 	private List<ConsumeAction> consumeActions;
 	private List<AcquireAction> failedAcquireActions;
 	private List<String> premiseQuestNames;
@@ -98,6 +99,16 @@ public class QuestModel implements IModel, Serializable, Comparable<QuestModel> 
 		this.firstCompleteAcquireActions = firstCompleteAcquireActions;
 		return this;
 	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public QuestModel withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+		return this;
+	}
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
@@ -150,6 +161,12 @@ public class QuestModel implements IModel, Serializable, Comparable<QuestModel> 
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -184,6 +201,12 @@ public class QuestModel implements IModel, Serializable, Comparable<QuestModel> 
                 put("challengePeriodEventId", getChallengePeriodEventId());
                 put("firstCompleteAcquireActions", getFirstCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getFirstCompleteAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getVerifyActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }
@@ -224,6 +247,7 @@ public class QuestModel implements IModel, Serializable, Comparable<QuestModel> 
         result = prime * result + ((this.contents == null) ? 0 : this.contents.hashCode());
         result = prime * result + ((this.challengePeriodEventId == null) ? 0 : this.challengePeriodEventId.hashCode());
         result = prime * result + ((this.firstCompleteAcquireActions == null) ? 0 : this.firstCompleteAcquireActions.hashCode());
+        result = prime * result + ((this.verifyActions == null) ? 0 : this.verifyActions.hashCode());
         result = prime * result + ((this.consumeActions == null) ? 0 : this.consumeActions.hashCode());
         result = prime * result + ((this.failedAcquireActions == null) ? 0 : this.failedAcquireActions.hashCode());
         result = prime * result + ((this.premiseQuestNames == null) ? 0 : this.premiseQuestNames.hashCode());
@@ -267,6 +291,11 @@ public class QuestModel implements IModel, Serializable, Comparable<QuestModel> 
 		if (firstCompleteAcquireActions == null) {
 			return other.firstCompleteAcquireActions == null;
 		} else if (!firstCompleteAcquireActions.equals(other.firstCompleteAcquireActions)) {
+			return false;
+		}
+		if (verifyActions == null) {
+			return other.verifyActions == null;
+		} else if (!verifyActions.equals(other.verifyActions)) {
 			return false;
 		}
 		if (consumeActions == null) {

@@ -32,6 +32,7 @@ public class NodeModel implements IModel, Serializable, Comparable<NodeModel> {
 	private String nodeModelId;
 	private String name;
 	private String metadata;
+	private List<VerifyAction> releaseVerifyActions;
 	private List<ConsumeAction> releaseConsumeActions;
 	private List<AcquireAction> returnAcquireActions;
 	private Float restrainReturnRate;
@@ -64,6 +65,16 @@ public class NodeModel implements IModel, Serializable, Comparable<NodeModel> {
 	}
 	public NodeModel withMetadata(String metadata) {
 		this.metadata = metadata;
+		return this;
+	}
+	public List<VerifyAction> getReleaseVerifyActions() {
+		return releaseVerifyActions;
+	}
+	public void setReleaseVerifyActions(List<VerifyAction> releaseVerifyActions) {
+		this.releaseVerifyActions = releaseVerifyActions;
+	}
+	public NodeModel withReleaseVerifyActions(List<VerifyAction> releaseVerifyActions) {
+		this.releaseVerifyActions = releaseVerifyActions;
 		return this;
 	}
 	public List<ConsumeAction> getReleaseConsumeActions() {
@@ -115,6 +126,12 @@ public class NodeModel implements IModel, Serializable, Comparable<NodeModel> {
             .withNodeModelId(data.get("nodeModelId") == null || data.get("nodeModelId").isNull() ? null : data.get("nodeModelId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withReleaseVerifyActions(data.get("releaseVerifyActions") == null || data.get("releaseVerifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("releaseVerifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withReleaseConsumeActions(data.get("releaseConsumeActions") == null || data.get("releaseConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("releaseConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -141,6 +158,12 @@ public class NodeModel implements IModel, Serializable, Comparable<NodeModel> {
                 put("nodeModelId", getNodeModelId());
                 put("name", getName());
                 put("metadata", getMetadata());
+                put("releaseVerifyActions", getReleaseVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getReleaseVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("releaseConsumeActions", getReleaseConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getReleaseConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -175,6 +198,7 @@ public class NodeModel implements IModel, Serializable, Comparable<NodeModel> {
         result = prime * result + ((this.nodeModelId == null) ? 0 : this.nodeModelId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.releaseVerifyActions == null) ? 0 : this.releaseVerifyActions.hashCode());
         result = prime * result + ((this.releaseConsumeActions == null) ? 0 : this.releaseConsumeActions.hashCode());
         result = prime * result + ((this.returnAcquireActions == null) ? 0 : this.returnAcquireActions.hashCode());
         result = prime * result + ((this.restrainReturnRate == null) ? 0 : this.restrainReturnRate.hashCode());
@@ -204,6 +228,11 @@ public class NodeModel implements IModel, Serializable, Comparable<NodeModel> {
 		if (metadata == null) {
 			return other.metadata == null;
 		} else if (!metadata.equals(other.metadata)) {
+			return false;
+		}
+		if (releaseVerifyActions == null) {
+			return other.releaseVerifyActions == null;
+		} else if (!releaseVerifyActions.equals(other.releaseVerifyActions)) {
 			return false;
 		}
 		if (releaseConsumeActions == null) {

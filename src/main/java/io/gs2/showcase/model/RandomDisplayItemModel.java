@@ -31,6 +31,7 @@ import io.gs2.core.model.IModel;
 public class RandomDisplayItemModel implements IModel, Serializable {
 	private String name;
 	private String metadata;
+	private List<VerifyAction> verifyActions;
 	private List<ConsumeAction> consumeActions;
 	private List<AcquireAction> acquireActions;
 	private Integer stock;
@@ -53,6 +54,16 @@ public class RandomDisplayItemModel implements IModel, Serializable {
 	}
 	public RandomDisplayItemModel withMetadata(String metadata) {
 		this.metadata = metadata;
+		return this;
+	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public RandomDisplayItemModel withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
 		return this;
 	}
 	public List<ConsumeAction> getConsumeActions() {
@@ -103,6 +114,12 @@ public class RandomDisplayItemModel implements IModel, Serializable {
         return new RandomDisplayItemModel()
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -124,6 +141,12 @@ public class RandomDisplayItemModel implements IModel, Serializable {
             new HashMap<String, Object>() {{
                 put("name", getName());
                 put("metadata", getMetadata());
+                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -148,6 +171,7 @@ public class RandomDisplayItemModel implements IModel, Serializable {
         int result = 1;
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.verifyActions == null) ? 0 : this.verifyActions.hashCode());
         result = prime * result + ((this.consumeActions == null) ? 0 : this.consumeActions.hashCode());
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
         result = prime * result + ((this.stock == null) ? 0 : this.stock.hashCode());
@@ -172,6 +196,11 @@ public class RandomDisplayItemModel implements IModel, Serializable {
 		if (metadata == null) {
 			return other.metadata == null;
 		} else if (!metadata.equals(other.metadata)) {
+			return false;
+		}
+		if (verifyActions == null) {
+			return other.verifyActions == null;
+		} else if (!verifyActions.equals(other.verifyActions)) {
 			return false;
 		}
 		if (consumeActions == null) {

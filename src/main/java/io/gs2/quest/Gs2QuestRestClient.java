@@ -1674,6 +1674,12 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -1866,6 +1872,12 @@ import io.gs2.quest.model.*;public class Gs2QuestRestClient extends AbstractGs2C
                     put("challengePeriodEventId", request.getChallengePeriodEventId());
                     put("firstCompleteAcquireActions", request.getFirstCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getFirstCompleteAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }

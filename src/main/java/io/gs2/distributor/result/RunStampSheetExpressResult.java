@@ -29,10 +29,38 @@ import io.gs2.distributor.model.*;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RunStampSheetExpressResult implements IResult, Serializable {
+    private List<Integer> verifyTaskResultCodes;
+    private List<String> verifyTaskResults;
     private List<Integer> taskResultCodes;
     private List<String> taskResults;
     private Integer sheetResultCode;
     private String sheetResult;
+
+	public List<Integer> getVerifyTaskResultCodes() {
+		return verifyTaskResultCodes;
+	}
+
+	public void setVerifyTaskResultCodes(List<Integer> verifyTaskResultCodes) {
+		this.verifyTaskResultCodes = verifyTaskResultCodes;
+	}
+
+	public RunStampSheetExpressResult withVerifyTaskResultCodes(List<Integer> verifyTaskResultCodes) {
+		this.verifyTaskResultCodes = verifyTaskResultCodes;
+		return this;
+	}
+
+	public List<String> getVerifyTaskResults() {
+		return verifyTaskResults;
+	}
+
+	public void setVerifyTaskResults(List<String> verifyTaskResults) {
+		this.verifyTaskResults = verifyTaskResults;
+	}
+
+	public RunStampSheetExpressResult withVerifyTaskResults(List<String> verifyTaskResults) {
+		this.verifyTaskResults = verifyTaskResults;
+		return this;
+	}
 
 	public List<Integer> getTaskResultCodes() {
 		return taskResultCodes;
@@ -91,6 +119,16 @@ public class RunStampSheetExpressResult implements IResult, Serializable {
             return null;
         }
         return new RunStampSheetExpressResult()
+            .withVerifyTaskResultCodes(data.get("verifyTaskResultCodes") == null || data.get("verifyTaskResultCodes").isNull() ? new ArrayList<Integer>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyTaskResultCodes").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.intValue();
+                }
+            ).collect(Collectors.toList()))
+            .withVerifyTaskResults(data.get("verifyTaskResults") == null || data.get("verifyTaskResults").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyTaskResults").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
+                }
+            ).collect(Collectors.toList()))
             .withTaskResultCodes(data.get("taskResultCodes") == null || data.get("taskResultCodes").isNull() ? new ArrayList<Integer>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("taskResultCodes").elements(), Spliterator.NONNULL), false).map(item -> {
                     return item.intValue();
@@ -108,6 +146,16 @@ public class RunStampSheetExpressResult implements IResult, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("verifyTaskResultCodes", getVerifyTaskResultCodes() == null ? new ArrayList<Integer>() :
+                    getVerifyTaskResultCodes().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
+                put("verifyTaskResults", getVerifyTaskResults() == null ? new ArrayList<String>() :
+                    getVerifyTaskResults().stream().map(item -> {
+                        return item;
+                    }
+                ).collect(Collectors.toList()));
                 put("taskResultCodes", getTaskResultCodes() == null ? new ArrayList<Integer>() :
                     getTaskResultCodes().stream().map(item -> {
                         return item;

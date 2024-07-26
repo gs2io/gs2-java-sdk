@@ -166,7 +166,10 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
                     put("updateProfileScript", request.getUpdateProfileScript() != null ? request.getUpdateProfileScript().toJson() : null);
                     put("followNotification", request.getFollowNotification() != null ? request.getFollowNotification().toJson() : null);
                     put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
+                    put("cancelRequestNotification", request.getCancelRequestNotification() != null ? request.getCancelRequestNotification().toJson() : null);
                     put("acceptRequestNotification", request.getAcceptRequestNotification() != null ? request.getAcceptRequestNotification().toJson() : null);
+                    put("rejectRequestNotification", request.getRejectRequestNotification() != null ? request.getRejectRequestNotification().toJson() : null);
+                    put("deleteFriendNotification", request.getDeleteFriendNotification() != null ? request.getDeleteFriendNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -419,7 +422,10 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
                     put("updateProfileScript", request.getUpdateProfileScript() != null ? request.getUpdateProfileScript().toJson() : null);
                     put("followNotification", request.getFollowNotification() != null ? request.getFollowNotification().toJson() : null);
                     put("receiveRequestNotification", request.getReceiveRequestNotification() != null ? request.getReceiveRequestNotification().toJson() : null);
+                    put("cancelRequestNotification", request.getCancelRequestNotification() != null ? request.getCancelRequestNotification().toJson() : null);
                     put("acceptRequestNotification", request.getAcceptRequestNotification() != null ? request.getAcceptRequestNotification().toJson() : null);
+                    put("rejectRequestNotification", request.getRejectRequestNotification() != null ? request.getRejectRequestNotification().toJson() : null);
+                    put("deleteFriendNotification", request.getDeleteFriendNotification() != null ? request.getDeleteFriendNotification().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}

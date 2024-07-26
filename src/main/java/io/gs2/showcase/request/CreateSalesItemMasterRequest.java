@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.showcase.model.VerifyAction;
 import io.gs2.showcase.model.ConsumeAction;
 import io.gs2.showcase.model.AcquireAction;
 
@@ -34,6 +35,7 @@ public class CreateSalesItemMasterRequest extends Gs2BasicRequest<CreateSalesIte
     private String name;
     private String description;
     private String metadata;
+    private List<VerifyAction> verifyActions;
     private List<ConsumeAction> consumeActions;
     private List<AcquireAction> acquireActions;
 	public String getNamespaceName() {
@@ -76,6 +78,16 @@ public class CreateSalesItemMasterRequest extends Gs2BasicRequest<CreateSalesIte
 		this.metadata = metadata;
 		return this;
 	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public CreateSalesItemMasterRequest withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+		return this;
+	}
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
@@ -106,6 +118,12 @@ public class CreateSalesItemMasterRequest extends Gs2BasicRequest<CreateSalesIte
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -127,6 +145,12 @@ public class CreateSalesItemMasterRequest extends Gs2BasicRequest<CreateSalesIte
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
+                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef

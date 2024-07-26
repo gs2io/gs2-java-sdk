@@ -30,6 +30,7 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Transaction implements IModel, Serializable {
 	private String transactionId;
+	private List<VerifyAction> verifyActions;
 	private List<ConsumeAction> consumeActions;
 	private List<AcquireAction> acquireActions;
 	public String getTransactionId() {
@@ -40,6 +41,16 @@ public class Transaction implements IModel, Serializable {
 	}
 	public Transaction withTransactionId(String transactionId) {
 		this.transactionId = transactionId;
+		return this;
+	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public Transaction withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
 		return this;
 	}
 	public List<ConsumeAction> getConsumeActions() {
@@ -69,6 +80,12 @@ public class Transaction implements IModel, Serializable {
         }
         return new Transaction()
             .withTransactionId(data.get("transactionId") == null || data.get("transactionId").isNull() ? null : data.get("transactionId").asText())
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -87,6 +104,12 @@ public class Transaction implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("transactionId", getTransactionId());
+                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -108,6 +131,7 @@ public class Transaction implements IModel, Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.transactionId == null) ? 0 : this.transactionId.hashCode());
+        result = prime * result + ((this.verifyActions == null) ? 0 : this.verifyActions.hashCode());
         result = prime * result + ((this.consumeActions == null) ? 0 : this.consumeActions.hashCode());
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
 		return result;
@@ -125,6 +149,11 @@ public class Transaction implements IModel, Serializable {
 		if (transactionId == null) {
 			return other.transactionId == null;
 		} else if (!transactionId.equals(other.transactionId)) {
+			return false;
+		}
+		if (verifyActions == null) {
+			return other.verifyActions == null;
+		} else if (!verifyActions.equals(other.verifyActions)) {
 			return false;
 		}
 		if (consumeActions == null) {

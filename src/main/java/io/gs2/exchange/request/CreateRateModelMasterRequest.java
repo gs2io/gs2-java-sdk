@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.exchange.model.AcquireAction;
+import io.gs2.exchange.model.VerifyAction;
 import io.gs2.exchange.model.ConsumeAction;
 
 @SuppressWarnings("serial")
@@ -37,6 +38,7 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
     private String timingType;
     private Integer lockTime;
     private List<AcquireAction> acquireActions;
+    private List<VerifyAction> verifyActions;
     private List<ConsumeAction> consumeActions;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -108,6 +110,16 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
 		this.acquireActions = acquireActions;
 		return this;
 	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public CreateRateModelMasterRequest withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+		return this;
+	}
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
@@ -136,6 +148,12 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -155,6 +173,12 @@ public class CreateRateModelMasterRequest extends Gs2BasicRequest<CreateRateMode
                 put("lockTime", getLockTime());
                 put("acquireActions", getAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getVerifyActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }

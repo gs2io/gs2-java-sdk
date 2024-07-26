@@ -33,6 +33,7 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
 	private String name;
 	private String description;
 	private String metadata;
+	private List<VerifyAction> verifyActions;
 	private List<ConsumeAction> consumeActions;
 	private String timingType;
 	private Integer lockTime;
@@ -78,6 +79,16 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
 	}
 	public RateModelMaster withMetadata(String metadata) {
 		this.metadata = metadata;
+		return this;
+	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public RateModelMaster withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
 		return this;
 	}
 	public List<ConsumeAction> getConsumeActions() {
@@ -160,6 +171,12 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -186,6 +203,12 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
+                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -220,6 +243,7 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.verifyActions == null) ? 0 : this.verifyActions.hashCode());
         result = prime * result + ((this.consumeActions == null) ? 0 : this.consumeActions.hashCode());
         result = prime * result + ((this.timingType == null) ? 0 : this.timingType.hashCode());
         result = prime * result + ((this.lockTime == null) ? 0 : this.lockTime.hashCode());
@@ -257,6 +281,11 @@ public class RateModelMaster implements IModel, Serializable, Comparable<RateMod
 		if (metadata == null) {
 			return other.metadata == null;
 		} else if (!metadata.equals(other.metadata)) {
+			return false;
+		}
+		if (verifyActions == null) {
+			return other.verifyActions == null;
+		} else if (!verifyActions.equals(other.verifyActions)) {
 			return false;
 		}
 		if (consumeActions == null) {

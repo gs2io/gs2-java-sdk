@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.quest.model.AcquireAction;
 import io.gs2.quest.model.Contents;
+import io.gs2.quest.model.VerifyAction;
 import io.gs2.quest.model.ConsumeAction;
 
 @SuppressWarnings("serial")
@@ -39,6 +40,7 @@ public class UpdateQuestModelMasterRequest extends Gs2BasicRequest<UpdateQuestMo
     private List<Contents> contents;
     private String challengePeriodEventId;
     private List<AcquireAction> firstCompleteAcquireActions;
+    private List<VerifyAction> verifyActions;
     private List<ConsumeAction> consumeActions;
     private List<AcquireAction> failedAcquireActions;
     private List<String> premiseQuestNames;
@@ -122,6 +124,16 @@ public class UpdateQuestModelMasterRequest extends Gs2BasicRequest<UpdateQuestMo
 		this.firstCompleteAcquireActions = firstCompleteAcquireActions;
 		return this;
 	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public UpdateQuestModelMasterRequest withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+		return this;
+	}
 	public List<ConsumeAction> getConsumeActions() {
 		return consumeActions;
 	}
@@ -176,6 +188,12 @@ public class UpdateQuestModelMasterRequest extends Gs2BasicRequest<UpdateQuestMo
                     return AcquireAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -212,6 +230,12 @@ public class UpdateQuestModelMasterRequest extends Gs2BasicRequest<UpdateQuestMo
                 put("challengePeriodEventId", getChallengePeriodEventId());
                 put("firstCompleteAcquireActions", getFirstCompleteAcquireActions() == null ? new ArrayList<AcquireAction>() :
                     getFirstCompleteAcquireActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
+                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getVerifyActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }

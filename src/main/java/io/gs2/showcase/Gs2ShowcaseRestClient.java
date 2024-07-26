@@ -1239,6 +1239,12 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -1415,6 +1421,12 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef

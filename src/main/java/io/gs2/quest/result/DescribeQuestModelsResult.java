@@ -27,6 +27,7 @@ import io.gs2.core.model.*;
 import io.gs2.quest.model.*;
 import io.gs2.quest.model.AcquireAction;
 import io.gs2.quest.model.Contents;
+import io.gs2.quest.model.VerifyAction;
 import io.gs2.quest.model.ConsumeAction;
 import io.gs2.quest.model.QuestModel;
 

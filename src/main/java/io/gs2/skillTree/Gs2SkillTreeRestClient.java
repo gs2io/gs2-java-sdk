@@ -1398,6 +1398,12 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
                     put("name", request.getName());
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("releaseVerifyActions", request.getReleaseVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getReleaseVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("releaseConsumeActions", request.getReleaseConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                         request.getReleaseConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -1574,6 +1580,12 @@ import io.gs2.skillTree.model.*;public class Gs2SkillTreeRestClient extends Abst
                 new HashMap<String, Object>() {{
                     put("description", request.getDescription());
                     put("metadata", request.getMetadata());
+                    put("releaseVerifyActions", request.getReleaseVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getReleaseVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("releaseConsumeActions", request.getReleaseConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                         request.getReleaseConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef

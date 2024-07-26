@@ -35,7 +35,7 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
 	private String description;
 	private String verifyCompleteType;
 	private TargetCounterModel targetCounter;
-	private List<ConsumeAction> verifyCompleteConsumeActions;
+	private List<VerifyAction> verifyCompleteConsumeActions;
 	private List<AcquireAction> completeAcquireActions;
 	private String challengePeriodEventId;
 	private String premiseMissionTaskName;
@@ -105,13 +105,13 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
 		this.targetCounter = targetCounter;
 		return this;
 	}
-	public List<ConsumeAction> getVerifyCompleteConsumeActions() {
+	public List<VerifyAction> getVerifyCompleteConsumeActions() {
 		return verifyCompleteConsumeActions;
 	}
-	public void setVerifyCompleteConsumeActions(List<ConsumeAction> verifyCompleteConsumeActions) {
+	public void setVerifyCompleteConsumeActions(List<VerifyAction> verifyCompleteConsumeActions) {
 		this.verifyCompleteConsumeActions = verifyCompleteConsumeActions;
 	}
-	public MissionTaskModelMaster withVerifyCompleteConsumeActions(List<ConsumeAction> verifyCompleteConsumeActions) {
+	public MissionTaskModelMaster withVerifyCompleteConsumeActions(List<VerifyAction> verifyCompleteConsumeActions) {
 		this.verifyCompleteConsumeActions = verifyCompleteConsumeActions;
 		return this;
 	}
@@ -226,10 +226,10 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withVerifyCompleteType(data.get("verifyCompleteType") == null || data.get("verifyCompleteType").isNull() ? null : data.get("verifyCompleteType").asText())
             .withTargetCounter(data.get("targetCounter") == null || data.get("targetCounter").isNull() ? null : TargetCounterModel.fromJson(data.get("targetCounter")))
-            .withVerifyCompleteConsumeActions(data.get("verifyCompleteConsumeActions") == null || data.get("verifyCompleteConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
+            .withVerifyCompleteConsumeActions(data.get("verifyCompleteConsumeActions") == null || data.get("verifyCompleteConsumeActions").isNull() ? new ArrayList<VerifyAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyCompleteConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
-                    return ConsumeAction.fromJson(item);
+                    return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
             .withCompleteAcquireActions(data.get("completeAcquireActions") == null || data.get("completeAcquireActions").isNull() ? new ArrayList<AcquireAction>() :
@@ -257,7 +257,7 @@ public class MissionTaskModelMaster implements IModel, Serializable, Comparable<
                 put("description", getDescription());
                 put("verifyCompleteType", getVerifyCompleteType());
                 put("targetCounter", getTargetCounter() != null ? getTargetCounter().toJson() : null);
-                put("verifyCompleteConsumeActions", getVerifyCompleteConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                put("verifyCompleteConsumeActions", getVerifyCompleteConsumeActions() == null ? new ArrayList<VerifyAction>() :
                     getVerifyCompleteConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();

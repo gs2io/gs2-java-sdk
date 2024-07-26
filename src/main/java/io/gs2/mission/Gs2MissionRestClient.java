@@ -5253,7 +5253,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("description", request.getDescription());
                     put("verifyCompleteType", request.getVerifyCompleteType());
                     put("targetCounter", request.getTargetCounter() != null ? request.getTargetCounter().toJson() : null);
-                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? new ArrayList<VerifyAction>() :
                         request.getVerifyCompleteConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
@@ -5438,7 +5438,7 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
                     put("description", request.getDescription());
                     put("verifyCompleteType", request.getVerifyCompleteType());
                     put("targetCounter", request.getTargetCounter() != null ? request.getTargetCounter().toJson() : null);
-                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? new ArrayList<ConsumeAction>() :
+                    put("verifyCompleteConsumeActions", request.getVerifyCompleteConsumeActions() == null ? new ArrayList<VerifyAction>() :
                         request.getVerifyCompleteConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();

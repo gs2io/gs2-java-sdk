@@ -33,6 +33,7 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
 	private String name;
 	private String description;
 	private String metadata;
+	private List<VerifyAction> verifyActions;
 	private List<ConsumeAction> consumeActions;
 	private List<AcquireAction> acquireActions;
 	private Long createdAt;
@@ -76,6 +77,16 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
 	}
 	public SalesItemMaster withMetadata(String metadata) {
 		this.metadata = metadata;
+		return this;
+	}
+	public List<VerifyAction> getVerifyActions() {
+		return verifyActions;
+	}
+	public void setVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
+	}
+	public SalesItemMaster withVerifyActions(List<VerifyAction> verifyActions) {
+		this.verifyActions = verifyActions;
 		return this;
 	}
 	public List<ConsumeAction> getConsumeActions() {
@@ -138,6 +149,12 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withVerifyActions(data.get("verifyActions") == null || data.get("verifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("verifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withConsumeActions(data.get("consumeActions") == null || data.get("consumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("consumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -162,6 +179,12 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
+                put("verifyActions", getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("consumeActions", getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -194,6 +217,7 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.metadata == null) ? 0 : this.metadata.hashCode());
+        result = prime * result + ((this.verifyActions == null) ? 0 : this.verifyActions.hashCode());
         result = prime * result + ((this.consumeActions == null) ? 0 : this.consumeActions.hashCode());
         result = prime * result + ((this.acquireActions == null) ? 0 : this.acquireActions.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -229,6 +253,11 @@ public class SalesItemMaster implements IModel, Serializable, Comparable<SalesIt
 		if (metadata == null) {
 			return other.metadata == null;
 		} else if (!metadata.equals(other.metadata)) {
+			return false;
+		}
+		if (verifyActions == null) {
+			return other.verifyActions == null;
+		} else if (!verifyActions.equals(other.verifyActions)) {
 			return false;
 		}
 		if (consumeActions == null) {

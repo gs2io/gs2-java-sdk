@@ -27,6 +27,7 @@ import io.gs2.core.model.*;
 import io.gs2.loginReward.model.*;
 import io.gs2.loginReward.model.AcquireAction;
 import io.gs2.loginReward.model.Reward;
+import io.gs2.loginReward.model.VerifyAction;
 import io.gs2.loginReward.model.ConsumeAction;
 import io.gs2.loginReward.model.BonusModelMaster;
 

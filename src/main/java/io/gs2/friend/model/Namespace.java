@@ -42,7 +42,10 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private ScriptSetting updateProfileScript;
 	private NotificationSetting followNotification;
 	private NotificationSetting receiveRequestNotification;
+	private NotificationSetting cancelRequestNotification;
 	private NotificationSetting acceptRequestNotification;
+	private NotificationSetting rejectRequestNotification;
+	private NotificationSetting deleteFriendNotification;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -177,6 +180,16 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.receiveRequestNotification = receiveRequestNotification;
 		return this;
 	}
+	public NotificationSetting getCancelRequestNotification() {
+		return cancelRequestNotification;
+	}
+	public void setCancelRequestNotification(NotificationSetting cancelRequestNotification) {
+		this.cancelRequestNotification = cancelRequestNotification;
+	}
+	public Namespace withCancelRequestNotification(NotificationSetting cancelRequestNotification) {
+		this.cancelRequestNotification = cancelRequestNotification;
+		return this;
+	}
 	public NotificationSetting getAcceptRequestNotification() {
 		return acceptRequestNotification;
 	}
@@ -185,6 +198,26 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withAcceptRequestNotification(NotificationSetting acceptRequestNotification) {
 		this.acceptRequestNotification = acceptRequestNotification;
+		return this;
+	}
+	public NotificationSetting getRejectRequestNotification() {
+		return rejectRequestNotification;
+	}
+	public void setRejectRequestNotification(NotificationSetting rejectRequestNotification) {
+		this.rejectRequestNotification = rejectRequestNotification;
+	}
+	public Namespace withRejectRequestNotification(NotificationSetting rejectRequestNotification) {
+		this.rejectRequestNotification = rejectRequestNotification;
+		return this;
+	}
+	public NotificationSetting getDeleteFriendNotification() {
+		return deleteFriendNotification;
+	}
+	public void setDeleteFriendNotification(NotificationSetting deleteFriendNotification) {
+		this.deleteFriendNotification = deleteFriendNotification;
+	}
+	public Namespace withDeleteFriendNotification(NotificationSetting deleteFriendNotification) {
+		this.deleteFriendNotification = deleteFriendNotification;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -246,7 +279,10 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withUpdateProfileScript(data.get("updateProfileScript") == null || data.get("updateProfileScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateProfileScript")))
             .withFollowNotification(data.get("followNotification") == null || data.get("followNotification").isNull() ? null : NotificationSetting.fromJson(data.get("followNotification")))
             .withReceiveRequestNotification(data.get("receiveRequestNotification") == null || data.get("receiveRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("receiveRequestNotification")))
+            .withCancelRequestNotification(data.get("cancelRequestNotification") == null || data.get("cancelRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("cancelRequestNotification")))
             .withAcceptRequestNotification(data.get("acceptRequestNotification") == null || data.get("acceptRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("acceptRequestNotification")))
+            .withRejectRequestNotification(data.get("rejectRequestNotification") == null || data.get("rejectRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("rejectRequestNotification")))
+            .withDeleteFriendNotification(data.get("deleteFriendNotification") == null || data.get("deleteFriendNotification").isNull() ? null : NotificationSetting.fromJson(data.get("deleteFriendNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -269,7 +305,10 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("updateProfileScript", getUpdateProfileScript() != null ? getUpdateProfileScript().toJson() : null);
                 put("followNotification", getFollowNotification() != null ? getFollowNotification().toJson() : null);
                 put("receiveRequestNotification", getReceiveRequestNotification() != null ? getReceiveRequestNotification().toJson() : null);
+                put("cancelRequestNotification", getCancelRequestNotification() != null ? getCancelRequestNotification().toJson() : null);
                 put("acceptRequestNotification", getAcceptRequestNotification() != null ? getAcceptRequestNotification().toJson() : null);
+                put("rejectRequestNotification", getRejectRequestNotification() != null ? getRejectRequestNotification().toJson() : null);
+                put("deleteFriendNotification", getDeleteFriendNotification() != null ? getDeleteFriendNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -300,7 +339,10 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.updateProfileScript == null) ? 0 : this.updateProfileScript.hashCode());
         result = prime * result + ((this.followNotification == null) ? 0 : this.followNotification.hashCode());
         result = prime * result + ((this.receiveRequestNotification == null) ? 0 : this.receiveRequestNotification.hashCode());
+        result = prime * result + ((this.cancelRequestNotification == null) ? 0 : this.cancelRequestNotification.hashCode());
         result = prime * result + ((this.acceptRequestNotification == null) ? 0 : this.acceptRequestNotification.hashCode());
+        result = prime * result + ((this.rejectRequestNotification == null) ? 0 : this.rejectRequestNotification.hashCode());
+        result = prime * result + ((this.deleteFriendNotification == null) ? 0 : this.deleteFriendNotification.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -382,9 +424,24 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		} else if (!receiveRequestNotification.equals(other.receiveRequestNotification)) {
 			return false;
 		}
+		if (cancelRequestNotification == null) {
+			return other.cancelRequestNotification == null;
+		} else if (!cancelRequestNotification.equals(other.cancelRequestNotification)) {
+			return false;
+		}
 		if (acceptRequestNotification == null) {
 			return other.acceptRequestNotification == null;
 		} else if (!acceptRequestNotification.equals(other.acceptRequestNotification)) {
+			return false;
+		}
+		if (rejectRequestNotification == null) {
+			return other.rejectRequestNotification == null;
+		} else if (!rejectRequestNotification.equals(other.rejectRequestNotification)) {
+			return false;
+		}
+		if (deleteFriendNotification == null) {
+			return other.deleteFriendNotification == null;
+		} else if (!deleteFriendNotification.equals(other.deleteFriendNotification)) {
 			return false;
 		}
 		if (logSetting == null) {

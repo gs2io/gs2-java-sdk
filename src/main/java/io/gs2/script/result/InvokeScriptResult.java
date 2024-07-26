@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.script.model.*;
+import io.gs2.script.model.VerifyAction;
 import io.gs2.script.model.ConsumeAction;
 import io.gs2.script.model.AcquireAction;
 import io.gs2.script.model.Transaction;

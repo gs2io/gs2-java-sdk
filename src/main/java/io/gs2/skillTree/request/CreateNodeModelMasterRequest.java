@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.skillTree.model.VerifyAction;
 import io.gs2.skillTree.model.ConsumeAction;
 
 @SuppressWarnings("serial")
@@ -33,6 +34,7 @@ public class CreateNodeModelMasterRequest extends Gs2BasicRequest<CreateNodeMode
     private String name;
     private String description;
     private String metadata;
+    private List<VerifyAction> releaseVerifyActions;
     private List<ConsumeAction> releaseConsumeActions;
     private Float restrainReturnRate;
     private List<String> premiseNodeNames;
@@ -76,6 +78,16 @@ public class CreateNodeModelMasterRequest extends Gs2BasicRequest<CreateNodeMode
 		this.metadata = metadata;
 		return this;
 	}
+	public List<VerifyAction> getReleaseVerifyActions() {
+		return releaseVerifyActions;
+	}
+	public void setReleaseVerifyActions(List<VerifyAction> releaseVerifyActions) {
+		this.releaseVerifyActions = releaseVerifyActions;
+	}
+	public CreateNodeModelMasterRequest withReleaseVerifyActions(List<VerifyAction> releaseVerifyActions) {
+		this.releaseVerifyActions = releaseVerifyActions;
+		return this;
+	}
 	public List<ConsumeAction> getReleaseConsumeActions() {
 		return releaseConsumeActions;
 	}
@@ -116,6 +128,12 @@ public class CreateNodeModelMasterRequest extends Gs2BasicRequest<CreateNodeMode
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withMetadata(data.get("metadata") == null || data.get("metadata").isNull() ? null : data.get("metadata").asText())
+            .withReleaseVerifyActions(data.get("releaseVerifyActions") == null || data.get("releaseVerifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("releaseVerifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withReleaseConsumeActions(data.get("releaseConsumeActions") == null || data.get("releaseConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("releaseConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -137,6 +155,12 @@ public class CreateNodeModelMasterRequest extends Gs2BasicRequest<CreateNodeMode
                 put("name", getName());
                 put("description", getDescription());
                 put("metadata", getMetadata());
+                put("releaseVerifyActions", getReleaseVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getReleaseVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("releaseConsumeActions", getReleaseConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getReleaseConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef

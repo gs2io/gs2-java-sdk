@@ -1246,6 +1246,12 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
                         }
                     ).collect(Collectors.toList()));
                     put("missedReceiveRelief", request.getMissedReceiveRelief());
+                    put("missedReceiveReliefVerifyActions", request.getMissedReceiveReliefVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getMissedReceiveReliefVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("missedReceiveReliefConsumeActions", request.getMissedReceiveReliefConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                         request.getMissedReceiveReliefConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -1427,6 +1433,12 @@ import io.gs2.loginReward.model.*;public class Gs2LoginRewardRestClient extends 
                         }
                     ).collect(Collectors.toList()));
                     put("missedReceiveRelief", request.getMissedReceiveRelief());
+                    put("missedReceiveReliefVerifyActions", request.getMissedReceiveReliefVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getMissedReceiveReliefVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("missedReceiveReliefConsumeActions", request.getMissedReceiveReliefConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                         request.getMissedReceiveReliefConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef

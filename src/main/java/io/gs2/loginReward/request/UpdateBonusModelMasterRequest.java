@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
 import io.gs2.loginReward.model.AcquireAction;
 import io.gs2.loginReward.model.Reward;
+import io.gs2.loginReward.model.VerifyAction;
 import io.gs2.loginReward.model.ConsumeAction;
 
 @SuppressWarnings("serial")
@@ -41,6 +42,7 @@ public class UpdateBonusModelMasterRequest extends Gs2BasicRequest<UpdateBonusMo
     private String repeat;
     private List<Reward> rewards;
     private String missedReceiveRelief;
+    private List<VerifyAction> missedReceiveReliefVerifyActions;
     private List<ConsumeAction> missedReceiveReliefConsumeActions;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -142,6 +144,16 @@ public class UpdateBonusModelMasterRequest extends Gs2BasicRequest<UpdateBonusMo
 		this.missedReceiveRelief = missedReceiveRelief;
 		return this;
 	}
+	public List<VerifyAction> getMissedReceiveReliefVerifyActions() {
+		return missedReceiveReliefVerifyActions;
+	}
+	public void setMissedReceiveReliefVerifyActions(List<VerifyAction> missedReceiveReliefVerifyActions) {
+		this.missedReceiveReliefVerifyActions = missedReceiveReliefVerifyActions;
+	}
+	public UpdateBonusModelMasterRequest withMissedReceiveReliefVerifyActions(List<VerifyAction> missedReceiveReliefVerifyActions) {
+		this.missedReceiveReliefVerifyActions = missedReceiveReliefVerifyActions;
+		return this;
+	}
 	public List<ConsumeAction> getMissedReceiveReliefConsumeActions() {
 		return missedReceiveReliefConsumeActions;
 	}
@@ -173,6 +185,12 @@ public class UpdateBonusModelMasterRequest extends Gs2BasicRequest<UpdateBonusMo
                 }
             ).collect(Collectors.toList()))
             .withMissedReceiveRelief(data.get("missedReceiveRelief") == null || data.get("missedReceiveRelief").isNull() ? null : data.get("missedReceiveRelief").asText())
+            .withMissedReceiveReliefVerifyActions(data.get("missedReceiveReliefVerifyActions") == null || data.get("missedReceiveReliefVerifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("missedReceiveReliefVerifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withMissedReceiveReliefConsumeActions(data.get("missedReceiveReliefConsumeActions") == null || data.get("missedReceiveReliefConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("missedReceiveReliefConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -199,6 +217,12 @@ public class UpdateBonusModelMasterRequest extends Gs2BasicRequest<UpdateBonusMo
                     }
                 ).collect(Collectors.toList()));
                 put("missedReceiveRelief", getMissedReceiveRelief());
+                put("missedReceiveReliefVerifyActions", getMissedReceiveReliefVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getMissedReceiveReliefVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("missedReceiveReliefConsumeActions", getMissedReceiveReliefConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getMissedReceiveReliefConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef

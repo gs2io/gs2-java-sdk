@@ -39,6 +39,7 @@ public class BonusModelMaster implements IModel, Serializable, Comparable<BonusM
 	private String repeat;
 	private List<Reward> rewards;
 	private String missedReceiveRelief;
+	private List<VerifyAction> missedReceiveReliefVerifyActions;
 	private List<ConsumeAction> missedReceiveReliefConsumeActions;
 	private Long createdAt;
 	private Long updatedAt;
@@ -143,6 +144,16 @@ public class BonusModelMaster implements IModel, Serializable, Comparable<BonusM
 		this.missedReceiveRelief = missedReceiveRelief;
 		return this;
 	}
+	public List<VerifyAction> getMissedReceiveReliefVerifyActions() {
+		return missedReceiveReliefVerifyActions;
+	}
+	public void setMissedReceiveReliefVerifyActions(List<VerifyAction> missedReceiveReliefVerifyActions) {
+		this.missedReceiveReliefVerifyActions = missedReceiveReliefVerifyActions;
+	}
+	public BonusModelMaster withMissedReceiveReliefVerifyActions(List<VerifyAction> missedReceiveReliefVerifyActions) {
+		this.missedReceiveReliefVerifyActions = missedReceiveReliefVerifyActions;
+		return this;
+	}
 	public List<ConsumeAction> getMissedReceiveReliefConsumeActions() {
 		return missedReceiveReliefConsumeActions;
 	}
@@ -204,6 +215,12 @@ public class BonusModelMaster implements IModel, Serializable, Comparable<BonusM
                 }
             ).collect(Collectors.toList()))
             .withMissedReceiveRelief(data.get("missedReceiveRelief") == null || data.get("missedReceiveRelief").isNull() ? null : data.get("missedReceiveRelief").asText())
+            .withMissedReceiveReliefVerifyActions(data.get("missedReceiveReliefVerifyActions") == null || data.get("missedReceiveReliefVerifyActions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("missedReceiveReliefVerifyActions").elements(), Spliterator.NONNULL), false).map(item -> {
+                    //noinspection Convert2MethodRef
+                    return VerifyAction.fromJson(item);
+                }
+            ).collect(Collectors.toList()))
             .withMissedReceiveReliefConsumeActions(data.get("missedReceiveReliefConsumeActions") == null || data.get("missedReceiveReliefConsumeActions").isNull() ? new ArrayList<ConsumeAction>() :
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("missedReceiveReliefConsumeActions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
@@ -233,6 +250,12 @@ public class BonusModelMaster implements IModel, Serializable, Comparable<BonusM
                     }
                 ).collect(Collectors.toList()));
                 put("missedReceiveRelief", getMissedReceiveRelief());
+                put("missedReceiveReliefVerifyActions", getMissedReceiveReliefVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                    getMissedReceiveReliefVerifyActions().stream().map(item -> {
+                        //noinspection Convert2MethodRef
+                        return item.toJson();
+                    }
+                ).collect(Collectors.toList()));
                 put("missedReceiveReliefConsumeActions", getMissedReceiveReliefConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                     getMissedReceiveReliefConsumeActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
@@ -265,6 +288,7 @@ public class BonusModelMaster implements IModel, Serializable, Comparable<BonusM
         result = prime * result + ((this.repeat == null) ? 0 : this.repeat.hashCode());
         result = prime * result + ((this.rewards == null) ? 0 : this.rewards.hashCode());
         result = prime * result + ((this.missedReceiveRelief == null) ? 0 : this.missedReceiveRelief.hashCode());
+        result = prime * result + ((this.missedReceiveReliefVerifyActions == null) ? 0 : this.missedReceiveReliefVerifyActions.hashCode());
         result = prime * result + ((this.missedReceiveReliefConsumeActions == null) ? 0 : this.missedReceiveReliefConsumeActions.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -329,6 +353,11 @@ public class BonusModelMaster implements IModel, Serializable, Comparable<BonusM
 		if (missedReceiveRelief == null) {
 			return other.missedReceiveRelief == null;
 		} else if (!missedReceiveRelief.equals(other.missedReceiveRelief)) {
+			return false;
+		}
+		if (missedReceiveReliefVerifyActions == null) {
+			return other.missedReceiveReliefVerifyActions == null;
+		} else if (!missedReceiveReliefVerifyActions.equals(other.missedReceiveReliefVerifyActions)) {
 			return false;
 		}
 		if (missedReceiveReliefConsumeActions == null) {

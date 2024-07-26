@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.model.*;
 import io.gs2.skillTree.model.*;
+import io.gs2.skillTree.model.VerifyAction;
 import io.gs2.skillTree.model.ConsumeAction;
 import io.gs2.skillTree.model.NodeModelMaster;
 

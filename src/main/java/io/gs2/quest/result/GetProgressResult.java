@@ -29,6 +29,7 @@ import io.gs2.quest.model.Reward;
 import io.gs2.quest.model.Progress;
 import io.gs2.quest.model.AcquireAction;
 import io.gs2.quest.model.Contents;
+import io.gs2.quest.model.VerifyAction;
 import io.gs2.quest.model.ConsumeAction;
 import io.gs2.quest.model.QuestModel;
 import io.gs2.quest.model.QuestGroupModel;

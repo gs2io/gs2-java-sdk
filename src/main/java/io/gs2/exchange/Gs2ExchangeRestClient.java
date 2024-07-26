@@ -1414,6 +1414,12 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getVerifyActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
                     put("consumeActions", request.getConsumeActions() == null ? new ArrayList<ConsumeAction>() :
                         request.getConsumeActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
@@ -1588,6 +1594,12 @@ import io.gs2.exchange.model.*;public class Gs2ExchangeRestClient extends Abstra
                     put("lockTime", request.getLockTime());
                     put("acquireActions", request.getAcquireActions() == null ? new ArrayList<AcquireAction>() :
                         request.getAcquireActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("verifyActions", request.getVerifyActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getVerifyActions().stream().map(item -> {
                             //noinspection Convert2MethodRef
                             return item.toJson();
                         }

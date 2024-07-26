@@ -43,7 +43,10 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private ScriptSetting updateProfileScript;
     private NotificationSetting followNotification;
     private NotificationSetting receiveRequestNotification;
+    private NotificationSetting cancelRequestNotification;
     private NotificationSetting acceptRequestNotification;
+    private NotificationSetting rejectRequestNotification;
+    private NotificationSetting deleteFriendNotification;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -165,6 +168,16 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.receiveRequestNotification = receiveRequestNotification;
 		return this;
 	}
+	public NotificationSetting getCancelRequestNotification() {
+		return cancelRequestNotification;
+	}
+	public void setCancelRequestNotification(NotificationSetting cancelRequestNotification) {
+		this.cancelRequestNotification = cancelRequestNotification;
+	}
+	public UpdateNamespaceRequest withCancelRequestNotification(NotificationSetting cancelRequestNotification) {
+		this.cancelRequestNotification = cancelRequestNotification;
+		return this;
+	}
 	public NotificationSetting getAcceptRequestNotification() {
 		return acceptRequestNotification;
 	}
@@ -173,6 +186,26 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withAcceptRequestNotification(NotificationSetting acceptRequestNotification) {
 		this.acceptRequestNotification = acceptRequestNotification;
+		return this;
+	}
+	public NotificationSetting getRejectRequestNotification() {
+		return rejectRequestNotification;
+	}
+	public void setRejectRequestNotification(NotificationSetting rejectRequestNotification) {
+		this.rejectRequestNotification = rejectRequestNotification;
+	}
+	public UpdateNamespaceRequest withRejectRequestNotification(NotificationSetting rejectRequestNotification) {
+		this.rejectRequestNotification = rejectRequestNotification;
+		return this;
+	}
+	public NotificationSetting getDeleteFriendNotification() {
+		return deleteFriendNotification;
+	}
+	public void setDeleteFriendNotification(NotificationSetting deleteFriendNotification) {
+		this.deleteFriendNotification = deleteFriendNotification;
+	}
+	public UpdateNamespaceRequest withDeleteFriendNotification(NotificationSetting deleteFriendNotification) {
+		this.deleteFriendNotification = deleteFriendNotification;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -203,7 +236,10 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withUpdateProfileScript(data.get("updateProfileScript") == null || data.get("updateProfileScript").isNull() ? null : ScriptSetting.fromJson(data.get("updateProfileScript")))
             .withFollowNotification(data.get("followNotification") == null || data.get("followNotification").isNull() ? null : NotificationSetting.fromJson(data.get("followNotification")))
             .withReceiveRequestNotification(data.get("receiveRequestNotification") == null || data.get("receiveRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("receiveRequestNotification")))
+            .withCancelRequestNotification(data.get("cancelRequestNotification") == null || data.get("cancelRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("cancelRequestNotification")))
             .withAcceptRequestNotification(data.get("acceptRequestNotification") == null || data.get("acceptRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("acceptRequestNotification")))
+            .withRejectRequestNotification(data.get("rejectRequestNotification") == null || data.get("rejectRequestNotification").isNull() ? null : NotificationSetting.fromJson(data.get("rejectRequestNotification")))
+            .withDeleteFriendNotification(data.get("deleteFriendNotification") == null || data.get("deleteFriendNotification").isNull() ? null : NotificationSetting.fromJson(data.get("deleteFriendNotification")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -222,7 +258,10 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("updateProfileScript", getUpdateProfileScript() != null ? getUpdateProfileScript().toJson() : null);
                 put("followNotification", getFollowNotification() != null ? getFollowNotification().toJson() : null);
                 put("receiveRequestNotification", getReceiveRequestNotification() != null ? getReceiveRequestNotification().toJson() : null);
+                put("cancelRequestNotification", getCancelRequestNotification() != null ? getCancelRequestNotification().toJson() : null);
                 put("acceptRequestNotification", getAcceptRequestNotification() != null ? getAcceptRequestNotification().toJson() : null);
+                put("rejectRequestNotification", getRejectRequestNotification() != null ? getRejectRequestNotification().toJson() : null);
+                put("deleteFriendNotification", getDeleteFriendNotification() != null ? getDeleteFriendNotification().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

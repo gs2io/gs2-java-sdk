@@ -1610,6 +1610,88 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
+    class RunVerifyTaskTask extends Gs2RestSessionTask<RunVerifyTaskResult> {
+        private RunVerifyTaskRequest request;
+
+        public RunVerifyTaskTask(
+            RunVerifyTaskRequest request,
+            AsyncAction<AsyncResult<RunVerifyTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RunVerifyTaskResult parse(JsonNode data) {
+            return RunVerifyTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/distribute/stamp/verifyTask/run";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("verifyTask", request.getVerifyTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void runVerifyTaskAsync(
+            RunVerifyTaskRequest request,
+            AsyncAction<AsyncResult<RunVerifyTaskResult>> callback
+    ) {
+        RunVerifyTaskTask task = new RunVerifyTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public RunVerifyTaskResult runVerifyTask(
+            RunVerifyTaskRequest request
+    ) {
+        final AsyncResult<RunVerifyTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        runVerifyTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class RunStampTaskTask extends Gs2RestSessionTask<RunStampTaskResult> {
         private RunStampTaskRequest request;
 
@@ -1840,6 +1922,86 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
     ) {
         final AsyncResult<RunStampSheetExpressResult>[] resultAsyncResult = new AsyncResult[]{null};
         runStampSheetExpressAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class RunVerifyTaskWithoutNamespaceTask extends Gs2RestSessionTask<RunVerifyTaskWithoutNamespaceResult> {
+        private RunVerifyTaskWithoutNamespaceRequest request;
+
+        public RunVerifyTaskWithoutNamespaceTask(
+            RunVerifyTaskWithoutNamespaceRequest request,
+            AsyncAction<AsyncResult<RunVerifyTaskWithoutNamespaceResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public RunVerifyTaskWithoutNamespaceResult parse(JsonNode data) {
+            return RunVerifyTaskWithoutNamespaceResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/verifyTask/run";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("verifyTask", request.getVerifyTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void runVerifyTaskWithoutNamespaceAsync(
+            RunVerifyTaskWithoutNamespaceRequest request,
+            AsyncAction<AsyncResult<RunVerifyTaskWithoutNamespaceResult>> callback
+    ) {
+        RunVerifyTaskWithoutNamespaceTask task = new RunVerifyTaskWithoutNamespaceTask(request, callback);
+        session.execute(task);
+    }
+
+    public RunVerifyTaskWithoutNamespaceResult runVerifyTaskWithoutNamespace(
+            RunVerifyTaskWithoutNamespaceRequest request
+    ) {
+        final AsyncResult<RunVerifyTaskWithoutNamespaceResult>[] resultAsyncResult = new AsyncResult[]{null};
+        runVerifyTaskWithoutNamespaceAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
