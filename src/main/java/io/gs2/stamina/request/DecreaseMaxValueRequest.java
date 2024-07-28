@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.distributor.request;
+package io.gs2.stamina.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,32 +24,53 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.distributor.model.Config;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetTransactionDefaultConfigRequest extends Gs2BasicRequest<SetTransactionDefaultConfigRequest> {
+public class DecreaseMaxValueRequest extends Gs2BasicRequest<DecreaseMaxValueRequest> {
+    private String namespaceName;
+    private String staminaName;
     private String accessToken;
-    private List<Config> config;
+    private Integer decreaseValue;
     private String duplicationAvoider;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+	public DecreaseMaxValueRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+	public String getStaminaName() {
+		return staminaName;
+	}
+	public void setStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+	}
+	public DecreaseMaxValueRequest withStaminaName(String staminaName) {
+		this.staminaName = staminaName;
+		return this;
+	}
 	public String getAccessToken() {
 		return accessToken;
 	}
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	public SetTransactionDefaultConfigRequest withAccessToken(String accessToken) {
+	public DecreaseMaxValueRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public List<Config> getConfig() {
-		return config;
+	public Integer getDecreaseValue() {
+		return decreaseValue;
 	}
-	public void setConfig(List<Config> config) {
-		this.config = config;
+	public void setDecreaseValue(Integer decreaseValue) {
+		this.decreaseValue = decreaseValue;
 	}
-	public SetTransactionDefaultConfigRequest withConfig(List<Config> config) {
-		this.config = config;
+	public DecreaseMaxValueRequest withDecreaseValue(Integer decreaseValue) {
+		this.decreaseValue = decreaseValue;
 		return this;
 	}
 
@@ -61,35 +82,29 @@ public class SetTransactionDefaultConfigRequest extends Gs2BasicRequest<SetTrans
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public SetTransactionDefaultConfigRequest withDuplicationAvoider(String duplicationAvoider) {
+	public DecreaseMaxValueRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static SetTransactionDefaultConfigRequest fromJson(JsonNode data) {
+    public static DecreaseMaxValueRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SetTransactionDefaultConfigRequest()
+        return new DecreaseMaxValueRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withStaminaName(data.get("staminaName") == null || data.get("staminaName").isNull() ? null : data.get("staminaName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
-                    //noinspection Convert2MethodRef
-                    return Config.fromJson(item);
-                }
-            ).collect(Collectors.toList()));
+            .withDecreaseValue(data.get("decreaseValue") == null || data.get("decreaseValue").isNull() ? null : data.get("decreaseValue").intValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("staminaName", getStaminaName());
                 put("accessToken", getAccessToken());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
-                    getConfig().stream().map(item -> {
-                        //noinspection Convert2MethodRef
-                        return item.toJson();
-                    }
-                ).collect(Collectors.toList()));
+                put("decreaseValue", getDecreaseValue());
             }}
         );
     }

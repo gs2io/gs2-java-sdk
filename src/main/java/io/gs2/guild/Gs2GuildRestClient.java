@@ -3153,6 +3153,94 @@ import io.gs2.guild.model.*;public class Gs2GuildRestClient extends AbstractGs2C
         return resultAsyncResult[0].getResult();
     }
 
+    class DecreaseMaximumCurrentMaximumMemberCountTask extends Gs2RestSessionTask<DecreaseMaximumCurrentMaximumMemberCountResult> {
+        private DecreaseMaximumCurrentMaximumMemberCountRequest request;
+
+        public DecreaseMaximumCurrentMaximumMemberCountTask(
+            DecreaseMaximumCurrentMaximumMemberCountRequest request,
+            AsyncAction<AsyncResult<DecreaseMaximumCurrentMaximumMemberCountResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DecreaseMaximumCurrentMaximumMemberCountResult parse(JsonNode data) {
+            return DecreaseMaximumCurrentMaximumMemberCountResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "guild")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/guild/{guildModelName}/me/currentMaximumMemberCount/decrease";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{guildModelName}", this.request.getGuildModelName() == null || this.request.getGuildModelName().length() == 0 ? "null" : String.valueOf(this.request.getGuildModelName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("value", request.getValue());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void decreaseMaximumCurrentMaximumMemberCountAsync(
+            DecreaseMaximumCurrentMaximumMemberCountRequest request,
+            AsyncAction<AsyncResult<DecreaseMaximumCurrentMaximumMemberCountResult>> callback
+    ) {
+        DecreaseMaximumCurrentMaximumMemberCountTask task = new DecreaseMaximumCurrentMaximumMemberCountTask(request, callback);
+        session.execute(task);
+    }
+
+    public DecreaseMaximumCurrentMaximumMemberCountResult decreaseMaximumCurrentMaximumMemberCount(
+            DecreaseMaximumCurrentMaximumMemberCountRequest request
+    ) {
+        final AsyncResult<DecreaseMaximumCurrentMaximumMemberCountResult>[] resultAsyncResult = new AsyncResult[]{null};
+        decreaseMaximumCurrentMaximumMemberCountAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DecreaseMaximumCurrentMaximumMemberCountByGuildNameTask extends Gs2RestSessionTask<DecreaseMaximumCurrentMaximumMemberCountByGuildNameResult> {
         private DecreaseMaximumCurrentMaximumMemberCountByGuildNameRequest request;
 

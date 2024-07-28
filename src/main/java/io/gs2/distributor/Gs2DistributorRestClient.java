@@ -1488,6 +1488,9 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
@@ -1570,6 +1573,9 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
             }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
@@ -2309,6 +2315,9 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
             if (this.request.getAccessToken() != null) {
                 builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
 
             builder
                 .build()
@@ -2395,6 +2404,9 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
             if (this.request.getRequestId() != null) {
                 builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
             }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
             if (this.request.getTimeOffsetToken() != null) {
                 builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
             }
@@ -2418,6 +2430,532 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
     ) {
         final AsyncResult<SetTransactionDefaultConfigByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         setTransactionDefaultConfigByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class IfExpressionByUserIdTask extends Gs2RestSessionTask<IfExpressionByUserIdResult> {
+        private IfExpressionByUserIdRequest request;
+
+        public IfExpressionByUserIdTask(
+            IfExpressionByUserIdRequest request,
+            AsyncAction<AsyncResult<IfExpressionByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IfExpressionByUserIdResult parse(JsonNode data) {
+            return IfExpressionByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/expression/if";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userId", request.getUserId());
+                    put("condition", request.getCondition() != null ? request.getCondition().toJson() : null);
+                    put("trueActions", request.getTrueActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getTrueActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("falseActions", request.getFalseActions() == null ? new ArrayList<ConsumeAction>() :
+                        request.getFalseActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void ifExpressionByUserIdAsync(
+            IfExpressionByUserIdRequest request,
+            AsyncAction<AsyncResult<IfExpressionByUserIdResult>> callback
+    ) {
+        IfExpressionByUserIdTask task = new IfExpressionByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public IfExpressionByUserIdResult ifExpressionByUserId(
+            IfExpressionByUserIdRequest request
+    ) {
+        final AsyncResult<IfExpressionByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        ifExpressionByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AndExpressionByUserIdTask extends Gs2RestSessionTask<AndExpressionByUserIdResult> {
+        private AndExpressionByUserIdRequest request;
+
+        public AndExpressionByUserIdTask(
+            AndExpressionByUserIdRequest request,
+            AsyncAction<AsyncResult<AndExpressionByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AndExpressionByUserIdResult parse(JsonNode data) {
+            return AndExpressionByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/expression/and";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userId", request.getUserId());
+                    put("actions", request.getActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void andExpressionByUserIdAsync(
+            AndExpressionByUserIdRequest request,
+            AsyncAction<AsyncResult<AndExpressionByUserIdResult>> callback
+    ) {
+        AndExpressionByUserIdTask task = new AndExpressionByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public AndExpressionByUserIdResult andExpressionByUserId(
+            AndExpressionByUserIdRequest request
+    ) {
+        final AsyncResult<AndExpressionByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        andExpressionByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class OrExpressionByUserIdTask extends Gs2RestSessionTask<OrExpressionByUserIdResult> {
+        private OrExpressionByUserIdRequest request;
+
+        public OrExpressionByUserIdTask(
+            OrExpressionByUserIdRequest request,
+            AsyncAction<AsyncResult<OrExpressionByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public OrExpressionByUserIdResult parse(JsonNode data) {
+            return OrExpressionByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/expression/or";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userId", request.getUserId());
+                    put("actions", request.getActions() == null ? new ArrayList<VerifyAction>() :
+                        request.getActions().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void orExpressionByUserIdAsync(
+            OrExpressionByUserIdRequest request,
+            AsyncAction<AsyncResult<OrExpressionByUserIdResult>> callback
+    ) {
+        OrExpressionByUserIdTask task = new OrExpressionByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public OrExpressionByUserIdResult orExpressionByUserId(
+            OrExpressionByUserIdRequest request
+    ) {
+        final AsyncResult<OrExpressionByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        orExpressionByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class IfExpressionByUserByStampTaskTask extends Gs2RestSessionTask<IfExpressionByUserByStampTaskResult> {
+        private IfExpressionByUserByStampTaskRequest request;
+
+        public IfExpressionByUserByStampTaskTask(
+            IfExpressionByUserByStampTaskRequest request,
+            AsyncAction<AsyncResult<IfExpressionByUserByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IfExpressionByUserByStampTaskResult parse(JsonNode data) {
+            return IfExpressionByUserByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/expression/if";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void ifExpressionByUserByStampTaskAsync(
+            IfExpressionByUserByStampTaskRequest request,
+            AsyncAction<AsyncResult<IfExpressionByUserByStampTaskResult>> callback
+    ) {
+        IfExpressionByUserByStampTaskTask task = new IfExpressionByUserByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public IfExpressionByUserByStampTaskResult ifExpressionByUserByStampTask(
+            IfExpressionByUserByStampTaskRequest request
+    ) {
+        final AsyncResult<IfExpressionByUserByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        ifExpressionByUserByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class AndExpressionByUserByStampTaskTask extends Gs2RestSessionTask<AndExpressionByUserByStampTaskResult> {
+        private AndExpressionByUserByStampTaskRequest request;
+
+        public AndExpressionByUserByStampTaskTask(
+            AndExpressionByUserByStampTaskRequest request,
+            AsyncAction<AsyncResult<AndExpressionByUserByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public AndExpressionByUserByStampTaskResult parse(JsonNode data) {
+            return AndExpressionByUserByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/expression/and";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void andExpressionByUserByStampTaskAsync(
+            AndExpressionByUserByStampTaskRequest request,
+            AsyncAction<AsyncResult<AndExpressionByUserByStampTaskResult>> callback
+    ) {
+        AndExpressionByUserByStampTaskTask task = new AndExpressionByUserByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public AndExpressionByUserByStampTaskResult andExpressionByUserByStampTask(
+            AndExpressionByUserByStampTaskRequest request
+    ) {
+        final AsyncResult<AndExpressionByUserByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        andExpressionByUserByStampTaskAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class OrExpressionByUserByStampTaskTask extends Gs2RestSessionTask<OrExpressionByUserByStampTaskResult> {
+        private OrExpressionByUserByStampTaskRequest request;
+
+        public OrExpressionByUserByStampTaskTask(
+            OrExpressionByUserByStampTaskRequest request,
+            AsyncAction<AsyncResult<OrExpressionByUserByStampTaskResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public OrExpressionByUserByStampTaskResult parse(JsonNode data) {
+            return OrExpressionByUserByStampTaskResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "distributor")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/expression/or";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampTask", request.getStampTask());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void orExpressionByUserByStampTaskAsync(
+            OrExpressionByUserByStampTaskRequest request,
+            AsyncAction<AsyncResult<OrExpressionByUserByStampTaskResult>> callback
+    ) {
+        OrExpressionByUserByStampTaskTask task = new OrExpressionByUserByStampTaskTask(request, callback);
+        session.execute(task);
+    }
+
+    public OrExpressionByUserByStampTaskResult orExpressionByUserByStampTask(
+            OrExpressionByUserByStampTaskRequest request
+    ) {
+        final AsyncResult<OrExpressionByUserByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        orExpressionByUserByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );

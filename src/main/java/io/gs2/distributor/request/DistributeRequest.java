@@ -34,6 +34,7 @@ public class DistributeRequest extends Gs2BasicRequest<DistributeRequest> {
     private String userId;
     private DistributeResource distributeResource;
     private String timeOffsetToken;
+    private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
 	}
@@ -82,6 +83,19 @@ public class DistributeRequest extends Gs2BasicRequest<DistributeRequest> {
 	}
 	public DistributeRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DistributeRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 

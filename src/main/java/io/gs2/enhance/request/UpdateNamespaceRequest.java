@@ -33,10 +33,10 @@ import io.gs2.enhance.model.LogSetting;
 public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceRequest> {
     private String namespaceName;
     private String description;
-    private Boolean enableDirectEnhance;
     private TransactionSetting transactionSetting;
     private ScriptSetting enhanceScript;
     private LogSetting logSetting;
+    private Boolean enableDirectEnhance;
     private String queueNamespaceId;
     private String keyId;
 	public String getNamespaceName() {
@@ -57,16 +57,6 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withDescription(String description) {
 		this.description = description;
-		return this;
-	}
-	public Boolean getEnableDirectEnhance() {
-		return enableDirectEnhance;
-	}
-	public void setEnableDirectEnhance(Boolean enableDirectEnhance) {
-		this.enableDirectEnhance = enableDirectEnhance;
-	}
-	public UpdateNamespaceRequest withEnableDirectEnhance(Boolean enableDirectEnhance) {
-		this.enableDirectEnhance = enableDirectEnhance;
 		return this;
 	}
 	public TransactionSetting getTransactionSetting() {
@@ -97,6 +87,19 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 	}
 	public UpdateNamespaceRequest withLogSetting(LogSetting logSetting) {
 		this.logSetting = logSetting;
+		return this;
+	}
+    @Deprecated
+	public Boolean getEnableDirectEnhance() {
+		return enableDirectEnhance;
+	}
+    @Deprecated
+	public void setEnableDirectEnhance(Boolean enableDirectEnhance) {
+		this.enableDirectEnhance = enableDirectEnhance;
+	}
+    @Deprecated
+	public UpdateNamespaceRequest withEnableDirectEnhance(Boolean enableDirectEnhance) {
+		this.enableDirectEnhance = enableDirectEnhance;
 		return this;
 	}
     @Deprecated
@@ -133,10 +136,10 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
         return new UpdateNamespaceRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withEnableDirectEnhance(data.get("enableDirectEnhance") == null || data.get("enableDirectEnhance").isNull() ? null : data.get("enableDirectEnhance").booleanValue())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withEnhanceScript(data.get("enhanceScript") == null || data.get("enhanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("enhanceScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
+            .withEnableDirectEnhance(data.get("enableDirectEnhance") == null || data.get("enableDirectEnhance").isNull() ? null : data.get("enableDirectEnhance").booleanValue())
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }
@@ -146,10 +149,10 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             new HashMap<String, Object>() {{
                 put("namespaceName", getNamespaceName());
                 put("description", getDescription());
-                put("enableDirectEnhance", getEnableDirectEnhance());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("enhanceScript", getEnhanceScript() != null ? getEnhanceScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
+                put("enableDirectEnhance", getEnableDirectEnhance());
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());
             }}

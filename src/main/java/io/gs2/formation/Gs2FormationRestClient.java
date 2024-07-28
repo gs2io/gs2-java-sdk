@@ -3642,6 +3642,94 @@ import io.gs2.formation.model.*;public class Gs2FormationRestClient extends Abst
         return resultAsyncResult[0].getResult();
     }
 
+    class SubMoldCapacityTask extends Gs2RestSessionTask<SubMoldCapacityResult> {
+        private SubMoldCapacityRequest request;
+
+        public SubMoldCapacityTask(
+            SubMoldCapacityRequest request,
+            AsyncAction<AsyncResult<SubMoldCapacityResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SubMoldCapacityResult parse(JsonNode data) {
+            return SubMoldCapacityResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "formation")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/mold/{moldModelName}/sub";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{moldModelName}", this.request.getMoldModelName() == null || this.request.getMoldModelName().length() == 0 ? "null" : String.valueOf(this.request.getMoldModelName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("capacity", request.getCapacity());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void subMoldCapacityAsync(
+            SubMoldCapacityRequest request,
+            AsyncAction<AsyncResult<SubMoldCapacityResult>> callback
+    ) {
+        SubMoldCapacityTask task = new SubMoldCapacityTask(request, callback);
+        session.execute(task);
+    }
+
+    public SubMoldCapacityResult subMoldCapacity(
+            SubMoldCapacityRequest request
+    ) {
+        final AsyncResult<SubMoldCapacityResult>[] resultAsyncResult = new AsyncResult[]{null};
+        subMoldCapacityAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class SubMoldCapacityByUserIdTask extends Gs2RestSessionTask<SubMoldCapacityByUserIdResult> {
         private SubMoldCapacityByUserIdRequest request;
 

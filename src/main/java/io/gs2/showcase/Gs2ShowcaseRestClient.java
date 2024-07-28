@@ -3704,6 +3704,95 @@ import io.gs2.showcase.model.*;public class Gs2ShowcaseRestClient extends Abstra
         return resultAsyncResult[0].getResult();
     }
 
+    class IncrementPurchaseCountTask extends Gs2RestSessionTask<IncrementPurchaseCountResult> {
+        private IncrementPurchaseCountRequest request;
+
+        public IncrementPurchaseCountTask(
+            IncrementPurchaseCountRequest request,
+            AsyncAction<AsyncResult<IncrementPurchaseCountResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public IncrementPurchaseCountResult parse(JsonNode data) {
+            return IncrementPurchaseCountResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "showcase")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/random/showcase/user/me/status/{showcaseName}/{displayItemName}/purchase/count";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{showcaseName}", this.request.getShowcaseName() == null || this.request.getShowcaseName().length() == 0 ? "null" : String.valueOf(this.request.getShowcaseName()));
+            url = url.replace("{displayItemName}", this.request.getDisplayItemName() == null || this.request.getDisplayItemName().length() == 0 ? "null" : String.valueOf(this.request.getDisplayItemName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("count", request.getCount());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void incrementPurchaseCountAsync(
+            IncrementPurchaseCountRequest request,
+            AsyncAction<AsyncResult<IncrementPurchaseCountResult>> callback
+    ) {
+        IncrementPurchaseCountTask task = new IncrementPurchaseCountTask(request, callback);
+        session.execute(task);
+    }
+
+    public IncrementPurchaseCountResult incrementPurchaseCount(
+            IncrementPurchaseCountRequest request
+    ) {
+        final AsyncResult<IncrementPurchaseCountResult>[] resultAsyncResult = new AsyncResult[]{null};
+        incrementPurchaseCountAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class IncrementPurchaseCountByUserIdTask extends Gs2RestSessionTask<IncrementPurchaseCountByUserIdResult> {
         private IncrementPurchaseCountByUserIdRequest request;
 

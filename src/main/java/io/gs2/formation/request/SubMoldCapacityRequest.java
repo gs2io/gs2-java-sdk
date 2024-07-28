@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.distributor.request;
+package io.gs2.formation.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,32 +24,53 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.distributor.model.Config;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetTransactionDefaultConfigRequest extends Gs2BasicRequest<SetTransactionDefaultConfigRequest> {
+public class SubMoldCapacityRequest extends Gs2BasicRequest<SubMoldCapacityRequest> {
+    private String namespaceName;
     private String accessToken;
-    private List<Config> config;
+    private String moldModelName;
+    private Integer capacity;
     private String duplicationAvoider;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+	public SubMoldCapacityRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
 	public String getAccessToken() {
 		return accessToken;
 	}
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	public SetTransactionDefaultConfigRequest withAccessToken(String accessToken) {
+	public SubMoldCapacityRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public List<Config> getConfig() {
-		return config;
+	public String getMoldModelName() {
+		return moldModelName;
 	}
-	public void setConfig(List<Config> config) {
-		this.config = config;
+	public void setMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
 	}
-	public SetTransactionDefaultConfigRequest withConfig(List<Config> config) {
-		this.config = config;
+	public SubMoldCapacityRequest withMoldModelName(String moldModelName) {
+		this.moldModelName = moldModelName;
+		return this;
+	}
+	public Integer getCapacity() {
+		return capacity;
+	}
+	public void setCapacity(Integer capacity) {
+		this.capacity = capacity;
+	}
+	public SubMoldCapacityRequest withCapacity(Integer capacity) {
+		this.capacity = capacity;
 		return this;
 	}
 
@@ -61,35 +82,29 @@ public class SetTransactionDefaultConfigRequest extends Gs2BasicRequest<SetTrans
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public SetTransactionDefaultConfigRequest withDuplicationAvoider(String duplicationAvoider) {
+	public SubMoldCapacityRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static SetTransactionDefaultConfigRequest fromJson(JsonNode data) {
+    public static SubMoldCapacityRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SetTransactionDefaultConfigRequest()
+        return new SubMoldCapacityRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
-                    //noinspection Convert2MethodRef
-                    return Config.fromJson(item);
-                }
-            ).collect(Collectors.toList()));
+            .withMoldModelName(data.get("moldModelName") == null || data.get("moldModelName").isNull() ? null : data.get("moldModelName").asText())
+            .withCapacity(data.get("capacity") == null || data.get("capacity").isNull() ? null : data.get("capacity").intValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
-                    getConfig().stream().map(item -> {
-                        //noinspection Convert2MethodRef
-                        return item.toJson();
-                    }
-                ).collect(Collectors.toList()));
+                put("moldModelName", getMoldModelName());
+                put("capacity", getCapacity());
             }}
         );
     }

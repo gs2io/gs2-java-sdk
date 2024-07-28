@@ -24,33 +24,44 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.distributor.model.Config;
+import io.gs2.distributor.model.VerifyAction;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetTransactionDefaultConfigByUserIdRequest extends Gs2BasicRequest<SetTransactionDefaultConfigByUserIdRequest> {
+public class OrExpressionByUserIdRequest extends Gs2BasicRequest<OrExpressionByUserIdRequest> {
+    private String namespaceName;
     private String userId;
-    private List<Config> config;
+    private List<VerifyAction> actions;
     private String timeOffsetToken;
     private String duplicationAvoider;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+	public OrExpressionByUserIdRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
 	public String getUserId() {
 		return userId;
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public SetTransactionDefaultConfigByUserIdRequest withUserId(String userId) {
+	public OrExpressionByUserIdRequest withUserId(String userId) {
 		this.userId = userId;
 		return this;
 	}
-	public List<Config> getConfig() {
-		return config;
+	public List<VerifyAction> getActions() {
+		return actions;
 	}
-	public void setConfig(List<Config> config) {
-		this.config = config;
+	public void setActions(List<VerifyAction> actions) {
+		this.actions = actions;
 	}
-	public SetTransactionDefaultConfigByUserIdRequest withConfig(List<Config> config) {
-		this.config = config;
+	public OrExpressionByUserIdRequest withActions(List<VerifyAction> actions) {
+		this.actions = actions;
 		return this;
 	}
 	public String getTimeOffsetToken() {
@@ -59,7 +70,7 @@ public class SetTransactionDefaultConfigByUserIdRequest extends Gs2BasicRequest<
 	public void setTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
 	}
-	public SetTransactionDefaultConfigByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
+	public OrExpressionByUserIdRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
 		return this;
 	}
@@ -72,21 +83,22 @@ public class SetTransactionDefaultConfigByUserIdRequest extends Gs2BasicRequest<
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public SetTransactionDefaultConfigByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
+	public OrExpressionByUserIdRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static SetTransactionDefaultConfigByUserIdRequest fromJson(JsonNode data) {
+    public static OrExpressionByUserIdRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SetTransactionDefaultConfigByUserIdRequest()
+        return new OrExpressionByUserIdRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
+            .withActions(data.get("actions") == null || data.get("actions").isNull() ? new ArrayList<VerifyAction>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("actions").elements(), Spliterator.NONNULL), false).map(item -> {
                     //noinspection Convert2MethodRef
-                    return Config.fromJson(item);
+                    return VerifyAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
@@ -95,9 +107,10 @@ public class SetTransactionDefaultConfigByUserIdRequest extends Gs2BasicRequest<
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
                 put("userId", getUserId());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
-                    getConfig().stream().map(item -> {
+                put("actions", getActions() == null ? new ArrayList<VerifyAction>() :
+                    getActions().stream().map(item -> {
                         //noinspection Convert2MethodRef
                         return item.toJson();
                     }

@@ -32,12 +32,12 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String namespaceId;
 	private String name;
 	private String description;
-	private Boolean enableDirectEnhance;
 	private TransactionSetting transactionSetting;
 	private ScriptSetting enhanceScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
+	private Boolean enableDirectEnhance;
 	private String queueNamespaceId;
 	private String keyId;
 	private Long revision;
@@ -69,16 +69,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	}
 	public Namespace withDescription(String description) {
 		this.description = description;
-		return this;
-	}
-	public Boolean getEnableDirectEnhance() {
-		return enableDirectEnhance;
-	}
-	public void setEnableDirectEnhance(Boolean enableDirectEnhance) {
-		this.enableDirectEnhance = enableDirectEnhance;
-	}
-	public Namespace withEnableDirectEnhance(Boolean enableDirectEnhance) {
-		this.enableDirectEnhance = enableDirectEnhance;
 		return this;
 	}
 	public TransactionSetting getTransactionSetting() {
@@ -132,6 +122,19 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		return this;
 	}
     @Deprecated
+	public Boolean getEnableDirectEnhance() {
+		return enableDirectEnhance;
+	}
+    @Deprecated
+	public void setEnableDirectEnhance(Boolean enableDirectEnhance) {
+		this.enableDirectEnhance = enableDirectEnhance;
+	}
+    @Deprecated
+	public Namespace withEnableDirectEnhance(Boolean enableDirectEnhance) {
+		this.enableDirectEnhance = enableDirectEnhance;
+		return this;
+	}
+    @Deprecated
 	public String getQueueNamespaceId() {
 		return queueNamespaceId;
 	}
@@ -176,12 +179,12 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withNamespaceId(data.get("namespaceId") == null || data.get("namespaceId").isNull() ? null : data.get("namespaceId").asText())
             .withName(data.get("name") == null || data.get("name").isNull() ? null : data.get("name").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
-            .withEnableDirectEnhance(data.get("enableDirectEnhance") == null || data.get("enableDirectEnhance").isNull() ? null : data.get("enableDirectEnhance").booleanValue())
             .withTransactionSetting(data.get("transactionSetting") == null || data.get("transactionSetting").isNull() ? null : TransactionSetting.fromJson(data.get("transactionSetting")))
             .withEnhanceScript(data.get("enhanceScript") == null || data.get("enhanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("enhanceScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
+            .withEnableDirectEnhance(data.get("enableDirectEnhance") == null || data.get("enableDirectEnhance").isNull() ? null : data.get("enableDirectEnhance").booleanValue())
             .withQueueNamespaceId(data.get("queueNamespaceId") == null || data.get("queueNamespaceId").isNull() ? null : data.get("queueNamespaceId").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText())
             .withRevision(data.get("revision") == null || data.get("revision").isNull() ? null : data.get("revision").longValue());
@@ -193,12 +196,12 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("namespaceId", getNamespaceId());
                 put("name", getName());
                 put("description", getDescription());
-                put("enableDirectEnhance", getEnableDirectEnhance());
                 put("transactionSetting", getTransactionSetting() != null ? getTransactionSetting().toJson() : null);
                 put("enhanceScript", getEnhanceScript() != null ? getEnhanceScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
+                put("enableDirectEnhance", getEnableDirectEnhance());
                 put("queueNamespaceId", getQueueNamespaceId());
                 put("keyId", getKeyId());
                 put("revision", getRevision());
@@ -218,12 +221,12 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.namespaceId == null) ? 0 : this.namespaceId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
-        result = prime * result + ((this.enableDirectEnhance == null) ? 0 : this.enableDirectEnhance.hashCode());
         result = prime * result + ((this.transactionSetting == null) ? 0 : this.transactionSetting.hashCode());
         result = prime * result + ((this.enhanceScript == null) ? 0 : this.enhanceScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        result = prime * result + ((this.enableDirectEnhance == null) ? 0 : this.enableDirectEnhance.hashCode());
         result = prime * result + ((this.queueNamespaceId == null) ? 0 : this.queueNamespaceId.hashCode());
         result = prime * result + ((this.keyId == null) ? 0 : this.keyId.hashCode());
         result = prime * result + ((this.revision == null) ? 0 : this.revision.hashCode());
@@ -254,11 +257,6 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		} else if (!description.equals(other.description)) {
 			return false;
 		}
-		if (enableDirectEnhance == null) {
-			return other.enableDirectEnhance == null;
-		} else if (!enableDirectEnhance.equals(other.enableDirectEnhance)) {
-			return false;
-		}
 		if (transactionSetting == null) {
 			return other.transactionSetting == null;
 		} else if (!transactionSetting.equals(other.transactionSetting)) {
@@ -282,6 +280,11 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		if (updatedAt == null) {
 			return other.updatedAt == null;
 		} else if (!updatedAt.equals(other.updatedAt)) {
+			return false;
+		}
+		if (enableDirectEnhance == null) {
+			return other.enableDirectEnhance == null;
+		} else if (!enableDirectEnhance.equals(other.enableDirectEnhance)) {
 			return false;
 		}
 		if (queueNamespaceId == null) {

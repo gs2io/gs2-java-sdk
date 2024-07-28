@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.distributor.request;
+package io.gs2.mission.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,32 +24,53 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.distributor.model.Config;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetTransactionDefaultConfigRequest extends Gs2BasicRequest<SetTransactionDefaultConfigRequest> {
+public class DecreaseCounterRequest extends Gs2BasicRequest<DecreaseCounterRequest> {
+    private String namespaceName;
+    private String counterName;
     private String accessToken;
-    private List<Config> config;
+    private Long value;
     private String duplicationAvoider;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+	public DecreaseCounterRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
+	public String getCounterName() {
+		return counterName;
+	}
+	public void setCounterName(String counterName) {
+		this.counterName = counterName;
+	}
+	public DecreaseCounterRequest withCounterName(String counterName) {
+		this.counterName = counterName;
+		return this;
+	}
 	public String getAccessToken() {
 		return accessToken;
 	}
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	public SetTransactionDefaultConfigRequest withAccessToken(String accessToken) {
+	public DecreaseCounterRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public List<Config> getConfig() {
-		return config;
+	public Long getValue() {
+		return value;
 	}
-	public void setConfig(List<Config> config) {
-		this.config = config;
+	public void setValue(Long value) {
+		this.value = value;
 	}
-	public SetTransactionDefaultConfigRequest withConfig(List<Config> config) {
-		this.config = config;
+	public DecreaseCounterRequest withValue(Long value) {
+		this.value = value;
 		return this;
 	}
 
@@ -61,35 +82,29 @@ public class SetTransactionDefaultConfigRequest extends Gs2BasicRequest<SetTrans
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public SetTransactionDefaultConfigRequest withDuplicationAvoider(String duplicationAvoider) {
+	public DecreaseCounterRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static SetTransactionDefaultConfigRequest fromJson(JsonNode data) {
+    public static DecreaseCounterRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SetTransactionDefaultConfigRequest()
+        return new DecreaseCounterRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
+            .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
-                    //noinspection Convert2MethodRef
-                    return Config.fromJson(item);
-                }
-            ).collect(Collectors.toList()));
+            .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").longValue());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
+                put("counterName", getCounterName());
                 put("accessToken", getAccessToken());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
-                    getConfig().stream().map(item -> {
-                        //noinspection Convert2MethodRef
-                        return item.toJson();
-                    }
-                ).collect(Collectors.toList()));
+                put("value", getValue());
             }}
         );
     }

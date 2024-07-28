@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.distributor.request;
+package io.gs2.dictionary.request;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,32 +24,42 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.gs2.core.control.Gs2BasicRequest;
-import io.gs2.distributor.model.Config;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SetTransactionDefaultConfigRequest extends Gs2BasicRequest<SetTransactionDefaultConfigRequest> {
+public class DeleteEntriesRequest extends Gs2BasicRequest<DeleteEntriesRequest> {
+    private String namespaceName;
     private String accessToken;
-    private List<Config> config;
+    private List<String> entryModelNames;
     private String duplicationAvoider;
+	public String getNamespaceName() {
+		return namespaceName;
+	}
+	public void setNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+	}
+	public DeleteEntriesRequest withNamespaceName(String namespaceName) {
+		this.namespaceName = namespaceName;
+		return this;
+	}
 	public String getAccessToken() {
 		return accessToken;
 	}
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	public SetTransactionDefaultConfigRequest withAccessToken(String accessToken) {
+	public DeleteEntriesRequest withAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 		return this;
 	}
-	public List<Config> getConfig() {
-		return config;
+	public List<String> getEntryModelNames() {
+		return entryModelNames;
 	}
-	public void setConfig(List<Config> config) {
-		this.config = config;
+	public void setEntryModelNames(List<String> entryModelNames) {
+		this.entryModelNames = entryModelNames;
 	}
-	public SetTransactionDefaultConfigRequest withConfig(List<Config> config) {
-		this.config = config;
+	public DeleteEntriesRequest withEntryModelNames(List<String> entryModelNames) {
+		this.entryModelNames = entryModelNames;
 		return this;
 	}
 
@@ -61,21 +71,21 @@ public class SetTransactionDefaultConfigRequest extends Gs2BasicRequest<SetTrans
 		this.duplicationAvoider = duplicationAvoider;
 	}
 
-	public SetTransactionDefaultConfigRequest withDuplicationAvoider(String duplicationAvoider) {
+	public DeleteEntriesRequest withDuplicationAvoider(String duplicationAvoider) {
 		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
-    public static SetTransactionDefaultConfigRequest fromJson(JsonNode data) {
+    public static DeleteEntriesRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new SetTransactionDefaultConfigRequest()
+        return new DeleteEntriesRequest()
+            .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withConfig(data.get("config") == null || data.get("config").isNull() ? new ArrayList<Config>() :
-                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("config").elements(), Spliterator.NONNULL), false).map(item -> {
-                    //noinspection Convert2MethodRef
-                    return Config.fromJson(item);
+            .withEntryModelNames(data.get("entryModelNames") == null || data.get("entryModelNames").isNull() ? new ArrayList<String>() :
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(data.get("entryModelNames").elements(), Spliterator.NONNULL), false).map(item -> {
+                    return item.asText();
                 }
             ).collect(Collectors.toList()));
     }
@@ -83,11 +93,11 @@ public class SetTransactionDefaultConfigRequest extends Gs2BasicRequest<SetTrans
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
-                put("config", getConfig() == null ? new ArrayList<Config>() :
-                    getConfig().stream().map(item -> {
-                        //noinspection Convert2MethodRef
-                        return item.toJson();
+                put("entryModelNames", getEntryModelNames() == null ? new ArrayList<String>() :
+                    getEntryModelNames().stream().map(item -> {
+                        return item;
                     }
                 ).collect(Collectors.toList()));
             }}

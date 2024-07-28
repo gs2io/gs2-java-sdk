@@ -2511,6 +2511,94 @@ import io.gs2.idle.model.*;public class Gs2IdleRestClient extends AbstractGs2Cli
         return resultAsyncResult[0].getResult();
     }
 
+    class DecreaseMaximumIdleMinutesTask extends Gs2RestSessionTask<DecreaseMaximumIdleMinutesResult> {
+        private DecreaseMaximumIdleMinutesRequest request;
+
+        public DecreaseMaximumIdleMinutesTask(
+            DecreaseMaximumIdleMinutesRequest request,
+            AsyncAction<AsyncResult<DecreaseMaximumIdleMinutesResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DecreaseMaximumIdleMinutesResult parse(JsonNode data) {
+            return DecreaseMaximumIdleMinutesResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "idle")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/user/me/status/model/{categoryName}/maximumIdle/decrease";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{categoryName}", this.request.getCategoryName() == null || this.request.getCategoryName().length() == 0 ? "null" : String.valueOf(this.request.getCategoryName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("decreaseMinutes", request.getDecreaseMinutes());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void decreaseMaximumIdleMinutesAsync(
+            DecreaseMaximumIdleMinutesRequest request,
+            AsyncAction<AsyncResult<DecreaseMaximumIdleMinutesResult>> callback
+    ) {
+        DecreaseMaximumIdleMinutesTask task = new DecreaseMaximumIdleMinutesTask(request, callback);
+        session.execute(task);
+    }
+
+    public DecreaseMaximumIdleMinutesResult decreaseMaximumIdleMinutes(
+            DecreaseMaximumIdleMinutesRequest request
+    ) {
+        final AsyncResult<DecreaseMaximumIdleMinutesResult>[] resultAsyncResult = new AsyncResult[]{null};
+        decreaseMaximumIdleMinutesAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DecreaseMaximumIdleMinutesByUserIdTask extends Gs2RestSessionTask<DecreaseMaximumIdleMinutesByUserIdResult> {
         private DecreaseMaximumIdleMinutesByUserIdRequest request;
 

@@ -32,6 +32,7 @@ public class DistributeWithoutOverflowProcessRequest extends Gs2BasicRequest<Dis
     private String userId;
     private DistributeResource distributeResource;
     private String timeOffsetToken;
+    private String duplicationAvoider;
 	public String getUserId() {
 		return userId;
 	}
@@ -60,6 +61,19 @@ public class DistributeWithoutOverflowProcessRequest extends Gs2BasicRequest<Dis
 	}
 	public DistributeWithoutOverflowProcessRequest withTimeOffsetToken(String timeOffsetToken) {
 		this.timeOffsetToken = timeOffsetToken;
+		return this;
+	}
+
+	public String getDuplicationAvoider() {
+		return duplicationAvoider;
+	}
+
+	public void setDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
+	}
+
+	public DistributeWithoutOverflowProcessRequest withDuplicationAvoider(String duplicationAvoider) {
+		this.duplicationAvoider = duplicationAvoider;
 		return this;
 	}
 
