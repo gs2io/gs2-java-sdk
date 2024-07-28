@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.gs2.distributor.request;
+package io.gs2.distributor.result;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,48 +23,39 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.gs2.core.control.Gs2BasicRequest;
+import io.gs2.core.model.*;
+import io.gs2.distributor.model.*;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AndExpressionByUserByStampTaskRequest extends Gs2BasicRequest<AndExpressionByUserByStampTaskRequest> {
-    private String stampTask;
-    private String keyId;
-	public String getStampTask() {
-		return stampTask;
+public class AndExpressionByStampTaskResult implements IResult, Serializable {
+    private String newContextStack;
+
+	public String getNewContextStack() {
+		return newContextStack;
 	}
-	public void setStampTask(String stampTask) {
-		this.stampTask = stampTask;
+
+	public void setNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
 	}
-	public AndExpressionByUserByStampTaskRequest withStampTask(String stampTask) {
-		this.stampTask = stampTask;
-		return this;
-	}
-	public String getKeyId() {
-		return keyId;
-	}
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
-	}
-	public AndExpressionByUserByStampTaskRequest withKeyId(String keyId) {
-		this.keyId = keyId;
+
+	public AndExpressionByStampTaskResult withNewContextStack(String newContextStack) {
+		this.newContextStack = newContextStack;
 		return this;
 	}
 
-    public static AndExpressionByUserByStampTaskRequest fromJson(JsonNode data) {
+    public static AndExpressionByStampTaskResult fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new AndExpressionByUserByStampTaskRequest()
-            .withStampTask(data.get("stampTask") == null || data.get("stampTask").isNull() ? null : data.get("stampTask").asText())
-            .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
+        return new AndExpressionByStampTaskResult()
+            .withNewContextStack(data.get("newContextStack") == null || data.get("newContextStack").isNull() ? null : data.get("newContextStack").asText());
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
-                put("stampTask", getStampTask());
-                put("keyId", getKeyId());
+                put("newContextStack", getNewContextStack());
             }}
         );
     }

@@ -35,6 +35,7 @@ public class IfExpressionByUserIdRequest extends Gs2BasicRequest<IfExpressionByU
     private VerifyAction condition;
     private List<ConsumeAction> trueActions;
     private List<ConsumeAction> falseActions;
+    private Boolean multiplyValueSpecifyingQuantity;
     private String timeOffsetToken;
     private String duplicationAvoider;
 	public String getNamespaceName() {
@@ -87,6 +88,16 @@ public class IfExpressionByUserIdRequest extends Gs2BasicRequest<IfExpressionByU
 		this.falseActions = falseActions;
 		return this;
 	}
+	public Boolean getMultiplyValueSpecifyingQuantity() {
+		return multiplyValueSpecifyingQuantity;
+	}
+	public void setMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+	}
+	public IfExpressionByUserIdRequest withMultiplyValueSpecifyingQuantity(Boolean multiplyValueSpecifyingQuantity) {
+		this.multiplyValueSpecifyingQuantity = multiplyValueSpecifyingQuantity;
+		return this;
+	}
 	public String getTimeOffsetToken() {
 		return timeOffsetToken;
 	}
@@ -131,6 +142,7 @@ public class IfExpressionByUserIdRequest extends Gs2BasicRequest<IfExpressionByU
                     return ConsumeAction.fromJson(item);
                 }
             ).collect(Collectors.toList()))
+            .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
     }
 
@@ -152,6 +164,7 @@ public class IfExpressionByUserIdRequest extends Gs2BasicRequest<IfExpressionByU
                         return item.toJson();
                     }
                 ).collect(Collectors.toList()));
+                put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
                 put("timeOffsetToken", getTimeOffsetToken());
             }}
         );

@@ -27,7 +27,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class IfExpressionByUserByStampTaskRequest extends Gs2BasicRequest<IfExpressionByUserByStampTaskRequest> {
+public class AndExpressionByStampTaskRequest extends Gs2BasicRequest<AndExpressionByStampTaskRequest> {
     private String stampTask;
     private String keyId;
 	public String getStampTask() {
@@ -36,7 +36,7 @@ public class IfExpressionByUserByStampTaskRequest extends Gs2BasicRequest<IfExpr
 	public void setStampTask(String stampTask) {
 		this.stampTask = stampTask;
 	}
-	public IfExpressionByUserByStampTaskRequest withStampTask(String stampTask) {
+	public AndExpressionByStampTaskRequest withStampTask(String stampTask) {
 		this.stampTask = stampTask;
 		return this;
 	}
@@ -46,16 +46,16 @@ public class IfExpressionByUserByStampTaskRequest extends Gs2BasicRequest<IfExpr
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-	public IfExpressionByUserByStampTaskRequest withKeyId(String keyId) {
+	public AndExpressionByStampTaskRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
 
-    public static IfExpressionByUserByStampTaskRequest fromJson(JsonNode data) {
+    public static AndExpressionByStampTaskRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new IfExpressionByUserByStampTaskRequest()
+        return new AndExpressionByStampTaskRequest()
             .withStampTask(data.get("stampTask") == null || data.get("stampTask").isNull() ? null : data.get("stampTask").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }

@@ -27,7 +27,7 @@ import io.gs2.core.control.Gs2BasicRequest;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OrExpressionByUserByStampTaskRequest extends Gs2BasicRequest<OrExpressionByUserByStampTaskRequest> {
+public class OrExpressionByStampTaskRequest extends Gs2BasicRequest<OrExpressionByStampTaskRequest> {
     private String stampTask;
     private String keyId;
 	public String getStampTask() {
@@ -36,7 +36,7 @@ public class OrExpressionByUserByStampTaskRequest extends Gs2BasicRequest<OrExpr
 	public void setStampTask(String stampTask) {
 		this.stampTask = stampTask;
 	}
-	public OrExpressionByUserByStampTaskRequest withStampTask(String stampTask) {
+	public OrExpressionByStampTaskRequest withStampTask(String stampTask) {
 		this.stampTask = stampTask;
 		return this;
 	}
@@ -46,16 +46,16 @@ public class OrExpressionByUserByStampTaskRequest extends Gs2BasicRequest<OrExpr
 	public void setKeyId(String keyId) {
 		this.keyId = keyId;
 	}
-	public OrExpressionByUserByStampTaskRequest withKeyId(String keyId) {
+	public OrExpressionByStampTaskRequest withKeyId(String keyId) {
 		this.keyId = keyId;
 		return this;
 	}
 
-    public static OrExpressionByUserByStampTaskRequest fromJson(JsonNode data) {
+    public static OrExpressionByStampTaskRequest fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
-        return new OrExpressionByUserByStampTaskRequest()
+        return new OrExpressionByStampTaskRequest()
             .withStampTask(data.get("stampTask") == null || data.get("stampTask").isNull() ? null : data.get("stampTask").asText())
             .withKeyId(data.get("keyId") == null || data.get("keyId").isNull() ? null : data.get("keyId").asText());
     }

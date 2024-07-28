@@ -2491,6 +2491,7 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
                             return item.toJson();
                         }
                     ).collect(Collectors.toList()));
+                    put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
                 }}
             ).toString().getBytes());
@@ -2732,12 +2733,12 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
-    class IfExpressionByUserByStampTaskTask extends Gs2RestSessionTask<IfExpressionByUserByStampTaskResult> {
-        private IfExpressionByUserByStampTaskRequest request;
+    class IfExpressionByStampTaskTask extends Gs2RestSessionTask<IfExpressionByStampTaskResult> {
+        private IfExpressionByStampTaskRequest request;
 
-        public IfExpressionByUserByStampTaskTask(
-            IfExpressionByUserByStampTaskRequest request,
-            AsyncAction<AsyncResult<IfExpressionByUserByStampTaskResult>> userCallback
+        public IfExpressionByStampTaskTask(
+            IfExpressionByStampTaskRequest request,
+            AsyncAction<AsyncResult<IfExpressionByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -2747,8 +2748,8 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         }
 
         @Override
-        public IfExpressionByUserByStampTaskResult parse(JsonNode data) {
-            return IfExpressionByUserByStampTaskResult.fromJson(data);
+        public IfExpressionByStampTaskResult parse(JsonNode data) {
+            return IfExpressionByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -2783,19 +2784,19 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         }
     }
 
-    public void ifExpressionByUserByStampTaskAsync(
-            IfExpressionByUserByStampTaskRequest request,
-            AsyncAction<AsyncResult<IfExpressionByUserByStampTaskResult>> callback
+    public void ifExpressionByStampTaskAsync(
+            IfExpressionByStampTaskRequest request,
+            AsyncAction<AsyncResult<IfExpressionByStampTaskResult>> callback
     ) {
-        IfExpressionByUserByStampTaskTask task = new IfExpressionByUserByStampTaskTask(request, callback);
+        IfExpressionByStampTaskTask task = new IfExpressionByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    public IfExpressionByUserByStampTaskResult ifExpressionByUserByStampTask(
-            IfExpressionByUserByStampTaskRequest request
+    public IfExpressionByStampTaskResult ifExpressionByStampTask(
+            IfExpressionByStampTaskRequest request
     ) {
-        final AsyncResult<IfExpressionByUserByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
-        ifExpressionByUserByStampTaskAsync(
+        final AsyncResult<IfExpressionByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        ifExpressionByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2812,12 +2813,12 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
-    class AndExpressionByUserByStampTaskTask extends Gs2RestSessionTask<AndExpressionByUserByStampTaskResult> {
-        private AndExpressionByUserByStampTaskRequest request;
+    class AndExpressionByStampTaskTask extends Gs2RestSessionTask<AndExpressionByStampTaskResult> {
+        private AndExpressionByStampTaskRequest request;
 
-        public AndExpressionByUserByStampTaskTask(
-            AndExpressionByUserByStampTaskRequest request,
-            AsyncAction<AsyncResult<AndExpressionByUserByStampTaskResult>> userCallback
+        public AndExpressionByStampTaskTask(
+            AndExpressionByStampTaskRequest request,
+            AsyncAction<AsyncResult<AndExpressionByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -2827,8 +2828,8 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         }
 
         @Override
-        public AndExpressionByUserByStampTaskResult parse(JsonNode data) {
-            return AndExpressionByUserByStampTaskResult.fromJson(data);
+        public AndExpressionByStampTaskResult parse(JsonNode data) {
+            return AndExpressionByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -2863,19 +2864,19 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         }
     }
 
-    public void andExpressionByUserByStampTaskAsync(
-            AndExpressionByUserByStampTaskRequest request,
-            AsyncAction<AsyncResult<AndExpressionByUserByStampTaskResult>> callback
+    public void andExpressionByStampTaskAsync(
+            AndExpressionByStampTaskRequest request,
+            AsyncAction<AsyncResult<AndExpressionByStampTaskResult>> callback
     ) {
-        AndExpressionByUserByStampTaskTask task = new AndExpressionByUserByStampTaskTask(request, callback);
+        AndExpressionByStampTaskTask task = new AndExpressionByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    public AndExpressionByUserByStampTaskResult andExpressionByUserByStampTask(
-            AndExpressionByUserByStampTaskRequest request
+    public AndExpressionByStampTaskResult andExpressionByStampTask(
+            AndExpressionByStampTaskRequest request
     ) {
-        final AsyncResult<AndExpressionByUserByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
-        andExpressionByUserByStampTaskAsync(
+        final AsyncResult<AndExpressionByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        andExpressionByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -2892,12 +2893,12 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         return resultAsyncResult[0].getResult();
     }
 
-    class OrExpressionByUserByStampTaskTask extends Gs2RestSessionTask<OrExpressionByUserByStampTaskResult> {
-        private OrExpressionByUserByStampTaskRequest request;
+    class OrExpressionByStampTaskTask extends Gs2RestSessionTask<OrExpressionByStampTaskResult> {
+        private OrExpressionByStampTaskRequest request;
 
-        public OrExpressionByUserByStampTaskTask(
-            OrExpressionByUserByStampTaskRequest request,
-            AsyncAction<AsyncResult<OrExpressionByUserByStampTaskResult>> userCallback
+        public OrExpressionByStampTaskTask(
+            OrExpressionByStampTaskRequest request,
+            AsyncAction<AsyncResult<OrExpressionByStampTaskResult>> userCallback
         ) {
             super(
                     (Gs2RestSession) session,
@@ -2907,8 +2908,8 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         }
 
         @Override
-        public OrExpressionByUserByStampTaskResult parse(JsonNode data) {
-            return OrExpressionByUserByStampTaskResult.fromJson(data);
+        public OrExpressionByStampTaskResult parse(JsonNode data) {
+            return OrExpressionByStampTaskResult.fromJson(data);
         }
 
         @Override
@@ -2943,19 +2944,19 @@ import io.gs2.distributor.model.*;public class Gs2DistributorRestClient extends 
         }
     }
 
-    public void orExpressionByUserByStampTaskAsync(
-            OrExpressionByUserByStampTaskRequest request,
-            AsyncAction<AsyncResult<OrExpressionByUserByStampTaskResult>> callback
+    public void orExpressionByStampTaskAsync(
+            OrExpressionByStampTaskRequest request,
+            AsyncAction<AsyncResult<OrExpressionByStampTaskResult>> callback
     ) {
-        OrExpressionByUserByStampTaskTask task = new OrExpressionByUserByStampTaskTask(request, callback);
+        OrExpressionByStampTaskTask task = new OrExpressionByStampTaskTask(request, callback);
         session.execute(task);
     }
 
-    public OrExpressionByUserByStampTaskResult orExpressionByUserByStampTask(
-            OrExpressionByUserByStampTaskRequest request
+    public OrExpressionByStampTaskResult orExpressionByStampTask(
+            OrExpressionByStampTaskRequest request
     ) {
-        final AsyncResult<OrExpressionByUserByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
-        orExpressionByUserByStampTaskAsync(
+        final AsyncResult<OrExpressionByStampTaskResult>[] resultAsyncResult = new AsyncResult[]{null};
+        orExpressionByStampTaskAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
