@@ -2258,6 +2258,183 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
         return resultAsyncResult[0].getResult();
     }
 
+    class CreateTakeOverOpenIdConnectTask extends Gs2RestSessionTask<CreateTakeOverOpenIdConnectResult> {
+        private CreateTakeOverOpenIdConnectRequest request;
+
+        public CreateTakeOverOpenIdConnectTask(
+            CreateTakeOverOpenIdConnectRequest request,
+            AsyncAction<AsyncResult<CreateTakeOverOpenIdConnectResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateTakeOverOpenIdConnectResult parse(JsonNode data) {
+            return CreateTakeOverOpenIdConnectResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/me/takeover/openIdConnect";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("type", request.getType());
+                    put("idToken", request.getIdToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createTakeOverOpenIdConnectAsync(
+            CreateTakeOverOpenIdConnectRequest request,
+            AsyncAction<AsyncResult<CreateTakeOverOpenIdConnectResult>> callback
+    ) {
+        CreateTakeOverOpenIdConnectTask task = new CreateTakeOverOpenIdConnectTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateTakeOverOpenIdConnectResult createTakeOverOpenIdConnect(
+            CreateTakeOverOpenIdConnectRequest request
+    ) {
+        final AsyncResult<CreateTakeOverOpenIdConnectResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createTakeOverOpenIdConnectAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateTakeOverOpenIdConnectAndByUserIdTask extends Gs2RestSessionTask<CreateTakeOverOpenIdConnectAndByUserIdResult> {
+        private CreateTakeOverOpenIdConnectAndByUserIdRequest request;
+
+        public CreateTakeOverOpenIdConnectAndByUserIdTask(
+            CreateTakeOverOpenIdConnectAndByUserIdRequest request,
+            AsyncAction<AsyncResult<CreateTakeOverOpenIdConnectAndByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateTakeOverOpenIdConnectAndByUserIdResult parse(JsonNode data) {
+            return CreateTakeOverOpenIdConnectAndByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/account/{userId}/takeover/openIdConnect";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("type", request.getType());
+                    put("idToken", request.getIdToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createTakeOverOpenIdConnectAndByUserIdAsync(
+            CreateTakeOverOpenIdConnectAndByUserIdRequest request,
+            AsyncAction<AsyncResult<CreateTakeOverOpenIdConnectAndByUserIdResult>> callback
+    ) {
+        CreateTakeOverOpenIdConnectAndByUserIdTask task = new CreateTakeOverOpenIdConnectAndByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateTakeOverOpenIdConnectAndByUserIdResult createTakeOverOpenIdConnectAndByUserId(
+            CreateTakeOverOpenIdConnectAndByUserIdRequest request
+    ) {
+        final AsyncResult<CreateTakeOverOpenIdConnectAndByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createTakeOverOpenIdConnectAndByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class GetTakeOverTask extends Gs2RestSessionTask<GetTakeOverResult> {
         private GetTakeOverRequest request;
 
@@ -2936,6 +3113,172 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
     ) {
         final AsyncResult<DoTakeOverResult>[] resultAsyncResult = new AsyncResult[]{null};
         doTakeOverAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DoTakeOverOpenIdConnectTask extends Gs2RestSessionTask<DoTakeOverOpenIdConnectResult> {
+        private DoTakeOverOpenIdConnectRequest request;
+
+        public DoTakeOverOpenIdConnectTask(
+            DoTakeOverOpenIdConnectRequest request,
+            AsyncAction<AsyncResult<DoTakeOverOpenIdConnectResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DoTakeOverOpenIdConnectResult parse(JsonNode data) {
+            return DoTakeOverOpenIdConnectResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/takeover/type/{type}/openIdConnect";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("idToken", request.getIdToken());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void doTakeOverOpenIdConnectAsync(
+            DoTakeOverOpenIdConnectRequest request,
+            AsyncAction<AsyncResult<DoTakeOverOpenIdConnectResult>> callback
+    ) {
+        DoTakeOverOpenIdConnectTask task = new DoTakeOverOpenIdConnectTask(request, callback);
+        session.execute(task);
+    }
+
+    public DoTakeOverOpenIdConnectResult doTakeOverOpenIdConnect(
+            DoTakeOverOpenIdConnectRequest request
+    ) {
+        final AsyncResult<DoTakeOverOpenIdConnectResult>[] resultAsyncResult = new AsyncResult[]{null};
+        doTakeOverOpenIdConnectAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetAuthorizationUrlTask extends Gs2RestSessionTask<GetAuthorizationUrlResult> {
+        private GetAuthorizationUrlRequest request;
+
+        public GetAuthorizationUrlTask(
+            GetAuthorizationUrlRequest request,
+            AsyncAction<AsyncResult<GetAuthorizationUrlResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetAuthorizationUrlResult parse(JsonNode data) {
+            return GetAuthorizationUrlResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/type/{type}/authorization/url";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getAuthorizationUrlAsync(
+            GetAuthorizationUrlRequest request,
+            AsyncAction<AsyncResult<GetAuthorizationUrlResult>> callback
+    ) {
+        GetAuthorizationUrlTask task = new GetAuthorizationUrlTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetAuthorizationUrlResult getAuthorizationUrl(
+            GetAuthorizationUrlRequest request
+    ) {
+        final AsyncResult<GetAuthorizationUrlResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getAuthorizationUrlAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
@@ -4072,6 +4415,905 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
     ) {
         final AsyncResult<DeleteDataOwnerByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
         deleteDataOwnerByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeTakeOverTypeModelsTask extends Gs2RestSessionTask<DescribeTakeOverTypeModelsResult> {
+        private DescribeTakeOverTypeModelsRequest request;
+
+        public DescribeTakeOverTypeModelsTask(
+            DescribeTakeOverTypeModelsRequest request,
+            AsyncAction<AsyncResult<DescribeTakeOverTypeModelsResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeTakeOverTypeModelsResult parse(JsonNode data) {
+            return DescribeTakeOverTypeModelsResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeTakeOverTypeModelsAsync(
+            DescribeTakeOverTypeModelsRequest request,
+            AsyncAction<AsyncResult<DescribeTakeOverTypeModelsResult>> callback
+    ) {
+        DescribeTakeOverTypeModelsTask task = new DescribeTakeOverTypeModelsTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeTakeOverTypeModelsResult describeTakeOverTypeModels(
+            DescribeTakeOverTypeModelsRequest request
+    ) {
+        final AsyncResult<DescribeTakeOverTypeModelsResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeTakeOverTypeModelsAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetTakeOverTypeModelTask extends Gs2RestSessionTask<GetTakeOverTypeModelResult> {
+        private GetTakeOverTypeModelRequest request;
+
+        public GetTakeOverTypeModelTask(
+            GetTakeOverTypeModelRequest request,
+            AsyncAction<AsyncResult<GetTakeOverTypeModelResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetTakeOverTypeModelResult parse(JsonNode data) {
+            return GetTakeOverTypeModelResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/model/{type}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getTakeOverTypeModelAsync(
+            GetTakeOverTypeModelRequest request,
+            AsyncAction<AsyncResult<GetTakeOverTypeModelResult>> callback
+    ) {
+        GetTakeOverTypeModelTask task = new GetTakeOverTypeModelTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetTakeOverTypeModelResult getTakeOverTypeModel(
+            GetTakeOverTypeModelRequest request
+    ) {
+        final AsyncResult<GetTakeOverTypeModelResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getTakeOverTypeModelAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DescribeTakeOverTypeModelMastersTask extends Gs2RestSessionTask<DescribeTakeOverTypeModelMastersResult> {
+        private DescribeTakeOverTypeModelMastersRequest request;
+
+        public DescribeTakeOverTypeModelMastersTask(
+            DescribeTakeOverTypeModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeTakeOverTypeModelMastersResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DescribeTakeOverTypeModelMastersResult parse(JsonNode data) {
+            return DescribeTakeOverTypeModelMastersResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            if (this.request.getPageToken() != null) {
+                queryStrings.add("pageToken=" + EncodingUtil.urlEncode((String.valueOf(this.request.getPageToken()))));
+            }
+            if (this.request.getLimit() != null) {
+                queryStrings.add("limit=" + String.valueOf(this.request.getLimit()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void describeTakeOverTypeModelMastersAsync(
+            DescribeTakeOverTypeModelMastersRequest request,
+            AsyncAction<AsyncResult<DescribeTakeOverTypeModelMastersResult>> callback
+    ) {
+        DescribeTakeOverTypeModelMastersTask task = new DescribeTakeOverTypeModelMastersTask(request, callback);
+        session.execute(task);
+    }
+
+    public DescribeTakeOverTypeModelMastersResult describeTakeOverTypeModelMasters(
+            DescribeTakeOverTypeModelMastersRequest request
+    ) {
+        final AsyncResult<DescribeTakeOverTypeModelMastersResult>[] resultAsyncResult = new AsyncResult[]{null};
+        describeTakeOverTypeModelMastersAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class CreateTakeOverTypeModelMasterTask extends Gs2RestSessionTask<CreateTakeOverTypeModelMasterResult> {
+        private CreateTakeOverTypeModelMasterRequest request;
+
+        public CreateTakeOverTypeModelMasterTask(
+            CreateTakeOverTypeModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateTakeOverTypeModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public CreateTakeOverTypeModelMasterResult parse(JsonNode data) {
+            return CreateTakeOverTypeModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("type", request.getType());
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("openIdConnectSetting", request.getOpenIdConnectSetting() != null ? request.getOpenIdConnectSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void createTakeOverTypeModelMasterAsync(
+            CreateTakeOverTypeModelMasterRequest request,
+            AsyncAction<AsyncResult<CreateTakeOverTypeModelMasterResult>> callback
+    ) {
+        CreateTakeOverTypeModelMasterTask task = new CreateTakeOverTypeModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public CreateTakeOverTypeModelMasterResult createTakeOverTypeModelMaster(
+            CreateTakeOverTypeModelMasterRequest request
+    ) {
+        final AsyncResult<CreateTakeOverTypeModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        createTakeOverTypeModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetTakeOverTypeModelMasterTask extends Gs2RestSessionTask<GetTakeOverTypeModelMasterResult> {
+        private GetTakeOverTypeModelMasterRequest request;
+
+        public GetTakeOverTypeModelMasterTask(
+            GetTakeOverTypeModelMasterRequest request,
+            AsyncAction<AsyncResult<GetTakeOverTypeModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetTakeOverTypeModelMasterResult parse(JsonNode data) {
+            return GetTakeOverTypeModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/{type}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getTakeOverTypeModelMasterAsync(
+            GetTakeOverTypeModelMasterRequest request,
+            AsyncAction<AsyncResult<GetTakeOverTypeModelMasterResult>> callback
+    ) {
+        GetTakeOverTypeModelMasterTask task = new GetTakeOverTypeModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetTakeOverTypeModelMasterResult getTakeOverTypeModelMaster(
+            GetTakeOverTypeModelMasterRequest request
+    ) {
+        final AsyncResult<GetTakeOverTypeModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getTakeOverTypeModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateTakeOverTypeModelMasterTask extends Gs2RestSessionTask<UpdateTakeOverTypeModelMasterResult> {
+        private UpdateTakeOverTypeModelMasterRequest request;
+
+        public UpdateTakeOverTypeModelMasterTask(
+            UpdateTakeOverTypeModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateTakeOverTypeModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateTakeOverTypeModelMasterResult parse(JsonNode data) {
+            return UpdateTakeOverTypeModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/{type}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("description", request.getDescription());
+                    put("metadata", request.getMetadata());
+                    put("openIdConnectSetting", request.getOpenIdConnectSetting() != null ? request.getOpenIdConnectSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateTakeOverTypeModelMasterAsync(
+            UpdateTakeOverTypeModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateTakeOverTypeModelMasterResult>> callback
+    ) {
+        UpdateTakeOverTypeModelMasterTask task = new UpdateTakeOverTypeModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateTakeOverTypeModelMasterResult updateTakeOverTypeModelMaster(
+            UpdateTakeOverTypeModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateTakeOverTypeModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateTakeOverTypeModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class DeleteTakeOverTypeModelMasterTask extends Gs2RestSessionTask<DeleteTakeOverTypeModelMasterResult> {
+        private DeleteTakeOverTypeModelMasterRequest request;
+
+        public DeleteTakeOverTypeModelMasterTask(
+            DeleteTakeOverTypeModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteTakeOverTypeModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public DeleteTakeOverTypeModelMasterResult parse(JsonNode data) {
+            return DeleteTakeOverTypeModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/model/{type}";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{type}", this.request.getType() == null  ? "null" : String.valueOf(this.request.getType()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.DELETE)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void deleteTakeOverTypeModelMasterAsync(
+            DeleteTakeOverTypeModelMasterRequest request,
+            AsyncAction<AsyncResult<DeleteTakeOverTypeModelMasterResult>> callback
+    ) {
+        DeleteTakeOverTypeModelMasterTask task = new DeleteTakeOverTypeModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public DeleteTakeOverTypeModelMasterResult deleteTakeOverTypeModelMaster(
+            DeleteTakeOverTypeModelMasterRequest request
+    ) {
+        final AsyncResult<DeleteTakeOverTypeModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        deleteTakeOverTypeModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class ExportMasterTask extends Gs2RestSessionTask<ExportMasterResult> {
+        private ExportMasterRequest request;
+
+        public ExportMasterTask(
+            ExportMasterRequest request,
+            AsyncAction<AsyncResult<ExportMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public ExportMasterResult parse(JsonNode data) {
+            return ExportMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/export";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void exportMasterAsync(
+            ExportMasterRequest request,
+            AsyncAction<AsyncResult<ExportMasterResult>> callback
+    ) {
+        ExportMasterTask task = new ExportMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public ExportMasterResult exportMaster(
+            ExportMasterRequest request
+    ) {
+        final AsyncResult<ExportMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        exportMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class GetCurrentModelMasterTask extends Gs2RestSessionTask<GetCurrentModelMasterResult> {
+        private GetCurrentModelMasterRequest request;
+
+        public GetCurrentModelMasterTask(
+            GetCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public GetCurrentModelMasterResult parse(JsonNode data) {
+            return GetCurrentModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            List<String> queryStrings = new ArrayList<> ();
+            if (this.request.getContextStack() != null) {
+                queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
+            }
+            url += "?" + String.join("&", queryStrings);
+
+            builder
+                .setMethod(HttpTask.Method.GET)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void getCurrentModelMasterAsync(
+            GetCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<GetCurrentModelMasterResult>> callback
+    ) {
+        GetCurrentModelMasterTask task = new GetCurrentModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public GetCurrentModelMasterResult getCurrentModelMaster(
+            GetCurrentModelMasterRequest request
+    ) {
+        final AsyncResult<GetCurrentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        getCurrentModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateCurrentModelMasterTask extends Gs2RestSessionTask<UpdateCurrentModelMasterResult> {
+        private UpdateCurrentModelMasterRequest request;
+
+        public UpdateCurrentModelMasterTask(
+            UpdateCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentModelMasterResult parse(JsonNode data) {
+            return UpdateCurrentModelMasterResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("settings", request.getSettings());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateCurrentModelMasterAsync(
+            UpdateCurrentModelMasterRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterResult>> callback
+    ) {
+        UpdateCurrentModelMasterTask task = new UpdateCurrentModelMasterTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateCurrentModelMasterResult updateCurrentModelMaster(
+            UpdateCurrentModelMasterRequest request
+    ) {
+        final AsyncResult<UpdateCurrentModelMasterResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentModelMasterAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class UpdateCurrentModelMasterFromGitHubTask extends Gs2RestSessionTask<UpdateCurrentModelMasterFromGitHubResult> {
+        private UpdateCurrentModelMasterFromGitHubRequest request;
+
+        public UpdateCurrentModelMasterFromGitHubTask(
+            UpdateCurrentModelMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterFromGitHubResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateCurrentModelMasterFromGitHubResult parse(JsonNode data) {
+            return UpdateCurrentModelMasterFromGitHubResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "account")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/master/from_git_hub";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("checkoutSetting", request.getCheckoutSetting() != null ? request.getCheckoutSetting().toJson() : null);
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.PUT)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateCurrentModelMasterFromGitHubAsync(
+            UpdateCurrentModelMasterFromGitHubRequest request,
+            AsyncAction<AsyncResult<UpdateCurrentModelMasterFromGitHubResult>> callback
+    ) {
+        UpdateCurrentModelMasterFromGitHubTask task = new UpdateCurrentModelMasterFromGitHubTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateCurrentModelMasterFromGitHubResult updateCurrentModelMasterFromGitHub(
+            UpdateCurrentModelMasterFromGitHubRequest request
+    ) {
+        final AsyncResult<UpdateCurrentModelMasterFromGitHubResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateCurrentModelMasterFromGitHubAsync(
                 request,
                 result -> resultAsyncResult[0] = result
         );
