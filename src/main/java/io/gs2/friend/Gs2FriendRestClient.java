@@ -1572,6 +1572,86 @@ import io.gs2.friend.model.*;public class Gs2FriendRestClient extends AbstractGs
         return resultAsyncResult[0].getResult();
     }
 
+    class UpdateProfileByStampSheetTask extends Gs2RestSessionTask<UpdateProfileByStampSheetResult> {
+        private UpdateProfileByStampSheetRequest request;
+
+        public UpdateProfileByStampSheetTask(
+            UpdateProfileByStampSheetRequest request,
+            AsyncAction<AsyncResult<UpdateProfileByStampSheetResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public UpdateProfileByStampSheetResult parse(JsonNode data) {
+            return UpdateProfileByStampSheetResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "friend")
+                .replace("{region}", session.getRegion().getName())
+                + "/stamp/profile/update";
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("stampSheet", request.getStampSheet());
+                    put("keyId", request.getKeyId());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void updateProfileByStampSheetAsync(
+            UpdateProfileByStampSheetRequest request,
+            AsyncAction<AsyncResult<UpdateProfileByStampSheetResult>> callback
+    ) {
+        UpdateProfileByStampSheetTask task = new UpdateProfileByStampSheetTask(request, callback);
+        session.execute(task);
+    }
+
+    public UpdateProfileByStampSheetResult updateProfileByStampSheet(
+            UpdateProfileByStampSheetRequest request
+    ) {
+        final AsyncResult<UpdateProfileByStampSheetResult>[] resultAsyncResult = new AsyncResult[]{null};
+        updateProfileByStampSheetAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class DescribeFriendsTask extends Gs2RestSessionTask<DescribeFriendsResult> {
         private DescribeFriendsRequest request;
 

@@ -1428,6 +1428,291 @@ import io.gs2.log.model.*;public class Gs2LogRestClient extends AbstractGs2Clien
         return resultAsyncResult[0].getResult();
     }
 
+    class QueryInGameLogTask extends Gs2RestSessionTask<QueryInGameLogResult> {
+        private QueryInGameLogRequest request;
+
+        public QueryInGameLogTask(
+            QueryInGameLogRequest request,
+            AsyncAction<AsyncResult<QueryInGameLogResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public QueryInGameLogResult parse(JsonNode data) {
+            return QueryInGameLogResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/ingame/log";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("userId", request.getUserId());
+                    put("tags", request.getTags() == null ? new ArrayList<InGameLogTag>() :
+                        request.getTags().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("begin", request.getBegin());
+                    put("end", request.getEnd());
+                    put("longTerm", request.getLongTerm());
+                    put("pageToken", request.getPageToken());
+                    put("limit", request.getLimit());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void queryInGameLogAsync(
+            QueryInGameLogRequest request,
+            AsyncAction<AsyncResult<QueryInGameLogResult>> callback
+    ) {
+        QueryInGameLogTask task = new QueryInGameLogTask(request, callback);
+        session.execute(task);
+    }
+
+    public QueryInGameLogResult queryInGameLog(
+            QueryInGameLogRequest request
+    ) {
+        final AsyncResult<QueryInGameLogResult>[] resultAsyncResult = new AsyncResult[]{null};
+        queryInGameLogAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SendInGameLogTask extends Gs2RestSessionTask<SendInGameLogResult> {
+        private SendInGameLogRequest request;
+
+        public SendInGameLogTask(
+            SendInGameLogRequest request,
+            AsyncAction<AsyncResult<SendInGameLogResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SendInGameLogResult parse(JsonNode data) {
+            return SendInGameLogResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/ingame/log/user/me/send";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("tags", request.getTags() == null ? new ArrayList<InGameLogTag>() :
+                        request.getTags().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("payload", request.getPayload());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getAccessToken() != null) {
+                builder.setHeader("X-GS2-ACCESS-TOKEN", this.request.getAccessToken());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void sendInGameLogAsync(
+            SendInGameLogRequest request,
+            AsyncAction<AsyncResult<SendInGameLogResult>> callback
+    ) {
+        SendInGameLogTask task = new SendInGameLogTask(request, callback);
+        session.execute(task);
+    }
+
+    public SendInGameLogResult sendInGameLog(
+            SendInGameLogRequest request
+    ) {
+        final AsyncResult<SendInGameLogResult>[] resultAsyncResult = new AsyncResult[]{null};
+        sendInGameLogAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
+    class SendInGameLogByUserIdTask extends Gs2RestSessionTask<SendInGameLogByUserIdResult> {
+        private SendInGameLogByUserIdRequest request;
+
+        public SendInGameLogByUserIdTask(
+            SendInGameLogByUserIdRequest request,
+            AsyncAction<AsyncResult<SendInGameLogByUserIdResult>> userCallback
+        ) {
+            super(
+                    (Gs2RestSession) session,
+                    userCallback
+            );
+            this.request = request;
+        }
+
+        @Override
+        public SendInGameLogByUserIdResult parse(JsonNode data) {
+            return SendInGameLogByUserIdResult.fromJson(data);
+        }
+
+        @Override
+        protected void executeImpl() {
+
+            String url = Gs2RestSession.EndpointHost
+                .replace("{service}", "log")
+                .replace("{region}", session.getRegion().getName())
+                + "/{namespaceName}/ingame/log/user/{userId}/send";
+
+            url = url.replace("{namespaceName}", this.request.getNamespaceName() == null || this.request.getNamespaceName().length() == 0 ? "null" : String.valueOf(this.request.getNamespaceName()));
+            url = url.replace("{userId}", this.request.getUserId() == null || this.request.getUserId().length() == 0 ? "null" : String.valueOf(this.request.getUserId()));
+
+            builder.setBody(new ObjectMapper().valueToTree(
+                new HashMap<String, Object>() {{
+                    put("tags", request.getTags() == null ? new ArrayList<InGameLogTag>() :
+                        request.getTags().stream().map(item -> {
+                            //noinspection Convert2MethodRef
+                            return item.toJson();
+                        }
+                    ).collect(Collectors.toList()));
+                    put("payload", request.getPayload());
+                    put("contextStack", request.getContextStack());
+                }}
+            ).toString().getBytes());
+
+            builder
+                .setMethod(HttpTask.Method.POST)
+                .setUrl(url)
+                .setHeader("Content-Type", "application/json")
+                .setHttpResponseHandler(this);
+
+            if (this.request.getRequestId() != null) {
+                builder.setHeader("X-GS2-REQUEST-ID", this.request.getRequestId());
+            }
+            if (this.request.getDuplicationAvoider() != null) {
+                builder.setHeader("X-GS2-DUPLICATION-AVOIDER", this.request.getDuplicationAvoider());
+            }
+            if (this.request.getTimeOffsetToken() != null) {
+                builder.setHeader("X-GS2-TIME-OFFSET-TOKEN", this.request.getTimeOffsetToken());
+            }
+
+            builder
+                .build()
+                .send();
+        }
+    }
+
+    public void sendInGameLogByUserIdAsync(
+            SendInGameLogByUserIdRequest request,
+            AsyncAction<AsyncResult<SendInGameLogByUserIdResult>> callback
+    ) {
+        SendInGameLogByUserIdTask task = new SendInGameLogByUserIdTask(request, callback);
+        session.execute(task);
+    }
+
+    public SendInGameLogByUserIdResult sendInGameLogByUserId(
+            SendInGameLogByUserIdRequest request
+    ) {
+        final AsyncResult<SendInGameLogByUserIdResult>[] resultAsyncResult = new AsyncResult[]{null};
+        sendInGameLogByUserIdAsync(
+                request,
+                result -> resultAsyncResult[0] = result
+        );
+        while (resultAsyncResult[0] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+
+        if(resultAsyncResult[0].getError() != null) {
+            throw resultAsyncResult[0].getError();
+        }
+
+        return resultAsyncResult[0].getResult();
+    }
+
     class QueryAccessLogWithTelemetryTask extends Gs2RestSessionTask<QueryAccessLogWithTelemetryResult> {
         private QueryAccessLogWithTelemetryRequest request;
 
