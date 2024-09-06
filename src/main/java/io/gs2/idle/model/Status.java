@@ -34,6 +34,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 	private String userId;
 	private Long randomSeed;
 	private Integer idleMinutes;
+	private Long nextRewardsAt;
 	private Integer maximumIdleMinutes;
 	private Long createdAt;
 	private Long updatedAt;
@@ -88,6 +89,16 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 		this.idleMinutes = idleMinutes;
 		return this;
 	}
+	public Long getNextRewardsAt() {
+		return nextRewardsAt;
+	}
+	public void setNextRewardsAt(Long nextRewardsAt) {
+		this.nextRewardsAt = nextRewardsAt;
+	}
+	public Status withNextRewardsAt(Long nextRewardsAt) {
+		this.nextRewardsAt = nextRewardsAt;
+		return this;
+	}
 	public Integer getMaximumIdleMinutes() {
 		return maximumIdleMinutes;
 	}
@@ -139,6 +150,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withRandomSeed(data.get("randomSeed") == null || data.get("randomSeed").isNull() ? null : data.get("randomSeed").longValue())
             .withIdleMinutes(data.get("idleMinutes") == null || data.get("idleMinutes").isNull() ? null : data.get("idleMinutes").intValue())
+            .withNextRewardsAt(data.get("nextRewardsAt") == null || data.get("nextRewardsAt").isNull() ? null : data.get("nextRewardsAt").longValue())
             .withMaximumIdleMinutes(data.get("maximumIdleMinutes") == null || data.get("maximumIdleMinutes").isNull() ? null : data.get("maximumIdleMinutes").intValue())
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -153,6 +165,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
                 put("userId", getUserId());
                 put("randomSeed", getRandomSeed());
                 put("idleMinutes", getIdleMinutes());
+                put("nextRewardsAt", getNextRewardsAt());
                 put("maximumIdleMinutes", getMaximumIdleMinutes());
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -175,6 +188,7 @@ public class Status implements IModel, Serializable, Comparable<Status> {
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.randomSeed == null) ? 0 : this.randomSeed.hashCode());
         result = prime * result + ((this.idleMinutes == null) ? 0 : this.idleMinutes.hashCode());
+        result = prime * result + ((this.nextRewardsAt == null) ? 0 : this.nextRewardsAt.hashCode());
         result = prime * result + ((this.maximumIdleMinutes == null) ? 0 : this.maximumIdleMinutes.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -214,6 +228,11 @@ public class Status implements IModel, Serializable, Comparable<Status> {
 		if (idleMinutes == null) {
 			return other.idleMinutes == null;
 		} else if (!idleMinutes.equals(other.idleMinutes)) {
+			return false;
+		}
+		if (nextRewardsAt == null) {
+			return other.nextRewardsAt == null;
+		} else if (!nextRewardsAt.equals(other.nextRewardsAt)) {
 			return false;
 		}
 		if (maximumIdleMinutes == null) {
