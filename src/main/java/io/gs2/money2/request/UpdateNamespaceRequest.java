@@ -38,7 +38,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
     private String currencyUsagePriority;
     private String description;
     private PlatformSetting platformSetting;
-    private ScriptSetting changeBalanceScript;
+    private ScriptSetting depositBalanceScript;
+    private ScriptSetting withdrawBalanceScript;
     private LogSetting logSetting;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -80,14 +81,24 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
 		this.platformSetting = platformSetting;
 		return this;
 	}
-	public ScriptSetting getChangeBalanceScript() {
-		return changeBalanceScript;
+	public ScriptSetting getDepositBalanceScript() {
+		return depositBalanceScript;
 	}
-	public void setChangeBalanceScript(ScriptSetting changeBalanceScript) {
-		this.changeBalanceScript = changeBalanceScript;
+	public void setDepositBalanceScript(ScriptSetting depositBalanceScript) {
+		this.depositBalanceScript = depositBalanceScript;
 	}
-	public UpdateNamespaceRequest withChangeBalanceScript(ScriptSetting changeBalanceScript) {
-		this.changeBalanceScript = changeBalanceScript;
+	public UpdateNamespaceRequest withDepositBalanceScript(ScriptSetting depositBalanceScript) {
+		this.depositBalanceScript = depositBalanceScript;
+		return this;
+	}
+	public ScriptSetting getWithdrawBalanceScript() {
+		return withdrawBalanceScript;
+	}
+	public void setWithdrawBalanceScript(ScriptSetting withdrawBalanceScript) {
+		this.withdrawBalanceScript = withdrawBalanceScript;
+	}
+	public UpdateNamespaceRequest withWithdrawBalanceScript(ScriptSetting withdrawBalanceScript) {
+		this.withdrawBalanceScript = withdrawBalanceScript;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -110,7 +121,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
             .withCurrencyUsagePriority(data.get("currencyUsagePriority") == null || data.get("currencyUsagePriority").isNull() ? null : data.get("currencyUsagePriority").asText())
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withPlatformSetting(data.get("platformSetting") == null || data.get("platformSetting").isNull() ? null : PlatformSetting.fromJson(data.get("platformSetting")))
-            .withChangeBalanceScript(data.get("changeBalanceScript") == null || data.get("changeBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeBalanceScript")))
+            .withDepositBalanceScript(data.get("depositBalanceScript") == null || data.get("depositBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("depositBalanceScript")))
+            .withWithdrawBalanceScript(data.get("withdrawBalanceScript") == null || data.get("withdrawBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("withdrawBalanceScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -121,7 +133,8 @@ public class UpdateNamespaceRequest extends Gs2BasicRequest<UpdateNamespaceReque
                 put("currencyUsagePriority", getCurrencyUsagePriority());
                 put("description", getDescription());
                 put("platformSetting", getPlatformSetting() != null ? getPlatformSetting().toJson() : null);
-                put("changeBalanceScript", getChangeBalanceScript() != null ? getChangeBalanceScript().toJson() : null);
+                put("depositBalanceScript", getDepositBalanceScript() != null ? getDepositBalanceScript().toJson() : null);
+                put("withdrawBalanceScript", getWithdrawBalanceScript() != null ? getWithdrawBalanceScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

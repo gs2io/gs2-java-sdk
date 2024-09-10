@@ -28,7 +28,7 @@ import io.gs2.core.model.IModel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class BanStatus implements IModel, Serializable {
+public class BanStatus implements IModel, Serializable, Comparable<BanStatus> {
 	private String name;
 	private String reason;
 	private Long releaseTimestamp;
@@ -82,6 +82,11 @@ public class BanStatus implements IModel, Serializable {
             }}
         );
     }
+
+	@Override
+	public int compareTo(BanStatus o) {
+		return name.compareTo(o.name);
+	}
 
 	@Override
 	public int hashCode() {

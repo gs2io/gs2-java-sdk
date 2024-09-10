@@ -2817,9 +2817,6 @@ import io.gs2.account.model.*;public class Gs2AccountRestClient extends Abstract
             if (this.request.getContextStack() != null) {
                 queryStrings.add("contextStack=" + EncodingUtil.urlEncode(this.request.getContextStack()));
             }
-            if (this.request.getUserIdentifier() != null) {
-                queryStrings.add("userIdentifier=" + EncodingUtil.urlEncode((String.valueOf(this.request.getUserIdentifier()))));
-            }
             url += "?" + String.join("&", queryStrings);
 
             builder

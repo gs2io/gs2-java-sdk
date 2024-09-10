@@ -31,7 +31,6 @@ public class DeleteTakeOverRequest extends Gs2BasicRequest<DeleteTakeOverRequest
     private String namespaceName;
     private String accessToken;
     private Integer type;
-    private String userIdentifier;
     private String duplicationAvoider;
 	public String getNamespaceName() {
 		return namespaceName;
@@ -63,16 +62,6 @@ public class DeleteTakeOverRequest extends Gs2BasicRequest<DeleteTakeOverRequest
 		this.type = type;
 		return this;
 	}
-	public String getUserIdentifier() {
-		return userIdentifier;
-	}
-	public void setUserIdentifier(String userIdentifier) {
-		this.userIdentifier = userIdentifier;
-	}
-	public DeleteTakeOverRequest withUserIdentifier(String userIdentifier) {
-		this.userIdentifier = userIdentifier;
-		return this;
-	}
 
 	public String getDuplicationAvoider() {
 		return duplicationAvoider;
@@ -94,8 +83,7 @@ public class DeleteTakeOverRequest extends Gs2BasicRequest<DeleteTakeOverRequest
         return new DeleteTakeOverRequest()
             .withNamespaceName(data.get("namespaceName") == null || data.get("namespaceName").isNull() ? null : data.get("namespaceName").asText())
             .withAccessToken(data.get("accessToken") == null || data.get("accessToken").isNull() ? null : data.get("accessToken").asText())
-            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue())
-            .withUserIdentifier(data.get("userIdentifier") == null || data.get("userIdentifier").isNull() ? null : data.get("userIdentifier").asText());
+            .withType(data.get("type") == null || data.get("type").isNull() ? null : data.get("type").intValue());
     }
 
     public JsonNode toJson() {
@@ -104,7 +92,6 @@ public class DeleteTakeOverRequest extends Gs2BasicRequest<DeleteTakeOverRequest
                 put("namespaceName", getNamespaceName());
                 put("accessToken", getAccessToken());
                 put("type", getType());
-                put("userIdentifier", getUserIdentifier());
             }}
         );
     }

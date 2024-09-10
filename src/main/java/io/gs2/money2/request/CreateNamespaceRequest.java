@@ -39,7 +39,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
     private String description;
     private Boolean sharedFreeCurrency;
     private PlatformSetting platformSetting;
-    private ScriptSetting changeBalanceScript;
+    private ScriptSetting depositBalanceScript;
+    private ScriptSetting withdrawBalanceScript;
     private LogSetting logSetting;
 	public String getName() {
 		return name;
@@ -91,14 +92,24 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
 		this.platformSetting = platformSetting;
 		return this;
 	}
-	public ScriptSetting getChangeBalanceScript() {
-		return changeBalanceScript;
+	public ScriptSetting getDepositBalanceScript() {
+		return depositBalanceScript;
 	}
-	public void setChangeBalanceScript(ScriptSetting changeBalanceScript) {
-		this.changeBalanceScript = changeBalanceScript;
+	public void setDepositBalanceScript(ScriptSetting depositBalanceScript) {
+		this.depositBalanceScript = depositBalanceScript;
 	}
-	public CreateNamespaceRequest withChangeBalanceScript(ScriptSetting changeBalanceScript) {
-		this.changeBalanceScript = changeBalanceScript;
+	public CreateNamespaceRequest withDepositBalanceScript(ScriptSetting depositBalanceScript) {
+		this.depositBalanceScript = depositBalanceScript;
+		return this;
+	}
+	public ScriptSetting getWithdrawBalanceScript() {
+		return withdrawBalanceScript;
+	}
+	public void setWithdrawBalanceScript(ScriptSetting withdrawBalanceScript) {
+		this.withdrawBalanceScript = withdrawBalanceScript;
+	}
+	public CreateNamespaceRequest withWithdrawBalanceScript(ScriptSetting withdrawBalanceScript) {
+		this.withdrawBalanceScript = withdrawBalanceScript;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -122,7 +133,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
             .withDescription(data.get("description") == null || data.get("description").isNull() ? null : data.get("description").asText())
             .withSharedFreeCurrency(data.get("sharedFreeCurrency") == null || data.get("sharedFreeCurrency").isNull() ? null : data.get("sharedFreeCurrency").booleanValue())
             .withPlatformSetting(data.get("platformSetting") == null || data.get("platformSetting").isNull() ? null : PlatformSetting.fromJson(data.get("platformSetting")))
-            .withChangeBalanceScript(data.get("changeBalanceScript") == null || data.get("changeBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeBalanceScript")))
+            .withDepositBalanceScript(data.get("depositBalanceScript") == null || data.get("depositBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("depositBalanceScript")))
+            .withWithdrawBalanceScript(data.get("withdrawBalanceScript") == null || data.get("withdrawBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("withdrawBalanceScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")));
     }
 
@@ -134,7 +146,8 @@ public class CreateNamespaceRequest extends Gs2BasicRequest<CreateNamespaceReque
                 put("description", getDescription());
                 put("sharedFreeCurrency", getSharedFreeCurrency());
                 put("platformSetting", getPlatformSetting() != null ? getPlatformSetting().toJson() : null);
-                put("changeBalanceScript", getChangeBalanceScript() != null ? getChangeBalanceScript().toJson() : null);
+                put("depositBalanceScript", getDepositBalanceScript() != null ? getDepositBalanceScript().toJson() : null);
+                put("withdrawBalanceScript", getWithdrawBalanceScript() != null ? getWithdrawBalanceScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
             }}
         );

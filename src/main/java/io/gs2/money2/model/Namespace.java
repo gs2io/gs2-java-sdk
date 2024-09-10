@@ -35,7 +35,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 	private String currencyUsagePriority;
 	private Boolean sharedFreeCurrency;
 	private PlatformSetting platformSetting;
-	private ScriptSetting changeBalanceScript;
+	private ScriptSetting depositBalanceScript;
+	private ScriptSetting withdrawBalanceScript;
 	private LogSetting logSetting;
 	private Long createdAt;
 	private Long updatedAt;
@@ -100,14 +101,24 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		this.platformSetting = platformSetting;
 		return this;
 	}
-	public ScriptSetting getChangeBalanceScript() {
-		return changeBalanceScript;
+	public ScriptSetting getDepositBalanceScript() {
+		return depositBalanceScript;
 	}
-	public void setChangeBalanceScript(ScriptSetting changeBalanceScript) {
-		this.changeBalanceScript = changeBalanceScript;
+	public void setDepositBalanceScript(ScriptSetting depositBalanceScript) {
+		this.depositBalanceScript = depositBalanceScript;
 	}
-	public Namespace withChangeBalanceScript(ScriptSetting changeBalanceScript) {
-		this.changeBalanceScript = changeBalanceScript;
+	public Namespace withDepositBalanceScript(ScriptSetting depositBalanceScript) {
+		this.depositBalanceScript = depositBalanceScript;
+		return this;
+	}
+	public ScriptSetting getWithdrawBalanceScript() {
+		return withdrawBalanceScript;
+	}
+	public void setWithdrawBalanceScript(ScriptSetting withdrawBalanceScript) {
+		this.withdrawBalanceScript = withdrawBalanceScript;
+	}
+	public Namespace withWithdrawBalanceScript(ScriptSetting withdrawBalanceScript) {
+		this.withdrawBalanceScript = withdrawBalanceScript;
 		return this;
 	}
 	public LogSetting getLogSetting() {
@@ -162,7 +173,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
             .withCurrencyUsagePriority(data.get("currencyUsagePriority") == null || data.get("currencyUsagePriority").isNull() ? null : data.get("currencyUsagePriority").asText())
             .withSharedFreeCurrency(data.get("sharedFreeCurrency") == null || data.get("sharedFreeCurrency").isNull() ? null : data.get("sharedFreeCurrency").booleanValue())
             .withPlatformSetting(data.get("platformSetting") == null || data.get("platformSetting").isNull() ? null : PlatformSetting.fromJson(data.get("platformSetting")))
-            .withChangeBalanceScript(data.get("changeBalanceScript") == null || data.get("changeBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("changeBalanceScript")))
+            .withDepositBalanceScript(data.get("depositBalanceScript") == null || data.get("depositBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("depositBalanceScript")))
+            .withWithdrawBalanceScript(data.get("withdrawBalanceScript") == null || data.get("withdrawBalanceScript").isNull() ? null : ScriptSetting.fromJson(data.get("withdrawBalanceScript")))
             .withLogSetting(data.get("logSetting") == null || data.get("logSetting").isNull() ? null : LogSetting.fromJson(data.get("logSetting")))
             .withCreatedAt(data.get("createdAt") == null || data.get("createdAt").isNull() ? null : data.get("createdAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue())
@@ -178,7 +190,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
                 put("currencyUsagePriority", getCurrencyUsagePriority());
                 put("sharedFreeCurrency", getSharedFreeCurrency());
                 put("platformSetting", getPlatformSetting() != null ? getPlatformSetting().toJson() : null);
-                put("changeBalanceScript", getChangeBalanceScript() != null ? getChangeBalanceScript().toJson() : null);
+                put("depositBalanceScript", getDepositBalanceScript() != null ? getDepositBalanceScript().toJson() : null);
+                put("withdrawBalanceScript", getWithdrawBalanceScript() != null ? getWithdrawBalanceScript().toJson() : null);
                 put("logSetting", getLogSetting() != null ? getLogSetting().toJson() : null);
                 put("createdAt", getCreatedAt());
                 put("updatedAt", getUpdatedAt());
@@ -202,7 +215,8 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
         result = prime * result + ((this.currencyUsagePriority == null) ? 0 : this.currencyUsagePriority.hashCode());
         result = prime * result + ((this.sharedFreeCurrency == null) ? 0 : this.sharedFreeCurrency.hashCode());
         result = prime * result + ((this.platformSetting == null) ? 0 : this.platformSetting.hashCode());
-        result = prime * result + ((this.changeBalanceScript == null) ? 0 : this.changeBalanceScript.hashCode());
+        result = prime * result + ((this.depositBalanceScript == null) ? 0 : this.depositBalanceScript.hashCode());
+        result = prime * result + ((this.withdrawBalanceScript == null) ? 0 : this.withdrawBalanceScript.hashCode());
         result = prime * result + ((this.logSetting == null) ? 0 : this.logSetting.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -249,9 +263,14 @@ public class Namespace implements IModel, Serializable, Comparable<Namespace> {
 		} else if (!platformSetting.equals(other.platformSetting)) {
 			return false;
 		}
-		if (changeBalanceScript == null) {
-			return other.changeBalanceScript == null;
-		} else if (!changeBalanceScript.equals(other.changeBalanceScript)) {
+		if (depositBalanceScript == null) {
+			return other.depositBalanceScript == null;
+		} else if (!depositBalanceScript.equals(other.depositBalanceScript)) {
+			return false;
+		}
+		if (withdrawBalanceScript == null) {
+			return other.withdrawBalanceScript == null;
+		} else if (!withdrawBalanceScript.equals(other.withdrawBalanceScript)) {
 			return false;
 		}
 		if (logSetting == null) {

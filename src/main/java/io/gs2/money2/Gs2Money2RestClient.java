@@ -159,7 +159,8 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
                     put("description", request.getDescription());
                     put("sharedFreeCurrency", request.getSharedFreeCurrency());
                     put("platformSetting", request.getPlatformSetting() != null ? request.getPlatformSetting().toJson() : null);
-                    put("changeBalanceScript", request.getChangeBalanceScript() != null ? request.getChangeBalanceScript().toJson() : null);
+                    put("depositBalanceScript", request.getDepositBalanceScript() != null ? request.getDepositBalanceScript().toJson() : null);
+                    put("withdrawBalanceScript", request.getWithdrawBalanceScript() != null ? request.getWithdrawBalanceScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
@@ -404,7 +405,8 @@ import io.gs2.money2.model.*;public class Gs2Money2RestClient extends AbstractGs
                     put("currencyUsagePriority", request.getCurrencyUsagePriority());
                     put("description", request.getDescription());
                     put("platformSetting", request.getPlatformSetting() != null ? request.getPlatformSetting().toJson() : null);
-                    put("changeBalanceScript", request.getChangeBalanceScript() != null ? request.getChangeBalanceScript().toJson() : null);
+                    put("depositBalanceScript", request.getDepositBalanceScript() != null ? request.getDepositBalanceScript().toJson() : null);
+                    put("withdrawBalanceScript", request.getWithdrawBalanceScript() != null ? request.getWithdrawBalanceScript().toJson() : null);
                     put("logSetting", request.getLogSetting() != null ? request.getLogSetting().toJson() : null);
                     put("contextStack", request.getContextStack());
                 }}
