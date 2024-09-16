@@ -29,10 +29,23 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CounterScopeModel implements IModel, Serializable {
+	private String scopeType;
 	private String resetType;
 	private Integer resetDayOfMonth;
 	private String resetDayOfWeek;
 	private Integer resetHour;
+	private String conditionName;
+	private VerifyAction condition;
+	public String getScopeType() {
+		return scopeType;
+	}
+	public void setScopeType(String scopeType) {
+		this.scopeType = scopeType;
+	}
+	public CounterScopeModel withScopeType(String scopeType) {
+		this.scopeType = scopeType;
+		return this;
+	}
 	public String getResetType() {
 		return resetType;
 	}
@@ -73,25 +86,51 @@ public class CounterScopeModel implements IModel, Serializable {
 		this.resetHour = resetHour;
 		return this;
 	}
+	public String getConditionName() {
+		return conditionName;
+	}
+	public void setConditionName(String conditionName) {
+		this.conditionName = conditionName;
+	}
+	public CounterScopeModel withConditionName(String conditionName) {
+		this.conditionName = conditionName;
+		return this;
+	}
+	public VerifyAction getCondition() {
+		return condition;
+	}
+	public void setCondition(VerifyAction condition) {
+		this.condition = condition;
+	}
+	public CounterScopeModel withCondition(VerifyAction condition) {
+		this.condition = condition;
+		return this;
+	}
 
     public static CounterScopeModel fromJson(JsonNode data) {
         if (data == null) {
             return null;
         }
         return new CounterScopeModel()
+            .withScopeType(data.get("scopeType") == null || data.get("scopeType").isNull() ? null : data.get("scopeType").asText())
             .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
             .withResetDayOfMonth(data.get("resetDayOfMonth") == null || data.get("resetDayOfMonth").isNull() ? null : data.get("resetDayOfMonth").intValue())
             .withResetDayOfWeek(data.get("resetDayOfWeek") == null || data.get("resetDayOfWeek").isNull() ? null : data.get("resetDayOfWeek").asText())
-            .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue());
+            .withResetHour(data.get("resetHour") == null || data.get("resetHour").isNull() ? null : data.get("resetHour").intValue())
+            .withConditionName(data.get("conditionName") == null || data.get("conditionName").isNull() ? null : data.get("conditionName").asText())
+            .withCondition(data.get("condition") == null || data.get("condition").isNull() ? null : VerifyAction.fromJson(data.get("condition")));
     }
 
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("scopeType", getScopeType());
                 put("resetType", getResetType());
                 put("resetDayOfMonth", getResetDayOfMonth());
                 put("resetDayOfWeek", getResetDayOfWeek());
                 put("resetHour", getResetHour());
+                put("conditionName", getConditionName());
+                put("condition", getCondition() != null ? getCondition().toJson() : null);
             }}
         );
     }
@@ -100,10 +139,13 @@ public class CounterScopeModel implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((this.scopeType == null) ? 0 : this.scopeType.hashCode());
         result = prime * result + ((this.resetType == null) ? 0 : this.resetType.hashCode());
         result = prime * result + ((this.resetDayOfMonth == null) ? 0 : this.resetDayOfMonth.hashCode());
         result = prime * result + ((this.resetDayOfWeek == null) ? 0 : this.resetDayOfWeek.hashCode());
         result = prime * result + ((this.resetHour == null) ? 0 : this.resetHour.hashCode());
+        result = prime * result + ((this.conditionName == null) ? 0 : this.conditionName.hashCode());
+        result = prime * result + ((this.condition == null) ? 0 : this.condition.hashCode());
 		return result;
 	}
 
@@ -116,6 +158,11 @@ public class CounterScopeModel implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		CounterScopeModel other = (CounterScopeModel) o;
+		if (scopeType == null) {
+			return other.scopeType == null;
+		} else if (!scopeType.equals(other.scopeType)) {
+			return false;
+		}
 		if (resetType == null) {
 			return other.resetType == null;
 		} else if (!resetType.equals(other.resetType)) {
@@ -134,6 +181,16 @@ public class CounterScopeModel implements IModel, Serializable {
 		if (resetHour == null) {
 			return other.resetHour == null;
 		} else if (!resetHour.equals(other.resetHour)) {
+			return false;
+		}
+		if (conditionName == null) {
+			return other.conditionName == null;
+		} else if (!conditionName.equals(other.conditionName)) {
+			return false;
+		}
+		if (condition == null) {
+			return other.condition == null;
+		} else if (!condition.equals(other.condition)) {
 			return false;
 		}
 		return true;

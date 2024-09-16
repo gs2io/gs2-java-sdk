@@ -32,7 +32,9 @@ public class VerifyCounterValueByUserIdRequest extends Gs2BasicRequest<VerifyCou
     private String userId;
     private String counterName;
     private String verifyType;
+    private String scopeType;
     private String resetType;
+    private String conditionName;
     private Long value;
     private Boolean multiplyValueSpecifyingQuantity;
     private String timeOffsetToken;
@@ -77,6 +79,16 @@ public class VerifyCounterValueByUserIdRequest extends Gs2BasicRequest<VerifyCou
 		this.verifyType = verifyType;
 		return this;
 	}
+	public String getScopeType() {
+		return scopeType;
+	}
+	public void setScopeType(String scopeType) {
+		this.scopeType = scopeType;
+	}
+	public VerifyCounterValueByUserIdRequest withScopeType(String scopeType) {
+		this.scopeType = scopeType;
+		return this;
+	}
 	public String getResetType() {
 		return resetType;
 	}
@@ -85,6 +97,16 @@ public class VerifyCounterValueByUserIdRequest extends Gs2BasicRequest<VerifyCou
 	}
 	public VerifyCounterValueByUserIdRequest withResetType(String resetType) {
 		this.resetType = resetType;
+		return this;
+	}
+	public String getConditionName() {
+		return conditionName;
+	}
+	public void setConditionName(String conditionName) {
+		this.conditionName = conditionName;
+	}
+	public VerifyCounterValueByUserIdRequest withConditionName(String conditionName) {
+		this.conditionName = conditionName;
 		return this;
 	}
 	public Long getValue() {
@@ -140,7 +162,9 @@ public class VerifyCounterValueByUserIdRequest extends Gs2BasicRequest<VerifyCou
             .withUserId(data.get("userId") == null || data.get("userId").isNull() ? null : data.get("userId").asText())
             .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
             .withVerifyType(data.get("verifyType") == null || data.get("verifyType").isNull() ? null : data.get("verifyType").asText())
+            .withScopeType(data.get("scopeType") == null || data.get("scopeType").isNull() ? null : data.get("scopeType").asText())
             .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
+            .withConditionName(data.get("conditionName") == null || data.get("conditionName").isNull() ? null : data.get("conditionName").asText())
             .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").longValue())
             .withMultiplyValueSpecifyingQuantity(data.get("multiplyValueSpecifyingQuantity") == null || data.get("multiplyValueSpecifyingQuantity").isNull() ? null : data.get("multiplyValueSpecifyingQuantity").booleanValue())
             .withTimeOffsetToken(data.get("timeOffsetToken") == null || data.get("timeOffsetToken").isNull() ? null : data.get("timeOffsetToken").asText());
@@ -153,7 +177,9 @@ public class VerifyCounterValueByUserIdRequest extends Gs2BasicRequest<VerifyCou
                 put("userId", getUserId());
                 put("counterName", getCounterName());
                 put("verifyType", getVerifyType());
+                put("scopeType", getScopeType());
                 put("resetType", getResetType());
+                put("conditionName", getConditionName());
                 put("value", getValue());
                 put("multiplyValueSpecifyingQuantity", getMultiplyValueSpecifyingQuantity());
                 put("timeOffsetToken", getTimeOffsetToken());

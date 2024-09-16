@@ -30,7 +30,9 @@ import io.gs2.core.model.IModel;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TargetCounterModel implements IModel, Serializable {
 	private String counterName;
+	private String scopeType;
 	private String resetType;
+	private String conditionName;
 	private Long value;
 	public String getCounterName() {
 		return counterName;
@@ -42,6 +44,16 @@ public class TargetCounterModel implements IModel, Serializable {
 		this.counterName = counterName;
 		return this;
 	}
+	public String getScopeType() {
+		return scopeType;
+	}
+	public void setScopeType(String scopeType) {
+		this.scopeType = scopeType;
+	}
+	public TargetCounterModel withScopeType(String scopeType) {
+		this.scopeType = scopeType;
+		return this;
+	}
 	public String getResetType() {
 		return resetType;
 	}
@@ -50,6 +62,16 @@ public class TargetCounterModel implements IModel, Serializable {
 	}
 	public TargetCounterModel withResetType(String resetType) {
 		this.resetType = resetType;
+		return this;
+	}
+	public String getConditionName() {
+		return conditionName;
+	}
+	public void setConditionName(String conditionName) {
+		this.conditionName = conditionName;
+	}
+	public TargetCounterModel withConditionName(String conditionName) {
+		this.conditionName = conditionName;
 		return this;
 	}
 	public Long getValue() {
@@ -69,7 +91,9 @@ public class TargetCounterModel implements IModel, Serializable {
         }
         return new TargetCounterModel()
             .withCounterName(data.get("counterName") == null || data.get("counterName").isNull() ? null : data.get("counterName").asText())
+            .withScopeType(data.get("scopeType") == null || data.get("scopeType").isNull() ? null : data.get("scopeType").asText())
             .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
+            .withConditionName(data.get("conditionName") == null || data.get("conditionName").isNull() ? null : data.get("conditionName").asText())
             .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").longValue());
     }
 
@@ -77,7 +101,9 @@ public class TargetCounterModel implements IModel, Serializable {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
                 put("counterName", getCounterName());
+                put("scopeType", getScopeType());
                 put("resetType", getResetType());
+                put("conditionName", getConditionName());
                 put("value", getValue());
             }}
         );
@@ -88,7 +114,9 @@ public class TargetCounterModel implements IModel, Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.counterName == null) ? 0 : this.counterName.hashCode());
+        result = prime * result + ((this.scopeType == null) ? 0 : this.scopeType.hashCode());
         result = prime * result + ((this.resetType == null) ? 0 : this.resetType.hashCode());
+        result = prime * result + ((this.conditionName == null) ? 0 : this.conditionName.hashCode());
         result = prime * result + ((this.value == null) ? 0 : this.value.hashCode());
 		return result;
 	}
@@ -107,9 +135,19 @@ public class TargetCounterModel implements IModel, Serializable {
 		} else if (!counterName.equals(other.counterName)) {
 			return false;
 		}
+		if (scopeType == null) {
+			return other.scopeType == null;
+		} else if (!scopeType.equals(other.scopeType)) {
+			return false;
+		}
 		if (resetType == null) {
 			return other.resetType == null;
 		} else if (!resetType.equals(other.resetType)) {
+			return false;
+		}
+		if (conditionName == null) {
+			return other.conditionName == null;
+		} else if (!conditionName.equals(other.conditionName)) {
 			return false;
 		}
 		if (value == null) {

@@ -29,10 +29,22 @@ import io.gs2.core.model.IModel;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ScopedValue implements IModel, Serializable {
+	private String scopeType;
 	private String resetType;
+	private String conditionName;
 	private Long value;
 	private Long nextResetAt;
 	private Long updatedAt;
+	public String getScopeType() {
+		return scopeType;
+	}
+	public void setScopeType(String scopeType) {
+		this.scopeType = scopeType;
+	}
+	public ScopedValue withScopeType(String scopeType) {
+		this.scopeType = scopeType;
+		return this;
+	}
 	public String getResetType() {
 		return resetType;
 	}
@@ -41,6 +53,16 @@ public class ScopedValue implements IModel, Serializable {
 	}
 	public ScopedValue withResetType(String resetType) {
 		this.resetType = resetType;
+		return this;
+	}
+	public String getConditionName() {
+		return conditionName;
+	}
+	public void setConditionName(String conditionName) {
+		this.conditionName = conditionName;
+	}
+	public ScopedValue withConditionName(String conditionName) {
+		this.conditionName = conditionName;
 		return this;
 	}
 	public Long getValue() {
@@ -79,7 +101,9 @@ public class ScopedValue implements IModel, Serializable {
             return null;
         }
         return new ScopedValue()
+            .withScopeType(data.get("scopeType") == null || data.get("scopeType").isNull() ? null : data.get("scopeType").asText())
             .withResetType(data.get("resetType") == null || data.get("resetType").isNull() ? null : data.get("resetType").asText())
+            .withConditionName(data.get("conditionName") == null || data.get("conditionName").isNull() ? null : data.get("conditionName").asText())
             .withValue(data.get("value") == null || data.get("value").isNull() ? null : data.get("value").longValue())
             .withNextResetAt(data.get("nextResetAt") == null || data.get("nextResetAt").isNull() ? null : data.get("nextResetAt").longValue())
             .withUpdatedAt(data.get("updatedAt") == null || data.get("updatedAt").isNull() ? null : data.get("updatedAt").longValue());
@@ -88,7 +112,9 @@ public class ScopedValue implements IModel, Serializable {
     public JsonNode toJson() {
         return new ObjectMapper().valueToTree(
             new HashMap<String, Object>() {{
+                put("scopeType", getScopeType());
                 put("resetType", getResetType());
+                put("conditionName", getConditionName());
                 put("value", getValue());
                 put("nextResetAt", getNextResetAt());
                 put("updatedAt", getUpdatedAt());
@@ -100,7 +126,9 @@ public class ScopedValue implements IModel, Serializable {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((this.scopeType == null) ? 0 : this.scopeType.hashCode());
         result = prime * result + ((this.resetType == null) ? 0 : this.resetType.hashCode());
+        result = prime * result + ((this.conditionName == null) ? 0 : this.conditionName.hashCode());
         result = prime * result + ((this.value == null) ? 0 : this.value.hashCode());
         result = prime * result + ((this.nextResetAt == null) ? 0 : this.nextResetAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -116,9 +144,19 @@ public class ScopedValue implements IModel, Serializable {
 		if (getClass() != o.getClass())
 			return false;
 		ScopedValue other = (ScopedValue) o;
+		if (scopeType == null) {
+			return other.scopeType == null;
+		} else if (!scopeType.equals(other.scopeType)) {
+			return false;
+		}
 		if (resetType == null) {
 			return other.resetType == null;
 		} else if (!resetType.equals(other.resetType)) {
+			return false;
+		}
+		if (conditionName == null) {
+			return other.conditionName == null;
+		} else if (!conditionName.equals(other.conditionName)) {
 			return false;
 		}
 		if (value == null) {

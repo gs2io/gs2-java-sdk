@@ -3942,7 +3942,9 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("scopeType", request.getScopeType());
                     put("resetType", request.getResetType());
+                    put("conditionName", request.getConditionName());
                     put("value", request.getValue());
                     put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
@@ -4034,7 +4036,9 @@ import io.gs2.mission.model.*;public class Gs2MissionRestClient extends Abstract
 
             builder.setBody(new ObjectMapper().valueToTree(
                 new HashMap<String, Object>() {{
+                    put("scopeType", request.getScopeType());
                     put("resetType", request.getResetType());
+                    put("conditionName", request.getConditionName());
                     put("value", request.getValue());
                     put("multiplyValueSpecifyingQuantity", request.getMultiplyValueSpecifyingQuantity());
                     put("contextStack", request.getContextStack());
